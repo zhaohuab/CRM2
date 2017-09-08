@@ -35,7 +35,8 @@ module.exports = {
             store: path.join(__dirname, 'src/store'),
             routes: path.join(__dirname, 'src/routes'),
 			assets: path.join(__dirname, 'src/assets'),
-			utils: path.join(__dirname, 'src/utils')
+			utils: path.join(__dirname, 'src/utils'),
+			api: path.join(__dirname, 'src/api')
         },
     },
 	module: {
