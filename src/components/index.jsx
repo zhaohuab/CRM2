@@ -29,17 +29,17 @@ class Main extends React.Component {
 
     render() {
         let viewBoxstyle = this.state.viewBoxstyle ? "app-container full-height boxed-layout" : "app-container full-height";
-        return <div className={viewBoxstyle}>
-            <Header  
-                collapsed = {this.state.collapsed} 
-                toggleCollapsed = {this.toggleCollapsed} 
-            />
-            <div className="app-body">
+        return <div className = "full-height">
+            <div className={viewBoxstyle}>
                 <Menu 
                     collapsed = {this.state.collapsed} 
                 />
-                <div className="app-content">
-                    { this.props.children }
+                <div className="app-body">
+                    <Header  
+                        collapsed = {this.state.collapsed} 
+                        toggleCollapsed = {this.toggleCollapsed} 
+                    />
+                    <div className="app-content">{ this.props.children }</div>
                 </div>
             </div>
             <ViewStyle toggleViewBox = {this.toggleViewBox} />

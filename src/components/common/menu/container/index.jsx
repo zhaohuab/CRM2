@@ -33,6 +33,7 @@ export default class LeftMenu extends React.Component {
                 selectedKeys = {this.state.selectedKeys}
                 mode="inline"
                 inlineCollapsed={this.props.collapsed}
+                theme={"dark"}
                 onSelect = {this.onSelect}
             >
                 <Menu.Item key="1">

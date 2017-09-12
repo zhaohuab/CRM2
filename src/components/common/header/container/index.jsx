@@ -14,10 +14,9 @@ class Header extends React.Component {
         const { $$state } = this.props;
         const user = $$state.get("user") || "";
         return <div className="app-header">
-                <span className="head-logo">CRMWEB</span>
-                <Button type="primary" onClick={this.props.toggleCollapsed}>
+                <span className="menu-style-control" onClick={this.props.toggleCollapsed}>
                   <Icon type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'} />
-                </Button>
+                </span>
                 <div className="logger">{user}</div>
             </div>
     }
