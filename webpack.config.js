@@ -7,8 +7,9 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 //修改antd.design主题文件
 var theme = require('./theme.config.js')
 
-var hostIP = 'localhost';
+var hostIP = '10.1.208.15';
 var portNumber = '3000';
+let urlPath ='10.1.230.0';
 
 module.exports = {
 	entry: {
@@ -18,7 +19,7 @@ module.exports = {
 	output: {
 		path: __dirname + '/lib',
 		//path: path.resolve(__dirname, "public"),
-		publicPath: '//localhost:'+portNumber+'/lib',
+		publicPath: '//'+urlPath+':'+portNumber+'/lib',
 		filename: "[name].min.js",   //打包后输出的文件名
 		chunkFilename: '[id].chunk.js'
 	},
@@ -78,6 +79,6 @@ module.exports = {
         hot: true,
         inline: true,
         port: portNumber,
-        host: hostIP
+        host: urlPath
 	}
 }

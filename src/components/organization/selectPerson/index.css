@@ -1,0 +1,9 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.app-out {
+  padding: 10px;
+  box-sizing: border-box;
+  background: #c8e1ff;
+}

@@ -9,11 +9,15 @@ import projectList from 'components/project/list/reducer'
 //user目录
 import userlist from 'components/user/list/reducer'
 
+//organization目录
+
+import orgReducers from '../components/organization/organizationList/reducer/index.js'
 
 let rootReducer = combineReducers({
     login,
     projectList,
     userlist,
+    orgReducers
  });
 
 export { rootReducer }

@@ -13,7 +13,7 @@ const rootRoutes = {
       }
     },
     {
-      path: '/crmweb',
+      path: '/CRM_WEB',
       getComponents(location, cb) {
         require.ensure([], function (require) {
           cb(null,  require('components').default)
@@ -30,7 +30,8 @@ const rootRoutes = {
         require.ensure([], function (require) {
           cb(null, [
             require('./routes/project').default,
-            require('./routes/user').default
+            require('./routes/user').default,
+            require('./routes/organization/routes/list/index.js').default
           ])
         })
       },

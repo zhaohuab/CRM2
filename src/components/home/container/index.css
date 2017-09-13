@@ -1,0 +1,21 @@
+.home-warrper {
+  background: white;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.home-warrper .home-header {
+  width: 100%;
+  height: 110px;
+  display: flex;
+}
+.home-warrper .home-header .home-header-part {
+  width: 25%;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+.home-warrper .home-header .home-header-part:nth-of-type(4) {
+  margin-right: 0;
+}
+.home-warrper .home-header .part1 {
+  background: #EC8686;
+}
