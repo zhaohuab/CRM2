@@ -47,9 +47,12 @@ import './index.less'
 
         return (
             <Menu
-              mode="inline"
-              selectedKeys = {this.state.selectedKeys}
-              onSelect = {this.onSelect}
+                defaultSelectedKeys = {["1"]}
+                selectedKeys = {this.state.selectedKeys}
+                mode="inline"
+                inlineCollapsed={this.props.collapsed}
+                theme={"dark"}
+                onSelect = {this.onSelect}
             >
                {tree(data)}
             </Menu>
