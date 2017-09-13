@@ -96,10 +96,25 @@ class LoginCon extends React.Component {
     render() {
         return (
             <div className="login-box" >
-               <div className="login-bg">
-                    <div className="login-tit">Cloud CRM</div>
-                    <Login login = {this.props.action.login} />
-               </div>
+                <header className="login-box-header">
+                    <section className='header-login'>
+                        <div>
+                            <img src={require('assets/images/login/login_logo.png')} />
+                        </div>
+                        
+                    </section>
+                </header>
+                <main className='login-box-mian'>
+                    <div className='login-box-mian-inner'>
+                        <div className='mian-inner-left'></div>
+                        <div className='mian-inner-right'>
+                            <Login login = {this.props.action.login} />
+                        </div>
+                    </div>
+                </main>
+                <footer className='login-box-end'>
+                    版权归用友股份有限公司所有
+                </footer>
             </div>
         );
     }
