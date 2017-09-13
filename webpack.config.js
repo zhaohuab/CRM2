@@ -18,7 +18,7 @@ module.exports = {
 	output: {
 		path: __dirname + '/lib',
 		//path: path.resolve(__dirname, "public"),
-		publicPath: '//localhost:'+portNumber+'/lib',
+		publicPath: '//localhost:'+portNumber+'/lib/',
 		filename: "[name].min.js",   //打包后输出的文件名
 		chunkFilename: '[id].chunk.js'
 	},
