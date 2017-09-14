@@ -37,28 +37,28 @@ export default class LeftMenu extends React.Component {
                 onSelect = {this.onSelect}
             >
                 <Menu.Item key="1">
-                    <Link to="/CRM_WEB">
+                    <Link to="/crm_web">
                         <Icon type="home" />
                         <span>主页</span>
                     </Link>
                 </Menu.Item>
                 <SubMenu key="sub1" title={<span><Icon type="pie-chart" /><span>项目</span></span>}>
                     <Menu.Item key="2">
-                        <Link to="/crmweb/project">
+                        <Link to="/crm_web/project">
                             <span>项目管理</span>
                         </Link>
                     </Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub2" title={<span><Icon type="user" /><span>用户</span></span>}>
                     <Menu.Item key="3">
-                        <Link to="/crmweb/user">
+                        <Link to="/crm_web/user">
                             <span>用户管理</span>
                         </Link>
                     </Menu.Item>
                 </SubMenu>
                 <SubMenu key="sub3" title={<span><Icon type="team" /><span>组织</span></span>}>
                     <Menu.Item key="4">
-                        <Link to="/CRM_WEB/page/organization">
+                        <Link to="/crm_web/page/org">
                             <span>组织列表</span>
                         </Link>
                     </Menu.Item>

@@ -5,7 +5,7 @@
 const rootRoutes = {
   childRoutes: [
     {
-      path: '/login',
+      path: '/crm_web/login',
       getComponents(location, cb) {
         require.ensure([], function (require) {
           cb(null, require('components/login/container').default)
@@ -13,7 +13,7 @@ const rootRoutes = {
       }
     },
     {
-      path: '/CRM_WEB',
+      path: '/crm_web',
       getComponents(location, cb) {
         require.ensure([], function (require) {
           cb(null,  require('components').default)
@@ -31,7 +31,7 @@ const rootRoutes = {
           cb(null, [
             require('./routes/project').default,
             require('./routes/user').default,
-            require('./routes/organization/routes/list/index.js').default
+            require('./routes/org/routes/list/index.js').default
           ])
         })
       },

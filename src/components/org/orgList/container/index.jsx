@@ -54,23 +54,30 @@ class List extends Component {
           },
           {
             title: '上级组织',
-            dataIndex: 'pkFatherorg',
-            key: 'pkFatherorg',
+            dataIndex: 'fatherorgId',
+            key: 'fatherorgId',
           },
           {
             title: '负责人',
-            dataIndex: 'respMan',
-            key: 'respMan',
+            dataIndex: 'respoPerson',
+            key: 'respoPerson',
           }, 
            {
             title: '其他负责人',
-            dataIndex: 'otherRespMan',
-            key: 'otherRespMan',
+            dataIndex: 'otherRespoPerson',
+            key: 'otherRespoPerson',
           },
            {
             title: '组织类型',
             dataIndex: 'orgType',
             key: 'orgType',
+            render:(text, record,index) => {
+                if(text === 0 ){
+                    return text='公司'
+                }else if(text === 1){
+                    return text='部门'
+                }
+            }
           },
            {
             title: '状态',
@@ -82,7 +89,7 @@ class List extends Component {
             key: 'action',
             render: (text, record,index) => (
               <div>
-                <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record,index)}}>修改</Button>
+                <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record)}}>修改</Button>
                 <Button type="danger" htmlType="button" onClick={()=>{this.itemDelete(record,index)}}>删除</Button>
               </div>
             ),
@@ -90,35 +97,27 @@ class List extends Component {
     }
 
     //修改一条数据方法
-    changeFrom(record,index){        
-        this.props.orgAction.getDetailSingle(record.pkOrg,(data)=>{
-            this.setState({
+    changeFrom(record){ 
+        this.props.orgAction.getDetailSingle(record.id,(data)=>{
+             this.setState({
                 changeFormVisitable:true,
-                index,
-                value:[data],
-                spinning:true
-            },()=>{
+                value:data
+             },()=>{
                 this.formRef.changeValueFn(this.state.value)
-                this.setState({
-                    spinning:false
-                })
-            })
-        });
+             })
+        })
     }
 
     //删除一条数据方法
     itemDelete(record,index){
-            let delFn=()=>{
-            message.success('删除成功');
-            }
-            this.props.orgAction.listdel(record,index,delFn)
+       this.props.orgAction.listdel(record,index)
     }
 
     //修改页面取消按钮 
     handleCancel(){
         this.setState({
             changeFormVisitable:false,
-        });
+         })
     }
 
    //修改页面确定方法
@@ -128,11 +127,10 @@ class List extends Component {
                 let closeFn=()=>{
                     this.setState({
                         changeFormVisitable:false
-                    },()=>{
-                        message.success('修改成功');
                     })
                 }
-                this.props.orgAction.listchange(values,this.props.index,closeFn);
+                this.props.orgAction.listchange(values);
+                closeFn()
             }
         });
     }
@@ -149,25 +147,21 @@ class List extends Component {
                     }
                     message.success('增加项目成功');
             }
-            this.props.orgAction.listadd(values,fn);  
-            this.setState({
-                addFormVisitable:false,
-            });
+            this.props.orgAction.listadd(values);  
+            fn()
         })
     }
  
     //增加组织页面取消按钮方法
     addFormHandleCancel(){
-        this.setState({
-            addFormVisitable:false,
-        });
+        this.props.orgAction.listaddclose()
     }
+
     //点击增加组织
     addFormBtn(){
-        this.setState({
-            addFormVisitable:true
-        });
+        this.props.orgAction.changeAdd()
     }
+
     //显示每行数据后的返回按钮
     tableListCheckboxFn(){
         this.setState({
@@ -205,40 +199,18 @@ class List extends Component {
 
     //组件渲染完毕获取数据
     componentDidMount(){
-        this.setState({
-            tabelLoading:true,
-            treeLoading:true
-        },()=>{
-            let tabelFn=()=>{
-                this.setState({
-                    tabelLoading:false,
-                })
-            }
-            let treeFn=()=>{
-                this.setState({
-                    treeLoading:false,
-                })
-            }
-
-            this.props.orgAction.getlist(tabelFn);
-            this.props.orgAction.getTreeList(treeFn);
-        })
+        this.props.orgAction.getlist();
     }
 
     render() {
-        //获取数据
-        let {total,voList} = this.props.orgState.toJS().listData;
-        let {treeData} = this.props.orgState.toJS()
-        if(voList){
-            voList=voList.filter((item,index)=>{
-                     if(item.orgType === 0){
-                        item.orgType='部门'
-                     }else if(item.orgType === 1){
-                        item.orgType='公司'
-                     }
-                     return item
-             })
-        }
+        //这获取总的状态
+        let {orgState} = this.props;
+        let tabelLoading=orgState.get('tabelLoading');
+        let addFormVisitable= orgState.get('addFormVisitable')
+    
+        //拿到想要的之后再toJS
+        let listData = orgState.get('listData').toJS();
+        //let treeData = orgState.get('treeData').toJS();
 
         let that=this;
         //点击每行table触发的onchange方法
@@ -264,7 +236,7 @@ class List extends Component {
 
                 <Modal
                     title="增加组织"
-                    visible={this.state.addFormVisitable}
+                    visible={addFormVisitable}
                     onOk={this.addFormHandleOk.bind(this)}
                     onCancel={this.addFormHandleCancel.bind(this)}
                 >
@@ -273,13 +245,13 @@ class List extends Component {
                 <div className='list-main'>
                     <div className='list-table-tree'>
                         <Spin spinning={this.state.treeLoading} tip='正在加载'/>
-                        <ListTree 
+                        {/* <ListTree 
                             data={treeData} 
                             onSelect={this.treeSelectFn.bind(this)} 
                             edit={this.treeSelectEditFn.bind(this)}
                             add={this.treeSelectAddFn.bind(this)}
                             delete={this.treeSelectDeleteFn.bind(this)}
-                        />
+                        /> */}
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
@@ -306,7 +278,7 @@ class List extends Component {
                             </div>
                         </div>
                         <div className='org-tabel'>
-                            <Table columns={this.columns} dataSource={voList} loading={this.state.tabelLoading} rowSelection={rowSelectionFn}/>
+                            <Table columns={this.columns} dataSource={listData} loading={tabelLoading} rowSelection={rowSelectionFn}/>
                         </div>
                         <Modal
                             title="修改组织"
@@ -314,10 +286,7 @@ class List extends Component {
                             onOk={this.changeFormHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
                         >
-                            <WrappedNormalLoginForm wrappedComponentRef={(inst) => this.formRef = inst}
-                                data={this.state.value} 
-                                index={this.state.index}  
-                            /> 
+                            <WrappedNormalLoginForm wrappedComponentRef={(inst) => this.formRef = inst} data={this.state.value}/> 
                         </Modal>   
                     </div>
                 </div>

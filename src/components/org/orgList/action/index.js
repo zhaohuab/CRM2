@@ -1,43 +1,22 @@
 import request from 'reqwest'
 
-
-//点击tree获取table数据
-export function getClickList(fn,id){
-    return(dispatch,getState)=>{
-        debugger
-        request({
-            url: `http://10.11.112.40:8081/CRM_WEB/system/org/`,
-            type:"application/x-www-form-urlencoded",
-            // type:"application/json",
-            method:'get',
-            data:{
-                param: JSON.stringify({
-                    pageSize:20,
-                    page:1,
-                    seachMap:typeof(params) == "undefined"?{}:JSON.stringify(params)
-                })
-            }
-        })
-        .then(function (dataResult) {
-            debugger
-            let {data} = JSON.parse(dataResult.response);
-            dispatch({type:'GETLIST',data,fn})
-        })
-        .fail(function (err, msg) {
-            debugger
-        }) 
-        
-    }
-}
+let urlPath=`http://10.11.112.40:8081/crm_web/sys/org/`
 
 
 //获取所有数据
 export function getlist(fn){
+    const fetchData = (type, payload)=> {
+        return {
+            type,
+            payload
+        }
+    }
+
     return(dispatch,getState)=>{
+        dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
-            url: 'http://10.11.112.40:8081/CRM_WEB/system/org',
+            url: urlPath,
             type:"application/x-www-form-urlencoded",
-            // type:"application/json",
             method:'get',
             data:{
                 param: JSON.stringify({
@@ -47,23 +26,59 @@ export function getlist(fn){
             }
         })
         .then(function (dataResult) {
-            let {data} = JSON.parse(dataResult.response);
-            dispatch({type:'GETLIST',data,fn})
+            let data=JSON.parse(dataResult.response);
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data.data}));
         })
         .fail(function (err, msg) {
             debugger
         }) 
-        
     }
 }
+
+
+export function changeAdd(){
+   return{
+       type:'ORG_LIST_CHANGEADD'
+   }
+}
+
+export function listaddclose (){
+    return{
+        type:'ORG_LIST_CHANGEADDCLOSE'
+    }
+}
+
+export function listadd(list){
+    const fetchData = (type, payload)=> {
+        return {
+            type,
+            payload
+        }
+    }
+    return(dispatch,getState)=>{
+        request({
+            url: urlPath,
+            type:"application/x-www-form-urlencoded",
+            method:'post',
+            data:"param="+JSON.stringify(list)
+        })
+        .then(function (dataResult) {
+            let {data} = JSON.parse(dataResult.response);
+            dispatch(fetchData('ORG_LIST_LISTADDSUCCESS',{data:data})) 
+        })
+        .fail(function (err, msg) {
+            debugger
+        }) 
+    }
+}
+
 
 //根据id查一条数据
 export function getDetailSingle(id,fn){
     return(dispatch,getState)=>{
         request({
-            url: `http://10.11.112.40:8081/CRM_WEB/system/org/+${id}`,
+            url: `${urlPath}+${id}`,
             type:"application/x-www-form-urlencoded",
-            // type:"application/json",
             method:'get',
             data:{
                 param: JSON.stringify({
@@ -81,60 +96,27 @@ export function getDetailSingle(id,fn){
     }
 }
 
-export function listadd(list,fn){
-    return(dispatch,getState)=>{
-        request({
-            url: `http://10.11.112.40:8081/CRM_WEB/system/org/`,
-            type:"application/x-www-form-urlencoded",
-            method:'post',
-            data:"param="+JSON.stringify(list)
-        })
-        .then(function (dataResult) {
-            let {data} = JSON.parse(dataResult.response);
-            dispatch({type:'LISTADD',data}) 
-            fn()     
-        })
-        .fail(function (err, msg) {
-            debugger
-        }) 
-    }
-}
-
-//删除一条数据
-export function listdel(record,index,fn){
-    return(dispatch,getState)=>{
-        let id=record.pkOrg
-        request({
-            url: `http://10.11.112.40:8081/CRM_WEB/system/org/+${id}`,
-            type:"application/x-www-form-urlencoded",
-            method:'delete',
-            data:{}
-        })
-        .then(function (dataResult) {
-            dispatch({type:'LISTDEL',record})
-            fn()
-        })
-        .fail(function (err, msg) {
-            debugger
-        }) 
-    }
-}
 
 //改变一条数据
-export function listchange(value,index,fn){
+export function listchange(value){
+    const fetchData = (type, payload)=> {
+        return {
+            type,
+            payload
+        }
+    }
     return(dispatch,getState)=>{
-        let id=value.pkOrg
+        let id=value.id
         request({
-            url: `http://10.11.112.40:8081/CRM_WEB/system/org/+${id}`,
+            url: `${urlPath}+${id}`,
             type:"application/x-www-form-urlencoded",
             method:'put',
             data:"param="+JSON.stringify(value)
         })
         .then(function (dataResult) {
             request({
-                url: 'http://10.11.112.40:8081/CRM_WEB/system/org',
+                url: urlPath,
                 type:"application/x-www-form-urlencoded",
-                // type:"application/json",
                 method:'get',
                 data:{
                     param: JSON.stringify({
@@ -146,9 +128,7 @@ export function listchange(value,index,fn){
             })
             .then(function (dataResult) {
                 let {data} = JSON.parse(dataResult.response);
-                dispatch({type:'GETLIST',data,fn})
-                //fn()
-               
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data})) 
             })
             .fail(function (err, msg) {
                 debugger
@@ -157,27 +137,43 @@ export function listchange(value,index,fn){
         .fail(function (err, msg) {
             debugger
         }) 
-
-
-        // setTimeout(()=>{
-        //    dispatch({type:'LISTCHANGE',value,index})
-        //    fn()
-        // },1000)
     }
 }
+
+
+//删除一条数据
+export function listdel(record){
+    return(dispatch,getState)=>{
+        let id=record.id
+        request({
+            url: `${urlPath}+${id}`,
+            type:"application/x-www-form-urlencoded",
+            method:'delete',
+            data:{}
+        })
+        .then(function (dataResult) {
+            dispatch({type:'ORG_LIST_LISTDELSUCCESS',record})
+        })
+        .fail(function (err, msg) {
+            debugger
+        }) 
+    }
+}
+
+
 
 //获取tree数据
 export function getTreeList(fn){
     return(dispatch,getState)=>{
         request({
-            url: `http://10.11.112.40:8081/CRM_WEB/system/orgTree`,
+            url: urlPath,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{}
         })
         .then(function (dataResult){
             let {data} = JSON.parse(dataResult.response);
-            dispatch({type:'GETTREELIST',data})
+            dispatch({type:'ORG_LIST_GETTREELIST',data})
             fn()
         })
         .fail(function (err, msg) {

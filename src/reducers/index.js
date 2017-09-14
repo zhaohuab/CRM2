@@ -11,7 +11,7 @@ import userlist from 'components/user/list/reducer'
 
 //organization目录
 
-import orgReducers from '../components/organization/organizationList/reducer/index.js'
+import orgReducers from '../components/org/orgList/reducer/index.js'
 
 let rootReducer = combineReducers({
     login,

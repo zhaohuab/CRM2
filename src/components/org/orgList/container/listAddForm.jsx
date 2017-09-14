@@ -51,21 +51,21 @@ export default class NormaladdForm extends React.Component {
                     )}
                 </FormItem>
                 <FormItem label='上级组织'>
-                    {getFieldDecorator('pkFatherorg', {
+                    {getFieldDecorator('fatherorgId', {
                     rules: [{ required: true, message: '请输入编号!' }],
                     })(
                     <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }}/>} type='text' placeholder="请输入编号!"/>
                     )}
                 </FormItem>
                 <FormItem label='负责人'>
-                    {getFieldDecorator('respMan', {
+                    {getFieldDecorator('respoPerson', {
                     rules: [{ required: true, message: '请输入编号!' }],
                     })(
                     <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }}/>} type='text' placeholder="请输入编号!"/>
                     )}
                 </FormItem>
                 <FormItem label='其他负责人'>
-                    {getFieldDecorator('otherRespMan', {
+                    {getFieldDecorator('otherRespoPerson', {
                     rules: [{ required: true, message: '请输入编号!' }],
                     })(
                     <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }}/>} type='text' placeholder="请输入编号!"/>

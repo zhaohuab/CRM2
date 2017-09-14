@@ -8,8 +8,17 @@ export default class NormalLoginForm extends React.Component {
         super(props);
     }
     
+    
+    // componentDidMount() {
+    //     debugger
+    //     if(this.props.data) {
+    //         this.props.form.setFieldsValue(this.props.data);
+    //     }
+        
+    // }
+    
     changeValueFn(){
-        let data=this.props.data[0];
+        let data=this.props.data;
         for(var key in data){
             // if(key ==='sysCreatedTime'){
             //     debugger
@@ -39,7 +48,7 @@ export default class NormalLoginForm extends React.Component {
                     <Form onSubmit={this.handleSubmit}  className="login-form home-form" >
 
                         <FormItem>
-                            {getFieldDecorator('pkOrg', {
+                            {getFieldDecorator('id', {
                             rules: [{ required: true, message: '请输入编号!' }],
                             })(
                             <Input  style={{display:'none'}} prefix={<Icon type="tag-o" style={{ fontSize: 13 }}/>} type='text' placeholder="请输入编号!"/>
@@ -74,21 +83,21 @@ export default class NormalLoginForm extends React.Component {
                             )}
                         </FormItem>
                         <FormItem label='上级组织'>
-                            {getFieldDecorator('pkFatherorg', {
+                            {getFieldDecorator('fatherorgId', {
                             rules: [{ required: true, message: '请输入编号!' }],
                             })(
                             <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }}/>} type='text' placeholder="请输入编号!"/>
                             )}
                         </FormItem>
                         <FormItem label='负责人'>
-                            {getFieldDecorator('respMan', {
+                            {getFieldDecorator('respoPerson', {
                             rules: [{ required: true, message: '请输入编号!' }],
                             })(
                             <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }}/>} type='text' placeholder="请输入编号!"/>
                             )}
                         </FormItem>
                         <FormItem label='其他负责人'>
-                            {getFieldDecorator('otherRespMan', {
+                            {getFieldDecorator('otherRespoPerson', {
                             rules: [{ required: true, message: '请输入编号!' }],
                             })(
                             <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }}/>} type='text' placeholder="请输入编号!"/>
