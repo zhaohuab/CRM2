@@ -12,12 +12,15 @@ import userlist from 'components/user/list/reducer'
 //organization目录
 
 import orgReducers from '../components/org/orgList/reducer/index.js'
+//左侧menu树
+import commonMenu from 'components/common/menu/reducer'
 
 let rootReducer = combineReducers({
     login,
     projectList,
     userlist,
-    orgReducers
+    orgReducers,
+    commonMenu,
  });
 
 export { rootReducer }
