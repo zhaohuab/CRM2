@@ -28,7 +28,7 @@ class LoginForm extends React.Component {
         const passwordError = isFieldTouched('password') && getFieldError('password');
         return (
             <div className="login-form">
-                
+                <p className='login-form-title'>登录</p>
                 <Form onSubmit={this.handleSubmit} width={300}>
                     <FormItem
                         validateStatus={userError ? 'error' : ''}
@@ -98,10 +98,28 @@ class LoginCon extends React.Component {
     render() {
         return (
             <div className="login-box" >
-               <div className="login-bg">
-                    <div className="login-tit">Cloud CRM</div>
-                    <Login login = {this.props.action.login} />
-               </div>
+                <header className="login-box-header">
+                    <section className='header-login'>
+                        <div className='header-login-logo'>
+                            <img src={require('assets/images/login/login_logo.png')} />
+                            <h3>用友云</h3>
+                        </div>
+                        
+                    </section>
+                </header>
+                <main className='login-box-mian'>
+                    <div className='login-box-mian-inner'>
+                        <div className='mian-inner-left'>
+                            <img src={require('assets/images/login/login_pic_left.png')} />
+                        </div>
+                        <div className='mian-inner-right'>
+                            <Login login = {this.props.action.login} />
+                        </div>
+                    </div>
+                </main>
+                <footer className='login-box-end'>
+                    版权归用友股份有限公司所有
+                </footer>
             </div>
         );
     }

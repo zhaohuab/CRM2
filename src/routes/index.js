@@ -42,9 +42,10 @@ const rootRoutes = {
             require.ensure([], function (require) {
               cb(null, [
                 require('./routes/project').default,
-                require('./routes/user').default
-              ])
-            })
+                require('./routes/user').default,
+                require('./routes/org/routes/list/index.js').default
+              ]
+            )})
           },
         },
         {
