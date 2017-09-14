@@ -13,17 +13,17 @@ export default class ListTree extends Component {
 
     edit(item,e){
         e.stopPropagation()
-        this.props.edit(item.pkOrg)
+        this.props.edit(item.id)
     }
 
     add(item,e){
         e.stopPropagation()
-        this.props.edit(item.pkOrg)
+        this.props.edit(item.id)
     }
 
     delete(item,e){
         e.stopPropagation()
-        this.props.edit(item.pkOrg)
+        this.props.edit(item.id)
     }
 
     getCustomTitle(item){
@@ -42,23 +42,29 @@ export default class ListTree extends Component {
         const loop = data => data.map((item) => {
             if (item.children && item.children.length) {
               return (
-                 <TreeNode key={item.pkOrg} title={this.getCustomTitle(item)}>
+                 <TreeNode key={item.id} title={this.getCustomTitle(item)}>
                     {loop(item.children)}
                  </TreeNode>
               );
             }
-            return <TreeNode key={item.pkOrg} title={this.getCustomTitle(item) }/>;
+            return <TreeNode key={item.id} title={this.getCustomTitle(item) }/>;
         });
+        let {data} = this.props
         return(
             <div>
-                <Search placeholder="Search" onChange={this.onChange}/>
-                <Tree
-                    showLine
-                    defaultExpandedKeys={['1015']}
-                    onSelect={this.onSelect.bind(this)}
-                >
-                    {loop(this.props.data)}
-                </Tree>
+                {
+                    data.length? 
+                    <div>
+                        <Search placeholder="Search" onChange={this.onChange}/>
+                        <Tree
+                            showLine
+                            defaultExpandedKeys={['1015']}
+                            onSelect={this.onSelect.bind(this)}
+                        >
+                            {loop(data)}
+                        </Tree>
+                    </div>:''
+                }
             </div>
         )
     }

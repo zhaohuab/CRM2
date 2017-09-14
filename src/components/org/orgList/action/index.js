@@ -1,17 +1,17 @@
 import request from 'reqwest'
+import { message} from 'antd';
 
-let urlPath=`http://10.11.112.40:8081/crm_web/sys/org/`
-
-
-//获取所有数据
-export function getlist(fn){
-    const fetchData = (type, payload)=> {
+let urlPath = `http://10.11.112.40:8081/crm_web/sys/org/`
+let treePath = `http://10.11.112.40:8081/crm_web/sys/orgTree`
+const fetchData = (type, payload)=> {
         return {
             type,
             payload
         }
-    }
+}
 
+//获取所有数据
+export function getlist(fn){
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
@@ -28,9 +28,10 @@ export function getlist(fn){
         .then(function (dataResult) {
             let data=JSON.parse(dataResult.response);
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data.data}));
+            message.success('获取数据成功');
         })
         .fail(function (err, msg) {
-            debugger
+            message.error('获取数据失败');
         }) 
     }
 }
@@ -38,7 +39,7 @@ export function getlist(fn){
 
 export function changeAdd(){
    return{
-       type:'ORG_LIST_CHANGEADD'
+       type:'ORG_LIST_CHANGEADDSTART'
    }
 }
 
@@ -49,12 +50,6 @@ export function listaddclose (){
 }
 
 export function listadd(list){
-    const fetchData = (type, payload)=> {
-        return {
-            type,
-            payload
-        }
-    }
     return(dispatch,getState)=>{
         request({
             url: urlPath,
@@ -65,9 +60,10 @@ export function listadd(list){
         .then(function (dataResult) {
             let {data} = JSON.parse(dataResult.response);
             dispatch(fetchData('ORG_LIST_LISTADDSUCCESS',{data:data})) 
+            message.success('增加数据成功');
         })
         .fail(function (err, msg) {
-            debugger
+            message.success('增加数据失败');
         }) 
     }
 }
@@ -91,7 +87,7 @@ export function getDetailSingle(id,fn){
             fn(data)
         })
         .fail(function (err, msg) {
-            debugger
+            message.error('查询数据失败');
         }) 
     }
 }
@@ -99,12 +95,6 @@ export function getDetailSingle(id,fn){
 
 //改变一条数据
 export function listchange(value){
-    const fetchData = (type, payload)=> {
-        return {
-            type,
-            payload
-        }
-    }
     return(dispatch,getState)=>{
         let id=value.id
         request({
@@ -129,13 +119,14 @@ export function listchange(value){
             .then(function (dataResult) {
                 let {data} = JSON.parse(dataResult.response);
                 dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data})) 
+                message.success('修改数据成功');
             })
             .fail(function (err, msg) {
-                debugger
+                message.error('修改数据失败');
             }) 
         })
         .fail(function (err, msg) {
-            debugger
+            message.error('修改数据失败');
         }) 
     }
 }
@@ -153,6 +144,29 @@ export function listdel(record){
         })
         .then(function (dataResult) {
             dispatch({type:'ORG_LIST_LISTDELSUCCESS',record})
+            message.success('删除数据成功');
+        })
+        .fail(function (err, msg) {
+            message.error('删除数据失败');
+        }) 
+    }
+}
+
+
+
+//获取tree数据
+export function getTreeList(){
+    return(dispatch,getState)=>{
+        dispatch({type:'ORG_LIST_GETTREELISTSTART'})
+        request({
+            url: treePath,
+            type:"application/x-www-form-urlencoded",
+            method:'get',
+            data:{}
+        })
+        .then(function (dataResult){
+            let {data} = JSON.parse(dataResult.response);
+            dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data})
         })
         .fail(function (err, msg) {
             debugger
@@ -161,20 +175,25 @@ export function listdel(record){
 }
 
 
-
-//获取tree数据
-export function getTreeList(fn){
+//获取一个部门tree信息，变换表格数据
+export function listTreeChange(id){
     return(dispatch,getState)=>{
+        
         request({
             url: urlPath,
             type:"application/x-www-form-urlencoded",
             method:'get',
-            data:{}
+            data:{
+                param: JSON.stringify({
+                    pageSize:20,
+                    page:1,
+                    searchMap:{id}
+                })
+            }
         })
         .then(function (dataResult){
             let {data} = JSON.parse(dataResult.response);
-            dispatch({type:'ORG_LIST_GETTREELIST',data})
-            fn()
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
         .fail(function (err, msg) {
             debugger

@@ -8,15 +8,18 @@
 }
 .list-warpper h2 {
   width: 100%;
-  height: 50px;
-  line-height: 50px;
+  height: 80px;
+  line-height: 80px;
   font-size: 18px;
   border-bottom: 1px solid #ccc;
+  background: white;
 }
 .list-warpper h2 .list-title {
   display: inline-block;
-  width: 70%;
+  width: 100%;
   height: 100%;
+  padding-left: 10px;
+  box-sizing: border-box;
 }
 .list-warpper .list-main {
   position: relative;
@@ -52,8 +55,6 @@
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  padding: 0 10px;
-  box-sizing: border-box;
 }
 .list-warpper .list-main .list-table .table-header {
   position: relative;
@@ -101,8 +102,6 @@
 .list-warpper .org-tabel {
   position: relative;
   background: white;
-  padding: 20px;
-  box-sizing: border-box;
 }
 .list-warpper .department-chioce {
   width: 100%;

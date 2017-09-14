@@ -1,5 +1,5 @@
 import  React, { Component } from 'react';
-import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,DatePicker,message,Modal,Spin ,Tree} from 'antd';
+import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,Modal,Spin} from 'antd';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
 import * as Actions from '../action/index.js'
@@ -110,7 +110,7 @@ class List extends Component {
 
     //删除一条数据方法
     itemDelete(record,index){
-       this.props.orgAction.listdel(record,index)
+       this.props.orgAction.listdel(record)
     }
 
     //修改页面取消按钮 
@@ -171,15 +171,8 @@ class List extends Component {
 
     //点击树节点触发的方法
     treeSelectFn(selectedKeys,obj){
+        this.props.orgAction.listTreeChange(selectedKeys[0])
         console.log(selectedKeys)
-        // let id=selectedKeys[0]
-        // let treeFn=()=>{
-        //     this.setState({
-        //         treeLoading:false,
-        //     })
-        // }
-
-        // this.props.orgAction.getClickList(treeFn,id);
     }
    
     //点击一个节点数的编辑操作
@@ -200,17 +193,18 @@ class List extends Component {
     //组件渲染完毕获取数据
     componentDidMount(){
         this.props.orgAction.getlist();
+        this.props.orgAction.getTreeList();
     }
 
     render() {
-        //这获取总的状态
+        //这获取总的状态  //拿到想要的之后再toJS
         let {orgState} = this.props;
-        let tabelLoading=orgState.get('tabelLoading');
-        let addFormVisitable= orgState.get('addFormVisitable')
+        let tabelLoading = orgState.get('tabelLoading');
+        let addFormVisitable = orgState.get('addFormVisitable')
+        let treeLoading = orgState.get('treeLoading')
     
-        //拿到想要的之后再toJS
         let listData = orgState.get('listData').toJS();
-        //let treeData = orgState.get('treeData').toJS();
+        let treeData = orgState.get('treeData').toJS();
 
         let that=this;
         //点击每行table触发的onchange方法
@@ -231,7 +225,7 @@ class List extends Component {
         return (
             <div className='list-warpper'>
                 <h2>
-                    <div className='list-title'>项目列表</div>
+                    <div className='list-title'>组织列表</div>
                 </h2>
 
                 <Modal
@@ -244,14 +238,14 @@ class List extends Component {
                 </Modal>
                 <div className='list-main'>
                     <div className='list-table-tree'>
-                        <Spin spinning={this.state.treeLoading} tip='正在加载'/>
-                        {/* <ListTree 
+                        <Spin spinning={treeLoading} tip='正在加载'/>
+                        <ListTree 
                             data={treeData} 
                             onSelect={this.treeSelectFn.bind(this)} 
                             edit={this.treeSelectEditFn.bind(this)}
                             add={this.treeSelectAddFn.bind(this)}
                             delete={this.treeSelectDeleteFn.bind(this)}
-                        /> */}
+                        />
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
