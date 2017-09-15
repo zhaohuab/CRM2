@@ -3,17 +3,31 @@ import React, { Component, PropTypes } from 'react';
 import { Input,Badge,Icon,Row, Col} from 'antd';
 const Search = Input.Search;
 import './index.less'
-
+import echarts from 'echarts'
+import target from './targetEcharts.js'
+import moneyEcharts from './moneyEcharts.js'
+import funnelEcharts from './funnelEcharts.js'
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-        }
+        this.state = {}
+        this.targetOption = target;
+        this.moneyOption = moneyEcharts
+        this.funnelEcharts = funnelEcharts
         
     }
 
     componentDidMount(){
-      
+        var target = echarts.init(this.refs.target);
+        target.setOption(this.targetOption);
+
+        var money = echarts.init(this.refs.money);
+        money.setOption(this.moneyOption);
+
+        var funnel = echarts.init(this.refs.funnel);
+        funnel.setOption(this.funnelEcharts);
+        
+
     }
     render() {
         return (
@@ -45,6 +59,10 @@ class Home extends React.Component {
                                         <h3 className='target-title'>
                                             本月指标
                                         </h3>
+                                        <div ref='target' style={{width:"100%",minHeight:"300px"}}>
+  
+                                        </div>
+
                                     </div>
                                 </Col>
 
@@ -53,6 +71,7 @@ class Home extends React.Component {
                                        <h3 className='target-title'>
                                             汇款排行榜
                                         </h3>
+                                        <div ref='money' style={{width:"100%",minHeight:"300px"}}></div>
                                     </div>
                                 </Col>
                             </Row>
@@ -69,6 +88,7 @@ class Home extends React.Component {
                                         <h3 className='target-title'>
                                             销售漏斗
                                         </h3>
+                                        <div ref='funnel' style={{width:"100%",minHeight:"300px"}}></div>
                                     </div>
                                 </Col>
                             </Row>
