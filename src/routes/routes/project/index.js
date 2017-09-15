@@ -1,6 +1,6 @@
  
  export default {
-  path: 'project',
+  path: 'org',
   indexRoute: { component: require('components/project/list/container').default },
   getChildRoutes(partialNextState, cb) {
     require.ensure([], (require) => {
