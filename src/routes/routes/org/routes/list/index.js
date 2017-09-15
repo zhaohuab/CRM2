@@ -2,7 +2,7 @@
 import organizationList from 'components/org/orgList/container';
 
 const route = {
-  path: 'page/org',
+  path: 'org',
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
       cb(null, organizationList)

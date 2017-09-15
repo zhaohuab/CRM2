@@ -37,7 +37,7 @@ export default class LeftMenu extends React.Component {
                 onSelect = {this.onSelect}
             >
                 <Menu.Item key="1">
-                    <Link to="/crm_web">
+                    <Link to="/crm_web/home">
                         <Icon type="home" />
                         <span>主页</span>
                     </Link>

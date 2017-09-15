@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import Menu from 'components/common/menu/container'
 import Header from 'components/common/header/container'
 import ViewStyle from 'components/common/viewstyle/container'
-
+import {Icon} from 'antd';
 import './index.less'
 
 class Main extends React.Component {
@@ -43,6 +43,9 @@ class Main extends React.Component {
                 </div>
             </div>
             <ViewStyle toggleViewBox = {this.toggleViewBox} />
+            <div className='app-talk'>
+                <Icon type="message" />
+            </div>
         </div>
     }
 }

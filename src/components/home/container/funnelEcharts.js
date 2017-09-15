@@ -8,11 +8,13 @@ let option = {
         feature: {
             dataView: {readOnly: false},
             saveAsImage: {},
-        }
+        },
+        bottom:20,
+        right:10
     },
     legend: {
         data: ['展现','点击','访问','咨询','订单'],
-        bottom:20
+        top:20
     },
     series: [
         {

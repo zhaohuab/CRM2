@@ -1,22 +1,53 @@
 
 import React, { Component, PropTypes } from 'react';
-import { Input,Badge,Icon,Row, Col} from 'antd';
+import { Input,Badge,Icon,Row, Col,Button} from 'antd';
 const Search = Input.Search;
 import './index.less'
 import echarts from 'echarts'
 import target from './targetEcharts.js'
 import moneyEcharts from './moneyEcharts.js'
 import funnelEcharts from './funnelEcharts.js'
+import { Map, Markers ,Polyline} from 'react-amap';
+
+const randomMarker = (len) => (
+    Array(len).fill(true).map((e, idx) => ({
+      position: {
+        longitude: 100 + Math.random() * 30,
+        latitude: 30 + Math.random() * 20,
+      },
+    }))
+  );
+
+const randomPath = () => ({
+    longitude: 60 + Math.random() * 50,
+    latitude: 10 + Math.random() * 40,
+})
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            useCluster: true,
+        }
         this.targetOption = target;
         this.moneyOption = moneyEcharts
         this.funnelEcharts = funnelEcharts
-        
+        this.markers = randomMarker(1000);
+        this.center = {longitude: 115, latitude: 40};
+        this.lineEvents = {
+            created: (ins) => {console.log(ins)},
+            show: () => {console.log('line show')},
+            hide: () => {console.log('line hide')},
+            click: () => {console.log('line clicked')},
+        }
     }
 
+    toggleCluster(){
+        this.setState({
+          useCluster: !this.state.useCluster,
+        });
+    }
+ 
     componentDidMount(){
         var target = echarts.init(this.refs.target);
         target.setOption(this.targetOption);
@@ -26,8 +57,6 @@ class Home extends React.Component {
 
         var funnel = echarts.init(this.refs.funnel);
         funnel.setOption(this.funnelEcharts);
-        
-
     }
     render() {
         return (
@@ -41,6 +70,9 @@ class Home extends React.Component {
                                 style={{ width: 200 }}
                                 onSearch={value => console.log(value)}
                             />
+                            <div className='clinet-alert'>
+                                <Icon type="solution" />
+                            </div>
                             <div className='clinet-alert'>
                                 <Icon type="bell" />
                                 <Badge count={0} showZero>
@@ -57,19 +89,16 @@ class Home extends React.Component {
                                 <Col span={12} className='left-top-target'> 
                                     <div className='left-top-target-inner'>
                                         <h3 className='target-title'>
-                                            本月指标
+                                            <span>本月指标</span>
                                         </h3>
-                                        <div ref='target' style={{width:"100%",minHeight:"300px"}}>
-  
-                                        </div>
-
+                                        <div ref='target' style={{width:"100%",minHeight:"300px"}}></div>
                                     </div>
                                 </Col>
 
                                 <Col span={12} className='leaderboard'> 
                                     <div className='left-top-leaderboard-inner'>
                                        <h3 className='target-title'>
-                                            汇款排行榜
+                                         <span>汇款排行榜</span>
                                         </h3>
                                         <div ref='money' style={{width:"100%",minHeight:"300px"}}></div>
                                     </div>
@@ -79,37 +108,54 @@ class Home extends React.Component {
                                 <Col span={12} className='left-top-area'> 
                                     <div className='left-top-area-inner'>
                                         <h3 className='target-title'>
-                                            销售区域
+                                            <span>销售区域</span>
+                                            <div className='edit-area'>
+                                                <Button onClick={ () => this.toggleCluster()  }> 切换显示方式</Button>
+                                            </div>
                                         </h3>
+                                        <div>
+                                            <div style={{width: '100%', height: 300}}>
+                                            <Map plugins={['ToolBar']} center={this.center} zoom={5}>
+                                                <Markers 
+                                                    markers={this.markers}
+                                                    useCluster={this.state.useCluster}
+                                                />
+                                            </Map>
+                                            </div>
+                                        </div>
                                     </div>
                                 </Col>
                                 <Col span={12} className='left-top-funnel'> 
                                     <div className='left-top-funnel-inner'>
                                         <h3 className='target-title'>
-                                            销售漏斗
+                                            <span>销售漏斗</span>
                                         </h3>
                                         <div ref='funnel' style={{width:"100%",minHeight:"300px"}}></div>
                                     </div>
-                                </Col>
-                            </Row>
-                            <Row className='clinet-main-left-bottom'>
-                                <Col span={24} className='main-left-bottom-inner'> 
-                                     <h3 className='target-title'>
-                                            轨迹
-                                     </h3>
                                 </Col>
                             </Row>
                         </Col>
                         <Col span={8} className='clinet-main-right'>
                             <div className='main-right-notice'>
                                 <h3 className='target-title'>
-                                    公告
+                                    <span>公告</span>
                                 </h3>
+                                <div className='notice-mian'>
+                                    <ul className='notice-mian-ul'>
+                                        <li>中国曾向日本大量出口木制品 如今角色互换</li>
+                                        <li>这艘中国船干了件事勾起美加矛盾 国内没啥人知道</li>
+                                        <li>各地省委高层为何同步学习毛泽东这两部作品？</li>
+                                        <li>内蒙古这2个省管干部同日被双开 均因做这2件事</li>
+                                    </ul>
+                                </div>
                             </div>
                             <div className='main-right-calendar'>
                                 <h3 className='target-title'>
-                                    日程
+                                    <span>日程</span>
                                 </h3>
+                                <div className='calendar-main'>
+                                    
+                                </div>
                             </div>
                         </Col>
                     </Row>

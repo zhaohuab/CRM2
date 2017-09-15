@@ -32,7 +32,7 @@ const rootRoutes = {
         },
         {
           // crm_web/{module}/{res}
-          path: ':module',
+          path: 'page',
           getComponents(location, cb) {
             require.ensure([], function (require) {
               cb(null,  require('components').default)
@@ -41,9 +41,10 @@ const rootRoutes = {
           getChildRoutes(location, cb) {
             require.ensure([], function (require) {
               cb(null, [
+                require('./routes/org/routes/list/index.js').default,
                 require('./routes/project').default,
                 require('./routes/user').default,
-                require('./routes/org/routes/list/index.js').default
+                
               ])
             })
           },
