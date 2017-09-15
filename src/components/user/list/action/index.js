@@ -1,53 +1,33 @@
+import fetchData from 'utils/fetchData';
+import reqwest from 'utils/reqwest';
+import fail from 'utils/reqwest/fail.js';
 
-//定义key， type
 
-let table_params = {
-	url:'',
-	data: {
-	}
-}
-
-let mockData = [{
-	name:"粤海",
-	begintime:"2017-07-31 12:00:00",
-	type: "1",
-	personnum:6,
-	stage:"0.2",
-	owner: [{
-		key:"dev",
-		value:"研发部"
-	},{
-		key:"guankx",
-		value:"关凯旋"
-	}],
-	marks: "这是一个粤海项目",
-	isbusy : "N",
-    }]
-
+let url = "http://10.11.112.46:8081/crm_web/sys/users/";
 const showForm = (flag, editData={}, index) => {
-    const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
-    }
     return (dispatch) => {
-        dispatch(fetchData('PROJECT_LIST_SHOWFORM',{visible:flag, editData}));
+        dispatch(fetchData('USER_LIST_SHOWFORM',{visible:flag, editData}));
     }
 }
 //定义方法 action
 const getListData = (params) => {
-	const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
-    }
 	return (dispatch) => {
-	    //dispatch(fetchData('GET_LIST_DATA', {}))
-	    setTimeout(()=>{
-	  	    dispatch(fetchData('PROJECT_LIST_GETDATA', {data: mockData}))
-	    }, 300)
+		reqwest({
+			url:url,
+			method: "GET",
+			data:{
+                param: JSON.stringify({
+                    pageSize:20,
+                    page:1
+                })
+            }
+		})
+		.then(result => {
+            dispatch(fetchData('USER_LIST_GETLISTSUCCESS', {...result}));
+		})
+		.fail(result => {
+            
+		})
 	}
 }
 
@@ -68,30 +48,7 @@ const onDelete = (record,index) => {
 	}
 }
 
-const onAdd = (data) => {
-    const fetchData = (type, payload) => {
-        return {
-            type,
-            payload,
-        }
-    }
-    mockData.push(data);
-	return (dispatch) => {
-	    //dispatch(fetchData('GET_LIST_DATA', {}))
-	    setTimeout(()=>{
-	  	    dispatch(fetchData('PROJECT_LIST_GETDATA_SUCCESS', {data: mockData,visible: false}))
-	    }, 300)
-	}
-}
-
 const onEdit = (data, index) => {
-    const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
-    }
-    mockData[index] = data;
 	return (dispatch) => {
 	    //dispatch(fetchData('GET_LIST_DATA', {}))
 	    setTimeout(()=>{
@@ -100,11 +57,31 @@ const onEdit = (data, index) => {
 	}
 }
 
+const onSave4Add = (data, index) => {
+	return (dispatch) => {
+        debugger
+		reqwest({
+			url:url,
+			method: "POST",
+			data:{
+                param: JSON.stringify(data)
+            }
+		})
+		.then(result => {
+            dispatch(fetchData('USER_CARD_SAVEADD', {...result ,visible:false}));
+		})
+		.fail(result => {
+            fail(result);
+		})
+	}
+}
+
+
 //输出 type 与 方法
 export {
     getListData,
     onDelete,
-    onAdd,
     onEdit,
     showForm,
+    onSave4Add,
 }

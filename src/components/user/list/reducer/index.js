@@ -3,40 +3,40 @@ import Immutable from 'immutable'
 let $$initialState = {
 	loading: false,
 	editData:{},
-	data:[{
-	name:"粤海",
-	begintime:"2017-07-31 12:00:00",
-	type: "1",
-	personnum:6,
-	stage:"0.2",
-	owner: [{
-		key:"dev",
-		value:"研发部"
-	},{
-		key:"guankx",
-		value:"关凯旋"
-	}],
-	marks: "这是一个粤海项目",
-	isbusy : "N",
-	}]
+	data:[],
+	visible:false,
 };
 
+function pageAdd(page,item) {
+	page.total+=1;
+	page.data.unshift(item)
+	debugger
+	page.page = Math.ceil(page.total / page.pageSize);
+	return page;
+}
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {
-	    case 'PROJECT_LIST_GETDATA':
+	    case 'USER_LIST_GETLIST':
 	        return $$state.merge({
                 loading: true
             })
-		case 'PROJECT_LIST_GETDATA_SUCCESS': 
+		case 'USER_LIST_GETLISTSUCCESS': 
 	        return $$state.merge({
 	        	loading: false,
-				data: action.payload.data,
-				visible : action.payload.visible,
+				data: action.content.data,
+				visible : action.content.visible,
 			})
-		case 'PROJECT_LIST_SHOWFORM':
+		case 'USER_LIST_SHOWFORM':
 			return $$state.merge({
-				visible : action.payload.visible,
-				editData : action.payload.editData,
+				visible : action.content.visible,
+				editData : action.content.editData,
+			})
+		case 'USER_CARD_SAVEADD' : 
+		debugger
+			let page = $$state.get("data").toJS();
+			return $$state.merge({
+				visible : action.content.visible,
+				data : pageAdd(page,action.content.data),
 			})
 	    default: 
 	        return $$state;

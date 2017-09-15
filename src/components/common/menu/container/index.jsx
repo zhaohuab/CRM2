@@ -8,6 +8,7 @@ const SubMenu = Menu.SubMenu;
 import * as Actions from "../action"
 import './index.less'
 
+const basePath = '/crm_web/';
  class LeftMenu extends React.Component {
     constructor(props) {
         super(props);
@@ -28,33 +29,47 @@ import './index.less'
 
     renderMenu = (data) => {
 
-        function tree(data){
+        function tree(data,isRoot){
             return data.map((item) => {
-                debugger
                 if(item.child.length>0){
-                    return <SubMenu  key={item.id} title = {<span><Icon type="user" />{item.name}</span>}>
-                        {tree(item.child)}
+                    return <SubMenu  key={item.id} title = {<span>
+                        {
+                            isRoot ?  <Icon type="user" />:''
+                        }
+                        {item.name}
+                        </span>}>
+                        {tree(item.child,false)}
                     </SubMenu>
                 }else{
                     return <Menu.Item key={item.id}>
-                        <Link to={item.webId}>
-                            <span><Icon type="user" />{item.name}</span>
+                        <Link to={basePath + item.webId}>
+                        <span>
+                        {
+                            isRoot ?  <Icon type="user" />:''
+                        }
+                        {item.name}
+                        </span>
                         </Link>
                     </Menu.Item>
                 }
             })
         };
-
+        let isRoot = true;
         return (
             <Menu
-                defaultSelectedKeys = {["1"]}
-                selectedKeys = {this.state.selectedKeys}
+                defaultSelectedKeys={["1"]}
+                selectedKeys={this.state.selectedKeys}
                 mode="inline"
                 inlineCollapsed={this.props.collapsed}
                 theme={"dark"}
-                onSelect = {this.onSelect}
+                onSelect={this.onSelect}
             >
-               {tree(data)}
+                <Menu.Item key="index">
+                    <Link to={basePath + "home"}>
+                        <span><Icon type="user" />首页</span>
+                    </Link>
+                </Menu.Item>
+                {tree(data, isRoot)}
             </Menu>
         )
     }

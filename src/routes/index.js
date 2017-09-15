@@ -31,7 +31,7 @@ const rootRoutes = {
           },
         },
         {
-          // crm_web/{module}/{res}
+          // crm_web/page
           path: 'page',
           getComponents(location, cb) {
             require.ensure([], function (require) {
