@@ -16,6 +16,8 @@ class LoginForm extends React.Component {
     }
 
     handleSubmit = (e) => {
+        let {getFieldsValue} = this.props.form;
+        this.props.login(getFieldsValue());
     }
     
     render() {
