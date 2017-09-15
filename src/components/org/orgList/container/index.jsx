@@ -224,9 +224,9 @@ class List extends Component {
 
         return (
             <div className='list-warpper'>
-                <h2>
+                {/* <h2>
                     <div className='list-title'>组织列表</div>
-                </h2>
+                </h2> */}
 
                 <Modal
                     title="增加组织"
