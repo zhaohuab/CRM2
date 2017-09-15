@@ -1,0 +1,34 @@
+body {
+  background-color: #e5e5e5;
+}
+.full-height {
+  height: 100%;
+}
+.app-container {
+  display: flex;
+  margin: auto;
+  flex-direction: row;
+  max-width: 100%;
+  transition: max-width 0.35s ease;
+}
+.app-container.boxed-layout {
+  max-width: 1200px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+}
+.app-body {
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+}
+.app-header {
+  flex: 0 0 60px;
+  height: 60px;
+  background: #ffffff;
+}
+.app-content {
+  flex: auto;
+}
+.app-content > div {
+  padding: 10px;
+  box-sizing: border-box;
+}

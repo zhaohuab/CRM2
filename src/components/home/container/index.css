@@ -1,21 +1,110 @@
 .home-warrper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.home-warrper .client-header {
+  width: 100%;
+  height: 55px;
+  display: flex;
   background: white;
-  padding: 10px;
+  padding: 0 10px;
   box-sizing: border-box;
 }
-.home-warrper .home-header {
-  width: 100%;
-  height: 110px;
+.home-warrper .client-header h3 {
   display: flex;
+  width: 50%;
+  align-items: center;
+  font-size: 16px;
 }
-.home-warrper .home-header .home-header-part {
-  width: 25%;
-  margin-right: 10px;
-  border-radius: 5px;
+.home-warrper .client-header .client-header-main {
+  display: flex;
+  width: 50%;
+  justify-content: flex-end;
+  align-items: center;
 }
-.home-warrper .home-header .home-header-part:nth-of-type(4) {
-  margin-right: 0;
+.home-warrper .client-header .client-header-main .clinet-search {
+  height: 30px;
 }
-.home-warrper .home-header .part1 {
-  background: #EC8686;
+.home-warrper .client-header .client-header-main .clinet-alert {
+  width: 50px;
+  height: 30px;
+  text-align: right;
+}
+.home-warrper .client-header .client-header-main .clinet-alert i {
+  font-size: 20px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+.home-warrper .client-header .client-header-main .clinet-alert sup {
+  top: -20px;
+  height: 13px;
+  line-height: 13px;
+  border-radius: 13px;
+  min-width: 13px;
+  padding: 0;
+}
+.home-warrper .clinet-main {
+  margin-top: 10px;
+  box-sizing: border-box;
+}
+.home-warrper .clinet-main .target-title {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px 10px 10px;
+  box-sizing: border-box;
+}
+.home-warrper .clinet-main .clinet-main-left {
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+.home-warrper .clinet-main .clinet-main-left .clinet-main-left-top .left-top-target {
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+.home-warrper .clinet-main .clinet-main-left .clinet-main-left-top .left-top-target .left-top-target-inner {
+  background: white;
+  height: 200px;
+}
+.home-warrper .clinet-main .clinet-main-left .clinet-main-left-top .leaderboard {
+  padding-right: 10px;
+  box-sizing: border-box;
+  height: 200px;
+  background: white;
+}
+.home-warrper .clinet-main .clinet-main-left .clinet-main-left-middle {
+  margin-top: 10px;
+}
+.home-warrper .clinet-main .clinet-main-left .clinet-main-left-middle .left-top-area {
+  padding-right: 10px;
+  box-sizing: border-box;
+}
+.home-warrper .clinet-main .clinet-main-left .clinet-main-left-middle .left-top-area .left-top-area-inner {
+  background: white;
+  height: 200px;
+}
+.home-warrper .clinet-main .clinet-main-left .clinet-main-left-middle .left-top-funnel {
+  padding-right: 10px;
+  box-sizing: border-box;
+  height: 200px;
+  background: white;
+}
+.home-warrper .clinet-main .clinet-main-left .clinet-main-left-bottom {
+  height: 200px;
+  background: white;
+  margin-top: 10px;
+}
+.home-warrper .clinet-main .clinet-main-right .main-right-notice {
+  width: 100%;
+  height: 150px;
+  background: white;
+}
+.home-warrper .clinet-main .clinet-main-right .main-right-calendar {
+  margin-top: 10px;
+  width: 100%;
+  height: 460px;
+  background: white;
 }

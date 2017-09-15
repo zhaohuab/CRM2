@@ -7,16 +7,7 @@ export default class NormalLoginForm extends React.Component {
     constructor(props){
         super(props);
     }
-    
-    
-    // componentDidMount() {
-    //     debugger
-    //     if(this.props.data) {
-    //         this.props.form.setFieldsValue(this.props.data);
-    //     }
-        
-    // }
-    
+
     changeValueFn(){
         let data=this.props.data;
         for(var key in data){
