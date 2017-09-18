@@ -8,7 +8,7 @@ const getMenuData = ()=>{
     }
     return (dispatch) => {
 		reqwest({
-			url: 'http://10.11.112.46:8081/crm_web/sys/menuitem',
+			url: 'http://10.11.112.40:8081/crm_web/sys/menuitem',
 		type:"application/x-www-form-urlencoded",
 			method:'get',
 			data:{

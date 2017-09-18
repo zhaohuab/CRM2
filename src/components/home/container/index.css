@@ -78,10 +78,6 @@
   background: white;
   min-height: 200px;
 }
-.home-warrper .clinet-main .clinet-main-left .clinet-main-left-top .leaderboard {
-  padding-right: 10px;
-  box-sizing: border-box;
-}
 .home-warrper .clinet-main .clinet-main-left .clinet-main-left-top .leaderboard .left-top-leaderboard-inner {
   min-height: 200px;
   background: white;
@@ -96,10 +92,6 @@
 .home-warrper .clinet-main .clinet-main-left .clinet-main-left-middle .left-top-area .left-top-area-inner {
   background: white;
   min-height: 200px;
-}
-.home-warrper .clinet-main .clinet-main-left .clinet-main-left-middle .left-top-funnel {
-  padding-right: 10px;
-  box-sizing: border-box;
 }
 .home-warrper .clinet-main .clinet-main-left .clinet-main-left-middle .left-top-funnel .left-top-funnel-inner {
   background: white;

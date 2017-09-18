@@ -1,8 +1,8 @@
 import request from 'reqwest'
 import { message} from 'antd';
 
-let urlPath = `http://10.11.112.46:8081/crm_web/sys/org/`
-let treePath = `http://10.11.112.46:8081/crm_web/sys/orgTree`
+let urlPath = `http://10.11.112.40:8081/crm_web/sys/org/`
+let treePath = `http://10.11.112.40:8081/crm_web/sys/orgTree`
 const fetchData = (type, payload)=> {
         return {
             type,
@@ -178,7 +178,6 @@ export function getTreeList(){
 //获取一个部门tree信息，变换表格数据
 export function listTreeChange(id){
     return(dispatch,getState)=>{
-        
         request({
             url: urlPath,
             type:"application/x-www-form-urlencoded",
@@ -198,5 +197,5 @@ export function listTreeChange(id){
         .fail(function (err, msg) {
             debugger
         }) 
-    }
+    } 
 }

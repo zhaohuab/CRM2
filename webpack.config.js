@@ -9,7 +9,7 @@ var theme = require('./theme.config.js')
 
 var hostIP = 'localhost';
 var portNumber = '3000';
-let urlPath ='localhost';
+let urlPath ='10.1.193.14';
 
 module.exports = {
 	entry: {

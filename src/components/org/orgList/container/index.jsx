@@ -171,8 +171,9 @@ class List extends Component {
 
     //点击树节点触发的方法
     treeSelectFn(selectedKeys,obj){
-        this.props.orgAction.listTreeChange(selectedKeys[0])
-        console.log(selectedKeys)
+        if(selectedKeys.length){
+            this.props.orgAction.listTreeChange(selectedKeys[0])
+        }
     }
    
     //点击一个节点数的编辑操作
