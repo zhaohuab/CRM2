@@ -13,7 +13,7 @@ const basePath = '/crm_web/';
     constructor(props) {
         super(props);
         this.state = {
-            selectedKeys:[1]
+            selectedKeys:[1],
         }
     }
 
@@ -56,32 +56,44 @@ const basePath = '/crm_web/';
         };
         let isRoot = true;
         return (
-            <Menu
-                defaultSelectedKeys={["1"]}
-                selectedKeys={this.state.selectedKeys}
-                mode="inline"
-                inlineCollapsed={this.props.collapsed}
-                theme={"dark"}
-                onSelect={this.onSelect}
-            >
-                <Menu.Item key="index">
-                    <Link to={basePath + "home"}>
-                        <span><Icon type="user" />首页</span>
-                    </Link>
-                </Menu.Item>
-                {tree(data, isRoot)}
-            </Menu>
+            <div>  
+                <Menu
+                    defaultSelectedKeys={["1"]}
+                    selectedKeys={this.state.selectedKeys}
+                    mode="inline"
+                    inlineCollapsed={this.props.collapsed}
+                    theme={"dark"}
+                    onSelect={this.onSelect}
+                >
+                    <Menu.Item key="index">
+                        <Link to={basePath + "home"}>
+                            <span><Icon type="user" />首页</span>
+                        </Link>
+                    </Menu.Item>
+                    {tree(data, isRoot)}
+                </Menu>
+            </div>
         )
     }
-    
+
     render() {
         const {$$state} = this.props;
         const data = $$state.get("data").toJS();
         let menuClassName = this.props.collapsed ? "app-menu-con" : "app-menu-con menu-con-open";
-
-        return <div  className={menuClassName}>
-            {this.renderMenu(data)}
-        </div>
+    
+        return (
+          <div className='menu-bg-warpper'>
+                <div className='menu-bg-logo'>logo</div>
+                <div className='menu-bg'>
+                    <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'} onClick={this.props.toggleCollapsed}>
+                        <Icon type='bars' />
+                    </span>
+                </div>
+                <div className={menuClassName}>
+                    {this.renderMenu(data)}
+                </div>
+          </div>
+        )
     }
 }
 

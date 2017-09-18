@@ -33,11 +33,11 @@ class Main extends React.Component {
             <div className={viewBoxstyle}>
                 <Menu 
                     collapsed = {this.state.collapsed} 
+                    toggleCollapsed = {this.toggleCollapsed} 
                 />
                 <div className="app-body">
                     <Header  
                         collapsed = {this.state.collapsed} 
-                        toggleCollapsed = {this.toggleCollapsed} 
                     />
                     <div className="app-content">{ this.props.children }</div>
                 </div>

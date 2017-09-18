@@ -34,12 +34,6 @@ class Home extends React.Component {
         this.funnelEcharts = funnelEcharts
         this.markers = randomMarker(1000);
         this.center = {longitude: 115, latitude: 40};
-        this.lineEvents = {
-            created: (ins) => {console.log(ins)},
-            show: () => {console.log('line show')},
-            hide: () => {console.log('line hide')},
-            click: () => {console.log('line clicked')},
-        }
     }
 
     toggleCluster(){
@@ -48,15 +42,31 @@ class Home extends React.Component {
         });
     }
  
+    onWindowResize(){
+        let resizeSize=this.refs.target.offsetWidth
+        this.targetEchar.resize({
+            width:resizeSize+'px'
+        })
+
+        this.moneyEchar.resize({
+            width:resizeSize+'px'
+        })
+
+        this.funnelEchar.resize({
+            width:resizeSize+'px'
+        })
+    }
+
     componentDidMount(){
-        var target = echarts.init(this.refs.target);
-        target.setOption(this.targetOption);
+        this.targetEchar = echarts.init(this.refs.target);
+        this.targetEchar.setOption(this.targetOption);
 
-        var money = echarts.init(this.refs.money);
-        money.setOption(this.moneyOption);
+        this.moneyEchar = echarts.init(this.refs.money);
+        this.moneyEchar.setOption(this.moneyOption);
 
-        var funnel = echarts.init(this.refs.funnel);
-        funnel.setOption(this.funnelEcharts);
+        this.funnelEchar = echarts.init(this.refs.funnel);
+        this.funnelEchar.setOption(this.funnelEcharts);
+        window.addEventListener('resize', this.onWindowResize.bind(this))
     }
     render() {
         return (

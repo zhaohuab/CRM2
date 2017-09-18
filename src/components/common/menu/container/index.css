@@ -1,0 +1,95 @@
+.menu-con-open {
+  width: 200px;
+}
+.avatar-warpper .avatar-warpper-show {
+  display: flex;
+  flex-direction: column;
+}
+.avatar-warpper .avatar-warpper-hide {
+  display: flex;
+}
+.menu-bg-warpper {
+  background: #26293f;
+}
+.menu-bg-warpper .menu-bg-logo {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background: #1671D5;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+}
+.menu-bg {
+  background: #1b1d2d;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ADAEBB;
+  font-size: 18px;
+}
+.menu-control-show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 30px;
+  cursor: pointer;
+}
+.menu-control-hide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 30px;
+  cursor: pointer;
+}
+.rotateMenuIn {
+  animation: MenuIn 0.2s linear forwards;
+}
+.rotateMenuOut {
+  animation: MenuOut 0.2s linear forwards;
+}
+@keyframes MenuOut {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(90deg);
+  }
+}
+@-webkit-keyframes MenuOut {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(90deg);
+  }
+}
+@keyframes MenuIn {
+  0% {
+    transform: rotateZ(90deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+@-webkit-keyframes MenuIn {
+  0% {
+    transform: rotateZ(90deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+.logger {
+  float: right;
+  color: #ffffff;
+  width: 100px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 14px;
+}

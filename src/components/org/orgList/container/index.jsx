@@ -84,16 +84,17 @@ class List extends Component {
             dataIndex: 'enablestate',
             key: 'enablestate',
           },
-          {
-            title: '操作',
-            key: 'action',
-            render: (text, record,index) => (
-              <div>
-                <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record)}}>修改</Button>
-                <Button type="danger" htmlType="button" onClick={()=>{this.itemDelete(record,index)}}>删除</Button>
-              </div>
-            ),
-          }];  
+        //   {
+        //     title: '操作',
+        //     key: 'action',
+        //     // render: (text, record,index) => (
+        //     //   <div>
+        //     //     <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record)}}>修改</Button>
+        //     //     <Button type="danger" htmlType="button" onClick={()=>{this.itemDelete(record,index)}}>删除</Button>
+        //     //   </div>
+        //     // ),
+        //   }
+        ];  
     }
 
     //修改一条数据方法
@@ -225,10 +226,6 @@ class List extends Component {
 
         return (
             <div className='list-warpper'>
-                {/* <h2>
-                    <div className='list-title'>组织列表</div>
-                </h2> */}
-
                 <Modal
                     title="增加组织"
                     visible={addFormVisitable}
@@ -273,7 +270,7 @@ class List extends Component {
                             </div>
                         </div>
                         <div className='org-tabel'>
-                            <Table columns={this.columns} dataSource={listData} loading={tabelLoading} rowSelection={rowSelectionFn}/>
+                            <Table columns={this.columns} dataSource={listData} loading={tabelLoading} rowSelection={rowSelectionFn} size='middle'/>
                         </div>
                         <Modal
                             title="修改组织"
