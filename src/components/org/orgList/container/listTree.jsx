@@ -29,7 +29,7 @@ export default class ListTree extends Component {
     getCustomTitle(item){
         return(
             <span className='show-edit-warpper'>
-                <span>{item.name}</span>
+                <span title={item.name} className='show-edit-title'>{item.name}</span>
                 <span className='show-edit-inner'>
                     <span><Icon type="plus-circle-o" onClick={this.add.bind(this,item)}/></span>
                     <span><Icon type="minus-circle-o"  onClick={this.delete.bind(this,item)}/></span>

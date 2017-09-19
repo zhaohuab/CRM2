@@ -179,7 +179,6 @@ export function getTreeList(){
 //获取一个部门tree信息，变换表格数据
 export function listTreeChange(id){
     return(dispatch,getState)=>{
-        
         request({
             url: url.org,
             type:"application/x-www-form-urlencoded",
@@ -199,5 +198,5 @@ export function listTreeChange(id){
         .fail(function (err, msg) {
             debugger
         }) 
-    }
+    } 
 }

@@ -1,15 +1,23 @@
-.menu-style-control {
-    display: inline-block;
-    height: 60px;
-    padding: 0 18px;
-    line-height: 60px;
-    cursor: pointer;
-    transition: all .5s;
-    &:hover {
-        background: #f7f7f7;
+.app-header{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    padding:0 15px;
+    box-sizing: border-box;
+    border-bottom:1px solid #DDD;
+    .app-header-title{
+        font-size:14px;
+    }
+    .app-header-right{
+        display: flex;
+        align-items: center;
+        img{
+            width:40px;
+            height:40px;
+            border-radius: 40px;
+        }
     }
 }
-
 .logger {
     float : right;
     color : #ffffff;
