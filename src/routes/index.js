@@ -4,6 +4,7 @@ const rootRoutes = {
   childRoutes : [
     {
       path : "crm_web",
+      indexRoute: { onEnter: (nextState, replace) => replace('/crm_web/login') },
       childRoutes: [
         {
           // crm_web/login
@@ -35,17 +36,22 @@ const rootRoutes = {
           path: 'page',
           getComponents(location, cb) {
             require.ensure([], function (require) {
-              cb(null,  require('components').default)
+              cb(null, require('components').default)
             })
-          },  
+          },
           getChildRoutes(location, cb) {
             require.ensure([], function (require) {
               cb(null, [
                 require('./routes/org/routes/list/index.js').default,
                 require('./routes/project').default,
                 require('./routes/user').default,
-              ]
-            )})
+                {
+                  //未开发页面
+                  path: 'developing',
+                  indexRoute: { component: require('components/developing/container').default },
+                }
+              ])
+            })
           },
         },
         {

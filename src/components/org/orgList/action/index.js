@@ -1,8 +1,7 @@
 import request from 'reqwest'
 import { message} from 'antd';
+import { org as url } from 'api';
 
-let urlPath = `http://10.11.112.46:8081/crm_web/sys/org/`
-let treePath = `http://10.11.112.46:8081/crm_web/sys/orgTree`
 const fetchData = (type, payload)=> {
         return {
             type,
@@ -15,7 +14,7 @@ export function getlist(fn){
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
-            url: urlPath,
+            url: url.org,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{
@@ -52,7 +51,7 @@ export function listaddclose (){
 export function listadd(list){
     return(dispatch,getState)=>{
         request({
-            url: urlPath,
+            url: url.org,
             type:"application/x-www-form-urlencoded",
             method:'post',
             data:"param="+JSON.stringify(list)
@@ -73,7 +72,7 @@ export function listadd(list){
 export function getDetailSingle(id,fn){
     return(dispatch,getState)=>{
         request({
-            url: `${urlPath}+${id}`,
+            url: `${url.org}+${id}`,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{
@@ -98,14 +97,14 @@ export function listchange(value){
     return(dispatch,getState)=>{
         let id=value.id
         request({
-            url: `${urlPath}+${id}`,
+            url: `${url.org}+${id}`,
             type:"application/x-www-form-urlencoded",
             method:'put',
             data:"param="+JSON.stringify(value)
         })
         .then(function (dataResult) {
             request({
-                url: urlPath,
+                url: url.org,
                 type:"application/x-www-form-urlencoded",
                 method:'get',
                 data:{
@@ -137,7 +136,7 @@ export function listdel(record){
     return(dispatch,getState)=>{
         let id=record.id
         request({
-            url: `${urlPath}+${id}`,
+            url: `${url.org}+${id}`,
             type:"application/x-www-form-urlencoded",
             method:'delete',
             data:{}
@@ -158,13 +157,15 @@ export function listdel(record){
 export function getTreeList(){
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETTREELISTSTART'})
+        console.info(url.orgTree);
         request({
-            url: treePath,
+            url: url.orgTree,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{}
         })
         .then(function (dataResult){
+            debugger
             let {data} = JSON.parse(dataResult.response);
             dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data})
         })
@@ -180,7 +181,7 @@ export function listTreeChange(id){
     return(dispatch,getState)=>{
         
         request({
-            url: urlPath,
+            url: url.org,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{

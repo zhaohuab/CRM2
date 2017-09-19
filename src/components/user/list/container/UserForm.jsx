@@ -7,6 +7,10 @@ class Card extends React.Component {
     super(props)
   }
 
+  componentDidMount() {
+      debugger
+      this.props.form.setFieldsValue(this.props.dataSource);
+  }
   render() {
       const { getFieldDecorator } = this.props.form;
 
@@ -20,7 +24,14 @@ class Card extends React.Component {
               sm: { span: 14 },
           },
       };
+      {
+          getFieldDecorator('id', {
+          })(
+          <Input />
+          )
+      }
       return (<Form >
+          
           <FormItem
               label="姓名"
               {...formItemLayout}
@@ -115,4 +126,4 @@ class Card extends React.Component {
   }
 }
 
-export default Form.create()(Card);
+export default Card;

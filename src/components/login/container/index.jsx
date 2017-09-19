@@ -3,6 +3,7 @@ import  * as Actions  from '../action'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { browserHistory } from 'react-router'
+import cookie from 'utils/cookie'
 import "./index.less"
 
 const FormItem = Form.Item;
@@ -16,6 +17,8 @@ class LoginForm extends React.Component {
     }
 
     handleSubmit = (e) => {
+        e.preventDefault();
+
         let {getFieldsValue} = this.props.form;
         this.props.login(getFieldsValue());
     }
@@ -96,6 +99,11 @@ class LoginCon extends React.Component {
     }
     
     render() {
+        let {$$state} = this.props;
+        let logined = $$state.get('logined');
+        if(logined) {
+            browserHistory.push('/crm_web/home');
+        }
         return (
             <div className="login-box" >
                 <header className="login-box-header">
