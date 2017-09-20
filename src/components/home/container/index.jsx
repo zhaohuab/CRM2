@@ -72,26 +72,6 @@ class Home extends React.Component {
         return (
             <div>
                 <div className="home-warrper">
-                    <header className='client-header'>
-                        <h3 className='client-header-title'>首页</h3>
-                        <main className='client-header-main'>
-                            <Search className='clinet-search'
-                                placeholder="搜索"
-                                style={{ width: 200 }}
-                                onSearch={value => console.log(value)}
-                            />
-                            <div className='clinet-alert'>
-                                <Icon type="solution" />
-                            </div>
-                            <div className='clinet-alert'>
-                                <Icon type="bell" />
-                                <Badge count={0} showZero>
-                                    <a href="#" className="head-example" />
-                                </Badge>
-                            </div>
-                        </main>
-                    </header>
-                    
                     <Row className='clinet-main'>
                         <Col span={16}  className='clinet-main-left'> 
                             <Row className='clinet-main-left-top'> 

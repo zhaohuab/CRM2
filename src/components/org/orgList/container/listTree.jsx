@@ -7,8 +7,14 @@ import './index.less'
 
 
 export default class ListTree extends Component {
+    constructor(props){
+        super(props)
+        this.state={
+            edit:''
+        }
+    }
     onSelect(selectedKeys,obj){
-        this.props.onSelect(selectedKeys,obj)
+        this.props.onSelect(selectedKeys,obj)  
     }
 
     edit(item,e){
@@ -25,12 +31,17 @@ export default class ListTree extends Component {
         e.stopPropagation()
         this.props.edit(item.id)
     }
+    showEdit(item){
+        this.setState({
+            edit:item.id
+        })
+    }
 
     getCustomTitle(item){
         return(
             <span className='show-edit-warpper'>
-                <span title={item.name} className='show-edit-title'>{item.name}</span>
-                <span className='show-edit-inner'>
+                <span title={item.name} className='show-edit-title' onClick={this.showEdit.bind(this,item)}>{item.name}</span>
+                <span className={this.state.edit == item.id?'show-edit-inner':'show-edit-inner-hide'}>
                     <span><Icon type="plus-circle-o" onClick={this.add.bind(this,item)}/></span>
                     <span><Icon type="minus-circle-o"  onClick={this.delete.bind(this,item)}/></span>
                     <span><Icon type="edit"  onClick={this.edit.bind(this,item)}/></span>

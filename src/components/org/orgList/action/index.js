@@ -200,3 +200,14 @@ export function listTreeChange(id){
         }) 
     } 
 }
+
+
+
+//点击操作按钮方法
+
+export function buttonEdit(rows){
+    return{
+        type:'ORG_LIST_SHOWBUTTONSTART',
+        rows
+    }
+}

@@ -6,6 +6,7 @@ let $$initialState = {
 	tabelLoading:false,
 	addFormVisitable:false,
 	treeLoading:false,
+	tableListCheckbox:[]
 };
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action){
 
@@ -38,7 +39,10 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 		case 'ORG_LIST_GETTREELISTSUCCESS':
 		    let treeNew=$$state.set('treeData',Immutable.fromJS(action.data))
 			return treeNew.merge({treeLoading:false})
-		
+
+		case 'ORG_LIST_SHOWBUTTONSTART':
+			return $$state.set('tableListCheckbox',Immutable.fromJS(action.rows)) 
+			 
 	    default: 
 	        return $$state;
     }

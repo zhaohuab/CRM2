@@ -8,6 +8,7 @@ import Immutable from 'immutable'
 import NormalLoginForm from './listFrom.jsx'
 import NormaladdForm from './listAddForm.jsx'
 import ListTree from './listTree.jsx'
+import EditButton from './EditButtons.jsx'
 const ButtonGroup = Button.Group;
 import './index.less'
 
@@ -27,9 +28,22 @@ class List extends Component {
             tabelLoading:false,//table加载,
             listTablePanel:0,//获取滑出模块的宽度,
             tableListCheckbox:null,//点击一个table的checkbox时，保存选中数量
-            treeLoading:false
+            treeLoading:false,
+            selectedRowKeys:[]
         }
-        
+
+        //点击每行table触发的onchange方法
+        let that = this
+        this.rowSelectionFn={
+            onChange(selectedRowKeys, selectedRows){
+                    if(selectedRows.length){
+                        that.props.orgAction.buttonEdit(selectedRows)
+                    }else{
+                        that.props.orgAction.buttonEdit(selectedRows)
+                    }
+            }       
+         }
+
         
         this.columns = [
           {
@@ -146,7 +160,6 @@ class List extends Component {
                             [key]: '',
                         });
                     }
-                    message.success('增加项目成功');
             }
             this.props.orgAction.listadd(values);  
             fn()
@@ -204,25 +217,10 @@ class List extends Component {
         let tabelLoading = orgState.get('tabelLoading');
         let addFormVisitable = orgState.get('addFormVisitable')
         let treeLoading = orgState.get('treeLoading')
-    
+
         let listData = orgState.get('listData').toJS();
         let treeData = orgState.get('treeData').toJS();
-
-        let that=this;
-        //点击每行table触发的onchange方法
-        let rowSelectionFn={
-            onChange(selectedRowKeys, selectedRows){
-                if(selectedRows.length){
-                    that.setState({
-                        tableListCheckbox:selectedRows.length
-                    })
-                }else{
-                    that.setState({
-                        tableListCheckbox:null
-                    })
-                }
-            }
-        }
+        let tableListCheckbox = orgState.get('tableListCheckbox').toJS();
 
         return (
             <div className='list-warpper'>
@@ -247,30 +245,13 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                        {
-                            this.state.tableListCheckbox?
-                            <div className='actionButtons-waprper'>
-                                <div className='actionButtons-chioce'>
-                                    已选择：{this.state.tableListCheckbox}
-                                </div> 
-                                <div className='actionButtons'>
-                                    <Button onClick={this.tableListCheckboxFn.bind(this)}>返回</Button>
-                                    <Button>删除</Button>
-                                    <Button>编辑</Button>
-                                    <ButtonGroup>
-                                        <Button>启用</Button>
-                                        <Button>停用</Button>
-                                    </ButtonGroup>
-                                    <Button>导出</Button>
-                                </div>    
-                            </div>:'' 
-                        }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} returnFn={this.tableListCheckboxFn.bind(this)}/>:'' }
                             <div className='list-add'>
-                                <Button type="primary" onClick={this.addFormBtn.bind(this)}>增加组织</Button>
+                                <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
                             </div>
                         </div>
                         <div className='org-tabel'>
-                            <Table columns={this.columns} dataSource={listData} loading={tabelLoading} rowSelection={rowSelectionFn} size='middle'/>
+                            <Table columns={this.columns} rowKey ='id' dataSource={listData} loading={tabelLoading}  rowSelection={this.rowSelectionFn} size='middle'/>
                         </div>
                         <Modal
                             title="修改组织"
@@ -300,5 +281,7 @@ export default connect(
         }
     }
 )(List)
+
+//onRowClick
 
 
