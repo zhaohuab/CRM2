@@ -24,7 +24,6 @@ export default class EditButtons extends Component {
                     <Button>导出</Button>
                 </div>    
             </div>
-           
         )
     }
 }

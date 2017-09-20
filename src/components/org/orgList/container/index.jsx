@@ -9,6 +9,7 @@ import NormalLoginForm from './listFrom.jsx'
 import NormaladdForm from './listAddForm.jsx'
 import ListTree from './listTree.jsx'
 import EditButton from './EditButtons.jsx'
+import columns from './columns.js'
 const ButtonGroup = Button.Group;
 import './index.less'
 
@@ -44,71 +45,7 @@ class List extends Component {
             }       
          }
 
-        
-        this.columns = [
-          {
-            title: '编码',
-            dataIndex: 'code',
-            key: 'code',
-          },
-          {
-            title: '名称',
-            dataIndex: 'name',
-            key: 'name'
-          }, 
-          {
-            title: '简称',
-            dataIndex: 'simpleName',
-            key: 'simpleName'
-          }, 
-          {
-            title: '助记码',
-            dataIndex: 'simpleCode',
-            key: 'simpleCode',
-          },
-          {
-            title: '上级组织',
-            dataIndex: 'fatherorgId',
-            key: 'fatherorgId',
-          },
-          {
-            title: '负责人',
-            dataIndex: 'respoPerson',
-            key: 'respoPerson',
-          }, 
-           {
-            title: '其他负责人',
-            dataIndex: 'otherRespoPerson',
-            key: 'otherRespoPerson',
-          },
-           {
-            title: '组织类型',
-            dataIndex: 'orgType',
-            key: 'orgType',
-            render:(text, record,index) => {
-                if(text === 0 ){
-                    return text='公司'
-                }else if(text === 1){
-                    return text='部门'
-                }
-            }
-          },
-           {
-            title: '状态',
-            dataIndex: 'enablestate',
-            key: 'enablestate',
-          },
-        //   {
-        //     title: '操作',
-        //     key: 'action',
-        //     // render: (text, record,index) => (
-        //     //   <div>
-        //     //     <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record)}}>修改</Button>
-        //     //     <Button type="danger" htmlType="button" onClick={()=>{this.itemDelete(record,index)}}>删除</Button>
-        //     //   </div>
-        //     // ),
-        //   }
-        ];  
+        this.columns = columns
     }
 
     //修改一条数据方法
@@ -177,10 +114,8 @@ class List extends Component {
     }
 
     //显示每行数据后的返回按钮
-    tableListCheckboxFn(){
-        this.setState({
-            tableListCheckbox:null
-        })
+    btnBack(){
+        this.props.orgAction.buttonEdit([])
     }
 
     //点击树节点触发的方法
@@ -245,7 +180,7 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} returnFn={this.tableListCheckboxFn.bind(this)}/>:'' }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} returnFn={this.btnBack.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
                             </div>
@@ -283,5 +218,17 @@ export default connect(
 )(List)
 
 //onRowClick
+
+
+//   {
+//     title: '操作',
+//     key: 'action',
+//     // render: (text, record,index) => (
+//     //   <div>
+//     //     <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record)}}>修改</Button>
+//     //     <Button type="danger" htmlType="button" onClick={()=>{this.itemDelete(record,index)}}>删除</Button>
+//     //   </div>
+//     // ),
+//   }
 
 

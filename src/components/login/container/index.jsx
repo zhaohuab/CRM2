@@ -100,14 +100,13 @@ class LoginCon extends React.Component {
     }
     
     render() {
-        let heightPx= document.documentElement.clientHeight
         return (
             <div className='login-warpper'>
                 <div className='login-carousel'>
                     <Carousel autoplay   effect='fade' speed={2000}>
-                        <div><img src={require('assets/images/login/banner-1.png')} style={{height:heightPx+'px'}}/></div>
-                        <div><img src={require('assets/images/login/banner-2.png')} style={{height:heightPx+'px'}}/></div>
-                        <div><img src={require('assets/images/login/banner-3.png')} style={{height:heightPx+'px'}}/></div>
+                        <div><img src={require('assets/images/login/banner-1.png')}/></div>
+                        <div><img src={require('assets/images/login/banner-2.png')}/></div>
+                        <div><img src={require('assets/images/login/banner-3.png')}/></div>
                     </Carousel>
                 </div>
                 <div className='login-main'>
