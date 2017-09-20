@@ -1,7 +1,7 @@
 
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Icon, Button ,Dropdown,Menu} from 'antd'
+import { Icon, Button ,Dropdown,Menu,Input,Badge} from 'antd'
 import cookie from 'utils/cookie'
 
 const Search = Input.Search;
