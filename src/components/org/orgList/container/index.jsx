@@ -30,34 +30,37 @@ class List extends Component {
             listTablePanel:0,//获取滑出模块的宽度,
             tableListCheckbox:null,//点击一个table的checkbox时，保存选中数量
             treeLoading:false,
-            selectedRowKeys:[]
+            selectedRowKeys:[],
+
         }
 
         //点击每行table触发的onchange方法
         let that = this
         this.rowSelectionFn={
-            onChange(selectedRowKeys, selectedRows){
-                    if(selectedRows.length){
-                        that.props.orgAction.buttonEdit(selectedRows)
-                    }else{
-                        that.props.orgAction.buttonEdit(selectedRows)
-                    }
-            }       
+            onChange(selected, selectedRows){
+                if(selectedRows.length){
+                    that.props.orgAction.buttonEdit(selectedRows)
+                }else{
+                    that.props.orgAction.buttonEdit(selectedRows)
+                }
+            }
          }
-
         this.columns = columns
     }
 
     //修改一条数据方法
-    changeFrom(record){ 
-        this.props.orgAction.getDetailSingle(record.id,(data)=>{
-             this.setState({
-                changeFormVisitable:true,
-                value:data
-             },()=>{
-                this.formRef.changeValueFn(this.state.value)
-             })
-        })
+    changeForm(record){ 
+        debugger
+        if(record){
+            this.props.orgAction.getDetailSingle(record.id,(data)=>{
+                this.setState({
+                   changeFormVisitable:true,
+                   value:data
+                },()=>{
+                   this.formRef.changeValueFn(this.state.value)
+                })
+           })
+        } 
     }
 
     //删除一条数据方法
@@ -156,7 +159,8 @@ class List extends Component {
         let listData = orgState.get('listData').toJS();
         let treeData = orgState.get('treeData').toJS();
         let tableListCheckbox = orgState.get('tableListCheckbox').toJS();
-
+       
+        
         return (
             <div className='list-warpper'>
                 <Modal
@@ -180,7 +184,7 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} returnFn={this.btnBack.bind(this)}/>:'' }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
                             </div>

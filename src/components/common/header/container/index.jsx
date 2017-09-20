@@ -2,6 +2,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Icon, Button ,Dropdown,Menu,Input,Badge} from 'antd'
+import cookie from 'utils/cookie'
+
 const Search = Input.Search;
 import './index.less'
 
@@ -21,11 +23,11 @@ class Header extends React.Component {
     }
 
     render() {
-        const { $$state } = this.props;
-        const user = $$state.get("user") || "";
+        const userName = cookie("name");
+        let title = this.props.$$state.get("title");
         return (
             <div className="app-header">
-                <div className="app-header-title">组织</div>
+                <div className="app-header-title">{title}</div>
                 <div className="app-header-right">
                     <main className='client-header-left'>
                         <Input 
@@ -43,7 +45,7 @@ class Header extends React.Component {
                     </main>
                     <main className='client-header-right'>
                         <img src={require('assets/images/header/cat.png')} alt=""/>
-                        <div style={{ marginLeft: 10 }}>hello word</div>
+                        <div style={{ marginLeft: 10 }}>{userName}</div>
                         <Dropdown overlay={menu}>
                             <a style={{ marginLeft: 10 }}>
                               <Icon type="down" />
@@ -58,7 +60,7 @@ class Header extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    $$state: state.login
+    $$state: state.header,
   }
 }
 

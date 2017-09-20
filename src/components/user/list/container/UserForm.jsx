@@ -7,6 +7,9 @@ class Card extends React.Component {
     super(props)
   }
 
+  componentDidMount() {
+      this.props.form.setFieldsValue(this.props.dataSource);
+  }
   render() {
       const { getFieldDecorator } = this.props.form;
 
@@ -20,7 +23,14 @@ class Card extends React.Component {
               sm: { span: 14 },
           },
       };
+      {
+          getFieldDecorator('id', {
+          })(
+          <Input />
+          )
+      }
       return (<Form >
+          
           <FormItem
               label="姓名"
               {...formItemLayout}
@@ -39,8 +49,6 @@ class Card extends React.Component {
           >
               {getFieldDecorator('phone', {
                   rules: [{
-                      type: 'integer', message: 'The input is not valid phone!',
-                  }, {
                       required: true, message: 'Please input your Phone!',
                   }],
               })(
@@ -115,4 +123,4 @@ class Card extends React.Component {
   }
 }
 
-export default Form.create()(Card);
+export default Card;

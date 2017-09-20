@@ -1,8 +1,7 @@
 import request from 'reqwest'
 import { message} from 'antd';
+import { org as url } from 'api';
 
-let urlPath = `http://10.11.112.40:8081/crm_web/sys/org/`
-let treePath = `http://10.11.112.40:8081/crm_web/sys/orgTree`
 const fetchData = (type, payload)=> {
         return {
             type,
@@ -10,12 +9,16 @@ const fetchData = (type, payload)=> {
         }
 }
 
+
+
 //获取所有数据
 export function getlist(fn){
     return(dispatch,getState)=>{
+        console.log(url)
+        debugger
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
-            url: urlPath,
+            url: url.org,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{
@@ -52,7 +55,7 @@ export function listaddclose (){
 export function listadd(list){
     return(dispatch,getState)=>{
         request({
-            url: urlPath,
+            url: url.org,
             type:"application/x-www-form-urlencoded",
             method:'post',
             data:"param="+JSON.stringify(list)
@@ -72,8 +75,10 @@ export function listadd(list){
 //根据id查一条数据
 export function getDetailSingle(id,fn){
     return(dispatch,getState)=>{
+        console.log(url.org)
+        debugger
         request({
-            url: `${urlPath}+${id}`,
+            url: `${url.org}+${id}`,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{
@@ -87,6 +92,7 @@ export function getDetailSingle(id,fn){
             fn(data)
         })
         .fail(function (err, msg) {
+            debugger
             message.error('查询数据失败');
         }) 
     }
@@ -98,14 +104,14 @@ export function listchange(value){
     return(dispatch,getState)=>{
         let id=value.id
         request({
-            url: `${urlPath}+${id}`,
+            url: `${url.org}+${id}`,
             type:"application/x-www-form-urlencoded",
             method:'put',
             data:"param="+JSON.stringify(value)
         })
         .then(function (dataResult) {
             request({
-                url: urlPath,
+                url: url.org,
                 type:"application/x-www-form-urlencoded",
                 method:'get',
                 data:{
@@ -137,7 +143,7 @@ export function listdel(record){
     return(dispatch,getState)=>{
         let id=record.id
         request({
-            url: `${urlPath}+${id}`,
+            url: `${url.org}+${id}`,
             type:"application/x-www-form-urlencoded",
             method:'delete',
             data:{}
@@ -158,8 +164,9 @@ export function listdel(record){
 export function getTreeList(){
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETTREELISTSTART'})
+        console.info(url.orgTree);
         request({
-            url: treePath,
+            url: url.orgTree,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{}
@@ -179,7 +186,7 @@ export function getTreeList(){
 export function listTreeChange(id){
     return(dispatch,getState)=>{
         request({
-            url: urlPath,
+            url: url.org,
             type:"application/x-www-form-urlencoded",
             method:'get',
             data:{

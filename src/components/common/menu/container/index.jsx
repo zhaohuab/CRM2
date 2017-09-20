@@ -25,9 +25,18 @@ const basePath = '/crm_web/';
         this.setState({
             selectedKeys:item.keyPath
         })
+        // debugger
+        // this.props.action.changeHeader(title);
     }
 
+    onClick = ( title ) => {
+        this.props.action.changeHeader(title);
+    }
+
+
     renderMenu = (data) => {
+
+        let that = this;
 
         function tree(data,isRoot){
             return data.map((item) => {
@@ -42,19 +51,22 @@ const basePath = '/crm_web/';
                     </SubMenu>
                 }else{
                     return <Menu.Item key={item.id}>
-                        <Link to={basePath + item.webId}>
-                        <span>
-                        {
-                            isRoot ?  <Icon type="user" />:''
-                        }
-                        {item.name}
-                        </span>
-                        </Link>
+                            <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
+                            
+                                <span>
+                                {
+                                    isRoot ?  <Icon type="user" />:''
+                                }
+                                {item.name}
+                                </span>
+                            
+                            </Link>
                     </Menu.Item>
                 }
             })
         };
         let isRoot = true;
+        let rootTitle = "首页";
         return (
             <div>  
                 <Menu
@@ -66,8 +78,8 @@ const basePath = '/crm_web/';
                     onSelect={this.onSelect}
                 >
                     <Menu.Item key="index">
-                        <Link to={basePath + "home"}>
-                            <span><Icon type="user" />首页</span>
+                        <Link to={basePath + "home"} onClick={that.onClick.bind(that, rootTitle)}>
+                            <span><Icon type="user" />{rootTitle}</span>
                         </Link>
                     </Menu.Item>
                     {tree(data, isRoot)}

@@ -3,8 +3,7 @@ import Immutable from 'immutable'
 let $$initialState = {
 	loading: false,
 	data:[],
-	user:undefined,
-	token:undefined,
+	logined:false,
 };
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
@@ -15,12 +14,9 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 loading: true
             })
 		case 'LOGIN_MAIN_LOGIN_START_SUCCESS': 
-			const { user , token} = action.payload.data;
 	        return $$state.merge({
-				loading: false,
-				user: user,
-                token: token,
-            })
+				logined:true
+			});
 	    default: 
 	        return $$state;
 	}

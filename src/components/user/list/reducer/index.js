@@ -10,8 +10,18 @@ let $$initialState = {
 function pageAdd(page,item) {
 	page.total+=1;
 	page.data.unshift(item)
-	debugger
 	page.page = Math.ceil(page.total / page.pageSize);
+	return page;
+}
+function pageEdit(page,item) {
+	let {data} = page;
+	for(let i=0,len=data.length;i<len;i++) {
+		if(data[i].id == item.id) {
+			data[i] = item;
+			break;
+		}
+	}
+	page.data = data;
 	return page;
 }
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
@@ -32,11 +42,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				editData : action.content.editData,
 			})
 		case 'USER_CARD_SAVEADD' : 
-		debugger
-			let page = $$state.get("data").toJS();
 			return $$state.merge({
 				visible : action.content.visible,
-				data : pageAdd(page,action.content.data),
+				data : pageAdd($$state.get("data").toJS(),action.content.data),
+			})
+		case 'USER_CARD_SAVEEDIT' : 
+			return $$state.merge({
+				visible : action.content.visible,
+				data : pageEdit($$state.get("data").toJS(),action.content.data),
 			})
 	    default: 
 	        return $$state;
