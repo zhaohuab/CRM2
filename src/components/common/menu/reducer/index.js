@@ -8,7 +8,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 	switch (action.type) {
 	    case 'COMMON_MENU_GETDATA':
 	        return $$state.merge({
-                data: action.payload.data
+                data: action.content.data
             })
 	    default: 
 	        return $$state;

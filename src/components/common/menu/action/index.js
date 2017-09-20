@@ -1,12 +1,8 @@
 import reqwest from 'utils/reqwest'
+import fetchData from 'utils/fetchData'
 import { menu as url } from 'api'
 
 const getMenuData = ()=>{
-    const fetchData = (type,payload)=>{
-        return {
-            type,payload
-        }
-    }
     return (dispatch) => {
 		reqwest({
 			url: url,
@@ -17,9 +13,19 @@ const getMenuData = ()=>{
 			dispatch(fetchData('COMMON_MENU_GETDATA',{data:JSON.parse(data.response).data}));
 		})
 		.fail(function (err, msg) {
-		})  
+		})
     }
 }
+
+const changeHeader = (title) => {
+
+    return (dispatch) => {
+		debugger
+        dispatch(fetchData('HEADER_CHANGE', {title}));
+    }
+}
+
 export {
-    getMenuData
+	getMenuData,
+	changeHeader,
 }

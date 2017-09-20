@@ -5,9 +5,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button,Form } from 'antd';
+import { Table, Modal, Button } from 'antd';
 
-import {Input,Radio} from 'antd';
+import {Input,Radio,Popconfirm,Form} from 'antd';
 import Card from './UserForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import './index.less'
@@ -31,15 +31,15 @@ class List extends React.Component {
       },
       {
         title: '所属公司',
-        dataIndex: 'org_id',
+        dataIndex: 'orgName',
       },
       {
         title: '所属部门',
-        dataIndex: 'dept_id',
+        dataIndex: 'deptName',
       },
       {
         title: '职位',
-        dataIndex: 'job',
+        dataIndex: 'jobName',
       },
       {
         title: '手机',
@@ -63,6 +63,7 @@ class List extends React.Component {
       headLabel : false,
       selectedRowKeys : [],
       isEdit : false,
+      enable : 1,
     }
   }
 
@@ -75,10 +76,12 @@ class List extends React.Component {
     this.props.action.showForm(true,{});
   }
   onDelete=()=>{
+    debugger
+    this.setState({headLabel:false});
     this.props.action.onDelete(this.state.selectedRowKeys);
   }
   onEdit = () => {
-    debugger
+    
     this.setState({isEdit:true});
     let rowKey = this.state.selectedRowKeys[0];
     let rowData = {};
@@ -95,7 +98,9 @@ class List extends React.Component {
     this.props.action.showForm(false,{});
   }
   onEnable(enable) {
-    
+    return (enable) => {
+      this.props.action.onEnable(this.state.selectedRowKeys,enable,{enable:this.state.enable});
+    }
   }
   onSave4Add() {
     let form = this.formRef.props.form;
@@ -107,8 +112,7 @@ class List extends React.Component {
     }
     
   }
-  onSelectChange = (selectedRowKeys) => {
-    debugger
+  onSelectChange = (selectedRowKeys) => {  
     let state = {
       selectedRowKeys:selectedRowKeys
     }
@@ -118,6 +122,11 @@ class List extends React.Component {
   onBack = ()=>{
     this.setState({headLabel:false});
   }
+  onEableRadioChange = (e) => {
+    let enable = e.target.value;
+    this.setState({enable,selectedRowKeys:[]});
+    this.props.action.getListData({enable});
+  }
   render() {
 
     let page = this.props.$$state.get("data").toJS();
@@ -125,19 +134,20 @@ class List extends React.Component {
 
     let {headLabel,selectedRowKeys} = this.state;
     let rowSelection = {
+      selectedRowKeys,
       onChange: this.onSelectChange,
     };
     let editData = this.props.$$state.get("editData").toJS();
     const WrapCard = Form.create()(Card);
     return (
       <div>
-        
-        
         {
           headLabel ? <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
-            <Button className="default_button" onClick={this.onDelete}>删除</Button>
             <Button className="default_button" onClick={this.onEdit}>编辑</Button>
-            <Button className="default_button" onClick={this.onEnable.bind(this, false)}>停用</Button>
+            <Popconfirm placement="bottom" title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
+              <Button className="default_button">删除</Button>
+            </Popconfirm>
+            <Button className="default_button" onClick={this.onEnable(2)}>停用</Button>
             <Button className="default_button" >分配角色</Button>
           </HeadLabel> : <div className='head_panel'>
               <span className='head_panel_span'>所属部门：</span>
@@ -147,7 +157,7 @@ class List extends React.Component {
                 onSearch={value => console.log(value)}
               />
               <span className='head_panel_span'>状态：</span>
-              <RadioGroup>
+              <RadioGroup onChange={this.onEableRadioChange} defaultValue={1}>
                 <Radio value={1}>启用</Radio>
                 <Radio value={2}>停用</Radio>
               </RadioGroup>

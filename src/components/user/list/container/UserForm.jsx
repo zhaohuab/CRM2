@@ -8,7 +8,6 @@ class Card extends React.Component {
   }
 
   componentDidMount() {
-      debugger
       this.props.form.setFieldsValue(this.props.dataSource);
   }
   render() {
@@ -50,8 +49,6 @@ class Card extends React.Component {
           >
               {getFieldDecorator('phone', {
                   rules: [{
-                      type: 'integer', message: 'The input is not valid phone!',
-                  }, {
                       required: true, message: 'Please input your Phone!',
                   }],
               })(

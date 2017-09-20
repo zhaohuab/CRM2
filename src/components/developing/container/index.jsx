@@ -11,7 +11,6 @@ class Default extends React.Component {
     }
 
     render() {
-        debugger
         return <div>
             <div className="app-404">To Be Continued...</div>
         </div>

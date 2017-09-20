@@ -12,7 +12,11 @@ const org = {
     orgTree : baseDir + 'sys/orgTree',
 }
 
-const user = baseDir + 'sys/users'
+const user = {
+    user : baseDir + 'sys/users',
+    userBatch : baseDir + 'sys/users/batch',
+    enable : baseDir + 'sys/users/state'  // {id}/state
+}
 
 export {
     login,

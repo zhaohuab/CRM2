@@ -11,13 +11,19 @@ const showForm = (flag, editData={}, index) => {
 
 const getListData = (params) => {
 	return (dispatch) => {
+		let searchMap = {};
+		debugger
+		if(params) {
+			searchMap.enableState = params.enable;
+		}
 		reqwest({
-			url:url,
+			url:url.user,
 			method: "GET",
 			data:{
                 param: JSON.stringify({
                     pageSize:20,
-                    page:1
+					page:1,
+					searchMap,
                 })
             }
 		})
@@ -34,7 +40,7 @@ const onSave4Add = (data, index) => {
 	return (dispatch) => {
         debugger
 		reqwest({
-			url:url,
+			url:url.user,
 			method: "POST",
 			data:{
                 param: JSON.stringify(data)
@@ -53,7 +59,7 @@ const onSave4Edit = (data, index) => {
 	return (dispatch) => {
         debugger
 		reqwest({
-			url:`${url}${data.id}`,
+			url:`${url.user}/${data.id}`,
 			method: "PUT",
 			data:{
                 param: JSON.stringify(data)
@@ -68,20 +74,61 @@ const onSave4Edit = (data, index) => {
 	}
 }
 
-const onDelete = (record,index) => {
-    const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
-	}
-	debugger
-    mockData.splice(index,1);
+const onDelete = (rowKeys,params) => {
 	return (dispatch) => {
-	    //dispatch(fetchData('GET_LIST_DATA', {}))
-	    setTimeout(()=>{
-	  	    dispatch(fetchData('PROJECT_LIST_GETDATA_SUCCESS', {data: mockData}))
-	    }, 300)
+		let searchMap = {};
+		debugger
+		if(params) {
+			searchMap.enableState = params.enable;
+		}
+		reqwest({
+			url:url.userBatch,
+			method: "POST",
+			data:{
+				param: JSON.stringify({
+					ids:rowKeys.join(","),
+					pageSize:20,
+					page:1,
+					searchMap,
+				}),
+				_method:"DELETE"
+			}
+		})
+		.then(result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', {...result}));
+		})
+		.fail(result => {
+			
+		})
+	}
+}
+
+const onEnable = (rowKeys,enable,params) => {
+	return (dispatch) => {
+		let searchMap = {};
+		debugger
+		if(params) {
+			searchMap.enableState = params.enable;
+		}
+		reqwest({
+			url:`${url.enable}`  ,
+			method: "POST",
+			data:{
+				param: JSON.stringify({
+					ids:rowKeys.join(","),
+					enableState:enable,
+					pageSize:20,
+					page:1,
+					searchMap,
+				}),
+			}
+		})
+		.then(result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', {...result}));
+		})
+		.fail(result => {
+			
+		})
 	}
 }
 
@@ -95,4 +142,5 @@ export {
     showForm,
 	onSave4Add,
 	onSave4Edit,
+	onEnable,
 }
