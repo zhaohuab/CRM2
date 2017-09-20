@@ -4,6 +4,7 @@ import { Form, Icon, Input, Button, Checkbox,Col,DatePicker ,message,Select,Spin
 const FormItem = Form.Item;
 import moment from 'moment';
 
+import Person from './personCustomForm.jsx'
 import debounce from 'lodash.debounce';
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
@@ -71,7 +72,8 @@ export default class NormaladdForm extends React.Component {
                             rules: [{ required: true, message: '请输入编号!' }],
                         })(
                             <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
-                            )}
+                            
+                        )}
                     </FormItem>
                     <FormItem  {...formItemLayout} label='其他负责人'>
                         {getFieldDecorator('otherRespoPerson', {
@@ -95,3 +97,5 @@ export default class NormaladdForm extends React.Component {
         );
     }
   }
+
+/* <Person/> */

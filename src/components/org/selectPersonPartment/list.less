@@ -1,0 +1,52 @@
+.person-list{
+  width:100%;
+  height:300px;
+  background: white;
+  border-radius:5px;
+  margin-left:10px;
+  padding:10px;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  border:1px solid #cccccc;
+  .person-list-p{
+    width:100%;
+    height:30px;
+    line-height:30px;
+    border-bottom:1px solid #cccccc;
+    font-size:14px;
+    font-weight: bold;
+    .all{padding: 0}
+  }
+  ul{
+    margin:0;
+    padding:0
+  }
+  ul li{
+    list-style: none;
+    position:relative;
+    height:50px;
+    width:100%;
+    border-bottom: 1px solid #cccccc;
+    .licheck{
+      position: absolute;
+      left:0;
+      top:19px;
+    }
+    img{
+      left:30px;
+      top:3px;
+      position: absolute;
+      width:45px;
+      height:45px;
+    }
+    .list-span{
+      left: 82px;
+      top: 18px;
+      position: absolute;
+      display: inline-block;
+      height:45px;
+      width:100px;
+    }
+  }
+
+}

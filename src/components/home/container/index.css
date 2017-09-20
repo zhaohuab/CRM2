@@ -17,35 +17,6 @@
   align-items: center;
   font-size: 16px;
 }
-.home-warrper .client-header .client-header-main {
-  display: flex;
-  width: 50%;
-  justify-content: flex-end;
-  align-items: center;
-}
-.home-warrper .client-header .client-header-main .clinet-search {
-  height: 30px;
-}
-.home-warrper .client-header .client-header-main .clinet-alert {
-  width: 50px;
-  height: 30px;
-  text-align: right;
-}
-.home-warrper .client-header .client-header-main .clinet-alert i {
-  font-size: 20px;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-}
-.home-warrper .client-header .client-header-main .clinet-alert sup {
-  top: -20px;
-  height: 13px;
-  line-height: 13px;
-  border-radius: 13px;
-  min-width: 13px;
-  padding: 0;
-}
 .home-warrper .clinet-main {
   margin-top: 10px;
   box-sizing: border-box;

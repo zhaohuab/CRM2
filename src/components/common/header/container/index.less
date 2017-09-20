@@ -1,3 +1,26 @@
+
+.ant-table-thead > tr, .ant-table-tbody > tr:nth-child(even){
+    background: #F6FAFF;
+}
+.ant-table-thead > tr > th{
+    color:#666
+}
+
+.ant-table table{
+    border-top: 1px solid #3CA4FB;
+    border-bottom: 1px solid #ddd;
+}
+
+.ant-table{
+    color:#999;
+}
+
+.ant-table-tbody > tr > td{
+    border:none
+}
+
+
+
 .app-header{
     display: flex;
     justify-content:space-between;
@@ -11,11 +34,56 @@
     .app-header-right{
         display: flex;
         align-items: center;
-        img{
-            width:40px;
-            height:40px;
-            border-radius: 40px;
+        justify-content: flex-end;
+        .client-header-left{
+            display: flex;
+            width:50%;
+            justify-content:flex-end;
+            align-items:center;
+            margin-right:15px;
+            border-right:1px solid #ccc;
+            padding-right:25px;
+            box-sizing: border-box;
+            .del-border{
+                border:none;
+                border-bottom:1px solid #ccc;
+                border-radius:0;
+            }
+            .clinet-search{
+                height:30px;
+            }
+            .clinet-alert{
+                width:50px;
+                height:30px;
+                text-align: right;
+                i{
+                  font-size: 20px;
+                  width: 30px;
+                  height: 30px;
+                  line-height: 30px;
+                  text-align: center;
+                }
+                sup{
+                    top:-20px;
+                    height: 13px;
+                    line-height: 13px;
+                    border-radius: 13px;
+                    min-width: 13px;
+                    padding:0
+                }
+            }
         }
+        .client-header-right{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img{
+                width:40px;
+                height:40px;
+                border-radius: 40px;
+            }
+            
+        } 
     }
 }
 .logger {
@@ -26,3 +94,16 @@
     line-height: 50px;
     font-size:14px;
 }
+
+.menu-more{
+    display: flex;
+    padding-left:15px;
+    box-sizing: border-box;
+    align-items: center;
+    width: 100px;
+    height:30px;
+    span{
+        margin-left:10px;
+    }
+}
+

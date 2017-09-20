@@ -1,4 +1,4 @@
-import { Form, Icon, Input, Button, Checkbox,message } from 'antd';
+import { Form, Icon, Input, Button, Checkbox,message,Carousel } from 'antd';
 import  * as Actions  from '../action'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -28,7 +28,8 @@ class LoginForm extends React.Component {
         const passwordError = isFieldTouched('password') && getFieldError('password');
         return (
             <div className="login-form">
-                <p className='login-form-title'>登录</p>
+                <p className='login-form-title'>欢迎登录</p>
+                <div className='login-form-error'></div>
                 <Form onSubmit={this.handleSubmit} width={300}>
                     <FormItem
                         validateStatus={userError ? 'error' : ''}
@@ -37,7 +38,7 @@ class LoginForm extends React.Component {
                         {getFieldDecorator('user', {
                             rules: [{ required: true, message: '不能为空!' }],
                         })(
-                            <Input placeholder="用户名..." />
+                            <Input placeholder="用户名" prefix={<Icon type="user" />} className='login-imnput'/>
                         )}
                     </FormItem>
                     <FormItem
@@ -47,27 +48,30 @@ class LoginForm extends React.Component {
                         {getFieldDecorator('password', {
                             rules: [{ required: true, message: '不能为空!' }],
                         })(
-                            <Input type="password" placeholder="密码..." />
+                            <Input type="password" placeholder="登录密码" prefix={<Icon type="lock" />} className='login-imnput'/>
                         )}
                     </FormItem>
                     <FormItem>
-                        {getFieldDecorator('remember', {
-                            valuePropName: 'checked',
-                            initialValue: true,
-                        })(
-                            <Checkbox >
-                                记住状态
-                            </Checkbox>
-                        )}
-                        <a style={{ float: "right" }} href="">忘记密码</a>
                         <Button
                             type="primary"
                             htmlType="submit"
                             disabled={hasErrors(getFieldsError())}
                             style={{ width: "100%" }}
+                            className='login-btn'
                         >
                             登录
                         </Button>
+                        <div className='form-footer'>
+                            {getFieldDecorator('remember', {
+                                valuePropName: 'checked',
+                                initialValue: true,
+                            })(
+                                <Checkbox >
+                                    记住状态
+                                </Checkbox>
+                            )}
+                            <a style={{ float: "right" }} href="">忘记密码</a>
+                        </div>
                     </FormItem>
                 </Form>
             </div>
@@ -96,30 +100,30 @@ class LoginCon extends React.Component {
     }
     
     render() {
+        let heightPx= document.documentElement.clientHeight
         return (
-            <div className="login-box" >
-                <header className="login-box-header">
-                    <section className='header-login'>
-                        <div className='header-login-logo'>
-                            <img src={require('assets/images/login/login_logo.png')} />
-                            <h3>用友云</h3>
-                        </div>
-                        
-                    </section>
-                </header>
-                <main className='login-box-mian'>
-                    <div className='login-box-mian-inner'>
-                        <div className='mian-inner-left'>
-                            <img src={require('assets/images/login/login_pic_left.png')} />
-                        </div>
-                        <div className='mian-inner-right'>
+            <div className='login-warpper'>
+                <div className='login-carousel'>
+                    <Carousel autoplay   effect='fade' speed={2000}>
+                        <div><img src={require('assets/images/login/banner-1.png')} style={{height:heightPx+'px'}}/></div>
+                        <div><img src={require('assets/images/login/banner-2.png')} style={{height:heightPx+'px'}}/></div>
+                        <div><img src={require('assets/images/login/banner-3.png')} style={{height:heightPx+'px'}}/></div>
+                    </Carousel>
+                </div>
+                <div className='login-main'>
+                    <div className='login-main-inner'>
+                        <div className='login-main-top'>
+                            <div className='login-main-title'>
+                                <img src={require('assets/images/login/crm-logo.png')}/>
+                                <p><span>—</span>企业营销工作平台</p>
+                            </div>
                             <Login login = {this.props.action.login} />
                         </div>
+                        <div className='login-main-footer'>
+                               <p>版权归用友股份有限公司所有</p>
+                        </div>
                     </div>
-                </main>
-                <footer className='login-box-end'>
-                    版权归用友股份有限公司所有
-                </footer>
+                </div>
             </div>
         );
     }

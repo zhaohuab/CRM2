@@ -1,7 +1,7 @@
-import Department from '../../selectDepart/index.jsx'
+import PersonDepart from '../../selectPersonPartment/index.jsx'
 import  React, { Component } from 'react';
-import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,DatePicker,message } from 'antd';
-export default class Depart extends Component{
+
+export default class Person extends Component{
     constructor(props){
         super(props);
         const value=this.props.value || {}
@@ -45,15 +45,14 @@ export default class Depart extends Component{
         }            
         return(
             <div>    
-                <Department
-                    async = {true}
-                    multi={false}
-                    options={{url:'http://localhost:5000/list'}}
+                <PersonDepart
+                    options={{url:'http://localhost:5000/list/'}}
                     onOk={this.ok.bind(this)}
                     onCancel={this.cancel.bind(this)}
-                    selectKeys={this.props.value}
                     visible={this.state.visible}
-                    title="修改"
+                    title="选人员"
+                    departSingle = {true}
+                    personSingle={false}
                 />   
                 <input value={data?data:''} ></input>
                 <div onClick={this.fo.bind(this)} className="department-chioce">

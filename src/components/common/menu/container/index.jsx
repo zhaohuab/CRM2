@@ -60,7 +60,7 @@ const basePath = '/crm_web/';
                 <Menu
                     defaultSelectedKeys={["1"]}
                     selectedKeys={this.state.selectedKeys}
-                    mode="inline"
+                    mode="vertical"
                     inlineCollapsed={this.props.collapsed}
                     theme={"dark"}
                     onSelect={this.onSelect}

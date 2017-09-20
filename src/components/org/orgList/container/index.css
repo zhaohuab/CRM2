@@ -44,17 +44,17 @@
   white-space: nowrap;
   display: inline-block;
 }
-.list-warpper .list-main .list-table-tree .show-edit-warpper .show-edit-inner {
-  display: none;
-}
-.list-warpper .list-main .list-table-tree .show-edit-warpper:hover .show-edit-inner {
+.list-warpper .list-main .list-table-tree .show-edit-inner {
   display: inline-block;
   margin-left: 10px;
   width: 100px;
 }
-.list-warpper .list-main .list-table-tree .show-edit-warpper:hover .show-edit-inner span {
+.list-warpper .list-main .list-table-tree .show-edit-inner span {
   padding: 10px;
   box-sizing: border-box;
+}
+.list-warpper .list-main .list-table-tree .show-edit-inner-hide {
+  display: none;
 }
 .list-warpper .list-main .list-table {
   width: 100%;
@@ -62,7 +62,7 @@
 }
 .list-warpper .list-main .list-table .table-header {
   position: relative;
-  height: 60px;
+  height: 54px;
   background: white;
 }
 .list-warpper .list-main .list-table .table-header .list-add {
@@ -72,7 +72,7 @@
   justify-content: flex-end;
   align-items: center;
   width: 20%;
-  top: 26px;
+  height: 100%;
 }
 .list-warpper .list-main .list-table .table-header .actionButtons-waprper {
   display: flex;
@@ -104,6 +104,8 @@
   cursor: pointer;
 }
 .list-warpper .org-tabel {
+  padding: 0 15px;
+  box-sizing: border-box;
   position: relative;
   background: white;
 }
