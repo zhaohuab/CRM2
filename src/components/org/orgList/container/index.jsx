@@ -50,7 +50,6 @@ class List extends Component {
 
     //修改一条数据方法
     changeForm(record){ 
-        debugger
         if(record){
             this.props.orgAction.getDetailSingle(record.id,(data)=>{
                 this.setState({
@@ -64,8 +63,9 @@ class List extends Component {
     }
 
     //删除一条数据方法
-    itemDelete(record,index){
-       this.props.orgAction.listdel(record)
+    btnDelete(treeSelect,record){
+        debugger
+        this.props.orgAction.listdel(record,treeSelect)
     }
 
     //修改页面取消按钮 
@@ -155,11 +155,12 @@ class List extends Component {
         let tabelLoading = orgState.get('tabelLoading');
         let addFormVisitable = orgState.get('addFormVisitable')
         let treeLoading = orgState.get('treeLoading')
+        let treeSelect = orgState.get('treeSelect');
 
         let listData = orgState.get('listData').toJS();
         let treeData = orgState.get('treeData').toJS();
         let tableListCheckbox = orgState.get('tableListCheckbox').toJS();
-       
+        
         
         return (
             <div className='list-warpper'>
@@ -184,7 +185,7 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} deleteList={this.btnDelete.bind(this,treeSelect)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
                             </div>

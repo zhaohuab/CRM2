@@ -1,6 +1,6 @@
 import fetchData from 'utils/fetchData';
 import reqwest from 'utils/reqwest';
-import fail from 'utils/reqwest/fail.js';
+import fail from 'utils/reqwest/handle.js';
 import { login as url } from 'api';
 
 //定义方法 action

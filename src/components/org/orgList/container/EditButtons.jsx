@@ -10,7 +10,10 @@ export default class EditButtons extends Component {
        debugger
        this.props.changeForm(id)
    }
-
+   deleteList(data){
+       this.props.deleteList(data);
+   }
+ 
     render(){
         return(
             <div className='actionButtons-waprper'>
@@ -19,7 +22,7 @@ export default class EditButtons extends Component {
                 </div> 
                 <div className='actionButtons'>
                     <Button onClick={this.returnBack.bind(this)}>返回</Button>
-                    <Button>删除</Button>
+                    <Button onClick={this.deleteList.bind(this,this.props.data)}>删除</Button>
                     {this.props.data.length===1?
                        <Button onClick={this.changeForm.bind(this,this.props.data[0])}>编辑</Button>
                     :''}

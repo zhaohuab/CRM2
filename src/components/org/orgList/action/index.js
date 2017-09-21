@@ -1,4 +1,5 @@
 import request from 'reqwest'
+import handle from 'utils/reqwest/handle'
 import { message} from 'antd';
 import { org as url } from 'api';
 
@@ -15,7 +16,6 @@ const fetchData = (type, payload)=> {
 export function getlist(fn){
     return(dispatch,getState)=>{
         console.log(url)
-        debugger
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
             url: url.org,
@@ -29,12 +29,12 @@ export function getlist(fn){
             }
         })
         .then(function (dataResult) {
+            handle(dataResult)
             let data=JSON.parse(dataResult.response);
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data.data}));
-            message.success('获取数据成功');
         })
         .fail(function (err, msg) {
-            message.error('获取数据失败');
+            handle(err)
         }) 
     }
 }
@@ -138,15 +138,27 @@ export function listchange(value){
 }
 
 
-//删除一条数据
-export function listdel(record){
+//删除数据
+export function listdel(record,treeId){
+    debugger
+    var ids = [];
+    for(let i=0;i<record.length;i++){
+        ids.push(record[i]);
+    }
     return(dispatch,getState)=>{
         let id=record.id
         request({
-            url: `${url.org}+${id}`,
-            type:"application/x-www-form-urlencoded",
-            method:'delete',
-            data:{}
+            url:url.org,
+			method: "POST",
+			data:{
+				param: JSON.stringify({
+					ids:ids.join(","),
+					pageSize:20,
+					page:1,
+					searchMap:{treeId}
+				}),
+				_method:"DELETE"
+			}
         })
         .then(function (dataResult) {
             dispatch({type:'ORG_LIST_LISTDELSUCCESS',record})
@@ -199,7 +211,7 @@ export function listTreeChange(id){
         })
         .then(function (dataResult){
             let {data} = JSON.parse(dataResult.response);
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data,treeSelect:id}));
         })
         .fail(function (err, msg) {
             debugger

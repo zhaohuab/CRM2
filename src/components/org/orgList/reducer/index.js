@@ -6,7 +6,8 @@ let $$initialState = {
 	tabelLoading:false,
 	addFormVisitable:false,
 	treeLoading:false,
-	tableListCheckbox:[]
+	tableListCheckbox:[],
+	treeSelect:'',
 };
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action){
 
@@ -15,7 +16,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({tabelLoading:true})
 			
 		case 'ORG_LIST_GETLISTSUCCESS':
-			return  $$state.merge({listData:action.payload.data,tabelLoading:false})
+			return  $$state.merge({listData:action.payload.data,tabelLoading:false,treeSelect:action.payload.treeSelect})
 			
 		case 'ORG_LIST_CHANGEADDSTART':
 			return $$state.merge({addFormVisitable:true})

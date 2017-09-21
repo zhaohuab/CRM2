@@ -1,6 +1,6 @@
 import fetchData from 'utils/fetchData';
 import reqwest from 'utils/reqwest';
-import fail from 'utils/reqwest/fail.js';
+import fail from 'utils/reqwest/handle.js';
 import { user as url } from 'api';
 
 const showForm = (flag, editData={}, index) => {
