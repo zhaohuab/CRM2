@@ -50,6 +50,14 @@ module.exports = {
 			{
 	            test: /\.(jpg|png|gif)$/,
 	            loader: 'url',
+			},
+			{
+	            test: /\.css$/,
+	            loaders: ["style", "css"]
+			},
+			{
+	            test: /\.(woff|svg|eot|ttf)\??.*$/,
+	            loader: "url-loader?name=fonts/[name].[md5:hash:hex:7].[ext]",
 	        },
 			{
 				test: /\.(less)$/,

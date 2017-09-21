@@ -3,132 +3,126 @@ import reqwest from 'utils/reqwest';
 import fail from 'utils/reqwest/handle.js';
 import { user as url } from 'api';
 
-const showForm = (flag, editData={}, index) => {
-    return (dispatch) => {
-        dispatch(fetchData('USER_LIST_SHOWFORM',{visible:flag, editData}));
-    }
+const showForm = (flag, editData = {}, index) => {
+	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_SHOWFORM', { visible: flag, editData }));
+	}
 }
 
 const getListData = (params) => {
 	return (dispatch) => {
-		let searchMap = {};
-		
-		if(params) {
-			searchMap.enableState = params.enable;
-		}
 		reqwest({
-			url:url.user,
+			url: url.user,
 			method: "GET",
-			data:{
-                param: JSON.stringify({
-                    pageSize:20,
-					page:1,
-					searchMap,
-                })
-            }
+			data: {
+				param: JSON.stringify({
+					...params.pagination,
+					searchMap: params.searchMap,
+				})
+			}
 		})
-		.then(result => {
-            dispatch(fetchData('USER_LIST_GETLISTSUCCESS', {...result}));
-		})
-		.fail(result => {
-            
-		})
+			.then(result => {
+				dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
+			})
+			.fail(result => {
+
+			})
 	}
 }
-
+const transData = (data) => {
+	
+	let { gender,orgId, deptId,job } = data;
+	data.gender = gender.key;
+	data.genderName = gender.title;
+	data.orgId = orgId.key;
+	data.orgName = orgId.title;
+	data.deptId = deptId.key;
+	data.deptName = deptId.title;
+	data.job = job.key;
+	data.jobName = job.title;
+	return data;
+}
 const onSave4Add = (data, index) => {
 	return (dispatch) => {
-        
+
 		reqwest({
-			url:url.user,
+			url: url.user,
 			method: "POST",
-			data:{
-                param: JSON.stringify(data)
-            }
+			data: {
+				param: JSON.stringify(transData(data))
+			}
 		})
-		.then(result => {
-            dispatch(fetchData('USER_CARD_SAVEADD', {...result ,visible:false}));
-		})
-		.fail(result => {
-            fail(result);
-		})
+			.then(result => {
+				dispatch(fetchData('USER_CARD_SAVEADD', { ...result, visible: false }));
+			})
+			.fail(result => {
+				fail(result);
+			})
 	}
 }
 
 const onSave4Edit = (data, index) => {
 	return (dispatch) => {
-        
+
 		reqwest({
-			url:`${url.user}/${data.id}`,
+			url: `${url.user}/${data.id}`,
 			method: "PUT",
-			data:{
-                param: JSON.stringify(data)
-            }
+			data: {
+				param: JSON.stringify((transData(data)))
+			}
 		})
-		.then(result => {
-            dispatch(fetchData('USER_CARD_SAVEEDIT', {...result ,visible:false}));
-		})
-		.fail(result => {
-            fail(result);
-		})
+			.then(result => {
+				dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
+			})
+			.fail(result => {
+				fail(result);
+			})
 	}
 }
 
-const onDelete = (rowKeys,params) => {
+const onDelete = (rowKeys, params) => {
 	return (dispatch) => {
-		let searchMap = {};
-		
-		if(params) {
-			searchMap.enableState = params.enable;
-		}
 		reqwest({
-			url:url.userBatch,
+			url: url.userBatch,
 			method: "POST",
-			data:{
+			data: {
 				param: JSON.stringify({
-					ids:rowKeys.join(","),
-					pageSize:20,
-					page:1,
-					searchMap,
+					ids: rowKeys.join(","),
+					...params.pagination,
+					searchMap: params.searchMap,
 				}),
-				_method:"DELETE"
+				_method: "DELETE"
 			}
 		})
-		.then(result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', {...result}));
-		})
-		.fail(result => {
-			
-		})
+			.then(result => {
+				dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
+			})
+			.fail(result => {
+
+			})
 	}
 }
 
-const onEnable = (rowKeys,enable,params) => {
+const onEnable = (rowKeys, enable, params) => {
 	return (dispatch) => {
-		let searchMap = {};
-		
-		if(params) {
-			searchMap.enableState = params.enable;
-		}
 		reqwest({
-			url:`${url.enable}`  ,
-			method: "POST",
-			data:{
+			url: `${url.enable}`,
+			method: "PUT",
+			data: {
 				param: JSON.stringify({
-					ids:rowKeys.join(","),
-					enableState:enable,
-					pageSize:20,
-					page:1,
-					searchMap,
+					ids: rowKeys.join(","),
+					enableState: enable,
+					...params.pagination,
+					searchMap: params.searchMap,
 				}),
 			}
 		})
-		.then(result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', {...result}));
-		})
-		.fail(result => {
-			
-		})
+			.then(result => {
+				dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
+			})
+			.fail(result => {
+
+			})
 	}
 }
 
@@ -137,9 +131,9 @@ const onEnable = (rowKeys,enable,params) => {
 
 //输出 type 与 方法
 export {
-    getListData,
-    onDelete,
-    showForm,
+	getListData,
+	onDelete,
+	showForm,
 	onSave4Add,
 	onSave4Edit,
 	onEnable,

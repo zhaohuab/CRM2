@@ -7,6 +7,7 @@ import { Menu, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 import * as Actions from "../action"
 import './index.less'
+import 'assets/stylesheet/iconfont.css'
 
 const basePath = '/crm_web/';
  class LeftMenu extends React.Component {
@@ -15,6 +16,7 @@ const basePath = '/crm_web/';
         this.state = {
             selectedKeys:[1],
         }
+        this.icon=['icon-xiaoshoujixiao-','icon-kehuguanli-','icon-kehuguanli-','icon-xiaoshouguocheng-','icon-jiaoyiguanli','icon-jichuyewu-','icon-xitongguanli']
     }
 
     componentDidMount() {
@@ -25,25 +27,23 @@ const basePath = '/crm_web/';
         this.setState({
             selectedKeys:item.keyPath
         })
-        // debugger
-        // this.props.action.changeHeader(title);
     }
 
     onClick = ( title ) => {
         this.props.action.changeHeader(title);
     }
 
-
     renderMenu = (data) => {
 
         let that = this;
 
         function tree(data,isRoot){
-            return data.map((item) => {
+           
+            return data.map((item,index) => {
                 if(item.child.length>0){
                     return <SubMenu  key={item.id} title = {<span>
                         {
-                            isRoot ?  <Icon type="user" />:''
+                            isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
                         }
                         {item.name}
                         </span>}>
@@ -52,10 +52,9 @@ const basePath = '/crm_web/';
                 }else{
                     return <Menu.Item key={item.id}>
                             <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
-                            
                                 <span>
                                 {
-                                    isRoot ?  <Icon type="user" />:''
+                                    isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
                                 }
                                 {item.name}
                                 </span>
@@ -79,7 +78,7 @@ const basePath = '/crm_web/';
                 >
                     <Menu.Item key="index">
                         <Link to={basePath + "home"} onClick={that.onClick.bind(that, rootTitle)}>
-                            <span><Icon type="user" />{rootTitle}</span>
+                            <span><Icon type="home" style={{fontSize:'18px'}}/>{rootTitle}</span>
                         </Link>
                     </Menu.Item>
                     {tree(data, isRoot)}
@@ -96,8 +95,8 @@ const basePath = '/crm_web/';
         return (
           <div className='menu-bg-warpper'>
                 <div className='menu-bg-logo'>logo</div>
-                <div className='menu-bg'>
-                    <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'} onClick={this.props.toggleCollapsed}>
+                <div className='menu-bg'  onClick={this.props.toggleCollapsed}>
+                    <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'}>
                         <Icon type='bars' />
                     </span>
                 </div>

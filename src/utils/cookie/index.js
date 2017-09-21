@@ -8,7 +8,8 @@ const getInfo = (key) => {
     if (typeof key == "undefined") {
         return cookieObj
     }
-    return cookieObj[key]
+    //去除汉语中cookie带有的引号
+    return decodeURI(cookieObj[key]).replace(/\"/g,"");
 }
 
 export default getInfo
