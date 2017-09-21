@@ -1,5 +1,6 @@
 body {
   background-color: #e5e5e5;
+  overflow: hidden;
 }
 .full-height {
   height: 100%;
@@ -34,6 +35,7 @@ body {
   margin: 10px;
   background: white;
   overflow: hidden;
+  overflow-y: auto;
 }
 .app-talk {
   width: 50px;
