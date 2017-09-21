@@ -40,7 +40,6 @@ const basePath = '/crm_web/';
         function tree(data,isRoot){
            
             return data.map((item,index) => {
-                //debugger
                 if(item.child.length>0){
                     return <SubMenu  key={item.id} title = {<span>
                         {

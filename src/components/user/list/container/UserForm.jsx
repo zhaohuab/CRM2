@@ -1,21 +1,40 @@
-import { Form, Input, Radio, Select } from 'antd';
+import { Form, Input, Select } from 'antd';
 
 import Email from 'utils/components/Email'
 import Department from 'components/refs/Department'
+import Enum from 'utils/components/Enum'
+import RadioGroup from 'utils/components/Radio'
 const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
 const Option = Select.Option;
 class Card extends React.Component {
     constructor(props) {
         super(props)
     }
-
+    jobEnum = [{
+        key : 1,
+        title : "员工"
+    },{
+        key : 2,
+        title : "负责人"
+    },{
+        key : 3,
+        title : "其他负责人"
+    }]
+    genderEnum = [{
+        key : 1,
+        title : "男",
+    },{
+        key : 2,
+        title : "女",
+    }]
     componentDidMount() {
         
         //装箱过程
-        let { orgId,orgName,deptId,deptName } = this.props.dataSource; 
+        let { gender,genderName,orgId,orgName,deptId,deptName,job,jobName } = this.props.dataSource; 
         this.props.dataSource.orgId = {key:orgId,title:orgName};
         this.props.dataSource.deptId = {key:deptId,title:deptName};
+        this.props.dataSource.job = {key:job,title:jobName};
+        this.props.dataSource.gender = {key:gender,title:genderName};
         this.props.form.setFieldsValue(this.props.dataSource);
     }
     componentWillMount() {
@@ -86,15 +105,10 @@ class Card extends React.Component {
             >
                 {getFieldDecorator('gender', {
                     rules: [{
-                        type: 'integer', message: 'The input is not valid E-mail!',
-                    }, {
                         required: true, message: 'Please input your E-mail!',
                     }],
                 })(
-                    <RadioGroup value={1}>
-                        <Radio value={1}>男</Radio>
-                        <Radio value={2}>女</Radio>
-                    </RadioGroup>
+                    <RadioGroup type="button" dataSource={this.genderEnum}/>
                     )}
             </FormItem>
             <FormItem
@@ -126,11 +140,7 @@ class Card extends React.Component {
                 {getFieldDecorator('job', {
 
                 })(
-                    <Select>
-                        <Option value={1}>员工</Option>
-                        <Option value={2}>负责人</Option>
-                        <Option value={3}>其他负责人</Option>
-                    </Select>
+                    <Enum dataSource={this.jobEnum}/>
                     )}
             </FormItem>
 

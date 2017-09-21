@@ -50,7 +50,6 @@ class List extends Component {
 
     //修改一条数据方法
     changeForm(record){ 
-        debugger
         if(record){
             this.props.orgAction.getDetailSingle(record.id,(data)=>{
                 this.setState({

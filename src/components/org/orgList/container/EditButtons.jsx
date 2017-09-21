@@ -7,7 +7,6 @@ export default class EditButtons extends Component {
      this.props.returnFn()
    }
    changeForm(id){
-       debugger
        this.props.changeForm(id)
    }
 
