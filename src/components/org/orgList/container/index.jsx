@@ -9,6 +9,7 @@ import NormalLoginForm from './listFrom.jsx'
 import NormaladdForm from './listAddForm.jsx'
 import ListTree from './listTree.jsx'
 import EditButton from './EditButtons.jsx'
+import columns from './columns.js'
 const ButtonGroup = Button.Group;
 import './index.less'
 
@@ -29,98 +30,37 @@ class List extends Component {
             listTablePanel:0,//获取滑出模块的宽度,
             tableListCheckbox:null,//点击一个table的checkbox时，保存选中数量
             treeLoading:false,
-            selectedRowKeys:[]
+            selectedRowKeys:[],
+
         }
 
         //点击每行table触发的onchange方法
         let that = this
         this.rowSelectionFn={
-            onChange(selectedRowKeys, selectedRows){
-                    if(selectedRows.length){
-                        that.props.orgAction.buttonEdit(selectedRows)
-                    }else{
-                        that.props.orgAction.buttonEdit(selectedRows)
-                    }
-            }       
-         }
-
-        
-        this.columns = [
-          {
-            title: '编码',
-            dataIndex: 'code',
-            key: 'code',
-          },
-          {
-            title: '名称',
-            dataIndex: 'name',
-            key: 'name'
-          }, 
-          {
-            title: '简称',
-            dataIndex: 'simpleName',
-            key: 'simpleName'
-          }, 
-          {
-            title: '助记码',
-            dataIndex: 'simpleCode',
-            key: 'simpleCode',
-          },
-          {
-            title: '上级组织',
-            dataIndex: 'fatherorgId',
-            key: 'fatherorgId',
-          },
-          {
-            title: '负责人',
-            dataIndex: 'respoPerson',
-            key: 'respoPerson',
-          }, 
-           {
-            title: '其他负责人',
-            dataIndex: 'otherRespoPerson',
-            key: 'otherRespoPerson',
-          },
-           {
-            title: '组织类型',
-            dataIndex: 'orgType',
-            key: 'orgType',
-            render:(text, record,index) => {
-                if(text === 0 ){
-                    return text='公司'
-                }else if(text === 1){
-                    return text='部门'
+            onChange(selected, selectedRows){
+                if(selectedRows.length){
+                    that.props.orgAction.buttonEdit(selectedRows)
+                }else{
+                    that.props.orgAction.buttonEdit(selectedRows)
                 }
             }
-          },
-           {
-            title: '状态',
-            dataIndex: 'enablestate',
-            key: 'enablestate',
-          },
-        //   {
-        //     title: '操作',
-        //     key: 'action',
-        //     // render: (text, record,index) => (
-        //     //   <div>
-        //     //     <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record)}}>修改</Button>
-        //     //     <Button type="danger" htmlType="button" onClick={()=>{this.itemDelete(record,index)}}>删除</Button>
-        //     //   </div>
-        //     // ),
-        //   }
-        ];  
+         }
+        this.columns = columns
     }
 
     //修改一条数据方法
-    changeFrom(record){ 
-        this.props.orgAction.getDetailSingle(record.id,(data)=>{
-             this.setState({
-                changeFormVisitable:true,
-                value:data
-             },()=>{
-                this.formRef.changeValueFn(this.state.value)
-             })
-        })
+    changeForm(record){ 
+        debugger
+        if(record){
+            this.props.orgAction.getDetailSingle(record.id,(data)=>{
+                this.setState({
+                   changeFormVisitable:true,
+                   value:data
+                },()=>{
+                   this.formRef.changeValueFn(this.state.value)
+                })
+           })
+        } 
     }
 
     //删除一条数据方法
@@ -177,10 +117,8 @@ class List extends Component {
     }
 
     //显示每行数据后的返回按钮
-    tableListCheckboxFn(){
-        this.setState({
-            tableListCheckbox:null
-        })
+    btnBack(){
+        this.props.orgAction.buttonEdit([])
     }
 
     //点击树节点触发的方法
@@ -221,7 +159,8 @@ class List extends Component {
         let listData = orgState.get('listData').toJS();
         let treeData = orgState.get('treeData').toJS();
         let tableListCheckbox = orgState.get('tableListCheckbox').toJS();
-
+       
+        
         return (
             <div className='list-warpper'>
                 <Modal
@@ -245,7 +184,7 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} returnFn={this.tableListCheckboxFn.bind(this)}/>:'' }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
                             </div>
@@ -283,5 +222,17 @@ export default connect(
 )(List)
 
 //onRowClick
+
+
+//   {
+//     title: '操作',
+//     key: 'action',
+//     // render: (text, record,index) => (
+//     //   <div>
+//     //     <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record)}}>修改</Button>
+//     //     <Button type="danger" htmlType="button" onClick={()=>{this.itemDelete(record,index)}}>删除</Button>
+//     //   </div>
+//     // ),
+//   }
 
 

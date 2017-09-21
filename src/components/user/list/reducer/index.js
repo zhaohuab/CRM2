@@ -47,7 +47,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				data : pageAdd($$state.get("data").toJS(),action.content.data),
 			})
 		case 'USER_CARD_SAVEEDIT' : 
-		debugger
 			return $$state.merge({
 				visible : action.content.visible,
 				data : pageEdit($$state.get("data").toJS(),action.content.data),

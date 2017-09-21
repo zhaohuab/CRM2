@@ -77,7 +77,12 @@ body {
   text-align: center;
 }
 .login-warpper {
-  position: relative;
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 .login-warpper .login-carousel {
   width: 100%;

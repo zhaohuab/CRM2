@@ -9,9 +9,13 @@ const fetchData = (type, payload)=> {
         }
 }
 
+
+
 //获取所有数据
 export function getlist(fn){
     return(dispatch,getState)=>{
+        console.log(url)
+        debugger
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
             url: url.org,
@@ -71,6 +75,8 @@ export function listadd(list){
 //根据id查一条数据
 export function getDetailSingle(id,fn){
     return(dispatch,getState)=>{
+        console.log(url.org)
+        debugger
         request({
             url: `${url.org}+${id}`,
             type:"application/x-www-form-urlencoded",
@@ -86,6 +92,7 @@ export function getDetailSingle(id,fn){
             fn(data)
         })
         .fail(function (err, msg) {
+            debugger
             message.error('查询数据失败');
         }) 
     }
@@ -165,7 +172,6 @@ export function getTreeList(){
             data:{}
         })
         .then(function (dataResult){
-            debugger
             let {data} = JSON.parse(dataResult.response);
             dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data})
         })
@@ -211,3 +217,4 @@ export function buttonEdit(rows){
         rows
     }
 }
+

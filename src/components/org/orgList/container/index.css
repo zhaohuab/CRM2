@@ -90,7 +90,7 @@
 .list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-chioce {
   width: 150px;
   height: 100%;
-  line-height: 40px;
+  line-height: 36px;
   text-align: center;
   border-right: 1px solid #ccc;
   margin-right: 20px;
@@ -98,7 +98,7 @@
 .list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons {
   width: 100%;
   height: 100%;
-  line-height: 40px;
+  line-height: 36px;
 }
 .list-warpper .orgPointer {
   cursor: pointer;

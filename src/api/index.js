@@ -8,8 +8,8 @@ const login =  baseDir +'login';
 const menu = baseDir + 'sys/menuitem'
 
 const org = {
-    org : baseDir + 'sys/org',
-    orgTree : baseDir + 'sys/orgTree',
+    org : baseDir + 'sys/org/',
+    orgTree : baseDir + 'sys/orgTree/',
 }
 
 const user = {
