@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button,Icon } from 'antd';
 
 
 class HeadLabel extends React.Component {
@@ -13,11 +13,17 @@ class HeadLabel extends React.Component {
     render() {
         let selectedRowLength = this.props.selectedRowKeys.length;
         return (
-            
-            <div className = "head_panel">
-                <div className="headlabel_title">已选中<span>{selectedRowLength}</span>条</div>
-                <Button className="default_button" onClick={this.props.onBack}>返回</Button>
-                {this.props.children}
+            <div className='edit-inner'>
+                <div className='edit-left'>
+                    <div className='edit-inner-left'>已选中<span>{selectedRowLength}</span>条</div>
+                    <div className='edit-inner-right'>
+                        <Button className="default_button" onClick={this.props.onBack} icon="swap-left">返回</Button>
+                        {this.props.children}
+                    </div>
+                </div>
+                <div  className='edit-right'>
+                    <Icon type="close" />
+                </div>
             </div>
         )
     }

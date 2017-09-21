@@ -1,0 +1,57 @@
+.user-warpper .list-box {
+  padding: 10px;
+  padding-top: 0;
+  box-sizing: border-box;
+}
+.user-warpper .head_panel {
+  height: 54px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background: white;
+}
+.user-warpper .head_panel .head_panel-left {
+  display: flex;
+  align-items: center;
+}
+.user-warpper .head_panel .head_panel-left .head_panel-state {
+  margin-left: 20px;
+}
+.user-warpper .head_edit {
+  justify-content: flex-start;
+  background: white;
+  height: 54px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+.user-warpper .head_edit .edit-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.user-warpper .head_edit .edit-inner .edit-left {
+  display: flex;
+  align-items: center;
+}
+.user-warpper .head_edit .edit-inner .edit-inner-left {
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid #DDD;
+  font-size: 13px;
+  color: #333;
+  font-weight: 400;
+}
+.user-warpper .head_edit .edit-inner .edit-right {
+  font-size: 18px;
+}
+.user-warpper .head_edit .default_button {
+  margin-right: 10px;
+  color: #666;
+  font-weight: 400;
+}

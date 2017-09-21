@@ -1,3 +1,10 @@
+.ant-menu-inline-collapsed > .ant-menu-item .anticon + span,
+.ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title .iconfont + span {
+  opacity: 0;
+}
+.ant-menu-inline-collapsed > .ant-menu-item > .iconfont + span {
+  opacity: 0;
+}
 .menu-con-open {
   width: 200px;
 }
@@ -10,6 +17,9 @@
 }
 .menu-bg-warpper {
   background: #26293f;
+}
+.menu-bg-warpper .anticon {
+  font-size: 17px;
 }
 .menu-bg-warpper .menu-bg-logo {
   width: 100%;

@@ -14,8 +14,7 @@ const fetchData = (type, payload)=> {
 //获取所有数据
 export function getlist(fn){
     return(dispatch,getState)=>{
-        console.log(url)
-        debugger
+       
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
             url: url.org,
