@@ -1,5 +1,11 @@
-.user-warpper .list-box {
+.user-warpper {
+  height: 100%;
   padding: 10px;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+.user-warpper .list-box {
+  padding: 5px;
   padding-top: 0;
   box-sizing: border-box;
 }

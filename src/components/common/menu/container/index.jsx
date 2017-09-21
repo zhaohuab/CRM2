@@ -98,8 +98,8 @@ const basePath = '/crm_web/';
         return (
           <div className='menu-bg-warpper'>
                 <div className='menu-bg-logo'>logo</div>
-                <div className='menu-bg'>
-                    <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'} onClick={this.props.toggleCollapsed}>
+                <div className='menu-bg'  onClick={this.props.toggleCollapsed}>
+                    <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'}>
                         <Icon type='bars' />
                     </span>
                 </div>
