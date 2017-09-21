@@ -15,17 +15,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-xitongguanli:before { content: "\e621"; }
+.icon-xitongguanli:before { content: "\e621"; padding-right:10px;}
 
-.icon-jichuyewu-:before { content: "\e622"; }
+.icon-jichuyewu-:before { content: "\e622"; padding-right:10px;}
 
-.icon-jiaoyiguanli:before { content: "\e623"; }
+.icon-jiaoyiguanli:before { content: "\e623"; padding-right:10px;}
 
-.icon-shouye:before { content: "\e624"; }
+.icon-shouye:before { content: "\e624"; padding-right:10px;}
 
-.icon-xiaoshouguocheng-:before { content: "\e625"; }
+.icon-xiaoshouguocheng-:before { content: "\e625"; padding-right:10px;}
 
-.icon-xiaoshoujixiao-:before { content: "\e626"; }
+.icon-xiaoshoujixiao-:before { content: "\e626"; padding-right:10px;}
 
-.icon-kehuguanli-:before { content: "\e627"; }
+.icon-kehuguanli-:before { content: "\e627"; padding-right:5px;}
 
