@@ -30,10 +30,10 @@ body {
 }
 .app-content {
   flex: auto;
-}
-.app-content > div {
-  padding: 10px;
-  box-sizing: border-box;
+  height: 100%;
+  margin: 10px;
+  background: white;
+  overflow: hidden;
 }
 .app-talk {
   width: 50px;

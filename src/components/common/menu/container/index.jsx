@@ -16,7 +16,7 @@ const basePath = '/crm_web/';
         this.state = {
             selectedKeys:[1],
         }
-        this.icon=['icon-xitongguanli','icon-jichuyewu-','icon-jiaoyiguanli','icon-xiaoshouguocheng-','icon-xiaoshoujixiao-','icon-kehuguanli-']
+        this.icon=['icon-xiaoshoujixiao-','icon-kehuguanli-','icon-kehuguanli-','icon-xiaoshouguocheng-','icon-jiaoyiguanli','icon-jichuyewu-','icon-xitongguanli']
     }
 
     componentDidMount() {
@@ -53,7 +53,6 @@ const basePath = '/crm_web/';
                 }else{
                     return <Menu.Item key={item.id}>
                             <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
-                            
                                 <span>
                                 {
                                     isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
@@ -80,7 +79,7 @@ const basePath = '/crm_web/';
                 >
                     <Menu.Item key="index">
                         <Link to={basePath + "home"} onClick={that.onClick.bind(that, rootTitle)}>
-                            <span><Icon type="home" />{rootTitle}</span>
+                            <span><Icon type="home" style={{fontSize:'18px'}}/>{rootTitle}</span>
                         </Link>
                     </Menu.Item>
                     {tree(data, isRoot)}
@@ -97,8 +96,8 @@ const basePath = '/crm_web/';
         return (
           <div className='menu-bg-warpper'>
                 <div className='menu-bg-logo'>logo</div>
-                <div className='menu-bg'>
-                    <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'} onClick={this.props.toggleCollapsed}>
+                <div className='menu-bg'  onClick={this.props.toggleCollapsed}>
+                    <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'}>
                         <Icon type='bars' />
                     </span>
                 </div>
