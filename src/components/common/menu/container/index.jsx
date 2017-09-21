@@ -7,6 +7,7 @@ import { Menu, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 import * as Actions from "../action"
 import './index.less'
+//import 'assets/stylesheet/iconfont.css'
 
 const basePath = '/crm_web/';
  class LeftMenu extends React.Component {
