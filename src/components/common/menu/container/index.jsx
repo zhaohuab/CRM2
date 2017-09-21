@@ -7,7 +7,7 @@ import { Menu, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 import * as Actions from "../action"
 import './index.less'
-//import 'assets/stylesheet/iconfont.css'
+import 'assets/stylesheet/iconfont.css'
 
 const basePath = '/crm_web/';
  class LeftMenu extends React.Component {
@@ -16,6 +16,7 @@ const basePath = '/crm_web/';
         this.state = {
             selectedKeys:[1],
         }
+        this.icon=['icon-xitongguanli','icon-jichuyewu-','icon-jiaoyiguanli','icon-xiaoshouguocheng-','icon-xiaoshoujixiao-','icon-kehuguanli-']
     }
 
     componentDidMount() {
@@ -34,17 +35,18 @@ const basePath = '/crm_web/';
         this.props.action.changeHeader(title);
     }
 
-
     renderMenu = (data) => {
 
         let that = this;
 
         function tree(data,isRoot){
-            return data.map((item) => {
+           
+            return data.map((item,index) => {
+                //debugger
                 if(item.child.length>0){
                     return <SubMenu  key={item.id} title = {<span>
                         {
-                            isRoot ?  <Icon type="user" />:''
+                            isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
                         }
                         {item.name}
                         </span>}>
@@ -56,7 +58,7 @@ const basePath = '/crm_web/';
                             
                                 <span>
                                 {
-                                    isRoot ?  <Icon type="user" />:''
+                                    isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
                                 }
                                 {item.name}
                                 </span>
@@ -80,7 +82,7 @@ const basePath = '/crm_web/';
                 >
                     <Menu.Item key="index">
                         <Link to={basePath + "home"} onClick={that.onClick.bind(that, rootTitle)}>
-                            <span><Icon type="user" />{rootTitle}</span>
+                            <span><Icon type="home" />{rootTitle}</span>
                         </Link>
                     </Menu.Item>
                     {tree(data, isRoot)}
