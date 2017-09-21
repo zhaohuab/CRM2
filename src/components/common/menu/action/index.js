@@ -20,7 +20,6 @@ const getMenuData = ()=>{
 const changeHeader = (title) => {
 
     return (dispatch) => {
-		debugger
         dispatch(fetchData('HEADER_CHANGE', {title}));
     }
 }

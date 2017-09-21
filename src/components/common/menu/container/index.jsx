@@ -25,12 +25,9 @@ const basePath = '/crm_web/';
         this.setState({
             selectedKeys:item.keyPath
         })
-        // debugger
-        // this.props.action.changeHeader(title);
     }
 
     onClick = ( title ) => {
-        debugger
         this.props.action.changeHeader(title);
     }
 

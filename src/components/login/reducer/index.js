@@ -14,8 +14,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 loading: true
             })
 		case 'LOGIN_MAIN_LOGIN_START_SUCCESS': 
-			//const { user , token} = action.payload.data;
-			debugger
 	        return $$state.merge({
 				logined:true
 			});

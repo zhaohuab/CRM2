@@ -11,19 +11,13 @@ const showForm = (flag, editData={}, index) => {
 
 const getListData = (params) => {
 	return (dispatch) => {
-		let searchMap = {};
-		debugger
-		if(params) {
-			searchMap.enableState = params.enable;
-		}
 		reqwest({
 			url:url.user,
 			method: "GET",
 			data:{
                 param: JSON.stringify({
-                    pageSize:20,
-					page:1,
-					searchMap,
+					...params.pagination,
+					searchMap:params.searchMap,
                 })
             }
 		})
@@ -35,7 +29,15 @@ const getListData = (params) => {
 		})
 	}
 }
-
+const transData = (data) => {
+	debugger
+	let {orgId,deptId} = data;
+	data.orgId = orgId.key;
+	data.orgName = orgId.title;
+	data.deptId = deptId.key;
+	data.deptName = deptId.title;
+	return data;
+}
 const onSave4Add = (data, index) => {
 	return (dispatch) => {
         debugger
@@ -43,7 +45,7 @@ const onSave4Add = (data, index) => {
 			url:url.user,
 			method: "POST",
 			data:{
-                param: JSON.stringify(data)
+                param: JSON.stringify(transData(data))
             }
 		})
 		.then(result => {
@@ -62,7 +64,7 @@ const onSave4Edit = (data, index) => {
 			url:`${url.user}/${data.id}`,
 			method: "PUT",
 			data:{
-                param: JSON.stringify(data)
+                param: JSON.stringify((transData(data)))
             }
 		})
 		.then(result => {
@@ -76,20 +78,14 @@ const onSave4Edit = (data, index) => {
 
 const onDelete = (rowKeys,params) => {
 	return (dispatch) => {
-		let searchMap = {};
-		debugger
-		if(params) {
-			searchMap.enableState = params.enable;
-		}
 		reqwest({
 			url:url.userBatch,
 			method: "POST",
 			data:{
 				param: JSON.stringify({
 					ids:rowKeys.join(","),
-					pageSize:20,
-					page:1,
-					searchMap,
+					...params.pagination,
+					searchMap:params.searchMap,
 				}),
 				_method:"DELETE"
 			}
@@ -105,21 +101,16 @@ const onDelete = (rowKeys,params) => {
 
 const onEnable = (rowKeys,enable,params) => {
 	return (dispatch) => {
-		let searchMap = {};
 		debugger
-		if(params) {
-			searchMap.enableState = params.enable;
-		}
 		reqwest({
 			url:`${url.enable}`  ,
-			method: "POST",
+			method: "PUT",
 			data:{
 				param: JSON.stringify({
 					ids:rowKeys.join(","),
 					enableState:enable,
-					pageSize:20,
-					page:1,
-					searchMap,
+					...params.pagination,
+					searchMap:params.searchMap,
 				}),
 			}
 		})
