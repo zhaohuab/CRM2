@@ -185,7 +185,7 @@ class List extends React.Component {
                 </div>
                 <div className='head_panel-state'>
                   <span className='head_panel_span'>状态：</span>
-                  <RadioGroup onChange={this.onEableRadioChange} defaultValue={1}>
+                  <RadioGroup onChange={this.onEableRadioChange}>
                     <Radio value={1}>启用</Radio>
                     <Radio value={2}>停用</Radio>
                   </RadioGroup>
