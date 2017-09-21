@@ -113,7 +113,7 @@ class List extends React.Component {
   }
   onSave() {
     let form = this.formRef.props.form;
-    debugger
+    this.setState({headLabel:false});
     if(this.state.isEdit) {
       this.props.action.onSave4Edit(form.getFieldsValue());
     }
@@ -123,14 +123,14 @@ class List extends React.Component {
     
   }
   onSelectChange = (selectedRowKeys) => {
-    console.info(this.state)
+    
     let state = {
       selectedRowKeys:selectedRowKeys
     }
     state.headLabel = selectedRowKeys.length ? true:false;
     this.setState(state);
 
-    console.info(this.state)
+    
   }
   onBack = ()=>{
     this.setState({headLabel:false});
@@ -150,7 +150,7 @@ class List extends React.Component {
     let visible = this.props.$$state.get("visible");
 
     let {headLabel,selectedRowKeys} = this.state;
-    console.info(this.state);
+    ;
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,

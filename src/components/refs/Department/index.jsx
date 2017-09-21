@@ -40,7 +40,7 @@ class Department extends React.Component {
         });
     }
     onSelect = (key,e) => {
-        debugger
+        
         let {title} = e.node.props;
         this.setState({select:{key:key[0],title}});
     }
@@ -71,7 +71,7 @@ class Department extends React.Component {
         }
         return (
             <div>
-                <Input value={key}/>
+                {/* <Input value={key}/> */}
                 <Input value={title}/>
                 <div onClick={this.onClick}>
                     点我出弹窗

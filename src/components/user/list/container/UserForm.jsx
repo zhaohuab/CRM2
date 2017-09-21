@@ -11,7 +11,7 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        debugger
+        
         //装箱过程
         let { orgId,orgName,deptId,deptName } = this.props.dataSource; 
         this.props.dataSource.orgId = {key:orgId,title:orgName};
@@ -127,9 +127,9 @@ class Card extends React.Component {
 
                 })(
                     <Select>
-                        <Option value={0}>员工</Option>
-                        <Option value={1}>负责人</Option>
-                        <Option value={2}>其他负责人</Option>
+                        <Option value={1}>员工</Option>
+                        <Option value={2}>负责人</Option>
+                        <Option value={3}>其他负责人</Option>
                     </Select>
                     )}
             </FormItem>
