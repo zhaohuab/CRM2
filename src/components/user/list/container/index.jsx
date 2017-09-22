@@ -27,7 +27,7 @@ class List extends React.Component {
       },
       {
         title: '性别',
-        dataIndex: 'gender',
+        dataIndex: 'genderName',
       },
       {
         title: '所属公司',
@@ -113,7 +113,7 @@ class List extends React.Component {
   }
   onSave() {
     let form = this.formRef.props.form;
-    this.setState({headLabel:false});
+    //this.setState({headLabel:false});
     if(this.state.isEdit) {
       this.props.action.onSave4Edit(form.getFieldsValue());
     }
@@ -136,7 +136,6 @@ class List extends React.Component {
     this.setState({headLabel:false});
   }
   onEableRadioChange = (e) => {
-    debugger
     let enable = e.target.value;
     let { pagination,searchMap } = this.state;
     //可能有问题
@@ -186,7 +185,7 @@ class List extends React.Component {
                 </div>
                 <div className='head_panel-state'>
                   <span className='head_panel_span'>状态：</span>
-                  <RadioGroup onChange={this.onEableRadioChange} defaultValue={1}>
+                  <RadioGroup onChange={this.onEableRadioChange}>
                     <Radio value={1}>启用</Radio>
                     <Radio value={2}>停用</Radio>
                   </RadioGroup>

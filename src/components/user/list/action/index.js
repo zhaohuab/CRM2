@@ -30,12 +30,16 @@ const getListData = (params) => {
 	}
 }
 const transData = (data) => {
-	debugger
-	let { orgId, deptId } = data;
+	
+	let { gender,orgId, deptId,job } = data;
+	data.gender = gender.key;
+	data.genderName = gender.title;
 	data.orgId = orgId.key;
 	data.orgName = orgId.title;
 	data.deptId = deptId.key;
 	data.deptName = deptId.title;
+	data.job = job.key;
+	data.jobName = job.title;
 	return data;
 }
 const onSave4Add = (data, index) => {
