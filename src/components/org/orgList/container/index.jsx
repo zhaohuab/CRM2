@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import * as Actions from '../action/index.js'
 
 import Immutable from 'immutable'
-import NormalLoginForm from './listFrom.jsx'
+import NormalEditForm from './listFrom.jsx'
 import NormaladdForm from './listAddForm.jsx'
 import ListTree from './listTree.jsx'
 import EditButton from './EditButtons.jsx'
@@ -14,7 +14,7 @@ const ButtonGroup = Button.Group;
 import './index.less'
 
 //修改表格
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
+const WrappedNormalLoginForm = Form.create()(NormalEditForm);
 //新增表格
 const WrappedNormaladdForm = Form.create()(NormaladdForm);
 
@@ -138,12 +138,14 @@ class List extends Component {
     }
     //点击一个节点数的增加操作
     treeSelectAddFn(item){
-
+        this.props.orgAction.changeAdd()
     }
 
     //点击一个节点数的删除操作
     treeSelectDeleteFn(item){
-        
+        const record = [];
+        record.push(item)
+        this.props.orgAction.listdel(record,item.id)
     }
 
 

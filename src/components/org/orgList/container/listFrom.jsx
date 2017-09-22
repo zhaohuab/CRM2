@@ -1,7 +1,9 @@
 import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,DatePicker,message ,Radio} from 'antd';
 import Myself from './formCustomDepart.jsx'
 import moment from 'moment';
+import Department from 'components/refs/Department'
 const FormItem = Form.Item;
+
 const RadioGroup = Radio.Group;
 export default class NormalLoginForm extends React.Component {
     constructor(props){

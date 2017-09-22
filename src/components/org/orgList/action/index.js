@@ -29,6 +29,7 @@ export function getlist(fn){
             }
         })
         .then(function (dataResult) {
+            debugger
             handle(dataResult)
             let data=JSON.parse(dataResult.response);
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data.data}));
@@ -52,13 +53,18 @@ export function listaddclose (){
     }
 }
 
+const transData = (data) => {
+	data.fatherOrgId = data.fatherOrgId.key
+	return data;
+}
+
 export function listadd(list){
     return(dispatch,getState)=>{
         request({
             url: url.org,
             type:"application/x-www-form-urlencoded",
             method:'post',
-            data:"param="+JSON.stringify(list)
+            data:"param="+JSON.stringify(transData(list))
         })
         .then(function (dataResult) {
             let {data} = JSON.parse(dataResult.response);
@@ -160,6 +166,7 @@ export function listdel(record,treeId){
 			}
         })
         .then(function (dataResult) {
+            debugger
             handle(dataResult)
             const listData=dataResult;
             request({
