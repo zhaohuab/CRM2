@@ -1,4 +1,4 @@
-import request from 'reqwest'
+import request from 'utils/reqwest'
 import { message} from 'antd';
 import { org as url } from 'api';
 
@@ -9,8 +9,6 @@ const fetchData = (type, payload)=> {
         }
 }
 
-
-
 //获取所有数据
 export function getlist(fn){
     return(dispatch,getState)=>{
@@ -18,7 +16,6 @@ export function getlist(fn){
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
             url: url.org,
-            type:"application/x-www-form-urlencoded",
             method:'get',
             data:{
                 param: JSON.stringify({
@@ -26,15 +23,9 @@ export function getlist(fn){
                     page:1
                 })
             }
-        })
-        .then(function (dataResult) {
-            let data=JSON.parse(dataResult.response);
+        },(data) => {
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data.data}));
-            message.success('获取数据成功');
         })
-        .fail(function (err, msg) {
-            message.error('获取数据失败');
-        }) 
     }
 }
 
@@ -55,18 +46,13 @@ export function listadd(list){
     return(dispatch,getState)=>{
         request({
             url: url.org,
-            type:"application/x-www-form-urlencoded",
+            
             method:'post',
             data:"param="+JSON.stringify(list)
-        })
-        .then(function (dataResult) {
+        }, (dataResult) => {
             let {data} = JSON.parse(dataResult.response);
             dispatch(fetchData('ORG_LIST_LISTADDSUCCESS',{data:data})) 
-            message.success('增加数据成功');
         })
-        .fail(function (err, msg) {
-            message.success('增加数据失败');
-        }) 
     }
 }
 
@@ -75,25 +61,20 @@ export function listadd(list){
 export function getDetailSingle(id,fn){
     return(dispatch,getState)=>{
         console.log(url.org)
-        debugger
+        
         request({
             url: `${url.org}+${id}`,
-            type:"application/x-www-form-urlencoded",
+            
             method:'get',
             data:{
                 param: JSON.stringify({
                     condMap:typeof(params) == "undefined"?{}:JSON.stringify(params)
                 })
             }
-        })
-        .then(function (dataResult) {
+        },(dataResult) => {
             let {data} = JSON.parse(dataResult.response);
             fn(data)
         })
-        .fail(function (err, msg) {
-            debugger
-            message.error('查询数据失败');
-        }) 
     }
 }
 
@@ -104,14 +85,11 @@ export function listchange(value){
         let id=value.id
         request({
             url: `${url.org}+${id}`,
-            type:"application/x-www-form-urlencoded",
             method:'put',
             data:"param="+JSON.stringify(value)
-        })
-        .then(function (dataResult) {
+        },(dataResult) => {
             request({
-                url: url.org,
-                type:"application/x-www-form-urlencoded",
+                url: url.org, 
                 method:'get',
                 data:{
                     param: JSON.stringify({
@@ -120,19 +98,10 @@ export function listchange(value){
                         condMap:typeof(params) == "undefined"?{}:JSON.stringify(params)
                     })
                 }
-            })
-            .then(function (dataResult) {
-                let {data} = JSON.parse(dataResult.response);
+            },(data) => {
                 dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data})) 
-                message.success('修改数据成功');
             })
-            .fail(function (err, msg) {
-                message.error('修改数据失败');
-            }) 
         })
-        .fail(function (err, msg) {
-            message.error('修改数据失败');
-        }) 
     }
 }
 
@@ -143,17 +112,14 @@ export function listdel(record){
         let id=record.id
         request({
             url: `${url.org}+${id}`,
-            type:"application/x-www-form-urlencoded",
+            
             method:'delete',
             data:{}
-        })
-        .then(function (dataResult) {
+        }, (dataResult) => {
             dispatch({type:'ORG_LIST_LISTDELSUCCESS',record})
             message.success('删除数据成功');
         })
-        .fail(function (err, msg) {
-            message.error('删除数据失败');
-        }) 
+        
     }
 }
 
@@ -166,17 +132,14 @@ export function getTreeList(){
         console.info(url.orgTree);
         request({
             url: url.orgTree,
-            type:"application/x-www-form-urlencoded",
+            
             method:'get',
             data:{}
+        },(data) => {
+            
+            dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
         })
-        .then(function (dataResult){
-            let {data} = JSON.parse(dataResult.response);
-            dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data})
-        })
-        .fail(function (err, msg) {
-            debugger
-        }) 
+        
     }
 }
 
@@ -186,7 +149,7 @@ export function listTreeChange(id){
     return(dispatch,getState)=>{
         request({
             url: url.org,
-            type:"application/x-www-form-urlencoded",
+            
             method:'get',
             data:{
                 param: JSON.stringify({
@@ -195,14 +158,10 @@ export function listTreeChange(id){
                     searchMap:{id}
                 })
             }
-        })
-        .then(function (dataResult){
-            let {data} = JSON.parse(dataResult.response);
+        },(data) => {
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
-        .fail(function (err, msg) {
-            debugger
-        }) 
+        
     } 
 }
 

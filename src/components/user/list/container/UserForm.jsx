@@ -1,9 +1,9 @@
 import { Form, Input, Select } from 'antd';
 
-import Email from 'utils/components/Email'
-import Department from 'components/refs/Department'
-import Enum from 'utils/components/Enum'
-import RadioGroup from 'utils/components/Radio'
+import Email from 'utils/components/email'
+import Department from 'components/refs/department'
+import Enum from 'utils/components/enum'
+import RadioGroup from 'utils/components/radio'
 const FormItem = Form.Item;
 const Option = Select.Option;
 class Card extends React.Component {
@@ -67,7 +67,7 @@ class Card extends React.Component {
             >
                 {getFieldDecorator('name', {
                     rules: [{
-                        required: true, message: 'Please input your Name',
+                        required: true, message: '请输出姓名',
                     }],
                 })(
                     <Input />
@@ -79,7 +79,7 @@ class Card extends React.Component {
             >
                 {getFieldDecorator('phone', {
                     rules: [{
-                        required: true, message: 'Please input your Phone!',
+                        required: true, message: '请输出手机号',
                     }],
                 })(
                     <Input />
@@ -93,7 +93,7 @@ class Card extends React.Component {
                     rules: [{
                         type: 'email', message: 'The input is not valid E-mail!',
                     }, {
-                        required: true, message: 'Please input your E-mail!',
+                        required: true, message: '请输入邮箱',
                     }],
                 })(
                     <Email />
@@ -105,7 +105,7 @@ class Card extends React.Component {
             >
                 {getFieldDecorator('gender', {
                     rules: [{
-                        required: true, message: 'Please input your E-mail!',
+                        required: true, message: '',
                     }],
                 })(
                     <RadioGroup type="button" dataSource={this.genderEnum}/>
@@ -117,7 +117,7 @@ class Card extends React.Component {
             >
                 {getFieldDecorator('orgId', {
                     rules: [{
-                        required: true, message: 'Please input your Org!',
+                        required: true, message: '请输入公司',
                     }],
                 })(
                     <Department />

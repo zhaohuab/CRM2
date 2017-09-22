@@ -1,19 +1,16 @@
 import reqwest from 'utils/reqwest'
-import fetchData from 'utils/fetchData'
+import fetchData from 'utils/fetchdata'
 import { menu as url } from 'api'
 
 const getMenuData = ()=>{
     return (dispatch) => {
 		reqwest({
 			url: url,
-			type:"application/x-www-form-urlencoded",
 			method:'get',
+		},(data) => {
+			dispatch(fetchData('COMMON_MENU_GETDATA',{data:data.data}));
 		})
-		.then(function (data) {
-			dispatch(fetchData('COMMON_MENU_GETDATA',{data:JSON.parse(data.response).data}));
-		})
-		.fail(function (err, msg) {
-		})
+		
     }
 }
 

@@ -1,5 +1,5 @@
 /**
- * Created by yangtmm on 2017-08-30
+ * Created by litcb on 2017-08-30
  */
 
 import React from 'react'
@@ -179,13 +179,13 @@ class List extends React.Component {
                   <span className='head_panel_span'>所属部门：</span>
                   <Search
                     placeholder="请选择..."
-                    style={{ width: 200 }}
+                    className="search"
                     onSearch={value => console.log(value)}
                   />
                 </div>
                 <div className='head_panel-state'>
                   <span className='head_panel_span'>状态：</span>
-                  <RadioGroup onChange={this.onEableRadioChange}>
+                  <RadioGroup onChange={this.onEableRadioChange} value={this.state.enable}>
                     <Radio value={1}>启用</Radio>
                     <Radio value={2}>停用</Radio>
                   </RadioGroup>
@@ -209,7 +209,7 @@ class List extends React.Component {
           title="新增人员"
           visible={visible}
           onOk={this.onSave.bind(this)}
-          onClose={this.onClose.bind(this)}
+          onCancel={this.onClose.bind(this)}
         >
           <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
         </Modal>
