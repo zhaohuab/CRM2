@@ -2,6 +2,7 @@ import  React, { Component } from 'react';
 import './index.less'
 import { Form, Icon, Input, Button, Checkbox,Col,DatePicker ,message,Select,Spin,TimePicker,Radio} from 'antd';
 const FormItem = Form.Item;
+import Department from 'components/refs/Department'
 import moment from 'moment';
 
 import Person from './personCustomForm.jsx'
@@ -60,11 +61,16 @@ export default class NormaladdForm extends React.Component {
                             <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
                             )}
                     </FormItem>
-                    <FormItem  {...formItemLayout} label='上级组织'>
-                        {getFieldDecorator('fatherorgId', {
-                            rules: [{ required: true, message: '请输入编号!' }],
+                    <FormItem
+                        label="所属公司"
+                        {...formItemLayout}
+                    >
+                        {getFieldDecorator('fatherOrgId', {
+                            rules: [{
+                                required: true, message: 'Please input your Org!',
+                            }],
                         })(
-                            <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
+                            <Department />
                             )}
                     </FormItem>
                     <FormItem  {...formItemLayout} label='负责人'>

@@ -140,35 +140,83 @@ export function listchange(value){
 
 //删除数据
 export function listdel(record,treeId){
-    debugger
     var ids = [];
     for(let i=0;i<record.length;i++){
-        ids.push(record[i]);
+        ids.push(record[i].id);
     }
     return(dispatch,getState)=>{
         let id=record.id
         request({
-            url:url.org,
+            url:url.org+'/batch',
 			method: "POST",
 			data:{
 				param: JSON.stringify({
 					ids:ids.join(","),
 					pageSize:20,
 					page:1,
-					searchMap:{treeId}
+					searchMap:{id:treeId}
 				}),
 				_method:"DELETE"
 			}
         })
         .then(function (dataResult) {
-            dispatch({type:'ORG_LIST_LISTDELSUCCESS',record})
-            message.success('删除数据成功');
+            handle(dataResult)
+            const listData=dataResult;
+            request({
+                url: url.orgTree,
+                type:"application/x-www-form-urlencoded",
+                method:'get',
+                data:{}
+            })
+            .then(function (dataResult){
+                let {data} = JSON.parse(dataResult.response);
+                dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data})
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data.data}));
+            })
+            .fail(function (err, msg) {
+            }) 
+            
+
+           
         })
         .fail(function (err, msg) {
             message.error('删除数据失败');
         }) 
     }
 }
+
+
+export function setEnablestate(treeId,data,state){
+    var ids = [];
+    for(let i=0;i<data.length;i++){
+        ids.push(data[i].id);
+    }
+    return (dispatch) => {
+		request({
+			url: url.org+'enable',
+			method: "PUT",
+			data: {
+				param: JSON.stringify({
+					ids: ids.join(","),
+					enablestate: state,
+					pageSize:20,
+					page:1,
+					searchMap:{id:treeId}
+				}),
+			}
+		})
+			.then(dataResult => {
+                debugger
+                handle(dataResult)
+                const listData=dataResult;
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data.data}));
+			})
+			.fail(result => {
+
+			})
+	}
+}
+
 
 
 

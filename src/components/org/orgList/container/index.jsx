@@ -64,9 +64,13 @@ class List extends Component {
 
     //删除一条数据方法
     btnDelete(treeSelect,record){
-        debugger
         this.props.orgAction.listdel(record,treeSelect)
     }
+
+    btnSetEnablestate(treeSelect,data,state){
+        this.props.orgAction.setEnablestate(treeSelect,data,state)
+    }
+
 
     //修改页面取消按钮 
     handleCancel(){
@@ -185,7 +189,7 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} deleteList={this.btnDelete.bind(this,treeSelect)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect)} deleteList={this.btnDelete.bind(this,treeSelect)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
                             </div>

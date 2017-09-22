@@ -3,9 +3,13 @@
  */
 import { message,notification } from 'antd';
 function handle(result) {
-    let { response } = result;
-    let { code ,message,developerMessage } = JSON.parse(response);
-
+    var { response } = result;
+    if(response==null){
+        response = result
+    }else{
+        response = JSON.parse(response);
+    }
+    const { code ,message,developerMessage } = response;
     switch (code) {
 		case 'SUCCESS':
             message.success(message);
