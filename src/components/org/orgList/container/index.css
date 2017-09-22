@@ -2,11 +2,7 @@
   content: "\E621";
 }
 .list-warpper {
-  padding: 10px;
-  box-sizing: border-box;
-  background: #e5e5e5;
   width: 100%;
-  height: 95%;
   position: relative;
 }
 .list-warpper h2 {
