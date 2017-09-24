@@ -29,7 +29,6 @@ export function getlist(fn){
             }
         })
         .then(function (dataResult) {
-            debugger
             handle(dataResult)
             let data=JSON.parse(dataResult.response);
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data.data}));
@@ -41,10 +40,10 @@ export function getlist(fn){
 }
 
 
-export function changeAdd(){
-   return{
-       type:'ORG_LIST_CHANGEADDSTART'
-   }
+export function showForm(flag, editData = {}){
+    return (dispatch) => {
+		dispatch(fetchData('ORG_LIST_SHOWFORM', { visible: flag, editData }));
+	}
 }
 
 export function listaddclose (){
@@ -54,7 +53,7 @@ export function listaddclose (){
 }
 
 const transData = (data) => {
-	data.fatherOrgId = data.fatherOrgId.key
+	data.fatherorgId = data.fatherorgId.key
 	return data;
 }
 
@@ -110,10 +109,10 @@ export function listchange(value){
     return(dispatch,getState)=>{
         let id=value.id
         request({
-            url: `${url.org}+${id}`,
+            url: `${url.org}${id}`,
             type:"application/x-www-form-urlencoded",
             method:'put',
-            data:"param="+JSON.stringify(value)
+            data:"param="+JSON.stringify(transData(value))
         })
         .then(function (dataResult) {
             request({
@@ -269,7 +268,6 @@ export function listTreeChange(id){
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data,treeSelect:id}));
         })
         .fail(function (err, msg) {
-            debugger
         }) 
     } 
 }

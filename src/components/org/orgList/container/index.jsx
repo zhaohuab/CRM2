@@ -5,33 +5,82 @@ import {bindActionCreators} from 'redux';
 import * as Actions from '../action/index.js'
 
 import Immutable from 'immutable'
-import NormalEditForm from './listFrom.jsx'
-import NormaladdForm from './listAddForm.jsx'
+import card from './listFrom.jsx'
 import ListTree from './listTree.jsx'
 import EditButton from './EditButtons.jsx'
-import columns from './columns.js'
 const ButtonGroup = Button.Group;
 import './index.less'
-
-//修改表格
-const WrappedNormalLoginForm = Form.create()(NormalEditForm);
-//新增表格
-const WrappedNormaladdForm = Form.create()(NormaladdForm);
 
 class List extends Component {
     constructor(){
         super();
+        this.columns= [
+          {
+            title: '编码',
+            dataIndex: 'code',
+            key: 'code',
+          },
+          {
+            title: '名称',
+            dataIndex: 'name',
+            key: 'name'
+          }, 
+          {
+            title: '简称',
+            dataIndex: 'simpleName',
+            key: 'simpleName'
+          }, 
+          {
+            title: '助记码',
+            dataIndex: 'simpleCode',
+            key: 'simpleCode',
+          },
+          {
+            title: '上级组织',
+            dataIndex: 'fatherorgId',
+            key: 'fatherorgId',
+          },
+          {
+            title: '上级组织名称',
+            dataIndex: 'fatherorgName',
+            key: 'fatherorgName',
+          },
+          {
+            title: '负责人',
+            dataIndex: 'respoPerson',
+            key: 'respoPerson',
+          }, 
+           {
+            title: '其他负责人',
+            dataIndex: 'otherRespoPerson',
+            key: 'otherRespoPerson',
+          },
+           {
+            title: '组织类型',
+            dataIndex: 'orgType',
+            key: 'orgType',
+            render:(text, record,index) => {
+                if(text === 0 ){
+                    return text='公司'
+                }else if(text === 1){
+                    return text='部门'
+                }
+            }
+          },
+           {
+            title: '状态',
+            dataIndex: 'enablestate',
+            key: 'enablestate',
+          }
+        ]; 
         this.state={
             index:0,//？？？不确定保留
             value:'',//修改时，获取一条数据的值
-            changeFormVisitable:false,//修改组织时控制显隐
-            addFormVisitable:false,//增加组织时控制显隐
             tabelLoading:false,//table加载,
-            listTablePanel:0,//获取滑出模块的宽度,
             tableListCheckbox:null,//点击一个table的checkbox时，保存选中数量
             treeLoading:false,
             selectedRowKeys:[],
-
+            isEdit : false,
         }
 
         //点击每行table触发的onchange方法
@@ -45,21 +94,14 @@ class List extends Component {
                 }
             }
          }
-        this.columns = columns
+       
     }
 
     //修改一条数据方法
     changeForm(record){ 
-        if(record){
-            this.props.orgAction.getDetailSingle(record.id,(data)=>{
-                this.setState({
-                   changeFormVisitable:true,
-                   value:data
-                },()=>{
-                   this.formRef.changeValueFn(this.state.value)
-                })
-           })
-        } 
+        this.setState({isEdit:true});
+        this.props.orgAction.showForm(true,record);
+
     }
 
     //删除一条数据方法
@@ -71,53 +113,31 @@ class List extends Component {
         this.props.orgAction.setEnablestate(treeSelect,data,state)
     }
 
-
     //修改页面取消按钮 
     handleCancel(){
-        this.setState({
-            changeFormVisitable:false,
-         })
+        this.props.orgAction.showForm(false,{})
     }
 
    //修改页面确定方法
-   changeFormHandelOk(){
-    this.formRef.props.form.validateFields((err, values) => {
-        if (!err) {
-                let closeFn=()=>{
-                    this.setState({
-                        changeFormVisitable:false
-                    })
+    formHandelOk(){
+        this.formRef.props.form.validateFields((err, values) => {
+            if (!err) {
+                    
+                if(this.state.isEdit){
+                    this.props.orgAction.listchange(values);
+                }else{
+                    this.props.orgAction.listadd(values);  
+                   
                 }
-                this.props.orgAction.listchange(values);
-                closeFn()
             }
         });
     }
 
-    //增加页面确定按钮方法
-    addFormHandleOk(){
-        //let values=this.addformRef.props.form.getFieldsValue()
-        this.addformRef.props.form.validateFields((err, values) => {
-            let fn=()=>{
-                    for(var key in values){
-                        this.addformRef.props.form.setFieldsValue({
-                            [key]: '',
-                        });
-                    }
-            }
-            this.props.orgAction.listadd(values);  
-            fn()
-        })
-    }
- 
-    //增加组织页面取消按钮方法
-    addFormHandleCancel(){
-        this.props.orgAction.listaddclose()
-    }
-
     //点击增加组织
     addFormBtn(){
-        this.props.orgAction.changeAdd()
+        this.setState({isEdit:false});
+        this.props.orgAction.showForm(true,{});
+        // this.props.orgAction.changeAdd()
     }
 
     //显示每行数据后的返回按钮
@@ -133,12 +153,22 @@ class List extends Component {
     }
    
     //点击一个节点数的编辑操作
-    treeSelectEditFn(item){
-            console.log(item)
+    treeSelectEditFn(rowKey){
+        this.setState({isEdit:true});
+        let rowData = {};
+        let page = this.props.orgState.get("listData").toJS();
+        for(let i=0,len=page.length;i<len;i++) {
+        if(rowKey == page[i].id) {
+            rowData = page[i];
+            break;
+        }
+        }
+        this.props.orgAction.showForm(true,rowData);
     }
     //点击一个节点数的增加操作
     treeSelectAddFn(item){
-        this.props.orgAction.changeAdd()
+        this.setState({isEdit:false});
+        this.props.orgAction.showForm(true,{});
     }
 
     //点击一个节点数的删除操作
@@ -147,7 +177,6 @@ class List extends Component {
         record.push(item)
         this.props.orgAction.listdel(record,item.id)
     }
-
 
     //组件渲染完毕获取数据
     componentDidMount(){
@@ -159,25 +188,17 @@ class List extends Component {
         //这获取总的状态  //拿到想要的之后再toJS
         let {orgState} = this.props;
         let tabelLoading = orgState.get('tabelLoading');
-        let addFormVisitable = orgState.get('addFormVisitable')
+        let formVisitable = orgState.get('formVisitable')
         let treeLoading = orgState.get('treeLoading')
         let treeSelect = orgState.get('treeSelect');
 
         let listData = orgState.get('listData').toJS();
         let treeData = orgState.get('treeData').toJS();
         let tableListCheckbox = orgState.get('tableListCheckbox').toJS();
-        
-        
+        const WrapCard = Form.create()(card);
+        let editData = orgState.get("editData").toJS();
         return (
             <div className='list-warpper'>
-                <Modal
-                    title="增加组织"
-                    visible={addFormVisitable}
-                    onOk={this.addFormHandleOk.bind(this)}
-                    onCancel={this.addFormHandleCancel.bind(this)}
-                >
-                    <WrappedNormaladdForm wrappedComponentRef={(inst) => this.addformRef = inst}/>
-                </Modal>
                 <div className='list-main'>
                     <div className='list-table-tree'>
                         <Spin spinning={treeLoading} tip='正在加载'/>
@@ -201,11 +222,11 @@ class List extends Component {
                         </div>
                         <Modal
                             title="修改组织"
-                            visible={this.state.changeFormVisitable}
-                            onOk={this.changeFormHandelOk.bind(this)}
+                            visible={formVisitable}
+                            onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
                         >
-                            <WrappedNormalLoginForm wrappedComponentRef={(inst) => this.formRef = inst} data={this.state.value}/> 
+                            <WrapCard wrappedComponentRef={(inst) => this.formRef = inst} data={editData}/> 
                         </Modal>   
                     </div>
                 </div>
@@ -227,19 +248,3 @@ export default connect(
         }
     }
 )(List)
-
-//onRowClick
-
-
-//   {
-//     title: '操作',
-//     key: 'action',
-//     // render: (text, record,index) => (
-//     //   <div>
-//     //     <Button type="default" htmlType="button" onClick={()=>{this.changeFrom(record)}}>修改</Button>
-//     //     <Button type="danger" htmlType="button" onClick={()=>{this.itemDelete(record,index)}}>删除</Button>
-//     //   </div>
-//     // ),
-//   }
-
-
