@@ -4,9 +4,11 @@ let $$initialState = {
 	listData:[],
 	treeData:[],
 	tabelLoading:false,
-	addFormVisitable:false,
+	formVisitable:false,
 	treeLoading:false,
-	tableListCheckbox:[]
+	tableListCheckbox:[],
+	treeSelect:'',
+	editData:[]
 };
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action){
 
@@ -15,17 +17,28 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({tabelLoading:true})
 			
 		case 'ORG_LIST_GETLISTSUCCESS':
-			return  $$state.merge({listData:action.payload.data,tabelLoading:false})
+			return  $$state.merge({
+				listData:action.payload.data,
+				tabelLoading:false,
+				treeSelect:action.payload.treeSelect,
+				formVisitable:false
+			})
 			
-		case 'ORG_LIST_CHANGEADDSTART':
-			return $$state.merge({addFormVisitable:true})
-
+		case 'ORG_LIST_SHOWFORM':
+			return $$state.merge({
+				formVisitable : action.payload.visible,
+				editData : action.payload.editData,
+			})
 		case 'ORG_LIST_CHANGEADDCLOSE':
-			return $$state.merge({addFormVisitable:false})
+			return $$state.merge({formVisitable:false})
 		   
 		case 'ORG_LIST_LISTADDSUCCESS':
+		debugger
 		    let  $$list=Immutable.fromJS(action.payload.data);
-			return $$state.merge({listData:$$state.get('listData').unshift($$list),addFormVisitable:false});
+			return $$state.merge({
+				listData:$$state.get('listData').unshift($$list),
+				formVisitable:false
+		});
 		  
 		case 'ORG_LIST_LISTDELSUCCESS':	
 			let newAry=$$state.get('listData').filter((item)=>{

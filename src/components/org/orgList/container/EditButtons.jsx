@@ -1,6 +1,7 @@
 import  React, { Component } from 'react';
 import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,Modal,Spin} from 'antd';
 const ButtonGroup = Button.Group;
+const confirm = Modal.confirm;
 import './index.less'
 export default class EditButtons extends Component {
    returnBack(){
@@ -9,7 +10,26 @@ export default class EditButtons extends Component {
    changeForm(id){
        this.props.changeForm(id)
    }
-
+   deleteList(data){
+        let that =this
+        confirm({
+        title: '确定要删除吗?',
+        content: '此操作不可逆',
+        okText: '是',
+        okType: 'danger',
+        cancelText: '否',
+        onOk() {
+            that.props.deleteList(data);
+        },
+        onCancel() {
+        console.log('Cancel');
+        },
+     });
+   }
+ 
+   setEnablestate(data,state){
+        this.props.setEnablestate(data,state);
+   }
     render(){
         return(
             <div className='actionButtons-waprper'>
@@ -24,8 +44,8 @@ export default class EditButtons extends Component {
                         <Button onClick={this.changeForm.bind(this,this.props.data[0])} className='returnbtn-class' icon='edit'>编辑</Button>
                         :''}
                         <ButtonGroup className='returnbtn-class'>
-                            <Button icon='play-circle-o'>启用</Button>
-                            <Button icon='pause-circle-o'>停用</Button>
+                            <Button icon='play-circle-o' onClick={this.setEnablestate.bind(this,this.props.data,0)}>启用</Button>
+                            <Button icon='pause-circle-o' onClick={this.setEnablestate.bind(this,this.props.data,1)}>停用</Button>
                         </ButtonGroup>
                         <Button className='returnbtn-class' icon='download'>导出</Button>
                     </div> 
