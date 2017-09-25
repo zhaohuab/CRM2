@@ -18,12 +18,6 @@ const login = (params) => {
 		},(result) => {
 			dispatch(fetchData('LOGIN_MAIN_LOGIN_START_SUCCESS', {}))
 		})
-<<<<<<< HEAD
-		.fail((result) => {
-			fail(result);
-		})
-=======
->>>>>>> 9242e511ce92d5db26dd037d9b5a7434fc181802
 	}
 }
 
