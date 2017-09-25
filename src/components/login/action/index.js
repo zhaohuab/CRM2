@@ -20,7 +20,6 @@ const login = (params) => {
 			dispatch(fetchData('LOGIN_MAIN_LOGIN_START_SUCCESS', {}))
 		})
 		.fail((result) => {
-			
 			fail(result);
 		})
 	}

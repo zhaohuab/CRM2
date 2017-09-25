@@ -7,9 +7,9 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 //修改antd.design主题文件
 var theme = require('./theme.config.js')
 
-var hostIP = '10.1.193.14';
+var hostIP = '10.1.219.57';
 var portNumber = '3000';
-let urlPath ='10.1.193.14';
+let urlPath ='10.1.219.57';
 
 module.exports = {
 	entry: {

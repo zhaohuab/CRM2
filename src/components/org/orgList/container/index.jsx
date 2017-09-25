@@ -31,9 +31,9 @@ class List extends Component {
             tableListCheckbox:null,//点击一个table的checkbox时，保存选中数量
             treeLoading:false,
             selectedRowKeys:[],
+            minH:''
 
         }
-
         //点击每行table触发的onchange方法
         let that = this
         this.rowSelectionFn={
@@ -140,12 +140,23 @@ class List extends Component {
     treeSelectDeleteFn(item){
         
     }
-
+    reSizeFn(){
+        let h=document.documentElement.clientHeight
+        this.setState({
+                minH : h - 70
+        })
+    }
 
     //组件渲染完毕获取数据
     componentDidMount(){
         this.props.orgAction.getlist();
         this.props.orgAction.getTreeList();
+        this.setState({
+            minH:document.documentElement.clientHeight- 70
+        })
+        window.onreset=()=>{
+           this.reSizeFn()
+        }
     }
 
     render() {
@@ -158,7 +169,7 @@ class List extends Component {
         let listData = orgState.get('listData').toJS();
         let treeData = orgState.get('treeData').toJS();
         let tableListCheckbox = orgState.get('tableListCheckbox').toJS();
-       
+        
         
         return (
             <div className='list-warpper'>
@@ -171,7 +182,7 @@ class List extends Component {
                     <WrappedNormaladdForm wrappedComponentRef={(inst) => this.addformRef = inst}/>
                 </Modal>
                 <div className='list-main'>
-                    <div className='list-table-tree'>
+                    <div className='list-table-tree' style={{minHeight:this.state.minH?this.state.minH+'px':'auto'}}>
                         <Spin spinning={treeLoading} tip='正在加载'/>
                         <ListTree 
                             data={treeData} 

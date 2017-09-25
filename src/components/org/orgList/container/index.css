@@ -28,7 +28,7 @@
 .list-warpper .list-main .list-table-tree {
   width: 300px;
   background: white;
-  margin-right: 10px;
+  border-right: 1px solid #e5e5e5;
   padding: 10px;
   box-sizing: border-box;
   overflow-x: scroll;
@@ -75,29 +75,41 @@
 }
 .list-warpper .list-main .list-table .table-header .actionButtons-waprper {
   display: flex;
+  justify-content: space-between;
   position: absolute;
-  top: 0;
-  left: 0;
   z-index: 5;
   width: 100%;
   height: 100%;
-  border-bottom: 1px solid #F0F0F0;
   background: white;
-  padding: 10px;
+  padding: 10px 15px;
   box-sizing: border-box;
 }
-.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-chioce {
-  width: 150px;
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-left {
+  display: flex;
+  align-items: center;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-left .actionButtons-chioce {
+  width: 100px;
   height: 100%;
   line-height: 36px;
-  text-align: center;
   border-right: 1px solid #ccc;
   margin-right: 20px;
 }
-.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons {
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-left .actionButtons {
   width: 100%;
   height: 100%;
   line-height: 36px;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  cursor: pointer;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .returnbtn-class {
+  margin-right: 10px;
+  color: #666;
 }
 .list-warpper .orgPointer {
   cursor: pointer;
