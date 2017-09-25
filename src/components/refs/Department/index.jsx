@@ -50,12 +50,11 @@ class Department extends React.Component {
             url: url.orgTree,
             method:'get',
             data:{}
-        })
-        .then(function (dataResult){
+        }
+        , (dataResult)=>{
             that.setState({dataSource:dataResult.data});
         })
-        .fail(function (err, msg) {
-        }) 
+         
     }
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;

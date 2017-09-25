@@ -1,6 +1,5 @@
-import fetchData from 'utils/fetchData';
+import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import fail from 'utils/reqwest/handle.js';
 import { user as url } from 'api';
 
 const showForm = (flag, editData = {}, index) => {
@@ -19,14 +18,10 @@ const getListData = (params) => {
 					...params.pagination,
 					searchMap: params.searchMap,
 				})
-			}
+			},
+		},result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
 		})
-			.then(result => {
-				dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
-			})
-			.fail(result => {
-
-			})
 	}
 }
 const transData = (data) => {
@@ -51,13 +46,9 @@ const onSave4Add = (data, index) => {
 			data: {
 				param: JSON.stringify(transData(data))
 			}
+		}, result => {
+			dispatch(fetchData('USER_CARD_SAVEADD', { ...result, visible: false }));
 		})
-			.then(result => {
-				dispatch(fetchData('USER_CARD_SAVEADD', { ...result, visible: false }));
-			})
-			.fail(result => {
-				fail(result);
-			})
 	}
 }
 
@@ -70,13 +61,9 @@ const onSave4Edit = (data, index) => {
 			data: {
 				param: JSON.stringify((transData(data)))
 			}
+		}, result => {
+			dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
-			.then(result => {
-				dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
-			})
-			.fail(result => {
-				fail(result);
-			})
 	}
 }
 
@@ -93,13 +80,9 @@ const onDelete = (rowKeys, params) => {
 				}),
 				_method: "DELETE"
 			}
+		}, result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
 		})
-			.then(result => {
-				dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
-			})
-			.fail(result => {
-
-			})
 	}
 }
 
@@ -116,13 +99,9 @@ const onEnable = (rowKeys, enable, params) => {
 					searchMap: params.searchMap,
 				}),
 			}
+		}, result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
 		})
-			.then(result => {
-				dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
-			})
-			.fail(result => {
-
-			})
 	}
 }
 

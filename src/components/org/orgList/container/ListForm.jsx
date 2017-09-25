@@ -101,7 +101,7 @@ export default class NormalLoginForm extends React.Component {
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='组织类型'>
                                     {getFieldDecorator('orgType', {
-                                        rules: [{ required: true, message: '请输入编号!' }],
+                                        rules: [{ required: true, message: '请输入组织类型!' }],
                                     })(
                                         <RadioGroup>
                                             <Radio value={0}>部门</Radio>

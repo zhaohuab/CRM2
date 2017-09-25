@@ -33,6 +33,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({formVisitable:false})
 		   
 		case 'ORG_LIST_LISTADDSUCCESS':
+		debugger
 		    let  $$list=Immutable.fromJS(action.payload.data);
 			return $$state.merge({
 				listData:$$state.get('listData').unshift($$list),

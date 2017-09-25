@@ -5,8 +5,8 @@ import {bindActionCreators} from 'redux';
 import * as Actions from '../action/index.js'
 
 import Immutable from 'immutable'
-import card from './listFrom.jsx'
-import ListTree from './listTree.jsx'
+import card from './ListForm.jsx'
+import ListTree from './ListTree.jsx'
 import EditButton from './EditButtons.jsx'
 const ButtonGroup = Button.Group;
 import './index.less'
@@ -118,7 +118,7 @@ class List extends Component {
         this.props.orgAction.showForm(false,{})
     }
 
-   //修改页面确定方法
+   //表单页面确定方法
     formHandelOk(){
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {

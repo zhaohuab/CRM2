@@ -19,7 +19,6 @@ export default class EditButtons extends Component {
         okType: 'danger',
         cancelText: '否',
         onOk() {
-            debugger
             that.props.deleteList(data);
         },
         onCancel() {
