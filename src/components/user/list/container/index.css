@@ -1,6 +1,48 @@
+.ant-modal-header {
+  background: #FAFAFA;
+  height: 50px;
+}
+.ant-form-item-required:before {
+  color: #333;
+}
+.add-model {
+  height: 390px;
+  overflow: auto;
+}
+.add-model .ant-modal-body {
+  background: red;
+}
+.pepole-refer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.add-inset-model {
+  margin: -16px;
+  padding: 16px;
+  height: 380px;
+  overflow: auto;
+}
+.pepole-refer-search {
+  width: 200px;
+  height: 30px;
+}
+.pepole-refer-search .ant-input-suffix {
+  width: 26px;
+  height: 26px;
+  background: #F2F2F2;
+  right: 1px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-left: 1px solid #DDDDDD;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .user-warpper {
   height: 100%;
   padding: 10px;
+  padding-top: 0;
   box-sizing: border-box;
 }
 .user-warpper .list-box {
@@ -14,9 +56,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
+  padding: 0 5px;
   box-sizing: border-box;
   background: white;
+}
+.user-warpper .head_panel .add-more {
+  margin-right: 15px;
 }
 .user-warpper .head_panel .head_panel-left {
   display: flex;
@@ -24,6 +69,9 @@
 }
 .user-warpper .head_panel .head_panel-left .head_panel-state {
   margin-left: 20px;
+}
+.user-warpper .head_panel .search {
+  width: 200px;
 }
 .user-warpper .head_edit {
   justify-content: flex-start;

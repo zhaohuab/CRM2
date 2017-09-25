@@ -80,14 +80,18 @@ export default class ListTree extends Component {
                 {
                     data.length? 
                     <div>
-                        <Search placeholder="Search" onChange={this.onChange}/>
-                        <Tree
-                            showLine
-                            defaultExpandedKeys={['1015']}
-                            onSelect={this.onSelect.bind(this)}
-                        >
-                            {loop(data)}
-                        </Tree>
+                        <div className='org-tree-top'>
+                            <Search placeholder="请输入关键字" onChange={this.onChange} />
+                        </div>
+                        <div className='org-tree-main'>
+                            <Tree
+                                showLine
+                                defaultExpandedKeys={['1015']}
+                                onSelect={this.onSelect.bind(this)}
+                            >
+                                {loop(data)}
+                            </Tree>
+                        </div>
                     </div>:''
                 }
             </div>

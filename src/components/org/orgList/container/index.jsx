@@ -227,7 +227,11 @@ class List extends Component {
                         <div className='table-header'>
                             { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect)} deleteList={this.btnDelete.bind(this,treeSelect)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
-                                <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
+                                <ButtonGroup className='list-add-group'>
+                                    <Button icon='download'>导入</Button>
+                                    <Button icon='upload'>导出</Button>
+                                </ButtonGroup>
+                                <Button type='primary' onClick={this.addFormBtn.bind(this)}><Icon type="plus" />新建</Button>
                             </div>
                         </div>
                         <div className='org-tabel'>

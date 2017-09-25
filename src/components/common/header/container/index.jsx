@@ -30,25 +30,25 @@ class Header extends React.Component {
                 <div className="app-header-title">{title}</div>
                 <div className="app-header-right">
                     <main className='client-header-left'>
-                        <Input 
+                        <Search 
                             className='clinet-search del-border'
-                            placeholder="搜索"
-                            style={{ width: 200 }}
+                            placeholder="客户名称、地址、联系人"
                             onSearch={value => console.log(value)}
+                            className='clinet-search-style'
                         />
                         <div className='clinet-alert'>
                             <Icon type="bell" />
-                            <Badge count={0} showZero>
+                            <Badge count={99} showZero className='Badge-custom'>
                                 <a href="#" className="head-example" />
                             </Badge>
                         </div>
                     </main>
                     <main className='client-header-right'>
                         <img src={require('assets/images/header/cat.png')} alt=""/>
-                        <div style={{ marginLeft: 10 }}>{userName}</div>
+                        <div  className='header-right-title'>{userName}</div>
                         <Dropdown overlay={menu}>
-                            <a style={{ marginLeft: 10 }}>
-                              <Icon type="down" />
+                            <a>
+                              <Icon type="caret-down" />
                             </a>
                         </Dropdown>
                     </main>

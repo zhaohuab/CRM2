@@ -70,7 +70,7 @@ class Card extends React.Component {
                         required: true, message: '请输出姓名',
                     }],
                 })(
-                    <Input />
+                    <Input placeholder='请输入...'/>
                     )}
             </FormItem>
             <FormItem
@@ -82,7 +82,7 @@ class Card extends React.Component {
                         required: true, message: '请输出手机号',
                     }],
                 })(
-                    <Input />
+                    <Input placeholder='请输入...'/>
                     )}
             </FormItem>
             <FormItem
@@ -96,7 +96,7 @@ class Card extends React.Component {
                         required: true, message: '请输入邮箱',
                     }],
                 })(
-                    <Email />
+                    <Email/>
                     )}
             </FormItem>
             <FormItem
