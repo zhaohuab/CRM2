@@ -37,6 +37,7 @@
   padding: 10px;
   padding-top: 0;
   box-sizing: border-box;
+  background: white;
 }
 .user-warpper .list-box {
   padding: 5px;
@@ -62,6 +63,9 @@
 }
 .user-warpper .head_panel .head_panel-left .head_panel-state {
   margin-left: 20px;
+}
+.user-warpper .head_panel .head_panel-right .iconfont {
+  font-size: 12px;
 }
 .user-warpper .head_panel .search {
   width: 200px;

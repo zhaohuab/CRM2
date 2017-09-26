@@ -1,26 +1,8 @@
 
 let option = {        
-            title: {
-                text: '本月指标',
-                left: 'center',
-                top: 20,
-                textStyle: {
-                    color: 'rgba(64, 13, 13, 0.8)'
-                }
-            },
-        
             tooltip : {
                 trigger: 'item',
                 formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-        
-            visualMap: {
-                show: false,
-                min: 80,
-                max: 600,
-                inRange: {
-                    colorLightness: [0, 1]
-                }
             },
             series : [
                 {
@@ -29,24 +11,46 @@ let option = {
                     radius : '55%',
                     center: ['50%', '50%'],
                     data:[
-                        {value:335, name:'直接访问'},
-                        {value:310, name:'邮件营销'},
-                        {value:274, name:'联盟广告'},
-                        {value:235, name:'视频广告'},
-                        {value:400, name:'搜索引擎'}
+                        {
+                            value:335, 
+                            name:'目标',
+                            itemStyle: {
+                            normal: {
+                                color: '#9FD563'
+                               }
+                            }
+                        },
+                        {
+                            value:310,
+                            name:'完成率',
+                            itemStyle: {
+                                normal: {
+                                    color: '#FACE4C'
+                                }
+                            }
+                        },
+                        {
+                            value:274,
+                            name:'回款',
+                            itemStyle: {
+                                normal: {
+                                    color: '#42C0E8'
+                                }
+                            }
+                        }
                     ].sort(function (a, b) { return a.value - b.value; }),
                     roseType: 'radius',
                     label: {
                         normal: {
                             textStyle: {
-                                color: 'rgba(64, 13, 13, 0.8)'
+                                color: '#999999'
                             }
                         }
                     },
                     labelLine: {
                         normal: {
                             lineStyle: {
-                                color: 'rgba(64, 13, 13, 0.8)'
+                                color: '#DDDDDD'
                             },
                             smooth: 0.2,
                             length: 10,

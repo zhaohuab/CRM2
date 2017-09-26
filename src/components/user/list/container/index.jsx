@@ -5,7 +5,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button } from 'antd';
+import { Table, Modal, Button,Icon } from 'antd';
 
 import {Input,Radio,Popconfirm,Form} from 'antd';
 import Card from './UserForm.jsx';
@@ -15,6 +15,7 @@ import './index.less'
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
+import 'assets/stylesheet/menu/iconfont.css'
 
 //导入action方法
 import * as Actions from "../action"
@@ -213,12 +214,12 @@ class List extends React.Component {
                   </RadioGroup>
                 </div>
               </div>
-              <div >
+              <div className='head_panel-right'>
                 <ButtonGroup className='add-more'>
-                  <Button icon='download'>导入</Button>
-                  <Button icon='upload'>导出</Button>
+                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
+                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
                 </ButtonGroup>
-                <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}>新增人员</Button>
+                <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
               </div>
           </div>
         }

@@ -9,6 +9,9 @@
 .ant-menu-inline-collapsed > .ant-menu-item > .iconfont + span {
   opacity: 0;
 }
+.iconfont {
+  margin-right: 10px;
+}
 .menu-con-open {
   width: 200px;
 }
@@ -30,7 +33,21 @@
   color: white;
   font-weight: bold;
   font-size: 14px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-bg-warpper .menu-bg-logo img {
+  width: 85px;
+  height: 40px;
+}
+.menu-bg-warpper .iconfont {
+  font-size: 18px;
+}
+.menu-bg-warpper .menu-home {
+  font-size: 20px;
+  position: relative;
+  top: 2px;
 }
 .menu-bg {
   background: #1b1d2d;
@@ -44,20 +61,16 @@
   cursor: pointer;
 }
 .menu-control-show {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 64px;
-  height: 30px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
+  line-height: 13px;
 }
 .menu-control-hide {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 64px;
-  height: 30px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
+  line-height: 13px;
 }
 .rotateMenuIn {
   animation: MenuIn 0.2s linear forwards;
