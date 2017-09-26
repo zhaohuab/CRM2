@@ -63,21 +63,30 @@ module.exports = {
 	module: {
 		loaders:[
 			{
-				test: /\.(js|jsx|ts)$/,
+				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
 				loader: "babel"
 			},
 			{
 	            test: /\.(jpg|png|gif)$/,
 	            loader: 'url',
+			},
+			{
+	            test: /\.css$/,
+	            loaders: ["style", "css"]
+			},
+			{
+	            test: /\.(woff|svg|eot|ttf)\??.*$/,
+	            loader: "url-loader?name=fonts/[name].[md5:hash:hex:7].[ext]",
 	        },
-		    {
-	          test: /\.(css|less)$/,
-	          loader: extractCSS.extract([
-						"css",
-						`less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`,
-					])
-	        },
+			{
+				test: /\.(less)$/,
+				loaders:[
+					"style",
+					"css",
+					`less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`,
+				]
+			}
 		]
 	},
 	devtool: 'cheap-module-source-map',
