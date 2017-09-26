@@ -1,34 +1,8 @@
-import reqwest from 'reqwest'
+import reqwest from 'utils/reqwest'
 import { message} from 'antd';
-//定义key， type
 
-let mockData = {
-data:[{
-        id:"666",
-        name:"腾讯",
-        cannelType:"0",
-        level: "1",
-        saleArea:"华北",
-        industry:"挖煤",
-        regAddr: "北京"
-    },{
-        id:"777",
-        name:"联通",
-        cannelType:"0",
-        level: "1",
-        saleArea:"东北",
-        industry:"纺织",
-        regAddr: "北京"
-    },{
-        id:"999",
-        name:"石化",
-        cannelType:"0",
-        level: "1",
-        saleArea:"华南",
-        industry:"种地",
-        regAddr: "北京"
-    }]
-}
+import { cum as url } from 'api';
+//定义key， type
 
 //定义方法 action
 const getListData = (params) => {
@@ -39,10 +13,21 @@ const getListData = (params) => {
         }
     }
 	return (dispatch) => {
-	    //dispatch(fetchData('GET_LIST_DATA', {}))
-	    setTimeout(()=>{
-	  	    dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: mockData}))
-	    }, 300)
+        //dispatch(fetchData('GET_LIST_DATA', {}))
+        console.log(url)
+        reqwest({
+            url:url.customer,
+            method:'get',
+            data:{
+                param: JSON.stringify({
+                    page:1,
+                    pageSize:20
+                })
+            }
+        },(data) => {
+            dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: data.data}));
+        })
+	   
 	}
 }
 

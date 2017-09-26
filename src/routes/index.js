@@ -45,7 +45,7 @@ const rootRoutes = {
                 require('./routes/org/routes/list/index.js').default,
                 require('./routes/project').default,
                 require('./routes/user').default,
-                // require('./routes/customer').default,
+                require('./routes/customer/routes/list').default,
                 {
                   //未开发页面
                   path: 'developing',

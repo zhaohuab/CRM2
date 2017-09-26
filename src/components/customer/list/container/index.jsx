@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Form,Table, Modal, Button} from 'antd';
-import {Input} from 'antd';
-import AdvancedSearchForm from './card.jsx'
+import { Select,Input,Form,Table, Modal, Button,Icon,Row,Col} from 'antd';
+import ToolForm from './ButtonTool.jsx'
 let Search = Input.Search;
+const FormItem = Form.Item;
+const ButtonGroup = Button.Group;
+
 //导入action方法
 import * as Actions from "../action"
 class List extends React.Component {
@@ -31,35 +33,26 @@ class List extends React.Component {
         dataIndex:'regAddr',
       }]
   }
+
   componentDidMount() {
     this.props.action.getListData();
   }
-  addFormHandleOk(){
+  formHandleOk(){
     this.props.action.closeAddForm();
   }
-  addFormHandleCancel(){
+  formHandleCancel(){
 
   }
-
-  addFormBtn(){
-    this.props.action.showAddForm()
-  }
-
 
   render() {
-    const CardForm = Form.create()(AdvancedSearchForm)
-
-    const page = this.props.$$state.get("data").toJS();
     const {$$state} = this.props;
-    const addFormVisitable = $$state.get("addFormVisitable");
+    const page = $$state.get("data").toJS();
+    const selectedRows = $$state.get('selectedRows').toJS();
+    const toolVisible = $$state.get('toolVisible').toJS();
+    const formVisitable = $$state.get("formVisitable");
     return (
       <div>
-        <div className='head_panel'>
-          <div className='list-add'>
-              <Button type="primary" onClick={this.addFormBtn.bind(this)}>增加组织</Button>
-          </div>
-        </div>
-
+        <ToolForm visible={toolVisible} btnLess={this.changeVisible} btnMore={this.changeVisible}/>
         <div className="list-box">
           <Table
             columns={this.columns}
@@ -69,11 +62,10 @@ class List extends React.Component {
         </div>
         <Modal
             title="增加客户"
-            visible={addFormVisitable}
-            onOk={this.addFormHandleOk.bind(this)}
-            onCancel={this.addFormHandleCancel.bind(this)}
+            visible={formVisitable}
+            onOk={this.formHandleOk.bind(this)}
+            onCancel={this.formHandleCancel.bind(this)}
         >
-        <CardForm />  
         </Modal>
       </div>
     )

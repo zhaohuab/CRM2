@@ -4,7 +4,13 @@ let $$initialState = {
 	data:{
 		data:[],
 	},
-	addFormVisitable:false
+	selectedRows:[],
+	formVisitable:false,
+	toolVisible:{
+		btnPanel:false,
+		simForm:true,
+		milForm:false
+	}
 };
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action){
 
