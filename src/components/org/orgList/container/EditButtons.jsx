@@ -44,8 +44,8 @@ export default class EditButtons extends Component {
                        <Button onClick={this.changeForm.bind(this,this.props.data[0])}>编辑</Button>
                     :''}
                     <ButtonGroup>
-                        <Button onClick={this.setEnablestate.bind(this,this.props.data,0)}>启用</Button>
-                        <Button onClick={this.setEnablestate.bind(this,this.props.data,1)}>停用</Button>
+                        <Button onClick={this.setEnablestate.bind(this,this.props.data,1)}>启用</Button>
+                        <Button onClick={this.setEnablestate.bind(this,this.props.data,2)}>停用</Button>
                     </ButtonGroup>
                     <Button>导出</Button>
                 </div>    

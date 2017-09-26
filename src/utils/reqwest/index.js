@@ -21,7 +21,6 @@ const reqwest = (options,success,fail)=> {
         ...options
     })
     .then((result) => {
-
         handle(result);
         if(result.response) {
             success(JSON.parse(result.response));

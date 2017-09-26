@@ -7,8 +7,9 @@ let $$initialState = {
 	formVisitable:false,
 	treeLoading:false,
 	tableListCheckbox:[],
-	treeSelect:'',
-	editData:[]
+	treeSelect:undefined,
+	editData:[],
+	searchFilter:undefined,
 };
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action){
 
@@ -20,8 +21,23 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return  $$state.merge({
 				listData:action.payload.data,
 				tabelLoading:false,
-				treeSelect:action.payload.treeSelect,
 				formVisitable:false
+			})
+			case 'ORG_LIST_GETLISTSUCCESSBYCLICKTREE':
+			return  $$state.merge({
+				listData:action.payload.data,
+				tabelLoading:false,
+				treeSelect:action.payload.treeSelect,
+				formVisitable:false,
+				searchFilter:''
+			})
+			case 'ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH':
+			return  $$state.merge({
+				listData:action.payload.data,
+				tabelLoading:false,
+				treeSelect:'',
+				formVisitable:false,
+				searchFilter:action.payload.searchFilter
 			})
 			
 		case 'ORG_LIST_SHOWFORM':
@@ -60,26 +76,3 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 	        return $$state;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    let changeNew = $$state.toJS();
-//    let changekey=changeNew.listData[action.index].key
-//    changeNew.listData[action.index]=action.value;
-//    changeNew.listData[action.index].key=changekey

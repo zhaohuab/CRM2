@@ -1,5 +1,4 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio } from 'antd';
-import Myself from './formCustomDepart.jsx'
 import moment from 'moment';
 import Department from 'components/refs/Department'
 
@@ -44,35 +43,35 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('id', {
                                         rules: [],
                                     })(
-                                        <Input style={{ display: 'none' }} prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
+                                        <Input style={{ display: 'none' }} type='text' placeholder="请输入编号!" />
                                         )}
                                 </FormItem>
                                 <FormItem {...formItemLayout} label='编码'>
                                     {getFieldDecorator('code', {
                                         rules: [{ required: true, message: '请输入编码' }],
                                     })(
-                                        <Input prefix={<Icon type="folder" style={{ fontSize: 13 }} />} type="text" placeholder="请输入项目名称" />
+                                        <Input  type="text" placeholder="请输入项目名称" />
                                         )}
                                 </FormItem>
                                 <FormItem {...formItemLayout} label='名称'>
                                     {getFieldDecorator('name', {
                                         rules: [{ required: true, message: '请输入名称!' }],
                                     })(
-                                        <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
+                                        <Input type='text' placeholder="请输入编号!" />
                                         )}
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='简称'>
                                     {getFieldDecorator('simpleName', {
                                         rules: [{ required: true, message: '请输入简称!' }],
                                     })(
-                                        <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
+                                        <Input type='text' placeholder="请输入编号!" />
                                         )}
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='助记码'>
                                     {getFieldDecorator('simpleCode', {
                                         rules: [{ required: true, message: '请输入助记码!' }],
                                     })(
-                                        <Input prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
+                                        <Input type='text' placeholder="请输入编号!" />
                                         )}
                                 </FormItem>
                                 <FormItem
@@ -89,14 +88,14 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('respoPerson', {
                                         rules: [],
                                     })(
-                                        <Input disabled='true' prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
+                                        <Input disabled='true' type='text' placeholder="无" />
                                         )}
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='其他负责人'>
                                     {getFieldDecorator('otherRespoPerson', {
                                         rules: [],
                                     })(
-                                        <Input disabled='true' prefix={<Icon type="tag-o" style={{ fontSize: 13 }} />} type='text' placeholder="请输入编号!" />
+                                        <Input disabled='true' type='text' placeholder="无" />
                                         )}
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='组织类型'>

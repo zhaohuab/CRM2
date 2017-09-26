@@ -24,7 +24,7 @@ export default class ListTree extends Component {
 
     add(item,e){
         e.stopPropagation()
-        this.props.add(item.id)
+        this.props.add(item)
     }
 
     delete(item,e){
@@ -80,7 +80,7 @@ export default class ListTree extends Component {
                 {
                     data.length? 
                     <div>
-                        <Search placeholder="Search" onChange={this.onChange}/>
+                        
                         <Tree
                             showLine
                             defaultExpandedKeys={['1015']}

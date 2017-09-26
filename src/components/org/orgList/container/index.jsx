@@ -9,6 +9,7 @@ import card from './ListForm.jsx'
 import ListTree from './ListTree.jsx'
 import EditButton from './EditButtons.jsx'
 const ButtonGroup = Button.Group;
+const Search = Input.Search;
 import './index.less'
 
 class List extends Component {
@@ -18,68 +19,41 @@ class List extends Component {
           {
             title: '编码',
             dataIndex: 'code',
-            key: 'code',
           },
           {
             title: '名称',
             dataIndex: 'name',
-            key: 'name'
           }, 
           {
             title: '简称',
             dataIndex: 'simpleName',
-            key: 'simpleName'
           }, 
           {
             title: '助记码',
             dataIndex: 'simpleCode',
-            key: 'simpleCode',
-          },
-          {
-            title: '上级组织',
-            dataIndex: 'fatherorgId',
-            key: 'fatherorgId',
           },
           {
             title: '上级组织名称',
             dataIndex: 'fatherorgName',
-            key: 'fatherorgName',
           },
           {
             title: '负责人',
             dataIndex: 'respoPerson',
-            key: 'respoPerson',
           }, 
            {
             title: '其他负责人',
             dataIndex: 'otherRespoPerson',
-            key: 'otherRespoPerson',
           },
            {
             title: '组织类型',
-            dataIndex: 'orgType',
-            key: 'orgType',
-            render:(text, record,index) => {
-                if(text === 0 ){
-                    return text='公司'
-                }else if(text === 1){
-                    return text='部门'
-                }
-            }
+            dataIndex: 'orgTypeName'
           },
            {
             title: '状态',
-            dataIndex: 'enablestate',
-            key: 'enablestate',
+            dataIndex: 'enablestateName'
           }
         ]; 
         this.state={
-            index:0,//？？？不确定保留
-            value:'',//修改时，获取一条数据的值
-            tabelLoading:false,//table加载,
-            tableListCheckbox:null,//点击一个table的checkbox时，保存选中数量
-            treeLoading:false,
-            selectedRowKeys:[],
             isEdit : false,
         }
 
@@ -105,12 +79,13 @@ class List extends Component {
     }
 
     //删除一条数据方法
-    btnDelete(treeSelect,record){
-        this.props.orgAction.listdel(record,treeSelect)
+    btnDelete(treeSelect,searchFilter,record){
+        this.props.orgAction.listdel(record,treeSelect,searchFilter)
     }
 
-    btnSetEnablestate(treeSelect,data,state){
-        this.props.orgAction.setEnablestate(treeSelect,data,state)
+    //启停用按钮
+    btnSetEnablestate(treeSelect,searchFilter,data,state){
+        this.props.orgAction.setEnablestate(treeSelect,searchFilter,data,state)
     }
 
     //修改页面取消按钮 
@@ -158,17 +133,18 @@ class List extends Component {
         let rowData = {};
         let page = this.props.orgState.get("listData").toJS();
         for(let i=0,len=page.length;i<len;i++) {
-        if(rowKey == page[i].id) {
-            rowData = page[i];
-            break;
-        }
+            if(rowKey == page[i].id) {
+                rowData = page[i];
+                break;
+            }
         }
         this.props.orgAction.showForm(true,rowData);
     }
     //点击一个节点数的增加操作
     treeSelectAddFn(item){
         this.setState({isEdit:false});
-        this.props.orgAction.showForm(true,{});
+        let rowData = {fatherorgId:item.id,fatherorgName:item.name}
+        this.props.orgAction.showForm(true,rowData);
     }
 
     //点击一个节点数的删除操作
@@ -176,6 +152,10 @@ class List extends Component {
         const record = [];
         record.push(item)
         this.props.orgAction.listdel(record,item.id)
+    }
+    //点击查询按钮
+    searchList(item){
+        this.props.orgAction.getlistByClickSearch({searchKey:item});
     }
 
     //组件渲染完毕获取数据
@@ -191,6 +171,7 @@ class List extends Component {
         let formVisitable = orgState.get('formVisitable')
         let treeLoading = orgState.get('treeLoading')
         let treeSelect = orgState.get('treeSelect');
+        let searchFilter = orgState.get('searchFilter');
 
         let listData = orgState.get('listData').toJS();
         let treeData = orgState.get('treeData').toJS();
@@ -201,6 +182,7 @@ class List extends Component {
             <div className='list-warpper'>
                 <div className='list-main'>
                     <div className='list-table-tree'>
+                        <Search placeholder="Search" onSearch={this.searchList.bind(this)}/>
                         <Spin spinning={treeLoading} tip='正在加载'/>
                         <ListTree 
                             data={treeData} 
@@ -212,7 +194,7 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect)} deleteList={this.btnDelete.bind(this,treeSelect)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect,searchFilter)} deleteList={this.btnDelete.bind(this,treeSelect,searchFilter)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
                             </div>
