@@ -6,7 +6,7 @@ import cookie from 'utils/cookie'
 
 const Search = Input.Search;
 import './index.less'
-
+import 'assets/stylesheet/menu/iconfont.css'
 
 const menu = (
   <Menu>
@@ -37,7 +37,7 @@ class Header extends React.Component {
                             className='clinet-search-style'
                         />
                         <div className='clinet-alert'>
-                            <Icon type="bell" />
+                            <i className='iconfont icon-xiaoxi clinet-alert-icon'></i>
                             <Badge count={99} showZero className='Badge-custom'>
                                 <a href="#" className="head-example" />
                             </Badge>

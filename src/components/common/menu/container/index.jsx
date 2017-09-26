@@ -7,7 +7,7 @@ import { Menu, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 import * as Actions from "../action"
 import './index.less'
-import 'assets/stylesheet/iconfont.css'
+import 'assets/stylesheet/menu/iconfont.css'
 
 const basePath = '/crm_web/';
  class LeftMenu extends React.Component {
@@ -16,7 +16,7 @@ const basePath = '/crm_web/';
         this.state = {
             selectedKeys:[1],
         }
-        this.icon=['icon-xiaoshoujixiao-','icon-kehuguanli-','icon-kehuguanli-','icon-xiaoshouguocheng-','icon-jiaoyiguanli','icon-jichuyewu-','icon-xitongguanli']
+        this.icon=['icon-xiaoshoujixiao-','icon-kehuguanli-xin','icon-hangdongguanlixin','icon-xiaoshouguocheng-xin','icon-jiaoyiguanlixin','icon-jichuyewu-xin','icon-xitongguanli-xin1']
     }
 
     componentDidMount() {
@@ -78,7 +78,7 @@ const basePath = '/crm_web/';
                 >
                     <Menu.Item key="index">
                         <Link to={basePath + "home"} onClick={that.onClick.bind(that, rootTitle)}>
-                            <span><Icon type="home" style={{fontSize:'18px'}}/>{rootTitle}</span>
+                            <span><Icon type="home" className='menu-home'/>{rootTitle}</span>
                         </Link>
                     </Menu.Item>
                     {tree(data, isRoot)}
@@ -94,10 +94,10 @@ const basePath = '/crm_web/';
     
         return (
           <div className='menu-bg-warpper'>
-                <div className='menu-bg-logo'>logo</div>
+                <div className='menu-bg-logo'><img src={require('assets/images/home/crm-logo.png')}/></div>
                 <div className='menu-bg'  onClick={this.props.toggleCollapsed}>
                     <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'}>
-                        <Icon type='bars' />
+                        <i className='iconfont icon-zhankai' style={{fontSize:'14px'}}></i>
                     </span>
                 </div>
                 <div className={menuClassName}>

@@ -24,6 +24,7 @@ body {
     display: flex;
     flex-direction: column;
     flex: auto;
+    background: #f2f2f3
 }
 
 .app-header {
@@ -35,7 +36,6 @@ body {
     flex: auto;
     height:100%;
     margin: 10px;
-    background: white;
     overflow-y: auto
 }
 
@@ -54,10 +54,13 @@ body {
     align-items: center;
 }
 
+//model样式
+
 .ant-modal-header{
     background: #FAFAFA;
     height:50px;
  }
+
  .ant-form-item-required:before{
      color:#333
  }
@@ -79,10 +82,10 @@ body {
 .ant-table{
     color:#999;
 }
-
-.ant-table-tbody > tr > td{
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
     border:none
 }
+
 
 
 
@@ -96,4 +99,9 @@ body {
 }
 .ant-menu-inline-collapsed > .ant-menu-item > .iconfont + span{
         opacity: 0
+}
+.ant-menu-inline-collapsed > .ant-menu-item .anticon, .ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title .anticon{
+    font-size: 20px;
+    position: relative;
+    left:-1px;
 }

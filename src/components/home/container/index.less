@@ -2,6 +2,7 @@
    display: flex;
    flex-direction:column;
    height:100%;
+   background: #f2f2f2;
   .client-header{
       width:100%;
       height:55px;
@@ -10,110 +11,164 @@
       padding:0 10px;
       box-sizing: border-box;
       h3{
-            display: flex;
-            width:50%;
-            align-items:center;
-            font-size:16px;
-        }
-      
-
+        display: flex;
+        width:50%;
+        align-items:center;
+        font-size:16px;
+     }
   }
   
   .clinet-main{
-     
-      .target-title{
-          width:100%;
-          height:40px;
-          line-height:40px;
-          padding:10px;
-          box-sizing: border-box;
+      .chart-title{
           display: flex;
-          justify-content:space-between;
-          align-items:center;
-          .edit-area{
-              width:50%;
-              display: flex;
-              justify-content:flex-end;
-              align-items:center
-          }
-      }
-      .clinet-main-left{
-          padding-right:10px;
+          align-items: center;
+          justify-content: space-between;
+          height: 50px;
+          width:100%;
+          padding:0 10px;
           box-sizing: border-box;
-          .clinet-main-left-top{
-            .left-top-target{
-                padding-right:10px;
-                box-sizing: border-box;
-                .left-top-target-inner{
-                  background: white;
-                  min-height:200px
+          font-size:14px;
+          color:#313542;
+          .chart-title-more{
+              font-size:12px;
+              font-weight: none;
+              color:#666666;
+              border-bottom:1px solid #3CA4FB;
+              cursor: pointer
+          }
+      }
+      .ant-dropdown-link{
+        font-size:12px;
+        color: #666666;
+        cursor: pointer
+      }
+    .clinet-main-left{
+        padding-right:10px;
+        box-sizing: border-box;
+
+        .main-left-top{
+            background: white;
+            margin-bottom:10px;
+            .charts-cell-tabel{
+                width:80%;
+                margin:0 auto;
+                text-align: center;
+                border:1px solid #EEEEEE;
+                border-collapse:collapse;
+                th{
+                    text-align: center;
+                    border:1px solid #EEEEEE;
+                    background: #FCFCFC;
+                    height:30px;
+                }
+                td{
+                    border:1px solid #EEEEEE;
+                    height:30px;
                 }
             }
-            .leaderboard{
-                .left-top-leaderboard-inner{
-                    min-height:200px;
-                    background: white;
-                }
-             }
-          } 
-          .clinet-main-left-middle{
-              margin-top:10px;
-              .left-top-area{
-                padding-right:10px;
-                box-sizing: border-box;
-                .left-top-area-inner{
-                    background: white;
-                    min-height:200px;
-                }
-              }
-              .left-top-funnel{
-                .left-top-funnel-inner{
-                    background: white;
-                    min-height:200px;
-                }
-              }
-          }
-          .clinet-main-left-bottom{
+        }
+        .main-left-bottom{
+            background: white;
+        }
+    }
+    .clinet-main-middle{
+        padding-right:10px;
+        box-sizing: border-box;
+        .main-middle-top{
+            background: white;
+            margin-bottom:10px;
             
-            padding-right:10px;
+        }
+        .main-middle-bottom{
+            background: white;
+        }
+    } 
+    .clinet-main-right{
+        .notice-right-padding{
+            padding:15px;padding-top:0;
             box-sizing: border-box;
-            margin-top:10px;
-            .main-left-bottom-inner{
-                background: white;
-                min-height:200px;
+            ul li{
+                height:30px;
+                line-height: 30px;
+                font-size: 14px;
+                color: #666;
+                width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-weight: 400;
             }
-          }
-      }
-      .clinet-main-right{
-            .main-right-notice{
+            .schedule-weather{
                 width:100%;
-                min-height:150px;
-                background: white;
-                .notice-mian{
+                height:40px;
+                background: #F2F2F2;
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                color: #3C394B
+            }
+            .schedule-date{
+                height: 75px;
+                padding-top:8px;
+                box-sizing: border-box;
+                .schedule-fix{
+                    list-style: none;
+                    display: flex;
+                    flex:7;
+                    li{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .day-active{
+                        color:#3CA4FB;
+                    }
+                }
+                .schedule-active{
+                    list-style: none;
+                    display: flex;
+                    flex:7;
+                    li{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .date-active{
+                        width:20px;
+                        height:20px;
+                        background: #3CA4FB;
+                        border-radius: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        color:white
+                    }
+                }
+            }
+            .schedule-mission{
+                .mission-list{
                     width:100%;
-                    padding:10px;
-                    box-sizing: border-box;
-                    .notice-mian-ul{
-                        width:100%;
-                        list-style: none;
-                        li{
-                            width:100%;
-                            border-bottom: 1px solid #EAEAEA;
-                        }
-                    }
+                    height:40px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    border-top:1px solid rgba(221,221,221,0.50);
+                    border-bottom:1px solid rgba(221,221,221,0.50);
+                    margin-bottom:10px;
+                }
+                .mission-main{
+                    min-height: 300px;
+                    text-align: center
                 }
             }
-            .main-right-calendar{
-                margin-top:10px;
-                width:100%;
-                min-height:460px;
-                background: white;
-                .calendar-main{
-                    img{
-                        width:100%;
-                    }
-                }
-            }
-      }
+        }
+       .main-right-top{
+        background: white;
+        margin-bottom:10px;
+       }
+       .main-right-bottom{
+        background: white;
+       }
+    }
   }
 }
