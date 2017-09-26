@@ -25,6 +25,13 @@
 }
 .app-header .app-header-title {
   font-size: 14px;
+  color: #313542;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid #3CA4FB ;
+  padding-right: 15px;
+  box-sizing: border-box;
 }
 .app-header .app-header-right {
   display: flex;
@@ -33,13 +40,37 @@
 }
 .app-header .app-header-right .client-header-left {
   display: flex;
-  width: 50%;
+  width: 100%;
   justify-content: flex-end;
   align-items: center;
-  margin-right: 15px;
-  border-right: 1px solid #ccc;
-  padding-right: 25px;
+  margin-right: 3px;
+  padding-right: 30px;
   box-sizing: border-box;
+}
+.app-header .app-header-right .client-header-left .clinet-search-style {
+  width: 300px;
+}
+.app-header .app-header-right .client-header-left .clinet-search-style .ant-input-suffix i {
+  color: #999;
+  font-size: 16px;
+}
+.app-header .app-header-right .client-header-left .clinet-search-style input {
+  width: 300px;
+  color: #666;
+  font-weight: 300;
+  height: 32px;
+}
+.app-header .app-header-right .client-header-left .clinet-search-style input::-webkit-input-placeholder {
+  color: #666;
+  font-weight: 300;
+}
+.app-header .app-header-right .client-header-left .clinet-search-style input::-webkit-input-placeholder {
+  color: #666;
+  font-weight: 300;
+}
+.app-header .app-header-right .client-header-left .clinet-search-style input::-webkit-input-placeholder {
+  color: #666;
+  font-weight: 300;
 }
 .app-header .app-header-right .client-header-left .del-border {
   border: none;
@@ -50,7 +81,7 @@
   height: 30px;
 }
 .app-header .app-header-right .client-header-left .clinet-alert {
-  width: 50px;
+  width: 52px;
   height: 30px;
   text-align: right;
 }
@@ -62,22 +93,32 @@
   text-align: center;
 }
 .app-header .app-header-right .client-header-left .clinet-alert sup {
-  top: -20px;
-  height: 13px;
-  line-height: 13px;
-  border-radius: 13px;
-  min-width: 13px;
+  top: -22px;
+  right: -22px;
+  height: 14px;
+  line-height: 14px;
   padding: 0;
+  border-radius: 8px;
+  background: #F1B941;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 .app-header .app-header-right .client-header-right {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.app-header .app-header-right .client-header-right .header-right-title {
+  color: #1B1D2E;
+  margin: 0 10px;
+}
+.app-header .app-header-right .client-header-right .anticon-caret-down:before {
+  color: #1B1D2E;
+}
 .app-header .app-header-right .client-header-right img {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 40px;
+  border: 2px solid #252840;
 }
 .logger {
   float: right;

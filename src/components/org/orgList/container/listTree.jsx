@@ -2,7 +2,7 @@ import  React, { Component } from 'react';
 import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,DatePicker,message,Modal,Spin ,Tree} from 'antd';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-
+const confirm = Modal.confirm;
 import './index.less'
 
 
@@ -24,12 +24,26 @@ export default class ListTree extends Component {
 
     add(item,e){
         e.stopPropagation()
-        this.props.edit(item.id)
+        this.props.add(item)
     }
 
     delete(item,e){
         e.stopPropagation()
-        this.props.edit(item.id)
+
+        let that =this
+        confirm({
+        title: '确定要删除吗?',
+        content: '此操作不可逆',
+        okText: '是',
+        okType: 'danger',
+        cancelText: '否',
+        onOk() {
+            that.props.delete(item)
+        },
+        onCancel() {
+        console.log('Cancel');
+        },
+     });
     }
     showEdit(item){
         this.setState({
@@ -66,14 +80,15 @@ export default class ListTree extends Component {
                 {
                     data.length? 
                     <div>
-                        <Search placeholder="Search" onChange={this.onChange}/>
-                        <Tree
-                            showLine
-                            defaultExpandedKeys={['1015']}
-                            onSelect={this.onSelect.bind(this)}
-                        >
-                            {loop(data)}
-                        </Tree>
+                        <div className='org-tree-main'>
+                            <Tree
+                                showLine
+                                defaultExpandedKeys={['1015']}
+                                onSelect={this.onSelect.bind(this)}
+                            >
+                                {loop(data)}
+                            </Tree>
+                        </div>
                     </div>:''
                 }
             </div>

@@ -1,4 +1,4 @@
-import { AutoComplete } from 'antd';
+import { AutoComplete ,Button,Icon,Input} from 'antd';
 
 class Email extends React.Component {
     state = {
@@ -27,12 +27,15 @@ class Email extends React.Component {
             <div>
                 <AutoComplete
                     dataSource={dataSource}
-                    style={{ width: 200 }}
                     onSearch={this.handleSearch}
                     onChange={this.onChange.bind(this)}
                     value={this.props.value}
-                />
-            </div>
+                    placeholder="请输入..."
+                >
+                <Input 
+              />
+          </AutoComplete>
+        </div>
         );
     }
 }

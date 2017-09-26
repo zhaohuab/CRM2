@@ -43,18 +43,20 @@ class Home extends React.Component {
     }
  
     onWindowResize(){
-        let resizeSize=this.refs.target.offsetWidth
-        this.targetEchar.resize({
-            width:resizeSize+'px'
-        })
+        if(this.refs.target){
+            let resizeSize=this.refs.target.offsetWidth
+            this.targetEchar.resize({
+                width:resizeSize+'px'
+            })
 
-        this.moneyEchar.resize({
-            width:resizeSize+'px'
-        })
+            this.moneyEchar.resize({
+                width:resizeSize+'px'
+            })
 
-        this.funnelEchar.resize({
-            width:resizeSize+'px'
-        })
+            this.funnelEchar.resize({
+                width:resizeSize+'px'
+            })
+        }
     }
 
     componentDidMount(){

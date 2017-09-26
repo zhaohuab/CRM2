@@ -7,7 +7,7 @@ function handleMessage(result) {
     if(!response) {
         return;
     }
-    let { code ,message,developerMessage } = response;
+    let { code ,message,developerMessage } = JSON.parse(response);
     switch (code) {
 		case 'SUCCESS':
             message.success(message);
