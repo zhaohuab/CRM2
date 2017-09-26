@@ -13,6 +13,8 @@ import HeadLabel from './HeadLabel.jsx';
 import './index.less'
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
+const ButtonGroup = Button.Group;
+
 //导入action方法
 import * as Actions from "../action"
 
@@ -123,14 +125,11 @@ class List extends React.Component {
     
   }
   onSelectChange = (selectedRowKeys) => {
-    
     let state = {
       selectedRowKeys:selectedRowKeys
     }
     state.headLabel = selectedRowKeys.length ? true:false;
     this.setState(state);
-
-    
   }
   onBack = ()=>{
     this.setState({headLabel:false});
@@ -144,12 +143,11 @@ class List extends React.Component {
     this.setState({enable,selectedRowKeys:[],searchMap});
   }
   render() {
-
     let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
 
     let {headLabel,selectedRowKeys} = this.state;
-    ;
+    
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -177,7 +175,7 @@ class List extends React.Component {
               <div className='head_panel-left'>
                 <div>
                   <span className='head_panel_span'>所属部门：</span>
-                  <Search
+                  <Input
                     placeholder="请选择..."
                     className="search"
                     onSearch={value => console.log(value)}
@@ -192,7 +190,11 @@ class List extends React.Component {
                 </div>
               </div>
               <div >
-                <Button  className="button_add" onClick={this.onAdd.bind(this)}>新增人员</Button>
+                <ButtonGroup className='add-more'>
+                  <Button icon='download'>导入</Button>
+                  <Button icon='upload'>导出</Button>
+                </ButtonGroup>
+                <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}>新增人员</Button>
               </div>
           </div>
         }
@@ -210,8 +212,11 @@ class List extends React.Component {
           visible={visible}
           onOk={this.onSave.bind(this)}
           onCancel={this.onClose.bind(this)}
+          width={500}
         >
-          <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+          <div className='add-model'>
+            <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+          </div>
         </Modal>
       </div>
     )

@@ -54,9 +54,9 @@ class List extends Component {
           }
         ]; 
         this.state={
+            minH:'',
             isEdit : false,
         }
-
         //点击每行table触发的onchange方法
         let that = this
         this.rowSelectionFn={
@@ -157,11 +157,23 @@ class List extends Component {
     searchList(item){
         this.props.orgAction.getlistByClickSearch({searchKey:item});
     }
+    reSizeFn(){
+        let h=document.documentElement.clientHeight
+        this.setState({
+                minH : h - 70
+        })
+    }
 
     //组件渲染完毕获取数据
     componentDidMount(){
         this.props.orgAction.getlist();
         this.props.orgAction.getTreeList();
+        this.setState({
+            minH:document.documentElement.clientHeight- 70
+        })
+        window.onreset=()=>{
+           this.reSizeFn()
+        }
     }
 
     render() {
@@ -176,13 +188,16 @@ class List extends Component {
         let listData = orgState.get('listData').toJS();
         let treeData = orgState.get('treeData').toJS();
         let tableListCheckbox = orgState.get('tableListCheckbox').toJS();
+        
         const WrapCard = Form.create()(card);
         let editData = orgState.get("editData").toJS();
         return (
             <div className='list-warpper'>
                 <div className='list-main'>
-                    <div className='list-table-tree'>
-                        <Search placeholder="Search" onSearch={this.searchList.bind(this)}/>
+                    <div className='list-table-tree' style={{minHeight:this.state.minH?this.state.minH+'px':'auto'}}>
+                        <div className='org-tree-top'>
+                            <Search placeholder="Search" onSearch={this.searchList.bind(this)}/>
+                        </div>
                         <Spin spinning={treeLoading} tip='正在加载'/>
                         <ListTree 
                             data={treeData} 
@@ -196,7 +211,11 @@ class List extends Component {
                         <div className='table-header'>
                             { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect,searchFilter)} deleteList={this.btnDelete.bind(this,treeSelect,searchFilter)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
-                                <Button onClick={this.addFormBtn.bind(this)}>增加组织</Button>
+                                <ButtonGroup className='list-add-group'>
+                                    <Button icon='download'>导入</Button>
+                                    <Button icon='upload'>导出</Button>
+                                </ButtonGroup>
+                                <Button type='primary' onClick={this.addFormBtn.bind(this)}><Icon type="plus" />新建</Button>
                             </div>
                         </div>
                         <div className='org-tabel'>

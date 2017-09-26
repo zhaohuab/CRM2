@@ -1,10 +1,11 @@
-import { Input,Modal,Tree } from 'antd';
+import { Input,Modal,Tree ,Icon} from 'antd';
 
 import { org as url } from 'api'
 import reqwest from 'utils/reqwest'
 const TreeNode = Tree.TreeNode;
+const Search = Input.Search;
+
 class Department extends React.Component {
-   
     state = {
         visible : false,
         select : {
@@ -62,30 +63,55 @@ class Department extends React.Component {
             onChange(changedValue);
         }
     }
+    emitEmpty=()=>{
+        this.setState({select:{key:'',title:''}},()=>{
+            this.triggerChange(this.state.select);
+        });
+        
+    }
+
+    aa(){
+        return(
+            <div className='pepole-refer'>
+                <div>组织</div>
+                <div className='pepole-refer-search'>
+                    <Search
+                        placeholder="请输入关键字"
+                        onSearch={value => console.log(value)}
+                    />
+                </div>
+            </div>
+        )
+    }
     render() {
         let key="",title="";
         if(this.props.value) {
             key = this.props.value.key;
             title = this.props.value.title;
+            
         }
+        const suffix = this.props.value && this.props.value.key ? <Icon type="close" onClick={this.emitEmpty} /> : null;
+
         return (
             <div>
                 {/* <Input value={key}/> */}
-                <Input value={title}/>
-                <div onClick={this.onClick}>
-                    点我出弹窗
-                </div>
+                <Input value={title} placeholder='请选择...'  onClick={this.onClick} suffix={suffix}/>
                 <Modal
-                    title="部门参照"
+                    title={this.aa()}
                     visible={this.state.visible}
                     onOk={this.onOk}
                     onCancel={this.onClose}
+                    width={400}
+                    closable={false}
                 >
+                <div className='add-inset-model' >
                     <Tree   
                         onSelect={this.onSelect}
+                        showLine={true}
                     >
                     {this.renderTreeNodes(this.state.dataSource)}
                     </Tree>
+                    </div>
                 </Modal>
             </div>
         );

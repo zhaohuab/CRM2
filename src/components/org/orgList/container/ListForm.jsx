@@ -50,28 +50,28 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('code', {
                                         rules: [{ required: true, message: '请输入编码' }],
                                     })(
-                                        <Input  type="text" placeholder="请输入项目名称" />
+                                        <Input  type="text" placeholder="请输入编码" />
                                         )}
                                 </FormItem>
                                 <FormItem {...formItemLayout} label='名称'>
                                     {getFieldDecorator('name', {
                                         rules: [{ required: true, message: '请输入名称!' }],
                                     })(
-                                        <Input type='text' placeholder="请输入编号!" />
+                                        <Input type='text' placeholder="请输入名称!" />
                                         )}
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='简称'>
                                     {getFieldDecorator('simpleName', {
                                         rules: [{ required: true, message: '请输入简称!' }],
                                     })(
-                                        <Input type='text' placeholder="请输入编号!" />
+                                        <Input type='text' placeholder="请输入简称!" />
                                         )}
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='助记码'>
                                     {getFieldDecorator('simpleCode', {
                                         rules: [{ required: true, message: '请输入助记码!' }],
                                     })(
-                                        <Input type='text' placeholder="请输入编号!" />
+                                        <Input type='text' placeholder="请输入助记码!" />
                                         )}
                                 </FormItem>
                                 <FormItem
@@ -103,8 +103,8 @@ export default class NormalLoginForm extends React.Component {
                                         rules: [{ required: true, message: '请输入组织类型!' }],
                                     })(
                                         <RadioGroup>
-                                            <Radio value={0}>部门</Radio>
-                                            <Radio value={1}>公司</Radio>
+                                            <Radio value={1}>部门</Radio>
+                                            <Radio value={2}>公司</Radio>
                                         </RadioGroup>
                                         )}
                                 </FormItem>

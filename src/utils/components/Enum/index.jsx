@@ -33,7 +33,7 @@ class Enum extends React.Component {
         }
         return (
             <div>
-                <Select onSelect={this.onSelect} value={key}>
+                <Select onSelect={this.onSelect} value={key} >
                     {this.trans(this.props.dataSource)}
                 </Select>
             </div>

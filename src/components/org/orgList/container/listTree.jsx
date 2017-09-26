@@ -80,14 +80,16 @@ export default class ListTree extends Component {
                 {
                     data.length? 
                     <div>
-                        
-                        <Tree
-                            showLine
-                            defaultExpandedKeys={['1015']}
-                            onSelect={this.onSelect.bind(this)}
-                        >
-                            {loop(data)}
-                        </Tree>
+                       
+                        <div className='org-tree-main'>
+                            <Tree
+                                showLine
+                                defaultExpandedKeys={['1015']}
+                                onSelect={this.onSelect.bind(this)}
+                            >
+                                {loop(data)}
+                            </Tree>
+                        </div>
                     </div>:''
                 }
             </div>
