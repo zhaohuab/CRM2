@@ -23,7 +23,7 @@ var portNumber = '3000';
 
 const environments = {
 	// 测试环境
-	'btestw': '//172.20.18.154',
+	'btestw': '//10.1.214.78',  //old //172.20.18.154
     // 正式环境
     'bupw': 'http://static-scrm.upesn.com',
 };
