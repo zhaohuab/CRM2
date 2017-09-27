@@ -192,7 +192,7 @@ class Home extends React.Component {
                             <div className='main-middle-top'>
                                 <h3 className='chart-title'>
                                     <span>销售区域</span>
-                                    <div >
+                                    <div>
                                         <Dropdown overlay={this.menuArea} trigger={['click']}>
                                             <span className="ant-dropdown-link">
                                                <span>D类客户</span> <Icon type="down" />
@@ -200,18 +200,13 @@ class Home extends React.Component {
                                         </Dropdown>
                                     </div>
                                 </h3>
-                                <div>
+                                <div  className='main-inner'>
                                     <div style={{width: '100%', height: 300}}>
-                                    <Map events={events}>
-                                        <Markers 
-                                            markers={this.markers}
-                                        />
-                                    </Map>
-                                    {/* <Map plugins={['ToolBar']} center={this.center} zoom={5}>
-                                        <Markers 
-                                            markers={this.markers}
-                                        />
-                                    </Map> */}
+                                        <Map events={events}>
+                                            <Markers 
+                                                markers={this.markers}
+                                            />
+                                        </Map>
                                     </div>
                                 </div>
                             </div>

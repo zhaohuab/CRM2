@@ -39,6 +39,9 @@
   box-sizing: border-box;
   background: white;
 }
+.user-warpper .iconfont {
+  font-size: 12px;
+}
 .user-warpper .list-box {
   padding: 5px;
   padding-top: 0;
@@ -61,11 +64,14 @@
   display: flex;
   align-items: center;
 }
+.user-warpper .head_panel .head_panel-left .deep-title-color {
+  color: #333;
+}
+.user-warpper .head_panel .head_panel-left .simple-title-color {
+  color: #666;
+}
 .user-warpper .head_panel .head_panel-left .head_panel-state {
   margin-left: 20px;
-}
-.user-warpper .head_panel .head_panel-right .iconfont {
-  font-size: 12px;
 }
 .user-warpper .head_panel .search {
   width: 200px;

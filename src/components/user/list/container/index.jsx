@@ -15,6 +15,7 @@ let Search = Input.Search;
 let RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
 import 'assets/stylesheet/menu/iconfont.css'
+import 'assets/stylesheet/tool/iconfont.css'
 
 //导入action方法
 import * as Actions from "../action"
@@ -161,21 +162,20 @@ class List extends React.Component {
           headLabel ? 
           <div className='head_edit'>
             <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
-              <Button className="default_button" onClick={this.onEdit} icon='edit'>编辑</Button>
+              <Button className="default_button" onClick={this.onEdit}><i className='iconfont icon-bianji'></i>编辑</Button>
               <Popconfirm placement="bottom"  title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
-                <Button className="default_button" icon='delete'>删除</Button>
+                <Button className="default_button" ><i className='iconfont icon-tubiao-shanchu'></i>删除</Button>
               </Popconfirm>
               
-              {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}  icon='pause-circle-o'>停用</Button>:
-              <Button className="default_button" onClick={this.onEnable(1).bind(this,1)} icon='play-circle-o'>启用</Button>}
-
-              <Button className="default_button" icon='user-add'>分配角色</Button>
+              {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}><i className='iconfont icon-tingyong-lanse'></i>停用</Button>:
+              <Button className="default_button" onClick={this.onEnable(1).bind(this,1)}><i className='iconfont icon-qiyong-lanse'></i>启用</Button>}
+              <Button className="default_button"><i className='iconfont icon-fenpeijiaose'></i>分配角色</Button>
             </HeadLabel> 
           </div>: 
           <div className='head_panel'>
               <div className='head_panel-left'>
                 <div>
-                  <span className='head_panel_span'>所属部门：</span>
+                  <span className='deep-title-color'>所属部门：</span>
                   <Input
                     placeholder="请选择..."
                     className="search"
@@ -183,8 +183,8 @@ class List extends React.Component {
                   />
                 </div>
                 <div className='head_panel-state'>
-                  <span className='head_panel_span'>状态：</span>
-                  <RadioGroup onChange={this.onEableRadioChange} value={this.state.enable}>
+                  <span className='simple-title-color'>状态：</span>
+                  <RadioGroup onChange={this.onEableRadioChange} value={this.state.enable} className='simple-title-color'>
                     <Radio value={1}>启用</Radio>
                     <Radio value={2}>停用</Radio>
                   </RadioGroup>
@@ -215,7 +215,7 @@ class List extends React.Component {
           onCancel={this.onClose.bind(this)}
           width={500}
         >
-          <div className='add-model'>
+          <div className='model-height'>
             <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
           </div>
         </Modal>

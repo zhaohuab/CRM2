@@ -1,4 +1,5 @@
-
+@simpleColor:#666;
+@deepColor:#333;
 .add-model{
     height:390px;
     overflow: auto;
@@ -44,6 +45,9 @@
     padding-top:0;
     box-sizing: border-box;
     background: white;
+    .iconfont{
+        font-size: 12px;
+    }
     .list-box{
         padding:5px;
         padding-top:0;
@@ -65,14 +69,15 @@
         .head_panel-left{
             display: flex;
             align-items: center;
+            .deep-title-color{
+                color:@deepColor
+            }
+            .simple-title-color{
+                color:@simpleColor
+            }
             .head_panel-state{
                 margin-left:20px;
             }
-        }
-        .head_panel-right{
-           .iconfont{
-               font-size: 12px;
-           }
         }
         .search {
             width: 200px;
