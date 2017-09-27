@@ -5,7 +5,7 @@ import { cum as url } from 'api';
 //定义key， type
 
 //定义方法 action
-const getListData = (params) => {
+const getListData = (pagination,searchMap) => {
 	const fetchData = (type, payload) => {
         return {
             type,
@@ -20,8 +20,8 @@ const getListData = (params) => {
             method:'get',
             data:{
                 param: JSON.stringify({
-                    page:1,
-                    pageSize:20
+                    ...pagination,
+                    searchMap
                 })
             }
         },(data) => {
@@ -43,34 +43,57 @@ const closeAddForm=()=>{
     }
  }
 
-const testFunc = () => {
-    reqwest({
-        url: "http://10.1.204.74:8081/crm_web/sys/org/",
-        type:"application/x-www-form-urlencoded",
-        method:'get',
-        data:{
-            param: JSON.stringify({
-                pageSize:20,
-                page:1
-            })
-        }
-    })
-    .then(function (dataResult) {
-        debugger
-        let data=JSON.parse(dataResult.response);
-        // dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data.data}));
-        message.success('获取数据成功');
-    })
-    .fail(function (err, msg) {
-        debugger
-        message.error('获取数据失败');
-    })
+
+//启停用功能
+export function setEnablestate(rows,state,page,searchMap){
+    debugger
+    var ids = [];
+    let searchMap = {};
+    if(treeId!=null&&treeId!=undefined&&treeId!=""){
+        searchMap.id = treeId;
+    }
+    for(let i=0;i<rows.length;i++){
+        ids.push(rows[i].id);
+    }
+    return (dispatch) => {
+		request({
+			url: url.customer+'enable',
+			method: "PUT",
+			data: {
+				param: JSON.stringify({
+					ids: ids.join(","),
+					...page,
+					searchMap
+				}),
+			}
+		},(dataResult) => {
+                const listData=dataResult;
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data.data}));
+        })
+			
+	}
 }
 
+const changeVisible = (visible)=>{
+    // dispatch(fetchData('CUSTOMER_LIST_CHANGEVISIBLE', {toolVisible: visible}));
+
+    return{
+        type:'CUSTOMER_LIST_CHANGEVISIBLE',payload:{toolVisible: visible}
+    }
+}
+
+const selectRow=(rows,visible)=>{
+    return{
+        type:'CUSTOMER_LIST_SELECTROW',
+        payload:{rows:rows,toolVisible:visible}
+    }
+}
 
 //输出 type 与 方法
 export {
     getListData,
     showAddForm,
-    testFunc
+    testFunc,
+    changeVisible,
+    selectRow
 }

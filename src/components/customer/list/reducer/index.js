@@ -10,7 +10,8 @@ let $$initialState = {
 		btnPanel:false,
 		simForm:true,
 		milForm:false
-	}
+	},
+	searchMap:[]
 };
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action){
 
@@ -23,6 +24,13 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
 			case 'CUSTOMER_LIST_CLOSEADDFORM':
 			return $$state.merge({addFormVisitable:false})
+
+			case 'CUSTOMER_LIST_CHANGEVISIBLE':
+			return $$state.merge({toolVisible:action.payload.toolVisible})
+			
+			case 'CUSTOMER_LIST_SELECTROW':
+			return $$state.merge({selectedRows:Immutable.fromJS(action.payload.rows),toolVisible:action.payload.toolVisible})
+			
 	    default: 
 	        return $$state;
     }

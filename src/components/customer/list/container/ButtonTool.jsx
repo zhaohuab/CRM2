@@ -9,16 +9,20 @@ class BtnPanel extends React.Component {
     constructor(props) {
         super(props)
     }
+    btnBack(){
+        this.props.btnBack();
+    }
+  
     render() {
 
         return (
             <div>
-                <Button className='returnbtn-class' icon='swap-left'>返回</Button>
+                <Button className='returnbtn-class' icon='swap-left' onClick = {this.btnBack.bind(this)}>返回</Button>
                 <Button className='returnbtn-class' icon='delete'>删除</Button>
                 <Button className='returnbtn-class' icon='edit'>编辑</Button>
                 <ButtonGroup className='returnbtn-class'>
-                    <Button icon='play-circle-o' >启用</Button>
-                    <Button icon='pause-circle-o'>停用</Button>
+                    <Button icon='play-circle-o' onClick={this.props.btnSetEnable.bind(this,1)}>启用</Button>
+                    <Button icon='pause-circle-o'onClick={this.props.btnSetEnable.bind(this,2)}>停用</Button>
                 </ButtonGroup>
                 <Button className='returnbtn-class' icon='download'>导出</Button>
             </div>
@@ -31,6 +35,10 @@ class SimForm extends React.Component {
     constructor(props) {
         super(props)
     }
+
+    handleSearch(){
+        this.props.handleSearch(this.props.form.getFieldsValue())
+    }
     render() {
         const count = 10;
         const { getFieldDecorator } = this.props.form;
@@ -41,8 +49,8 @@ class SimForm extends React.Component {
         const children = [];
         return (
             <div>
-
-                <Col span={4} key={0} style={{ display: 0 < count ? 'block' : 'none' }}>
+                 <Form onSubmit={this.handleSearch.bind(this)} className="login-form">
+                <Col span={6} key={0} style={{ display: 0 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: '请输入客户名称!' }],
@@ -51,9 +59,9 @@ class SimForm extends React.Component {
                             )}
                     </FormItem>
                 </Col>
-                <Col span={4} key={1} style={{ display: 1 < count ? 'block' : 'none' }}>
+                <Col span={6} key={1} style={{ display: 1 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
-                        {getFieldDecorator('name', {
+                        {getFieldDecorator('cannelType', {
                             rules: [{ required: true, message: '请输入渠道类型!' }],
                         })(
                             <Input type='text' placeholder="渠道类型" />
@@ -62,14 +70,14 @@ class SimForm extends React.Component {
                 </Col>
 
 
-                <Col span={8} style={{ textAlign: 'right' }}>
-                    <Button type="primary" htmlType="submit">搜索</Button>
+                <Col span={4} style={{ textAlign: 'right' }}>
+                    <Button type="primary" htmlType="submit" >搜索</Button>
 
-                    <a style={{ fontSize: 12 }} onClick={this.toggle}>
+                    <a style={{ fontSize: 12 }} onClick={this.props.btnMore.bind(this,{simForm:false,milForm:true})}>
                         更多 <Icon type='down' />
                     </a>
                 </Col>
-
+                </Form>
             </div>
         );
     }
@@ -80,6 +88,9 @@ class MilForm extends React.Component {
     constructor(props) {
         super(props)
     }
+    handleSearch(){
+        this.props.handleSearch(this.props.form.getFieldsValue())
+    }
     render() {
         const count = 10;
         const { getFieldDecorator } = this.props.form;
@@ -90,7 +101,7 @@ class MilForm extends React.Component {
         const children = [];
         return (
             <div>
-
+   <Form onSubmit={this.handleSearch.bind(this)} className="login-form">
                 <Col span={4} key={0} style={{ display: 0 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
                         {getFieldDecorator('name', {
@@ -102,7 +113,7 @@ class MilForm extends React.Component {
                 </Col>
                 <Col span={4} key={1} style={{ display: 1 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
-                        {getFieldDecorator('name', {
+                        {getFieldDecorator('cannelType', {
                             rules: [{ required: true, message: '请输入渠道类型!' }],
                         })(
                             <Input type='text' placeholder="渠道类型" />
@@ -111,7 +122,7 @@ class MilForm extends React.Component {
                 </Col>
                 <Col span={4} key={2} style={{ display: 2 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
-                        {getFieldDecorator('name', {
+                        {getFieldDecorator('level', {
                             rules: [{ required: true, message: '请输入客户等级!' }],
                         })(
                             <Input type='text' placeholder="客户等级" />
@@ -120,7 +131,7 @@ class MilForm extends React.Component {
                 </Col>
                 <Col span={4} key={3} style={{ display: 3 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
-                        {getFieldDecorator('name', {
+                        {getFieldDecorator('saleArea', {
                             rules: [{ required: true, message: '请输入营销区域!' }],
                         })(
                             <Input type='text' placeholder="营销区域" />
@@ -129,7 +140,7 @@ class MilForm extends React.Component {
                 </Col>
                 <Col span={4} key={4} style={{ display: 4 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
-                        {getFieldDecorator('name', {
+                        {getFieldDecorator('parent_id', {
                             rules: [{ required: true, message: '请输入上级客户!' }],
                         })(
                             <Input type='text' placeholder="上级客户" />
@@ -138,7 +149,7 @@ class MilForm extends React.Component {
                 </Col>
                 <Col span={4} key={5} style={{ display: 5 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
-                        {getFieldDecorator('name', {
+                        {getFieldDecorator('adress', {
                             rules: [{ required: true, message: '请输入省/市/区/县!' }],
                         })(
                             <Input type='text' placeholder="省/市/区/县" />
@@ -147,7 +158,7 @@ class MilForm extends React.Component {
                 </Col>
                 <Col span={4} key={6} style={{ display: 6 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
-                        {getFieldDecorator('name', {
+                        {getFieldDecorator('industry', {
                             rules: [{ required: true, message: '请输入行业!' }],
                         })(
                             <Input type='text' placeholder="行业" />
@@ -156,7 +167,7 @@ class MilForm extends React.Component {
                 </Col>
                 <Col span={4} key={7} style={{ display: 7 < count ? 'block' : 'none' }}>
                     <FormItem {...formItemLayout} >
-                        {getFieldDecorator('name', {
+                        {getFieldDecorator('lifecycle', {
                             rules: [{ required: true, message: '请输入生命周期!' }],
                         })(
                             <Input type='text' placeholder="生命周期" />
@@ -173,14 +184,14 @@ class MilForm extends React.Component {
                     </FormItem>
                 </Col>
 
-                <Col span={8} style={{ textAlign: 'right' }}>
+                <Col span={4} style={{ textAlign: 'right' }}>
                     <Button type="primary" htmlType="submit">搜索</Button>
 
-                    <a style={{ fontSize: 12 }} onClick={this.toggle}>
+                    <a style={{ fontSize: 12 }} onClick={this.props.btnLess.bind(this,{simForm:true,milForm:false})}>
                         收起 <Icon type='up' />
                     </a>
                 </Col>
-
+                </Form>
             </div>
         );
     }
@@ -215,7 +226,6 @@ class ToolForm extends React.Component {
     }
 
 
-
     render() {
         const WarpSimForm = Form.create()(SimForm);
         const WarpMilForm = Form.create()(MilForm);
@@ -231,15 +241,21 @@ class ToolForm extends React.Component {
                             <Option value="3">最近查看</Option>
                         </Select>
                     </Col>
-                    <Col span={14}>
-                        <div style={{ display: this.props.visible.BtnPanel == true ? 'block' : 'none' }}>
-                            <BtnPanel />
+                    <Col span={15}>
+                        <div style={{ display: this.props.visible.btnPanel == true ? 'block' : 'none' }}>
+                            <BtnPanel 
+                                btnBack = {this.props.btnBack}
+                                btnSetEnable = {this.props.btnSetEnable}
+                            />
                         </div>
                         <div style={{ display: this.props.visible.simForm == true ? 'block' : 'none' }}>
-                            <WarpSimForm />
+                            <WarpSimForm 
+                                handleSearch = {this.props.handleSearch}
+                                btnMore = {this.props.btnMore}
+                             />
                         </div>
                     </Col>
-                    <Col span={6}>
+                    <Col span={5}>
                         <div className='list-add'>
                             <ButtonGroup className='list-add-group'>
                                 <Button icon='download'>导入</Button>
@@ -249,7 +265,10 @@ class ToolForm extends React.Component {
                         </div></Col>
                 </Row>
                 <Row style={{ marginLeft: 8, marginTop: 8, fontSize: 12, display: this.props.visible.milForm == true ? 'block' : 'none' }}>
-                    <WarpMilForm />
+                    <WarpMilForm  
+                        handleSearch = {this.props.handleSearch} 
+                        btnLess = {this.props.btnLess}
+                    />
                 </Row>
             </div>
         );
