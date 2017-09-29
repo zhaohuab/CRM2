@@ -11,11 +11,9 @@ request.ajaxSetup({
     headers: {
         // 后端约定, 用以辨别是否为ajax请求的字段
         'X-Requested-With': 'XMLHttpRequest',
-        // "type":"application/x-www-form-urlencoded"
     }
 })
 
-// session过期自动跳转登录页面
 const reqwest = (options,success,fail)=> {
     let {data,method,url,...others} = options;
     let mResult = handleMehtod(method,url,data);
@@ -45,7 +43,6 @@ const reqwest = (options,success,fail)=> {
     })
 }
 function handleMehtod(method,url,data) {
-    debugger
     if(method.toUpperCase() == "GET" && data) {
         url += "?param=" + encodeURIComponent(encrypt(data.param))
         data = {};
