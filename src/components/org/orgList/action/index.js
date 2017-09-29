@@ -23,7 +23,7 @@ export function getlist(searchMap){
                 })
             }
         },(data) => {
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data.data}));
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
     }
 }
@@ -103,7 +103,7 @@ export function listchange(value){
                     })
                 }
             },(data) => {
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data.data})) 
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data})) 
             })
         })
     }
@@ -154,7 +154,7 @@ export function listdel(record,treeId,searchFilter){
 
 //启停用功能
 export function setEnablestate(treeId,searchFilter,data,state){
-    debugger
+
     var ids = [];
     let searchMap = {};
     if(treeId!=null&&treeId!=undefined&&treeId!=""){
@@ -187,16 +187,15 @@ export function setEnablestate(treeId,searchFilter,data,state){
 
 //获取tree数据
 export function getTreeList(){
+
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETTREELISTSTART'})
-        console.info(url.orgTree);
         request({
             url: url.orgTree,
-            
             method:'get',
             data:{}
         },(data) => {
-            
+            debugger
             dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
         })
         

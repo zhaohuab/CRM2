@@ -5,9 +5,8 @@
  */
 import request from 'reqwest'
 import handle from './HandleReqwest'
-import des from 'des.js'
-import crypto from 'crypto';
-import {Buffer} from 'buffer'
+import {encrypt,decrypt} from './Cryto'
+
 request.ajaxSetup({
     headers: {
         // 后端约定, 用以辨别是否为ajax请求的字段
@@ -18,38 +17,19 @@ request.ajaxSetup({
 
 // session过期自动跳转登录页面
 const reqwest = (options,success,fail)=> {
-    let {data,...others} = options;
-
-    var CBC = des.CBC.instantiate(des.DES);
-    let v = "3132333435363738";
-    var key = new Buffer(v, 'hex');
-    var iv = new Buffer(v, 'hex');
-    var input = new Buffer(v, 'hex');
-    //debugger
-    var enc = CBC.create({  
-        type: 'encrypt',
-        key: key,
-        iv: iv
-    });
-    console.info(key);
-    // console.info(enc.update(input));
-    // console.info(enc.final())
-    var out = enc.update(input).concat(enc.final());
-    
-    //  var cipher = crypto.createCipheriv('des', key, iv);
-    // console.info(cipher.update(input));
-    // console.info(cipher.final());
-    console.info(out);
-
-
+    let {data,method,url,...others} = options;
+    let mResult = handleMehtod(method,url,data);
     request({
         type:"application/x-www-form-urlencoded",
-        ...options
+        ...mResult,
+        ...others
     })
     .then((result) => {
         handle(result);
         if(result.response) {
-            success(JSON.parse(result.response));
+            let resp = JSON.parse(result.response);
+            let respData = resp.data;
+            success(JSON.parse(decrypt(respData)));
         }
         else {
             success();
@@ -64,5 +44,21 @@ const reqwest = (options,success,fail)=> {
         }
     })
 }
-
+function handleMehtod(method,url,data) {
+    debugger
+    if(method.toUpperCase() == "GET" && data) {
+        url += "?param=" + encodeURIComponent(encrypt(data.param))
+        data = {};
+    }
+    else {
+        data = {
+            param:encrypt(data && data.param ? data.param : undefined)
+        }
+    }
+    return {
+        method,
+        url,
+        data,
+    }
+}
 export default  reqwest
