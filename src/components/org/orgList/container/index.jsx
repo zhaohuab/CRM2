@@ -12,6 +12,7 @@ const ButtonGroup = Button.Group;
 const Search = Input.Search;
 import './index.less'
 import 'assets/stylesheet/menu/iconfont.css'
+import 'assets/stylesheet/tool/iconfont.css'
 
 class List extends Component {
     constructor(){
@@ -228,7 +229,9 @@ class List extends Component {
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
                         >
-                            <WrapCard wrappedComponentRef={(inst) => this.formRef = inst} data={editData}/> 
+                            <div className='model-height'>
+                                <WrapCard wrappedComponentRef={(inst) => this.formRef = inst} data={editData}/> 
+                            </div>
                         </Modal>   
                     </div>
                 </div>

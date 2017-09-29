@@ -45,7 +45,7 @@ const basePath = '/crm_web/';
                         {
                             isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
                         }
-                        {item.name}
+                            <span className='menu-title'>{item.name}</span>
                         </span>}>
                         {tree(item.child,false)}
                     </SubMenu>
@@ -56,7 +56,7 @@ const basePath = '/crm_web/';
                                 {
                                     isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
                                 }
-                                {item.name}
+                                    <span className='menu-title'>{item.name}</span>
                                 </span>
                             
                             </Link>
@@ -78,7 +78,7 @@ const basePath = '/crm_web/';
                 >
                     <Menu.Item key="index">
                         <Link to={basePath + "home"} onClick={that.onClick.bind(that, rootTitle)}>
-                            <span><Icon type="home" className='menu-home'/>{rootTitle}</span>
+                            <span><Icon type="home" className='menu-home'/><span className='menu-title'>{rootTitle}</span></span>
                         </Link>
                     </Menu.Item>
                     {tree(data, isRoot)}
@@ -91,10 +91,10 @@ const basePath = '/crm_web/';
         const {$$state} = this.props;
         const data = $$state.get("data").toJS();
         let menuClassName = this.props.collapsed ? "app-menu-con" : "app-menu-con menu-con-open";
-    
+        let imgLogo= this.props.collapsed ? "img-logo-hide" : "img-logo";
         return (
           <div className='menu-bg-warpper'>
-                <div className='menu-bg-logo'><img src={require('assets/images/home/crm-logo.png')}/></div>
+                <div className='menu-bg-logo'><img src={require('assets/images/menu/crm-logo.png')} className={imgLogo}/></div>
                 <div className='menu-bg'  onClick={this.props.toggleCollapsed}>
                     <span className={this.props.collapsed?"menu-control-show rotateMenuIn":'menu-control-hide rotateMenuOut'}>
                         <i className='iconfont icon-zhankai' style={{fontSize:'14px'}}></i>

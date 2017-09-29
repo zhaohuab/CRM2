@@ -59,8 +59,8 @@ class Card extends React.Component {
                 <Input />
                 )
         }
-        return (<Form >
-
+        return (
+        <Form >
             <FormItem
                 label="姓名"
                 {...formItemLayout}

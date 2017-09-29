@@ -1,6 +1,7 @@
 body {
     background-color: #e5e5e5;
-    overflow: hidden
+    overflow: hidden;
+    font-family:"Microsoft YaHei","Arial","黑体","宋体",sans-serif;
 }
 .full-height {
     height: 100%;
@@ -35,7 +36,8 @@ body {
 .app-content {
     flex: auto;
     height:100%;
-    margin: 10px;
+    padding: 10px;
+    box-sizing: border-box;
     overflow-y: auto
 }
 
@@ -64,11 +66,18 @@ body {
  .ant-form-item-required:before{
      color:#333
  }
+ //model内高度
+.model-height{
+    max-height: 480px;
+    overflow-y: auto;
+    margin:-16px;
+    padding:16px;
+}
 
 
 //ant.design  表格样式
 .ant-table-thead > tr, .ant-table-tbody > tr:nth-child(even){
-    background: #F6FAFF;
+    background: #F3FAFF;
 }
 .ant-table-thead > tr > th{
     color:#666
@@ -86,10 +95,6 @@ body {
     border:none
 }
 
-
-
-
-
 //ant.design  菜单样式
 .ant-menu-inline-collapsed > .ant-menu-item .anticon + span, .ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title .iconfont + span{
     opacity: 0
@@ -105,3 +110,6 @@ body {
     position: relative;
     left:-1px;
 }
+
+
+

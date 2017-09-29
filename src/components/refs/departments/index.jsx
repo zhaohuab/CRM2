@@ -4,7 +4,7 @@ import { org as url } from 'api'
 import reqwest from 'utils/reqwest'
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-
+import './index.less'
 class Department extends React.Component {
     state = {
         visible : false,
@@ -30,21 +30,22 @@ class Department extends React.Component {
     }
     renderTreeNodes = (data) => {
         return data.map((item) => {
-            if (item.children) {
+            if (item.children && item.children.length) {
                 return (
                     <TreeNode title={item.name} key={item.id} dataRef={item}>
                         {this.renderTreeNodes(item.children)}
                     </TreeNode>
                 );
             }
-            return <TreeNode {...item} />;
+            return <TreeNode title={item.name} key={item.id} dataRef={item} />;
         });
     }
+  
     onSelect = (key,e) => {
-        
         let {title} = e.node.props;
         this.setState({select:{key:key[0],title}});
     }
+
     getData = () => {
         let that = this;
         reqwest({
@@ -55,12 +56,14 @@ class Department extends React.Component {
             that.setState({dataSource:dataResult.data});
         })
     }
+
     triggerChange = (changedValue) => {
         const onChange = this.props.onChange;
         if (onChange) {
             onChange(changedValue);
         }
     }
+
     emitEmpty=()=>{
         this.setState({select:{key:'',title:''}},()=>{
             this.triggerChange(this.state.select);

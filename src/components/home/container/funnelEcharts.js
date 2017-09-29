@@ -4,14 +4,6 @@ let option = {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c}%"
     },
-    toolbox: {
-        feature: {
-            dataView: {readOnly: false},
-            saveAsImage: {},
-        },
-        bottom:20,
-        right:10
-    },
     series: [
         {
             name: '预期',
