@@ -92,7 +92,6 @@ const basePath = '/crm_web/';
         const data = $$state.get("data").toJS();
         let menuClassName = this.props.collapsed ? "app-menu-con" : "app-menu-con menu-con-open";
         let imgLogo= this.props.collapsed ? "img-logo-hide" : "img-logo";
-    
         return (
           <div className='menu-bg-warpper'>
                 <div className='menu-bg-logo'><img src={require('assets/images/menu/crm-logo.png')} className={imgLogo}/></div>

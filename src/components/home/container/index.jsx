@@ -185,7 +185,7 @@ class Home extends React.Component {
                                         </Dropdown>
                                     </div>
                                 </h3>
-                                <div ref='money' style={{width:"100%",minHeight:"300px"}}></div>
+                                <div ref='money' style={{width:"100%",minHeight:"350px"}}></div>
                             </div>
                         </Col>
                         <Col span={9} className='clinet-main-middle'> 
