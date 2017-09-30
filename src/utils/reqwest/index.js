@@ -17,17 +17,20 @@ request.ajaxSetup({
 const reqwest = (options,success,fail)=> {
     let {data,method,url,...others} = options;
     let mResult = handleMehtod(method,url,data);
+    
     request({
         type:"application/x-www-form-urlencoded",
         ...mResult,
         ...others
     })
     .then((result) => {
+        
         handle(result);
         if(result.response) {
             let resp = JSON.parse(result.response);
             let respData = resp.data;
-            success(JSON.parse(decrypt(respData)));
+            let decryptData = decrypt(respData)
+            success(decryptData ? JSON.parse(decryptData) : undefined);
         }
         else {
             success();
@@ -43,17 +46,23 @@ const reqwest = (options,success,fail)=> {
     })
 }
 function handleMehtod(method,url,data) {
-    if(method.toUpperCase() == "GET" && data) {
-        url += "?param=" + encodeURIComponent(encrypt(data.param))
+    let contentType="";
+    if((method.toUpperCase() == "GET" || method.toUpperCase() == "DELETE")) {
+        if(data) {
+            url += "?param=" + encodeURIComponent(encrypt(data.param));
+        }
         data = {};
+        contentType = "application/x-www-form-urlencoded";
     }
     else {
-        data = {
-            param:encrypt(data && data.param ? data.param : undefined)
-        }
+        data = JSON.stringify({
+            param:encrypt(data && data.param ? JSON.stringify(data.param) : undefined)
+        })
+        contentType = "application/json";
     }
     return {
         method,
+        contentType,
         url,
         data,
     }

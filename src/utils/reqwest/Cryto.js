@@ -28,6 +28,9 @@ const encrypt = (content) => {
 }
 
 const decrypt = (content) => {
+    if(!content) {
+        return;
+    }
     //b64解码
     content = b64.toByteArray(content);
     let CBC = des.CBC.instantiate(des.DES);

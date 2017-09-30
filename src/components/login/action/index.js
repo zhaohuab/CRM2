@@ -13,7 +13,7 @@ const login = (params) => {
 			url: url,
 			method : 'POST',
 			data : {
-				param : JSON.stringify({username:user,password}),
+				param : {username:user,password},
 			}
 		},(result) => {
 			dispatch(fetchData('LOGIN_MAIN_LOGIN_START_SUCCESS', {}))
