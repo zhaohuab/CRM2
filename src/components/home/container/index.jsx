@@ -1,6 +1,6 @@
 
 import React, { Component, PropTypes } from 'react';
-import { Input,Badge,Icon,Row, Col,Button} from 'antd';
+import { Input, Badge, Icon, Row, Col, Button} from 'antd';
 const Search = Input.Search;
 import './index.less'
 import echarts from 'echarts'
