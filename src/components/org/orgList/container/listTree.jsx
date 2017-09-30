@@ -80,7 +80,6 @@ export default class ListTree extends Component {
                 {
                     data.length? 
                     <div>
-                       
                         <div className='org-tree-main'>
                             <Tree
                                 showLine

@@ -4,18 +4,6 @@ let option = {
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c}%"
     },
-    toolbox: {
-        feature: {
-            dataView: {readOnly: false},
-            saveAsImage: {},
-        },
-        bottom:20,
-        right:10
-    },
-    legend: {
-        data: ['展现','点击','访问','咨询','订单'],
-        top:20
-    },
     series: [
         {
             name: '预期',
@@ -42,11 +30,37 @@ let option = {
                 }
             },
             data: [
-                {value: 60, name: '访问'},
-                {value: 40, name: '咨询'},
-                {value: 20, name: '订单'},
-                {value: 80, name: '点击'},
-                {value: 100, name: '展现'}
+                {value: 60, name: '访问',itemStyle: {
+                    normal: {
+                        color: 'rgba(203,70,63,1)'
+                        
+                    }
+                }},
+                {value: 40, name: '咨询',itemStyle: {
+                    normal: {
+                        color: ' rgba(75,95,109,1)'
+                    }
+                }},
+                {value: 20, name: '订单',itemStyle: {
+                    normal: {
+                        color: 'rgba(60,170,185,1)'
+                    }
+                }},
+                {value: 80, name: '点击',itemStyle: {
+                    normal: {
+                        color: 'rgba(216,109,66,1)'
+                    }
+                }},
+                {value: 90, name: '展现',itemStyle: {
+                    normal: {
+                        color: 'rgba(119,209,167,1)'
+                    }
+                }},
+                {value: 100, name: '展现',itemStyle: {
+                    normal: {
+                        color: 'rgba(159,213,99,1)'
+                    }
+                }}
             ]
         },
         {
@@ -70,17 +84,41 @@ let option = {
             },
             itemStyle: {
                 normal: {
-                    opacity: 0.5,
-                    borderColor: '#fff',
-                    borderWidth: 2
+                    opacity: .8,
                 }
             },
             data: [
-                {value: 30, name: '访问'},
-                {value: 10, name: '咨询'},
-                {value: 5, name: '订单'},
-                {value: 50, name: '点击'},
-                {value: 80, name: '展现'}
+                {value: 30, name: '访问',itemStyle: {
+                    normal: {
+                        color: 'rgba(203,70,63,1)'
+                    }
+                }},
+                {value: 10, name: '咨询',itemStyle: {
+                    normal: {
+                        color: ' rgba(75,95,109,1)'
+                    }
+                }},
+                {value: 5, name: '订单',itemStyle: {
+                    normal: {
+                        color: 'rgba(60,170,185,1)'
+                    }
+                }},
+                {value: 50, name: '点击',itemStyle: {
+                    normal: {
+                        color: 'rgba(216,109,66,1)'
+                    }
+                }},
+                {value: 70, name: '展现',itemStyle: {
+                    normal: {
+                        color: 'rgba(119,209,167,1)'
+                    }
+                }},
+                {value: 80, name: '展现',itemStyle: {
+                    normal: {
+                        color: 'rgba(159,213,99,0.50)'
+                       
+                    }
+                }}
             ]
         }
     ]

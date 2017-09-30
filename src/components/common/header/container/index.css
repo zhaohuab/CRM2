@@ -93,7 +93,7 @@
   text-align: center;
 }
 .app-header .app-header-right .client-header-left .clinet-alert sup {
-  top: -22px;
+  top: -10px;
   right: -22px;
   height: 14px;
   line-height: 14px;
@@ -102,14 +102,24 @@
   background: #F1B941;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
+.app-header .app-header-right .client-header-left .clinet-alert .clinet-alert-icon {
+  font-size: 15px;
+  color: #3CA4FB;
+}
 .app-header .app-header-right .client-header-right {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 130px;
 }
 .app-header .app-header-right .client-header-right .header-right-title {
   color: #1B1D2E;
+  min-width: 50px;
   margin: 0 10px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .app-header .app-header-right .client-header-right .anticon-caret-down:before {
   color: #1B1D2E;

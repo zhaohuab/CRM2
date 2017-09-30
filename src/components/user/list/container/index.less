@@ -1,10 +1,40 @@
+@simpleColor:#666;
+@deepColor:#333;
+
+
+ //ant.design  tree样式
+
+ .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher-noop:after{
+    content: "\E621";
+    color:#3CA4FB 
+}
+
+.ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_open:after{
+    content: "\E6C1";
+    color:#3CA4FB 
+}
+.ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_close:after{
+    content: "\E6C0";
+    color:#3CA4FB 
+}
+
+//model样式
+
 .ant-modal-header{
-   background: #FAFAFA;
-   height:50px;
+    background: #FAFAFA;
+    height:50px;
+ }
+
+ .ant-form-item-required:before{
+     color:#333
+ }
+
+ //树样式
+ .ant-tree.ant-tree-show-line li:not(:last-child):before{
+    border-left:1px solid #ECECEC
 }
-.ant-form-item-required:before{
-    color:#333
-}
+
+
 .add-model{
     height:390px;
     overflow: auto;
@@ -49,6 +79,13 @@
     padding: 10px;
     padding-top:0;
     box-sizing: border-box;
+    background: white;
+    .ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+        border:none
+    }
+    .iconfont{
+        font-size: 12px;
+    }
     .list-box{
         padding:5px;
         padding-top:0;
@@ -70,6 +107,12 @@
         .head_panel-left{
             display: flex;
             align-items: center;
+            .deep-title-color{
+                color:@deepColor
+            }
+            .simple-title-color{
+                color:@simpleColor
+            }
             .head_panel-state{
                 margin-left:20px;
             }

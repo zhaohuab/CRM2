@@ -5,15 +5,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button } from 'antd';
+import { Table, Modal, Button,Icon } from 'antd';
 
 import {Input,Radio,Popconfirm,Form} from 'antd';
 import Card from './UserForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
+import Department from 'components/refs/departments'
 import './index.less'
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
+import 'assets/stylesheet/menu/iconfont.css'
+import 'assets/stylesheet/tool/iconfont.css'
 
 //导入action方法
 import * as Actions from "../action"
@@ -67,7 +70,7 @@ class List extends React.Component {
       isEdit : false,
       enable : 1,
       pagination : {
-        pageSize:20,
+        pageSize:10,
         page:1,
       },
       searchMap : {
@@ -115,6 +118,11 @@ class List extends React.Component {
   }
   onSave() {
     let form = this.formRef.props.form;
+    form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
     //this.setState({headLabel:false});
     debugger;
     if(this.state.isEdit) {
@@ -144,6 +152,24 @@ class List extends React.Component {
     this.props.action.getListData({ pagination,searchMap });
     this.setState({enable,selectedRowKeys:[],searchMap});
   }
+  showTotal(total) {
+    return `共 ${total} 条`;
+  }
+  onPageChange(page,pageSize) {
+    let { pagination,searchMap } = this.state;
+    //可能有问题
+    pagination = {page:page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData({ pagination,searchMap });
+  }
+  onPageSizeChange(current,pageSize) {
+    debugger
+    let { pagination,searchMap } = this.state;
+    pagination = {page:pagination.page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData({ pagination,searchMap });
+    console.info(`pageSize:${pageSize}`)
+  }
   render() {
     let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
@@ -162,21 +188,20 @@ class List extends React.Component {
           headLabel ? 
           <div className='head_edit'>
             <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
-              <Button className="default_button" onClick={this.onEdit} icon='edit'>编辑</Button>
+              <Button className="default_button" onClick={this.onEdit}><i className='iconfont icon-bianji'></i>编辑</Button>
               <Popconfirm placement="bottom"  title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
-                <Button className="default_button" icon='delete'>删除</Button>
+                <Button className="default_button" ><i className='iconfont icon-tubiao-shanchu'></i>删除</Button>
               </Popconfirm>
               
-              {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}  icon='pause-circle-o'>停用</Button>:
-              <Button className="default_button" onClick={this.onEnable(1).bind(this,1)} icon='play-circle-o'>启用</Button>}
-
-              <Button className="default_button" icon='user-add'>分配角色</Button>
+              {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}><i className='iconfont icon-tingyong-lanse'></i>停用</Button>:
+              <Button className="default_button" onClick={this.onEnable(1).bind(this,1)}><i className='iconfont icon-qiyong-lanse'></i>启用</Button>}
+              <Button className="default_button"><i className='iconfont icon-fenpeijiaose'></i>分配角色</Button>
             </HeadLabel> 
           </div>: 
           <div className='head_panel'>
               <div className='head_panel-left'>
                 <div>
-                  <span className='head_panel_span'>所属部门：</span>
+                  <span className='deep-title-color'>所属部门：</span>
                   <Input
                     placeholder="请选择..."
                     className="search"
@@ -184,29 +209,31 @@ class List extends React.Component {
                   />
                 </div>
                 <div className='head_panel-state'>
-                  <span className='head_panel_span'>状态：</span>
-                  <RadioGroup onChange={this.onEableRadioChange} value={this.state.enable}>
+                  <span className='simple-title-color'>状态：</span>
+                  <RadioGroup onChange={this.onEableRadioChange} value={this.state.enable} className='simple-title-color'>
                     <Radio value={1}>启用</Radio>
                     <Radio value={2}>停用</Radio>
                   </RadioGroup>
                 </div>
               </div>
-              <div >
+              <div className='head_panel-right'>
                 <ButtonGroup className='add-more'>
-                  <Button icon='download'>导入</Button>
-                  <Button icon='upload'>导出</Button>
+                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
+                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
                 </ButtonGroup>
-                <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}>新增人员</Button>
+                <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
               </div>
           </div>
         }
 
         <div className="list-box">
           <Table
+            size="middle"
             columns={this.columns}
             dataSource={page.data}
             rowSelection={rowSelection}
             rowKey="id"
+            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}
           />
         </div>
         <Modal
@@ -216,7 +243,7 @@ class List extends React.Component {
           onCancel={this.onClose.bind(this)}
           width={500}
         >
-          <div className='add-model'>
+          <div className='model-height'>
             <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
           </div>
         </Modal>

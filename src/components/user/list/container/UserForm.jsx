@@ -1,7 +1,7 @@
 import { Form, Input, Select } from 'antd';
 
 import Email from 'utils/components/email'
-import Department from 'components/refs/Department'
+import Department from 'components/refs/departments'
 import Enum from 'utils/components/enum'
 import RadioGroup from 'utils/components/radio'
 const FormItem = Form.Item;
@@ -59,8 +59,8 @@ class Card extends React.Component {
                 <Input />
                 )
         }
-        return (<Form >
-
+        return (
+        <Form >
             <FormItem
                 label="姓名"
                 {...formItemLayout}

@@ -100,6 +100,7 @@ const onEnable = (rowKeys, enable, params) => {
 				}),
 			}
 		}, result => {
+			debugger
 			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
