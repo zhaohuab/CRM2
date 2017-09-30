@@ -116,7 +116,9 @@ class List extends React.Component {
   onSave() {
     let form = this.formRef.props.form;
     //this.setState({headLabel:false});
+    debugger;
     if(this.state.isEdit) {
+  
       this.props.action.onSave4Edit(form.getFieldsValue());
     }
     else {
