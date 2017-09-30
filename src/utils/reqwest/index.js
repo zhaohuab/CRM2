@@ -16,6 +16,7 @@ request.ajaxSetup({
 
 const reqwest = (options,success,fail)=> {
     let {data,method,url,...others} = options;
+    debugger
     let mResult = handleMehtod(method,url,data);
     
     request({
@@ -48,8 +49,8 @@ const reqwest = (options,success,fail)=> {
 function handleMehtod(method,url,data) {
     let contentType="";
     if((method.toUpperCase() == "GET" || method.toUpperCase() == "DELETE")) {
-        if(data) {
-            url += "?param=" + encodeURIComponent(encrypt(data.param));
+        if(data&&data.param) {
+            url += "?param=" + encodeURIComponent(encrypt(JSON.stringify(data.param)));
         }
         data = {};
         contentType = "application/x-www-form-urlencoded";

@@ -89,8 +89,9 @@ class List extends React.Component {
     this.props.action.showForm(true,{});
   }
   onDelete=()=>{
+    let { pagination,searchMap } = this.state;
     this.setState({headLabel:false});
-    this.props.action.onDelete(this.state.selectedRowKeys);
+    this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
   }
   onEdit = () => {
     
