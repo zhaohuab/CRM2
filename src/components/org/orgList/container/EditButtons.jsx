@@ -3,6 +3,7 @@ import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,Modal,Spin} from 'antd'
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 import './index.less'
+
 export default class EditButtons extends Component {
    returnBack(){
      this.props.returnFn()
@@ -38,7 +39,7 @@ export default class EditButtons extends Component {
                         已选择：{this.props.data.length}
                     </div> 
                     <div className='actionButtons'>
-                        <Button onClick={this.returnBack.bind(this)} className='returnbtn-class' icon='swap-left'>返回</Button>
+                        <Button onClick={this.returnBack.bind(this)} className='returnbtn-class'> <i className='iconfont icon-fanhui'></i> 返回</Button>
                         <Button className='returnbtn-class' onClick={this.deleteList.bind(this,this.props.data)}><i className='iconfont icon-tubiao-shanchu'></i>删除</Button>
                         {this.props.data.length===1?
                         <Button onClick={this.changeForm.bind(this,this.props.data[0])} className='returnbtn-class'> <i className='iconfont icon-bianji'></i>编辑</Button>

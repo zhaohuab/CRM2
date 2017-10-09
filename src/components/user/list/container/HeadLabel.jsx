@@ -1,5 +1,5 @@
 import { Button,Icon } from 'antd';
-
+import 'assets/stylesheet/tool/iconfont.css'
 
 class HeadLabel extends React.Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class HeadLabel extends React.Component {
                 <div className='edit-left'>
                     <div className='edit-inner-left'>已选中<span>{selectedRowLength}</span>条</div>
                     <div className='edit-inner-right'>
-                        <Button className="default_button" onClick={this.props.onBack} icon="swap-left">返回</Button>
+                        <Button className="default_button" onClick={this.props.onBack}><i className='iconfont icon-fanhui'></i>返回</Button>
                         {this.props.children}
                     </div>
                 </div>

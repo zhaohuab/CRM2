@@ -1,8 +1,30 @@
+/*ant select下拉框颜色*/
+.ant-select-dropdown{
+    min-width:105px;
+    text-align: center;
+}
+
+.ant-select-dropdown-menu-item{
+    color:#1C7FEB
+}
+.ant-select-dropdown-menu-item:hover{
+    color:#666;
+    background: #EBF5FF
+}
+.ant-select{
+    margin-right: -10px;
+    
+}
+
 .home-warrper {
    display: flex;
    flex-direction:column;
    height:100%;
    background: #f2f2f2;
+   .ant-select-selection{
+       border:none;
+   }
+   
    .main-inner{
        padding:15px;
        padding-top:0;
@@ -42,11 +64,6 @@
               cursor: pointer
           }
       }
-      .ant-dropdown-link{
-        font-size:12px;
-        color: #666666;
-        cursor: pointer
-      }
     .clinet-main-left{
         padding-right:10px;
         box-sizing: border-box;
@@ -54,8 +71,12 @@
         .main-left-top{
             background: white;
             margin-bottom:10px;
+            .target-charts{
+                width:100%;
+                min-height:250px
+            }
             .charts-cell-tabel{
-                width:90%;
+                width:100%;
                 margin:0 auto;
                 text-align: center;
                 border:1px solid #EEEEEE;
@@ -76,6 +97,10 @@
         }
         .main-left-bottom{
             background: white;
+            .money-charts{
+                width:100%;
+                min-height:350px
+            }
         }
     }
     .clinet-main-middle{
@@ -84,10 +109,16 @@
         .main-middle-top{
             background: white;
             margin-bottom:10px;
-            
         }
         .main-middle-bottom{
             background: white;
+            .funnel-chrats{
+                width:100%;
+                min-height:405px;
+                div{
+                    margin:0 auto;
+                }
+            }
         }
     } 
     .clinet-main-right{
@@ -175,7 +206,7 @@
        }
        .main-right-bottom{
         background: white;
-        height:605px;
+        height:635px;
        }
     }
   }

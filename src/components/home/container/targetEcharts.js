@@ -12,7 +12,7 @@ let option = {
                     center: ['50%', '50%'],
                     data:[
                         {
-                            value:3000, 
+                            value:1000, 
                             name:'目标',
                             itemStyle: {
                                 normal: {
@@ -28,7 +28,7 @@ let option = {
                             }
                         },
                         {
-                            value:15,
+                            value:2000,
                             name:'完成率',
                             itemStyle: {
                                 normal: {
@@ -44,7 +44,7 @@ let option = {
                             }
                         },
                         {
-                            value:2000,
+                            value:3000,
                             name:'回款',
                             itemStyle: {
                                 normal: {

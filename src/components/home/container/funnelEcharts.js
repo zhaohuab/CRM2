@@ -1,3 +1,4 @@
+
 let option = {
 
     tooltip: {
@@ -8,15 +9,16 @@ let option = {
         {
             name: '预期',
             type: 'funnel',
-            left: '10%',
+            left: '13%',
             width: '70%',
             label: {
                 normal: {
-                    formatter: '{b}预期'
+                    color:'#999999',
+                    formatter: '{b}'
                 },
                 emphasis: {
                     position:'inside',
-                    formatter: '{b}预期: {c}%'
+                    formatter: '{b}: {c}%'
                 }
             },
             labelLine: {
@@ -26,37 +28,38 @@ let option = {
             },
             itemStyle: {
                 normal: {
-                    opacity: 0.7
+                    opacity: 0.7,
+                    borderWidth:0
                 }
             },
             data: [
-                {value: 60, name: '访问',itemStyle: {
+                {value: 60, name: '需求沟通',itemStyle: {
                     normal: {
                         color: 'rgba(203,70,63,1)'
                         
                     }
                 }},
-                {value: 40, name: '咨询',itemStyle: {
+                {value: 40, name: '确认商机',itemStyle: {
                     normal: {
                         color: ' rgba(75,95,109,1)'
                     }
                 }},
-                {value: 20, name: '订单',itemStyle: {
+                {value: 20, name: '发现商机',itemStyle: {
                     normal: {
                         color: 'rgba(60,170,185,1)'
                     }
                 }},
-                {value: 80, name: '点击',itemStyle: {
+                {value: 80, name: '方案设计',itemStyle: {
                     normal: {
                         color: 'rgba(216,109,66,1)'
                     }
                 }},
-                {value: 90, name: '展现',itemStyle: {
+                {value: 90, name: '投标谈判',itemStyle: {
                     normal: {
                         color: 'rgba(119,209,167,1)'
                     }
                 }},
-                {value: 100, name: '展现',itemStyle: {
+                {value: 100, name: '签约',itemStyle: {
                     normal: {
                         color: 'rgba(159,213,99,1)'
                     }
@@ -66,7 +69,7 @@ let option = {
         {
             name: '实际',
             type: 'funnel',
-            left: '10%',
+            left: '13%',
             width: '70%',
             maxSize: '80%',
             label: {
@@ -84,36 +87,38 @@ let option = {
             },
             itemStyle: {
                 normal: {
-                    opacity: .8,
+                    opacity: 0.8,
+                    borderWidth:0
                 }
             },
+           
             data: [
-                {value: 30, name: '访问',itemStyle: {
+                {value: 30, name: '需求沟通',itemStyle: {
                     normal: {
                         color: 'rgba(203,70,63,1)'
                     }
                 }},
-                {value: 10, name: '咨询',itemStyle: {
+                {value: 10, name: '确认商机',itemStyle: {
                     normal: {
                         color: ' rgba(75,95,109,1)'
                     }
                 }},
-                {value: 5, name: '订单',itemStyle: {
+                {value: 5, name: '发现商机',itemStyle: {
                     normal: {
                         color: 'rgba(60,170,185,1)'
                     }
                 }},
-                {value: 50, name: '点击',itemStyle: {
+                {value: 50, name: '方案设计',itemStyle: {
                     normal: {
                         color: 'rgba(216,109,66,1)'
                     }
                 }},
-                {value: 70, name: '展现',itemStyle: {
+                {value: 70, name: '投标谈判',itemStyle: {
                     normal: {
                         color: 'rgba(119,209,167,1)'
                     }
                 }},
-                {value: 80, name: '展现',itemStyle: {
+                {value: 80, name: '签约',itemStyle: {
                     normal: {
                         color: 'rgba(159,213,99,0.50)'
                        
