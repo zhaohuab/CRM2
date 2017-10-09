@@ -29,8 +29,11 @@ const environments = {
 };
 
 const productionEnv = environments[process.env.npm_lifecycle_event] || '//172.20.18.154';
-console.log(productionEnv)
+console.log("打包引用地址："+productionEnv)
 
+
+//打包之前先清理lib
+require('./before-build.script');
 
 module.exports = {
 	entry: {
