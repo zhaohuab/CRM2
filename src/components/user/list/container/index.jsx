@@ -10,6 +10,7 @@ import { Table, Modal, Button,Icon } from 'antd';
 import {Input,Radio,Popconfirm,Form} from 'antd';
 import Card from './UserForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
+import Department from 'components/refs/department'
 import './index.less'
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
@@ -69,7 +70,7 @@ class List extends React.Component {
       isEdit : false,
       enable : 1,
       pagination : {
-        pageSize:20,
+        pageSize:10,
         page:1,
       },
       searchMap : {
@@ -117,6 +118,11 @@ class List extends React.Component {
   }
   onSave() {
     let form = this.formRef.props.form;
+    form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
     //this.setState({headLabel:false});
     if(this.state.isEdit) {
       this.props.action.onSave4Edit(form.getFieldsValue());
@@ -143,6 +149,24 @@ class List extends React.Component {
     searchMap.enableState = enable;
     this.props.action.getListData({ pagination,searchMap });
     this.setState({enable,selectedRowKeys:[],searchMap});
+  }
+  showTotal(total) {
+    return `共 ${total} 条`;
+  }
+  onPageChange(page,pageSize) {
+    let { pagination,searchMap } = this.state;
+    //可能有问题
+    pagination = {page:page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData({ pagination,searchMap });
+  }
+  onPageSizeChange(current,pageSize) {
+    debugger
+    let { pagination,searchMap } = this.state;
+    pagination = {page:pagination.page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData({ pagination,searchMap });
+    console.info(`pageSize:${pageSize}`)
   }
   render() {
     let page = this.props.$$state.get("data").toJS();
@@ -202,10 +226,12 @@ class List extends React.Component {
 
         <div className="list-box">
           <Table
+            size="middle"
             columns={this.columns}
             dataSource={page.data}
             rowSelection={rowSelection}
             rowKey="id"
+            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}
           />
         </div>
         <Modal

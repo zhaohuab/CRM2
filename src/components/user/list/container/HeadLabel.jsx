@@ -21,7 +21,7 @@ class HeadLabel extends React.Component {
                         {this.props.children}
                     </div>
                 </div>
-                <div  className='edit-right'>
+                <div  className='edit-right' onClick = {this.props.onBack}>
                     <Icon type="close" />
                 </div>
             </div>

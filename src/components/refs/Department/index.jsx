@@ -52,11 +52,9 @@ class Department extends React.Component {
             url: url.orgTree,
             method:'get',
             data:{}
-        }
-        , (dataResult)=>{
+        },(dataResult) => {
             that.setState({dataSource:dataResult.data});
         })
-         
     }
 
     triggerChange = (changedValue) => {
