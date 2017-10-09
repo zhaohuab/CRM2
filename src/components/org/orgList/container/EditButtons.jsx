@@ -39,13 +39,13 @@ export default class EditButtons extends Component {
                     </div> 
                     <div className='actionButtons'>
                         <Button onClick={this.returnBack.bind(this)} className='returnbtn-class' icon='swap-left'>返回</Button>
-                        <Button className='returnbtn-class' icon='delete' onClick={this.deleteList.bind(this,this.props.data)}>删除</Button>
+                        <Button className='returnbtn-class' onClick={this.deleteList.bind(this,this.props.data)}><i className='iconfont icon-tubiao-shanchu'></i>删除</Button>
                         {this.props.data.length===1?
-                        <Button onClick={this.changeForm.bind(this,this.props.data[0])} className='returnbtn-class' icon='edit'>编辑</Button>
+                        <Button onClick={this.changeForm.bind(this,this.props.data[0])} className='returnbtn-class'> <i className='iconfont icon-bianji'></i>编辑</Button>
                         :''}
                         <ButtonGroup className='returnbtn-class'>
-                            <Button icon='play-circle-o' onClick={this.setEnablestate.bind(this,this.props.data,1)}>启用</Button>
-                            <Button icon='pause-circle-o' onClick={this.setEnablestate.bind(this,this.props.data,2)}>停用</Button>
+                            <Button  onClick={this.setEnablestate.bind(this,this.props.data,1)}><i className='iconfont icon-qiyong-lanse'></i>启用</Button>
+                            <Button onClick={this.setEnablestate.bind(this,this.props.data,2)}><i className='iconfont icon-tingyong-lanse'></i>停用</Button>
                         </ButtonGroup>
                         <Button className='returnbtn-class' icon='download'>导出</Button>
                     </div> 

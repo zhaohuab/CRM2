@@ -1,6 +1,6 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio } from 'antd';
 import moment from 'moment';
-import Department from 'components/refs/Department'
+import Department from 'components/refs/departments'
 
 const FormItem = Form.Item;
 
@@ -36,16 +36,14 @@ export default class NormalLoginForm extends React.Component {
             <div>
                 {
                     this.props.data ?
-                        <div>
                             <Form {...formItemLayout}  className="login-form home-form" >
-
-                                <FormItem>
+                                <div>
                                     {getFieldDecorator('id', {
                                         rules: [],
                                     })(
-                                        <Input style={{ display: 'none' }} type='text' placeholder="请输入编号!" />
+                                        <Input style={{ display: 'none'}} type='text' placeholder="请输入编号!" />
                                         )}
-                                </FormItem>
+                                </div>
                                 <FormItem {...formItemLayout} label='编码'>
                                     {getFieldDecorator('code', {
                                         rules: [{ required: true, message: '请输入编码' }],
@@ -109,7 +107,7 @@ export default class NormalLoginForm extends React.Component {
                                         )}
                                 </FormItem>
                             </Form>
-                        </div> : ''
+                         : ''
                 }
             </div>
         );

@@ -11,6 +11,8 @@ import EditButton from './EditButtons.jsx'
 const ButtonGroup = Button.Group;
 const Search = Input.Search;
 import './index.less'
+import 'assets/stylesheet/menu/iconfont.css'
+import 'assets/stylesheet/tool/iconfont.css'
 
 class List extends Component {
     constructor(){
@@ -196,7 +198,7 @@ class List extends Component {
                 <div className='list-main'>
                     <div className='list-table-tree' style={{minHeight:this.state.minH?this.state.minH+'px':'auto'}}>
                         <div className='org-tree-top'>
-                            <Search placeholder="Search" onSearch={this.searchList.bind(this)}/>
+                            <Search placeholder="请输入关键字段" onSearch={this.searchList.bind(this)}/>
                         </div>
                         <Spin spinning={treeLoading} tip='正在加载'/>
                         <ListTree 
@@ -212,8 +214,8 @@ class List extends Component {
                             { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect,searchFilter)} deleteList={this.btnDelete.bind(this,treeSelect,searchFilter)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <ButtonGroup className='list-add-group'>
-                                    <Button icon='download'>导入</Button>
-                                    <Button icon='upload'>导出</Button>
+                                    <Button><i className='iconfont icon-daochu'></i>导入</Button>
+                                    <Button><i className='iconfont icon-daoru'></i>导出</Button>
                                 </ButtonGroup>
                                 <Button type='primary' onClick={this.addFormBtn.bind(this)}><Icon type="plus" />新建</Button>
                             </div>
@@ -227,7 +229,9 @@ class List extends Component {
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
                         >
-                            <WrapCard wrappedComponentRef={(inst) => this.formRef = inst} data={editData}/> 
+                            <div className='model-height'>
+                                <WrapCard wrappedComponentRef={(inst) => this.formRef = inst} data={editData}/> 
+                            </div>
                         </Modal>   
                     </div>
                 </div>

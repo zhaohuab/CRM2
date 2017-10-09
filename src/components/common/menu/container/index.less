@@ -1,5 +1,5 @@
 
-//ant.design样式
+//ant.design icon样式
 .ant-menu-inline-collapsed > .ant-menu-item .anticon + span, .ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title .iconfont + span{
     opacity: 0
 }
@@ -11,9 +11,16 @@
 }
 
 
+//自己定义的icon
+.iconfont{
+    margin-right: 10px;
+}
+
+//伸缩菜单样式宽度
 .menu-con-open {
     width: 200px;
 }
+
 
 .avatar-warpper{
     .avatar-warpper-show{
@@ -27,6 +34,18 @@
 
 .menu-bg-warpper{
     background:#26293f;
+    .ant-menu-submenu-title .menu-title {
+        position:relative;
+        top:-2px;
+    }
+    .img-logo-hide{
+        width:50px;
+        transition:all .1s ease-in;
+    }
+    .img-logo{
+        width:84px;
+        transition:all .1s ease-in;
+    }
     .menu-bg-logo{
         width: 100%;
         height:70px;
@@ -35,7 +54,17 @@
         color:white;
         font-weight: bold;
         font-size:14px;
-        text-align: center
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .iconfont{
+        font-size:18px;
+    }
+    .menu-home{
+        font-size:20px;
+        position: relative;
+        top: 2px
     }
 }
 .menu-bg{
@@ -50,21 +79,17 @@
     cursor: pointer;
 }
 .menu-control-show {
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    width:64px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     cursor: pointer;
+    line-height: 13px;
 }
 
 .menu-control-hide {
-    display: flex;
-    justify-content:center;
-    align-items: center;
-    width:64px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     cursor: pointer;
+    line-height: 13px;
 }
 
 .rotateMenuIn{
