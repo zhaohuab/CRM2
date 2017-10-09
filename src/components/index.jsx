@@ -32,6 +32,7 @@ class Main extends React.Component {
     }
 
     render() {
+        debugger
         let {collapsed}=this.props.componentState.toJS()
         let viewBoxstyle = this.state.viewBoxstyle ? "app-container full-height boxed-layout" : "app-container full-height";
         return <div className = "full-height">
@@ -57,6 +58,7 @@ class Main extends React.Component {
 
 export default connect(
     state=>{
+        debugger
         return{
             componentState:state.componentReducer
         }
