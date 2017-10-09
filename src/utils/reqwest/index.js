@@ -16,7 +16,6 @@ request.ajaxSetup({
 
 const reqwest = (options,success,fail)=> {
     let {data,method,url,...others} = options;
-    debugger
     let mResult = handleMehtod(method,url,data);
     
     request({
