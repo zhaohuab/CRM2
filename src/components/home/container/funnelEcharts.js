@@ -64,7 +64,8 @@ let option = {
                         color: 'rgba(159,213,99,1)'
                     }
                 }}
-            ]
+            ],
+            
         },
         {
             name: '实际',
@@ -125,7 +126,9 @@ let option = {
                     }
                 }}
             ]
-        }
-    ]
+        },
+        
+    ],
+    animationEasing: 'linear',
 };
  export default option

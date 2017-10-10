@@ -112,10 +112,10 @@ class LoginCon extends React.Component {
         return (
             <div className='login-warpper'>
                 <div className='login-carousel'>
-                    <Carousel autoplay   effect='fade' speed={2000}>
-                        <div><img src={require('assets/images/login/banner-1.png')}/></div>
-                        <div><img src={require('assets/images/login/banner-2.png')}/></div>
-                        <div><img src={require('assets/images/login/banner-3.png')}/></div>
+                    <Carousel autoplay   effect='fade' speed='3000'>
+                        <div><img src={require('assets/images/login/banner1.jpg')}/></div>
+                        <div><img src={require('assets/images/login/banner2.jpg')}/></div>
+                        <div><img src={require('assets/images/login/banner3.jpg')}/></div>
                     </Carousel>
                 </div>
                 <div className='login-main'>
@@ -123,7 +123,7 @@ class LoginCon extends React.Component {
                         <div className='login-main-top'>
                             <div className='login-main-title'>
                                 <img src={require('assets/images/login/crm-logo.png')}/>
-                                <p><span>—</span>企业营销工作平台</p>
+                                <p><span>—</span><span>企业营销工作平台</span><span>—</span></p>
                             </div>
                             <Login login = {this.props.action.login} />
                         </div>

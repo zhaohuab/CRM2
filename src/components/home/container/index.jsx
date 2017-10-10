@@ -20,6 +20,7 @@ import funnelEcharts from './funnelEcharts.js'
 
 import * as Actions from '../action/index.js'
 import './index.less'
+import 'assets/stylesheet/all/iconfont.css'
 
 const randomMarker = (len) => (
     Array(len).fill(true).map((e, idx) => ({
@@ -220,8 +221,8 @@ class Home extends React.Component {
                                 <div className='notice-right-padding'>
                                     <div className='schedule-weather'>
                                         <p>2017-7-7</p>
-                                        <p>北京市</p>
-                                        <p>多云 29/19</p>
+                                        <p><i className='iconfont icon-dingwei'></i>北京市</p>
+                                        <p><i className='iconfont icon-duoyun'></i>多云 29/19</p>
                                     </div>
                                     <div className=' schedule-date'>
                                         <div>
@@ -248,12 +249,53 @@ class Home extends React.Component {
                                     </div>
                                     <div className=' schedule-mission'>
                                         <div className='mission-list'>
-                                            <p>今日拜访:0</p>
-                                            <p>已完成：0</p>
-                                            <p>未完成：0</p>
+                                            <p>今日拜访：<span className='mission-blue'>0</span></p>
+                                            <p>已完成：<span className='mission-green'>0</span></p>
+                                            <p>未完成：<span className='mission-red'>0</span></p>
                                         </div>
                                         <div className='mission-main'>
-                                            今日没有拜访
+                                            <ul className='mission-main-list'>
+                                                <li>
+                                                    <div className='list-main'>
+                                                        <p>百度科技有限公司</p>
+                                                        <p><Icon type="environment-o" />北京市海淀区西北旺后场村108号</p>
+                                                        <p><span>销售一部</span>><span>周杰</span></p>
+                                                    </div>
+                                                    <div className='list-bg red'>
+                                                        <i className='iconfont icon-daibaifang'></i>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='list-main'>
+                                                        <p>百度科技有限公司</p>
+                                                        <p><Icon type="environment-o" />北京市海淀区西北旺后场村108号</p>
+                                                        <p><span>销售一部</span>><span>周杰</span></p>
+                                                    </div>
+                                                    <div className='list-bg green'>
+                                                        <i className='iconfont icon-yiwancheng'></i>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='list-main'>
+                                                        <p>百度科技有限公司</p>
+                                                        <p><Icon type="environment-o" />北京市海淀区西北旺后场村108号</p>
+                                                        <p><span>销售一部</span>><span>周杰</span></p>
+                                                    </div>
+                                                    <div className='list-bg blue'>
+                                                        <i className='iconfont icon-jinribaifang'></i>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='list-main'>
+                                                        <p>百度科技有限公司</p>
+                                                        <p><Icon type="environment-o" />北京市海淀区西北旺后场村108号</p>
+                                                        <p><span>销售一部</span>><span>周杰</span></p>
+                                                    </div>
+                                                    <div className='list-bg red'>
+                                                        <i className='iconfont icon-daibaifang'></i>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>

@@ -1,5 +1,5 @@
 import { Button,Icon } from 'antd';
-import 'assets/stylesheet/tool/iconfont.css'
+import 'assets/stylesheet/all/iconfont.css'
 
 class HeadLabel extends React.Component {
     constructor(props) {

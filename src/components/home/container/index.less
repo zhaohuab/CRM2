@@ -1,3 +1,7 @@
+@blue:#3ca3fb;
+@green:#2dd685;
+@red:#fd786d;
+
 /*ant select下拉框颜色*/
 .ant-select-dropdown{
     min-width:105px;
@@ -192,11 +196,71 @@
                     align-items: center;
                     border-top:1px solid rgba(221,221,221,0.50);
                     border-bottom:1px solid rgba(221,221,221,0.50);
-                    margin-bottom:10px;
+                    .mission-blue{
+                        color:@blue
+                    }
+                    .mission-green{
+                        color:@green
+                    }
+                    .mission-red{
+                        color:@red
+                    }
                 }
                 .mission-main{
                     min-height: 300px;
-                    text-align: center
+                    .mission-main-list{
+                        list-style: none;
+                        li{
+                            position: relative;
+                            height:auto;
+                            border-bottom:1px solid rgba(238,238,238,1);
+                            padding:10px 0;
+                            box-sizing: border-box;
+                            font-size: 12px;
+                            .list-bg{
+                                position: absolute;
+                                z-index: 1;
+                                top:0;
+                                right:0;
+                                width:60px;
+                                i{
+                                    font-size: 60px;
+                                }
+                            }
+                        }
+                        .red{
+                            color:rgba(60,163,251,.6)
+                        }
+                        .green{
+                            color:rgba(45,214,133,.6)
+                        }
+                        .blue{
+                            color:rgba(253,120,109,.6)
+                        }
+                        .list-main p{
+                            position: relative;
+                            z-index: 2;
+                            padding:0;
+                            margin:0;
+                            line-height: 23px;
+                            color:#999;
+                            width:100%;
+                            overflow: hidden;
+                            text-overflow:ellipsis;
+                            white-space: nowrap;
+                        }
+                        .list-main p:nth-of-type(2) i{
+                            margin-right:7.5px;
+                        }
+                        .list-main p:first-child{
+                            font-size: 14px;
+                            color:#333
+                        }
+                        li:last-child{
+                            border-bottom:none;
+                            color:#666
+                        }
+                    }
                 }
             }
         }
@@ -207,6 +271,7 @@
        .main-right-bottom{
         background: white;
         height:635px;
+        overflow: auto
        }
     }
   }

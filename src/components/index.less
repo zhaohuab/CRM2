@@ -10,6 +10,7 @@ body {
 .ant-menu.ant-menu-dark .ant-menu-item-selected{
     background: #1671D5
 }
+
 .app-container {
     display: flex;
     margin: auto;
@@ -56,7 +57,15 @@ body {
     justify-content: center;
     align-items: center;
 }
+//model
+.ant-modal-content .ant-modal-header{
+    background: #FAFAFA;
+    height:50px;
+ }
 
+ .ant-modal-content .ant-form-item-required:before{
+     color:#333
+ }
 /*model头部样式*/
 .ant-modal-header{
     background: #FAFAFA;
@@ -75,15 +84,23 @@ body {
     padding:16px;
 }
 
+/*model内侧参照样式*/
+.add-inset-model{
+    margin:-16px;
+    padding:16px;
+    height:380px;
+    overflow:auto
+}
+
 /* ant.design  表格样式 */
-.ant-table-thead > tr, .ant-table-tbody > tr:nth-child(even){
+.ant-table .ant-table-thead > tr, .ant-table .ant-table-tbody > tr:nth-child(even){
     background: #F3FAFF;
 }
-.ant-table-thead > tr > th{
+.ant-table .ant-table-thead > tr > th{
     color:#666
 }
 
-.ant-table table{
+.ant-table .ant-table table{
     border-top: 1px solid #3CA4FB;
     border-bottom: 1px solid #ddd;
 }
@@ -91,8 +108,12 @@ body {
 .ant-table{
     color:#999;
 }
-.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+.ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
     border:none
+}
+
+.ant-table .ant-tree.ant-tree-show-line li:not(:last-child):before{
+    border-left:1px solid #ECECEC
 }
 
 /* ant.design  菜单样式*/
@@ -111,5 +132,33 @@ body {
     left:-1px;
 }
 
+//tree
+.ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher-noop:after{
+    content: "\E621";
+    color:#3CA4FB 
+}
+
+.ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_open:after{
+    content: "\E6C1";
+    color:#3CA4FB 
+}
+.ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_close:after{
+    content: "\E6C0";
+    color:#3CA4FB 
+}
+
+//折叠菜单
+.ant-collapse > .ant-collapse-item > .ant-collapse-header{
+    background: #F2F2F2;
+}
+.ant-collapse > .ant-collapse-item > .ant-collapse-header .arrow:before{
+    content: '\E604'
+}
+.ant-collapse-borderless > .ant-collapse-item > .ant-collapse-content{
+    border-top:none;
+}
+.ant-collapse > .ant-collapse-item{
+    border-bottom:none
+}
 
 
