@@ -47,6 +47,7 @@ const reqwest = (options,success,fail)=> {
 }
 function handleMehtod(method,url,data) {
     let contentType="";
+    // debugger
     if((method.toUpperCase() == "GET" || method.toUpperCase() == "DELETE")) {
         if(data) {
             url += "?param=" + encodeURIComponent(encrypt(data.param));

@@ -63,7 +63,6 @@ class List extends Component {
         let that = this
         this.rowSelectionFn={
             onChange(selected, selectedRows){
-                debugger
                 if(selectedRows.length){
                     that.props.orgAction.buttonEdit(selectedRows)
                 }else{
@@ -102,6 +101,7 @@ class List extends Component {
             if (!err) {
                     
                 if(this.state.isEdit){
+                  
                     this.props.orgAction.listchange(values);
                 }else{
                     this.props.orgAction.listadd(values);  

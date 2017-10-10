@@ -129,10 +129,8 @@ class List extends React.Component {
     this.setState({isEdit:true});
     this.props.action.showForm(true);
   }
-  btnView() {
-    // this.props.action.showForm(true);
-    // this.setState({isEdit:true});
-    // this.props.orgAction.showViewForm(true,record);
+  btnView(record) {
+    this.props.action.showViewForm(true,record);
   }
 
   render() {
@@ -144,6 +142,9 @@ class List extends React.Component {
     const formVisitable = $$state.get("formVisitable");
     const CardForm = Form.create()(Card);
     const editData = $$state.get("editData").toJS();
+    const viewData = $$state.get("viewData").toJS();
+    const viewFormVisible = $$state.get("viewFormVisible");
+    debugger
     return (
       
       <div className style={{position:'relative'}}>
@@ -172,8 +173,6 @@ class List extends React.Component {
           visible={formVisitable}
           onOk={this.formHandleOk.bind(this)}
           onCancel={this.formHandleCancel.bind(this)}
-          enumData={enumData}
-          cityData={cityData}
         >
           <CardForm
             wrappedComponentRef={(inst) => this.formRef = inst}
@@ -182,8 +181,8 @@ class List extends React.Component {
             cityData={cityData}
           />
         </Modal>
-        <div style={{position:'absolute',zIndex:'500',background:'#EEEEEE',top:0,bottom:0,left:'20%',right:0}} >
-          <ViewPanel />
+        <div style={{display:"inline" , position:'absolute',zIndex:'500',background:'#EEEEEE',top:0,bottom:0,left:'20%',right:0}} >
+          <ViewPanel data={viewData}/>
         </div>
       </div>
     )

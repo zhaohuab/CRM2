@@ -13,6 +13,8 @@ let $$initialState = {
 		milForm:false
 	},
 	searchMap:[],
+	viewFormVisible:false,
+	viewData:{}
 };
 
 function pageAdd(page,item) {
@@ -25,7 +27,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
 	switch (action.type) {
 		case 'CUSTOMER_LIST_GETDATA':
-			return $$state.merge({data:action.payload.data})
+			return $$state.merge({data:{data:action.payload.data}})
 
 			case 'CUSTOMER_LIST_SHOWFORM':
 			return $$state.merge({formVisitable:action.payload.visible})
@@ -40,11 +42,16 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({searchMap:action.payload==undefined?[]:action.payload.searchMap})
 			
 			case 'CUSTOMER_LIST_ADDSAVE':
-			debugger
 			return $$state.merge({
 				formVisitable : false,
 				data : pageAdd($$state.get("data").toJS(),action.payload.data),
 			})
+			case 'CUSTOMER_LIST_SHOWVIEWFORM':
+			return $$state.merge({
+				viewFormVisible : action.payload.visible,
+				viewData :action.payload.record ,
+			})
+			
 	    default: 
 	        return $$state;
     }

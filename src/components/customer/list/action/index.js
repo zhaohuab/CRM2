@@ -26,9 +26,10 @@ function transData  (searchMap) {
 }
 
 const appendAddress = (data) =>{
-    for(let i=0;i<data.data.length;i++){
-        data.data[i].address = data.data[i].provinceName+data.data[i].city+ data.data[i].districtName+data.data[i].street
+    for(let i=0;i<data.length;i++){
+        data[i].address = data[i].provinceName+data[i].city+ data[i].districtName+data[i].street
     }
+    // debugger
     return data;
 }
 
@@ -123,11 +124,16 @@ const showForm=(visible)=>{
     return fetchData('CUSTOMER_LIST_SHOWFORM', {visible});
 }
 
+const showViewForm=(visible,record)=>{
+    return fetchData('CUSTOMER_LIST_SHOWVIEWFORM',{visible,record})
+}
+
 //输出 type 与 方法
 export {
     getListData,
     changeVisible,
     selectRow,
     showForm,
-    listAddSave
+    listAddSave,
+    showViewForm
 }
