@@ -2,8 +2,14 @@
  * 处理信息公共
  */
 import { message as MsgTool,notification } from 'antd';
+import { browserHistory } from 'react-router'
 function handleMessage(result) {
-    let { response } = result;
+    debugger
+    let { response,status } = result;
+    if(status == 401) {
+        //browserHistory.push('/crm_web/login');
+        return;
+    }
     if(!response) {
         return;
     }
