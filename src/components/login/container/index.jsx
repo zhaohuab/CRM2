@@ -103,6 +103,7 @@ class LoginCon extends React.Component {
     }
     
     render() {
+        debugger
         let {$$state} = this.props;
         let logined = $$state.get('logined');
         if(logined) {

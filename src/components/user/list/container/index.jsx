@@ -10,7 +10,7 @@ import { Table, Modal, Button,Icon } from 'antd';
 import {Input,Radio,Popconfirm,Form} from 'antd';
 import Card from './UserForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
-import Department from 'components/refs/department'
+import Department from 'components/refs/departments'
 import './index.less'
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
@@ -88,8 +88,9 @@ class List extends React.Component {
     this.props.action.showForm(true,{});
   }
   onDelete=()=>{
+    let { pagination,searchMap } = this.state;
     this.setState({headLabel:false});
-    this.props.action.onDelete(this.state.selectedRowKeys);
+    this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
   }
   onEdit = () => {
     

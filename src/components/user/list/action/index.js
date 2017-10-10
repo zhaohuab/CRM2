@@ -9,15 +9,16 @@ const showForm = (flag, editData = {}, index) => {
 }
 
 const getListData = (params) => {
+	
 	return (dispatch) => {
 		reqwest({
 			url: url.user,
 			method: "GET",
 			data: {
-				param: JSON.stringify({
+				param: {
 					...params.pagination,
 					searchMap: params.searchMap,
-				})
+				}
 			},
 		},result => {
 			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
@@ -44,7 +45,7 @@ const onSave4Add = (data, index) => {
 			url: url.user,
 			method: "POST",
 			data: {
-				param: JSON.stringify(transData(data))
+				param: transData(data)
 			}
 		}, result => {
 			dispatch(fetchData('USER_CARD_SAVEADD', { ...result, visible: false }));
@@ -59,7 +60,7 @@ const onSave4Edit = (data, index) => {
 			url: `${url.user}/${data.id}`,
 			method: "PUT",
 			data: {
-				param: JSON.stringify((transData(data)))
+				param: transData(data)
 			}
 		}, result => {
 			dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
@@ -68,17 +69,17 @@ const onSave4Edit = (data, index) => {
 }
 
 const onDelete = (rowKeys, params) => {
+debugger
 	return (dispatch) => {
 		reqwest({
 			url: url.userBatch,
-			method: "POST",
+			method: "DELETE",
 			data: {
-				param: JSON.stringify({
+				param: {
 					ids: rowKeys.join(","),
 					...params.pagination,
 					searchMap: params.searchMap,
-				}),
-				_method: "DELETE"
+				},
 			}
 		}, result => {
 			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
@@ -92,14 +93,15 @@ const onEnable = (rowKeys, enable, params) => {
 			url: `${url.enable}`,
 			method: "PUT",
 			data: {
-				param: JSON.stringify({
+				param: {
 					ids: rowKeys.join(","),
 					enableState: enable,
 					...params.pagination,
 					searchMap: params.searchMap,
-				}),
+				},
 			}
 		}, result => {
+			debugger
 			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}

@@ -1,6 +1,6 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio } from 'antd';
 import moment from 'moment';
-import Department from 'components/refs/Department'
+import Department from 'components/refs/departments'
 
 const FormItem = Form.Item;
 

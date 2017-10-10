@@ -14,6 +14,7 @@ function pageAdd(page,item) {
 	return page;
 }
 function pageEdit(page,item) {
+	debugger
 	let {data} = page;
 	for(let i=0,len=data.length;i<len;i++) {
 		if(data[i].id == item.id) {
@@ -33,7 +34,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'USER_LIST_GETLISTSUCCESS': 
 	        return $$state.merge({
 	        	loading: false,
-				data: action.content.data,
+				data: action.content,
 				visible : action.content.visible,
 			})
 		case 'USER_LIST_SHOWFORM':
@@ -44,12 +45,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'USER_CARD_SAVEADD' : 
 			return $$state.merge({
 				visible : action.content.visible,
-				data : pageAdd($$state.get("data").toJS(),action.content.data),
+				data : pageAdd($$state.get("data").toJS(),action.content),
 			})
 		case 'USER_CARD_SAVEEDIT' : 
 			return $$state.merge({
 				visible : action.content.visible,
-				data : pageEdit($$state.get("data").toJS(),action.content.data),
+				data : pageEdit($$state.get("data").toJS(),action.content),
 			})
 	    default: 
 	        return $$state;
