@@ -99,14 +99,12 @@ class List extends React.Component {
 
     this.props.action.getListData(this.state.pagination);
   }
-  formHandleOk() {
-
-    // this.props.action.setFormVisible(false);
+  formHandleOk(pagination,searchMap) {
     this.formRef.props.form.validateFields((err, values) => {
       if (!err) {
 
         if (this.state.isEdit) {
-          this.props.action.listAddSave(values);
+          this.props.action.listEditSave(values,pagination,searchMap);
         } else {
           this.props.action.listAddSave(values);
         }
@@ -126,13 +124,16 @@ class List extends React.Component {
     this.props.action.setEnableState(selectRow, enableState, this.state.pagination, searchMap)
   }
   btnNew() {
-    this.setState({isEdit:true});
+    this.setState({isEdit:false});
     this.props.action.showForm(true);
   }
   btnView(record) {
     this.props.action.showViewForm(true,record);
   }
-
+  btnEdit(data) {
+    this.setState({isEdit:true});
+    this.props.action.showFormEdit(true);
+  }
   render() {
     const { $$state } = this.props;
     const page = $$state.get("data").toJS();
@@ -144,7 +145,6 @@ class List extends React.Component {
     const editData = $$state.get("editData").toJS();
     const viewData = $$state.get("viewData").toJS();
     const viewFormVisible = $$state.get("viewFormVisible");
-    debugger
     return (
       
       <div className style={{position:'relative'}}>
@@ -171,18 +171,24 @@ class List extends React.Component {
         <Modal
           title="增加客户"
           visible={formVisitable}
-          onOk={this.formHandleOk.bind(this)}
+          onOk={this.formHandleOk.bind(this,this.state.pagination,searchMap)}
           onCancel={this.formHandleCancel.bind(this)}
         >
           <CardForm
             wrappedComponentRef={(inst) => this.formRef = inst}
-            data={editData}
+            data={viewData}
             enumData={enumData}
             cityData={cityData}
           />
         </Modal>
-        <div style={{display:"inline" , position:'absolute',zIndex:'500',background:'#EEEEEE',top:0,bottom:0,left:'20%',right:0}} >
-          <ViewPanel data={viewData}/>
+        <div 
+        style = {{ }}
+        style={{ display:"none",position:'absolute',zIndex:'500',background:'#EEEEEE',top:0,bottom:0,left:'20%',right:0}} >
+          <ViewPanel
+            data={viewData}
+            btnNew={this.btnNew.bind(this)}
+            btnEdit={this.btnEdit.bind(this)}
+          />
         </div>
       </div>
     )

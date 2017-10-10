@@ -12,7 +12,7 @@ let $$initialState = {
 		simForm:true,
 		milForm:false
 	},
-	searchMap:[],
+	searchMap:{},
 	viewFormVisible:false,
 	viewData:{}
 };
@@ -39,12 +39,17 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({selectedRows:Immutable.fromJS(action.payload.rows),toolVisible:action.payload.toolVisible})
 
 			case 'CUSTOMER_LIST_SAVESEARCHMAP':
-			return $$state.merge({searchMap:action.payload==undefined?[]:action.payload.searchMap})
+			return $$state.merge({searchMap:action.payload==undefined?{}:action.payload.searchMap})
 			
 			case 'CUSTOMER_LIST_ADDSAVE':
 			return $$state.merge({
 				formVisitable : false,
 				data : pageAdd($$state.get("data").toJS(),action.payload.data),
+			})
+			case 'CUSTOMER_LIST_EDITSAVE':
+			return $$state.merge({
+				formVisitable : false,
+				data:{data:action.payload.data}
 			})
 			case 'CUSTOMER_LIST_SHOWVIEWFORM':
 			return $$state.merge({

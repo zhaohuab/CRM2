@@ -86,7 +86,6 @@ export function listadd(list){
 
 //改变一条数据
 export function listchange(data){
-    debugger
     return(dispatch)=>{
         let id=data.id
         request({

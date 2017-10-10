@@ -37,6 +37,7 @@ const appendAddress = (data) =>{
 const getListData = (pagination,searchMap) => {
 	return (dispatch) => {
         dispatch(fetchData('CUSTOMER_LIST_SAVESEARCHMAP',  searchMap));
+        debugger
         reqwest({
             url:url.customer,
             method:'get',
@@ -47,22 +48,23 @@ const getListData = (pagination,searchMap) => {
                 })
             }
         },(data) => {
-            
+            debugger
             dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data.data)}));
         })
 	   
 	}
 }
 
-const listAddSave = (list) =>{
+const listAddSave = (data) =>{
 
-    return(dispatch,getState)=>{
-        debugger
+    return(dispatch)=>{
         reqwest({
             url: url.customer,
             
             method:'post',
-            data:"param="+JSON.stringify(transData(list))
+            data:{
+                param: transData(data)
+            }
         }, (data) => {
             dispatch(fetchData('CUSTOMER_LIST_ADDSAVE',data));
         })
@@ -70,6 +72,27 @@ const listAddSave = (list) =>{
 
 }
 
+const listEditSave = (data,pagination,searchMap) =>{
+    const param = transData(data)
+    param.page = String(pagination.page);
+    param.pageIndex = String(pagination.pageIndex);
+    param.searchMap = String(searchMap);
+        return(dispatch)=>{
+            reqwest({
+                url: url.customer+"/"+data.id,
+                
+                method:'put',
+                data:{
+                    param: param
+                }
+            }, (data) => {
+               
+                    dispatch(fetchData('CUSTOMER_LIST_EDITSAVE', {data: appendAddress(data.data)}));
+             
+            })
+        }
+    
+    }
 
 const closeForm=()=>{
     return{
@@ -124,6 +147,9 @@ const showForm=(visible)=>{
     return fetchData('CUSTOMER_LIST_SHOWFORM', {visible});
 }
 
+const showFormEdit=(visible)=>{
+    return fetchData('CUSTOMER_LIST_SHOWFORM', {visible});
+}
 const showViewForm=(visible,record)=>{
     return fetchData('CUSTOMER_LIST_SHOWVIEWFORM',{visible,record})
 }
@@ -134,6 +160,8 @@ export {
     changeVisible,
     selectRow,
     showForm,
+    showFormEdit,
     listAddSave,
+    listEditSave,
     showViewForm
 }

@@ -210,6 +210,12 @@ export default class EditForm extends React.Component {
                     <Input type='text' placeholder="请输入" />
                     )}
                 </FormItem>
+                <FormItem style={{display:'none', width: 200 }} {...formItemLayout} label="id">
+                  {getFieldDecorator('id', {
+                  })(
+                    <Input type='text' placeholder="请输入" />
+                    )}
+                </FormItem>
               </Form>
             </div> : ''
         }
