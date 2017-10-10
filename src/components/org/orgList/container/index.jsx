@@ -11,8 +11,7 @@ import EditButton from './EditButtons.jsx'
 const ButtonGroup = Button.Group;
 const Search = Input.Search;
 import './index.less'
-import 'assets/stylesheet/menu/iconfont.css'
-import 'assets/stylesheet/tool/iconfont.css'
+import 'assets/stylesheet/all/iconfont.css'
 
 class List extends Component {
     constructor(){

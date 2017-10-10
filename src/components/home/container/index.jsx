@@ -1,13 +1,25 @@
 
 import React, { Component, PropTypes } from 'react';
-import { Input,Badge,Icon,Row, Col,Button,Menu, Dropdown} from 'antd';
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux';
+import { Map, Markers ,Polyline} from 'react-amap';
+import { Input,Badge,Icon,Row, Col,Button,Menu, Dropdown,Select} from 'antd';
+
 const Search = Input.Search;
-import './index.less'
-import echarts from 'echarts'
+const Option = Select.Option;
+
+var echarts = require('../../../../node_modules/echarts/lib/echarts');
+require('../../../../node_modules/echarts/lib/chart/pie');
+require('../../../../node_modules/echarts/lib/chart/bar');
+require('../../../../node_modules/echarts/lib/chart/funnel');
+require('../../../../node_modules/echarts/lib/component/timeline');
 import target from './targetEcharts.js'
 import moneyEcharts from './moneyEcharts.js'
 import funnelEcharts from './funnelEcharts.js'
-import { Map, Markers ,Polyline} from 'react-amap';
+
+import * as Actions from '../action/index.js'
+import './index.less'
+import 'assets/stylesheet/all/iconfont.css'
 
 const randomMarker = (len) => (
     Array(len).fill(true).map((e, idx) => ({
@@ -18,101 +30,56 @@ const randomMarker = (len) => (
     }))
   );
 
-const randomPath = () => ({
-    longitude: 60 + Math.random() * 50,
-    latitude: 10 + Math.random() * 40,
-})
+const targetChange=[{data:[1000,2000,3000]},{data:[100,20,700]},{data:[60,26,3033]},{data:[105,200,3000]}]  
+const funnelChange=[{data:[60,40,20,80,90,100],data2:[30,10,5,50,70,80]},{data:[80,40,60,30,15,10],data2:[60,30,55,25,13,5]},{data:[100,20,80,10,45,60],data2:[90,10,65,5,33,40]},{data:[10,20,40,60,90,75],data2:[7,10,21,25,63,40]}] 
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.targetOption = target;
-        this.moneyOption = moneyEcharts
-        this.funnelEcharts = funnelEcharts
+       
+        this.targetOption=target;
+        this.moneyOption=moneyEcharts;
+        this.funnelOption=funnelEcharts;
         this.markers = randomMarker(1000);
         this.center = {longitude: 115, latitude: 40};
         
-        this.menuCell = (
-            <Menu>
-                <Menu.Item>
-                    本年
-                </Menu.Item>
-                <Menu.Item>
-                    本季
-                </Menu.Item>
-                <Menu.Item>
-                    本月
-                </Menu.Item>
-                <Menu.Item>
-                    本周
-                </Menu.Item>
-            </Menu>
-        );
-        this.menuArea = (
-            <Menu>
-                <Menu.Item>
-                    重点客户
-                </Menu.Item>
-                <Menu.Item>
-                    B类客户
-                </Menu.Item>
-                <Menu.Item>
-                    C类客户
-                </Menu.Item>
-                <Menu.Item>
-                    D类客户
-                </Menu.Item>
-            </Menu>
-        );
-        this.menuMoney = (
-            <Menu>
-                <Menu.Item>
-                    本年
-                </Menu.Item>
-                <Menu.Item>
-                    本季
-                </Menu.Item>
-                <Menu.Item>
-                    本月
-                </Menu.Item>
-                <Menu.Item>
-                    本周
-                </Menu.Item>
-            </Menu>
-        ); 
-        this.menuFunnel = (
-            <Menu>
-                <Menu.Item>
-                    本年
-                </Menu.Item>
-                <Menu.Item>
-                    本季
-                </Menu.Item>
-                <Menu.Item>
-                    本月
-                </Menu.Item>
-                <Menu.Item>
-                    本周
-                </Menu.Item>
-            </Menu>
-        );
+        this.changeTargetData=(key)=>{
+            this.targetOption.series[0].data.forEach((item,index)=>{
+                item.value=targetChange[key].data[index]
+            })
+            this.targetEchar.setOption(this.targetOption);
+        }
+
+        this.changeFunnelData=(key)=>{
+            this.funnelOption.series[0].data.forEach((item,index)=>{
+                item.value=funnelChange[key].data[index]
+            })
+
+            this.funnelOption.series[1].data.forEach((item,index)=>{
+                item.value=funnelChange[key].data2[index]
+            })
+            this.funnelEchar.setOption(this.funnelOption);
+        }
     }
  
     onWindowResize(){
-        if(this.refs.target){
-            let resizeSize=this.refs.target.offsetWidth
-            this.targetEchar.resize({
-                width:resizeSize+'px'
-            })
-
-            this.moneyEchar.resize({
-                width:resizeSize+'px'
-            })
-
-            this.funnelEchar.resize({
-                width:resizeSize+'px'
-            })
-        }
+        setTimeout(()=>{
+            if(this.refs.target){
+                let resizeSize=this.refs.target.offsetWidth
+                console.log(resizeSize)
+                this.targetEchar.resize({
+                    width:resizeSize+'px'
+                })
+    
+                this.moneyEchar.resize({
+                    width:resizeSize+'px'
+                })
+    
+                this.funnelEchar.resize({
+                    width:resizeSize+'px'
+                })
+            }
+        },500)
     }
 
     componentDidMount(){
@@ -123,16 +90,20 @@ class Home extends React.Component {
         this.moneyEchar.setOption(this.moneyOption);
 
         this.funnelEchar = echarts.init(this.refs.funnel);
-        this.funnelEchar.setOption(this.funnelEcharts);
+        this.funnelEchar.setOption(this.funnelOption);
         window.addEventListener('resize', this.onWindowResize.bind(this))
-
-       
+        
     }
     render() {
         const events = {
             created: (ins) => {console.log(ins)},
             click: () => {console.log('You Clicked The Map')}
         }
+        let collapse=this.props.componentState.get('collapsed')
+        let toggle=this.props.componentState.get('toggle')
+        
+        this.onWindowResize()
+
         return (
             <div>
                 <div className="home-warrper">
@@ -142,14 +113,15 @@ class Home extends React.Component {
                                 <h3 className='chart-title'>
                                     <span>销售回款</span>
                                     <div>
-                                        <Dropdown overlay={this.menuCell} trigger={['click']}>
-                                            <span className="ant-dropdown-link">
-                                               <span>本年</span> <Icon type="down" />
-                                            </span>
-                                        </Dropdown>
+                                        <Select defaultValue="本年"  onChange={this.changeTargetData}>
+                                            <Option value="0">本年</Option>
+                                            <Option value="1">本季</Option>
+                                            <Option value="2">本月</Option>
+                                            <Option value="3">本周</Option>
+                                        </Select>
                                     </div>
                                 </h3>
-                                <div>
+                                <div  className='main-inner'>
                                     <table className='charts-cell-tabel' cellpadding={0}>
                                         <tr>
                                             <th>姓名</th>
@@ -170,22 +142,17 @@ class Home extends React.Component {
                                             <td>15%</td>
                                         </tr>
                                     </table>
-                                    <div ref='target' style={{width:"100%",minHeight:"300px"}}></div>
+                                    <div ref='target' className='target-charts' ></div>
                                 </div>
                             </div>
                         
                             <div className='main-left-bottom'>
                                 <h3 className='chart-title'>
                                     <span>回款排行榜</span>
-                                    <div>
-                                        <Dropdown overlay={this.menuMoney} trigger={['click']}>
-                                            <span className="ant-dropdown-link">
-                                               <span>本月</span> <Icon type="down" />
-                                            </span>
-                                        </Dropdown>
-                                    </div>
                                 </h3>
-                                <div ref='money' style={{width:"100%",minHeight:"350px"}}></div>
+                                <div  className='main-inner'>
+                                    <div ref='money' className='money-charts'></div>
+                                </div>
                             </div>
                         </Col>
                         <Col span={9} className='clinet-main-middle'> 
@@ -193,15 +160,16 @@ class Home extends React.Component {
                                 <h3 className='chart-title'>
                                     <span>销售区域</span>
                                     <div>
-                                        <Dropdown overlay={this.menuArea} trigger={['click']}>
-                                            <span className="ant-dropdown-link">
-                                               <span>D类客户</span> <Icon type="down" />
-                                            </span>
-                                        </Dropdown>
+                                       <Select defaultValue="本年">
+                                            <Option value="0">本年</Option>
+                                            <Option value="1">本季</Option>
+                                            <Option value="2">本月</Option>
+                                            <Option value="3">本周</Option>
+                                        </Select>
                                     </div>
                                 </h3>
                                 <div  className='main-inner'>
-                                    <div style={{width: '100%', height: 300}}>
+                                    <div style={{ width: '100%', height: 300}}>
                                         <Map events={events}>
                                             <Markers 
                                                 markers={this.markers}
@@ -215,14 +183,18 @@ class Home extends React.Component {
                                 <h3 className='chart-title'>
                                     <span>销售漏斗</span>
                                     <div>
-                                        <Dropdown overlay={this.menuFunnel} trigger={['click']}>
-                                            <span className="ant-dropdown-link">
-                                               <span>本周</span> <Icon type="down" />
-                                            </span>
-                                        </Dropdown>
+                                        <Select defaultValue="本年" onChange={this.changeFunnelData}>
+                                            <Option value="0">本年</Option>
+                                            <Option value="1">本季</Option>
+                                            <Option value="2">本月</Option>
+                                            <Option value="3">本周</Option>
+                                        </Select>
                                     </div>
                                 </h3>
-                                <div ref='funnel' style={{width:"100%",minHeight:"375px"}}></div>
+                                <div>
+                                    <div ref='funnel' className='funnel-chrats'></div>
+                                </div>
+                                
                             </div>
                         </Col>
                         <Col span={6} className='clinet-main-right'>
@@ -248,8 +220,8 @@ class Home extends React.Component {
                                 <div className='notice-right-padding'>
                                     <div className='schedule-weather'>
                                         <p>2017-7-7</p>
-                                        <p>北京市</p>
-                                        <p>多云 29/19</p>
+                                        <p><i className='iconfont icon-dingwei'></i>北京市</p>
+                                        <p><i className='iconfont icon-duoyun'></i>多云 29/19</p>
                                     </div>
                                     <div className=' schedule-date'>
                                         <div>
@@ -276,12 +248,53 @@ class Home extends React.Component {
                                     </div>
                                     <div className=' schedule-mission'>
                                         <div className='mission-list'>
-                                            <p>今日拜访:0</p>
-                                            <p>已完成：0</p>
-                                            <p>未完成：0</p>
+                                            <p>今日拜访：<span className='mission-blue'>0</span></p>
+                                            <p>已完成：<span className='mission-green'>0</span></p>
+                                            <p>未完成：<span className='mission-red'>0</span></p>
                                         </div>
                                         <div className='mission-main'>
-                                            今日没有拜访
+                                            <ul className='mission-main-list'>
+                                                <li>
+                                                    <div className='list-main'>
+                                                        <p>百度科技有限公司</p>
+                                                        <p><Icon type="environment-o" />北京市海淀区西北旺后场村108号</p>
+                                                        <p><span>销售一部</span>><span>周杰</span></p>
+                                                    </div>
+                                                    <div className='list-bg red'>
+                                                        <i className='iconfont icon-daibaifang'></i>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='list-main'>
+                                                        <p>百度科技有限公司</p>
+                                                        <p><Icon type="environment-o" />北京市海淀区西北旺后场村108号</p>
+                                                        <p><span>销售一部</span>><span>周杰</span></p>
+                                                    </div>
+                                                    <div className='list-bg green'>
+                                                        <i className='iconfont icon-yiwancheng'></i>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='list-main'>
+                                                        <p>百度科技有限公司</p>
+                                                        <p><Icon type="environment-o" />北京市海淀区西北旺后场村108号</p>
+                                                        <p><span>销售一部</span>><span>周杰</span></p>
+                                                    </div>
+                                                    <div className='list-bg blue'>
+                                                        <i className='iconfont icon-jinribaifang'></i>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div className='list-main'>
+                                                        <p>百度科技有限公司</p>
+                                                        <p><Icon type="environment-o" />北京市海淀区西北旺后场村108号</p>
+                                                        <p><span>销售一部</span>><span>周杰</span></p>
+                                                    </div>
+                                                    <div className='list-bg red'>
+                                                        <i className='iconfont icon-daibaifang'></i>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -294,4 +307,16 @@ class Home extends React.Component {
     }
 }
 
-export default  Home
+
+export default connect(
+    state=>{
+        return{
+            componentState:state.componentReducer
+        }
+    },
+    dispatch=>{
+        return{
+            componentAction:bindActionCreators(Actions,dispatch)
+        }
+    }
+)(Home)

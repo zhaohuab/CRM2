@@ -6,7 +6,7 @@ import cookie from 'utils/cookie'
 
 const Search = Input.Search;
 import './index.less'
-import 'assets/stylesheet/menu/iconfont.css'
+import 'assets/stylesheet/all/iconfont.css'
 
 const menu = (
   <Menu>

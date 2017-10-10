@@ -20,20 +20,15 @@ class Main extends React.Component {
 
     toggleCollapsed = () => {
         this.props.componentAction.getCollaps()
-        // this.setState({
-        //     collapsed: !this.state.collapsed,
-        // });
     }
     
     toggleViewBox = (checked) => {
-        this.setState({
-            viewBoxstyle: checked
-        });
+        this.props.componentAction.getToggle(checked)
     }
 
     render() {
-        let {collapsed}=this.props.componentState.toJS()
-        let viewBoxstyle = this.state.viewBoxstyle ? "app-container full-height boxed-layout" : "app-container full-height";
+        let {collapsed,toggle}=this.props.componentState.toJS()
+        let viewBoxstyle = toggle ? "app-container full-height boxed-layout" : "app-container full-height";
         return <div className = "full-height">
             <div className={viewBoxstyle}>
                 <Menu 
@@ -57,6 +52,7 @@ class Main extends React.Component {
 
 export default connect(
     state=>{
+        debugger
         return{
             componentState:state.componentReducer
         }

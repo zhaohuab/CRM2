@@ -1,6 +1,4 @@
 
-
-
 let option
 export default option = {
     baseOption: {
@@ -59,9 +57,9 @@ export default option = {
             }
         },
         grid: {
-            left: '3%',
-            right: '4%',
-            top: '10%',
+            left: '0',
+            right: '0',
+            top: '2%',
             containLabel: true,
         },
         xAxis : [
@@ -88,8 +86,10 @@ export default option = {
                 splitLine:{
                     show:true,
                     lineStyle:{
-                        type:'dashed'
-                    }
+                        type:'dashed',
+                        color:'#ddd'
+                    },
+                   
                 },
                 axisLine:{
                     lineStyle:{
