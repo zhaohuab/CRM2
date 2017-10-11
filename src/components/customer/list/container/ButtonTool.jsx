@@ -1,10 +1,10 @@
-import { Cascader, Select, Form, Row, Col, Input, Button, Icon } from 'antd';
+import {Modal, Cascader, Select, Form, Row, Col, Input, Button, Icon } from 'antd';
 
 import Enum from 'utils/components/enum'
 const FormItem = Form.Item;
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
-
+const confirm = Modal.confirm;
 
 
 
@@ -16,13 +16,30 @@ class BtnPanel extends React.Component {
         this.props.btnBack();
     }
 
+    btnDelete(){
+        let that =this
+        confirm({
+        title: '确定要删除吗?',
+        content: '此操作不可逆',
+        okText: '是',
+        okType: 'danger',
+        cancelText: '否',
+        onOk() {
+            that.props.btnDelete();
+        },
+        onCancel() {
+        console.log('Cancel');
+        },
+     });
+    }
+    
     render() {
 
         return (
             <div>
                 <Button className='returnbtn-class' icon='swap-left' onClick={this.btnBack.bind(this)}>返回</Button>
-                <Button className='returnbtn-class' icon='delete'>删除</Button>
-                <Button className='returnbtn-class' icon='edit'>编辑</Button>
+                <Button className='returnbtn-class' icon='delete' onClick={this.btnDelete.bind(this)}>删除</Button>
+               
                 <ButtonGroup className='returnbtn-class'>
                     <Button icon='play-circle-o' onClick={this.props.btnSetEnable.bind(this, 1)}>启用</Button>
                     <Button icon='pause-circle-o' onClick={this.props.btnSetEnable.bind(this, 2)}>停用</Button>
@@ -250,7 +267,7 @@ class ToolForm extends React.Component {
             <div>
                 <Row>
                     <Col span={4}>
-                        <Select style={{ width: 150 }} initValue="3" >
+                        <Select style={{ width: 150 }} defaultValue="3" >
                             <Option value="0">全部</Option>
                             <Option value="1">我关注的</Option>
                             <Option value="2">最近新建</Option>
@@ -262,7 +279,7 @@ class ToolForm extends React.Component {
                             <BtnPanel
                                 btnBack={this.props.btnBack}
                                 btnSetEnable={this.props.btnSetEnable}
-
+                                btnDelete={this.props.btnDelete}
                             />
                         </div>
                         <div style={{ display: this.props.visible.simForm == true ? 'block' : 'none' }}>

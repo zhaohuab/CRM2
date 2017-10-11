@@ -12,6 +12,8 @@ import * as Actions from "../action"
 import * as enumData from "./enumdata"
 import cityData from "./citydata"
 import ViewPanel from "./ViewPanel"
+import './index.less'
+
 
 class List extends React.Component {
   constructor(props) {
@@ -99,12 +101,12 @@ class List extends React.Component {
 
     this.props.action.getListData(this.state.pagination);
   }
-  formHandleOk(pagination,searchMap) {
+  formHandleOk() {
     this.formRef.props.form.validateFields((err, values) => {
       if (!err) {
 
         if (this.state.isEdit) {
-          this.props.action.listEditSave(values,pagination,searchMap);
+          this.props.action.listEditSave(values);
         } else {
           this.props.action.listAddSave(values);
         }
@@ -116,12 +118,18 @@ class List extends React.Component {
   }
 
   handleSearch(searchMap) {
-    this.props.action.getListData(this.state.pagination, { searchMap });
+    debugger
+    this.props.action.getListData(this.state.pagination,  searchMap );
   }
 
   btnSetEnable(enableState) {
+    const searchMap = this.props.$$state.get('searchMap').toJS();
     const selectRow = this.props.$$state.get("selectedRows").toJS();
-    this.props.action.setEnableState(selectRow, enableState, this.state.pagination, searchMap)
+    const ids = [];
+    for(let i=0;i<selectRow.length;i++){
+      ids.push(selectRow[i].id);
+    }
+    this.props.action.setEnableState(ids, enableState, this.state.pagination, searchMap)
   }
   btnNew() {
     this.setState({isEdit:false});
@@ -133,6 +141,19 @@ class List extends React.Component {
   btnEdit(data) {
     this.setState({isEdit:true});
     this.props.action.showFormEdit(true);
+  }
+  btnDelete(){
+    const searchMap = this.props.$$state.get('searchMap').toJS();
+    const selectRow = this.props.$$state.get("selectedRows").toJS();
+    const ids = [];
+    for(let i=0;i<selectRow.length;i++){
+      ids.push(selectRow[i].id);
+    }
+    this.props.action.deleteData(ids,searchMap,this.state.pagination);
+  }
+  btnClosePanel(){
+  
+    this.props.action.closePanel()
   }
   render() {
     const { $$state } = this.props;
@@ -147,7 +168,7 @@ class List extends React.Component {
     const viewFormVisible = $$state.get("viewFormVisible");
     return (
       
-      <div className style={{position:'relative'}}>
+      <div className="aaa" style={{position:'relative'}}>
         <ToolForm
           visible={toolVisible}
           btnBack={this.btnBack.bind(this)}
@@ -159,6 +180,7 @@ class List extends React.Component {
           enumData={enumData}
           cityData={cityData}
           searchMap={searchMap}
+          btnDelete={this.btnDelete.bind(this)}
         />
         <div className="list-box">
           <Table
@@ -171,23 +193,25 @@ class List extends React.Component {
         <Modal
           title="增加客户"
           visible={formVisitable}
-          onOk={this.formHandleOk.bind(this,this.state.pagination,searchMap)}
+          onOk={this.formHandleOk.bind(this)}
           onCancel={this.formHandleCancel.bind(this)}
         >
           <CardForm
             wrappedComponentRef={(inst) => this.formRef = inst}
             data={viewData}
+            isEdit={this.state.isEdit}
             enumData={enumData}
             cityData={cityData}
           />
         </Modal>
         <div 
-        style = {{ }}
-        style={{ display:"none",position:'absolute',zIndex:'500',background:'#EEEEEE',top:0,bottom:0,left:'20%',right:0}} >
+        className={viewFormVisible==true?'viewPanelTrue':'viewPanelFalse'}
+        >
           <ViewPanel
             data={viewData}
             btnNew={this.btnNew.bind(this)}
             btnEdit={this.btnEdit.bind(this)}
+            btnClosePanel={this.btnClosePanel.bind(this)}
           />
         </div>
       </div>

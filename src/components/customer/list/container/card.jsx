@@ -20,10 +20,13 @@ export default class EditForm extends React.Component {
 
 
   componentDidMount() {
-    let { fatherorgId, fatherorgName } = this.props.data;
-    this.props.data.fatherorgId = { key: fatherorgId, title: fatherorgName };
+    if(this.props.isEdit==true){
+      let { fatherorgId, fatherorgName } = this.props.data;
+      this.props.data.fatherorgId = { key: fatherorgId, title: fatherorgName };
 
-    this.props.form.setFieldsValue(this.props.data);
+      this.props.form.setFieldsValue(this.props.data);
+    }
+    
   }
   handleChangeLevel = (value) => {
     if (value == "0") {
