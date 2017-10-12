@@ -5,7 +5,7 @@ import {baseDir} from 'api'
 export function loginOut(){
    return (dispatch)=>{
        
-       debugger
+       
         // reqwest({
         //     url: `${baseDir}logout`,
         //     method: "GET",
