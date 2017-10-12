@@ -49,8 +49,8 @@ function handleMehtod(method,url,data) {
     let contentType="";
     // debugger
     if((method.toUpperCase() == "GET" || method.toUpperCase() == "DELETE")) {
-        if(data) {
-            url += "?param=" + encodeURIComponent(encrypt(data.param));
+        if(data&&data.param) {
+            url += "?param=" + encodeURIComponent(encrypt(JSON.stringify(data.param)));
         }
         data = {};
         contentType = "application/x-www-form-urlencoded";

@@ -15,8 +15,7 @@ import './index.less'
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
-import 'assets/stylesheet/menu/iconfont.css'
-import 'assets/stylesheet/tool/iconfont.css'
+import 'assets/stylesheet/all/iconfont.css'
 
 //导入action方法
 import * as Actions from "../action"
@@ -89,8 +88,9 @@ class List extends React.Component {
     this.props.action.showForm(true,{});
   }
   onDelete=()=>{
+    let { pagination,searchMap } = this.state;
     this.setState({headLabel:false});
-    this.props.action.onDelete(this.state.selectedRowKeys);
+    this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
   }
   onEdit = () => {
     
@@ -190,10 +190,10 @@ class List extends React.Component {
             <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
               <Button className="default_button" onClick={this.onEdit}><i className='iconfont icon-bianji'></i>编辑</Button>
               <Popconfirm placement="bottom"  title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
-                <Button className="default_button" ><i className='iconfont icon-tubiao-shanchu'></i>删除</Button>
+                <Button className="default_button" ><i className='iconfont icon-shanchu'></i>删除</Button>
               </Popconfirm>
               
-              {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}><i className='iconfont icon-tingyong-lanse'></i>停用</Button>:
+              {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}><i className='iconfont icon-tingyong'></i>停用</Button>:
               <Button className="default_button" onClick={this.onEnable(1).bind(this,1)}><i className='iconfont icon-qiyong-lanse'></i>启用</Button>}
               <Button className="default_button"><i className='iconfont icon-fenpeijiaose'></i>分配角色</Button>
             </HeadLabel> 

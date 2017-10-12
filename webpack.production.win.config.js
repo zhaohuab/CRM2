@@ -23,14 +23,17 @@ var portNumber = '3000';
 
 const environments = {
 	// 测试环境
-	'btestw': '//172.20.18.154',
+	'btestw': '//172.20.18.154',  //old //172.20.18.154
     // 正式环境
-    'bupw': 'http://static-scrm.upesn.com',
+    'bupw': '//10.1.214.78',
 };
 
 const productionEnv = environments[process.env.npm_lifecycle_event] || '//172.20.18.154';
-console.log(productionEnv)
+console.log("打包引用地址："+productionEnv)
 
+
+//打包之前先清理lib
+require('./before-build.script');
 
 module.exports = {
 	entry: {
@@ -63,21 +66,30 @@ module.exports = {
 	module: {
 		loaders:[
 			{
-				test: /\.(js|jsx|ts)$/,
+				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
 				loader: "babel"
 			},
 			{
 	            test: /\.(jpg|png|gif)$/,
-	            loader: 'url',
+	            loader: 'url?limit=8192',
+			},
+			{
+	            test: /\.css$/,
+	            loaders: ["style", "css"]
+			},
+			{
+	            test: /\.(woff|svg|eot|ttf)\??.*$/,
+	            loader: "url-loader?name=fonts/[name].[md5:hash:hex:7].[ext]",
 	        },
-		    {
-	          test: /\.(css|less)$/,
-	          loader: extractCSS.extract([
-						"css",
-						`less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`,
-					])
-	        },
+			{
+				test: /\.(less)$/,
+				loaders:[
+					"style",
+					"css",
+					`less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`,
+				]
+			}
 		]
 	},
 	devtool: 'cheap-module-source-map',

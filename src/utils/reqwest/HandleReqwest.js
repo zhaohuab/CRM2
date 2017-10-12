@@ -1,25 +1,34 @@
 /**
  * 处理信息公共
  */
-import { message,notification } from 'antd';
+import { message as MsgTool,notification } from 'antd';
+import { browserHistory } from 'react-router'
 function handleMessage(result) {
-    let { response } = result;
+    let { response,status } = result;
+    if(status == 401) {
+        //browserHistory.push('/crm_web/login');
+        return;
+    }
     if(!response) {
         return;
     }
     let { code ,message,developerMessage } = JSON.parse(response);
+    //message.destroy()
+    if(!message && code == 'SUCCESS') {
+        return;
+    }
     switch (code) {
 		case 'SUCCESS':
-            message.success(message);
+            MsgTool.success(message);
             break;
         case 'INFO':
-            message.info(message);
+            MsgTool.info(message);
             break;
         case 'WARN':
-            message.warn(message);
+            MsgTool.warn(message);
             break;
         case 'ERROR':
-            message.error(message);
+            MsgTool.error(message);
             break;
         case 'NOTIFICATION':
             notification.open({
