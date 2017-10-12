@@ -18,19 +18,21 @@ function handleMessage(result) {
         return;
     }
     switch (code) {
-		case 'SUCCESS':
+		case '0':
             MsgTool.success(message);
             break;
-        case 'INFO':
-            MsgTool.info(message);
+        case '1':
+            MsgTool.error(message);
+            
             break;
-        case 'WARN':
+        case '2':
+            MsgTool.info(message);
+            
+            break;
+        case '3':
             MsgTool.warn(message);
             break;
-        case 'ERROR':
-            MsgTool.error(message);
-            break;
-        case 'NOTIFICATION':
+        case '4':
             notification.open({
                 message: '操作异常',
                 description: '请联系管理员！',

@@ -24,6 +24,8 @@ class LoginForm extends React.Component {
         const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
         const userError = isFieldTouched('user') && getFieldError('user');
         const passwordError = isFieldTouched('password') && getFieldError('password');
+        const loginError = this.props.loginError
+        
         return (
             <div className='login-form-warpper'>
                 <div className='login-shadow'></div>
@@ -109,7 +111,7 @@ class LoginCon extends React.Component {
                                 <img src={require('assets/images/login/crm-logo.png')}/>
                                 <p><span>—</span><span>企业营销工作平台</span><span>—</span></p>
                             </div>
-                            <Login login = {this.props.action.login} />
+                            <Login loginError = '112312' login = {this.props.action.login} />
                         </div>
                         <div className='login-main-footer'>
                                <p>版权归用友股份有限公司所有</p>
