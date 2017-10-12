@@ -105,7 +105,7 @@ class Department extends React.Component {
                     width={400}
                     closable={false}
                 >
-                <div className='add-inset-model' >
+                <div className='add-inset-model'  id='tree-icon'>
                     <Tree   
                         onSelect={this.onSelect}
                         showLine={true}

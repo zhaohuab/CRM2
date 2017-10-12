@@ -1,13 +1,11 @@
 @blue:#3ca3fb;
 @green:#2dd685;
 @red:#fd786d;
-
-/*ant select下拉框颜色*/
+ /*ant下拉框单独样式修改*/
 .ant-select-dropdown{
     min-width:105px;
     text-align: center;
 }
-
 .ant-select-dropdown-menu-item{
     color:#1C7FEB
 }
@@ -17,18 +15,56 @@
 }
 .ant-select{
     margin-right: -10px;
-    
+}
+.ant-select-selection{
+    border:none;
 }
 
+ /*首页样式*/
 .home-warrper {
    display: flex;
    flex-direction:column;
    height:100%;
    background: #f2f2f2;
-   .ant-select-selection{
-       border:none;
+
+   /*单独改ant tabel样式*/
+   #change-style .ant-table table{
+       border:1px solid #ccc;
+       border-bottom:none;
+       border-right:none;
+       border-radius:0 0 0 0;
    }
+   #change-style .ant-table-thead > tr,  #change-style .ant-table-tbody > tr:nth-child(even){
+        background: none
+    }
+    #change-style .ant-table-thead > tr > th{
+        color:#666;
+        border:none;
+        background: #FCFCFC ;
+        border-radius:0px;
+    }
+
+    #change-style .ant-table .ant-table table{
+        border:none
+    }
+
+    #change-style .ant-table{
+        color:#999;
+    }
+    #change-style .ant-table .ant-table-thead > tr > th, .ant-table .ant-table-tbody > tr > td{
+        border-bottom:1px solid #ccc;
+        border-right:1px solid #ccc;
+        height:20px;
+        padding:5px;
+        box-sizing: border-box;
+        text-align: center
+    }
+
+    #change-style .ant-table .ant-tree.ant-tree-show-line li:not(:last-child):before{
+        border-left:1px solid #ECECEC
+    }
    
+   /*首页样式*/
    .main-inner{
        padding:15px;
        padding-top:0;
@@ -132,7 +168,7 @@
             ul li{
                 height:30px;
                 line-height: 30px;
-                font-size: 14px;
+                font-size: 12px;
                 color: #666;
                 width: 100%;
                 overflow: hidden;

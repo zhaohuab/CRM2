@@ -195,7 +195,7 @@ class List extends Component {
         return (
             <div className='list-warpper'>
                 <div className='list-main'>
-                    <div className='list-table-tree' style={{minHeight:this.state.minH?this.state.minH+'px':'auto'}}>
+                    <div className='list-table-tree' id='tree-icon' style={{minHeight:this.state.minH?this.state.minH+'px':'auto'}}>
                         <div className='org-tree-top'>
                             <Search placeholder="请输入关键字段" onSearch={this.searchList.bind(this)}/>
                         </div>
@@ -206,6 +206,7 @@ class List extends Component {
                             edit={this.treeSelectEditFn.bind(this)}
                             add={this.treeSelectAddFn.bind(this)}
                             delete={this.treeSelectDeleteFn.bind(this)}
+                            
                         />
                     </div>
                     <div className='list-table' ref="listTablePanel">

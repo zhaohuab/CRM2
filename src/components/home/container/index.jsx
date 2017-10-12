@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
 import { Map, Markers ,Polyline} from 'react-amap';
-import { Input,Badge,Icon,Row, Col,Button,Menu, Dropdown,Select} from 'antd';
+import { Input,Badge,Icon,Row, Col,Button,Menu, Dropdown,Select,Table} from 'antd';
 
 const Search = Input.Search;
 const Option = Select.Option;
@@ -30,8 +30,61 @@ const randomMarker = (len) => (
     }))
   );
 
+//假数据  
 const targetChange=[{data:[1000,2000,3000]},{data:[100,20,700]},{data:[60,26,3033]},{data:[105,200,3000]}]  
 const funnelChange=[{data:[60,40,20,80,90,100],data2:[30,10,5,50,70,80]},{data:[80,40,60,30,15,10],data2:[60,30,55,25,13,5]},{data:[100,20,80,10,45,60],data2:[90,10,65,5,33,40]},{data:[10,20,40,60,90,75],data2:[7,10,21,25,63,40]}] 
+const targetTabelData = [[{
+    key: '1',
+    name: '周杰',
+    target: '￥3000',
+    money: '￥2000',
+    down:'15%'
+  }, {
+    key: '2',
+    name: '王晶',
+    target: '￥3000',
+    money: '￥2000',
+    down:'20%'
+  }],
+  [{
+    key: '1',
+    name: '周杰1',
+    target: '￥1000',
+    money: '￥400',
+    down:'15%'
+  }, {
+    key: '2',
+    name: '王晶1',
+    target: '￥6000',
+    money: '￥5000',
+    down:'20%'
+  }],
+  [{
+    key: '1',
+    name: '周杰2',
+    target: '￥4000',
+    money: '￥500',
+    down:'15%'
+  }, {
+    key: '2',
+    name: '王晶2',
+    target: '￥1000',
+    money: '￥700',
+    down:'20%'
+  }]
+,[{
+    key: '1',
+    name: '周杰3',
+    target: '￥100',
+    money: '￥50',
+    down:'15%'
+  }, {
+    key: '2',
+    name: '王晶3',
+    target: '￥3000',
+    money: '￥2000',
+    down:'20%'
+  }]];
 
 class Home extends React.Component {
     constructor(props) {
@@ -42,12 +95,19 @@ class Home extends React.Component {
         this.funnelOption=funnelEcharts;
         this.markers = randomMarker(1000);
         this.center = {longitude: 115, latitude: 40};
-        
+        this.state={
+            targetTabelData:targetTabelData[0]
+        }
         this.changeTargetData=(key)=>{
             this.targetOption.series[0].data.forEach((item,index)=>{
                 item.value=targetChange[key].data[index]
             })
-            this.targetEchar.setOption(this.targetOption);
+            
+            this.setState({
+                targetTabelData:targetTabelData[key]
+            },()=>{
+                this.targetEchar.setOption(this.targetOption);
+            })
         }
 
         this.changeFunnelData=(key)=>{
@@ -60,8 +120,22 @@ class Home extends React.Component {
             })
             this.funnelEchar.setOption(this.funnelOption);
         }
+        this.columns = [{
+            title: '姓名',
+            dataIndex: 'name',
+            
+          }, {
+            title: '目标',
+            dataIndex: 'target',
+          }, {
+            title: '回款',
+            dataIndex: 'money',
+          }, {
+            title: '完成率',
+            dataIndex: 'down',
+          }];    
     }
- 
+    
     onWindowResize(){
         setTimeout(()=>{
             if(this.refs.target){
@@ -91,22 +165,19 @@ class Home extends React.Component {
 
         this.funnelEchar = echarts.init(this.refs.funnel);
         this.funnelEchar.setOption(this.funnelOption);
+       
         window.addEventListener('resize', this.onWindowResize.bind(this))
-        
     }
     render() {
         const events = {
             created: (ins) => {console.log(ins)},
             click: () => {console.log('You Clicked The Map')}
         }
-        let collapse=this.props.componentState.get('collapsed')
-        let toggle=this.props.componentState.get('toggle')
-        
         this.onWindowResize()
 
         return (
             <div>
-                <div className="home-warrper">
+                <div className="home-warrper" id='home-id'>
                     <Row className='clinet-main'>
                         <Col span={9} className='clinet-main-left'> 
                             <div className='main-left-top'>
@@ -121,27 +192,8 @@ class Home extends React.Component {
                                         </Select>
                                     </div>
                                 </h3>
-                                <div  className='main-inner'>
-                                    <table className='charts-cell-tabel' cellpadding={0}>
-                                        <tr>
-                                            <th>姓名</th>
-                                            <th>目标</th>
-                                            <th>回款</th>
-                                            <th>完成率</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Month</td>
-                                            <td>￥3000</td>
-                                            <td>￥2000</td>
-                                            <td>15%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Month</td>
-                                            <td>￥3000</td>
-                                            <td>￥2000</td>
-                                            <td>15%</td>
-                                        </tr>
-                                    </table>
+                                <div  className='main-inner' id='change-style'>
+                                    <Table  columns={this.columns} dataSource={this.state.targetTabelData} pagination={false} />
                                     <div ref='target' className='target-charts' ></div>
                                 </div>
                             </div>

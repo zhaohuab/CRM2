@@ -1,6 +1,11 @@
+import reqwest from 'reqwest'
+import 'whatwg-fetch';
+import 'es6-promise';
+
 export function getCollaps(){
-    debugger
      return{
          type:'COMMON_MENU_COLLAPSED'
      }
  }
+
+ 

@@ -24,7 +24,6 @@ const reqwest = (options,success,fail)=> {
         ...others
     })
     .then((result) => {
-        
         handle(result);
         if(result.response) {
             let resp = JSON.parse(result.response);
@@ -47,6 +46,7 @@ const reqwest = (options,success,fail)=> {
 }
 function handleMehtod(method,url,data) {
     let contentType="";
+    
     if((method.toUpperCase() == "GET" || method.toUpperCase() == "DELETE")) {
         if(data&&data.param) {
             url += "?param=" + encodeURIComponent(encrypt(JSON.stringify(data.param)));
