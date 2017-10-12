@@ -12,7 +12,7 @@ const fetchData = (type, payload)=> {
 //获取所有数据
 export function getlist(searchMap={}){
     return(dispatch,getState)=>{
-        
+        debugger
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
             url: url.org,
@@ -21,7 +21,7 @@ export function getlist(searchMap={}){
                 param : JSON.stringify({searchMap})
             }
         },(data) => {
-
+            debugger
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
     }
@@ -137,7 +137,7 @@ export function listdel(record,treeId,searchFilter){
 			}
         }
         ,(dataResult) => {
-          
+           debugger
             const listData=dataResult;
             request({
                 url: url.orgTree,
@@ -145,6 +145,7 @@ export function listdel(record,treeId,searchFilter){
                 data:{}
             }
             ,(data) => {
+                debugger
                 dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
                 dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data}));
             })
