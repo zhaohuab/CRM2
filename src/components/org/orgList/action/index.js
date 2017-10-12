@@ -92,7 +92,7 @@ export function listchange(data){
             url: `${url.org}${id}`,
             method:'put',
             data:{
-                param: JSON.stringify((transData(data)))
+                param: transData(data)
             }
         },(dataResult) => {
             request({
@@ -145,7 +145,6 @@ export function listdel(record,treeId,searchFilter){
                 data:{}
             }
             ,(data) => {
-                debugger
                 dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
                 dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data}));
             })
