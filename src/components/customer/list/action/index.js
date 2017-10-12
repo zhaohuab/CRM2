@@ -11,7 +11,6 @@ const fetchData = (type, payload) => {
     }
 
 function transData  (searchMap) {
-    debugger
     if(searchMap == null){
         return searchMap
     }
@@ -31,6 +30,7 @@ function transData  (searchMap) {
 }
 
 const appendAddress = (data) =>{
+    debugger
     for(let i=0;i<data.data.length;i++){
         data.data[i].address = data.data[i].provinceName+data.data[i].cityName+ data.data[i].districtName+data.data[i].street
     }
