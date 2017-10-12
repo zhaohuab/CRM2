@@ -6,12 +6,12 @@ export function loginOut(){
    return (dispatch)=>{
        
        
-        // reqwest({
-        //     url: `${baseDir}logout`,
-        //     method: "GET",
-        // }, result => {
-        //     debugger
-        //     //dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
-        // })
+        reqwest({
+            url: `${baseDir}logout`,
+            method: "POST",
+        }, result => {
+            debugger
+            //dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
+        })
    }
 }

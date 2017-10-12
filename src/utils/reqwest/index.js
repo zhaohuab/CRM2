@@ -24,6 +24,7 @@ const reqwest = (options,success,fail)=> {
         ...others
     })
     .then((result) => {
+        debugger
         handle(result);
         if(result.response) {
             let resp = JSON.parse(result.response);
