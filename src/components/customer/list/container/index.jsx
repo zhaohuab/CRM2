@@ -118,17 +118,25 @@ class List extends React.Component {
   }
 
   handleSearch(searchMap) {
-    debugger
     this.props.action.getListData(this.state.pagination,  searchMap );
   }
 
-  btnSetEnable(enableState) {
+  btnSetEnableList(enableState) {
     const searchMap = this.props.$$state.get('searchMap').toJS();
     const selectRow = this.props.$$state.get("selectedRows").toJS();
     const ids = [];
     for(let i=0;i<selectRow.length;i++){
       ids.push(selectRow[i].id);
     }
+    this.props.action.setEnableState(ids, enableState, this.state.pagination, searchMap)
+  }
+
+  btnSetEnableView(enableState) {
+    const searchMap = this.props.$$state.get('searchMap').toJS();
+    const viewData = this.props.$$state.get("viewData").toJS();
+    const ids = [];
+    ids.push(viewData.id);
+    debugger
     this.props.action.setEnableState(ids, enableState, this.state.pagination, searchMap)
   }
   btnNew() {
@@ -142,7 +150,7 @@ class List extends React.Component {
     this.setState({isEdit:true});
     this.props.action.showFormEdit(true);
   }
-  btnDelete(){
+  btnDeleteList(){
     const searchMap = this.props.$$state.get('searchMap').toJS();
     const selectRow = this.props.$$state.get("selectedRows").toJS();
     const ids = [];
@@ -151,6 +159,14 @@ class List extends React.Component {
     }
     this.props.action.deleteData(ids,searchMap,this.state.pagination);
   }
+  btnDeleteView(){
+    const searchMap = this.props.$$state.get('searchMap').toJS();
+    const viewData = this.props.$$state.get("viewData").toJS();
+    const ids = [];
+    ids.push(viewData.id);
+    this.props.action.deleteData(ids,searchMap,this.state.pagination);
+  }
+
   btnClosePanel(){
   
     this.props.action.closePanel()
@@ -174,13 +190,13 @@ class List extends React.Component {
           btnBack={this.btnBack.bind(this)}
           btnLess={this.changeVisible.bind(this)}
           btnMore={this.changeVisible.bind(this)}
-          btnSetEnable={this.btnSetEnable.bind(this)}
+          btnSetEnable={this.btnSetEnableList.bind(this)}
           handleSearch={this.handleSearch.bind(this)}
           btnNew={this.btnNew.bind(this)}
           enumData={enumData}
           cityData={cityData}
           searchMap={searchMap}
-          btnDelete={this.btnDelete.bind(this)}
+          btnDelete={this.btnDeleteList.bind(this)}
         />
         <div className="list-box">
           <Table
@@ -212,6 +228,8 @@ class List extends React.Component {
             btnNew={this.btnNew.bind(this)}
             btnEdit={this.btnEdit.bind(this)}
             btnClosePanel={this.btnClosePanel.bind(this)}
+            btnSetEnable={this.btnSetEnableView.bind(this)}
+            btnDelete={this.btnDeleteView.bind(this)}
           />
         </div>
       </div>

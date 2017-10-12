@@ -24,7 +24,6 @@ function pageAdd(page,item) {
 	return page;
 }
 function pageEdit(page,item) {
-	debugger
 	let {data} = page;
 	for(let i=0,len=data.length;i<len;i++) {
 		if(data[i].id == item.id) {
@@ -38,7 +37,7 @@ function pageEdit(page,item) {
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action){
 
 	switch (action.type) {
-		case 'CUSTOMER_LIST_GETDATA':
+			case 'CUSTOMER_LIST_GETDATA':
 			return $$state.merge({data:action.payload.data})
 
 			case 'CUSTOMER_LIST_SHOWFORM':
@@ -51,7 +50,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({selectedRows:Immutable.fromJS(action.payload.rows),toolVisible:action.payload.toolVisible})
 
 			case 'CUSTOMER_LIST_SAVESEARCHMAP':
-			debugger
 			return $$state.merge({searchMap:action.payload==undefined?{}:action.payload})
 			
 			case 'CUSTOMER_LIST_ADDSAVE':
@@ -74,7 +72,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				viewFormVisible : false,
 			})
-			
+			case 'CUSTOMER_LIST_DELETE':
+			return $$state.merge({data:action.payload.data,viewFormVisible:false})
 	    default: 
 	        return $$state;
     }

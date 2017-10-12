@@ -19,18 +19,18 @@ class BtnPanel extends React.Component {
     btnDelete(){
         let that =this
         confirm({
-        title: '确定要删除吗?',
-        content: '此操作不可逆',
-        okText: '是',
-        okType: 'danger',
-        cancelText: '否',
-        onOk() {
-            that.props.btnDelete();
-        },
-        onCancel() {
-        console.log('Cancel');
-        },
-     });
+            title: '确定要删除吗?',
+            content: '此操作不可逆',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk() {
+                that.props.btnDelete();
+            },
+            onCancel() {
+            console.log('Cancel');
+            },
+        });
     }
     
     render() {

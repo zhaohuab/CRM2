@@ -1,15 +1,18 @@
 
 
-import {Popover,Collapse,Tabs,Row,Col, Layout, Menu, Breadcrumb, Icon ,Button} from 'antd'
+import {Modal,Popover,Collapse,Tabs,Row,Col, Layout, Menu, Breadcrumb, Icon ,Button} from 'antd'
 import { browserHistory } from 'react-router'
 const TabPane = Tabs.TabPane;
 const { Header, Content, Sider } = Layout;
 const Panel = Collapse.Panel;
-
+const confirm = Modal.confirm;
 console.log(browserHistory)
 export default class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+            enableState:this.props.data.enableState
+        }
     }
 
 
@@ -20,8 +23,52 @@ export default class ViewPanel extends React.Component {
         let path=browserHistory.getCurrentLocation().pathname
         browserHistory.push('/crm_web/page/contacts/'+encodeURIComponent(path))
     }
-
+    btnEnable(){
+        debugger
+        this.setState({
+            enableState:2
+        })
+        if(this.state.enableState==1){
+            this.setState({
+                enableState:2
+            })
+            this.props.btnSetEnable(2)
+        }else{
+            this.setState({
+                enableState:1
+            })
+            this.props.btnSetEnable(1)
+        }
+        
+    }
+    btnDelete(){
+        
+        let that =this
+        confirm({
+            title: '确定要删除吗?',
+            content: '此操作不可逆',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk() {
+                that.props.btnDelete()
+            },
+            onCancel() {
+            console.log('Cancel');
+            },
+        });
+    }
+    
     render() {
+        
+        const content = (
+            <div>
+             <div><Button >调整负责人</Button></div>
+             <div><Button >查重</Button></div>
+             <div><Button onClick={this.btnEnable.bind(this)}>{this.state.enableState==1?"停用":"启用"}</Button></div>
+             <div><Button onClick={this.btnDelete.bind(this)}>删除</Button></div>
+            </div>
+          );
         return (
             <div>
                 <Layout>
@@ -32,15 +79,11 @@ export default class ViewPanel extends React.Component {
                                 <Col span={10}>
                                     <Button onClick={this.props.btnEdit.bind(this,this.props.data)}>编辑</Button>
                                     <Button onClick={this.props.btnNew}>新增</Button>
-                                    {/* <Popover
-                                        content={<a onClick={this.hide}>Close</a>}
-                                        title="Title"
-                                        trigger="click"
-                                        visible={this.state.visible}
-                                        onVisibleChange={this.handleVisibleChange}
-                                    >
-                                        <Button type="primary">Click me</Button>
-                                    </Popover> */}
+                                    <Popover placement="bottom" title="更多" content={content} trigger="click">
+                                        <Button>更多</Button>
+                                    </Popover>
+                                       
+                                 
                                 </Col>
                                 <Col span={2}><Button onClick={this.props.btnClosePanel}>X</Button></Col>
                             </Row>

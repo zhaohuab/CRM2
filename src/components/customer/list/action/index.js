@@ -45,7 +45,6 @@ const getListData = (pagination,searchMap) => {
                 })
             }
         },(data) => {
-            debugger
             dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data)}));
         })
 	   
@@ -137,13 +136,12 @@ const deleteData=(ids,searchMap,pagination)=>{
             }
         }
         ,(data) => {
-            dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data)}));
+            dispatch(fetchData('CUSTOMER_LIST_DELETE', {data: appendAddress(data)}));
         })
     }
 }
 //启停用功能
 const setEnableState=(ids,state,page,searchMap)=>{
-    debugger
     return (dispatch) => {
 		reqwest({
 			url: url.customer+'/state',
