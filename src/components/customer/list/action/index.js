@@ -11,7 +11,6 @@ const fetchData = (type, payload) => {
     }
 
 function transData  (searchMap) {
-    debugger
     if(searchMap == null){
         return searchMap
     }
@@ -22,6 +21,7 @@ function transData  (searchMap) {
     searchMap.lifecycle =searchMap.lifecycle == undefined?undefined:searchMap.lifecycle.key;
     searchMap.enableState =searchMap.enableState == undefined?undefined:searchMap.enableState.key;
     searchMap.province_city_district =searchMap.province_city_district == undefined?undefined: searchMap.province_city_district.join('_');
+    debugger
     if(searchMap.province_city_district!=undefined){
         searchMap.province=searchMap.province_city_district.split("_")[0];
         searchMap.city=searchMap.province_city_district.split("_")[1];
@@ -31,12 +31,17 @@ function transData  (searchMap) {
 }
 
 const appendAddress = (data) =>{
+    debugger
     for(let i=0;i<data.data.length;i++){
-        data.data[i].address = data.data[i].provinceName+data.data[i].cityName+ data.data[i].districtName+data.data[i].street
+        data.data[i].address = String(data.data[i].provinceName)+String(data.data[i].cityName)+ String(data.data[i].districtName)+String(data.data[i].street);
     }
     return data;
 }
-
+const appendAddressOne = (data) =>{
+    debugger
+    data.address = String(data.provinceName)+String(data.cityName)+ String(data.districtName)+String(data.street);
+    return data;
+}
 //定义方法 action
 const getListData = (pagination,searchMap) => {
 	return (dispatch) => {
@@ -45,13 +50,12 @@ const getListData = (pagination,searchMap) => {
             url:url.customer,
             method:'get',
             data:{
-                param: JSON.stringify({
+                param: {
                     ...pagination,
                     searchMap:transData(searchMap)
-                })
+                }
             }
         },(data) => {
-            debugger
             dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data)}));
         })
 	   
@@ -68,7 +72,7 @@ const listAddSave = (data) =>{
             }
         }, (data) => {
             debugger
-            dispatch(fetchData('CUSTOMER_LIST_ADDSAVE',data));
+            dispatch(fetchData('CUSTOMER_LIST_ADDSAVE',appendAddressOne(data)));
         })
     }
 }
@@ -77,14 +81,12 @@ const listEditSave = (data) =>{
     return(dispatch)=>{
         reqwest({
             url: url.customer+"/"+data.id,
-            
             method:'put',
             data:{
                 param: transData(data)
             }
         }, (data) => {
-            dispatch(fetchData('CUSTOMER_LIST_EDITSAVE', {data: appendAddress(data)}));
-            
+            dispatch(fetchData('CUSTOMER_LIST_EDITSAVE', appendAddressOne(data)));
         })
     }
 
@@ -136,11 +138,11 @@ const deleteData=(ids,searchMap,pagination)=>{
             url:url.customer+'/batch',
             method: "DELETE",
             data:{
-                param: JSON.stringify({
+                param: {
                     ids:ids.join(","),
                     ...pagination,
                     searchMap:searchMap
-                }),
+                },
             }
         }
         ,(data) => {

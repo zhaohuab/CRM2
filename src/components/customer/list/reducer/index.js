@@ -60,7 +60,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			case 'CUSTOMER_LIST_EDITSAVE':
 			return $$state.merge({
 				formVisitable : false,
-				data : pageEdit($$state.get("data").toJS(),action.payload.data),
+				data : pageEdit($$state.get("data").toJS(),action.payload),
 				viewData : action.payload.data,
 			})
 			case 'CUSTOMER_LIST_SHOWVIEWFORM':

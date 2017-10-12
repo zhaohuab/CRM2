@@ -34,7 +34,7 @@ class List extends React.Component {
         ),
       }, {
         title: '渠道类型',
-        dataIndex: 'cannelType',
+        dataIndex: 'cannelTypeName',
       }, {
         title: '客户等级',
         dataIndex: 'levelName',
@@ -46,7 +46,7 @@ class List extends React.Component {
         dataIndex: 'industryName',
       }, {
         title: '地址',
-        dataIndex: 'regAddr',
+        dataIndex: 'address',
       }]
     const that = this
     this.rowSelectionFn = {

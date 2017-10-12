@@ -27,9 +27,14 @@ class Contacts extends React.Component {
         return(
             <section className={collapse?'contacts-wrapper thin ':'contacts-wrapper wide'}>
                 <header className='contacts-wrapper-header'>
+<<<<<<< HEAD
                     <div className='wrapper-header-title' onClick={this.btnBack.bind(this)}>
                         <i className='iconfont icon-fanhui'></i>
                         <h3>联系人</h3>
+=======
+                    <div className='wrapper-header-title'>
+                        <i className='iconfont icon-fanhui'></i>
+>>>>>>> a9328a685376ebbe3e01e9d4d9a729306cf43196
                         <h3>联系人</h3>
                     </div>
                 </header>

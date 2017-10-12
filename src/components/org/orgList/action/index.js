@@ -12,16 +12,14 @@ const fetchData = (type, payload)=> {
 //获取所有数据
 export function getlist(searchMap={}){
     return(dispatch,getState)=>{
-        debugger
         dispatch({type:'ORG_LIST_GETLISTSTART'})
         request({
             url: url.org,
             method:'get',
             data:{
-                param : JSON.stringify({searchMap})
+                param : {searchMap}
             }
         },(data) => {
-            debugger
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
     }
@@ -36,7 +34,7 @@ export function getlistByClickSearch(searchMap){
             url: url.org,
             method:'get',
             data:{
-                param : JSON.stringify({searchMap})
+                param : {searchMap}
             }
         },(data) => {
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH', {data: data.data,searchFilter:searchMap.searchKey}));
@@ -99,9 +97,9 @@ export function listchange(data){
                 url: url.org, 
                 method:'get',
                 data:{
-                    param: JSON.stringify({
-                        condMap:typeof(params) == "undefined"?{}:JSON.stringify(params)
-                    })
+                    param: {
+                        condMap:typeof(params) == "undefined"?{}:params
+                    }
                 }
             },(data) => {
                 dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data})) 
@@ -130,10 +128,10 @@ export function listdel(record,treeId,searchFilter){
             url:url.org+'/batch',
 			method: "DELETE",
 			data:{
-				param: JSON.stringify({
+				param: {
 					ids:ids.join(","),
 					searchMap:searchMap
-				}),
+				},
 			}
         }
         ,(dataResult) => {
@@ -213,9 +211,9 @@ export function listTreeChange(id){
             
             method:'get',
             data:{
-                param: JSON.stringify({
+                param: {
                     searchMap:{id}
-                })
+                }
             }
         },(data) => {
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKTREE', {data: data.data,treeSelect:id}));
