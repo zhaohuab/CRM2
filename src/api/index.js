@@ -29,5 +29,6 @@ export {
     menu,
     org,
     user,
-    cum
+    cum,
+    baseDir
 }
