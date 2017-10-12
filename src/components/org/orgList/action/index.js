@@ -17,7 +17,9 @@ export function getlist(searchMap={}){
         request({
             url: url.org,
             method:'get',
-            
+            data:{
+                param : JSON.stringify({searchMap})
+            }
         },(data) => {
 
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
@@ -34,10 +36,10 @@ export function getlistByClickSearch(searchMap){
             url: url.org,
             method:'get',
             data:{
-                param : searchMap
+                param : JSON.stringify({searchMap})
             }
         },(data) => {
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH', {data: data.data.data,searchFilter:searchMap.searchKey}));
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH', {data: data.data,searchFilter:searchMap.searchKey}));
         })
     }
 }
@@ -51,7 +53,7 @@ export function showForm(flag, editData = {}){
 
 
 const transData = (data) => {
-	data.fatherorgId = data.fatherorgId.key
+    data.fatherorgId = data.fatherorgId.key
 	return data;
 }
 
@@ -61,7 +63,10 @@ export function listadd(list){
         request({
             url: url.org,   
             method:'post',
-            data:"param="+JSON.stringify(transData(list))
+            // data:"param="+JSON.stringify(transData(list)),
+            data:{
+                param:transData(list)
+            }
         }, (dataResult) => {
             // dispatch(fetchData('ORG_LIST_LISTADDSUCCESS',{data:data.data})) 
             const listData=dataResult;
@@ -72,7 +77,7 @@ export function listadd(list){
             }
             ,(data) => {
                 dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
-                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData.data}));
+                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData}));
             })
         })
     }
@@ -80,13 +85,15 @@ export function listadd(list){
 
 
 //改变一条数据
-export function listchange(value){
-    return(dispatch,getState)=>{
-        let id=value.id
+export function listchange(data){
+    return(dispatch)=>{
+        let id=data.id
         request({
-            url: `${url.org}+${id}`,
+            url: `${url.org}${id}`,
             method:'put',
-            data:"param="+JSON.stringify(transData(value))
+            data:{
+                param: JSON.stringify((transData(data)))
+            }
         },(dataResult) => {
             request({
                 url: url.org, 
@@ -130,6 +137,7 @@ export function listdel(record,treeId,searchFilter){
 			}
         }
         ,(dataResult) => {
+          
             const listData=dataResult;
             request({
                 url: url.orgTree,
@@ -137,8 +145,9 @@ export function listdel(record,treeId,searchFilter){
                 data:{}
             }
             ,(data) => {
+                debugger
                 dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data.data}));
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data}));
             })
         })
     }
@@ -172,7 +181,7 @@ export function setEnablestate(treeId,searchFilter,data,state){
 			}
 		},(dataResult) => {
                 const listData=dataResult;
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data.data}));
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data}));
         })
 			
 	}
@@ -209,7 +218,7 @@ export function listTreeChange(id){
                 })
             }
         },(data) => {
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKTREE', {data: data.data.data,treeSelect:id}));
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKTREE', {data: data.data,treeSelect:id}));
         })
         
     } 

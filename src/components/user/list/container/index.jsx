@@ -124,7 +124,9 @@ class List extends React.Component {
       }
     });
     //this.setState({headLabel:false});
+    debugger;
     if(this.state.isEdit) {
+  
       this.props.action.onSave4Edit(form.getFieldsValue());
     }
     else {

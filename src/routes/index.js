@@ -45,6 +45,7 @@ const rootRoutes = {
                 require('./routes/org/routes/list/index.js').default,
                 require('./routes/project').default,
                 require('./routes/user').default,
+                require('./routes/customer/routes/list').default,
                 require('./routes/contacts').default,
                 // require('./routes/customer').default,
                 {

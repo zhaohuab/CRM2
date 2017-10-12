@@ -5,7 +5,15 @@ import {bindActionCreators} from 'redux';
 const Panel = Collapse.Panel;
 import * as Actions from '../action/index.js'
 import './index.less'
+import { browserHistory } from 'react-router'
+
 class Contacts extends React.Component {
+    btnBack(){
+        debugger
+        browserHistory.push(this.props.params.father)
+        
+    }
+
     render(){
         let collapse=this.props.componentState.get('collapsed')
         const menu = (
@@ -19,8 +27,9 @@ class Contacts extends React.Component {
         return(
             <section className={collapse?'contacts-wrapper thin ':'contacts-wrapper wide'}>
                 <header className='contacts-wrapper-header'>
-                    <div className='wrapper-header-title'>
+                    <div className='wrapper-header-title' onClick={this.btnBack.bind(this)}>
                         <i className='iconfont icon-fanhui'></i>
+                        <h3>联系人</h3>
                         <h3>联系人</h3>
                     </div>
                 </header>
