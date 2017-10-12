@@ -29,10 +29,12 @@ class LoginForm extends React.Component {
         // Only show error after a field is touched.
         const userError = isFieldTouched('user') && getFieldError('user');
         const passwordError = isFieldTouched('password') && getFieldError('password');
+        const loginError = this.props.loginError
+        debugger
         return (
             <div className="login-form">
                 <p className='login-form-title'>欢迎登录</p>
-                <div className='login-form-error'></div>
+                <div className='login-form-error'>loginError</div>
                 <Form onSubmit={this.handleSubmit} width={300}>
                     <FormItem
                         validateStatus={userError ? 'error' : ''}
@@ -125,7 +127,7 @@ class LoginCon extends React.Component {
                                 <img src={require('assets/images/login/crm-logo.png')}/>
                                 <p><span>—</span><span>企业营销工作平台</span><span>—</span></p>
                             </div>
-                            <Login login = {this.props.action.login} />
+                            <Login loginError = '112312' login = {this.props.action.login} />
                         </div>
                         <div className='login-main-footer'>
                                <p>版权归用友股份有限公司所有</p>
