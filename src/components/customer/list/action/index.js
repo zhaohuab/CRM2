@@ -11,6 +11,7 @@ const fetchData = (type, payload) => {
     }
 
 function transData  (searchMap) {
+    debugger
     if(searchMap == null){
         return searchMap
     }
@@ -21,12 +22,17 @@ function transData  (searchMap) {
     searchMap.lifecycle =searchMap.lifecycle == undefined?undefined:searchMap.lifecycle.key;
     searchMap.enableState =searchMap.enableState == undefined?undefined:searchMap.enableState.key;
     searchMap.province_city_district =searchMap.province_city_district == undefined?undefined: searchMap.province_city_district.join('_');
+    if(searchMap.province_city_district!=undefined){
+        searchMap.province=searchMap.province_city_district.split("_")[0];
+        searchMap.city=searchMap.province_city_district.split("_")[1];
+        searchMap.district=searchMap.province_city_district.split("_")[2];
+    }
     return searchMap
 }
 
 const appendAddress = (data) =>{
-    for(let i=0;i<data.length;i++){
-        data[i].address = data[i].provinceName+data[i].city+ data[i].districtName+data[i].street
+    for(let i=0;i<data.data.length;i++){
+        data.data[i].address = data.data[i].provinceName+data.data[i].cityName+ data.data[i].districtName+data.data[i].street
     }
     return data;
 }
@@ -45,6 +51,7 @@ const getListData = (pagination,searchMap) => {
                 })
             }
         },(data) => {
+            debugger
             dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data)}));
         })
 	   
@@ -60,6 +67,7 @@ const listAddSave = (data) =>{
                 param: transData(data)
             }
         }, (data) => {
+            debugger
             dispatch(fetchData('CUSTOMER_LIST_ADDSAVE',data));
         })
     }
