@@ -4,7 +4,6 @@
 import { message as MsgTool,notification } from 'antd';
 import { browserHistory } from 'react-router'
 function handleMessage(result) {
-    debugger
     let { response,status } = result;
     if(status == 401) {
         //browserHistory.push('/crm_web/login');
