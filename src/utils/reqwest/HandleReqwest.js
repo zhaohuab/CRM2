@@ -14,7 +14,7 @@ function handleMessage(result) {
     }
     let { code ,message,developerMessage } = JSON.parse(response);
     //message.destroy()
-    if(!message && code == 'SUCCESS') {
+    if(!message && code == '0') {
         return;
     }
     switch (code) {

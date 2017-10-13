@@ -184,7 +184,7 @@ class List extends React.Component {
     const viewFormVisible = $$state.get("viewFormVisible");
     return (
       
-      <div className="aaa" style={{position:'relative'}}>
+      <div className="custom-warpper" style={{position:'relative'}}>
         <ToolForm
           visible={toolVisible}
           btnBack={this.btnBack.bind(this)}
@@ -198,12 +198,13 @@ class List extends React.Component {
           searchMap={searchMap}
           btnDelete={this.btnDeleteList.bind(this)}
         />
-        <div className="list-box">
+        <div className="custom-tabel">
           <Table
             columns={this.columns}
             dataSource={page.data}
             rowKey='id'
             rowSelection={this.rowSelectionFn}
+            size='middle'
           />
         </div>
         <Modal
@@ -220,9 +221,7 @@ class List extends React.Component {
             cityData={cityData}
           />
         </Modal>
-        <div 
-        className={viewFormVisible==true?'viewPanelTrue':'viewPanelFalse'}
-        >
+        <div  className={viewFormVisible==true?'viewPanelTrue':'viewPanelFalse'}>
           <ViewPanel
             data={viewData}
             btnNew={this.btnNew.bind(this)}

@@ -1,17 +1,15 @@
 import fetchData from 'utils/fetchdata';
-import reqwest from 'utils/reqwest';
+import reqwest from 'reqwest';
 import {baseDir} from 'api'
+import { browserHistory } from 'react-router'
 
 export function loginOut(){
    return (dispatch)=>{
-       
-       
         reqwest({
             url: `${baseDir}logout`,
             method: "POST",
-        }, result => {
-            debugger
-            //dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
+        }).then(result => {
+            location.href = location.href
         })
    }
 }

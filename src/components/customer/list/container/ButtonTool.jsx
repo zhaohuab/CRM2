@@ -6,8 +6,6 @@ const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 
-
-
 class BtnPanel extends React.Component {
     constructor(props) {
         super(props)
@@ -34,7 +32,6 @@ class BtnPanel extends React.Component {
     }
     
     render() {
-
         return (
             <div>
                 <Button className='returnbtn-class' icon='swap-left' onClick={this.btnBack.bind(this)}>返回</Button>
@@ -70,47 +67,51 @@ class SimForm extends React.Component {
         };
         const children = [];
         return (
-            <div>
-                <Form layout="inline" onSubmit={this.handleSearch.bind(this)} className="login-form">
-
-                    <FormItem style={{ width: 200 }}  {...formItemLayout} >
-                        {getFieldDecorator('name', {
-                            rules: [{ required: true, message: '请输入客户名称!' }],
-                        })(
-                            <Input type='text' placeholder="客户名称" />
-                            )}
-                    </FormItem>
-
-                    <FormItem style={{ width: 200 }}  {...formItemLayout} >
-                        {getFieldDecorator('level', {
-                            rules: [{ required: true, message: '请输入客户等级!' }],
-                        })(
-                            <Enum
-                                initValue={this.props.searchMap.level}
-                                addOptionAll={'客户等级'}
-                                dataSource={this.props.enumData.levelEnum}
-                            />
-                            )}
-                    </FormItem>
-
-                    <FormItem style={{ width: 200 }}  {...formItemLayout} >
-                        {getFieldDecorator('saleArea', {
-                            rules: [{ required: true, message: '请输入营销区域!' }],
-                        })(
-                            <Enum
-                                initValue={this.props.searchMap.saleArea}
-                                addOptionAll={'营销区域'}
-                                dataSource={this.props.enumData.saleAreaEnum}
-                            />
-                            )}
-                    </FormItem>
-
-                    <Button type="primary" htmlType="submit" >搜索</Button>
-
-                    <a style={{ fontSize: 12 }} onClick={this.props.btnMore.bind(this, { simForm: false, milForm: true })}>
-                        更多 <Icon type='down' />
-                    </a>
-
+            <div className='form-top' id='recover-btn'>
+                <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
+                    <Row>
+                        <Col span={8}>
+                            <FormItem  {...formItemLayout} >
+                                {getFieldDecorator('name', {
+                                    rules: [{ required: true, message: '请输入客户名称!' }],
+                                })(
+                                    <Input type='text' placeholder="客户名称" />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col  span={8}>
+                            <FormItem   {...formItemLayout} >
+                                {getFieldDecorator('level', {
+                                    rules: [{ required: true, message: '请输入客户等级!' }],
+                                })(
+                                    <Enum
+                                        initValue={this.props.searchMap.level}
+                                        addOptionAll={'客户等级'}
+                                        dataSource={this.props.enumData.levelEnum}
+                                    />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        {/* <FormItem style={{ width: 200 }}  {...formItemLayout} >
+                            {getFieldDecorator('saleArea', {
+                                rules: [{ required: true, message: '请输入营销区域!' }],
+                            })(
+                                <Enum
+                                    initValue={this.props.searchMap.saleArea}
+                                    addOptionAll={'营销区域'}
+                                    dataSource={this.props.enumData.saleAreaEnum}
+                                />
+                                )}
+                        </FormItem> */}
+                        <Col span={8}>
+                           <div className='more-btn'>
+                                <Button htmlType="submit" >搜索</Button>
+                                <span onClick={this.props.btnMore.bind(this, { simForm: false, milForm: true })}>
+                                    更多 <Icon type='down' />
+                                </span>
+                            </div>
+                        </Col>
+                    </Row>
                 </Form>
             </div>
         );
@@ -138,103 +139,128 @@ class MilForm extends React.Component {
         };
         const children = [];
         return (
-            <div>
+            <div className='form-bottom' id='recover-btn'>
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)} >
+                    <Row>
+                        <Col span={6}>
+                            <FormItem {...formItemLayout} >
+                                {getFieldDecorator('name', {
+                                    rules: [{ required: true, message: '请输入客户名称!' }],
+                                })(
+                                    <Input type='text' placeholder="客户名称" />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem  {...formItemLayout} >
+                                {getFieldDecorator('level', {
+                                    rules: [{ required: true, message: '请输入客户等级!' }],
+                                })(
+                                    <Enum
+                                        initValue={this.props.searchMap.level}
+                                        addOptionAll={'客户等级'}
+                                        dataSource={this.props.enumData.levelEnum}
+                                    />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem  {...formItemLayout} >
+                                {getFieldDecorator('saleArea', {
+                                    rules: [{ required: true, message: '请输入营销区域!' }],
+                                })(
+                                    <Enum
+                                        initValue={this.props.searchMap.saleArea}
+                                        addOptionAll={'营销区域'}
+                                        dataSource={this.props.enumData.saleAreaEnum}
+                                    />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem {...formItemLayout} >
+                                {getFieldDecorator('province_city_district', {
+                                    rules: [{ required: true, message: '请输入省/市/区/县!' }],
+                                })(
+                                    <Cascader options={this.props.cityData} placeholder="省/市/区/县" />
 
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('name', {
-                            rules: [{ required: true, message: '请输入客户名称!' }],
-                        })(
-                            <Input type='text' placeholder="客户名称" />
-                            )}
-                    </FormItem>
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('level', {
-                            rules: [{ required: true, message: '请输入客户等级!' }],
-                        })(
-                            <Enum
-                                initValue={this.props.searchMap.level}
-                                addOptionAll={'客户等级'}
-                                dataSource={this.props.enumData.levelEnum}
-                            />
-                            )}
-                    </FormItem>
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('saleArea', {
-                            rules: [{ required: true, message: '请输入营销区域!' }],
-                        })(
-                            <Enum
-                                initValue={this.props.searchMap.saleArea}
-                                addOptionAll={'营销区域'}
-                                dataSource={this.props.enumData.saleAreaEnum}
-                            />
-                            )}
-                    </FormItem>
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('province_city_district', {
-                            rules: [{ required: true, message: '请输入省/市/区/县!' }],
-                        })(
-                            <Cascader options={this.props.cityData} placeholder="省/市/区/县" />
-
-                            )}
-                    </FormItem>
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('parentId', {
-                            rules: [{ required: true, message: '请输入上级客户!' }],
-                        })(
-                            <Input type='text' placeholder="上级客户" />
-                            )}
-                    </FormItem>
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('industry', {
-                            rules: [{ required: true, message: '请输入行业!' }],
-                        })(
-                            <Enum
-                                initValue={this.props.searchMap.industry}
-                                addOptionAll={'行业'} 
-                                dataSource={this.props.enumData.industryEnum}
-                            />
-                            )}
-                    </FormItem>
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('cannelType', {
-                            rules: [{ required: true, message: '请输入渠道类型!' }],
-                        })(
-                            <Enum
-                                initValue={this.props.searchMap.cannelType}
-                                addOptionAll={'渠道类型'}
-                                dataSource={this.props.enumData.cannelTypeEnum}
-                            />
-                            )}
-                    </FormItem>
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('lifecycle', {
-                            rules: [{ required: true, message: '请输入生命周期!' }],
-                        })(
-                            <Enum
-                                initValue={this.props.searchMap.lifecycle}
-                                addOptionAll={'生命周期'}
-                                dataSource={this.props.enumData.lifecycleEnum}
-                            />
-                            )}
-                    </FormItem>
-                    <FormItem style={{ width: 200 }} {...formItemLayout} >
-                        {getFieldDecorator('enableState', {
-                            rules: [{ required: true, message: '请输入启用状态!' }],
-                        })(
-                            <Enum
-                                initValue={this.props.searchMap.enableState}
-                                addOptionAll={'启用状态'}
-                                dataSource={this.props.enumData.enableStateEnum}
-                            />
-                            )}
-                    </FormItem>
-
-                    <Button type="primary" htmlType="submit">搜索</Button>
-
-                    <a style={{ fontSize: 12 }} onClick={this.props.btnLess.bind(this, { simForm: true, milForm: false })}>
-                        收起 <Icon type='up' />
-                    </a>
+                                    )}
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={6}>
+                            <FormItem {...formItemLayout} >
+                                {getFieldDecorator('parentId', {
+                                    rules: [{ required: true, message: '请输入上级客户!' }],
+                                })(
+                                    <Input type='text' placeholder="上级客户" />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem {...formItemLayout} >
+                                {getFieldDecorator('industry', {
+                                    rules: [{ required: true, message: '请输入行业!' }],
+                                })(
+                                    <Enum
+                                        initValue={this.props.searchMap.industry}
+                                        addOptionAll={'行业'} 
+                                        dataSource={this.props.enumData.industryEnum}
+                                    />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem  {...formItemLayout} >
+                                {getFieldDecorator('cannelType', {
+                                    rules: [{ required: true, message: '请输入渠道类型!' }],
+                                })(
+                                    <Enum
+                                        initValue={this.props.searchMap.cannelType}
+                                        addOptionAll={'渠道类型'}
+                                        dataSource={this.props.enumData.cannelTypeEnum}
+                                    />
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem  {...formItemLayout} >
+                                {getFieldDecorator('lifecycle', {
+                                    rules: [{ required: true, message: '请输入生命周期!' }],
+                                })(
+                                    <Enum
+                                        initValue={this.props.searchMap.lifecycle}
+                                        addOptionAll={'生命周期'}
+                                        dataSource={this.props.enumData.lifecycleEnum}
+                                    />
+                                    )}
+                            </FormItem>
+                        </Col>
+                    </Row>
+                    <Row>
+                      <Col span={6}>
+                        <FormItem  {...formItemLayout} >
+                            {getFieldDecorator('enableState', {
+                                rules: [{ required: true, message: '请输入启用状态!' }],
+                            })(
+                                <Enum
+                                    initValue={this.props.searchMap.enableState}
+                                    addOptionAll={'启用状态'}
+                                    dataSource={this.props.enumData.enableStateEnum}
+                                />
+                                )}
+                        </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <div className='more-btn'>
+                                <Button htmlType="submit">搜索</Button>
+                                <span  onClick={this.props.btnLess.bind(this, { simForm: true, milForm: false })}>
+                                    收起 <Icon type='up' />
+                                </span>
+                            </div>
+                        </Col>
+                    </Row>
                 </Form>
             </div>
         );
@@ -264,51 +290,55 @@ class ToolForm extends React.Component {
         const WarpMilForm = Form.create()(MilForm);
 
         return (
-            <div>
-                <Row>
-                    <Col span={4}>
-                        <Select style={{ width: 150 }} defaultValue="3" >
-                            <Option value="0">全部</Option>
-                            <Option value="1">我关注的</Option>
-                            <Option value="2">最近新建</Option>
-                            <Option value="3">最近查看</Option>
-                        </Select>
-                    </Col>
-                    <Col span={15}>
-                        <div style={{ display: this.props.visible.btnPanel == true ? 'block' : 'none' }}>
-                            <BtnPanel
-                                btnBack={this.props.btnBack}
-                                btnSetEnable={this.props.btnSetEnable}
-                                btnDelete={this.props.btnDelete}
-                            />
+            <div className='label-form-more'>
+                {
+                    this.props.visible.btnPanel?
+                    <div>
+                        <BtnPanel
+                            btnBack={this.props.btnBack}
+                            btnSetEnable={this.props.btnSetEnable}
+                            btnDelete={this.props.btnDelete}
+                        />
+                    </div>:
+                    <div>
+                        <div className='label-form-top'>
+                            <div className='label-form-topleft' >
+                                <div id='recover-select'>
+                                    <Select defaultValue="3" className='first-select' >
+                                        <Option value="0">全部</Option>
+                                        <Option value="1">我关注的</Option>
+                                        <Option value="2">最近新建</Option>
+                                        <Option value="3">最近查看</Option>
+                                    </Select>
+                                </div>
+                                <div className={this.props.visible.simForm ?'showleft-form':'form-hide'}>
+                                    <WarpSimForm
+                                        enumData={this.props.enumData}
+                                        handleSearch={this.props.handleSearch}
+                                        btnMore={this.props.btnMore}
+                                        searchMap={this.props.searchMap}
+                                    />
+                                </div>
+                            </div>
+                            <div className='label-form-topright'>
+                                <ButtonGroup className='list-add-group'>
+                                    <Button icon='download'>导入</Button>
+                                    <Button icon='upload'>导出</Button>
+                                </ButtonGroup>
+                                <Button type='primary' onClick={this.props.btnNew}><Icon type="plus" />新建</Button>
+                            </div>
                         </div>
-                        <div style={{ display: this.props.visible.simForm == true ? 'block' : 'none' }}>
-                            <WarpSimForm
+                        <div  className={this.props.visible.milForm?'label-form-bottom':'form-hide'}>
+                            <WarpMilForm
                                 enumData={this.props.enumData}
+                                cityData={this.props.cityData}
                                 handleSearch={this.props.handleSearch}
-                                btnMore={this.props.btnMore}
+                                btnLess={this.props.btnLess}
                                 searchMap={this.props.searchMap}
                             />
                         </div>
-                    </Col>
-                    <Col span={5}>
-                        <div className='list-add'>
-                            <ButtonGroup className='list-add-group'>
-                                <Button icon='download'>导入</Button>
-                                <Button icon='upload'>导出</Button>
-                            </ButtonGroup>
-                            <Button type='primary' onClick={this.props.btnNew}><Icon type="plus" />新建</Button>
-                        </div></Col>
-                </Row>
-                <Row style={{ marginLeft: 8, marginTop: 8, fontSize: 12, display: this.props.visible.milForm == true ? 'block' : 'none' }}>
-                    <WarpMilForm
-                        enumData={this.props.enumData}
-                        cityData={this.props.cityData}
-                        handleSearch={this.props.handleSearch}
-                        btnLess={this.props.btnLess}
-                        searchMap={this.props.searchMap}
-                    />
-                </Row>
+                    </div>
+                }
             </div>
         );
     }

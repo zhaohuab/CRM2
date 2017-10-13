@@ -177,8 +177,8 @@ class Home extends React.Component {
 
         return (
             <div>
-                <div className="home-warrper" id='home-id'>
-                    <Row className='clinet-main'>
+                <div className="home-warrper">
+                    <Row className='clinet-main' id='recover-select'>
                         <Col span={9} className='clinet-main-left'> 
                             <div className='main-left-top'>
                                 <h3 className='chart-title'>

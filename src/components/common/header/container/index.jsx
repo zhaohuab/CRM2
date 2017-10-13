@@ -50,10 +50,11 @@ class Header extends React.Component {
                     </main>
                     <main className='client-header-right'>
                         <img src={require('assets/images/header/cat.png')} alt=""/>
-                        <div  className='header-right-title'>{userName}</div>
+                        
                         <Dropdown overlay={this.menu}>
-                            <a>
-                              <Icon type="caret-down" />
+                            <a className='menu-down'>
+                                <div  className='header-right-title'>{userName}</div>
+                                <Icon type="caret-down" />
                             </a>
                         </Dropdown>
                     </main>

@@ -7,9 +7,7 @@ body {
     position: relative;
     height: 100%;
 }
-.ant-menu.ant-menu-dark .ant-menu-item-selected{
-    background: #1671D5
-}
+
 
 .app-container {
     display: flex;
@@ -84,7 +82,7 @@ body {
     padding:16px;
 }
 
-/*model内侧参照样式*/
+/*model内侧高度参照样式*/
 .add-inset-model{
     margin:-16px;
     padding:16px;
@@ -131,6 +129,9 @@ body {
     position: relative;
     left:-1px;
 }
+.ant-menu.ant-menu-dark .ant-menu-item-selected{
+    background: #1671D5
+}
 
 //tree
 #tree-icon .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher-noop:after{
@@ -162,4 +163,22 @@ body {
     border-bottom:none
 }
 
+ /*ant下拉框单独样式修改*/
+ .ant-select-dropdown{
+    min-width:105px;
+    text-align: center;
+}
+.ant-select-dropdown-menu-item{
+    color:#1C7FEB
+}
+.ant-select-dropdown-menu-item:hover{
+    color:#666;
+    background: #EBF5FF
+}
+.ant-select{
+    margin-right: -10px;
+}
+#recover-select .ant-select .ant-select-selection{
+    border:none;
+}
 

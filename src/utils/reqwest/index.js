@@ -24,13 +24,16 @@ const reqwest = (options,success,fail)=> {
         ...others
     })
     .then((result) => {
-        debugger
         handle(result);
         if(result.response) {
             let resp = JSON.parse(result.response);
-            let respData = resp.data;
-            let decryptData = decrypt(respData)
-            success(decryptData ? JSON.parse(decryptData) : undefined);
+            if(resp.data){
+                let respData = resp.data;
+                let decryptData = decrypt(respData)
+                success(decryptData ? JSON.parse(decryptData) : undefined);
+            }else{
+                success();
+            }
         }
         else {
             success();
