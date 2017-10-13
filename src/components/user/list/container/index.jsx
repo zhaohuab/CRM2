@@ -1,12 +1,20 @@
 /**
- * Created by yangtmm on 2017-08-30
+ * Created by litcb on 2017-08-30
  */
 
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Icon, Modal, Form, Progress, Row, Col, Button, Checkbox, Layout } from 'antd';
+import { Table, Modal, Button } from 'antd';
+
+import {Input,Radio,Popconfirm,Form} from 'antd';
+import Card from './UserForm.jsx';
+import HeadLabel from './HeadLabel.jsx';
+import Department from 'components/refs/department'
 import './index.less'
+let Search = Input.Search;
+let RadioGroup = Radio.Group;
+const ButtonGroup = Button.Group;
 
 //导入action方法
 import * as Actions from "../action"
@@ -14,57 +22,228 @@ import * as Actions from "../action"
 class List extends React.Component {
   constructor(props) {
     super(props)
+    
+    this.columns = [
+      {
+        title: '姓名',
+        dataIndex:'name',
+      },
+      {
+        title: '性别',
+        dataIndex: 'genderName',
+      },
+      {
+        title: '所属公司',
+        dataIndex: 'orgName',
+      },
+      {
+        title: '所属部门',
+        dataIndex: 'deptName',
+      },
+      {
+        title: '职位',
+        dataIndex: 'jobName',
+      },
+      {
+        title: '手机',
+        dataIndex: 'phone',
+      },
+      {
+        title: '邮箱',
+        dataIndex: 'email',
+      },
+      {
+        title: '角色',
+        dataIndex: 'role_id',
+      },
+      {
+        title: '状态',
+        dataIndex: 'enable_state',
+      }
+    ]
+
     this.state = {
+      headLabel : false,
+      selectedRowKeys : [],
+      isEdit : false,
+      enable : 1,
+      pagination : {
+        pageSize:10,
+        page:1,
+      },
+      searchMap : {
+        enableState:1,
+      }
     }
   }
 
   componentDidMount() {
-    //this.props.action.getListData();
+    let { pagination,searchMap } = this.state;
+    this.props.action.getListData({ pagination,searchMap });
   }
 
+  onAdd() {
+    this.setState({isEdit:false});
+    this.props.action.showForm(true,{});
+  }
+  onDelete=()=>{
+    this.setState({headLabel:false});
+    this.props.action.onDelete(this.state.selectedRowKeys);
+  }
+  onEdit = () => {
+    
+    this.setState({isEdit:true});
+    let rowKey = this.state.selectedRowKeys[0];
+    let rowData = {};
+    let page = this.props.$$state.get("data").toJS();
+    for(let i=0,len=page.data.length;i<len;i++) {
+      if(rowKey == page.data[i].id) {
+        rowData = page.data[i];
+        break;
+      }
+    }
+    this.props.action.showForm(true,rowData);
+  }
+  onClose() {
+    this.props.action.showForm(false,{});
+  }
+  onEnable(enable) {
+    return (enable) => {
+      let { pagination,searchMap } = this.state;
+      this.setState({headLabel:false});
+      this.props.action.onEnable(this.state.selectedRowKeys,enable,{ pagination,searchMap });
+    }
+  }
+  onSave() {
+    let form = this.formRef.props.form;
+    form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+    //this.setState({headLabel:false});
+    if(this.state.isEdit) {
+      this.props.action.onSave4Edit(form.getFieldsValue());
+    }
+    else {
+      this.props.action.onSave4Add(form.getFieldsValue());
+    }
+    
+  }
+  onSelectChange = (selectedRowKeys) => {
+    let state = {
+      selectedRowKeys:selectedRowKeys
+    }
+    state.headLabel = selectedRowKeys.length ? true:false;
+    this.setState(state);
+  }
+  onBack = ()=>{
+    this.setState({headLabel:false});
+  }
+  onEableRadioChange = (e) => {
+    let enable = e.target.value;
+    let { pagination,searchMap } = this.state;
+    //可能有问题
+    searchMap.enableState = enable;
+    this.props.action.getListData({ pagination,searchMap });
+    this.setState({enable,selectedRowKeys:[],searchMap});
+  }
+  showTotal(total) {
+    return `共 ${total} 条`;
+  }
+  onPageChange(page,pageSize) {
+    let { pagination,searchMap } = this.state;
+    //可能有问题
+    pagination = {page:page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData({ pagination,searchMap });
+  }
+  onPageSizeChange(current,pageSize) {
+    debugger
+    let { pagination,searchMap } = this.state;
+    pagination = {page:pagination.page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData({ pagination,searchMap });
+    console.info(`pageSize:${pageSize}`)
+  }
   render() {
-    const columns = [{
-      title: 'Name',
-      dataIndex: 'name',
-      render: text => <a href="#">{text}</a>,
-    }, {
-      title: 'Cash Assets',
-      className: 'column-money',
-      dataIndex: 'money',
-    }, {
-      title: 'Address',
-      dataIndex: 'address',
-    }];
+    let page = this.props.$$state.get("data").toJS();
+    let visible = this.props.$$state.get("visible");
 
-    const data = [{
-      key: '1',
-      name: 'John Brown',
-      money: '￥300,000.00',
-      address: 'New York No. 1 Lake Park',
-    }, {
-      key: '2',
-      name: 'Jim Green',
-      money: '￥1,256,000.00',
-      address: 'London No. 1 Lake Park',
-    }, {
-      key: '3',
-      name: 'Joe Black',
-      money: '￥120,000.00',
-      address: 'Sidney No. 1 Lake Park',
-    }];
-
+    let {headLabel,selectedRowKeys} = this.state;
+    
+    let rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
+    let editData = this.props.$$state.get("editData").toJS();
+    const WrapCard = Form.create()(Card);
     return (
-      <div>
-         <div className="breadcrumb">用户管理</div>
-         <div className="list-box">
-             <Table
-                columns={columns}
-                dataSource={data}
-                bordered
-                title={() => 'Header'}
-                footer={() => 'Footer'}
-              />
-         </div>
+      <div className='user-warpper'>
+        {
+          headLabel ? 
+          <div className='head_edit'>
+            <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
+              <Button className="default_button" onClick={this.onEdit} icon='edit'>编辑</Button>
+              <Popconfirm placement="bottom"  title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
+                <Button className="default_button" icon='delete'>删除</Button>
+              </Popconfirm>
+              
+              {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}  icon='pause-circle-o'>停用</Button>:
+              <Button className="default_button" onClick={this.onEnable(1).bind(this,1)} icon='play-circle-o'>启用</Button>}
+
+              <Button className="default_button" icon='user-add'>分配角色</Button>
+            </HeadLabel> 
+          </div>: 
+          <div className='head_panel'>
+              <div className='head_panel-left'>
+                <div>
+                  <span className='head_panel_span'>所属部门：</span>
+                  <Input
+                    placeholder="请选择..."
+                    className="search"
+                    onSearch={value => console.log(value)}
+                  />
+                </div>
+                <div className='head_panel-state'>
+                  <span className='head_panel_span'>状态：</span>
+                  <RadioGroup onChange={this.onEableRadioChange} value={this.state.enable}>
+                    <Radio value={1}>启用</Radio>
+                    <Radio value={2}>停用</Radio>
+                  </RadioGroup>
+                </div>
+              </div>
+              <div >
+                <ButtonGroup className='add-more'>
+                  <Button icon='download'>导入</Button>
+                  <Button icon='upload'>导出</Button>
+                </ButtonGroup>
+                <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}>新增人员</Button>
+              </div>
+          </div>
+        }
+
+        <div className="list-box">
+          <Table
+            size="middle"
+            columns={this.columns}
+            dataSource={page.data}
+            rowSelection={rowSelection}
+            rowKey="id"
+            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}
+          />
+        </div>
+        <Modal
+          title="新增人员"
+          visible={visible}
+          onOk={this.onSave.bind(this)}
+          onCancel={this.onClose.bind(this)}
+          width={500}
+        >
+          <div className='add-model'>
+            <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+          </div>
+        </Modal>
       </div>
     )
   }

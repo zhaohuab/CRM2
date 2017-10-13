@@ -1,6 +1,119 @@
-.app-welcome {
-    line-height: 300px;
-    font-size: 40px;
-    color: #01bcd4;
-    text-align: center;
+.home-warrper {
+   display: flex;
+   flex-direction:column;
+   height:100%;
+  .client-header{
+      width:100%;
+      height:55px;
+      display: flex;
+      background: white;
+      padding:0 10px;
+      box-sizing: border-box;
+      h3{
+            display: flex;
+            width:50%;
+            align-items:center;
+            font-size:16px;
+        }
+      
+
+  }
+  
+  .clinet-main{
+     
+      .target-title{
+          width:100%;
+          height:40px;
+          line-height:40px;
+          padding:10px;
+          box-sizing: border-box;
+          display: flex;
+          justify-content:space-between;
+          align-items:center;
+          .edit-area{
+              width:50%;
+              display: flex;
+              justify-content:flex-end;
+              align-items:center
+          }
+      }
+      .clinet-main-left{
+          padding-right:10px;
+          box-sizing: border-box;
+          .clinet-main-left-top{
+            .left-top-target{
+                padding-right:10px;
+                box-sizing: border-box;
+                .left-top-target-inner{
+                  background: white;
+                  min-height:200px
+                }
+            }
+            .leaderboard{
+                .left-top-leaderboard-inner{
+                    min-height:200px;
+                    background: white;
+                }
+             }
+          } 
+          .clinet-main-left-middle{
+              margin-top:10px;
+              .left-top-area{
+                padding-right:10px;
+                box-sizing: border-box;
+                .left-top-area-inner{
+                    background: white;
+                    min-height:200px;
+                }
+              }
+              .left-top-funnel{
+                .left-top-funnel-inner{
+                    background: white;
+                    min-height:200px;
+                }
+              }
+          }
+          .clinet-main-left-bottom{
+            
+            padding-right:10px;
+            box-sizing: border-box;
+            margin-top:10px;
+            .main-left-bottom-inner{
+                background: white;
+                min-height:200px;
+            }
+          }
+      }
+      .clinet-main-right{
+            .main-right-notice{
+                width:100%;
+                min-height:150px;
+                background: white;
+                .notice-mian{
+                    width:100%;
+                    padding:10px;
+                    box-sizing: border-box;
+                    .notice-mian-ul{
+                        width:100%;
+                        list-style: none;
+                        li{
+                            width:100%;
+                            border-bottom: 1px solid #EAEAEA;
+                        }
+                    }
+                }
+            }
+            .main-right-calendar{
+                margin-top:10px;
+                width:100%;
+                min-height:460px;
+                background: white;
+                .calendar-main{
+                    img{
+                        width:100%;
+                    }
+                }
+            }
+      }
+  }
 }

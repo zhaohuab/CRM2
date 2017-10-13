@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import Menu from 'components/common/menu/container'
 import Header from 'components/common/header/container'
 import ViewStyle from 'components/common/viewstyle/container'
-
+import {Icon} from 'antd';
 import './index.less'
 
 class Main extends React.Component {
@@ -29,20 +29,23 @@ class Main extends React.Component {
 
     render() {
         let viewBoxstyle = this.state.viewBoxstyle ? "app-container full-height boxed-layout" : "app-container full-height";
-        return <div className={viewBoxstyle}>
-            <Header  
-                collapsed = {this.state.collapsed} 
-                toggleCollapsed = {this.toggleCollapsed} 
-            />
-            <div className="app-body">
+        return <div className = "full-height">
+            <div className={viewBoxstyle}>
                 <Menu 
                     collapsed = {this.state.collapsed} 
+                    toggleCollapsed = {this.toggleCollapsed} 
                 />
-                <div className="app-content">
-                    { this.props.children }
+                <div className="app-body">
+                    <Header  
+                        collapsed = {this.state.collapsed} 
+                    />
+                    <div className="app-content">{ this.props.children }</div>
                 </div>
             </div>
             <ViewStyle toggleViewBox = {this.toggleViewBox} />
+            <div className='app-talk'>
+                <Icon type="message" />
+            </div>
         </div>
     }
 }

@@ -1,8 +1,9 @@
-import { Form, Icon, Input, Button, Checkbox,message } from 'antd';
+import { Form, Icon, Input, Button, Checkbox,message,Carousel } from 'antd';
 import  * as Actions  from '../action'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { browserHistory } from 'react-router'
+import cookie from 'utils/cookie'
 import "./index.less"
 
 const FormItem = Form.Item;
@@ -16,6 +17,10 @@ class LoginForm extends React.Component {
     }
 
     handleSubmit = (e) => {
+        e.preventDefault();
+
+        let {getFieldsValue} = this.props.form;
+        this.props.login(getFieldsValue());
     }
     
     render() {
@@ -26,7 +31,8 @@ class LoginForm extends React.Component {
         const passwordError = isFieldTouched('password') && getFieldError('password');
         return (
             <div className="login-form">
-                
+                <p className='login-form-title'>欢迎登录</p>
+                <div className='login-form-error'></div>
                 <Form onSubmit={this.handleSubmit} width={300}>
                     <FormItem
                         validateStatus={userError ? 'error' : ''}
@@ -35,7 +41,7 @@ class LoginForm extends React.Component {
                         {getFieldDecorator('user', {
                             rules: [{ required: true, message: '不能为空!' }],
                         })(
-                            <Input placeholder="用户名..." />
+                            <Input placeholder="用户名" prefix={<Icon type="user" />} className='login-imnput'/>
                         )}
                     </FormItem>
                     <FormItem
@@ -45,27 +51,30 @@ class LoginForm extends React.Component {
                         {getFieldDecorator('password', {
                             rules: [{ required: true, message: '不能为空!' }],
                         })(
-                            <Input type="password" placeholder="密码..." />
+                            <Input type="password" placeholder="登录密码" prefix={<Icon type="lock" />} className='login-imnput'/>
                         )}
                     </FormItem>
                     <FormItem>
-                        {getFieldDecorator('remember', {
-                            valuePropName: 'checked',
-                            initialValue: true,
-                        })(
-                            <Checkbox >
-                                记住状态
-                            </Checkbox>
-                        )}
-                        <a style={{ float: "right" }} href="">忘记密码</a>
                         <Button
                             type="primary"
                             htmlType="submit"
                             disabled={hasErrors(getFieldsError())}
                             style={{ width: "100%" }}
+                            className='login-btn'
                         >
                             登录
                         </Button>
+                        <div className='form-footer'>
+                            {getFieldDecorator('remember', {
+                                valuePropName: 'checked',
+                                initialValue: true,
+                            })(
+                                <Checkbox >
+                                    记住状态
+                                </Checkbox>
+                            )}
+                            <a style={{ float: "right" }} href="">忘记密码</a>
+                        </div>
                     </FormItem>
                 </Form>
             </div>
@@ -94,10 +103,35 @@ class LoginCon extends React.Component {
     }
     
     render() {
+        let {$$state} = this.props;
+        let logined = $$state.get('logined');
+        if(logined) {
+            browserHistory.push('/crm_web/home');
+        }
+        let heightPx= document.documentElement.clientHeight
         return (
-            <div className="login-box" >
-               <div className="login-tit">Cloud CRM</div>
-               <Login login = {this.props.action.login} />
+            <div className='login-warpper'>
+                <div className='login-carousel'>
+                    <Carousel autoplay   effect='fade' speed={2000}>
+                        <div><img src={require('assets/images/login/banner-1.png')}/></div>
+                        <div><img src={require('assets/images/login/banner-2.png')}/></div>
+                        <div><img src={require('assets/images/login/banner-3.png')}/></div>
+                    </Carousel>
+                </div>
+                <div className='login-main'>
+                    <div className='login-main-inner'>
+                        <div className='login-main-top'>
+                            <div className='login-main-title'>
+                                <img src={require('assets/images/login/crm-logo.png')}/>
+                                <p><span>—</span>企业营销工作平台</p>
+                            </div>
+                            <Login login = {this.props.action.login} />
+                        </div>
+                        <div className='login-main-footer'>
+                               <p>版权归用友股份有限公司所有</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

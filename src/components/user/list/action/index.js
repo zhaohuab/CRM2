@@ -1,110 +1,119 @@
+import fetchData from 'utils/fetchdata';
+import reqwest from 'utils/reqwest';
+import { user as url } from 'api';
 
-//定义key， type
-
-let table_params = {
-	url:'',
-	data: {
+const showForm = (flag, editData = {}, index) => {
+	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_SHOWFORM', { visible: flag, editData }));
 	}
 }
 
-let mockData = [{
-	name:"粤海",
-	begintime:"2017-07-31 12:00:00",
-	type: "1",
-	personnum:6,
-	stage:"0.2",
-	owner: [{
-		key:"dev",
-		value:"研发部"
-	},{
-		key:"guankx",
-		value:"关凯旋"
-	}],
-	marks: "这是一个粤海项目",
-	isbusy : "N",
-    }]
-
-const showForm = (flag, editData={}, index) => {
-    const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
-    }
-    return (dispatch) => {
-        dispatch(fetchData('PROJECT_LIST_SHOWFORM',{visible:flag, editData}));
-    }
-}
-//定义方法 action
 const getListData = (params) => {
-	const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
-    }
 	return (dispatch) => {
-	    //dispatch(fetchData('GET_LIST_DATA', {}))
-	    setTimeout(()=>{
-	  	    dispatch(fetchData('PROJECT_LIST_GETDATA', {data: mockData}))
-	    }, 300)
+		reqwest({
+			url: url.user,
+			method: "GET",
+			data: {
+				param: JSON.stringify({
+					...params.pagination,
+					searchMap: params.searchMap,
+				})
+			},
+		},result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
+		})
+	}
+}
+const transData = (data) => {
+	
+	let { gender,orgId, deptId,job } = data;
+	data.gender = gender.key;
+	data.genderName = gender.title;
+	data.orgId = orgId.key;
+	data.orgName = orgId.title;
+	data.deptId = deptId.key;
+	data.deptName = deptId.title;
+	data.job = job.key;
+	data.jobName = job.title;
+	return data;
+}
+const onSave4Add = (data, index) => {
+	return (dispatch) => {
+
+		reqwest({
+			url: url.user,
+			method: "POST",
+			data: {
+				param: JSON.stringify(transData(data))
+			}
+		}, result => {
+			dispatch(fetchData('USER_CARD_SAVEADD', { ...result, visible: false }));
+		})
 	}
 }
 
-const onDelete = (record,index) => {
-    const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
-	}
-	debugger
-    mockData.splice(index,1);
+const onSave4Edit = (data, index) => {
 	return (dispatch) => {
-	    //dispatch(fetchData('GET_LIST_DATA', {}))
-	    setTimeout(()=>{
-	  	    dispatch(fetchData('PROJECT_LIST_GETDATA_SUCCESS', {data: mockData}))
-	    }, 300)
+
+		reqwest({
+			url: `${url.user}/${data.id}`,
+			method: "PUT",
+			data: {
+				param: JSON.stringify((transData(data)))
+			}
+		}, result => {
+			dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
+		})
 	}
 }
 
-const onAdd = (data) => {
-    const fetchData = (type, payload) => {
-        return {
-            type,
-            payload,
-        }
-    }
-    mockData.push(data);
+const onDelete = (rowKeys, params) => {
 	return (dispatch) => {
-	    //dispatch(fetchData('GET_LIST_DATA', {}))
-	    setTimeout(()=>{
-	  	    dispatch(fetchData('PROJECT_LIST_GETDATA_SUCCESS', {data: mockData,visible: false}))
-	    }, 300)
+		reqwest({
+			url: url.userBatch,
+			method: "POST",
+			data: {
+				param: JSON.stringify({
+					ids: rowKeys.join(","),
+					...params.pagination,
+					searchMap: params.searchMap,
+				}),
+				_method: "DELETE"
+			}
+		}, result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
+		})
 	}
 }
 
-const onEdit = (data, index) => {
-    const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
-    }
-    mockData[index] = data;
+const onEnable = (rowKeys, enable, params) => {
 	return (dispatch) => {
-	    //dispatch(fetchData('GET_LIST_DATA', {}))
-	    setTimeout(()=>{
-	  	    dispatch(fetchData('PROJECT_LIST_GETDATA_SUCCESS', {data : mockData}))
-	    }, 300)
+		reqwest({
+			url: `${url.enable}`,
+			method: "PUT",
+			data: {
+				param: JSON.stringify({
+					ids: rowKeys.join(","),
+					enableState: enable,
+					...params.pagination,
+					searchMap: params.searchMap,
+				}),
+			}
+		}, result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
+		})
 	}
 }
+
+
+
 
 //输出 type 与 方法
 export {
-    getListData,
-    onDelete,
-    onAdd,
-    onEdit,
-    showForm,
+	getListData,
+	onDelete,
+	showForm,
+	onSave4Add,
+	onSave4Edit,
+	onEnable,
 }

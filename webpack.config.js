@@ -7,8 +7,9 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 //修改antd.design主题文件
 var theme = require('./theme.config.js')
 
-var hostIP = 'localhost';
+var hostIP = '10.1.219.57';
 var portNumber = '3000';
+let urlPath ='10.1.219.57';
 
 module.exports = {
 	entry: {
@@ -18,7 +19,7 @@ module.exports = {
 	output: {
 		path: __dirname + '/lib',
 		//path: path.resolve(__dirname, "public"),
-		publicPath: '//localhost:'+portNumber+'/lib',
+		publicPath: '//'+urlPath+':'+portNumber+'/lib',
 		filename: "[name].min.js",   //打包后输出的文件名
 		chunkFilename: '[id].chunk.js'
 	},
@@ -35,7 +36,8 @@ module.exports = {
             store: path.join(__dirname, 'src/store'),
             routes: path.join(__dirname, 'src/routes'),
 			assets: path.join(__dirname, 'src/assets'),
-			utils: path.join(__dirname, 'src/utils')
+			utils: path.join(__dirname, 'src/utils'),
+			api: path.join(__dirname, 'src/api')
         },
     },
 	module: {
@@ -48,6 +50,14 @@ module.exports = {
 			{
 	            test: /\.(jpg|png|gif)$/,
 	            loader: 'url',
+			},
+			{
+	            test: /\.css$/,
+	            loaders: ["style", "css"]
+			},
+			{
+	            test: /\.(woff|svg|eot|ttf)\??.*$/,
+	            loader: "url-loader?name=fonts/[name].[md5:hash:hex:7].[ext]",
 	        },
 			{
 				test: /\.(less)$/,
@@ -78,6 +88,6 @@ module.exports = {
         hot: true,
         inline: true,
         port: portNumber,
-        host: hostIP
+        host: urlPath
 	}
 }

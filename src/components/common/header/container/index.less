@@ -1,14 +1,135 @@
-.head-logo {
-    height:60px;
-    display: inline-block;
-    padding:0 20px;
-    line-height:60px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
-    color: #ffffff;
+
+.ant-table-thead > tr, .ant-table-tbody > tr:nth-child(even){
+    background: #F6FAFF;
+}
+.ant-table-thead > tr > th{
+    color:#666
 }
 
+.ant-table table{
+    border-top: 1px solid #3CA4FB;
+    border-bottom: 1px solid #ddd;
+}
+
+.ant-table{
+    color:#999;
+}
+
+.ant-table-tbody > tr > td{
+    border:none
+}
+
+
+
+.app-header{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    padding:0 15px;
+    box-sizing: border-box;
+    border-bottom:1px solid #DDD;
+    .app-header-title{
+        font-size:14px;
+        color:#313542;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        border-right:1px solid #3CA4FB ;
+        padding-right:15px;
+        box-sizing: border-box;
+    }
+    .app-header-right{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .client-header-left{
+            display: flex;
+            width:100%;
+            justify-content:flex-end;
+            align-items:center;
+            margin-right:3px;
+            padding-right:30px;
+            box-sizing: border-box;
+            .clinet-search-style{
+                width:300px;
+                .ant-input-suffix{
+                    i{
+                        color:#999;
+                        font-size: 16px;
+                    }
+                }
+               
+                input{
+                    width:300px;
+                    color:#666;
+                    font-weight: 300;
+                    height:32px
+                }
+                input::-webkit-input-placeholder{
+                    color:#666;
+                    font-weight: 300
+                }
+                input::-webkit-input-placeholder{
+                    color:#666;
+                    font-weight: 300
+                }
+                input::-webkit-input-placeholder{
+                    color:#666;
+                    font-weight: 300
+                }
+            }
+            .del-border{
+                border:none;
+                border-bottom:1px solid #ccc;
+                border-radius:0;
+            }
+            .clinet-search{
+                height:30px;
+            }
+            .clinet-alert{
+                width:52px;
+                height:30px;
+                text-align: right;
+                i{
+                  font-size: 20px;
+                  width: 30px;
+                  height: 30px;
+                  line-height: 30px;
+                  text-align: center;
+                }
+                sup{
+                    top: -22px;
+                    right: -22px;
+                    height:14px;
+                    line-height:14px;
+                    padding: 0;
+                    border-radius: 8px;
+                    background: #F1B941;
+                    box-shadow: 0 2px 2px rgba(0,0,0,.2);
+                }
+            }
+        }
+        .client-header-right{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .header-right-title{
+                color: #1B1D2E;
+                margin:0 10px;
+            }
+            .anticon-caret-down:before{
+                color:#1B1D2E;
+            }
+            img{
+                width:36px;
+                height:36px;
+                border-radius: 40px;
+                border:2px solid #252840;
+            }
+            
+        } 
+    }
+}
 .logger {
     float : right;
     color : #ffffff;
@@ -17,3 +138,16 @@
     line-height: 50px;
     font-size:14px;
 }
+
+.menu-more{
+    display: flex;
+    padding-left:15px;
+    box-sizing: border-box;
+    align-items: center;
+    width: 100px;
+    height:30px;
+    span{
+        margin-left:10px;
+    }
+}
+
