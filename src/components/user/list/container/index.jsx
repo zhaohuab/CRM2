@@ -10,7 +10,7 @@ import { Table, Modal, Button } from 'antd';
 import {Input,Radio,Popconfirm,Form} from 'antd';
 import Card from './UserForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
-import Department from 'components/refs/department'
+import Department from 'components/refs/departments'
 import './index.less'
 let Search = Input.Search;
 let RadioGroup = Radio.Group;

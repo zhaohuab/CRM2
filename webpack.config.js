@@ -7,81 +7,79 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 //修改antd.design主题文件
 var theme = require('./theme.config.js')
 
-var hostIP = '10.1.219.57';
 var portNumber = '3000';
-let urlPath ='10.1.219.57';
+let urlPath = 'localhost';
 
 module.exports = {
-	entry: {
-		main: __dirname + "/src/main.jsx",  //入口文件
-		vendor: ['redux', 'react-redux', 'react-router', 'react-router-redux', 'redux-thunk']
-	},
-	output: {
-		path: __dirname + '/lib',
-		//path: path.resolve(__dirname, "public"),
-		publicPath: '//'+urlPath+':'+portNumber+'/lib',
-		filename: "[name].min.js",   //打包后输出的文件名
-		chunkFilename: '[id].chunk.js'
-	},
-	externals: {
+    entry: {
+        main: __dirname + "/src/main.jsx", //入口文件
+        vendor: ['redux', 'react-redux', 'react-router', 'react-router-redux', 'redux-thunk']
+    },
+    output: {
+        path: __dirname + '/lib',
+        //path: path.resolve(__dirname, "public"),
+        publicPath: '//' + urlPath + ':' + portNumber + '/lib',
+        filename: "[name].min.js", //打包后输出的文件名
+        chunkFilename: '[id].chunk.js'
+    },
+    externals: {
         react: 'React',
         'react-dom': 'ReactDOM',
-		immutable: 'Immutable'
+        immutable: 'Immutable'
     },
-	resolve: {
+    resolve: {
         extensions: ["", ".js", ".jsx"],
         alias: {
             components: path.join(__dirname, 'src/components'),
             reducers: path.join(__dirname, 'src/reducers'),
             store: path.join(__dirname, 'src/store'),
             routes: path.join(__dirname, 'src/routes'),
-			assets: path.join(__dirname, 'src/assets'),
-			utils: path.join(__dirname, 'src/utils'),
-			api: path.join(__dirname, 'src/api')
+            assets: path.join(__dirname, 'src/assets'),
+            utils: path.join(__dirname, 'src/utils'),
+            api: path.join(__dirname, 'src/api')
         },
     },
-	module: {
-		loaders:[
-			{
-				test: /\.(js|jsx)$/,
-				exclude: /node_modules/,
-				loader: "babel"
-			},
-			{
-	            test: /\.(jpg|png|gif)$/,
-	            loader: 'url',
-			},
-			{
-	            test: /\.css$/,
-	            loaders: ["style", "css"]
-			},
-			{
-	            test: /\.(woff|svg|eot|ttf)\??.*$/,
-	            loader: "url-loader?name=fonts/[name].[md5:hash:hex:7].[ext]",
-	        },
-			{
-				test: /\.(less)$/,
-				loaders:[
-					"style",
-					"css",
-					`less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`,
-				]
-			}
-		]
-	},
-	devtool: 'cheap-module-eval-source-map',
-	plugins: [
-	    new webpack.HotModuleReplacementPlugin(),                         //热加载插件
-		new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js"),
-		new webpack.optimize.MinChunkSizePlugin({
+    module: {
+        loaders: [{
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                loader: "babel"
+            },
+            {
+                test: /\.(jpg|png|gif)$/,
+                loader: 'url?limit=8192',
+            },
+            {
+                test: /\.css$/,
+                loaders: ["style", "css"]
+            },
+            {
+                test: /\.(woff|svg|eot|ttf)\??.*$/,
+                loader: "url-loader?name=fonts/[name].[md5:hash:hex:7].[ext]",
+            },
+            {
+                test: /\.(less)$/,
+                loaders: [
+                    "style",
+                    "css",
+                    `less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`,
+                ]
+            }
+        ]
+    },
+    devtool: 'cheap-module-eval-source-map',
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(), //热加载插件
+        new webpack.optimize.CommonsChunkPlugin( /* chunkName= */ "vendor", /* filename= */ "vendor.bundle.js"),
+        new webpack.optimize.MinChunkSizePlugin({
             minChunkSize: 10240
         }),
-		new webpack.DefinePlugin({
+        new webpack.DefinePlugin({
             'process.env.NODE_ENV': '"development"'
         })
     ],
-	devServer: {
-	    headers: {
+    devServer: {
+        headers: {
             "Access-Control-Allow-Origin": "*"
         },
         devtool: 'cheap-module-eval-source-map',
@@ -89,5 +87,5 @@ module.exports = {
         inline: true,
         port: portNumber,
         host: urlPath
-	}
+    }
 }
