@@ -9,9 +9,7 @@ import { browserHistory } from 'react-router'
 
 class Contacts extends React.Component {
     btnBack(){
-        debugger
         browserHistory.push(this.props.params.father)
-        
     }
 
     render(){

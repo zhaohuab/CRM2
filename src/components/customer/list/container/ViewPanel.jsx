@@ -14,8 +14,6 @@ export default class ViewPanel extends React.Component {
             enableState:this.props.data.enableState
         }
     }
-
-
     componentDidMount() {
 
     }
@@ -24,7 +22,6 @@ export default class ViewPanel extends React.Component {
         browserHistory.push('/crm_web/page/contacts/'+encodeURIComponent(path))
     }
     btnEnable(){
-        debugger
         this.setState({
             enableState:2
         })

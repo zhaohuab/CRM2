@@ -6,7 +6,7 @@
 import request from 'reqwest'
 import handle from './HandleReqwest'
 import {encrypt,decrypt} from './Cryto'
-
+import {codeConstant} from './HandleReqwest'
 request.ajaxSetup({
     headers: {
         // 后端约定, 用以辨别是否为ajax请求的字段
@@ -24,10 +24,13 @@ const reqwest = (options,success,fail)=> {
         ...others
     })
     .then((result) => {
-        
         handle(result);
         if(result.response) {
             let resp = JSON.parse(result.response);
+            if(resp.code==codeConstant.ServiceFormVaild){
+                success(resp);
+                return
+            }
             let respData = resp.data;
             let decryptData = decrypt(respData)
             success(decryptData ? JSON.parse(decryptData) : undefined);
@@ -39,6 +42,9 @@ const reqwest = (options,success,fail)=> {
     .fail((result) => {
         handle(result);
         if(fail) {
+            if(result.code){
+                fail(result);
+            }
             if(result.response) {
                 fail(JSON.parse(result.response));
             }

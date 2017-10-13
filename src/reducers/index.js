@@ -15,8 +15,11 @@ import userlist from 'components/user/list/reducer'
 //organization目录
 import orgReducers from '../components/org/orgList/reducer/index.js'
 
-//organization目录
+//客户
 import customerList from '../components/customer/list/reducer/index.js'
+
+//角色
+import roleList from '../components/role/list/reducer/index.js'
 
 import componentReducer from 'components/reducer.js'
 let rootReducer = combineReducers({
@@ -27,6 +30,7 @@ let rootReducer = combineReducers({
     orgReducers,
     projectList,
     customerList,
+    roleList,
     componentReducer
  });
 
