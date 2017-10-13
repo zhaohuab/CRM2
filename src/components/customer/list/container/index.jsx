@@ -136,7 +136,6 @@ class List extends React.Component {
     const viewData = this.props.$$state.get("viewData").toJS();
     const ids = [];
     ids.push(viewData.id);
-    debugger
     this.props.action.setEnableState(ids, enableState, this.state.pagination, searchMap)
   }
   btnNew() {

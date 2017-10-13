@@ -2,26 +2,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Icon, Button, Form, Input, Checkbox, Col, Modal, Spin } from 'antd';
+import { Tabs,Table, Icon, Button, Form, Input, Checkbox, Col, Modal, Spin } from 'antd';
+const TabPane = Tabs.TabPane;
 import * as roleActions from "../action"
 class List extends React.Component {
 
     constructor(props) {
         super(props)
 
-        this.columns = [
-            {
-                title: 'id',
-                dataIndex: 'id',
-            }, {
+        this.columns = [{
                 title: '姓名',
                 dataIndex: 'name',
-            },
-            {
-                title: '性别',
-                dataIndex: 'genderName',
-            },
-        ]
+            }]
 
         this.state = {
 
@@ -29,7 +21,7 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-
+        this.props.action.getRoleListData();
     }
 
     render() {
@@ -38,22 +30,35 @@ class List extends React.Component {
             <div className='list-warpper'>
                 <div className='list-main'>
                     <div className='list-table-tree' style={{ minHeight: 'auto' }}>
-
-
-
+                        <div className='org-tree-top'>
+                            <Button>新增角色</Button>
+                        </div>
+                        <Table
+                            size="middle"
+                            columns={this.columns}
+                            rowKey="name"
+                            pagination="false"
+                        />
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
+                            <Button>功能</Button>
+                            <Button>数据</Button>
+                            <Button>分配用户</Button>
                         </div>
                         <div className='org-tabel'>
-                            <Table columns={this.columns} rowKey='id' size='middle' />
+                        <Tabs tabPosition={this.state.tabPosition}>
+                        <TabPane tab="功能" key="1">Content of Tab 1</TabPane>
+                        <TabPane tab="数据" key="2">Content of Tab 2</TabPane>
+                        <TabPane tab="分配用户" key="3">Content of Tab 3</TabPane>
+                      </Tabs>
                         </div>
+                        
                         <Modal
                             title="修改组织"
                             visible={false}
                         >
                             <div className='model-height'>
-                                
                             </div>
                         </Modal>
                     </div>

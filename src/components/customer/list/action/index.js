@@ -21,7 +21,6 @@ function transData  (searchMap) {
     searchMap.lifecycle =searchMap.lifecycle == undefined?undefined:searchMap.lifecycle.key;
     searchMap.enableState =searchMap.enableState == undefined?undefined:searchMap.enableState.key;
     searchMap.province_city_district =searchMap.province_city_district == undefined?undefined: searchMap.province_city_district.join('_');
-    debugger
     if(searchMap.province_city_district!=undefined){
         searchMap.province=searchMap.province_city_district.split("_")[0];
         searchMap.city=searchMap.province_city_district.split("_")[1];
@@ -31,14 +30,12 @@ function transData  (searchMap) {
 }
 
 const appendAddress = (data) =>{
-    debugger
     for(let i=0;i<data.data.length;i++){
         data.data[i].address = String(data.data[i].provinceName)+String(data.data[i].cityName)+ String(data.data[i].districtName)+String(data.data[i].street);
     }
     return data;
 }
 const appendAddressOne = (data) =>{
-    debugger
     data.address = String(data.provinceName)+String(data.cityName)+ String(data.districtName)+String(data.street);
     return data;
 }
@@ -71,7 +68,6 @@ const listAddSave = (data) =>{
                 param: transData(data)
             }
         }, (data) => {
-            debugger
             dispatch(fetchData('CUSTOMER_LIST_ADDSAVE',appendAddressOne(data)));
         })
     }
