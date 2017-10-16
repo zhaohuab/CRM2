@@ -3,10 +3,20 @@
  */
 import { message as MsgTool,notification } from 'antd';
 import { browserHistory } from 'react-router'
+
+export const codeConstant = {
+    Success:"0",
+    ServerError:"1",
+    Info:"2",
+    Warn:"3",
+    Notification:"4",
+    ServiceFormVaild:"5",
+}
+
 function handleMessage(result) {
     let { response,status } = result;
     if(status == 401) {
-        //browserHistory.push('/crm_web/login');
+        browserHistory.push('/crm_web/login/sessionover');
         return;
     }
     if(!response) {
@@ -14,23 +24,25 @@ function handleMessage(result) {
     }
     let { code ,message,developerMessage } = JSON.parse(response);
     //message.destroy()
-    if(!message && code == 'SUCCESS') {
+    if(!message && code == codeConstant.Success) {
         return;
     }
     switch (code) {
-		case 'SUCCESS':
+		case codeConstant.Success:
             MsgTool.success(message);
             break;
-        case 'INFO':
-            MsgTool.info(message);
+        case codeConstant.Info:
+            MsgTool.error(message);
+            
             break;
-        case 'WARN':
+        case codeConstant.Info:
+            MsgTool.info(message);
+            
+            break;
+        case codeConstant.Warn:
             MsgTool.warn(message);
             break;
-        case 'ERROR':
-            MsgTool.error(message);
-            break;
-        case 'NOTIFICATION':
+        case codeConstant.Notification:
             notification.open({
                 message: '操作异常',
                 description: '请联系管理员！',
