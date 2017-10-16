@@ -3,7 +3,8 @@ import Immutable from 'immutable'
 let $$initialState = {
     data: [],
     editData: {},
-    roleCardVisible: false,
+	roleCardVisible: false,
+	funcData:[]
 };
 
 function pageAdd(page,item) {
@@ -63,6 +64,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
         case 'ROLE_LIST_DELETESUCCESS' : 
 			return $$state.merge({
 				data : pageDelete($$state.get("data").toJS(),action.content),
+			})
+
+		case 'ROLE_LIST_GETFUNCTREESUCCESS' : 
+			return $$state.merge({
+				funcData : action.content,
 			})
         default:
             return $$state;

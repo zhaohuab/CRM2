@@ -131,7 +131,6 @@ class List extends React.Component {
 }
 
 
-
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {

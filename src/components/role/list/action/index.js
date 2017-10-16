@@ -1,6 +1,7 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { role as url } from 'api';
+import funcTreeData from '../container/data'
 
 console.log("url"+url)
 const showRoleForm = (flag, editData = {}, index) => {
@@ -50,6 +51,12 @@ const getRoleListData = () => {
 	}
 }
 
+const getFuncTreeData = () => {
+	return (dispatch)=>{
+		dispatch(fetchData("ROLE_LIST_GETFUNCTREESUCCESS",funcTreeData))
+	}
+
+}
 
 const onSaveRole4Add = (data, index) => {
 	return (dispatch) => {
@@ -106,5 +113,6 @@ export {
 	showRoleForm,
 	onSaveRole4Add,
 	onSaveRole4Edit,
-	onDelete
+	onDelete,
+	getFuncTreeData
 }
