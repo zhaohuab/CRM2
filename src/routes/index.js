@@ -46,6 +46,7 @@ const rootRoutes = {
                 require('./routes/project').default,
                 require('./routes/user').default,
                 require('./routes/contacts').default,
+                require('./routes/measure').default,
                 // require('./routes/customer').default,
                 {
                   //未开发页面

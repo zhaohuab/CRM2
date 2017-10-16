@@ -18,9 +18,15 @@ const user = {
     enable : baseDir + 'sys/users/state'  // {id}/state
 }
 
+const measure = {
+    measure : baseDir + "base/measures",
+    measureBatch : baseDir + 'base/measures/batch',
+}
+
 export {
     login,
     menu,
     org,
     user,
+    measure,
 }

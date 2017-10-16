@@ -13,7 +13,9 @@ import projectList from 'components/project/list/reducer'
 import userlist from 'components/user/list/reducer'
 
 //organization目录
-import orgReducers from '../components/org/orgList/reducer/index.js'
+import orgReducers from 'components/org/orgList/reducer/index.js'
+//measure目录
+import measureList from 'components/measure/list/reducer/index.js'
 
 //最外层component
 
@@ -25,7 +27,8 @@ let rootReducer = combineReducers({
     userlist,
     orgReducers,
     projectList,
-    componentReducer
+    componentReducer,
+    measureList,
  });
 
 export { rootReducer }
