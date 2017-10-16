@@ -32,7 +32,7 @@ class List extends React.Component {
 
     componentDidMount() {
         this.props.action.getRoleListData();
-        this.props.action.getFuncTreeData();
+        //this.props.action.getFuncTreeData();
     }
 
     //点击新增按钮事件
