@@ -25,6 +25,7 @@ const reqwest = (options,success,fail)=> {
     })
     .then((result) => {
         handle(result);
+        // debugger
         if(result.response) {
             let resp = JSON.parse(result.response);
             if(resp.code==codeConstant.ServiceFormVaild){

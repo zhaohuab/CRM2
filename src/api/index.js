@@ -24,10 +24,15 @@ const cum = {
     enable : baseDir + 'sys/users/state'  // {id}/state
 }
 
+const role = {
+    role : baseDir + 'sys/roles',
+}
+
 export {
     login,
     menu,
     org,
     user,
-    cum
+    cum,
+    role
 }

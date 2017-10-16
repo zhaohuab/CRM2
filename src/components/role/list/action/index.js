@@ -1,10 +1,11 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { user as url } from 'api';
+import { role as url } from 'api';
 
-const showForm = (flag, editData = {}, index) => {
+console.log("url"+url)
+const showRoleForm = (flag, editData = {}, index) => {
 	return (dispatch) => {
-		dispatch(fetchData('USER_LIST_SHOWFORM', { visible: flag, editData }));
+		dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData }));
 	}
 }
 
@@ -12,39 +13,98 @@ const mockData = {
 	total:3,
 	data:[
 		{
-			name:销售经理
+			code:"3eew",
+			name:'销售经理',
+			org:'fdsfeww'
 		},
 		{
-			name:销售员
+			code:"wqe",
+			name:'销售员',
+			org:'234ds'
 		},
 		{
-			name:公司内勤
+			code:"dsf",
+			name:'公司内勤',
+			org:'sdfwe'
 		}
 	]
 }
 
-const getRoleListData = (params) => {
-	
-	// return (dispatch) => {
-	// 	reqwest({
-	// 		url: url.user,
-	// 		method: "GET",
-	// 		data: {
-	// 			param: {
-	// 				...params.pagination,
-	// 				searchMap: params.searchMap,
-	// 			}
-	// 		},
-	// 	},result => {
-	// 		dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', { ...result }));
-	// 	})
-	// }
-	dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', mockData));
+
+const transData = (data) => {
+	data.orgId = data.orgId.key
+	return data;
 }
 
+const getRoleListData = () => {
+	
+	return (dispatch) => {
+		reqwest({
+			url: url.role,
+			method: "GET",
+			data: {
+			},
+		},result => {
+			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', { ...result }));
+		})
+	}
+}
+
+
+const onSaveRole4Add = (data, index) => {
+	return (dispatch) => {
+		reqwest({
+			url: url.role,
+			method: "POST",
+			data: {
+				param: transData(data)
+			}
+		}, result => {
+			dispatch(fetchData('ROLE_CARD_SAVEADD', { ...result}));
+		})
+	}
+}
+
+const onSaveRole4Edit = (data, index) => {
+	return (dispatch) => {
+
+		reqwest({
+			url: `${url.role}/${data.id}`,
+			method: "PUT",
+			data: {
+				param: transData(data)
+			}
+		}, result => {
+			dispatch(fetchData('ROLE_CARD_SAVEEDIT', { ...result}));
+		})
+	}
+}
+
+const onDelete = (id) => {
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/"+id,
+			method: "DELETE",
+			data: {
+				// param: {
+				// 	ids: ids.join(","),
+				// },
+			}
+		}, result => {
+			if(result.flag){
+				dispatch(fetchData('ROLE_LIST_DELETESUCCESS', id));
+			}
+			
+		})
+	}
+}
 
 
 //输出 type 与 方法
 export {
 	getRoleListData,
+	showRoleForm,
+	onSaveRole4Add,
+	onSaveRole4Edit,
+	onDelete
 }
