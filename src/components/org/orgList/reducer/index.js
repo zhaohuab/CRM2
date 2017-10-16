@@ -32,6 +32,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				searchFilter:''
 			})
 			case 'ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH':
+			debugger
 			return  $$state.merge({
 				listData:action.payload.data,
 				tabelLoading:false,

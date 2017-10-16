@@ -1,6 +1,12 @@
 export function getCollaps(){
-   // debugger
     return{
         type:'COMMON_MENU_COLLAPSED'
+    }
+}
+
+export function getToggle(flag){
+    return{
+        type:'COMMON_MENU_TOGGLE',
+        flag
     }
 }

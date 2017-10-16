@@ -29,10 +29,11 @@ class LoginForm extends React.Component {
         // Only show error after a field is touched.
         const userError = isFieldTouched('user') && getFieldError('user');
         const passwordError = isFieldTouched('password') && getFieldError('password');
+        const loginError = this.props.loginError
         return (
             <div className="login-form">
                 <p className='login-form-title'>欢迎登录</p>
-                <div className='login-form-error'></div>
+                <div className='login-form-error'>{loginError}</div>
                 <Form onSubmit={this.handleSubmit} width={300}>
                     <FormItem
                         validateStatus={userError ? 'error' : ''}
@@ -100,23 +101,33 @@ class LoginCon extends React.Component {
     }
 
     componentDidMount() {
+
     }
-    
+    componentWillMount(){
+        if(this.props.params.loginmsg&&this.props.params.loginmsg=="sessionover"){
+            this.props.action.setLogout();
+        } 
+    }
     render() {
-        debugger
         let {$$state} = this.props;
         let logined = $$state.get('logined');
-        if(logined) {
-            browserHistory.push('/crm_web/home');
+        if(this.props.params.loginmsg=="sessionover"){
+            browserHistory.push('/crm_web/login');
+        }else{
+            if(logined) {
+                browserHistory.push('/crm_web/home');
+            }
         }
+      
         let heightPx= document.documentElement.clientHeight
+        let errorMessage = $$state.get('errorMessage');
         return (
             <div className='login-warpper'>
                 <div className='login-carousel'>
-                    <Carousel autoplay   effect='fade' speed={2000}>
-                        <div><img src={require('assets/images/login/banner-1.png')}/></div>
-                        <div><img src={require('assets/images/login/banner-2.png')}/></div>
-                        <div><img src={require('assets/images/login/banner-3.png')}/></div>
+                    <Carousel autoplay   effect='fade' speed='3000'>
+                        <div><img src={require('assets/images/login/banner1.jpg')}/></div>
+                        <div><img src={require('assets/images/login/banner2.jpg')}/></div>
+                        <div><img src={require('assets/images/login/banner3.jpg')}/></div>
                     </Carousel>
                 </div>
                 <div className='login-main'>
@@ -124,12 +135,12 @@ class LoginCon extends React.Component {
                         <div className='login-main-top'>
                             <div className='login-main-title'>
                                 <img src={require('assets/images/login/crm-logo.png')}/>
-                                <p><span>—</span>企业营销工作平台</p>
+                                <p><span>—</span><span>企业营销工作平台</span><span>—</span></p>
                             </div>
-                            <Login login = {this.props.action.login} />
+                            <Login loginError = {errorMessage} login = {this.props.action.login} />
                         </div>
                         <div className='login-main-footer'>
-                               <p>版权归用友股份有限公司所有</p>
+                            <p>版权归用友股份有限公司所有</p>
                         </div>
                     </div>
                 </div>

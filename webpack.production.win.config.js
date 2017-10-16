@@ -72,7 +72,7 @@ module.exports = {
 			},
 			{
 	            test: /\.(jpg|png|gif)$/,
-	            loader: 'url',
+	            loader: 'url?limit=8192',
 			},
 			{
 	            test: /\.css$/,
