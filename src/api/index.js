@@ -22,6 +22,13 @@ const measure = {
     measure : baseDir + "base/measures",
     measureBatch : baseDir + 'base/measures/batch',
 }
+const cum = {
+    customer : baseDir + 'cum/customers',
+}
+
+const role = {
+    role : baseDir + 'sys/roles',
+}
 
 export {
     login,
@@ -29,4 +36,6 @@ export {
     org,
     user,
     measure,
+    cum,
+    role
 }

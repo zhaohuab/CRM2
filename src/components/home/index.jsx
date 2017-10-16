@@ -3,17 +3,17 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Select, Input, Form, Table, Modal, Button, Icon, Row, Col } from 'antd';
 import ToolForm from './ButtonTool.jsx'
+import EditForm from './card';
 let Search = Input.Search;
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
-import Card from './card'
+
 //导入action方法
 import * as Actions from "../action"
-import * as enumData from "./enumdata"
-import cityData from "./citydata"
-import ViewPanel from "./ViewPanel"
-import './index.less'
 
+
+import * as enumData from './enumdata'
+import cityData from './citydata'
 
 class List extends React.Component {
   constructor(props) {
@@ -22,20 +22,14 @@ class List extends React.Component {
       pagination: {
         pageSize: 20,
         page: 1,
-      }
-
+      },
+      isEdit: true
     }
     this.columns = [
       {
         title: '客户名称',
         dataIndex: 'name',
-        render: (text, record) => (
-          <a onClick={this.btnView.bind(this, record)}> {record.name}</a>
-        ),
-      }, {
-        title: '渠道类型',
-        dataIndex: 'cannelTypeName',
-      }, {
+      },{
         title: '客户等级',
         dataIndex: 'levelName',
       }, {
@@ -50,8 +44,10 @@ class List extends React.Component {
       }]
     const that = this
     this.rowSelectionFn = {
+      /**
+        * 行选中事件
+        */
       onChange(selected, selectedRows) {
-
         const nowVisible = that.props.$$state.get("toolVisible").toJS();
         if (selectedRows.length > 0) {
           nowVisible.simForm = false
@@ -69,8 +65,12 @@ class List extends React.Component {
     }
   }
 
-
-
+  componentDidMount() {
+    this.props.action.getListData(this.state.pagination);
+  }
+  /**
+   * 点击展开或收缩事件
+   */
   changeVisible(visible) {
     const nowVisible = this.props.$$state.get("toolVisible").toJS();
     if (visible.simForm != undefined) {
@@ -85,7 +85,9 @@ class List extends React.Component {
 
     this.props.action.changeVisible(nowVisible);
   }
-
+  /**
+   * 返回按钮
+   */
   btnBack() {
     const nowVisible = this.props.$$state.get("toolVisible").toJS();
     nowVisible.btnPanel = false;
@@ -97,105 +99,73 @@ class List extends React.Component {
     this.props.action.changeVisible(nowVisible);
   }
 
-  componentDidMount() {
-
-    this.props.action.getListData(this.state.pagination);
-  }
+  /**
+   * 保存按钮
+   */
   formHandleOk() {
+    const that = this;
     this.formRef.props.form.validateFields((err, values) => {
       if (!err) {
 
-        if (this.state.isEdit) {
-          this.props.action.listEditSave(values);
+        if (that.state.isEdit) {
+          that.props.action.listEditSave(values);
         } else {
-          this.props.action.listAddSave(values);
+          that.props.action.listAddSave(values);
+
         }
       }
     });
   }
+  /**
+   * 关闭按钮
+   */
   formHandleCancel() {
-    this.props.action.showForm(false);
+    this.props.action.setFormVisible(false)
   }
 
+  /**
+   * 查询方法
+   */
   handleSearch(searchMap) {
-    this.props.action.getListData(this.state.pagination,  searchMap );
+    this.props.action.getListData(this.state.pagination, searchMap);
   }
 
-  btnSetEnableList(enableState) {
-    const searchMap = this.props.$$state.get('searchMap').toJS();
+  /**
+   * 启停用
+   */
+  btnSetEnable(enableState) {
     const selectRow = this.props.$$state.get("selectedRows").toJS();
-    const ids = [];
-    for(let i=0;i<selectRow.length;i++){
-      ids.push(selectRow[i].id);
-    }
-    this.props.action.setEnableState(ids, enableState, this.state.pagination, searchMap)
+    this.props.action.setEnableState(selectRow, enableState, this.state.pagination, searchMap)
   }
 
-  btnSetEnableView(enableState) {
-    const searchMap = this.props.$$state.get('searchMap').toJS();
-    const viewData = this.props.$$state.get("viewData").toJS();
-    const ids = [];
-    ids.push(viewData.id);
-    this.props.action.setEnableState(ids, enableState, this.state.pagination, searchMap)
-  }
+  /**
+   * 新增
+   */
   btnNew() {
-    this.setState({isEdit:false});
-    this.props.action.showForm(true);
-  }
-  btnView(record) {
-    this.props.action.showViewForm(true,record);
-  }
-  btnEdit(data) {
-    this.setState({isEdit:true});
-    this.props.action.showFormEdit(true);
-  }
-  btnDeleteList(){
-    const searchMap = this.props.$$state.get('searchMap').toJS();
-    const selectRow = this.props.$$state.get("selectedRows").toJS();
-    const ids = [];
-    for(let i=0;i<selectRow.length;i++){
-      ids.push(selectRow[i].id);
-    }
-    this.props.action.deleteData(ids,searchMap,this.state.pagination);
-  }
-  btnDeleteView(){
-    const searchMap = this.props.$$state.get('searchMap').toJS();
-    const viewData = this.props.$$state.get("viewData").toJS();
-    const ids = [];
-    ids.push(viewData.id);
-    this.props.action.deleteData(ids,searchMap,this.state.pagination);
+    this.setState({ isEdit: false });
+    this.props.action.setFormVisible(true)
   }
 
-  btnClosePanel(){
-  
-    this.props.action.closePanel()
-  }
   render() {
     const { $$state } = this.props;
     const page = $$state.get("data").toJS();
+    const editData = $$state.get("editData").toJS();
     const selectedRows = $$state.get('selectedRows').toJS();
-    const searchMap = $$state.get('searchMap').toJS();
     const toolVisible = $$state.get('toolVisible').toJS();
     const formVisitable = $$state.get("formVisitable");
-    const CardForm = Form.create()(Card);
-    const editData = $$state.get("editData").toJS();
-    const viewData = $$state.get("viewData").toJS();
-    const viewFormVisible = $$state.get("viewFormVisible");
+    const FormCard = Form.create()(EditForm)
     return (
-      
-      <div className="aaa" style={{position:'relative'}}>
+      <div>
         <ToolForm
+          enumData={enumData}
+          cityData={cityData}
           visible={toolVisible}
           btnBack={this.btnBack.bind(this)}
           btnLess={this.changeVisible.bind(this)}
           btnMore={this.changeVisible.bind(this)}
-          btnSetEnable={this.btnSetEnableList.bind(this)}
+          btnSetEnable={this.btnSetEnable.bind(this)}
           handleSearch={this.handleSearch.bind(this)}
           btnNew={this.btnNew.bind(this)}
-          enumData={enumData}
-          cityData={cityData}
-          searchMap={searchMap}
-          btnDelete={this.btnDeleteList.bind(this)}
         />
         <div className="list-box">
           <Table
@@ -211,26 +181,13 @@ class List extends React.Component {
           onOk={this.formHandleOk.bind(this)}
           onCancel={this.formHandleCancel.bind(this)}
         >
-          <CardForm
+          <FormCard
             wrappedComponentRef={(inst) => this.formRef = inst}
-            data={viewData}
-            isEdit={this.state.isEdit}
+            data={editData}
             enumData={enumData}
             cityData={cityData}
           />
         </Modal>
-        <div 
-        className={viewFormVisible==true?'viewPanelTrue':'viewPanelFalse'}
-        >
-          <ViewPanel
-            data={viewData}
-            btnNew={this.btnNew.bind(this)}
-            btnEdit={this.btnEdit.bind(this)}
-            btnClosePanel={this.btnClosePanel.bind(this)}
-            btnSetEnable={this.btnSetEnableView.bind(this)}
-            btnDelete={this.btnDeleteView.bind(this)}
-          />
-        </div>
       </div>
     )
   }

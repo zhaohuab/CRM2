@@ -100,6 +100,7 @@ class List extends Component {
             if (!err) {
                     
                 if(this.state.isEdit){
+                  
                     this.props.orgAction.listchange(values);
                 }else{
                     this.props.orgAction.listadd(values);  
