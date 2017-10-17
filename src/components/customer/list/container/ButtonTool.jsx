@@ -5,6 +5,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
+import 'assets/stylesheet/all/iconfont.css'
 
 class BtnPanel extends React.Component {
     constructor(props) {
@@ -33,17 +34,21 @@ class BtnPanel extends React.Component {
     
     render() {
         return (
-            <div>
-                <Button className='returnbtn-class' icon='swap-left' onClick={this.btnBack.bind(this)}>返回</Button>
-                <Button className='returnbtn-class' icon='delete' onClick={this.btnDelete.bind(this)}>删除</Button>
-               
-                <ButtonGroup className='returnbtn-class'>
-                    <Button icon='play-circle-o' onClick={this.props.btnSetEnable.bind(this, 1)}>启用</Button>
-                    <Button icon='pause-circle-o' onClick={this.props.btnSetEnable.bind(this, 2)}>停用</Button>
-                </ButtonGroup>
-                <Button className='returnbtn-class' icon='download'>导出</Button>
+            <div className='hide-label'>
+                <div className='hide-label-left'>
+                    <Button className='returnbtn-class' onClick={this.btnBack.bind(this)}><i className='iconfont icon-fanhui'></i>返回</Button>
+                    <Button className='returnbtn-class' onClick={this.btnDelete.bind(this)}><i className='iconfont icon-shanchu'></i>删除</Button>
+                
+                    <ButtonGroup className='returnbtn-class'>
+                        <Button onClick={this.props.btnSetEnable.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
+                        <Button onClick={this.props.btnSetEnable.bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
+                    </ButtonGroup>
+                    <Button className='returnbtn-class'><i className='iconfont icon-daochu'></i>导出</Button>
+                </div>
+                <div className='hide-label-right'>
+                    <Icon type="close" />
+                </div>
             </div>
-
         );
     }
 }
@@ -322,10 +327,10 @@ class ToolForm extends React.Component {
                             </div>
                             <div className='label-form-topright'>
                                 <ButtonGroup className='list-add-group'>
-                                    <Button icon='download'>导入</Button>
-                                    <Button icon='upload'>导出</Button>
+                                    <Button><i className='iconfont icon-daoru'></i>导入</Button>
+                                    <Button><i className='iconfont icon-daochu'></i>导出</Button>
                                 </ButtonGroup>
-                                <Button type='primary' onClick={this.props.btnNew}><Icon type="plus" />新建</Button>
+                                <Button type='primary' onClick={this.props.btnNew}><i className='iconfont icon-xinjian'></i>新建</Button>
                             </div>
                         </div>
                         <div  className={this.props.visible.milForm?'label-form-bottom':'form-hide'}>
