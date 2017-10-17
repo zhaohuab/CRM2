@@ -45,12 +45,9 @@ export {
     menu,
     org,
     user,
-<<<<<<< HEAD
     measure,
     cum,
     role,
-    prdtype
-=======
+    prdtype,
     product,
->>>>>>> 9da1bcd5202e6ee1437c94360abe1cd22b04aa02
 }
