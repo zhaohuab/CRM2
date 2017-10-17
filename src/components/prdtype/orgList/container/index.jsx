@@ -67,15 +67,13 @@ class List extends Component {
                     that.props.prdAction.buttonEdit(selectedRows)
                 }
             }
-         }
-       
+         }      
     }
 
     //修改一条数据方法
     changeForm(record){ 
         this.setState({isEdit:true});
         this.props.prdAction.showForm(true,record);
-
     }
 
     //删除一条数据方法
@@ -96,8 +94,7 @@ class List extends Component {
    //表单页面确定方法
     formHandelOk(){
         this.formRef.props.form.validateFields((err, values) => {
-            if (!err) {
-                    
+            if (!err) {                  
                 if(this.state.isEdit){
                     this.props.prdAction.listchange(values);
                 }else{
@@ -147,8 +144,7 @@ class List extends Component {
     }
 
     //点击一个节点数的删除操作
-    treeSelectDeleteFn(item){
-       
+    treeSelectDeleteFn(item){//这里的record和item不用传参，点击的时候是ant design插件自动传递的么    
         const record = [];
         record.push(item)
         this.props.prdAction.listdel(record,item.id)
