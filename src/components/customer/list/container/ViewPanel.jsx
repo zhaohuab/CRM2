@@ -215,7 +215,10 @@ export default class ViewPanel extends React.Component {
                 <Row className="view-warrper-main">
                     <div>
                         <Col span={18} className="warrper-main-left">
-                            <div className="main-left-inner">
+                            <div
+                                className="main-left-inner"
+                                id="collapse-recover"
+                            >
                                 <Tabs defaultActiveKey="1">
                                     <TabPane tab="相关" key="1">
                                         <Collapse defaultActiveKey={["1"]}>

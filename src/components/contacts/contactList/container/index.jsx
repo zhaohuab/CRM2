@@ -8,8 +8,8 @@ import "./index.less";
 import { browserHistory } from "react-router";
 
 class Contacts extends React.Component {
-    btnBack(){
-        browserHistory.push(this.props.params.father)
+    btnBack() {
+        browserHistory.push(this.props.params.father);
     }
 
     render() {
@@ -94,7 +94,7 @@ class Contacts extends React.Component {
                                 </Dropdown.Button>
                             </div>
                         </div>
-                        <div className="info-warpper">
+                        <div className="info-warpper" id="collapse-recover">
                             <div className="inner-info">
                                 <Collapse
                                     bordered={false}

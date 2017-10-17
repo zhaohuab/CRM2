@@ -89,7 +89,6 @@ body {
     color: #333;
 }
 
-
 /*model头部样式*/
 
 .ant-modal-header {
@@ -101,7 +100,6 @@ body {
     color: #333;
 }
 
-
 /* model内高度 */
 
 .model-height {
@@ -110,7 +108,6 @@ body {
     margin: -16px;
     padding: 16px;
 }
-
 
 /*model内侧高度参照样式*/
 
@@ -121,15 +118,14 @@ body {
     overflow: auto;
 }
 
-
 /* ant.design  表格样式 */
 
-.ant-table .ant-table-thead>tr,
-.ant-table .ant-table-tbody>tr:nth-child(even) {
+.ant-table .ant-table-thead > tr,
+.ant-table .ant-table-tbody > tr:nth-child(even) {
     background: #f3faff;
 }
 
-.ant-table .ant-table-thead>tr>th {
+.ant-table .ant-table-thead > tr > th {
     color: #666;
 }
 
@@ -142,8 +138,8 @@ body {
     color: #999;
 }
 
-.ant-table .ant-table-thead>tr>th,
-.ant-table .ant-table-tbody>tr>td {
+.ant-table .ant-table-thead > tr > th,
+.ant-table .ant-table-tbody > tr > td {
     border: none;
 }
 
@@ -151,25 +147,32 @@ body {
     border-left: 1px solid #ececec;
 }
 
-
 /* ant.design  菜单样式*/
 
-.ant-menu-inline-collapsed>.ant-menu-item .anticon+span,
-.ant-menu-inline-collapsed>.ant-menu-submenu>.ant-menu-submenu-title .iconfont+span {
+.ant-menu-inline-collapsed > .ant-menu-item .anticon + span,
+.ant-menu-inline-collapsed
+    > .ant-menu-submenu
+    > .ant-menu-submenu-title
+    .iconfont
+    + span {
     opacity: 0;
 }
 
-.ant-menu-item .anticon+span,
-.ant-menu-submenu-title .iconfont+span {
-    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+.ant-menu-item .anticon + span,
+.ant-menu-submenu-title .iconfont + span {
+    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+        width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-.ant-menu-inline-collapsed>.ant-menu-item>.iconfont+span {
+.ant-menu-inline-collapsed > .ant-menu-item > .iconfont + span {
     opacity: 0;
 }
 
-.ant-menu-inline-collapsed>.ant-menu-item .anticon,
-.ant-menu-inline-collapsed>.ant-menu-submenu>.ant-menu-submenu-title .anticon {
+.ant-menu-inline-collapsed > .ant-menu-item .anticon,
+.ant-menu-inline-collapsed
+    > .ant-menu-submenu
+    > .ant-menu-submenu-title
+    .anticon {
     font-size: 20px;
     position: relative;
     left: -1px;
@@ -180,45 +183,60 @@ body {
 }
 
 //tree
-#tree-icon .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher-noop:after {
+#tree-icon
+    .ant-tree.ant-tree-show-line
+    li
+    span.ant-tree-switcher.ant-tree-switcher-noop:after {
     content: "\E621";
     color: #3ca4fb;
 }
 
-#tree-icon .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_open:after {
+#tree-icon
+    .ant-tree.ant-tree-show-line
+    li
+    span.ant-tree-switcher.ant-tree-switcher_open:after {
     content: "\E6C1";
     color: #3ca4fb;
 }
 
-#tree-icon .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_close:after {
+#tree-icon
+    .ant-tree.ant-tree-show-line
+    li
+    span.ant-tree-switcher.ant-tree-switcher_close:after {
     content: "\E6C0";
     color: #3ca4fb;
 }
 
 //折叠菜单
-.ant-collapse {
+#collapse-recover .ant-collapse {
     border: none;
     background: white;
 }
 
-.ant-collapse>.ant-collapse-item>.ant-collapse-header {
+#collapse-recover .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     background: #f2f2f2;
 }
 
-.ant-collapse>.ant-collapse-item>.ant-collapse-header .arrow:before {
+#collapse-recover
+    .ant-collapse
+    > .ant-collapse-item
+    > .ant-collapse-header
+    .arrow:before {
     content: "\E604";
 }
 
-.ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
+#collapse-recover
+    .ant-collapse-borderless
+    > .ant-collapse-item
+    > .ant-collapse-content {
     border-top: none;
 }
 
-.ant-collapse>.ant-collapse-item {
+#collapse-recover .ant-collapse > .ant-collapse-item {
     border-bottom: none;
     margin-bottom: 12px;
     border: 1px solid #f2f2f2;
 }
-
 
 /*ant下拉框单独样式修改*/
 
