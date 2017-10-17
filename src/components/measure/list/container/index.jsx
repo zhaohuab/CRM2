@@ -80,8 +80,8 @@ class List extends React.Component {
   }
   onDelete=()=>{
     let { pagination,searchMap } = this.state;
-    this.setState({headLabel:false});
     this.props.action.onDelete(this.state.selectedRowKeys,{ pagination });
+    this.setState({headLabel:false,selectedRowKeys:[]});
   }
   onClose() {
     this.props.action.showForm(false,{});

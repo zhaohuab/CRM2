@@ -30,6 +30,16 @@ const role = {
     role : baseDir + 'sys/roles',
 }
 
+const prdtype={
+    prdtype:baseDir + 'base/prdtype',
+    prdtypeTree:baseDir + 'base/prdtypeTree'
+}
+
+const product = {
+    product: baseDir + 'base/products',
+    productBatch: baseDir + 'base/products/batch',
+}
+
 export {
     login,
     menu,
@@ -37,5 +47,8 @@ export {
     user,
     measure,
     cum,
-    role
+    role,
+    prdtype,
+    product,
+    baseDir,
 }

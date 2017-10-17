@@ -89,8 +89,8 @@ class List extends React.Component {
   }
   onDelete=()=>{
     let { pagination,searchMap } = this.state;
-    this.setState({headLabel:false});
     this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
+    this.setState({headLabel:false,selectedRowKeys:[]});
   }
   onEdit = () => {
     
@@ -123,10 +123,7 @@ class List extends React.Component {
         console.log('Received values of form: ', values);
       }
     });
-    //this.setState({headLabel:false});
-    debugger;
     if(this.state.isEdit) {
-  
       this.props.action.onSave4Edit(form.getFieldsValue());
     }
     else {
@@ -163,7 +160,6 @@ class List extends React.Component {
     this.props.action.getListData({ pagination,searchMap });
   }
   onPageSizeChange(current,pageSize) {
-    debugger
     let { pagination,searchMap } = this.state;
     pagination = {page:pagination.page,pageSize:pageSize};
     this.setState({pagination})
