@@ -137,7 +137,6 @@ export function listdel(record,treeId,searchFilter){
 			}
         }
         ,(dataResult) => {
-          
             const listData=dataResult;
             request({
                 url: url.orgTree,

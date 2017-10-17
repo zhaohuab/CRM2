@@ -50,4 +50,5 @@ export {
     role,
     prdtype,
     product,
+    baseDir,
 }
