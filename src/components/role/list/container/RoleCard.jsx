@@ -28,13 +28,9 @@ class Card extends React.Component {
         title: "女",
     }]
     componentDidMount() {
-        debugger
         //装箱过程
         let { orgId,orgName } = this.props.dataSource; 
         this.props.dataSource.orgId = {key:orgId,title:orgName};
-        // this.props.dataSource.deptId = {key:deptId,title:deptName};
-        // this.props.dataSource.job = {key:job,title:jobName};
-        // this.props.dataSource.gender = {key:gender,title:genderName};
         this.props.form.setFieldsValue(this.props.dataSource);
     }
     componentWillMount() {

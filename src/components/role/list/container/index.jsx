@@ -5,6 +5,8 @@ import { bindActionCreators } from 'redux'
 import { Tabs, Table, Icon, Button, Form, Input, Checkbox, Col, Modal, Spin } from 'antd';
 import * as roleActions from "../action"
 import RoleCard from "./RoleCard"
+import FuncTree from "./FuncTree"
+
 const confirm = Modal.confirm;
 const TabPane = Tabs.TabPane;
 class List extends React.Component {
@@ -87,6 +89,7 @@ class List extends React.Component {
         const roleCardVisible = $$state.get("roleCardVisible");
         const WarpRoleCard = Form.create()(RoleCard)
         const page = $$state.get("data").toJS();
+        const funcData = $$state.get("funcData").toJS();
         const editData = $$state.get("editData").toJS();
         return (
             <div className='list-warpper'>
@@ -108,7 +111,9 @@ class List extends React.Component {
 
                         <div className='org-tabel'>
                             <Tabs tabPosition={this.state.tabPosition}>
-                                <TabPane tab="功能" key="1">Content of Tab 1</TabPane>
+                                <TabPane tab="功能" key="1">
+                                    <FuncTree data={funcData} />
+                                </TabPane>
                                 <TabPane tab="数据" key="2">Content of Tab 2</TabPane>
                                 <TabPane tab="分配用户" key="3">Content of Tab 3</TabPane>
                             </Tabs>
