@@ -1,10 +1,11 @@
-import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio } from 'antd';
+import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio, Select } from 'antd';
 import moment from 'moment';
 import Department from 'components/refs/departments'
 
 const FormItem = Form.Item;
-
 const RadioGroup = Radio.Group;
+const Option = Select.Option;
+
 export default class NormalLoginForm extends React.Component {
     constructor(props) {
         super(props);
@@ -58,52 +59,35 @@ export default class NormalLoginForm extends React.Component {
                                         <Input type='text' placeholder="请输入名称!" />
                                         )}
                                 </FormItem>
-                                <FormItem  {...formItemLayout} label='简称'>
-                                    {getFieldDecorator('simpleName', {
-                                        rules: [{ required: true, message: '请输入简称!' }],
+                                <FormItem  {...formItemLayout} label='上级分类'>
+                                    {getFieldDecorator('fatherTypeId', {
+                                        rules: [{ required: true, message: '上级分类!' }],
                                     })(
-                                        <Input type='text' placeholder="请输入简称!" />
+                                         <Select defaultValue="lucy" style={{ width: 120 }}>
+                                            <Option value="1">肥料</Option>
+                                            <Option value="2">农药</Option>
+                                            <Option value="3">种子</Option>
+                                            <Option value="4">农膜</Option>
+                                          </Select>
                                         )}
                                 </FormItem>
-                                <FormItem  {...formItemLayout} label='助记码'>
-                                    {getFieldDecorator('simpleCode', {
-                                        rules: [{ required: true, message: '请输入助记码!' }],
+                                <FormItem  {...formItemLayout} label='属性组'>
+                                    {getFieldDecorator('attrGroupId', {
+                                        rules: [{ required: true, message: '请输入属性组!' }],
                                     })(
-                                        <Input type='text' placeholder="请输入助记码!" />
+                                          <Select defaultValue="lucy" style={{ width: 120 }}>
+                                            <Option value="1">肥料属性</Option>
+                                            <Option value="2">农药属性</Option>
+                                            <Option value="3">种子属性</Option>
+                                            <Option value="4">农膜属性</Option>
+                                          </Select>
                                         )}
                                 </FormItem>
-                                <FormItem
-                                    label="上级组织"
-                                    {...formItemLayout}
-                                >
-                                    {getFieldDecorator('fatherorgId', {
+                                <FormItem  {...formItemLayout} label='对应ERP组织'>
+                                    {getFieldDecorator('erpCode', {
                                         rules: [],
                                     })(
-                                        <Department />
-                                        )}
-                                </FormItem>
-                                <FormItem  {...formItemLayout} label='负责人'>
-                                    {getFieldDecorator('respoPerson', {
-                                        rules: [],
-                                    })(
-                                        <Input disabled='true' type='text' placeholder="无" />
-                                        )}
-                                </FormItem>
-                                <FormItem  {...formItemLayout} label='其他负责人'>
-                                    {getFieldDecorator('otherRespoPerson', {
-                                        rules: [],
-                                    })(
-                                        <Input disabled='true' type='text' placeholder="无" />
-                                        )}
-                                </FormItem>
-                                <FormItem  {...formItemLayout} label='组织类型'>
-                                    {getFieldDecorator('orgType', {
-                                        rules: [{ required: true, message: '请输入组织类型!' }],
-                                    })(
-                                        <RadioGroup>
-                                            <Radio value={1}>部门</Radio>
-                                            <Radio value={2}>公司</Radio>
-                                        </RadioGroup>
+                                        <Input type='text' placeholder="无" />
                                         )}
                                 </FormItem>
                             </Form>
