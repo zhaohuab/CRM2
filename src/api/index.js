@@ -35,14 +35,22 @@ const prdtype={
     prdtypeTree:baseDir + 'base/prdtypeTree'
 }
 
+const product = {
+    product: baseDir + 'base/products',
+    productBatch: baseDir + 'base/products/batch',
+}
 
 export {
     login,
     menu,
     org,
     user,
+<<<<<<< HEAD
     measure,
     cum,
     role,
     prdtype
+=======
+    product,
+>>>>>>> 9da1bcd5202e6ee1437c94360abe1cd22b04aa02
 }
