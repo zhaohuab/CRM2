@@ -36,6 +36,7 @@ const appendAddress = (data) =>{
     return data;
 }
 const appendAddressOne = (data) =>{
+   
     data.address = String(data.provinceName)+String(data.cityName)+ String(data.districtName)+String(data.street);
     return data;
 }

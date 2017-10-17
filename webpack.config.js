@@ -1,54 +1,61 @@
 //webpack.config.js
-var webpack = require('webpack');
-var path = require('path');
+var webpack = require("webpack");
+var path = require("path");
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin");
 //var HtmlWebpackPlugin = require('html-webpack-plugin'); //自动打开浏览器插件
 
 //修改antd.design主题文件
-var theme = require('./theme.config.js')
+var theme = require("./theme.config.js");
 
-var hostIP = '10.11.112.80';
-var portNumber = '3000';
-let urlPath ='10.11.112.80';
+var hostIP = "10.11.112.44";
+var portNumber = "3000";
+let urlPath = "10.11.112.44";
 
 module.exports = {
     entry: {
         main: __dirname + "/src/main.jsx", //入口文件
-        vendor: ['redux', 'react-redux', 'react-router', 'react-router-redux', 'redux-thunk']
+        vendor: [
+            "redux",
+            "react-redux",
+            "react-router",
+            "react-router-redux",
+            "redux-thunk"
+        ]
     },
     output: {
-        path: __dirname + '/lib',
+        path: __dirname + "/lib",
         //path: path.resolve(__dirname, "public"),
-        publicPath: '//' + urlPath + ':' + portNumber + '/lib',
+        publicPath: "//" + urlPath + ":" + portNumber + "/lib",
         filename: "[name].min.js", //打包后输出的文件名
-        chunkFilename: '[id].chunk.js'
+        chunkFilename: "[id].chunk.js"
     },
     externals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-        immutable: 'Immutable'
+        react: "React",
+        "react-dom": "ReactDOM",
+        immutable: "Immutable"
     },
     resolve: {
         extensions: ["", ".js", ".jsx"],
         alias: {
-            components: path.join(__dirname, 'src/components'),
-            reducers: path.join(__dirname, 'src/reducers'),
-            store: path.join(__dirname, 'src/store'),
-            routes: path.join(__dirname, 'src/routes'),
-            assets: path.join(__dirname, 'src/assets'),
-            utils: path.join(__dirname, 'src/utils'),
-            api: path.join(__dirname, 'src/api')
-        },
+            components: path.join(__dirname, "src/components"),
+            reducers: path.join(__dirname, "src/reducers"),
+            store: path.join(__dirname, "src/store"),
+            routes: path.join(__dirname, "src/routes"),
+            assets: path.join(__dirname, "src/assets"),
+            utils: path.join(__dirname, "src/utils"),
+            api: path.join(__dirname, "src/api")
+        }
     },
     module: {
-        loaders: [{
+        loaders: [
+            {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 loader: "babel"
             },
             {
                 test: /\.(jpg|png|gif)$/,
-                loader: 'url?limit=8192',
+                loader: "url?limit=8192"
             },
             {
                 test: /\.css$/,
@@ -56,37 +63,42 @@ module.exports = {
             },
             {
                 test: /\.(woff|svg|eot|ttf)\??.*$/,
-                loader: "url-loader?name=fonts/[name].[md5:hash:hex:7].[ext]",
+                loader: "url-loader?name=fonts/[name].[md5:hash:hex:7].[ext]"
             },
             {
                 test: /\.(less)$/,
                 loaders: [
                     "style",
                     "css",
-                    `less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(theme)}}`,
+                    `less-loader?{"sourceMap":true,"modifyVars":${JSON.stringify(
+                        theme
+                    )}}`
                 ]
             }
         ]
     },
-    devtool: 'cheap-module-eval-source-map',
+    devtool: "cheap-module-eval-source-map",
     plugins: [
         new webpack.HotModuleReplacementPlugin(), //热加载插件
-        new webpack.optimize.CommonsChunkPlugin( /* chunkName= */ "vendor", /* filename= */ "vendor.bundle.js"),
+        new webpack.optimize.CommonsChunkPlugin(
+            /* chunkName= */ "vendor",
+            /* filename= */ "vendor.bundle.js"
+        ),
         new webpack.optimize.MinChunkSizePlugin({
             minChunkSize: 10240
         }),
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"development"'
+            "process.env.NODE_ENV": '"development"'
         })
     ],
     devServer: {
         headers: {
             "Access-Control-Allow-Origin": "*"
         },
-        devtool: 'cheap-module-eval-source-map',
+        devtool: "cheap-module-eval-source-map",
         hot: true,
         inline: true,
         port: portNumber,
         host: urlPath
     }
-}
+};

@@ -50,7 +50,7 @@ const rootRoutes = {
                 require('./routes/prdtype').default,
                 require('./routes/measure').default,
                 require('./routes/role').default,
-                // require('./routes/customer').default,
+                require('./routes/product').default,
                 {
                   //未开发页面
                   path: 'developing',
@@ -58,7 +58,7 @@ const rootRoutes = {
                 }
               ])
             })
-          },
+          }
         },
         {
           path: '*',

@@ -35,6 +35,10 @@ const prdtype={//这两个路径分别对应请求的哪个资源？哪个是tre
     prdtypeTree:baseDir + 'base/prdtypeTree'
 }
 
+const product = {
+    product: baseDir + 'base/products',
+    productBatch: baseDir + 'base/products/batch',
+}
 
 export {
     login,
@@ -44,5 +48,7 @@ export {
     measure,
     cum,
     role,
-    prdtype
+    prdtype,
+    product,
+    baseDir,
 }
