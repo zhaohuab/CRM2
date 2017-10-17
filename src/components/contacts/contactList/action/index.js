@@ -1,6 +1,5 @@
-export function getCollaps(){
-    debugger
-     return{
-         type:'COMMON_MENU_COLLAPSED'
-     }
- }
+export function getCollaps() {
+    return {
+        type: "COMMON_MENU_COLLAPSED"
+    };
+}

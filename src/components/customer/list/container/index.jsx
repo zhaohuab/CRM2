@@ -211,8 +211,10 @@ class List extends React.Component {
         const editData = $$state.get("editData").toJS();
         const viewData = $$state.get("viewData").toJS();
         const viewFormVisible = $$state.get("viewFormVisible");
+        const h = this.props.$$stateCommon.toJS().height - 90;
+        console.log(h, "hhhhhhhhhhhhhhh");
         return (
-            <div className="custom-warpper">
+            <div className="custom-warpper" style={{ height: h + "px" }}>
                 <ToolForm
                     visible={toolVisible}
                     btnBack={this.btnBack.bind(this)}
@@ -278,7 +280,8 @@ class List extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList
+        $$state: state.customerList,
+        $$stateCommon: state.componentReducer
     };
 }
 //绑定action到组件props
