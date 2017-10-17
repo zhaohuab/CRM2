@@ -47,6 +47,7 @@ const rootRoutes = {
                 require('./routes/user').default,
                 require('./routes/customer/routes/list').default,
                 require('./routes/contacts').default,
+                require('./routes/prdtype').default,
                 require('./routes/measure').default,
                 require('./routes/role').default,
                 // require('./routes/customer').default,

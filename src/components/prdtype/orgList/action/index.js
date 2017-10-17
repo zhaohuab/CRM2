@@ -1,6 +1,7 @@
 import request from 'utils/reqwest'
 import { message} from 'antd';
-import { org as url } from 'api';
+import { prdtype as url } from 'api';
+
 
 const fetchData = (type, payload)=> {
         return {
@@ -10,36 +11,60 @@ const fetchData = (type, payload)=> {
 }
 
 //获取所有数据
-export function getlist(searchMap={}){
-    return(dispatch,getState)=>{
-        dispatch({type:'ORG_LIST_GETLISTSTART'})
-        debugger;
+export function getlist(params){
+    if(typeof params=='undefined'){
+        params={
+            searchMap:{}
+        }
+    }
+    return(dispatch,getState)=>{       
+        dispatch({type:'PRDTYPE_LIST_GETLISTSTART'})
         request({
-            url: url.org,
-            method:'get',
+            url: url.prdtype,
+            method:'get', 
             data:{
-                param : {searchMap}
-            }
+                param:{
+                    ...params.pagination,
+					searchMap: params.searchMap,
+                }
+            }          
         },(data) => {
-            debugger;
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
+            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', {data: data.data}));
         })
     }
 }
+/* 
+const getListData = (params) => {
+	
+	return (dispatch) => {
+		reqwest({
+			url: url.user,
+			method: "GET",
+			data: {
+				param: {
+					...params.pagination,
+					searchMap: params.searchMap,
+				}
+			},
+		},result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
+		})
+	}
+} */
 
 //点击查询按钮获取所有数据
 export function getlistByClickSearch(searchMap){
     return(dispatch,getState)=>{
         
-        dispatch({type:'ORG_LIST_GETLISTSTART'})
+        dispatch({type:'PRDTYPE_LIST_GETLISTSTART'})
         request({
-            url: url.org,
+            url: url.prdtype,
             method:'get',
             data:{
-                param : {searchMap}
+                param : searchMap
             }
         },(data) => {
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH', {data: data.data,searchFilter:searchMap.searchKey}));
+            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESSBYCLICKSEARCH', {data: data.data.data,searchFilter:searchMap.searchKey}));
         })
     }
 }
@@ -47,13 +72,14 @@ export function getlistByClickSearch(searchMap){
 //打开新增/编辑页面
 export function showForm(flag, editData = {}){
     return (dispatch) => {
-		dispatch(fetchData('ORG_LIST_SHOWFORM', { visible: flag, editData }));
+		dispatch(fetchData('PRDTYPE_LIST_SHOWFORM', { visible: flag, editData }));
 	}
 }
 
 
 const transData = (data) => {
-    data.fatherorgId = data.fatherorgId.key
+    debugger;
+	data.fatherTypeId = data.fatherTypeId.key
 	return data;
 }
 
@@ -61,23 +87,22 @@ const transData = (data) => {
 export function listadd(list){
     return(dispatch,getState)=>{
         request({
-            url: url.org,   
+            url: url.prdtype,   
             method:'post',
-            // data:"param="+JSON.stringify(transData(list)),
             data:{
-                param:transData(list)
+                param:list
             }
         }, (dataResult) => {
             // dispatch(fetchData('ORG_LIST_LISTADDSUCCESS',{data:data.data})) 
             const listData=dataResult;
             request({
-                url: url.orgTree,
+                url: url.prdtypeTree,
                 method:'get',
                 data:{}
             }
             ,(data) => {
-                dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
-                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData}));
+                dispatch({type:'PRDTYPE_LIST_GETTREELISTSUCCESS',data:data.data})
+                dispatch(fetchData('PRDTYPE_LIST_LISTADDSUCCESS', {data: listData}));
             })
         })
     }
@@ -85,28 +110,35 @@ export function listadd(list){
 
 
 //改变一条数据
-export function listchange(data){
-    return(dispatch)=>{
-        let id=data.id
+export function listchange(value){
+    return(dispatch,getState)=>{
+        let id=value.id
         request({
-            url: `${url.org}${id}`,
+            url:url.prdtype+'/'+id,
             method:'put',
-            data:{
-                param: transData(data)
-            }
-        },(dataResult) => {
+            data:{param:value}
+        },(dataResult) => {       
             request({
-                url: url.org, 
+                url: url.prdtype, 
                 method:'get',
                 data:{
                     param: {
                         condMap:typeof(params) == "undefined"?{}:params
-                    }
+                    }           
                 }
-            },(data) => {
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data})) 
+            },(data) => {            
+                dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS',{data:data.data})) ;
+            });
+            request({
+                url: url.prdtypeTree,
+                method:'get',
+                data:{}
+            }
+            ,(data) => {
+                dispatch({type:'PRDTYPE_LIST_GETTREELISTSUCCESS',data:data.data})
             })
-        })
+        });
+
     }
 }
 
@@ -125,9 +157,10 @@ export function listdel(record,treeId,searchFilter){
         ids.push(record[i].id);
     }
     return(dispatch,getState)=>{
-        let id=record.id
+       
+        let id=record[0].id
         request({
-            url:url.org+'/batch',
+            url:url.prdtype+'/batch',
 			method: "DELETE",
 			data:{
 				param: {
@@ -137,16 +170,16 @@ export function listdel(record,treeId,searchFilter){
 			}
         }
         ,(dataResult) => {
-          
             const listData=dataResult;
             request({
-                url: url.orgTree,
+                url: url.prdtypeTree,
                 method:'get',
                 data:{}
             }
             ,(data) => {
-                dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data}));
+                debugger;
+                dispatch({type:'PRDTYPE_LIST_GETTREELISTSUCCESS',data:data.data})
+                dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', {data: listData.data}));
             })
         })
     }
@@ -169,7 +202,7 @@ export function setEnablestate(treeId,searchFilter,data,state){
     }
     return (dispatch) => {
 		request({
-			url: url.org+'enable',
+			url: url.prdtype+'enable',
 			method: "PUT",
 			data: {
 				param: {
@@ -180,7 +213,7 @@ export function setEnablestate(treeId,searchFilter,data,state){
 			}
 		},(dataResult) => {
                 const listData=dataResult;
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data}));
+                dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', {data: listData.data.data}));
         })
 			
 	}
@@ -190,14 +223,14 @@ export function setEnablestate(treeId,searchFilter,data,state){
 export function getTreeList(){
 
     return(dispatch,getState)=>{
-        dispatch({type:'ORG_LIST_GETTREELISTSTART'})
+        dispatch({type:'PRDTYPE_LIST_GETTREELISTSTART'})
         request({
-            url: url.orgTree,
+            url: url.prdtypeTree,
             method:'get',
             data:{}
         },(data) => {
         
-            dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
+            dispatch({type:'PRDTYPE_LIST_GETTREELISTSUCCESS',data:data.data})
         })
         
     }
@@ -208,16 +241,15 @@ export function getTreeList(){
 export function listTreeChange(id){
     return(dispatch,getState)=>{
         request({
-            url: url.org,
-            
+            url: url.prdtype,           
             method:'get',
             data:{
-                param: {
+                param:{
                     searchMap:{id}
                 }
             }
         },(data) => {
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKTREE', {data: data.data,treeSelect:id}));
+            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESSBYCLICKTREE', {data: data.data,treeSelect:id}));
         })
         
     } 
@@ -228,7 +260,7 @@ export function listTreeChange(id){
 
 export function buttonEdit(rows){
     return{
-        type:'ORG_LIST_SHOWBUTTONSTART',
+        type:'PRDTYPE_LIST_SHOWBUTTONSTART',
         rows
     }
 }
