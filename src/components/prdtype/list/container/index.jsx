@@ -63,8 +63,10 @@ class List extends Component {
             onChange(selected, selectedRows){
                 if(selectedRows.length){
                     that.props.prdAction.buttonEdit(selectedRows)
+                
                 }else{
                     that.props.prdAction.buttonEdit(selectedRows)
+        
                 }
             }
          }      

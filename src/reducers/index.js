@@ -21,7 +21,7 @@ import customerList from '../components/customer/list/reducer/index.js'
 //角色
 import roleList from '../components/role/list/reducer/index.js'
 //产品分类
-import prdtype from '../components/prdtype/orgList/reducer/index.js'
+import prdtype from '../components/prdtype/list/reducer/index.js'
 //product目录
 import product from '../components/product/list/reducer'
 

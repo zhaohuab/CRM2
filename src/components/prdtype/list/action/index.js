@@ -95,7 +95,10 @@ export function listchange(value) {
             url: url.prdtype+'/'+id,
             method: 'put',
             data: { param: value }
-        },(dataResult) => {       
+        },(dataResult) => {    
+            let listData = dataResult;
+            let arr = []; 
+            arr.push(listData);  
             request({
                 url: url.prdtype, 
                 method: 'get',
@@ -105,8 +108,9 @@ export function listchange(value) {
                     }           
                 }
             },(data) => {            
-                dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: data.data })) ;
+                dispatch(fetchData('PRDTYPE_EDIT_GETLISTSUCCESS', { tableListCheckbox: arr, data: data.data })) ;
             });
+           
             request({
                 url: url.prdtypeTree,
                 method: 'get',

@@ -12,8 +12,7 @@ const fetchData = (type, payload)=> {
 //获取所有数据
 export function getlist(searchMap={}){
     return(dispatch,getState)=>{
-        dispatch({type:'ORG_LIST_GETLISTSTART'})
-        debugger;
+        dispatch({type:'ORG_LIST_GETLISTSTART'})    
         request({
             url: url.org,
             method:'get',
@@ -21,7 +20,6 @@ export function getlist(searchMap={}){
                 param : {searchMap}
             }
         },(data) => {
-            debugger;
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
     }
