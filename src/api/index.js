@@ -18,9 +18,15 @@ const user = {
     enable : baseDir + 'sys/users/state'  // {id}/state
 }
 
+const product = {
+    product: baseDir + 'base/products',
+    productBatch: baseDir + 'base/products/batch',
+}
+
 export {
     login,
     menu,
     org,
     user,
+    product,
 }
