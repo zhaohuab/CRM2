@@ -13,6 +13,7 @@ const fetchData = (type, payload)=> {
 export function getlist(searchMap={}){
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETLISTSTART'})
+        debugger;
         request({
             url: url.org,
             method:'get',
@@ -20,6 +21,7 @@ export function getlist(searchMap={}){
                 param : {searchMap}
             }
         },(data) => {
+            debugger;
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
     }
@@ -135,7 +137,6 @@ export function listdel(record,treeId,searchFilter){
 			}
         }
         ,(dataResult) => {
-          
             const listData=dataResult;
             request({
                 url: url.orgTree,
