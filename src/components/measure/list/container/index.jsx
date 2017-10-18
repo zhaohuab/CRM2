@@ -18,7 +18,7 @@ class List extends React.Component {
     super(props)
     this.columns = [
       {
-        title: '代号',
+        title: '代号111',
         dataIndex:'code',
       },
       {
