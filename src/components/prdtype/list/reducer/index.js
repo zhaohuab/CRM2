@@ -1,6 +1,6 @@
 import Immutable from 'immutable'
 
-let $$initialState = {
+let $$initialState = {//设计这些参数各自的意义是什么？？
 	listData:[],
 	treeData:[],
 	tabelLoading:false,
@@ -22,7 +22,14 @@ export default function prdtypeReducers($$state = Immutable.fromJS($$initialStat
 			return  $$state.merge({
 				listData:action.payload.data,
 				tabelLoading:false,
-				formVisitable:false
+				formVisitable:false,
+			})
+			case 'PRDTYPE_EDIT_GETLISTSUCCESS':
+			return  $$state.merge({
+				listData:action.payload.data,
+				tabelLoading:false,
+				formVisitable:false,
+				tableListCheckbox: action.payload.tableListCheckbox
 			})
 			case 'PRDTYPE_LIST_GETLISTSUCCESSBYCLICKTREE':
 			return  $$state.merge({
@@ -50,7 +57,6 @@ export default function prdtypeReducers($$state = Immutable.fromJS($$initialStat
 			return $$state.merge({formVisitable:false})
 		   
 		case 'PRDTYPE_LIST_LISTADDSUCCESS':
-		debugger
 		    let  $$list=Immutable.fromJS(action.payload.data);
 			return $$state.merge({
 				listData:$$state.get('listData').unshift($$list),
