@@ -30,7 +30,7 @@ const role = {
     role : baseDir + 'sys/roles',
 }
 
-const prdtype={
+const prdtype={//这两个路径分别对应请求的哪个资源？哪个是tree的，哪个是具体列表信息的？？
     prdtype:baseDir + 'base/prdtype',
     prdtypeTree:baseDir + 'base/prdtypeTree'
 }

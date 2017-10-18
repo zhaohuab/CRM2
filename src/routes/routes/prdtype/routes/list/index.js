@@ -1,9 +1,9 @@
 
 export default {
-  path: 'orgList',
+  path: 'list',
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
-      cb(null, require('components/prdtype/orgList/container').default)
+      cb(null, require('components/prdtype/list/container').default)
     })
   }
 }
