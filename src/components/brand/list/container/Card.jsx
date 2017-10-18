@@ -29,8 +29,6 @@ class Card extends React.Component {
     }]
     componentDidMount() {
         //装箱过程
-        let { orgId,orgName } = this.props.dataSource; 
-        this.props.dataSource.orgId = {key:orgId,title:orgName};
         this.props.form.setFieldsValue(this.props.dataSource);
     }
     componentWillMount() {
@@ -55,28 +53,21 @@ class Card extends React.Component {
                 <Input />
                 )
         }
+        {
+            getFieldDecorator('enableState', {
+            })(
+                <Input value = "1"/>
+                )
+        }
         return (
             <Form >
                 <FormItem
-                    label="角色编码"
-                    {...formItemLayout}
-                >
-                    {getFieldDecorator('code', {
-                        rules: [{
-                            required: true, message: '请输出角色编码',
-                        }],
-                    })(
-                        <Input placeholder='请输入...' />
-                        )}
-                </FormItem>
-
-                <FormItem
-                    label="角色名称"
+                    label="品牌"
                     {...formItemLayout}
                 >
                     {getFieldDecorator('name', {
                         rules: [{
-                            required: true, message: '请输出角色名称',
+                            required: true, message: '请输出品牌',
                         }],
                     })(
                         <Input placeholder='请输入...' />
@@ -84,13 +75,37 @@ class Card extends React.Component {
                 </FormItem>
 
                 <FormItem
-                    label="所属组织"
+                    label="英文"
                     {...formItemLayout}
                 >
-                    {getFieldDecorator('orgId', {
-
+                    {getFieldDecorator('enName', {
+                        rules: [{
+                            required: true, message: '请输出英文',
+                        }],
                     })(
-                        <Department />
+                        <Input placeholder='请输入...' />
+                        )}
+                </FormItem>
+                <FormItem
+                    label="备注"
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator('description', {
+                        rules: [{
+                            required: true, message: '请输出备注',
+                        }],
+                    })(
+                        <Input placeholder='请输入...' />
+                        )}
+                </FormItem>
+                <FormItem
+                    label="启用状态"
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator('enableStateName', {
+                        initialValue:"启用"
+                    })(
+                        <Input disabled />
                         )}
                 </FormItem>
               
