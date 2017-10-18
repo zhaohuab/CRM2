@@ -40,7 +40,7 @@ class LoginForm extends React.Component {
                         help={userError || ''}
                     >
                         {getFieldDecorator('user', {
-                            rules: [{ required: true, message: '不能为空!' }],
+                            rules: [],
                         })(
                             <Input placeholder="用户名" prefix={<Icon type="user" />} className='login-imnput'/>
                         )}
@@ -50,7 +50,7 @@ class LoginForm extends React.Component {
                         help={passwordError || ''}
                     >
                         {getFieldDecorator('password', {
-                            rules: [{ required: true, message: '不能为空!' }],
+                            rules: [],
                         })(
                             <Input type="password" placeholder="登录密码" prefix={<Icon type="lock" />} className='login-imnput'/>
                         )}

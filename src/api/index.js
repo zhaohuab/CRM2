@@ -28,11 +28,16 @@ const role = {
     role : baseDir + 'sys/roles',
 }
 
+const brand ={
+    brand :baseDir + 'base/brands'
+}
+
 export {
     login,
     menu,
     org,
     user,
     cum,
-    role
+    role,
+    brand
 }

@@ -48,6 +48,7 @@ const rootRoutes = {
                 require('./routes/customer/routes/list').default,
                 require('./routes/contacts').default,
                 require('./routes/role').default,
+                require('./routes/brand').default,
                 // require('./routes/customer').default,
                 {
                   //未开发页面

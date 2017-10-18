@@ -21,6 +21,9 @@ import customerList from '../components/customer/list/reducer/index.js'
 //角色
 import roleList from '../components/role/list/reducer/index.js'
 
+//品牌
+import brandList from '../components/brand/list/reducer/index.js'
+
 import componentReducer from 'components/reducer.js'
 let rootReducer = combineReducers({
     login,
@@ -31,7 +34,8 @@ let rootReducer = combineReducers({
     projectList,
     customerList,
     roleList,
-    componentReducer
+    componentReducer,
+    brandList
  });
 
 export { rootReducer }
