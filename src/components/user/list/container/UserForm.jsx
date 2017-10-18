@@ -105,7 +105,7 @@ class Card extends React.Component {
             >
                 {getFieldDecorator('gender', {
                     rules: [{
-                        required: true, message: '',
+                        required: true, message: '请输入性别',
                     }],
                 })(
                     <RadioGroup type="button" dataSource={this.genderEnum}/>
