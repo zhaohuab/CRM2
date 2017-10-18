@@ -120,15 +120,15 @@ class List extends React.Component {
     let form = this.formRef.props.form;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        if(this.state.isEdit) {
+          this.props.action.onSave4Edit(form.getFieldsValue());
+        }
+        else {
+          this.props.action.onSave4Add(form.getFieldsValue());
+        }
       }
     });
-    if(this.state.isEdit) {
-      this.props.action.onSave4Edit(form.getFieldsValue());
-    }
-    else {
-      this.props.action.onSave4Add(form.getFieldsValue());
-    }
+    
     
   }
   onSelectChange = (selectedRowKeys) => {
