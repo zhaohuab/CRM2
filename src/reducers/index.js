@@ -24,12 +24,9 @@ import roleList from '../components/role/list/reducer/index.js'
 import prdtype from '../components/prdtype/orgList/reducer/index.js'
 //product目录
 import product from '../components/product/list/reducer'
-
-
 //品牌
 import brandList from '../components/brand/list/reducer/index.js'
 
-import componentReducer from 'components/reducer.js'
 let rootReducer = combineReducers({
     login,
     commonMenu,
@@ -41,7 +38,6 @@ let rootReducer = combineReducers({
     measureList,
     customerList,
     roleList,
-    componentReducer,
     brandList,
     prdtype,
     product,
