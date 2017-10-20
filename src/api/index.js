@@ -43,6 +43,10 @@ const product = {
     productBatch: baseDir + 'base/products/batch',
 }
 
+const opportunity = {
+    opportunity: baseDir + 'sprc/opportunity',
+}
+
 export {
     login,
     menu,
@@ -55,4 +59,5 @@ export {
     prdtype,
     product,
     baseDir,
+    opportunity
 }

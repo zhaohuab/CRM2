@@ -1,42 +1,47 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { brand as url } from 'api';
+import { opportunity as url } from 'api';
 
-
+const data1 ={
+    data:[
+        {
+            name:"1"
+        }
+    ]
+}
 
 const showForm = (flag, editData = {}, index) => {
     return (dispatch) => {
-        dispatch(fetchData('BRAND_LIST_SHOWFORM', { visible: flag, editData }));
+        dispatch(fetchData('OPPORTUNITY_LIST_SHOWFORM', { visible: flag, editData }));
     }
 }
 
 const getListData = (params) => {
 
     return (dispatch) => {
-        reqwest({
-        	url: url.brand,
-        	method: "GET",
-        	data: {
-        	},
-        },result => {
-        	dispatch(fetchData('BRAND_LIST_GETLISTSUCCESS', { ...result }));
-        })
-        // dispatch(fetchData('BRAND_LIST_GETLISTSUCCESS', brandData));
+        // reqwest({
+        // 	url: url.opportunity,
+        // 	method: "GET",
+        // 	data: {
+        // 	},
+        // },result => {
+        // 	dispatch(fetchData('OPPORTUNITY_LIST_GETLISTSUCCESS', { ...result }));
+        // })
+        dispatch(fetchData('OPPORTUNITY_LIST_GETLISTSUCCESS', data1));
     }
 }
 
 const onSave4Add = (data) => {
-    debugger
     data.enableState = "1";
     return (dispatch) => {
         reqwest({
-            url: url.brand,
+            url: url.opportunity,
             method: "POST",
             data: {
                 param: data
             }
         }, result => {
-            dispatch(fetchData('BRAND_CARD_SAVEADD', { ...result }));
+            dispatch(fetchData('OPPORTUNITY_CARD_SAVEADD', { ...result }));
         })
     }
 }
@@ -44,13 +49,13 @@ const onSave4Add = (data) => {
 const onSave4Edit = (data) => {
     return (dispatch) => {
         reqwest({
-            url: `${url.brand}/${data.id}`,
+            url: `${url.opportunity}/${data.id}`,
             method: "PUT",
             data: {
                 param: data
             }
         }, result => {
-            dispatch(fetchData('BRAND_CARD_SAVEEDIT', { ...result }));
+            dispatch(fetchData('OPPORTUNITY_CARD_SAVEEDIT', { ...result }));
         })
     }
 }
@@ -58,7 +63,7 @@ const onSave4Edit = (data) => {
 const onDelete = (ids) => {
     return (dispatch) => {
         reqwest({
-            url: url.brand+"/batch",
+            url: url.opportunity+"/batch",
             method: "DELETE",
             data: {
                 param: {
@@ -66,7 +71,7 @@ const onDelete = (ids) => {
                 },
             }
         }, result => {
-                dispatch(fetchData('BRAND_LIST_DELETESUCCESS', {...result}));
+                dispatch(fetchData('OPPORTUNITY_LIST_DELETESUCCESS', {...result}));
         })
     }
 }
@@ -74,7 +79,7 @@ const onDelete = (ids) => {
 const onSetState = (ids, enable) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.brand+"/state",
+			url: url.opportunity+"/state",
 			method: "PUT",
 			data: {
 				param: {
@@ -83,7 +88,7 @@ const onSetState = (ids, enable) => {
 				},
 			}
 		}, result => {
-			dispatch(fetchData('BRAND_LIST_SETSTATESUCCESS', { ...result }));
+			dispatch(fetchData('OPPORTUNITY_LIST_SETSTATESUCCESS', { ...result }));
 		})
 	}
 }

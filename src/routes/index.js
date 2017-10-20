@@ -53,6 +53,8 @@ const rootRoutes = {
                 require('./routes/brand').default,
                 // require('./routes/customer').default,
                 require('./routes/product').default,
+                require('./routes/opportunity').default,
+                
                 {
                   //未开发页面
                   path: 'developing',

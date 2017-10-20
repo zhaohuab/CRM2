@@ -15,36 +15,40 @@ class List extends React.Component {
 
         this.columns = [
             {
-                title: "品牌",
+                title: "商机名称",
                 dataIndex: "name"
             },
             {
-                title: "英文",
-                dataIndex: "enName"
+                title: "客户名称",
+                dataIndex: "customerName"
             },
             {
-                title: "备注",
-                dataIndex: "description"
+                title: "商机类型",
+                dataIndex: "type"
             },
             {
-                title: "对应ERP",
-                dataIndex: "erpCode"
+                title: "销售阶段",
+                dataIndex: "saleStage"
             },
             {
-                title: "启用状态",
-                dataIndex: "enableStateName"
+                title: "停留时间",
+                dataIndex: "stageResidenceTime"
             },
             {
-                title: "操作",
-                render: (key, record) => {
-                    return (
-                        <span>
-                            <a href="#" onClick={this.onEdit.bind(this, record)}>修改  </a>
-                            <a href="#">删除  </a>
-                            <a href="#">启停</a>
-                        </span>
-                    )
-                }
+                title: "赢单概率",
+                dataIndex: "winProbability"
+            },
+            {
+                title: "预计成交金额",
+                dataIndex: "expectSignMoney"
+            },
+            {
+                title: "预计成交时间",
+                dataIndex: "expectSignTime"
+            },
+            {
+                title: "负责人",
+                dataIndex: "ownerUserId"
             },
         ]
 
@@ -178,7 +182,7 @@ class List extends React.Component {
                     />
                 </div>
                 <Modal
-                    title={this.state.isEdit?"修改品牌":"新增品牌"}
+                    title={this.state.isEdit?"修改商机":"新增商机"}
                     visible={visible}
                     width={500}
                     onOk={this.onSave.bind(this)}
@@ -196,7 +200,7 @@ class List extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.brandList
+        $$state: state.opportunityList
     }
 }
 

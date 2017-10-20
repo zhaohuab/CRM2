@@ -26,30 +26,30 @@ function pageEdit(page, item) {
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 	switch (action.type) {
 
-		case 'BRAND_LIST_GETLISTSUCCESS':
+		case 'OPPORTUNITY_LIST_GETLISTSUCCESS':
 			return $$state.merge({
 				data: action.content,
 			})
-		case 'BRAND_LIST_SHOWFORM':
+		case 'OPPORTUNITY_LIST_SHOWFORM':
 			return $$state.merge({
 				visible: action.content.visible,
 				editData: action.content.editData
 			})
-		case 'BRAND_CARD_SAVEADD':
+		case 'OPPORTUNITY_CARD_SAVEADD':
 			return $$state.merge({
 				visible: false,
 				data: pageAdd($$state.get("data").toJS(), action.content),
 			})
-		case 'BRAND_CARD_SAVEEDIT':
+		case 'OPPORTUNITY_CARD_SAVEEDIT':
 			return $$state.merge({
 				visible: false,
 				data: pageEdit($$state.get("data").toJS(), action.content),
 			})
-		case 'BRAND_LIST_DELETESUCCESS':
+		case 'OPPORTUNITY_LIST_DELETESUCCESS':
 			return $$state.merge({
 				data: action.content,
 			})
-		case 'BRAND_LIST_SETSTATESUCCESS':
+		case 'OPPORTUNITY_LIST_SETSTATESUCCESS':
 			return $$state.merge({
 				data: action.content,
 			})
