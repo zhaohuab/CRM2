@@ -30,7 +30,7 @@ const role = {
     role : baseDir + 'sys/roles',
 }
 
-const prdtype={//这两个路径分别对应请求的哪个资源？哪个是tree的，哪个是具体列表信息的？？
+const prdtype = {
     prdtype:baseDir + 'base/prdtype',
     prdtypeTree:baseDir + 'base/prdtypeTree'
 }
@@ -40,6 +40,11 @@ const product = {
     productBatch: baseDir + 'base/products/batch',
 }
 
+const taskcard = {
+    taskcard : baseDir + 'sact/taskcard',
+    taskcardBatch : baseDir + 'sact/taskcard/batch',
+    enable : baseDir + 'sact/taskcard/state' 
+}
 export {
     login,
     menu,
@@ -51,4 +56,5 @@ export {
     prdtype,
     product,
     baseDir,
+    taskcard,
 }

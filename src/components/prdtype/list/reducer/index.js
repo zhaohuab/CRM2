@@ -31,6 +31,10 @@ export default function prdtypeReducers($$state = Immutable.fromJS($$initialStat
 				formVisitable:false,
 				tableListCheckbox: action.payload.tableListCheckbox
 			})
+			case 'PRDTYPE_LIST_DELETELISTSUCCESS':
+			return  $$state.merge({
+				tableListCheckbox: action.tableListCheckbox
+			})
 			case 'PRDTYPE_LIST_GETLISTSUCCESSBYCLICKTREE':
 			return  $$state.merge({
 				listData:action.payload.data,
@@ -78,6 +82,8 @@ export default function prdtypeReducers($$state = Immutable.fromJS($$initialStat
 
 		case 'PRDTYPE_LIST_SHOWBUTTONSTART':
 			return $$state.set('tableListCheckbox',Immutable.fromJS(action.rows)) 
+		/* case 'PRDTYPE_LIST_DELETELISTSUCCESS':
+	    	return $$state.set('tableListCheckbox',[]) */
 			 
 	    default: 
 	        return $$state;

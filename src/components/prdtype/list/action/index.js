@@ -154,6 +154,7 @@ export function listdel(record, treeId, searchFilter) {
 			}
         }
         ,(dataResult) => {
+            dispatch({ type:'PRDTYPE_LIST_DELETELISTSUCCESS', tableListCheckbox: [] })
             const listData = dataResult;
             request({
                 url: url.prdtypeTree,

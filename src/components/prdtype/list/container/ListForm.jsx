@@ -10,16 +10,13 @@ export default class NormalLoginForm extends React.Component {
     constructor(props) {
         super(props);
     }
-
-  
+ 
     componentDidMount() {
     //装箱过程
         let { fatherorgId,fatherorgName} = this.props.data; 
-        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};
-     
+        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};    
         this.props.form.setFieldsValue(this.props.data);
     }
-
 
     render() {
         const formItemLayout = {
@@ -63,11 +60,11 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('fatherTypeId', {
                                         rules: [{ required: true, message: '上级分类!' }],
                                     })(
-                                         <Select defaultValue="lucy" style={{ width: 120 }}>
-                                            <Option value="1">肥料</Option>
-                                            <Option value="2">农药</Option>
-                                            <Option value="3">种子</Option>
-                                            <Option value="4">农膜</Option>
+                                         <Select style={{ width: 120 }} placeholder = '请选择...'>
+                                            <Option value = { 1 }>肥料</Option>
+                                            <Option value = { 2 }>农药</Option>
+                                            <Option value = { 3 }>种子</Option>
+                                            <Option value = { 4 }>农膜</Option>
                                           </Select>
                                         )}
                                 </FormItem>
@@ -75,19 +72,19 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('attrGroupId', {
                                         rules: [{ required: true, message: '请输入属性组!' }],
                                     })(
-                                          <Select defaultValue="lucy" style={{ width: 120 }}>
-                                            <Option value="1">肥料属性</Option>
-                                            <Option value="2">农药属性</Option>
-                                            <Option value="3">种子属性</Option>
-                                            <Option value="4">农膜属性</Option>
+                                          <Select style={{ width: 120 }} placeholder = '请选择...'>
+                                            <Option value = { 1 }>肥料属性</Option>
+                                            <Option value = { 2 }>农药属性</Option>
+                                            <Option value = { 3 }>种子属性</Option>
+                                            <Option value = { 4 }>农膜属性</Option>
                                           </Select>
                                         )}
                                 </FormItem>
-                                <FormItem  {...formItemLayout} label='对应ERP组织'>
-                                    {getFieldDecorator('erpCode', {
+                                <FormItem  { ...formItemLayout } label='对应ERP组织'>
+                                    { getFieldDecorator('erpCode', {
                                         rules: [],
                                     })(
-                                        <Input type='text' placeholder="无" />
+                                        <Input type='text' placeholder = "无" />
                                         )}
                                 </FormItem>
                             </Form>

@@ -24,6 +24,8 @@ import roleList from '../components/role/list/reducer/index.js'
 import prdtype from '../components/prdtype/list/reducer/index.js'
 //product目录
 import product from '../components/product/list/reducer'
+//任务卡
+import taskcard from '../components/taskcard/list/reducer'
 
 
 let rootReducer = combineReducers({
@@ -39,6 +41,7 @@ let rootReducer = combineReducers({
     roleList,
     prdtype,
     product,
+    taskcard
  });
 
 export { rootReducer }
