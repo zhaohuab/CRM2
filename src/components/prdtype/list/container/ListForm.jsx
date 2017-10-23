@@ -56,9 +56,20 @@ export default class NormalLoginForm extends React.Component {
                                         <Input type='text' placeholder="请输入名称!" />
                                         )}
                                 </FormItem>
-                                <FormItem  {...formItemLayout} label='上级分类'>
+                                  <FormItem
+                                    label="上级分类"
+                                    {...formItemLayout}
+                                >
                                     {getFieldDecorator('fatherTypeId', {
-                                        rules: [{ required: true, message: '上级分类!' }],
+                                        rules: [],
+                                    })(
+                                        <Department />
+                                        )}
+                                </FormItem>
+                                {                             
+                               /*  <FormItem  {...formItemLayout} label='上级分类'>
+                                    {getFieldDecorator('fatherTypeId', {
+                                        rules: [],
                                     })(
                                          <Select style={{ width: 120 }} placeholder = '请选择...'>
                                             <Option value = { 1 }>肥料</Option>
@@ -67,10 +78,10 @@ export default class NormalLoginForm extends React.Component {
                                             <Option value = { 4 }>农膜</Option>
                                           </Select>
                                         )}
-                                </FormItem>
-                                <FormItem  {...formItemLayout} label='属性组'>
+                                </FormItem> */
+                       /*          <FormItem  {...formItemLayout} label='属性组'>
                                     {getFieldDecorator('attrGroupId', {
-                                        rules: [{ required: true, message: '请输入属性组!' }],
+                                        rules: [],
                                     })(
                                           <Select style={{ width: 120 }} placeholder = '请选择...'>
                                             <Option value = { 1 }>肥料属性</Option>
@@ -79,7 +90,8 @@ export default class NormalLoginForm extends React.Component {
                                             <Option value = { 4 }>农膜属性</Option>
                                           </Select>
                                         )}
-                                </FormItem>
+                                </FormItem> */
+                                 }
                                 <FormItem  { ...formItemLayout } label='对应ERP组织'>
                                     { getFieldDecorator('erpCode', {
                                         rules: [],

@@ -1,6 +1,6 @@
 import { Input,Modal,Tree ,Icon} from 'antd';
 
-import { org as url } from 'api'
+import { prdtype as url } from 'api'
 import reqwest from 'utils/reqwest'
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -49,7 +49,7 @@ class Department extends React.Component {
     getData = () => {
         let that = this;
         reqwest({
-            url: url.orgTree,
+            url: url.prdtypeTree,
             method:'get',
             data:{}
         },(dataResult) => {
@@ -87,6 +87,7 @@ class Department extends React.Component {
     render() {
         let key="",title="";
         if(this.props.value) {
+//debugger;
             key = this.props.value.key;
             title = this.props.value.title;
             
