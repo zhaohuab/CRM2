@@ -55,11 +55,6 @@ export default class ListTree extends Component {
         return(
             <span className='show-edit-warpper'>
                 <span title={item.name} className='show-edit-title' onClick={this.showEdit.bind(this,item)}>{item.name}</span>
-                <span className={this.state.edit == item.id?'show-edit-inner':'show-edit-inner-hide'}>
-                    <span><Icon type="plus-circle-o" onClick={this.add.bind(this,item)}/></span>
-                    <span><Icon type="minus-circle-o"  onClick={this.delete.bind(this,item)}/></span>
-                    <span><Icon type="edit"  onClick={this.edit.bind(this,item)}/></span>
-                </span>
             </span>
         )
     }

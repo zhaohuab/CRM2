@@ -2,13 +2,13 @@ const  funcTree = [
     {
         id: "1",
         name: "PC端",
-        childRen: [{
+        children: [{
             id: "11",
             name: "基本客户"
         }, {
             id: "12",
             name: "客户管理",
-            childRen: [
+            children: [
                 {
                     id: "121",
                     name: "客户联系人",
@@ -16,14 +16,14 @@ const  funcTree = [
                 {
                     id: "122",
                     name: "客户",
-                    childRen: [{
+                    children: [{
                         id: "1221",
                         name: "集团客户",
                     },
                     {
                         id: "1222",
                         name: "公司客户",
-                        childRen: [{
+                        children: [{
                             id: "12221",
                             name: "新增客户",
                         }, {

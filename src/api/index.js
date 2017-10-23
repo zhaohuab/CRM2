@@ -30,6 +30,9 @@ const role = {
     role : baseDir + 'sys/roles',
 }
 
+const brand ={
+    brand :baseDir + 'base/brands'
+}
 const prdtype={
     prdtype:baseDir + 'base/prdtype',
     prdtypeTree:baseDir + 'base/prdtypeTree'
@@ -48,6 +51,7 @@ export {
     measure,
     cum,
     role,
+    brand,
     prdtype,
     product,
     baseDir,
