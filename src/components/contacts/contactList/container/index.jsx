@@ -8,16 +8,19 @@ import {
     Input,
     Row,
     Col,
-    Table
+    Table,
+    Modal
 } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
-import * as Actions from "../action/index.js";
 import "./index.less";
 import { browserHistory } from "react-router";
 import ContactsView from "./view";
+import * as Actions from "../action/index.js";
+import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
+
 import "assets/stylesheet/all/iconfont.css";
 
 class Contacts extends React.Component {
@@ -49,96 +52,142 @@ class Contacts extends React.Component {
                 dataIndex: "qq"
             },
             {
-                title: "所属公司",
-                dataIndex: "company"
-            },
-            {
                 title: "上级联系人",
                 dataIndex: "supContactId"
             },
             {
-                title: "停启用人",
-                dataIndex: "enableUserId"
+                title: "停启用",
+                dataIndex: "enableState"
             },
             {
                 title: "停启用时间",
                 dataIndex: "enableTime"
             }
         ];
+        let that = this;
 
-        this.dataSource = [
-            {
-                id: 1,
-                name: "ss",
-                gender: 0,
-                mobile: "43",
-                address: "ss",
-                wechat: 22222,
-                qq: 2314144132,
-                company: "sdasdasaddas",
-                supContactId: "sddada",
-                enableUserId: "dasda",
-                enableTime: "2016-12-12"
+        this.state = {
+            pagination: {
+                pageSize: 10,
+                page: 1
             },
-            {
-                id: 2,
-                name: "ss",
-                gender: 0,
-                mobile: "43",
-                address: "ss",
-                wechat: 22222,
-                qq: 2314144132,
-                company: "sdasdasaddas",
-                supContactId: "sddada",
-                enableUserId: "dasda",
-                enableTime: "2016-12-12"
-            }
-        ];
-        this.rowSelection = {
-            onChange: this.onSelectChange
+            searchMap: {
+                enableState: 1
+            },
+            //存放点击table时获取的行数据
+            tableSelet: []
         };
+
+        this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            that.setState({
+                tableSelet: selectedRows
+            });
+        };
+    }
+
+    headerBack() {
+        this.setState({
+            tableSelet: []
+        });
+    }
+
+    componentDidMount() {
+        let { pagination, searchMap } = this.state;
+        this.props.action.getContactList(pagination, searchMap);
     }
 
     render() {
         const param = this.props.params.father;
-        const collapse = this.props.componentState.get("collapsed");
+        const collapse = this.props.$$stateComponent.get("collapsed");
+        const loading = this.props.$$state.get("loading");
+        const data = this.props.$$state.get("data").toJS();
+        let rowSelection = {
+            onChange: this.onSelectChange
+        };
         return (
-            <div className="container-warpper">
+            <div className="crm-container">
                 {param ? (
                     <ContactsView param={param} collapse={collapse} />
                 ) : (
-                    <div className="contacts-wapper">
-                        <div className="container-warpper-header">
-                            <Row>
-                                <Col span={16} className="warpper-header-left">
-                                    <span>所有联系人:</span>
-                                    <Input
-                                        placeholder="搜索联系人"
-                                        className="contacts-search"
-                                    />
-                                </Col>
-                                <Col span={8} className="warpper-header-right">
+                    <div className="contacts-warpper">
+                        {this.state.tableSelet.length ? (
+                            <div className="crm-header-buttons">
+                                <HeaderButton
+                                    length={this.state.tableSelet.length}
+                                    goBack={this.headerBack.bind(this)}
+                                >
+                                    <Button
+                                        onClick={this.headerBack.bind(this)}
+                                    >
+                                        <i className="iconfont icon-fanhui" />返回
+                                    </Button>
+                                    <Button>
+                                        <i className="iconfont icon-shanchu" />删除
+                                    </Button>
+                                    <Button>
+                                        <i className="iconfont icon-bianji" />编辑
+                                    </Button>
                                     <ButtonGroup>
                                         <Button>
-                                            <i className="iconfont icon-daochu" />导入
+                                            <i className="iconfont icon-tingyong" />停用
                                         </Button>
                                         <Button>
-                                            <i className="iconfont icon-daoru" />导出
+                                            <i className="iconfont icon-qiyong" />启用
                                         </Button>
                                     </ButtonGroup>
-                                    {/* <Button type="primary" className="add-btn">
-                                        <Icon type="plus" />新增
-                                    </Button> */}
-                                </Col>
-                            </Row>
-                        </div>
+                                </HeaderButton>
+                            </div>
+                        ) : (
+                            <div className="crm-container-header">
+                                <Row>
+                                    <Col span={12}>
+                                        <Row>
+                                            <Col span={3}>所有联系人:</Col>
+                                            <Col span={8}>
+                                                <Input
+                                                    placeholder="搜索联系人"
+                                                    className="contacts-search"
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </Col>
+
+                                    <Col span={12}>
+                                        <Row type="flex" justify="end">
+                                            <Col span={24}>
+                                                <Row
+                                                    type="flex"
+                                                    justify="end"
+                                                    gutter={15}
+                                                >
+                                                    <ButtonGroup className="add-btn">
+                                                        <Button>
+                                                            <i className="iconfont icon-daochu" />导入
+                                                        </Button>
+                                                        <Button>
+                                                            <i className="iconfont icon-daoru" />导出
+                                                        </Button>
+                                                    </ButtonGroup>
+                                                    <div>
+                                                        <Button type="primary">
+                                                            <Icon type="plus" />新增
+                                                        </Button>
+                                                    </div>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </div>
+                        )}
 
                         <Table
                             size="middle"
                             columns={this.columns}
-                            dataSource={this.dataSource}
+                            dataSource={data}
                             rowKey="id"
-                            rowSelection={this.rowSelection}
+                            rowSelection={rowSelection}
+                            loading={loading}
                         />
                     </div>
                 )}
@@ -146,8 +195,16 @@ class Contacts extends React.Component {
         );
     }
 }
-export default connect(state => {
-    return {
-        componentState: state.componentReducer
-    };
-})(Contacts);
+export default connect(
+    state => {
+        return {
+            $$stateComponent: state.componentReducer,
+            $$state: state.contacts
+        };
+    },
+    dispatch => {
+        return {
+            action: bindActionCreators(Actions, dispatch)
+        };
+    }
+)(Contacts);
