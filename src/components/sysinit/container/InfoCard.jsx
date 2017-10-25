@@ -1,5 +1,5 @@
 import { Form, Input, Row, Col,DatePicker } from 'antd';
-import Radio from 'utils/components/Radio'
+import Radio from 'utils/components/radios'
 const FormItem = Form.Item;
 class Card extends React.Component {
     constructor(props) {
