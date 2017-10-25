@@ -1,47 +1,51 @@
+import cookie from "utils/cookie";
 
-import cookie from 'utils/cookie'
+const baseDir = cookie("basedir"); // host:ip/crm_web/
 
-const baseDir = cookie('basedir'); // host:ip/crm_web/
+const login = baseDir + "login";
 
-const login =  baseDir +'login';
-
-const menu = baseDir + 'sys/menuitem'
+const menu = baseDir + "sys/menuitem";
 
 const org = {
-    org : baseDir + 'sys/org/',
-    orgTree : baseDir + 'sys/orgTree/',
-}
+    org: baseDir + "sys/org/",
+    orgTree: baseDir + "sys/orgTree/"
+};
 
 const user = {
-    user : baseDir + 'sys/users',
-    userBatch : baseDir + 'sys/users/batch',
-    enable : baseDir + 'sys/users/state'  // {id}/state
-}
+    user: baseDir + "sys/users",
+    userBatch: baseDir + "sys/users/batch",
+    enable: baseDir + "sys/users/state" // {id}/state
+};
 
 const measure = {
-    measure : baseDir + "base/measures",
-    measureBatch : baseDir + 'base/measures/batch',
-}
+    measure: baseDir + "base/measures",
+    measureBatch: baseDir + "base/measures/batch"
+};
 const cum = {
-    customer : baseDir + 'cum/customers',
-}
+    customer: baseDir + "cum/customers"
+};
 
 const role = {
-    role : baseDir + 'sys/roles',
-}
+    role: baseDir + "sys/roles"
+};
 
-const brand ={
-    brand :baseDir + 'base/brands'
-}
-const prdtype={
-    prdtype:baseDir + 'base/prdtype',
-    prdtypeTree:baseDir + 'base/prdtypeTree'
-}
+const brand = {
+    brand: baseDir + "base/brands"
+};
+const prdtype = {
+    prdtype: baseDir + "base/prdtype",
+    prdtypeTree: baseDir + "base/prdtypeTree"
+};
 
 const product = {
-    product: baseDir + 'base/products',
-    productBatch: baseDir + 'base/products/batch',
-}
+    product: baseDir + "base/products",
+    productBatch: baseDir + "base/products/batch"
+};
+
+const contacts = {
+    contacts: baseDir + "cum/contacts",
+    contactsDel: "cum/contacts/batch"
+};
 
 export {
     login,
@@ -55,4 +59,5 @@ export {
     prdtype,
     product,
     baseDir,
-}
+    contacts
+};

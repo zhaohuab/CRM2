@@ -7,6 +7,7 @@ import ViewStyle from "components/common/viewstyle/container";
 import * as Actions from "./action.js";
 import { Icon } from "antd";
 import "./index.less";
+import "./antd-recoverd.less";
 
 class Main extends React.Component {
     constructor(props) {
