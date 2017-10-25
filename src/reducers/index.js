@@ -26,6 +26,8 @@ import prdtype from '../components/prdtype/list/reducer/index.js'
 import product from '../components/product/list/reducer'
 //品牌
 import brandList from '../components/brand/list/reducer/index.js'
+//系统初始化
+import sysinit from '../components/sysinit/reducer/index.js'
 
 let rootReducer = combineReducers({
     login,
@@ -41,6 +43,7 @@ let rootReducer = combineReducers({
     brandList,
     prdtype,
     product,
+    sysinit,
  });
 
 export { rootReducer }

@@ -51,8 +51,8 @@ const rootRoutes = {
                 require('./routes/measure').default,
                 require('./routes/role').default,
                 require('./routes/brand').default,
-                // require('./routes/customer').default,
                 require('./routes/product').default,
+                require('./routes/sysinit').default,
                 {
                   //未开发页面
                   path: 'developing',

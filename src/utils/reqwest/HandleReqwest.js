@@ -15,7 +15,6 @@ export const codeConstant = {
 
 //本方法返回的true和false用于指示页面是否要终止之后的操作(用于报错后停止之后的逻辑)。
 function handleMessage(result) {
-    debugger
     let { response,status } = result;
     if(status == 401) {
         browserHistory.push('/crm_web/login/sessionover');

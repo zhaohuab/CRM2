@@ -31,7 +31,7 @@ class LoginForm extends React.Component {
                 <div className='login-shadow'></div>
                 <div className="login-form">
                     <p className='login-form-title'>欢迎登录</p>
-                    <div className='login-form-error'>loginError</div>
+                    <div className='login-form-error'>{loginError}</div>
                     <Form onSubmit={this.handleSubmit} width={300}>
                         <FormItem
                             validateStatus={userError ? 'error' : ''}
