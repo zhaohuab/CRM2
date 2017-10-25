@@ -1,7 +1,12 @@
 import { Input, Modal, Tree, Icon } from "antd";
 
+<<<<<<< HEAD
 import { org as url } from "api";
 import reqwest from "utils/reqwest";
+=======
+import { prdtype as url } from 'api'
+import reqwest from 'utils/reqwest'
+>>>>>>> eea4ebba813872b39879691c433d5ea8844278e1
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import "./index.less";

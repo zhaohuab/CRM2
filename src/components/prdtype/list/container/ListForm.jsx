@@ -10,16 +10,13 @@ export default class NormalLoginForm extends React.Component {
     constructor(props) {
         super(props);
     }
-
-  
+ 
     componentDidMount() {
     //装箱过程
         let { fatherorgId,fatherorgName} = this.props.data; 
-        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};
-     
+        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};    
         this.props.form.setFieldsValue(this.props.data);
     }
-
 
     render() {
         const formItemLayout = {
@@ -59,35 +56,47 @@ export default class NormalLoginForm extends React.Component {
                                         <Input type='text' placeholder="请输入名称!" />
                                         )}
                                 </FormItem>
-                                <FormItem  {...formItemLayout} label='上级分类'>
+                                  <FormItem
+                                    label="上级分类"
+                                    {...formItemLayout}
+                                >
                                     {getFieldDecorator('fatherTypeId', {
-                                        rules: [{ required: true, message: '上级分类!' }],
-                                    })(
-                                         <Select defaultValue="lucy" style={{ width: 120 }}>
-                                            <Option value="1">肥料</Option>
-                                            <Option value="2">农药</Option>
-                                            <Option value="3">种子</Option>
-                                            <Option value="4">农膜</Option>
-                                          </Select>
-                                        )}
-                                </FormItem>
-                                <FormItem  {...formItemLayout} label='属性组'>
-                                    {getFieldDecorator('attrGroupId', {
-                                        rules: [{ required: true, message: '请输入属性组!' }],
-                                    })(
-                                          <Select defaultValue="lucy" style={{ width: 120 }}>
-                                            <Option value="1">肥料属性</Option>
-                                            <Option value="2">农药属性</Option>
-                                            <Option value="3">种子属性</Option>
-                                            <Option value="4">农膜属性</Option>
-                                          </Select>
-                                        )}
-                                </FormItem>
-                                <FormItem  {...formItemLayout} label='对应ERP组织'>
-                                    {getFieldDecorator('erpCode', {
                                         rules: [],
                                     })(
-                                        <Input type='text' placeholder="无" />
+                                        <Department />
+                                        )}
+                                </FormItem>
+                                {                             
+                               /*  <FormItem  {...formItemLayout} label='上级分类'>
+                                    {getFieldDecorator('fatherTypeId', {
+                                        rules: [],
+                                    })(
+                                         <Select style={{ width: 120 }} placeholder = '请选择...'>
+                                            <Option value = { 1 }>肥料</Option>
+                                            <Option value = { 2 }>农药</Option>
+                                            <Option value = { 3 }>种子</Option>
+                                            <Option value = { 4 }>农膜</Option>
+                                          </Select>
+                                        )}
+                                </FormItem> */
+                       /*          <FormItem  {...formItemLayout} label='属性组'>
+                                    {getFieldDecorator('attrGroupId', {
+                                        rules: [],
+                                    })(
+                                          <Select style={{ width: 120 }} placeholder = '请选择...'>
+                                            <Option value = { 1 }>肥料属性</Option>
+                                            <Option value = { 2 }>农药属性</Option>
+                                            <Option value = { 3 }>种子属性</Option>
+                                            <Option value = { 4 }>农膜属性</Option>
+                                          </Select>
+                                        )}
+                                </FormItem> */
+                                 }
+                                <FormItem  { ...formItemLayout } label='对应ERP组织'>
+                                    { getFieldDecorator('erpCode', {
+                                        rules: [],
+                                    })(
+                                        <Input type='text' placeholder = "无" />
                                         )}
                                 </FormItem>
                             </Form>

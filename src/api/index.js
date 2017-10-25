@@ -47,6 +47,11 @@ const contacts = {
     contactsDel: "cum/contacts/batch"
 };
 
+const taskcard = {
+    taskcard : baseDir + 'sact/taskcard',
+    taskcardBatch : baseDir + 'sact/taskcard/batch',
+    enable : baseDir + 'sact/taskcard/state' 
+}
 export {
     login,
     menu,
@@ -59,5 +64,6 @@ export {
     prdtype,
     product,
     baseDir,
-    contacts
+    contacts,
+    taskcard,
 };

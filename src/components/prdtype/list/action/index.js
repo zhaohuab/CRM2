@@ -11,7 +11,7 @@ const fetchData = (type, payload) => {
 }
 
 //获取所有数据
-export function getlist(params) {//这个searchMap的作用是什么？分页信息么？？
+export function getlist(params) {
     if (typeof params == 'undefined') {
         params = {
             searchMap:{}
@@ -64,6 +64,8 @@ const transData = (data) => {//这个transData的作用是？？
 
 //新增数据
 export function listadd(list) {
+ 
+    list.fatherTypeId = list.fatherTypeId.key
     return (dispatch, getState) => {
         request({
             url: url.prdtype,   
@@ -91,6 +93,7 @@ export function listadd(list) {
 export function listchange(value) {
     return (dispatch, getState) => {
         let id = value.id
+        value.fatherTypeId = value.fatherTypeId.key;
         request({
             url: url.prdtype+'/'+id,
             method: 'put',
@@ -154,6 +157,7 @@ export function listdel(record, treeId, searchFilter) {
 			}
         }
         ,(dataResult) => {
+            dispatch({ type:'PRDTYPE_LIST_DELETELISTSUCCESS', tableListCheckbox: [] })
             const listData = dataResult;
             request({
                 url: url.prdtypeTree,
