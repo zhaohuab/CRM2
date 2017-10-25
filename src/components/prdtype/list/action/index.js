@@ -17,7 +17,7 @@ export function getlist(params) {
             searchMap:{}
         }
     }
-    return (dispatch, getState) => {//这个getState干什么用的，没看到传实参的地方？？？       
+    return (dispatch, getState) => {    
         dispatch({ type: 'PRDTYPE_LIST_GETLISTSTART' })
         request({
             url: url.prdtype,
@@ -57,7 +57,7 @@ export function showForm(flag, editData = {}) {
 	}
 }
 
-const transData = (data) => {//这个transData的作用是？？
+const transData = (data) => {
 	data.fatherTypeId = data.fatherTypeId.key
 	return data;
 }
@@ -106,7 +106,7 @@ export function listchange(value) {
                 url: url.prdtype, 
                 method: 'get',
                 data: {
-                    param: {//这里的params是个什么意思？没有定义直接使用？作用是什么？
+                    param: {
                         condMap: typeof(params) == "undefined" ? {} : params
                     }           
                 }

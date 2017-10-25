@@ -52,6 +52,7 @@ const rootRoutes = {
                 require('./routes/role').default,
                 require('./routes/product').default,
                 require('./routes/taskcard').default,
+                require('./routes/doc').default,
                 {
                   //未开发页面
                   path: 'developing',
