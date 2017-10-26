@@ -45,7 +45,7 @@ class Card extends React.Component {
                 label="企业类型"
                 {...formItemLayout}
             >
-                {getFieldDecorator('type', {
+                {getFieldDecorator('orgType', {
                     rules: [{
                         required: true, message: '必输',
                     }],
@@ -57,7 +57,7 @@ class Card extends React.Component {
                 label="简称"
                 {...formItemLayout}
             >
-                {getFieldDecorator('shortname', {
+                {getFieldDecorator('simpleName', {
                     rules: [{
                         required: true, message: '必输',
                     }],
@@ -81,7 +81,7 @@ class Card extends React.Component {
                 label="创立时间"
                 {...formItemLayout}
             >
-                {getFieldDecorator('createtime', {
+                {getFieldDecorator('createTime', {
                     rules: [{
                         required: true, message: '必输',
                     }],

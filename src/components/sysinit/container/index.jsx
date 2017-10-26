@@ -20,8 +20,8 @@ class Page extends React.Component {
     super(props);
     this.state = {
       current: 0,
-      isEdit:false,
-      dataSource:{},
+      isEdit: false,
+      dataSource: {},
     };
   }
   steps = [{
@@ -41,12 +41,7 @@ class Page extends React.Component {
 
       form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          if (this.state.isEdit) {
-            this.props.action.onSave4Edit(form.getFieldsValue());
-          }
-          else {
-            this.props.action.onSave4Add(form.getFieldsValue());
-          }
+          this.props.action.onOrgSave(form.getFieldsValue());
           current += 1;
           this.setState({ current });
         }
@@ -68,17 +63,17 @@ class Page extends React.Component {
   }
   render() {
     let { current } = this.state;
-    
+
     let orgInfo = this.props.$$state.get("orgInfo").toJS();
-  
+
     let content = "";
-    debugger
-    switch(current) {
+    
+    switch (current) {
       case 0:
         content = <WrapInfoCard dataSource={orgInfo} wrappedComponentRef={(inst) => this.formRef = inst} />;
         break;
       case 1:
-        content = <div><InfoView dataSource={orgInfo} /><AdminList /></div>;
+        content = <div><AdminList /></div>;
         break;
       // case 2:
       //   content = '完成';
@@ -100,28 +95,29 @@ class Page extends React.Component {
             &&
             <span className="head-label">完成</span>
           }
-          <div>
-            {
-              this.state.current > 0
-              &&
-              <Button onClick={() => this.prev()}>
-                上一步
-                </Button>
-            }
-            {
-              this.state.current < this.steps.length - 1
-              &&
-              <Button type="primary" style={{ marginLeft: 15 }} onClick={() => this.next()}>下一步</Button>
-            }
-            {
-              this.state.current === this.steps.length - 1
-              &&
-              <Button type="primary" style={{ marginLeft: 15 }} onClick={() => message.success('操作完成')}>完成</Button>
-            }
 
-          </div>
         </div>
         <div className="steps-content">{content}</div>
+        <div>
+          {
+            this.state.current > 0
+            &&
+            <Button onClick={() => this.prev()}>
+              上一步
+                </Button>
+          }
+          {
+            this.state.current < this.steps.length - 1
+            &&
+            <Button type="primary" style={{ marginLeft: 15 }} onClick={() => this.next()}>下一步</Button>
+          }
+          {
+            this.state.current === this.steps.length - 1
+            &&
+            <Button type="primary" style={{ marginLeft: 15 }} onClick={() => message.success('操作完成')}>完成</Button>
+          }
+
+        </div>
 
       </div>
     );
@@ -129,15 +125,15 @@ class Page extends React.Component {
 }
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
-    return {
-        $$state: state.sysinit
-    }
+  return {
+    $$state: state.sysinit
+  }
 }
 //绑定action到组件props
 function mapDispatchToProps(dispatch) {
-    return {
-        action: bindActionCreators(Actions, dispatch)
-    }
+  return {
+    action: bindActionCreators(Actions, dispatch)
+  }
 }
 //输出绑定state和action后组件
 export default connect(mapStateToProps, mapDispatchToProps)(Page);

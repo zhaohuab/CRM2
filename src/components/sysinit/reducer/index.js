@@ -5,18 +5,17 @@ let $$initialState = {
 };
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
     switch (action.type) {
-        case 'SYSINIT_PAGE_ADMINLISTADD':
-            let adminList = $$state.get("adminList").toJS();
-            adminList.push(action.content.newData);
+        case 'SYSINIT_PAGE_ADMINLISTCHANGE':
             return $$state.merge({
-                adminList
+                adminList:action.content.newData
             })
         case 'SYSINIT_PAGE_ADMINLISTSAVE':
         
             return $$state.merge({
                 adminList:action.content.adminList
             })
-        case 'SYSINIT_PAGE_SAVEADD':
+        case 'SYSINIT_PAGE_ORGSAVE':
+        debugger
             return $$state.merge({
                 orgInfo: action.content.orgInfo,
             })

@@ -52,6 +52,11 @@ const taskcard = {
     taskcardBatch : baseDir + 'sact/taskcard/batch',
     enable : baseDir + 'sact/taskcard/state' 
 }
+
+const sysinit = {
+    org : baseDir + 'sys/sysinit/org',
+    adminList : baseDir + 'sys/sysinit/adminlist',
+}
 export {
     login,
     menu,
@@ -66,4 +71,5 @@ export {
     baseDir,
     contacts,
     taskcard,
+    sysinit,
 };

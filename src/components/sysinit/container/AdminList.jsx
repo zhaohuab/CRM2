@@ -7,99 +7,45 @@ import {Input} from 'antd';
 //导入action方法
 import * as Actions from "../action"
 
-class EditableCell extends React.Component {
-  state = {
-    value:this.props.value,
-    editable: false,
-  }
-
-  edit = () => {
-    this.setState({ editable: true });
-  }
-
-  handleChange = (e) => {
-    const value = e.target.value;
-    this.setState({ value });
-  }
-  save = () => {
-    this.setState({ editable: false });
-    if(this.props.onChange) {
-      this.props.onChange(this.state.value);
-    }
-  }
-
-  render() {
-    
-    let { value } = this.state;
-    value = value || '';
-    return <div className="editable-cell">
-    {
-      this.state.editable ?
-        <div className="editable-cell-input-wrapper">
-          <Input
-            value={value}
-            onChange={this.handleChange}
-            onPressEnter={this.save}
-          />
-          <Icon
-            type="check"
-            className="editable-cell-icon-check"
-            onClick={this.save}
-          />
-        </div>
-        :
-        <div className="editable-cell-text-wrapper">
-          {value || ' '}
-          <Icon
-            type="edit"
-            className="editable-cell-icon"
-            onClick={this.edit}
-          />
-        </div>
-    }
-  </div>
-  }
-}
-
 class List extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-        //dataSource : [],
-        isAdd:false,
+      //dataSource : [],
+      edit: true,
     }
     this.enableColumns = [
-      "code","name","phone","mail"
+      "code", "name", "phone", "mail", "password",
     ];
     this.columns = [
       {
         title: '编码',
-        dataIndex:'code',
+        dataIndex: 'code',
         width: "200px",
-        render:(text, record, index) => this.renderColumn('code',text,record,index),
+        render: (text, record, index) => this.renderColumn('code', text, record, index),
       },
       {
         title: '姓名',
-        dataIndex:'name',
+        dataIndex: 'name',
         width: "200px",
-        render:(text, record, index) => this.renderColumn('name',text,record,index),
+        render: (text, record, index) => this.renderColumn('name', text, record, index),
       },
       {
         title: '手机',
-        dataIndex:'phone',
+        dataIndex: 'phone',
         width: "200px",
-        render:(text, record, index) => this.renderColumn('phone',text,record,index),
+        render: (text, record, index) => this.renderColumn('phone', text, record, index),
       },
       {
         title: '邮箱',
-        dataIndex:'mail',
+        dataIndex: 'email',
         width: "200px",
-        render:(text, record, index) => this.renderColumn('mail',text,record,index),
+        render: (text, record, index) => this.renderColumn('mail', text, record, index),
       },
       {
         title: '密码',
-        dataIndex:'password',
-        render:(text, record, index) => this.renderColumn('password',"123456",record,index),
+        dataIndex: 'password',
+        render: (text, record, index) => this.renderColumn('password', "123456", record, index),
       },
       // {
       //   title: '确认密码',
@@ -108,86 +54,86 @@ class List extends React.Component {
       // },
       {
         title: '角色',
-        dataIndex:'role',
-        render:(text, record, index) => this.renderColumn('role',"集团管理员",record,index),
+        dataIndex: 'role',
+        render: (text, record, index) => this.renderColumn('role', "集团管理员", record, index),
       },
       {
         title: '启用状态',
-        dataIndex:'enableState',
-        render:(text, record, index) => this.renderColumn("enableState","已启用",record,index),
+        dataIndex: 'enableState',
+        render: (text, record, index) => this.renderColumn("enableState", "已启用", record, index),
       }
     ]
   }
-  renderColumn = (key,text,record,index) => {
-      
-      if(this.enableColumns.indexOf(key) != -1) {
-        if(record.status == "ADD") {
-          return <Input onBlur={this.onInputChange(record.key,key).bind(this)}/>
-        }
-        if(this.state.isAdd) {
-          return text;
-        }
-        return <EditableCell value={text} onChange={this.onCellChange(record.key,key).bind(this)}/>;
-      }
-      return text;
-  }
-  componentDidMount() {
-    
-  }
-  nextIndex = 1;
-  onAdminListAdd = () => {
-    
-    let adminList = this.props.$$state.get("adminList").toJS();
-    // adminList.push({
-    //     status:"ADD",
-    // })
-    this.setState({ isAdd:true })
-    this.props.action.onAdminListAdd({status:"ADD",key:this.nextIndex++});
-  }
-  onAdminListSave = () => {
-    let adminList = this.props.$$state.get("adminList").toJS();
-    adminList.map((item) => {
-      if(item.status == "ADD") {
-        item.status = "NORMAL"
-      }
-    })
-    this.setState({isAdd:false});
-    this.props.action.onAdminListSave(adminList);
+  renderColumn = (key, text, record, index) => {
+
+    //编辑态 且 列可编辑
+    if (this.state.edit && this.enableColumns.indexOf(key) != -1) {
+      return <Input onBlur={this.onInputChange(record.key,key).bind(this)}/>
+    }
+    return text;
   }
   onInputChange = (key, dataIndex) => {
     return (e) => {
-      debugger
+      
       let value = e.target.value;
       let adminList = this.props.$$state.get("adminList").toJS();
       const target = adminList.find(item => item.key === key);
       if (target) {
         target[dataIndex] = value;
-        this.props.action.adminChange(adminList);
+        this.props.action.onAdminListChange(adminList);
       }
     };
   }
-  onCellChange = (key, dataIndex) => {
-    return (value) => {
-      debugger
-      let adminList = this.props.$$state.get("adminList").toJS();
-      const target = adminList.find(item => item.key === key);
-      if (target) {
-        target[dataIndex] = value;
-        this.props.action.adminChange(adminList);
-      }
+  onSelectChange = selectedRowKeys => {
+    let state = {
+        selectedRowKeys: selectedRowKeys
     };
-  }
-  render() {
+    this.setState(state);
+  };
+  nextIndex = 1;
+  onAdminListAdd = () => {
     
     let adminList = this.props.$$state.get("adminList").toJS();
+    adminList.push({editState:"ADD",id:this.nextIndex++});
+    this.props.action.onAdminListChange(adminList);
+  }
+  onAdminListSave = () => {
+    let adminList = this.props.$$state.get("adminList").toJS();
+    this.props.action.onAdminListSave(adminList);
+    this.setState({edit:false});
+  }
+  onAdminListDel = () => {
+    let adminList = this.props.$$state.get("adminList").toJS();
+    let { selectedRowKeys } = this.state;
+    
+    //选中行，行标识修改
+    adminList = adminList.map((item) => {
+      if(selectedRowKeys.includes(item.id)) {
+        item.editState = "DELETE"
+      }
+      return item;
+    });
+    this.props.action.onAdminListChange(adminList);
+  }
+  render() {
+    let adminList = this.props.$$state.get("adminList").toJS();
+    let { selectedRowKeys } = this.state;
+    let rowSelection = {
+        selectedRowKeys,
+        onChange: this.onSelectChange
+    };
+    adminList = adminList.filter((item) => {
+      return item.editState != "DELETE";
+    })
     return (
       <div>
         <div className="sider-layout">
-            <span className="head-label">管理员列表</span>
-            <div className="left-action">
-                <Button  type="primary" className="button_add" onClick={this.onAdminListAdd.bind(this)}><Icon type="plus" />新增</Button>
-                <Button  type="primary" className="button_save" onClick={this.onAdminListSave.bind(this)}>保存</Button>
-            </div>
+          <span className="head-label">管理员列表</span>
+          <div className="left-action">
+            <Button type="primary" className="button_add" onClick={this.onAdminListAdd.bind(this)}><Icon type="plus" />增行</Button>
+            {/*<Button type="primary" className="button_save" onClick={this.onAdminListSave.bind(this)}>保存</Button>*/}
+            <Button type="primary" className="button_del" onClick={this.onAdminListDel.bind(this)}><Icon type="minus" />删行</Button>
+          </div>
         </div>
         <div className="list-box">
           <Table
@@ -195,13 +141,16 @@ class List extends React.Component {
             columns={this.columns}
             dataSource={adminList}
             pagination={false}
-            //rowSelection={{}}
+            rowSelection={rowSelection}
+            rowKey="id"
           />
         </div>
+        <Button type="primary" className="button_del" onClick={this.onAdminListSave.bind(this)}>保存</Button>
       </div>
     )
   }
 }
+
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
   return {

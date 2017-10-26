@@ -19,8 +19,8 @@ class View extends React.Component {
                 </Col>
     }
     transData(data) {
-        data.createtime = data.createtime.format("YYYY-MM-DD hh:mm:ss");
-        data.type = data.type.title;
+        data.createTime = "2017-10-26";
+        //data.orgType = {key:data.orgType,title:data.orgTypeName};
         return data;
     }
     render() {
@@ -28,21 +28,22 @@ class View extends React.Component {
             key:"name",
             name:"企业名称"
         },{
-            key:"type",
+            key:"orgTypeName",
             name:"企业类型"
         },{
-            key:"shortname",
+            key:"simpleName",
             name:"简称"
         },{
             key:"industry",
             name:"所属行业"
         },{
-            key:"createtime",
+            key:"createTime",
             name:"创立时间"
         },{
             key:"address",
             name:"总部地址"
         }]
+        debugger
         const dataSource = this.transData(this.props.dataSource/*dataSource*/);
         // const dataSource = {
         //     name:"华为集团",
