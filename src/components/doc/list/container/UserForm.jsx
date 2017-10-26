@@ -1,12 +1,7 @@
 import { Form, Input, Select, Checkbox, Table, Row, Col  } from 'antd';
-
-import Email from 'utils/components/email'
-import Department from 'components/refs/departments'
-import Enum from 'utils/components/enum'
-import RadioGroup from 'utils/components/radio'
 import Tables from './table.jsx'
 const FormItem = Form.Item;
-const Option = Select.Option;
+
 class Card extends React.Component {
     constructor(props) {
         super(props)
@@ -78,10 +73,7 @@ class Card extends React.Component {
                     >
                         {getFieldDecorator('isDefault', {
                             rules: [],
-                        })(<Row>
-                                <Col span={10}></Col>
-                                <Col span={14}> <Checkbox >系统档案</Checkbox ></Col>
-                            </Row>)}                          
+                        })(<div></div>)}                          
                    </FormItem>
             </Form>
         </div>)          

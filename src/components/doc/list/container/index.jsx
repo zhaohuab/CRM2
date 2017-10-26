@@ -248,7 +248,7 @@ class List extends React.Component {
         >
           <div className='model-height' id='doc-table'>
             <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}  />
-            <Tables ref={ref => this.ref = ref} />
+            <Tables ref={ref => this.ref = ref} style={{marginTop:'30px'}}/>
           </div>
         </Modal>
       </div>
