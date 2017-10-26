@@ -32,7 +32,8 @@ import sysinit from '../components/sysinit/reducer/index.js'
 import contacts from "components/contacts/contactList/reducer/index.js";
 //任务卡
 import taskcard from '../components/taskcard/list/reducer'
-
+//档案管理
+import doc from '../components/doc/list/reducer'
 
 let rootReducer = combineReducers({
     login,
@@ -48,9 +49,10 @@ let rootReducer = combineReducers({
     brandList,
     prdtype,
     product,
+    taskcard,
+    doc,
     contacts,
     sysinit,
-    taskcard,
  });
 
 export { rootReducer };

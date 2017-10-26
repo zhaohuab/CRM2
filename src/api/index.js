@@ -48,9 +48,14 @@ const contacts = {
 };
 
 const taskcard = {
-    taskcard : baseDir + 'sact/taskcard',
-    taskcardBatch : baseDir + 'sact/taskcard/batch',
-    enable : baseDir + 'sact/taskcard/state' 
+    taskcard: baseDir + 'sact/taskcard',
+    taskcardBatch: baseDir + 'sact/taskcard/batch',
+    enable: baseDir + 'sact/taskcard/state' 
+}
+const doc = {
+    doc: baseDir + 'base/doc',
+    docBatch: baseDir + 'base/doc/batch',
+    enable: baseDir + 'base/doc/state' 
 }
 
 const sysinit = {
@@ -72,4 +77,5 @@ export {
     contacts,
     taskcard,
     sysinit,
+    doc,
 };
