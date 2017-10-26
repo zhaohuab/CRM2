@@ -50,7 +50,9 @@ const rootRoutes = {
                 require('./routes/prdtype').default,
                 require('./routes/measure').default,
                 require('./routes/role').default,
+                require('./routes/brand').default,
                 require('./routes/product').default,
+                require('./routes/sysinit').default,
                 require('./routes/taskcard').default,
                 require('./routes/doc').default,
                 {

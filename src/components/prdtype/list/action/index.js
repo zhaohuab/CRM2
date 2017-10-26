@@ -42,7 +42,7 @@ export function getlistByClickSearch(searchMap) {
             url: url.prdtype,
             method: 'get',
             data: {
-                param:  searchMap 
+                param: searchMap
             }
         },(data) => {
             dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESSBYCLICKSEARCH', { data: data.data, searchFilter: searchMap.searchKey }));

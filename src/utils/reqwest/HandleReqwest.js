@@ -13,45 +13,48 @@ export const codeConstant = {
     ServiceFormVaild:"5",
 }
 
+//本方法返回的true和false用于指示页面是否要终止之后的操作(用于报错后停止之后的逻辑)。
 function handleMessage(result) {
     let { response,status } = result;
     if(status == 401) {
         browserHistory.push('/crm_web/login/sessionover');
-        return;
+        return true;
     }
     if(!response) {
-        return;
+        return true;
     }
     let { code ,message,developerMessage } = JSON.parse(response);
+    if(developerMessage) {
+        console.log(developerMessage);
+    }
     //message.destroy()
     if(!message && code == codeConstant.Success) {
-        return;
+        return true;
     }
     switch (code) {
 		case codeConstant.Success:
             MsgTool.success(message);
-            break;
-        case codeConstant.Info:
+            return true;
+        case codeConstant.ServerError:
             MsgTool.error(message);
-            
-            break;
+            return false;
         case codeConstant.Info:
             MsgTool.info(message);
-            
-            break;
+            return true;
         case codeConstant.Warn:
             MsgTool.warn(message);
-            break;
+            return true;
         case codeConstant.Notification:
             notification.open({
                 message: '操作异常',
                 description: '请联系管理员！',
             });
-            break;
+            return false;
         default: 
+            return true
             
     }
-    console.log(developerMessage)
+   
 }
 
 export default handleMessage;

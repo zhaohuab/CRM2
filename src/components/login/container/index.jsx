@@ -31,14 +31,14 @@ class LoginForm extends React.Component {
                 <div className='login-shadow'></div>
                 <div className="login-form">
                     <p className='login-form-title'>欢迎登录</p>
-                    <div className='login-form-error'></div>
+                    <div className='login-form-error'>{loginError}</div>
                     <Form onSubmit={this.handleSubmit} width={300}>
                         <FormItem
                             validateStatus={userError ? 'error' : ''}
                             help={userError || ''}
                         >
                             {getFieldDecorator('user', {
-                                rules: [{ required: true, message: '不能为空!' }],
+                                rules: [],
                             })(
                                 <Input placeholder="用户名" prefix={<Icon type="user" />} className='login-imnput'/>
                             )}
@@ -48,7 +48,7 @@ class LoginForm extends React.Component {
                             help={passwordError || ''}
                         >
                             {getFieldDecorator('password', {
-                                rules: [{ required: true, message: '不能为空!' }],
+                                rules: [],
                             })(
                                 <Input type="password" placeholder="登录密码" prefix={<Icon type="lock" />} className='login-imnput'/>
                             )}
