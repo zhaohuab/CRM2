@@ -1,21 +1,30 @@
 import Immutable from 'immutable'
 
 let $$initialState = {
-	editData: {},
-	data: [],
-	visible: false,
+	
+	data:[],
+	selectedRows:[],
+	formVisitable:false,
+	toolVisible:{
+		btnPanel:false,
+		simForm:true,
+		milForm:false
+	},
+	searchMap:{},
+	viewFormVisible:false,
+	viewData:{}
 };
 
-function pageAdd(page, item) {
-	page.total += 1;
+function pageAdd(page,item) {
+	page.total+=1;
 	page.data.unshift(item)
 	page.page = Math.ceil(page.total / page.pageSize);
 	return page;
 }
-function pageEdit(page, item) {
-	let { data } = page;
-	for (let i = 0, len = data.length; i < len; i++) {
-		if (data[i].id == item.id) {
+function pageEdit(page,item) {
+	let {data} = page;
+	for(let i=0,len=data.length;i<len;i++) {
+		if(data[i].id == item.id) {
 			data[i] = item;
 			break;
 		}
@@ -23,37 +32,64 @@ function pageEdit(page, item) {
 	page.data = data;
 	return page;
 }
-export default function reducer($$state = Immutable.fromJS($$initialState), action) {
-	switch (action.type) {
+export default function orgReducers($$state = Immutable.fromJS($$initialState), action){
 
-		case 'OPPORTUNITY_LIST_GETLISTSUCCESS':
+	switch (action.type) {
+			case 'OPPORTUNITY_LIST_GETDATA':
+			return $$state.merge({data:action.payload.data})
+
+			case 'OPPORTUNITY_LIST_SHOWNEWFORM':
 			return $$state.merge({
-				data: action.content,
+				viewData:{},
+				formVisitable:action.payload.visible,
 			})
-		case 'OPPORTUNITY_LIST_SHOWFORM':
+			case 'OPPORTUNITY_LIST_SHOWEDITFORM':
 			return $$state.merge({
-				visible: action.content.visible,
-				editData: action.content.editData
+				formVisitable:action.payload.visible,
 			})
-		case 'OPPORTUNITY_CARD_SAVEADD':
+			case 'OPPORTUNITY_LIST_SHOWVIEWFORM':
 			return $$state.merge({
-				visible: false,
-				data: pageAdd($$state.get("data").toJS(), action.content),
+				viewFormVisible : action.payload.visible,
+				viewData :action.payload.record ,
 			})
-		case 'OPPORTUNITY_CARD_SAVEEDIT':
+
+			case 'OPPORTUNITY_LIST_CLOSEFORM' :
 			return $$state.merge({
-				visible: false,
-				data: pageEdit($$state.get("data").toJS(), action.content),
+				formVisitable:false,
+				viewFormVisible:false,
 			})
-		case 'OPPORTUNITY_LIST_DELETESUCCESS':
+			case 'OPPORTUNITY_LIST_CHANGEVISIBLE':
+			return $$state.merge({toolVisible:action.payload.toolVisible})
+			
+			case 'OPPORTUNITY_LIST_SELECTROW':
+			return $$state.merge({selectedRows:Immutable.fromJS(action.payload.rows),toolVisible:action.payload.toolVisible})
+
+			case 'OPPORTUNITY_LIST_SAVESEARCHMAP':
+			return $$state.merge({searchMap:action.payload==undefined?{}:action.payload})
+			
+			case 'OPPORTUNITY_LIST_ADDSAVE':
 			return $$state.merge({
-				data: action.content,
+				formVisitable : false,
+				viewFormVisible : false,
+				data : pageAdd($$state.get("data").toJS(),action.payload),
+				viewData:{}
 			})
-		case 'OPPORTUNITY_LIST_SETSTATESUCCESS':
+			case 'OPPORTUNITY_LIST_EDITSAVE':
 			return $$state.merge({
-				data: action.content,
+				formVisitable : false,
+				viewFormVisible : false,
+				data : pageEdit($$state.get("data").toJS(),action.payload),
+				viewData : {},
 			})
-		default:
-			return $$state;
-	}
-};
+			
+			case 'OPPORTUNITY_LIST_CLOSEPANEL':
+			return $$state.merge({
+				viewFormVisible : false,
+				formVisitable : false,
+			})
+			case 'OPPORTUNITY_LIST_DELETE':
+			return $$state.merge({data:action.payload.data,viewFormVisible:false})
+	    default: 
+	        return $$state;
+    }
+}

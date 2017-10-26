@@ -54,7 +54,7 @@ const rootRoutes = {
                 // require('./routes/customer').default,
                 require('./routes/product').default,
                 require('./routes/opportunity').default,
-                
+                require('./routes/oppaction').default,
                 {
                   //未开发页面
                   path: 'developing',

@@ -26,9 +26,10 @@ import prdtype from '../components/prdtype/orgList/reducer/index.js'
 import product from '../components/product/list/reducer'
 //品牌
 import brandList from '../components/brand/list/reducer/index.js'
-//品牌
+//商机
 import opportunityList from '../components/opportunity/list/reducer/index.js'
-
+//商机动作
+import oppactionlist from 'components/oppaction/list/reducer'
 
 let rootReducer = combineReducers({
     login,
@@ -45,6 +46,7 @@ let rootReducer = combineReducers({
     prdtype,
     product,
     opportunityList,
+    oppactionlist
  });
 
 export { rootReducer }

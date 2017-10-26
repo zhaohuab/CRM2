@@ -44,7 +44,11 @@ const product = {
 }
 
 const opportunity = {
-    opportunity: baseDir + 'sprc/opportunity',
+    opportunity: baseDir + 'sprc/opportunities',
+}
+
+const oppaction = {
+    oppaction: baseDir + 'sprc/oppactions',
 }
 
 export {
@@ -59,5 +63,6 @@ export {
     prdtype,
     product,
     baseDir,
-    opportunity
+    opportunity,
+    oppaction
 }

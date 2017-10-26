@@ -2,7 +2,10 @@ import { DatePicker, Form, Input, Select, InputNumber, Row, Col } from 'antd';
 import Department from 'components/refs/departments'
 
 import moment from "moment";
-
+// import Email from 'utils/components/email'
+// import Department from 'components/refs/departments'
+// import Enum from 'utils/components/enum'
+// import RadioGroup from 'utils/components/radio'
 const FormItem = Form.Item;
 const Option = Select.Option;
 class Card extends React.Component {
@@ -11,17 +14,13 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.isEdit) {
-            //装箱过程
-            this.props.data.createdTime = moment(this.props.data.createdTime);
-            this.props.data.expectSignTime = moment(this.props.data.expectSignTime);
-            this.props.form.setFieldsValue(this.props.data);
-        }
+   
     }
     componentWillMount() {
 
     }
     render() {
+        this.props.data
         const { getFieldDecorator } = this.props.form;
 
         const formItemLayout = {
@@ -55,11 +54,9 @@ class Card extends React.Component {
                             {...formItemLayout}
                         >
                             {getFieldDecorator('type', {
-                                rules: [{
-                                    required: true, message: '请选择商机类型',
-                                }],
+                            
                             })(
-                                <Input />
+                                <div>{this.props.data.saleStage}</div>
                                 )}
                         </FormItem>
                     </Col>
@@ -68,12 +65,10 @@ class Card extends React.Component {
                             label="商机名称"
                             {...formItemLayout}
                         >
-                            {getFieldDecorator('name', {
-                                rules: [{
-                                    required: true, message: '请输出商机名称',
-                                }],
+                            {getFieldDecorator('opportunitId', {
+                              
                             })(
-                                <Input />
+                                <div>{this.props.data.name}</div>
                                 )}
                         </FormItem>
                     </Col>
@@ -85,11 +80,9 @@ class Card extends React.Component {
                             {...formItemLayout}
                         >
                             {getFieldDecorator('customerId', {
-                                rules: [{
-                                    required: true, message: '请选择客户',
-                                }],
+                              
                             })(
-                                <Input />
+                                <div>{this.props.data.customerId}</div>
                                 )}
                         </FormItem>
                     </Col>
@@ -99,11 +92,9 @@ class Card extends React.Component {
                             {...formItemLayout}
                         >
                             {getFieldDecorator('saleStage', {
-                                rules: [{
-                                    required: true, message: '请选择商机阶段',
-                                }],
+                              
                             })(
-                                <Input />
+                                <div>{this.props.data.saleStage}</div>
                                 )}
                         </FormItem>
                     </Col>
@@ -115,11 +106,9 @@ class Card extends React.Component {
                             {...formItemLayout}
                         >
                             {getFieldDecorator('winProbability', {
-                                rules: [{
-                                    required: true, message: '请输入赢单概率',
-                                }],
+                              
                             })(
-                                <InputNumber min={0} max={100} formatter={value => `${value}%`} parser={value => value.replace("%", "")} />
+                                <div>{this.props.data.winProbability}</div>
                                 )}
                         </FormItem>
                     </Col>
@@ -129,11 +118,9 @@ class Card extends React.Component {
                             {...formItemLayout}
                         >
                             {getFieldDecorator('createdTime', {
-                                rules: [{
-                                    required: true, message: '请选择商机时间',
-                                }],
+                              
                             })(
-                                <DatePicker format='YYYY/MM/DD' />
+                                <div>{this.props.data.createdTime}</div>
                                 )}
                         </FormItem>
                     </Col>
@@ -147,7 +134,7 @@ class Card extends React.Component {
                             {getFieldDecorator('expectSignTime', {
                                 rules: [],
                             })(
-                                <DatePicker format='YYYY/MM/DD' />
+                                <div>{this.props.data.expectSignTime}</div>
                                 )}
                         </FormItem>
                     </Col>
@@ -157,11 +144,9 @@ class Card extends React.Component {
                             {...formItemLayout}
                         >
                             {getFieldDecorator('expectSignMoney', {
-                                rules: [{
-                                    required: true, message: '请输入预计签单金额',
-                                }],
+                                
                             })(
-                                <InputNumber min={0} formatter={value => `¥${value}`} parser={value => value.replace("¥", "")} />
+                                <div>{this.props.data.expectSignMoney}</div>
                                 )}
                         </FormItem>
                     </Col>
@@ -175,7 +160,7 @@ class Card extends React.Component {
                             {getFieldDecorator('description', {
                                 rules: [],
                             })(
-                                <Input />
+                                <div>{this.props.data.description}</div>
                                 )}
                         </FormItem>
                     </Col>
