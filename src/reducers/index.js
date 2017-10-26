@@ -49,14 +49,10 @@ let rootReducer = combineReducers({
     brandList,
     prdtype,
     product,
-<<<<<<< HEAD
     taskcard,
-    doc
-=======
+    doc,
     contacts,
     sysinit,
-    taskcard,
->>>>>>> 4cc6d46dd143b84354126771382b180a7eef59cb
  });
 
 export { rootReducer };
