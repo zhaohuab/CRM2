@@ -8,11 +8,11 @@ import { Input } from 'antd';
 import * as Actions from "../action"
 
 import InfoCard from './InfoCard.jsx'
-import AdminList from './AdminList.jsx'
 import InfoView from './InfoView.jsx'
+import AdminList from './AdminList.jsx'
 
 const Step = Steps.Step;
-const WrapInfoCard = Form.create()(InfoCard);
+
 
 
 class Page extends React.Component {
@@ -26,57 +26,33 @@ class Page extends React.Component {
   }
   steps = [{
     title: '企业信息',
-    //content: <WrapInfoCard wrappedComponentRef={(inst) => this.formRef = inst} />,
   }, {
     title: '管理员列表',
-    //content: <div><InfoView /*dataSource={this.state.dataSource}*//><AdminList /></div>,
   }, {
     title: '完成',
-    //content: '完成',
   }];
-  next() {
-    let current = this.state.current;
-    if (current == 0) {
-      let form = this.formRef.props.form;
+  
 
-      form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          this.props.action.onOrgSave(form.getFieldsValue());
-          current += 1;
-          this.setState({ current });
-        }
-      });
-    }
-    else if (current == 1) {
-      current += 1;
-      this.setState({ current });
-    }
-    else if (current == 2) {
-      current += 1;
-      this.setState({ current });
-    }
-
-  }
-  prev() {
-    const current = this.state.current - 1;
-    this.setState({ current });
+  componentDidMount() {
+    this.props.action.getSysInitInfo();
   }
   render() {
-    let { current } = this.state;
-
-    let orgInfo = this.props.$$state.get("orgInfo").toJS();
+    
+    let current = this.props.$$state.get("current");
+    let orgInfo = this.props.$$state.get("tenantInfo").toJS();
 
     let content = "";
-    
+    const WrapInfoCard = Form.create()(InfoCard);
     switch (current) {
       case 0:
         content = <WrapInfoCard dataSource={orgInfo} wrappedComponentRef={(inst) => this.formRef = inst} />;
         break;
       case 1:
-        content = <div><AdminList /></div>;
+        content = <div><InfoView dataSource={orgInfo}/><AdminList editable={true}/></div>;
         break;
-      // case 2:
-      //   content = '完成';
+      case 2:
+        content = <div><InfoView dataSource={orgInfo}/><AdminList editable={false}/></div>;
+        break;
     }
     return (
       <div>
@@ -86,38 +62,19 @@ class Page extends React.Component {
 
         <div className="sider-layout">
           {
-            this.state.current != 2
+            current != 2
             &&
             <span className="head-label">企业信息</span>
           }
           {
-            this.state.current == 2
+            current == 2
             &&
             <span className="head-label">完成</span>
           }
 
         </div>
         <div className="steps-content">{content}</div>
-        <div>
-          {
-            this.state.current > 0
-            &&
-            <Button onClick={() => this.prev()}>
-              上一步
-                </Button>
-          }
-          {
-            this.state.current < this.steps.length - 1
-            &&
-            <Button type="primary" style={{ marginLeft: 15 }} onClick={() => this.next()}>下一步</Button>
-          }
-          {
-            this.state.current === this.steps.length - 1
-            &&
-            <Button type="primary" style={{ marginLeft: 15 }} onClick={() => message.success('操作完成')}>完成</Button>
-          }
-
-        </div>
+        
 
       </div>
     );

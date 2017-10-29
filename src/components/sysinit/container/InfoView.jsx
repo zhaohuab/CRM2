@@ -1,4 +1,5 @@
 import { Row, Col } from 'antd';
+import moment from 'moment'
 
 class View extends React.Component {
     constructor(props) {
@@ -19,31 +20,33 @@ class View extends React.Component {
                 </Col>
     }
     transData(data) {
-        data.createTime = "2017-10-26";
+        
+        data.companyCreatedTime = data.companyCreatedTime ? moment(data.companyCreatedTime.time).format("YYYY-MM-DD") : undefined;
         //data.orgType = {key:data.orgType,title:data.orgTypeName};
         return data;
     }
     render() {
+        
         const template = [{
-            key:"name",
+            key:"companyName",
             name:"企业名称"
         },{
-            key:"orgTypeName",
+            key:"companyTypeName",
             name:"企业类型"
         },{
-            key:"simpleName",
+            key:"companySimpleName",
             name:"简称"
         },{
-            key:"industry",
+            key:"companyIndustry",
             name:"所属行业"
         },{
-            key:"createTime",
+            key:"companyCreatedTime",
             name:"创立时间"
         },{
-            key:"address",
+            key:"companyAddress",
             name:"总部地址"
         }]
-        debugger
+        
         const dataSource = this.transData(this.props.dataSource/*dataSource*/);
         // const dataSource = {
         //     name:"华为集团",

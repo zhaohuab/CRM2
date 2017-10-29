@@ -12,10 +12,9 @@ class List extends React.Component {
     super(props)
     this.state = {
       //dataSource : [],
-      edit: true,
     }
     this.enableColumns = [
-      "code", "name", "phone", "mail", "password",
+      "code", "name", "phone", "email", "password",
     ];
     this.columns = [
       {
@@ -40,12 +39,12 @@ class List extends React.Component {
         title: '邮箱',
         dataIndex: 'email',
         width: "200px",
-        render: (text, record, index) => this.renderColumn('mail', text, record, index),
+        render: (text, record, index) => this.renderColumn('email', text, record, index),
       },
       {
         title: '密码',
         dataIndex: 'password',
-        render: (text, record, index) => this.renderColumn('password', "123456", record, index),
+        render: (text, record, index) => this.renderColumn('password', text, record, index),
       },
       // {
       //   title: '确认密码',
@@ -67,19 +66,23 @@ class List extends React.Component {
   renderColumn = (key, text, record, index) => {
 
     //编辑态 且 列可编辑
-    if (this.state.edit && this.enableColumns.indexOf(key) != -1) {
-      return <Input onBlur={this.onInputChange(record.key,key).bind(this)}/>
+    if (this.props.editable && this.enableColumns.indexOf(key) != -1) {
+      
+      return <Input defaultValue={record[key]} onBlur={this.onInputChange(record.id,key).bind(this)}/>
     }
     return text;
   }
-  onInputChange = (key, dataIndex) => {
+  onInputChange = (id, dataIndex) => {
     return (e) => {
       
       let value = e.target.value;
       let adminList = this.props.$$state.get("adminList").toJS();
-      const target = adminList.find(item => item.key === key);
+      const target = adminList.find(item => item.id === id);
       if (target) {
         target[dataIndex] = value;
+        if(target.editState == "" || target.editState == "NORMAL") {
+          target.editState = "UPDATE";
+        }
         this.props.action.onAdminListChange(adminList);
       }
     };
@@ -94,13 +97,12 @@ class List extends React.Component {
   onAdminListAdd = () => {
     
     let adminList = this.props.$$state.get("adminList").toJS();
-    adminList.push({editState:"ADD",id:this.nextIndex++});
+    adminList.push({editState:"ADD",id:"SYS_"+this.nextIndex++});
     this.props.action.onAdminListChange(adminList);
   }
   onAdminListSave = () => {
     let adminList = this.props.$$state.get("adminList").toJS();
     this.props.action.onAdminListSave(adminList);
-    this.setState({edit:false});
   }
   onAdminListDel = () => {
     let adminList = this.props.$$state.get("adminList").toJS();
@@ -115,7 +117,11 @@ class List extends React.Component {
     });
     this.props.action.onAdminListChange(adminList);
   }
+  onAdminListEdit = () => {
+    this.props.action.onEdit();
+  }
   render() {
+    
     let adminList = this.props.$$state.get("adminList").toJS();
     let { selectedRowKeys } = this.state;
     let rowSelection = {
@@ -127,13 +133,16 @@ class List extends React.Component {
     })
     return (
       <div>
-        <div className="sider-layout">
+        <div >
           <span className="head-label">管理员列表</span>
-          <div className="left-action">
-            <Button type="primary" className="button_add" onClick={this.onAdminListAdd.bind(this)}><Icon type="plus" />增行</Button>
-            {/*<Button type="primary" className="button_save" onClick={this.onAdminListSave.bind(this)}>保存</Button>*/}
-            <Button type="primary" className="button_del" onClick={this.onAdminListDel.bind(this)}><Icon type="minus" />删行</Button>
-          </div>
+          {
+            this.props.editable ? 
+            <div className="table-action">
+              <Button type="primary" className="button_add" onClick={this.onAdminListAdd.bind(this)}><Icon type="plus" />增行</Button>
+              <Button type="primary" style={{ marginLeft: 15 }} className="button_del" onClick={this.onAdminListDel.bind(this)}><Icon type="minus" />删行</Button>
+            </div>:""
+          }
+          
         </div>
         <div className="list-box">
           <Table
@@ -145,7 +154,13 @@ class List extends React.Component {
             rowKey="id"
           />
         </div>
-        <Button type="primary" className="button_del" onClick={this.onAdminListSave.bind(this)}>保存</Button>
+        {
+          this.props.editable ? 
+          <Button type="primary" style={{ marginLeft: 15 }} onClick={this.onAdminListSave.bind(this)}>保存</Button>
+          :
+          <Button type="primary" style={{ marginLeft: 15 }}  onClick={this.onAdminListEdit.bind(this)}>编辑</Button>
+        }
+        
       </div>
     )
   }

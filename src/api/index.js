@@ -59,6 +59,7 @@ const doc = {
 }
 
 const sysinit = {
+    info : baseDir + "sys/sysinit/info",
     org : baseDir + 'sys/sysinit/org',
     adminList : baseDir + 'sys/sysinit/adminlist',
 }
