@@ -36,8 +36,9 @@ class Card extends React.Component {
         }
         {
             getFieldDecorator('enableState', {
+                initialValue:"1"
             })(
-                <Input value = "1"/>
+                <Input />
                 )
         }
         return (
@@ -60,9 +61,7 @@ class Card extends React.Component {
                     {...formItemLayout}
                 >
                     {getFieldDecorator('enName', {
-                        rules: [{
-                            required: true, message: '请输出英文',
-                        }],
+                        rules: [],
                     })(
                         <Input placeholder='请输入...' />
                         )}
@@ -72,9 +71,7 @@ class Card extends React.Component {
                     {...formItemLayout}
                 >
                     {getFieldDecorator('description', {
-                        rules: [{
-                            required: true, message: '请输出备注',
-                        }],
+                        rules: [],
                     })(
                         <Input placeholder='请输入...' />
                         )}

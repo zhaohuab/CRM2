@@ -34,6 +34,10 @@ import contacts from "components/contacts/contactList/reducer/index.js";
 import taskcard from '../components/taskcard/list/reducer'
 //档案管理
 import doc from '../components/doc/list/reducer'
+//商机
+import opportunityList from '../components/opportunity/list/reducer/index.js'
+//商机动作
+import oppactionlist from 'components/oppaction/list/reducer'
 
 let rootReducer = combineReducers({
     login,
@@ -53,6 +57,8 @@ let rootReducer = combineReducers({
     doc,
     contacts,
     sysinit,
+    opportunityList,
+    oppactionlist
  });
 
 export { rootReducer };

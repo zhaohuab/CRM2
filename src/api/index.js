@@ -63,6 +63,14 @@ const sysinit = {
     org : baseDir + 'sys/sysinit/org',
     adminList : baseDir + 'sys/sysinit/adminlist',
 }
+const opportunity = {
+    opportunity: baseDir + 'sprc/opportunities',
+}
+
+const oppaction = {
+    oppaction: baseDir + 'sprc/oppactions',
+}
+
 export {
     login,
     menu,
@@ -79,4 +87,6 @@ export {
     taskcard,
     sysinit,
     doc,
-};
+    opportunity,
+    oppaction
+}

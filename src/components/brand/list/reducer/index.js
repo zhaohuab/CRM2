@@ -30,7 +30,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				data: action.content,
 			})
-		case 'BARD_LIST_SHOWFORM':
+		case 'BRAND_LIST_SHOWFORM':
 			return $$state.merge({
 				visible: action.content.visible,
 				editData: action.content.editData

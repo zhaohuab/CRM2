@@ -55,6 +55,8 @@ const rootRoutes = {
                 require('./routes/sysinit').default,
                 require('./routes/taskcard').default,
                 require('./routes/doc').default,
+                require('./routes/opportunity').default,
+                require('./routes/oppaction').default,
                 {
                   //未开发页面
                   path: 'developing',
