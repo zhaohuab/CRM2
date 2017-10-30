@@ -18,15 +18,45 @@ const user = {
     enable : baseDir + 'sys/users/state'  // {id}/state
 }
 
+const measure = {
+    measure : baseDir + "base/measures",
+    measureBatch : baseDir + 'base/measures/batch',
+}
+const cum = {
+    customer : baseDir + 'cum/customers',
+}
+
+const role = {
+    role : baseDir + 'sys/roles',
+}
+
+const brand ={
+    brand :baseDir + 'base/brands'
+}
+const prdtype={
+    prdtype:baseDir + 'base/prdtype',
+    prdtypeTree:baseDir + 'base/prdtypeTree'
+}
+
 const product = {
     product: baseDir + 'base/products',
     productBatch: baseDir + 'base/products/batch',
 }
 
+const visitrules = {
+    visitrules: baseDir + 'sact/visitrules',
+}
 export {
     login,
     menu,
     org,
     user,
+    measure,
+    cum,
+    role,
+    brand,
+    prdtype,
     product,
+    visitrules,
+    baseDir,
 }
