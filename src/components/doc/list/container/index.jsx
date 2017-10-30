@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -17,8 +16,7 @@ import * as Actions from "../action"
 
 class List extends React.Component {
   constructor(props) {
-    super(props)
-    
+    super(props)    
     this.columns = [
       {
         title: '档案名称',
@@ -84,33 +82,33 @@ class List extends React.Component {
       }
     }
     this.props.action.showForm(true,rowData);
-    setTimeout(()=>{
+    setTimeout(() => {
         this.ref.setTableData(rowData)
     }, 0)
   }
 
-  onClose() {
-    this.props.action.showForm(false,{});
+  onClose = () => {
+    this.props.action.showForm(false, {});
   }
 
   translate(data){//转换table组件引入的数据结构
      let obj = {};
-     obj.id = data.key;
+     data.flag ? null : obj.id = data.key;
      obj.name = data.name.value;      
      obj.enableStateName = '启用';
-     obj.editState = data.editState;
+     obj.editState = data.editState1||data.editState2||data.editState;
      obj.enableState = data.enableState.value;  
      return obj   
   }
-  onEnable(enable) {
+  onEnable = (enable) => {
     return (enable) => {
-      let { pagination,searchMap } = this.state;
-      this.setState({headLabel:false});
-      this.props.action.onEnable(this.state.selectedRowKeys,enable,{ pagination,searchMap });
+      let { pagination, searchMap } = this.state;
+      this.setState({ headLabel: false });
+      this.props.action.onEnable(this.state.selectedRowKeys, enable, { pagination, searchMap });
     }
   }
 
-  onSave() {
+  onSave = () => {
     let form = this.formRef.props.form;
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -118,18 +116,16 @@ class List extends React.Component {
       }
     });  
     let data = form.getFieldsValue();
-    if(!data.name||!data.description) return;
+    if (!data.name||!data.description) return;
     data.sysDocDetailList = [];
-    let docDetailList = this.ref.getTableData();    
-    let translate = this.translate;
-    for(let i=0,len=docDetailList.length; i<len; i++){
-      let cur = translate(docDetailList[i]);
+    let docDetailList = this.ref.getTableData();   
+    for (let i=0,len=docDetailList.length; i<len; i++){
+      let cur = this.translate(docDetailList[i]);
       data.sysDocDetailList.push(cur)
     }
-    if(this.state.isEdit) {
+    if (this.state.isEdit) {
       this.props.action.onSave4Edit(data);
-    }
-    else {
+    }else {
       this.props.action.onSave4Add(data);
       this.ref.clearState();
     }   
@@ -137,45 +133,45 @@ class List extends React.Component {
 
   onSelectChange = (selectedRowKeys) => {
     let state = {
-      selectedRowKeys:selectedRowKeys
+      selectedRowKeys: selectedRowKeys
     }
-    state.headLabel = selectedRowKeys.length ? true:false;
+    state.headLabel = selectedRowKeys.length ? true : false;
     this.setState(state);
   }
 
-  onBack = ()=>{
-    this.setState({headLabel:false});
+  onBack = () => {
+    this.setState({ eadLabel: false });
   }
 
   onEableRadioChange = (e) => {
     let enable = e.target.value;
-    let { pagination,searchMap } = this.state;
+    let { pagination, searchMap } = this.state;
     //可能有问题
     searchMap.enableState = enable;
-    this.props.action.getListData({ pagination,searchMap });
-    this.setState({enable,selectedRowKeys:[],searchMap});
+    this.props.action.getListData({ pagination, searchMap });
+    this.setState({ enable, selectedRowKeys: [], searchMap });
   }
-  showTotal(total) {
+  showTotal = (total) => {
     return `共 ${total} 条`;
   }
-  onPageChange(page,pageSize) {
-    let { pagination,searchMap } = this.state;
+  onPageChange = (page, pageSize) => {
+    let { pagination, searchMap } = this.state;
     //可能有问题
-    pagination = {page:page,pageSize:pageSize};
-    this.setState({pagination})
-    this.props.action.getListData({ pagination,searchMap });
+    pagination = { page: page, pageSize: pageSize };
+    this.setState({ pagination })
+    this.props.action.getListData({ pagination, searchMap });
   }
-  onPageSizeChange(current,pageSize) {
-    let { pagination,searchMap } = this.state;
-    pagination = {page:pagination.page,pageSize:pageSize};
-    this.setState({pagination})
-    this.props.action.getListData({ pagination,searchMap });
-    console.info(`pageSize:${pageSize}`)
+  onPageSizeChange = (current, pageSize) => {
+    let { pagination, searchMap } = this.state;
+    pagination = { page: pagination.page, pageSize: pageSize };
+    this.setState({ pagination })
+    this.props.action.getListData({ pagination, searchMap });
+    console.info(`pageSize: ${pageSize}`)
   }
   render() {
     let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
-    let {headLabel,selectedRowKeys} = this.state;
+    let { headLabel, selectedRowKeys } = this.state;
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,

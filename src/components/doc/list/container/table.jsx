@@ -1,7 +1,5 @@
+
 import { Table, Input, Popconfirm, Switch , Icon } from 'antd';
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as Actions from "../action"
 
 class EditableCell extends React.Component {
   state = {
@@ -73,7 +71,7 @@ export default class EditableTable extends React.Component {
       title: '删除',
       dataIndex: 'deleteState',
       width: '10%',
-      render: (text, record, index) => (<Popconfirm title="Are you sure?" onConfirm={this.onDelete.bind(this,record)}  onCancel= {this.onCancel} okText="Yes" cancelText="No">
+      render: (text, record, index) => (<Popconfirm title = "确定删除?" onConfirm = { this.onDelete.bind(this, record) }  onCancel = { this.onCancel } okText = "是" cancelText = "否" >
       <a href="#"><Icon type="delete" /></a>
       </Popconfirm>)
     }, {
@@ -86,9 +84,9 @@ export default class EditableTable extends React.Component {
             {
               editable ?
                 <span>
-                  <a onClick={() => this.editDone(index, 'save')} style={{marginRight:'10px'}}><Icon type="check" /></a>
-                  <Popconfirm title="Sure to cancel?" onConfirm={() => this.editDone(index, 'cancel')}>
-                    <a><Icon type="close" /></a>
+                  <a onClick={() => this.editDone(index, 'save')} style= {{ marginRight: '10px' }}>保存</a>
+                  <Popconfirm title="确定取消?" onConfirm={() => this.editDone(index, 'cancel')}>
+                    <a>取消</a>
                   </Popconfirm>
                 </span>
                 :
@@ -103,6 +101,7 @@ export default class EditableTable extends React.Component {
 
     this.state = {
       docDetail: [],
+      deleDetail:[]
     };
   }
   renderColumns(data, index, key, text) {
@@ -127,7 +126,7 @@ export default class EditableTable extends React.Component {
     Object.keys(docDetail[index]).forEach((item) => {
       if (docDetail[index][item] && typeof docDetail[index][item].editable !== 'undefined') {
         docDetail[index][item].editable = true;
-        docDetail[index].editState = 'update';
+        docDetail[index].editState2= 'update';
       }
     });
     this.setState({ docDetail });
@@ -138,8 +137,8 @@ export default class EditableTable extends React.Component {
       if (docDetail[index][item] && typeof docDetail[index][item].editable !== 'undefined') {
         docDetail[index][item].editable = false;
         docDetail[index][item].status = type;
-        docDetail[index][item].editState = 'update';
-        docDetail[index].editState = 'update';
+        docDetail[index][item].editState2= 'update';
+        docDetail[index].editState2= 'update';
       }
     });
     this.setState({ docDetail }, () => {
@@ -156,6 +155,7 @@ export default class EditableTable extends React.Component {
     if(value=='') return;
     let detail = this.state.docDetail;
     let obj = {
+          key:'add'+Math.round(Math.random()*50),
           name: {
             editable: false,
             value: value,
@@ -163,7 +163,8 @@ export default class EditableTable extends React.Component {
           enableState: {
             value: '1',
           },
-          editState: 'add'
+          editState1: 'add',
+          flag:true,
         }
     detail.push(obj);
     this.refs.input1.value = '';  
@@ -187,21 +188,29 @@ export default class EditableTable extends React.Component {
   onDelete(record){//档案明细删除
     let id = record.key;
     let arr = this.state.docDetail;
+    let delArr=this.state.deleDetail;
     for (let i=0,len=arr.length; i<len; i++){
-      if (id==arr[i].key){
-        arr[i].editState = "delete";
+      let cur = arr[i];
+      if (id==cur.key){
+        if (cur.flag){
+          arr.splice(i,1)
+          }else {
+          cur.editState = "delete"
+          delArr.push(cur)
+          arr.splice(i,1)
+        }        
         break;
       }
     } 
-    this.setState({docDetail:arr})
+    this.setState({docDetail:arr,deleDetail:delArr})
   }
 
-  getTableData (){//抛出子表state中的数据源
-     return this.state.docDetail
+  getTableData (){//抛出子表state中的数据源 
+     return this.state.docDetail.concat(this.state.deleDetail);
   }
 
   clearState (){//清空子表state中的数据源
-    this.setState({docDetail:[]});
+    this.setState({ docDetail: [], deleDetail: [] });
   }
 
   translate (data){//转化数据格式
@@ -218,15 +227,14 @@ export default class EditableTable extends React.Component {
 
   setTableData(dataSource){ //将store中的数据替换到state中 
     let data = dataSource.sysDocDetailList;
-    if(data){
+    if (data){
       let arr=[];
       let translate = this.translate;
       for (let i=0,len=data.length; i<len; i++){
       let cur = data[i];
       arr.push(translate(cur))
       }
-      this.setState({docDetail:arr})
-      return 
+      this.setState({ docDetail: arr })
     } 
   }
 
