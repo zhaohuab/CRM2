@@ -63,6 +63,7 @@ const rootRoutes = {
                                 require('./routes/opportunity').default,
                                 require('./routes/oppaction').default,
                                 require("./routes/visitroute").default,
+                                require('./routes/visitrules').default,
                                 {
                                     //未开发页面
                                     path: "developing",
