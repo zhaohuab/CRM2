@@ -7,6 +7,7 @@ export function getCollaps() {
     };
 }
 
+//获取联系人信息
 export function getContactList(pagination, searchMap) {
     return dispatch => {
         dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
@@ -30,13 +31,13 @@ export function getContactList(pagination, searchMap) {
         );
     };
 }
-
+//显示modal
 export function showForm(data) {
     return dispatch => {
         dispatch({ type: "CONTACTS_LIST_SHOWFORM", data });
     };
 }
-
+//保存新增联系人
 export function cardSaved(data, pagination, searchMap) {
     return dispatch => {
         reqwest(
@@ -55,14 +56,14 @@ export function cardSaved(data, pagination, searchMap) {
         );
     };
 }
-
+//保存已选择的数据
 export function selectData(data) {
     return {
         type: "CONTACTS_LIST_SELECTDATA",
         data
     };
 }
-
+//删除已选择的数据
 export function onDelete(delKey, pagination, searchMap) {
     debugger;
     return dispatch => {
@@ -90,7 +91,7 @@ export function onDelete(delKey, pagination, searchMap) {
         );
     };
 }
-
+//编辑已选择
 export function onEdit(values, pagination, searchMa) {
     return dispatch => {
         reqwest(

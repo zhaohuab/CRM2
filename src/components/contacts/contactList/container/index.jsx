@@ -64,8 +64,6 @@ class Contacts extends React.Component {
             searchMap: {
                 enableState: 1
             },
-            //存放点击table时获取的行数据
-            selectedRowKeys: [],
             //存放编辑数据
             editData: [],
             //上方条件选择保存更多状态
@@ -112,6 +110,9 @@ class Contacts extends React.Component {
 
     //新增按钮
     addContacts() {
+        this.setState({
+            editData: {}
+        });
         this.props.action.showForm(true);
     }
 
@@ -272,9 +273,6 @@ class Contacts extends React.Component {
                             length={selectData.length}
                             goBack={this.headerBack.bind(this)}
                         >
-                            <Button onClick={this.headerBack.bind(this)}>
-                                <i className="iconfont icon-fanhui" />返回
-                            </Button>
                             <Button onClick={this.onDelete.bind(this)}>
                                 <i className="iconfont icon-shanchu" />删除
                             </Button>
@@ -312,7 +310,6 @@ class Contacts extends React.Component {
                                                     showFn={this.showFn.bind(
                                                         this
                                                     )}
-                                                    show={this.state.more}
                                                 />
                                             </div>
                                         </Col>
@@ -362,7 +359,6 @@ class Contacts extends React.Component {
                             >
                                 <ContactMoreFrom
                                     showFn={this.showFn.bind(this)}
-                                    show={this.state.more}
                                 />
                             </Row>
                         </div>
@@ -390,7 +386,7 @@ class Contacts extends React.Component {
                     </div>
                 </div>
                 <Modal
-                    title="新增联系人"
+                    title={this.state.editData.id ? "修改联系人" : "新增联系人"}
                     visible={visible}
                     onOk={this.handleOk.bind(this)}
                     onCancel={this.handleCancel.bind(this)}

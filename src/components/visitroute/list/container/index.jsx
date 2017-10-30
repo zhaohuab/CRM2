@@ -199,9 +199,6 @@ class VisitRoute extends React.Component {
                         length={selectedRows.length}
                         goBack={this.headerBack.bind(this)}
                     >
-                        <Button onClick={this.headerBack.bind(this)}>
-                            <i className="iconfont icon-fanhui" />返回
-                        </Button>
                         <Button onClick={this.onEdit.bind(this)}>
                             <i className="iconfont icon-shanchu" />删除
                         </Button>

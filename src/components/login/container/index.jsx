@@ -121,7 +121,13 @@ class LoginCon extends React.Component {
         return (
             <div className="login-warpper">
                 <div className="login-carousel">
-                    <Carousel autoplay effect="fade" speed="3000">
+                    <Carousel
+                        autoplay
+                        fade={true}
+                        speed="4000"
+                        autoplaySpeed="6000"
+                        dots={true}
+                    >
                         <div>
                             <img
                                 src={require("assets/images/login/banner1.jpg")}

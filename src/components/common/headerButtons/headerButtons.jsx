@@ -29,6 +29,9 @@ export default class HeaderButton extends React.Component {
                             条
                         </span>
                         <div className="crm-buttons-inner-btns">
+                            <Button onClick={this.back.bind(this)}>
+                                <i className="iconfont icon-fanhui" />返回
+                            </Button>
                             {this.props.children}
                         </div>
                     </div>
