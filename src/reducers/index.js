@@ -38,6 +38,8 @@ import doc from '../components/doc/list/reducer'
 import opportunityList from '../components/opportunity/list/reducer/index.js'
 //商机动作
 import oppactionlist from 'components/oppaction/list/reducer'
+//拜访路线
+import visitroute from "components/visitroute/list/reducer/index.js";
 
 let rootReducer = combineReducers({
     login,
@@ -58,7 +60,8 @@ let rootReducer = combineReducers({
     contacts,
     sysinit,
     opportunityList,
-    oppactionlist
- });
+    oppactionlist,
+    visitroute,
+});
 
 export { rootReducer };

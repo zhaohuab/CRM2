@@ -18,23 +18,25 @@ export default class HeaderButton extends React.Component {
     }
     render() {
         return (
-            <div className="crm-header-buttons-inner">
-                <div className="crm-buttons-inner-left">
-                    <span className="crm-inner-left-choice">
-                        已选择
-                        <span className="crm-import-choice">
-                            {this.props.length}
+            <div className="crm-header-buttons">
+                <div className="crm-header-buttons-inner">
+                    <div className="crm-buttons-inner-left">
+                        <span className="crm-inner-left-choice">
+                            已选择
+                            <span className="crm-import-choice">
+                                {this.props.length}
+                            </span>
+                            条
                         </span>
-                        条
-                    </span>
-                    <div className="crm-buttons-inner-btns">
-                        {this.props.children}
+                        <div className="crm-buttons-inner-btns">
+                            {this.props.children}
+                        </div>
                     </div>
+                    <i
+                        className="iconfont icon-guanbi-xiao"
+                        onClick={this.back.bind(this)}
+                    />
                 </div>
-                <i
-                    className="iconfont icon-guanbi-xiao"
-                    onClick={this.back.bind(this)}
-                />
             </div>
         );
     }

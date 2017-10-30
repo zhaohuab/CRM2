@@ -43,8 +43,11 @@ const product = {
 };
 
 const contacts = {
-    contacts: baseDir + "cum/contacts",
-    contactsDel: "cum/contacts/batch"
+    contacts: baseDir + "cum/contacts"
+};
+
+const visitRouter = {
+    visit: baseDir + "sact/visitroutes"
 };
 
 const taskcard = {
@@ -88,5 +91,6 @@ export {
     sysinit,
     doc,
     opportunity,
-    oppaction
-}
+    oppaction,
+    visitRouter,
+};

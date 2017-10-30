@@ -47,10 +47,7 @@ class Main extends React.Component {
                         <div className="app-content">{this.props.children}</div>
                     </div>
                 </div>
-                <ViewStyle toggleViewBox={this.toggleViewBox} />
-                <div className="app-talk">
-                    <Icon type="message" />
-                </div>
+                {/* <ViewStyle toggleViewBox={this.toggleViewBox} /> */}
             </div>
         );
     }

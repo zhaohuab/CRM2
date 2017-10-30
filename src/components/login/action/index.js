@@ -1,7 +1,7 @@
-import fetchData from 'utils/fetchdata';
-import reqwest from 'utils/reqwest';
-import { login as url } from 'api';
-import {codeConstant} from 'utils/reqwest/HandleReqwest'
+import fetchData from "utils/fetchdata";
+import reqwest from "utils/reqwest";
+import { login as url } from "api";
+import { codeConstant } from "utils/reqwest/HandleReqwest";
 //定义方法 action
 const login = (params) => {
 	
@@ -26,14 +26,11 @@ const login = (params) => {
 	}
 }
 
-const setLogout = ()=>{
-	return(dispatch)=>{
-		dispatch(fetchData('LOGIN_MAIN_SETLOGOUT', {}))
-    }
-}
+const setLogout = () => {
+    return dispatch => {
+        dispatch(fetchData("LOGIN_MAIN_SETLOGOUT", {}));
+    };
+};
 
 //输出 type 与 方法
-export {
-	login,
-	setLogout
-}
+export { login, setLogout };
