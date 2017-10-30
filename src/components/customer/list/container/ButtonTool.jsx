@@ -10,7 +10,7 @@ import {
     Icon
 } from "antd";
 
-import Enum from "utils/components/enum";
+import Enum from 'utils/components/enums'
 const FormItem = Form.Item;
 const Option = Select.Option;
 const ButtonGroup = Button.Group;

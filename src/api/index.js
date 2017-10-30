@@ -50,6 +50,33 @@ const visitRouter = {
     visit: baseDir + "sact/visitroutes"
 };
 
+const taskcard = {
+    taskcard: baseDir + 'sact/taskcard',
+    taskcardBatch: baseDir + 'sact/taskcard/batch',
+    enable: baseDir + 'sact/taskcard/state' 
+}
+const doc = {
+    doc: baseDir + 'base/doc',
+    docBatch: baseDir + 'base/doc/batch',
+    enable: baseDir + 'base/doc/state' 
+}
+
+const sysinit = {
+    info : baseDir + "sys/sysinit/info",
+    org : baseDir + 'sys/sysinit/org',
+    adminList : baseDir + 'sys/sysinit/adminlist',
+}
+const opportunity = {
+    opportunity: baseDir + 'sprc/opportunities',
+}
+
+const oppaction = {
+    oppaction: baseDir + 'sprc/oppactions',
+}
+
+const visitrules = {
+    visitrules: baseDir + 'sact/visitrules',
+}
 export {
     login,
     menu,
@@ -63,5 +90,11 @@ export {
     product,
     baseDir,
     contacts,
-    visitRouter
-};
+    taskcard,
+    sysinit,
+    doc,
+    opportunity,
+    oppaction,
+    visitRouter,
+    visitrules,
+}

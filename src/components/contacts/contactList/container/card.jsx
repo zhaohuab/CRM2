@@ -15,7 +15,7 @@ import {
 } from "antd";
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
-import Email from "utils/components/email";
+import Email from "utils/components/emails";
 
 export default class Card extends React.Component {
     componentDidMount() {

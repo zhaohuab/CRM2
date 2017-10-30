@@ -178,7 +178,7 @@ class List extends React.Component {
                     />
                 </div>
                 <Modal
-                    title="新增人员"
+                    title={this.state.isEdit?"修改品牌":"新增品牌"}
                     visible={visible}
                     width={500}
                     onOk={this.onSave.bind(this)}

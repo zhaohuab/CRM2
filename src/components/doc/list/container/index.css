@@ -1,0 +1,107 @@
+.pepole-refer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pepole-refer-search {
+  width: 200px;
+  height: 30px;
+}
+.pepole-refer-search .ant-input-suffix {
+  width: 26px;
+  height: 26px;
+  background: #F2F2F2;
+  right: 1px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-left: 1px solid #DDDDDD;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.user-warpper {
+  height: 100%;
+  padding: 10px;
+  padding-top: 0;
+  box-sizing: border-box;
+  background: white;
+}
+.user-warpper .iconfont {
+  font-size: 12px;
+}
+.user-warpper .list-box {
+  padding: 5px;
+  padding-top: 0;
+  box-sizing: border-box;
+}
+.user-warpper .head_panel {
+  height: 54px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  box-sizing: border-box;
+  background: white;
+}
+.user-warpper .head_panel .add-more {
+  margin-right: 15px;
+}
+.user-warpper .head_panel .head_panel-left {
+  display: flex;
+  align-items: center;
+}
+.user-warpper .head_panel .head_panel-left .deep-title-color {
+  color: #333;
+}
+.user-warpper .head_panel .head_panel-left .simple-title-color {
+  color: #666;
+}
+.user-warpper .head_panel .head_panel-left .head_panel-state {
+  margin-left: 20px;
+}
+.user-warpper .head_panel .search {
+  width: 200px;
+}
+.user-warpper .head_edit {
+  justify-content: flex-start;
+  background: white;
+  height: 54px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+.user-warpper .head_edit .edit-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.user-warpper .head_edit .edit-inner .edit-left {
+  display: flex;
+  align-items: center;
+}
+.user-warpper .head_edit .edit-inner .edit-inner-left {
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid #DDD;
+  font-size: 13px;
+  color: #333;
+  font-weight: 400;
+}
+.user-warpper .head_edit .edit-inner .edit-right {
+  font-size: 18px;
+}
+.user-warpper .head_edit .default_button {
+  margin-right: 10px;
+  color: #666;
+  font-weight: 400;
+}
+#doc-table .table {
+  border-top: none !important;
+  border-bottom: 1px solid #999 !important;
+}
+#doc .ant-pagination-options-quick-jumper > span:nth-child(1) {
+  margin-left: 20px;
+}

@@ -21,15 +21,27 @@ import customerList from "../components/customer/list/reducer/index.js";
 //角色
 import roleList from "../components/role/list/reducer/index.js";
 //产品分类
-import prdtype from "../components/prdtype/orgList/reducer/index.js";
+import prdtype from '../components/prdtype/list/reducer/index.js'
 //product目录
 import product from "../components/product/list/reducer";
 //品牌
-import brandList from "../components/brand/list/reducer/index.js";
+import brandList from '../components/brand/list/reducer/index.js'
+//系统初始化
+import sysinit from '../components/sysinit/reducer/index.js'
 //联系人
 import contacts from "components/contacts/contactList/reducer/index.js";
+//任务卡
+import taskcard from '../components/taskcard/list/reducer'
+//档案管理
+import doc from '../components/doc/list/reducer'
+//商机
+import opportunityList from '../components/opportunity/list/reducer/index.js'
+//商机动作
+import oppactionlist from 'components/oppaction/list/reducer'
 //拜访路线
 import visitroute from "components/visitroute/list/reducer/index.js";
+//拜访规则
+import visitRules from '../components/visitrules/reducer'
 
 let rootReducer = combineReducers({
     login,
@@ -45,8 +57,14 @@ let rootReducer = combineReducers({
     brandList,
     prdtype,
     product,
+    taskcard,
+    doc,
     contacts,
-    visitroute
+    sysinit,
+    opportunityList,
+    oppactionlist,
+    visitroute,
+    visitRules,
 });
 
 export { rootReducer };
