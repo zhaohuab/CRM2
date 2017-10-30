@@ -28,6 +28,8 @@ import product from "../components/product/list/reducer";
 import brandList from "../components/brand/list/reducer/index.js";
 //联系人
 import contacts from "components/contacts/contactList/reducer/index.js";
+//拜访路线
+import visitroute from "components/visitroute/list/reducer/index.js";
 
 let rootReducer = combineReducers({
     login,
@@ -43,7 +45,8 @@ let rootReducer = combineReducers({
     brandList,
     prdtype,
     product,
-    contacts
+    contacts,
+    visitroute
 });
 
 export { rootReducer };

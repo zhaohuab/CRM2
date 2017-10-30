@@ -43,8 +43,11 @@ const product = {
 };
 
 const contacts = {
-    contacts: baseDir + "cum/contacts",
-    contactsDel: "cum/contacts/batch"
+    contacts: baseDir + "cum/contacts"
+};
+
+const visitRouter = {
+    visit: baseDir + "sact/visitroutes"
 };
 
 export {
@@ -59,5 +62,6 @@ export {
     prdtype,
     product,
     baseDir,
-    contacts
+    contacts,
+    visitRouter
 };
