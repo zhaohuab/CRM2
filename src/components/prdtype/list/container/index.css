@@ -1,0 +1,268 @@
+.list-warpper {
+  width: 100%;
+  position: relative;
+  background: white;
+}
+.list-warpper .iconfont {
+  font-size: 12px;
+}
+.list-warpper h2 {
+  width: 100%;
+  height: 80px;
+  line-height: 80px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  background: white;
+}
+.list-warpper h2 .list-title {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+.list-warpper .list-main {
+  position: relative;
+  display: flex;
+  height: 100%;
+}
+.list-warpper .list-main .list-table-tree {
+  width: 300px;
+  background: white;
+  border-right: 10px solid #f2f2f2;
+  overflow-x: scroll;
+}
+.list-warpper .list-main .list-table-tree .org-tree-top {
+  display: flex;
+  align-items: center;
+  height: 54px;
+  border-bottom: 1px solid #EEEEEE;
+  padding: 10px;
+  box-sizing: border-box;
+  background: #FAFAFA;
+}
+.list-warpper .list-main .list-table-tree .org-tree-top input[placeholder] {
+  color: #ccc;
+}
+.list-warpper .list-main .list-table-tree .org-tree-top .ant-input-affix-wrapper input {
+  border: 1px solid #ddd;
+}
+.list-warpper .list-main .list-table-tree .org-tree-top .ant-input-affix-wrapper .ant-input-suffix {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 1px;
+  background: #F2F2F2;
+  border-left: 1px solid #d9d9d9;
+  border-top-right-radius: 5px;
+  color: #afafaf;
+}
+.list-warpper .list-main .list-table-tree .org-tree-main {
+  padding: 10px;
+  box-sizing: border-box;
+}
+.list-warpper .list-main .list-table-tree .show-edit-warpper {
+  display: flex;
+}
+.list-warpper .list-main .list-table-tree .show-edit-warpper .show-edit-title {
+  max-width: 125px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+}
+.list-warpper .list-main .list-table-tree .show-edit-inner {
+  display: inline-block;
+  margin-left: 10px;
+  width: 100px;
+}
+.list-warpper .list-main .list-table-tree .show-edit-inner span {
+  padding: 10px;
+  box-sizing: border-box;
+}
+.list-warpper .list-main .list-table-tree .show-edit-inner-hide {
+  display: none;
+}
+.list-warpper .list-main .list-table {
+  width: 100%;
+  height: 100%;
+}
+.list-warpper .list-main .list-table .table-header {
+  position: relative;
+  height: 54px;
+  background: white;
+}
+.list-warpper .list-main .list-table .table-header .list-add {
+  position: absolute;
+  right: 15px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 60%;
+  height: 100%;
+}
+.list-warpper .list-main .list-table .table-header .list-add .list-add-group {
+  margin-right: 15px;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  z-index: 5;
+  width: 100%;
+  min-height: 54px;
+  background: white;
+  padding: 10px 15px;
+  box-sizing: border-box;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-left {
+  display: flex;
+  align-items: center;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-left .actionButtons-chioce {
+  width: 100px;
+  height: 100%;
+  line-height: 36px;
+  border-right: 1px solid #ccc;
+  margin-right: 20px;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-left .actionButtons {
+  width: 100%;
+  height: 100%;
+  line-height: 36px;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .actionButtons-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  cursor: pointer;
+}
+.list-warpper .list-main .list-table .table-header .actionButtons-waprper .returnbtn-class {
+  margin-right: 10px;
+  color: #666;
+}
+.list-warpper .orgPointer {
+  cursor: pointer;
+}
+.list-warpper .org-tabel {
+  padding: 0 15px;
+  box-sizing: border-box;
+  position: relative;
+  background: white;
+}
+.list-warpper .department-chioce {
+  width: 100%;
+  min-height: 30px;
+  border: 1px solid #ccc;
+}
+.list-warpper .hideinput {
+  display: none;
+}
+.list-warpper .swiper-left {
+  animation: fadeInRight .3s linear;
+}
+.list-warpper .swiper-outleft {
+  animation: fadeOutRight .3s linear;
+}
+.list-warpper .hide-panel-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: white;
+  box-shadow: -3px 0 5px #ccc;
+  overflow-y: scroll;
+}
+.list-warpper .hide-panel-inner .hide-panel-inner-header {
+  width: 100%;
+  height: 60px;
+  line-height: 60px;
+  border-bottom: 1px solid #E6E6E6;
+}
+.list-warpper .hide-panel-inner .hide-panel-inner-header .inner-header-left {
+  display: inline-block;
+  width: 70%;
+  height: 100%;
+  padding-left: 30px;
+  box-sizing: border-box;
+}
+.list-warpper .hide-panel-inner .hide-panel-inner-header .inner-header-right {
+  display: inline-block;
+  width: 30%;
+  height: 100%;
+  padding-right: 30px;
+  text-align: right;
+  box-sizing: border-box;
+}
+.list-warpper .hide-panel-inner .hide-panel-inner-main {
+  padding-top: 30px;
+  box-sizing: border-box;
+  width: 60%;
+  margin: 0 auto;
+}
+.list-warpper .show-panel {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 90%;
+}
+.list-warpper .hide-panel {
+  display: none;
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  right: 0;
+  width: 80%;
+}
+@-webkit-keyframes fadeInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+  }
+}
+@-webkit-keyframes fadeOutRight {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+@keyframes fadeOutRight {
+  from {
+    opacity: 1;
+  }
+  to {
+    display: none;
+    opacity: 0;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+#prdtype .ant-pagination-options-quick-jumper > span:nth-child(1) {
+  margin-left: 20px;
+}

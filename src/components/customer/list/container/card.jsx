@@ -14,7 +14,7 @@ import {
 } from "antd";
 import moment from "moment";
 import Department from "components/refs/departments";
-import Enum from "utils/components/enum";
+import Enum from "utils/components/enums";
 const FormItem = Form.Item;
 const { TextArea } = Input;
 

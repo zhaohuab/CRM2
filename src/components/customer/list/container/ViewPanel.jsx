@@ -125,7 +125,7 @@ export default class ViewPanel extends React.Component {
                                         <span>身份验证</span>
                                     </span>
                                 </div>
-                                <div className="project-label-group">
+                                <div className="tag-group">
                                     <span>经销商</span>
                                     <span>重点客户</span>
                                     <span>海口</span>

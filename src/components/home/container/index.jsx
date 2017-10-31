@@ -140,7 +140,6 @@ class Home extends React.Component {
         setTimeout(()=>{
             if(this.refs.target){
                 let resizeSize=this.refs.target.offsetWidth
-                console.log(resizeSize)
                 this.targetEchar.resize({
                     width:resizeSize+'px'
                 })
@@ -170,8 +169,8 @@ class Home extends React.Component {
     }
     render() {
         const events = {
-            created: (ins) => {console.log(ins)},
-            click: () => {console.log('You Clicked The Map')}
+            created: (ins) => {},
+            click: () => {}
         }
         this.onWindowResize()
 

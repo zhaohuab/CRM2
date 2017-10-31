@@ -305,7 +305,7 @@ class List extends Component {
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
                         >
-                            <div className="model-height">
+                            <div className="modal-height">
                                 <WrapCard
                                     wrappedComponentRef={inst =>
                                         (this.formRef = inst)}

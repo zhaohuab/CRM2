@@ -1,32 +1,13 @@
 import { Form, Input, Select } from 'antd';
 import Department from 'components/refs/departments'
-// import Email from 'utils/components/email'
-// import Department from 'components/refs/departments'
-// import Enum from 'utils/components/enum'
-// import RadioGroup from 'utils/components/radio'
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 class Card extends React.Component {
     constructor(props) {
         super(props)
     }
-    jobEnum = [{
-        key: 1,
-        title: "员工"
-    }, {
-        key: 2,
-        title: "负责人"
-    }, {
-        key: 3,
-        title: "其他负责人"
-    }]
-    genderEnum = [{
-        key: 1,
-        title: "男",
-    }, {
-        key: 2,
-        title: "女",
-    }]
+    
     componentDidMount() {
         //装箱过程
         this.props.form.setFieldsValue(this.props.dataSource);

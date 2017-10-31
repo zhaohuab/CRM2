@@ -1,37 +1,47 @@
-import {Modal, Cascader, Select, Form, Row, Col, Input, Button, Icon } from 'antd';
+import {
+    Modal,
+    Cascader,
+    Select,
+    Form,
+    Row,
+    Col,
+    Input,
+    Button,
+    Icon
+} from "antd";
 
-import Enum from 'utils/components/enum'
+import Enum from 'utils/components/enums'
 const FormItem = Form.Item;
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
-import 'assets/stylesheet/all/iconfont.css'
+import "assets/stylesheet/all/iconfont.css";
 
 class BtnPanel extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
     btnBack() {
         this.props.btnBack();
     }
 
-    btnDelete(){
-        let that =this
+    btnDelete() {
+        let that = this;
         confirm({
-            title: '确定要删除吗?',
-            content: '此操作不可逆',
-            okText: '是',
-            okType: 'danger',
-            cancelText: '否',
+            title: "确定要删除吗?",
+            content: "此操作不可逆",
+            okText: "是",
+            okType: "danger",
+            cancelText: "否",
             onOk() {
                 that.props.btnDelete();
             },
             onCancel() {
-            console.log('Cancel');
-            },
+                console.log("Cancel");
+            }
         });
     }
-    
+
     render() {
         return (
             <div className='hide-label'>
@@ -60,11 +70,11 @@ class BtnPanel extends React.Component {
 
 class SimForm extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
     handleSearch(e) {
         e.preventDefault();
-        this.props.handleSearch(this.props.form.getFieldsValue())
+        this.props.handleSearch(this.props.form.getFieldsValue());
     }
     componentDidMount() {
         this.props.form.setFieldsValue(this.props.searchMap);
@@ -73,11 +83,11 @@ class SimForm extends React.Component {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 2 },
-            wrapperCol: { span: 22 },
+            wrapperCol: { span: 22 }
         };
         const children = [];
         return (
-            <div className='form-top' id='recover-btn'>
+            <div className="form-top" id="recover-btn">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
                     <Row>
                         <Col span={8}>
@@ -94,10 +104,12 @@ class SimForm extends React.Component {
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.level}
-                                        addOptionAll={'客户等级'}
-                                        dataSource={this.props.enumData.levelEnum}
+                                        addOptionAll={"客户等级"}
+                                        dataSource={
+                                            this.props.enumData.levelEnum
+                                        }
                                     />
-                                    )}
+                                )}
                             </FormItem>
                         </Col>
                         {/* <FormItem style={{ width: 200 }}  {...formItemLayout} >
@@ -112,10 +124,15 @@ class SimForm extends React.Component {
                                 )}
                         </FormItem> */}
                         <Col span={8}>
-                           <div className='more-btn'>
-                                <Button htmlType="submit" >搜索</Button>
-                                <span onClick={this.props.btnMore.bind(this, { simForm: false, milForm: true })}>
-                                    更多 <Icon type='down' />
+                            <div className="more-btn">
+                                <Button htmlType="submit">查询</Button>
+                                <span
+                                    onClick={this.props.btnMore.bind(this, {
+                                        simForm: false,
+                                        milForm: true
+                                    })}
+                                >
+                                    更多 <Icon type="down" />
                                 </span>
                             </div>
                         </Col>
@@ -126,10 +143,9 @@ class SimForm extends React.Component {
     }
 }
 
-
 class MilForm extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
     componentDidMount() {
         this.props.form.setFieldsValue(this.props.searchMap);
@@ -137,18 +153,18 @@ class MilForm extends React.Component {
 
     handleSearch(e) {
         e.preventDefault();
-        this.props.handleSearch(this.props.form.getFieldsValue())
+        this.props.handleSearch(this.props.form.getFieldsValue());
     }
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 2 },
-            wrapperCol: { span: 22 },
+            wrapperCol: { span: 22 }
         };
         const children = [];
         return (
-            <div className='form-bottom' id='recover-btn'>
-                <Form layout="inline" onSubmit={this.handleSearch.bind(this)} >
+            <div className="form-bottom" id="recover-btn">
+                <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
                     <Row>
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
@@ -164,10 +180,12 @@ class MilForm extends React.Component {
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.level}
-                                        addOptionAll={'客户等级'}
-                                        dataSource={this.props.enumData.levelEnum}
+                                        addOptionAll={"客户等级"}
+                                        dataSource={
+                                            this.props.enumData.levelEnum
+                                        }
                                     />
-                                    )}
+                                )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
@@ -175,20 +193,26 @@ class MilForm extends React.Component {
                                 {getFieldDecorator('saleArea', {
                                 })(
                                     <Enum
-                                        initValue={this.props.searchMap.saleArea}
-                                        addOptionAll={'营销区域'}
-                                        dataSource={this.props.enumData.saleAreaEnum}
+                                        initValue={
+                                            this.props.searchMap.saleArea
+                                        }
+                                        addOptionAll={"营销区域"}
+                                        dataSource={
+                                            this.props.enumData.saleAreaEnum
+                                        }
                                     />
-                                    )}
+                                )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('province_city_district', {
                                 })(
-                                    <Cascader options={this.props.cityData} placeholder="省/市/区/县" />
-
-                                    )}
+                                    <Cascader
+                                        options={this.props.cityData}
+                                        placeholder="省/市/区/县"
+                                    />
+                                )}
                             </FormItem>
                         </Col>
                     </Row>
@@ -206,11 +230,15 @@ class MilForm extends React.Component {
                                 {getFieldDecorator('industry', {
                                 })(
                                     <Enum
-                                        initValue={this.props.searchMap.industry}
-                                        addOptionAll={'行业'} 
-                                        dataSource={this.props.enumData.industryEnum}
+                                        initValue={
+                                            this.props.searchMap.industry
+                                        }
+                                        addOptionAll={"行业"}
+                                        dataSource={
+                                            this.props.enumData.industryEnum
+                                        }
                                     />
-                                    )}
+                                )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
@@ -218,11 +246,15 @@ class MilForm extends React.Component {
                                 {getFieldDecorator('cannelType', {
                                 })(
                                     <Enum
-                                        initValue={this.props.searchMap.cannelType}
-                                        addOptionAll={'渠道类型'}
-                                        dataSource={this.props.enumData.cannelTypeEnum}
+                                        initValue={
+                                            this.props.searchMap.cannelType
+                                        }
+                                        addOptionAll={"渠道类型"}
+                                        dataSource={
+                                            this.props.enumData.cannelTypeEnum
+                                        }
                                     />
-                                    )}
+                                )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
@@ -230,11 +262,15 @@ class MilForm extends React.Component {
                                 {getFieldDecorator('lifecycle', {
                                 })(
                                     <Enum
-                                        initValue={this.props.searchMap.lifecycle}
-                                        addOptionAll={'生命周期'}
-                                        dataSource={this.props.enumData.lifecycleEnum}
+                                        initValue={
+                                            this.props.searchMap.lifecycle
+                                        }
+                                        addOptionAll={"生命周期"}
+                                        dataSource={
+                                            this.props.enumData.lifecycleEnum
+                                        }
                                     />
-                                    )}
+                                )}
                             </FormItem>
                         </Col>
                     </Row>
@@ -249,13 +285,18 @@ class MilForm extends React.Component {
                                     dataSource={this.props.enumData.enableStateEnum}
                                 />
                                 )}
-                        </FormItem>
+                            </FormItem>
                         </Col>
                         <Col span={6}>
-                            <div className='more-btn'>
-                                <Button htmlType="submit">搜索</Button>
-                                <span  onClick={this.props.btnLess.bind(this, { simForm: true, milForm: false })}>
-                                    收起 <Icon type='up' />
+                            <div className="more-btn">
+                                <Button htmlType="submit">查询</Button>
+                                <span
+                                    onClick={this.props.btnLess.bind(this, {
+                                        simForm: true,
+                                        milForm: false
+                                    })}
+                                >
+                                    收起 <Icon type="up" />
                                 </span>
                             </div>
                         </Col>
@@ -268,30 +309,28 @@ class MilForm extends React.Component {
 
 class ToolForm extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
     state = {
-        expand: false,
+        expand: false
     };
 
     handleReset = () => {
         this.props.form.resetFields();
-    }
+    };
 
     toggle = () => {
         const { expand } = this.state;
         this.setState({ expand: !expand });
-    }
-   
+    };
 
     render() {
         const WarpSimForm = Form.create()(SimForm);
         const WarpMilForm = Form.create()(MilForm);
 
         return (
-            <div className='label-form-more'>
-                {
-                    this.props.visible.btnPanel?
+            <div className="label-form-more">
+                {this.props.visible.btnPanel ? (
                     <div>
                         <BtnPanel
                             btnBack={this.props.btnBack}
@@ -299,19 +338,29 @@ class ToolForm extends React.Component {
                             btnDelete={this.props.btnDelete}
                             selectedData = {this.props.selectedData}
                         />
-                    </div>:
+                    </div>
+                ) : (
                     <div>
-                        <div className='label-form-top'>
-                            <div className='label-form-topleft' >
-                                <div id='recover-select'>
-                                    <Select defaultValue="3" className='first-select' >
+                        <div className="label-form-top">
+                            <div className="label-form-topleft">
+                                <div id="recover-select">
+                                    <Select
+                                        defaultValue="3"
+                                        className="first-select"
+                                    >
                                         <Option value="0">全部</Option>
                                         <Option value="1">我关注的</Option>
                                         <Option value="2">最近新建</Option>
                                         <Option value="3">最近查看</Option>
                                     </Select>
                                 </div>
-                                <div className={this.props.visible.simForm ?'showleft-form':'form-hide'}>
+                                <div
+                                    className={
+                                        this.props.visible.simForm
+                                            ? "showleft-form"
+                                            : "form-hide"
+                                    }
+                                >
                                     <WarpSimForm
                                         enumData={this.props.enumData}
                                         handleSearch={this.props.handleSearch}
@@ -320,15 +369,30 @@ class ToolForm extends React.Component {
                                     />
                                 </div>
                             </div>
-                            <div className='label-form-topright'>
-                                <ButtonGroup className='list-add-group'>
-                                    <Button><i className='iconfont icon-daoru'></i>导入</Button>
-                                    <Button><i className='iconfont icon-daochu'></i>导出</Button>
+                            <div className="label-form-topright">
+                                <ButtonGroup className="list-add-group">
+                                    <Button>
+                                        <i className="iconfont icon-daoru" />导入
+                                    </Button>
+                                    <Button>
+                                        <i className="iconfont icon-daochu" />导出
+                                    </Button>
                                 </ButtonGroup>
-                                <Button type='primary' onClick={this.props.btnNew}><i className='iconfont icon-xinjian'></i>新建</Button>
+                                <Button
+                                    type="primary"
+                                    onClick={this.props.btnNew}
+                                >
+                                    <i className="iconfont icon-xinjian" />新建
+                                </Button>
                             </div>
                         </div>
-                        <div  className={this.props.visible.milForm?'label-form-bottom':'form-hide'}>
+                        <div
+                            className={
+                                this.props.visible.milForm
+                                    ? "label-form-bottom"
+                                    : "form-hide"
+                            }
+                        >
                             <WarpMilForm
                                 enumData={this.props.enumData}
                                 cityData={this.props.cityData}
@@ -338,7 +402,7 @@ class ToolForm extends React.Component {
                             />
                         </div>
                     </div>
-                }
+                )}
             </div>
         );
     }
