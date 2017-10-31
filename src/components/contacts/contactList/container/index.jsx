@@ -93,6 +93,7 @@ class Contacts extends React.Component {
     handleOk() {
         let { pagination, searchMap } = this.state; //获取分页信息
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {
+            debugger;
             if (!err) {
                 if (values.id) {
                     this.props.action.onEdit(values, pagination, searchMap);
@@ -187,6 +188,7 @@ class Contacts extends React.Component {
                 newObj[key] = resultNew[0][key];
             }
         }
+
         this.setState(
             {
                 editData: newObj
@@ -234,18 +236,12 @@ class Contacts extends React.Component {
     }
 
     render() {
-        //获取页面是否折叠
-        const collapse = this.props.$$stateComponent.get("collapsed");
-        //列表loading
-        const loading = this.props.$$state.get("loading");
-        //modal显示
-        const visible = this.props.$$state.get("visible");
-        //获取列表信息
-        let result = this.props.$$state.toJS();
+        let { data, visible, loading } = this.props.$$state.toJS();
+
         //获取列表所需字段
-        let data;
-        if (result.data.data) {
-            data = this.changeValue.call(this, result.data.data);
+        let newData;
+        if (data.data) {
+            newData = this.changeValue.call(this, data.data);
         }
         //新建表单
         const ContactsForm = Form.create({})(Card);
@@ -253,13 +249,12 @@ class Contacts extends React.Component {
         const ContactLessForm = Form.create({})(LessCard);
         //查询列表头部负载搜索表单
         const ContactMoreFrom = Form.create({})(MoreCard);
-        //获取已列表选择keys
-        let selectedRowKeys = this.props.$$state.toJS().editData[
-            "selectedRowKeys"
-        ];
-        //获取已选择列表数据
-        let selectData = this.props.$$state.toJS().editData["selectedRows"];
-        //选择每行列表数据时的方法
+
+        let {
+            selectedRowKeys,
+            selectedRows
+        } = this.props.$$state.toJS().editData;
+
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
@@ -268,15 +263,15 @@ class Contacts extends React.Component {
         return (
             <div className="crm-container">
                 <div className="contacts-warpper">
-                    {selectData && selectData.length ? (
+                    {selectedRowKeys && selectedRowKeys.length ? (
                         <HeaderButton
-                            length={selectData.length}
+                            length={selectedRowKeys.length}
                             goBack={this.headerBack.bind(this)}
                         >
                             <Button onClick={this.onDelete.bind(this)}>
                                 <i className="iconfont icon-shanchu" />删除
                             </Button>
-                            {selectData.length == 1 ? (
+                            {selectedRowKeys.length == 1 ? (
                                 <Button onClick={this.onEdit.bind(this)}>
                                     <i className="iconfont icon-bianji" />编辑
                                 </Button>
@@ -367,7 +362,7 @@ class Contacts extends React.Component {
                         <Table
                             size="middle"
                             columns={this.columns}
-                            dataSource={data}
+                            dataSource={newData}
                             rowKey="id"
                             rowSelection={rowSelection}
                             loading={loading}
@@ -375,7 +370,7 @@ class Contacts extends React.Component {
                                 size: "large",
                                 showSizeChanger: true,
                                 showQuickJumper: true,
-                                total: result.data.total,
+                                total: data.total,
                                 showTotal: this.showTotal,
                                 onChange: this.onPageChange.bind(this),
                                 onShowSizeChange: this.onPageSizeChange.bind(

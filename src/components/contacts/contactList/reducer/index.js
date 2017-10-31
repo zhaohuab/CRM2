@@ -7,6 +7,13 @@ let $$initialState = {
     visible: false
 };
 
+function pageAdd(page, item) {
+    page.total += 1;
+    page.data.unshift(item);
+    page.page = Math.ceil(page.total / page.pageSize);
+    return page;
+}
+
 export default function reducer(
     $$state = Immutable.fromJS($$initialState),
     action
@@ -26,15 +33,11 @@ export default function reducer(
                 return action.data;
             });
         case "CONTACTS_CARD_SAVEADD": //新增一条数据
-            $$state = $$state.update("visible", val => {
-                return false;
+            return $$state.merge({
+                visible: false,
+                data: pageAdd($$state.get("data").toJS(), action.data)
             });
-            let newData = $$state.toJS();
-            newData.data.data.unshift(action.data);
 
-            return $$state.update("data", val => {
-                return Immutable.fromJS(newData.data);
-            });
         case "CONTACTS_LIST_SELECTDATA": //保存已选择的数据
             return $$state.update("editData", val => {
                 return Immutable.fromJS(action.data);

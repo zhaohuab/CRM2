@@ -107,9 +107,13 @@ class VisitRoute extends React.Component {
     handleOk() {
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {
             let { pagination, searchMap } = this.state; //获取分页信息
-            debugger;
+
             if (!err) {
-                this.props.action.cardSaved(values, pagination, searchMap);
+                if (values.id) {
+                    this.props.action.onEdit(values, pagination, searchMap);
+                } else {
+                    this.props.action.cardSaved(values, pagination, searchMap);
+                }
             }
         });
     }
@@ -121,21 +125,62 @@ class VisitRoute extends React.Component {
 
     //头部编辑层点击返回
     headerBack() {
-        this.props.action.selectData({});
+        this.props.action.selectData({ selectedRowKeys: [], selectedRows: [] });
     }
     //新建路线
     addVisitRoute() {
+        this.setState({
+            editData: {}
+        });
         this.props.action.showForm(true);
     }
     //删除路线
-    onEdit() {
+    onDelete() {
         let selectedRowKeys = this.props.$$state.toJS().editData[
             "selectedRowKeys"
         ];
         let { pagination, searchMap } = this.state; //获取分页信息
-        this.props.action.onEdit(selectedRowKeys, pagination, searchMap);
+        this.props.action.onDelete(selectedRowKeys, pagination, searchMap);
     }
+    //编辑路线
+    onEdit() {
+        let selectedRowKeys = this.props.$$state.toJS().editData[
+            "selectedRowKeys"
+        ];
+        let resultNew = this.props.$$state.toJS().data.data;
+        resultNew = resultNew.filter(item => {
+            return item.id == selectedRowKeys[0];
+        });
 
+        let newObj = {};
+        for (var key in resultNew[0]) {
+            if (key == "id") {
+                newObj[key] = resultNew[0][key];
+            } else if (key == "name") {
+                newObj[key] = resultNew[0][key];
+            } else if (key == "ownerUserId") {
+                newObj[key] = resultNew[0][key];
+            } else if (key == "deptId") {
+                newObj[key] = resultNew[0][key];
+            } else if (key == "coverNodeNum") {
+                newObj[key] = resultNew[0][key];
+            } else if (key == "ownerNodeNum") {
+                newObj[key] = resultNew[0][key];
+            } else if (key == "nodeId") {
+                newObj[key] = resultNew[0][key];
+            } else if (key == "remarks") {
+                newObj[key] = resultNew[0][key];
+            }
+        }
+        this.setState(
+            {
+                editData: newObj
+            },
+            () => {
+                this.props.action.showForm(true);
+            }
+        );
+    }
     //获取列表所需展示字段
     changeValue(data) {
         let newDate = [];
@@ -167,24 +212,19 @@ class VisitRoute extends React.Component {
     }
 
     render() {
-        //获取table loading
-        const loading = this.props.$$state.toJS().loading;
-        //获取请求列表数据
-        let result = this.props.$$state.toJS();
-        //获取modal可视
-        let visible = result.visible;
-        //编辑获取数据为列表需要字段
+        const { loading, data, visible } = this.props.$$state.toJS();
+
         let tableData;
-        if (result.data.data) {
-            tableData = this.changeValue(result.data.data);
+        if (data.data) {
+            tableData = this.changeValue(data.data);
         }
-        //获取已选择的keys
-        let selectedRowKeys = this.props.$$state.toJS().editData[
-            "selectedRowKeys"
-        ];
-        //获取已选择的数据data
-        let selectedRows = this.props.$$state.toJS().editData["selectedRows"];
-        //选择每行列表数据时的方法
+
+        //获取已选择的keys,获取已选择的数据data
+        let {
+            selectedRowKeys,
+            selectedRows
+        } = this.props.$$state.toJS().editData;
+
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
@@ -194,16 +234,16 @@ class VisitRoute extends React.Component {
 
         return (
             <div className="crm-container">
-                {selectedRows && selectedRows.length ? (
+                {selectedRowKeys && selectedRowKeys.length ? (
                     <HeaderButton
-                        length={selectedRows.length}
+                        length={selectedRowKeys.length}
                         goBack={this.headerBack.bind(this)}
                     >
-                        <Button onClick={this.onEdit.bind(this)}>
+                        <Button onClick={this.onDelete.bind(this)}>
                             <i className="iconfont icon-shanchu" />删除
                         </Button>
-                        {selectedRows.length == 1 ? (
-                            <Button>
+                        {selectedRowKeys.length == 1 ? (
+                            <Button onClick={this.onEdit.bind(this)}>
                                 <i className="iconfont icon-bianji" />编辑
                             </Button>
                         ) : (
@@ -273,7 +313,7 @@ class VisitRoute extends React.Component {
                             size: "large",
                             showSizeChanger: true,
                             showQuickJumper: true,
-                            total: result.data.total,
+                            total: data.total,
                             showTotal: this.showTotal,
                             onChange: this.onPageChange.bind(this),
                             onShowSizeChange: this.onPageSizeChange.bind(this)
@@ -289,6 +329,7 @@ class VisitRoute extends React.Component {
                 >
                     <div className="modal-height">
                         <VisitCard
+                            dataSource={this.state.editData}
                             wrappedComponentRef={inst => (this.formRef = inst)}
                         />
                     </div>
