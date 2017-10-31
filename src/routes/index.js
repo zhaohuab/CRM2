@@ -43,16 +43,16 @@ const rootRoutes = {
             require.ensure([], function (require) {
               cb(null, [
                 require('./routes/org/routes/list/index.js').default,
-                require('./routes/project').default,
-                require('./routes/user').default,
-                require('./routes/customer/routes/list').default,
-                require('./routes/contacts').default,
-                require('./routes/prdtype').default,
-                require('./routes/measure').default,
-                require('./routes/role').default,
-                require('./routes/brand').default,
+               // require('./routes/project').default,
+               // require('./routes/user').default,
+                //require('./routes/customer/routes/list').default,
+               // require('./routes/contacts').default,
+              //  require('./routes/prdtype').default,
+              //  require('./routes/measure').default,
+              //  require('./routes/role').default,
+               // require('./routes/brand').default,
                 // require('./routes/customer').default,
-                require('./routes/product').default,
+             //   require('./routes/product').default,
                 require('./routes/visitrules').default,
                 {
                   //未开发页面

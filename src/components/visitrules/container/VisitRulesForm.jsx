@@ -1,6 +1,10 @@
 import { Form, Row, Col, Input, Select, Button,Modal, Table} from 'antd';
+import Enum from 'utils/components/enum';
 import './index.less';
-import {VisitCardTable} from './VisitCardTable';
+import React from 'react'
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as Actions from '../action';
 
 const FormItem = Form.Item;
 const InputGroup = Input.Group;
@@ -9,6 +13,7 @@ const Option = Select.Option;
 
 let cardNum = 1;
 let editKey = true;
+let m = 0;
 
 class Card extends React.Component {
 
@@ -42,8 +47,9 @@ class Card extends React.Component {
             disabled:true,
             valueToKey:{},
             keyToValue:{},
-            preSelectedRowKeys:[]
-                }
+            preSelectedRowKeys:[],
+                },
+            
 
         this.columns=[
             {
@@ -73,34 +79,63 @@ class Card extends React.Component {
         
     }
     
+    cumEnumValue = [{
+      key : 1,
+        title : "普通客户"},
+        {
+      key : 2,
+        title : "小型客户"},
+        {
+      key : 3,
+        title : "中型客户"},
+        {
+      key : 4,
+        title : "大型客户"},]
+
     componentDidMount() {
-       
-       let data = this.props.dataSource;
-       this.props.form.setFieldsValue(data);
-        let keys = this.props.form.getFieldValue('keys');
-        let i = 0;
-        let {valueToKey, keyToValue, visitCardList, selectedRowKeys, selectedRows, preSelectedRowKeys} = this.state;
-        //debugger
-        //keys.splice(keys.length-1,1);
-        keys.forEach((key)=>{
-            if(i<keys.length-1){
-            valueToKey[data['taskCardId-'+key]]=key;
-            keyToValue[key] = data['taskCardId-'+key];
-            selectedRowKeys[i] = data['taskCardId-'+key];
-            preSelectedRowKeys[i] = data['taskCardId-'+key];
-            visitCardList.filter((item)=>{
-                if(item.taskCardId === data['taskCardId-'+key]){
-                    selectedRows[i] = item;
+
+        if (this.props.$$state.get('finished') == false){
+             m =0;
+            cardNum = 1;
+        }
+        if(m ==0){
+
+            let data = this.props.dataSource;
+            let keys = this.props.keys;
+            if(keys.length>1){
+                let i = 0;
+                let {valueToKey, keyToValue, visitCardList, selectedRowKeys, selectedRows, preSelectedRowKeys} = this.state;
+                let selected = {};
+                let preSelected = {};
+                keys.forEach((key)=>{
+                    if(i<keys.length-1){
+                        valueToKey[data['taskCardId-'+key]]=key;
+                        keyToValue[key] = data['taskCardId-'+key];
+                        selectedRowKeys = selectedRowKeys.concat(data['taskCardId-'+key]);
+                        preSelectedRowKeys = preSelectedRowKeys.concat(data['taskCardId-'+key]);
+            
+                        visitCardList.filter((item)=>{
+                            if(item.taskCardId === data['taskCardId-'+key]){
+                                selectedRows = selectedRows.concat(item);
+                    }});
+                i++;
+                cardNum++;
             }});
-            i++;
-        }});
-     
-        this.setState({valueToKey:valueToKey});
-        this.setState({keyToValue,keyToValue});
-        this.setState({preSelectedRowKeys:preSelectedRowKeys});
-        this.setState({selectedRowKeys:selectedRowKeys});
-        this.setState({selectedRows:selectedRows});
-        
+
+            let state = {
+                valueToKey:valueToKey,
+                keyToValue:keyToValue,
+                visitCardList:visitCardList,
+                selectedRowKeys:selectedRowKeys,
+                selectedRows:selectedRows,
+                preSelectedRowKeys,preSelectedRowKeys
+            }
+            this.setState(state);
+        }
+        this.props.form.setFieldsValue(data);
+        m++;
+       
+       }                                  
     }
 
     componentWillMount() {
@@ -166,11 +201,11 @@ class Card extends React.Component {
         const {form} = this.props;
         let fvs = form.getFieldsValue();
         let initKeys = form.getFieldValue('keys');
-        //let keys = [];
+       
         let {selectedRowKeys, selectedRows, valueToKey, keyToValue, preSelectedRowKeys} = this.state;
-        //let selectedLen = selectedRowKeys.length;
-        let taskcardIds = [];     
-        //let{selectedMap} =this.state;
+      
+        let taskcardIds = []; 
+           
         for(let value in valueToKey){
             let value = parseInt(value);
             let i = selectedRowKeys.indexOf(value);
@@ -178,7 +213,6 @@ class Card extends React.Component {
             let id = 'taskCardId-'+valueToKey[value];
             form.setFieldsValue({[name]:selectedRows[i].taskCardName});
             taskcardIds[valueToKey[value]] = {[id]:value};
-           // selectedMap[value];
         }
         form.setFieldsValue({taskCardId:taskcardIds});
     
@@ -189,8 +223,9 @@ class Card extends React.Component {
 }
 
     onSelect = (selectedRowKeys,selectedRows) => {  
+        debugger
         const {form} = this.props;
-        let initKeys = form.getFieldValue('keys');           
+        let initKeys = form.getFieldValue('keys');         
         let{preSelectedRowKeys,valueToKey, keyToValue} =this.state;
         let preSelected = new Set(preSelectedRowKeys);
         let selected = new Set(selectedRowKeys);
@@ -206,6 +241,7 @@ class Card extends React.Component {
                 form.setFieldsValue({keys: initKeys});
             });
         }
+        debugger
         this.setState({preSelectedRowKeys : selectedRowKeys});
         if(diffSel !==null && diffSel !== undefined && diffSel !==[]){
        
@@ -213,17 +249,16 @@ class Card extends React.Component {
             valueToKey[value] = cardNum;
             keyToValue[cardNum] = value;
                 cardNum++;
-                const nextKeys = initKeys.concat(cardNum);
+                let nextKeys = initKeys.concat(cardNum);
                 form.setFieldsValue({keys:nextKeys});
                 let {disabled} = this.state;
                 if(disabled === true){
                     this.setState({disabled:false});
                 }
-                //selectedMap[value] = cardNum;
             });
   
   
-         }// }
+         }
          let state = {
             selectedRowKeys:selectedRowKeys,
             disabled: false,
@@ -240,25 +275,21 @@ class Card extends React.Component {
     }
 
     render() {
-      this.state;
         const {form} = this.props;
         let {selectedRowKeys,selectedRows, preSelectedRowKeys} = this.state;
         const { getFieldDecorator,getFieldValue } = this.props.form;
-        getFieldDecorator('keys',{initialValue:[1]});
+        let hasFinished = this.props.$$state.finished;      
+    
+        if(editKey==false){
+            this.props.action.finish(true);
+        }
+        getFieldDecorator('keys',{initialValue:this.props.keys});    
         let keys = form.getFieldValue('keys');
-       if(editKey === true){
-           keys = this.props.keys;
-           form.setFieldsValue({keys:keys});
-           editKey = false;
-           cardNum+=keys.length-1;
-       }
-        
-      
+        debugger
         getFieldDecorator('taskCardId',{initialValue:[]});
         getFieldDecorator('id',{initialValue:{}});
-       
         const cardItems = keys.map((k, index) => {
-            if(k ===1){
+            if(k ==1){
                 return(
                 <Row gutter ={4}>
                 <Col span={2}>
@@ -371,12 +402,12 @@ class Card extends React.Component {
                     )}
                 </FormItem>
                 <FormItem label="客户等级："  >
-                    {getFieldDecorator('cumEnumValueName', {
+                    {getFieldDecorator('cumEnum', {
                         rules: [{
                             required: true, message: '请输出名称',
                         }],
                     })(
-                        <Search placeholder='请输入'/>
+                        <Enum dataSource={this.cumEnumValue}/>
                     )}
                 </FormItem>
                 <FormItem label="任务卡："  >
@@ -400,4 +431,16 @@ class Card extends React.Component {
     }
 }
 
-export default Card;
+function mapStateToProps(state, ownProps) {
+    return{
+        $$state: state.visitRules
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+       action: bindActionCreators(Actions,dispatch)
+    }
+}
+
+export default connect( mapStateToProps, mapDispatchToProps)(Card);
