@@ -36,6 +36,8 @@ class BtnPanel extends React.Component {
         return (
             <div className='hide-label'>
                 <div className='hide-label-left'>
+                <div className='edit-inner-left'>已选中<span>{this.props.selectedData.length}</span>条</div>
+                    <div className='edit-inner-right'>
                     <Button className='returnbtn-class' onClick={this.btnBack.bind(this)}><i className='iconfont icon-fanhui'></i>返回</Button>
                     <Button className='returnbtn-class' onClick={this.btnDelete.bind(this)}><i className='iconfont icon-shanchu'></i>删除</Button>
                 
@@ -43,10 +45,13 @@ class BtnPanel extends React.Component {
                         <Button onClick={this.props.btnSetEnable.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
                         <Button onClick={this.props.btnSetEnable.bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
                     </ButtonGroup>
-                    <Button className='returnbtn-class'><i className='iconfont icon-daochu'></i>导出</Button>
+                    
+                </div>
                 </div>
                 <div className='hide-label-right'>
-                    <Icon type="close" />
+                    
+                    <Icon type="close" onClick={this.btnBack.bind(this)} />
+                    
                 </div>
             </div>
         );
@@ -78,7 +83,6 @@ class SimForm extends React.Component {
                         <Col span={8}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('name', {
-                                    rules: [{ required: true, message: '请输入客户名称!' }],
                                 })(
                                     <Input type='text' placeholder="客户名称" />
                                     )}
@@ -87,7 +91,6 @@ class SimForm extends React.Component {
                         <Col  span={8}>
                             <FormItem   {...formItemLayout} >
                                 {getFieldDecorator('level', {
-                                    rules: [{ required: true, message: '请输入客户等级!' }],
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.level}
@@ -150,7 +153,6 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('name', {
-                                    rules: [{ required: true, message: '请输入客户名称!' }],
                                 })(
                                     <Input type='text' placeholder="客户名称" />
                                     )}
@@ -159,7 +161,6 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('level', {
-                                    rules: [{ required: true, message: '请输入客户等级!' }],
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.level}
@@ -172,7 +173,6 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('saleArea', {
-                                    rules: [{ required: true, message: '请输入营销区域!' }],
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.saleArea}
@@ -185,7 +185,6 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('province_city_district', {
-                                    rules: [{ required: true, message: '请输入省/市/区/县!' }],
                                 })(
                                     <Cascader options={this.props.cityData} placeholder="省/市/区/县" />
 
@@ -197,7 +196,6 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('parentId', {
-                                    rules: [{ required: true, message: '请输入上级客户!' }],
                                 })(
                                     <Input type='text' placeholder="上级客户" />
                                     )}
@@ -206,7 +204,6 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('industry', {
-                                    rules: [{ required: true, message: '请输入行业!' }],
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.industry}
@@ -219,7 +216,6 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('cannelType', {
-                                    rules: [{ required: true, message: '请输入渠道类型!' }],
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.cannelType}
@@ -232,7 +228,6 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('lifecycle', {
-                                    rules: [{ required: true, message: '请输入生命周期!' }],
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.lifecycle}
@@ -247,7 +242,6 @@ class MilForm extends React.Component {
                       <Col span={6}>
                         <FormItem  {...formItemLayout} >
                             {getFieldDecorator('enableState', {
-                                rules: [{ required: true, message: '请输入启用状态!' }],
                             })(
                                 <Enum
                                     initValue={this.props.searchMap.enableState}
@@ -303,6 +297,7 @@ class ToolForm extends React.Component {
                             btnBack={this.props.btnBack}
                             btnSetEnable={this.props.btnSetEnable}
                             btnDelete={this.props.btnDelete}
+                            selectedData = {this.props.selectedData}
                         />
                     </div>:
                     <div>

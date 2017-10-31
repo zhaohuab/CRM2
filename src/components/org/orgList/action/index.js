@@ -13,7 +13,6 @@ const fetchData = (type, payload)=> {
 export function getlist(searchMap={}){
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETLISTSTART'})
-        debugger;
         request({
             url: url.org,
             method:'get',
@@ -21,7 +20,6 @@ export function getlist(searchMap={}){
                 param : {searchMap}
             }
         },(data) => {
-            debugger;
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
     }
@@ -76,8 +74,8 @@ export function listadd(list){
                 data:{}
             }
             ,(data) => {
-                dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
-                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData}));
+            debugger;
+                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData,treeData:data.data}));
             })
         })
     }
