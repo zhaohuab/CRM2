@@ -180,71 +180,71 @@ class List extends React.Component {
     const detail = this.props.action.detail;
     const WrapCard = Form.create()(Card);
     return (
-      <div className='user-warpper'>
+      <div className= 'user-warpper'>
         {
           headLabel ? 
-          <div className='head_edit'>
-            <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
+          <div className= 'head_edit'>
+            <HeadLabel selectedRowKeys= { selectedRowKeys } onBack= { this.onBack }>
             {             
-              this.state.selectedRowKeys.length==1? <Button className="default_button" onClick={this.onEdit.bind(this)}><i className='iconfont icon-bianji'></i>编辑</Button> :''}
+              this.state.selectedRowKeys.length == 1 ? <Button className="default_button" onClick = { this.onEdit.bind(this) }><i className = 'iconfont icon-bianji'></i>编辑</Button> :''}
                     
-              <Popconfirm placement="bottom"  title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
-                <Button className="default_button" ><i className='iconfont icon-shanchu'></i>删除</Button>
+              <Popconfirm placement = "bottom"  title = "确认删除吗" onConfirm = { this.onDelete } okText = "是" cancelText = "否">
+                <Button className = "default_button" ><i className = 'iconfont icon-shanchu'></i>删除</Button>
               </Popconfirm>
               
-              {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}><i className='iconfont icon-tingyong'></i>停用</Button>:
-              <Button className="default_button" onClick={this.onEnable(1).bind(this,1)}><i className='iconfont icon-qiyong-lanse'></i>启用</Button>}
-              <Button className="default_button"><i className='iconfont icon-fenpeijiaose'></i>分配角色</Button>
+              { this.state.enable == 1 ? <Button className = "default_button" onClick = { this.onEnable(2).bind(this, 2) }><i className = 'iconfont icon-tingyong'></i>停用</Button>:
+              <Button className = "default_button" onClick = { this.onEnable(1).bind(this, 1) }><i className = 'iconfont icon-qiyong-lanse'></i>启用</Button>}
+              <Button className = "default_button"><i className = 'iconfont icon-fenpeijiaose'></i>分配角色</Button>
             </HeadLabel> 
           </div>: 
-          <div className='head_panel'>
-              <div className='head_panel-left'>
+          <div className = 'head_panel'>
+              <div className = 'head_panel-left'>
                 <div>
-                  <span className='deep-title-color'>所属部门：</span>
+                  <span className = 'deep-title-color'>所属部门：</span>
                   <Input
-                    placeholder="请选择..."
-                    className="search"
-                    onSearch={value => console.log(value)}
+                    placeholder = "请选择..."
+                    className = "search"
+                    onSearch = { value => console.log(value) }
                   />
                 </div>
-                <div className='head_panel-state'>
-                  <span className='simple-title-color'>状态：</span>
-                  <RadioGroup onChange={this.onEableRadioChange} value={this.state.enable} className='simple-title-color'>
-                    <Radio value={1}>启用</Radio>
-                    <Radio value={2}>停用</Radio>
+                <div className = 'head_panel-state'>
+                  <span className = 'simple-title-color'>状态：</span>
+                  <RadioGroup onChange = { this.onEableRadioChange } value = { this.state.enable } className = 'simple-title-color'>
+                    <Radio value = { 1 }>启用</Radio>
+                    <Radio value = { 2 }>停用</Radio>
                   </RadioGroup>
                 </div>
               </div>
-              <div className='head_panel-right'>
-                <ButtonGroup className='add-more'>
-                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
+              <div className = 'head_panel-right'>
+                <ButtonGroup className = 'add-more'>
+                  <Button><i className = 'iconfont icon-daochu'></i>导入</Button>
+                  <Button><i className = 'iconfont icon-daoru'></i>导出</Button>
                 </ButtonGroup>
-                <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
+                <Button  type = "primary" className = "button_add" onClick = { this.onAdd.bind(this) }><Icon type = "plus" />新增</Button>
               </div>
           </div>
         }
 
-        <div className="list-box" id='doc'>
+        <div className = "list-box" >
           <Table
-            size="middle"
-            columns={this.columns}
-            dataSource={page.data}
-            rowSelection={rowSelection}
-            rowKey="id"
-            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}
+            size = "middle"
+            columns = { this.columns }
+            dataSource = { page.data }
+            rowSelection = { rowSelection }
+            rowKey = "id"
+            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
           />
         </div>
         <Modal
-          title="新增档案"
-          visible={visible}
-          onOk={this.onSave.bind(this)}
-          onCancel={this.onClose.bind(this)}
-          width={500}
+          title = { headLabel ? "编辑档案" : "新增档案" }
+          visible = {visible}
+          onOk = { this.onSave.bind(this) }
+          onCancel = { this.onClose.bind(this) }
+          width= { 500 }
         >
-          <div className='model-height' id='doc-table'>
-            <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}  />
-            <Tables ref={ref => this.ref = ref} style={{marginTop:'30px'}}/>
+          <div className = 'model-height' id = 'doc'>
+            <WrapCard dataSource = { editData } wrappedComponentRef ={ (inst) => this.formRef = inst} />
+            <Tables ref = { ref => this.ref = ref} />
           </div>
         </Modal>
       </div>
@@ -260,7 +260,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-      action : bindActionCreators(Actions, dispatch)
+      action: bindActionCreators(Actions, dispatch)
   }
 }
 

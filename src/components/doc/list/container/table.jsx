@@ -151,7 +151,7 @@ export default class EditableTable extends React.Component {
   }
 
   add(){//增加明细
-    let value = this.refs.input1.value;
+    let value = this.input.value;
     if(value=='') return;
     let detail = this.state.docDetail;
     let obj = {
@@ -167,7 +167,7 @@ export default class EditableTable extends React.Component {
           flag:true,
         }
     detail.push(obj);
-    this.refs.input1.value = '';  
+    this.input.value = '';  
     this.setState({ docDetail: detail })  
   }
 
@@ -238,7 +238,11 @@ export default class EditableTable extends React.Component {
     } 
   }
 
+  title(){return <div style={{color:'rgba(0,0,0,0.85)',padding:'5px 0', fontSize:'15px' }}>档案明细:</div>} 
 
+componentDidMount(){
+  console.log('=======',this.state.docDetail.length)
+}
   render() {
     const { docDetail } = this.state;
     const dataSource = docDetail.map((item) => {
@@ -250,11 +254,12 @@ export default class EditableTable extends React.Component {
     });
     const columns = this.columns;
     return (
-        <div>
-          <Table dataSource={dataSource} columns={columns} pagination={false} showHeader={false} />        
-         <div style={{ marginTop:'20px' }}>
-           <input ref='input1' placeholder='请输入档案明细...' style={{width:'50%', float:'left'}}></input>
-           <button style={{width:'20%', float:'right'}} onClick={this.add.bind(this)}>添加</button>
+        <div id='doc-table'>
+          { this.state.docDetail.length ? 
+            <Table title={this.title} dataSource={dataSource} columns={columns} pagination={false} showHeader={false} /> :'' } 
+         <div style={{ marginTop:'20px', overflow: 'hidden'}}>
+           <input ref={ref => this.input=ref} placeholder='请输入档案明细...' style={{width:'50%', float:'left'}}></input>
+           <button style={{width:'15%', float:'right'}} onClick={this.add.bind(this)}>添加</button>
          </div>
         </div>
         );
