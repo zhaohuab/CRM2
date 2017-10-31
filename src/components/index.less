@@ -1,6 +1,5 @@
 body {
     background-color: #e5e5e5;
-    overflow: hidden;
     font-family: "Microsoft YaHei", "Arial", "黑体", "宋体", sans-serif;
     -webkit-font-smoothing: antialiased;
 }
@@ -8,6 +7,9 @@ body {
 .full-height {
     position: relative;
     height: 100%;
+    min-width: 1200px;
+    max-width: 100%;
+    overflow-y: hidden;
 }
 
 .app-container {
@@ -40,7 +42,6 @@ body {
     padding: 10px;
     box-sizing: border-box;
     overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .app-talk {
@@ -58,213 +59,11 @@ body {
     align-items: center;
 }
 
-//model
-.ant-modal-content {
-    position: relative;
-    .ant-modal-close {
-        height: 40px;
-    }
-    .ant-modal-close-x {
-        position: absolute;
-        right: -5px;
-        top: 0;
-        line-height: 35px;
-        font-size: 18px;
-    }
-}
 
-.ant-modal-content .ant-modal-header {
-    background: #fafafa;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    .ant-modal-title {
-        color: rgba(102, 102, 102, 1);
-        font-size: 16px;
-        font-weight: 400;
-    }
-}
+/*页面公共样式*/
 
-.ant-modal-content .ant-form-item-required:before {
-    color: #333;
-}
-
-/*model头部样式*/
-
-.ant-modal-header {
-    background: #fafafa;
-    height: 50px;
-}
-
-.ant-form-item-required:before {
-    color: #333;
-}
-
-/* model内高度 */
-
-.model-height {
-    max-height: 480px;
-    overflow-y: auto;
-    margin: -16px;
-    padding: 16px;
-}
-
-/*model内侧高度参照样式*/
-
-.add-inset-model {
-    margin: -16px;
-    padding: 16px;
-    height: 380px;
-    overflow: auto;
-}
-
-/* ant.design  表格样式 */
-
-.ant-table .ant-table-thead > tr,
-.ant-table .ant-table-tbody > tr:nth-child(even) {
-    background: #f3faff;
-}
-
-.ant-table .ant-table-thead > tr > th {
-    color: #666;
-}
-
-.ant-table .ant-table table {
-    border-top: 1px solid #3ca4fb;
-    border-bottom: 1px solid #ddd;
-}
-
-.ant-table {
-    color: #999;
-}
-
-.ant-table .ant-table-thead > tr > th,
-.ant-table .ant-table-tbody > tr > td {
-    border: none;
-}
-
-.ant-table .ant-tree.ant-tree-show-line li:not(:last-child):before {
-    border-left: 1px solid #ececec;
-}
-
-/* ant.design  菜单样式*/
-
-.ant-menu-inline-collapsed > .ant-menu-item .anticon + span,
-.ant-menu-inline-collapsed
-    > .ant-menu-submenu
-    > .ant-menu-submenu-title
-    .iconfont
-    + span {
-    opacity: 0;
-}
-
-.ant-menu-item .anticon + span,
-.ant-menu-submenu-title .iconfont + span {
-    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
-        width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
-
-.ant-menu-inline-collapsed > .ant-menu-item > .iconfont + span {
-    opacity: 0;
-}
-
-.ant-menu-inline-collapsed > .ant-menu-item .anticon,
-.ant-menu-inline-collapsed
-    > .ant-menu-submenu
-    > .ant-menu-submenu-title
-    .anticon {
-    font-size: 20px;
-    position: relative;
-    left: -1px;
-}
-
-.ant-menu.ant-menu-dark .ant-menu-item-selected {
-    background: #1671d5;
-}
-
-//tree
-#tree-icon
-    .ant-tree.ant-tree-show-line
-    li
-    span.ant-tree-switcher.ant-tree-switcher-noop:after {
-    content: "\E621";
-    color: #3ca4fb;
-}
-
-#tree-icon
-    .ant-tree.ant-tree-show-line
-    li
-    span.ant-tree-switcher.ant-tree-switcher_open:after {
-    content: "\E6C1";
-    color: #3ca4fb;
-}
-
-#tree-icon
-    .ant-tree.ant-tree-show-line
-    li
-    span.ant-tree-switcher.ant-tree-switcher_close:after {
-    content: "\E6C0";
-    color: #3ca4fb;
-}
-
-//折叠菜单
-#collapse-recover .ant-collapse {
-    border: none;
-    background: white;
-}
-
-#collapse-recover .ant-collapse > .ant-collapse-item > .ant-collapse-header {
-    background: #f2f2f2;
-}
-
-#collapse-recover
-    .ant-collapse
-    > .ant-collapse-item
-    > .ant-collapse-header
-    .arrow:before {
-    content: "\E604";
-}
-
-#collapse-recover
-    .ant-collapse-borderless
-    > .ant-collapse-item
-    > .ant-collapse-content {
-    border-top: none;
-}
-
-#collapse-recover .ant-collapse > .ant-collapse-item {
-    border-bottom: none;
-    margin-bottom: 12px;
-    border: 1px solid #f2f2f2;
-}
-
-/*ant下拉框单独样式修改*/
-
-.ant-select-dropdown {
-    min-width: 105px;
-    text-align: center;
-}
-
-.ant-select-dropdown-menu-item {
-    color: #1c7feb;
-}
-
-.ant-select-dropdown-menu-item:hover {
-    color: #666;
-    background: #ebf5ff;
-}
-
-.ant-select {
-    margin-right: -10px;
-}
-
-#recover-select .ant-select .ant-select-selection {
-    border: none;
-    color: #666;
-}
-
-//标签
-.project-label-group {
+//tag标签
+.tag-group {
     display: flex;
     align-items: center;
     span {
@@ -281,14 +80,42 @@ body {
     }
 }
 
-//下拉菜单
-.ant-dropdown .ant-dropdown-menu-item,
-.ant-dropdown .ant-dropdown-menu-submenu-title {
-    color: #1c7feb;
+
+/* modal内高度，表单内容不超8个，超过显示滚动条*/
+
+.modal-height {
+    max-height: 480px;
+    overflow-y: auto;
+    margin: -16px;
+    padding: 16px;
 }
 
-.ant-dropdown .ant-dropdown-menu-item:hover,
-.ant-dropdown .ant-dropdown-menu-submenu-title:hover {
-    color: #999;
-    background: #ebf5ff;
+
+/*modal参照内侧高度*/
+
+.add-inset-modal {
+    margin: -16px;
+    padding: 16px;
+    height: 380px;
+    overflow: auto;
+}
+
+
+/*列表头部高度*/
+
+.crm-container-header {
+    width: 100%;
+    min-height: 54px;
+    line-height: 54px;
+}
+
+
+/*列表页最外成页边距*/
+
+.crm-container {
+    background: white;
+    width: 100%;
+    min-height: 100%;
+    padding: 0 15px;
+    box-sizing: border-box;
 }

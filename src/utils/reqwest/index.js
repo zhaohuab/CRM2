@@ -3,76 +3,81 @@
  * 参数：request库参数
  * 创建日期：2017-8-1
  */
-import request from 'reqwest'
-import handle from './HandleReqwest'
-import {encrypt,decrypt} from './Cryto'
-import {codeConstant} from './HandleReqwest'
+import request from "reqwest";
+import handle from "./HandleReqwest";
+import { encrypt, decrypt } from "./Cryto";
+import { codeConstant } from "./HandleReqwest";
 request.ajaxSetup({
     headers: {
         // 后端约定, 用以辨别是否为ajax请求的字段
-        'X-Requested-With': 'XMLHttpRequest',
+        "X-Requested-With": "XMLHttpRequest"
     }
-})
+});
 
-const reqwest = (options,success,fail)=> {
-    let {data,method,url,...others} = options;
-    let mResult = handleMehtod(method,url,data);
-    
+const reqwest = (options, success, fail) => {
+    let { data, method, url, ...others } = options;
+
+    let mResult = handleMehtod(method, url, data);
+
     request({
-        type:"application/x-www-form-urlencoded",
+        type: "application/x-www-form-urlencoded",
         ...mResult,
         ...others
     })
-    .then((result) => {
-        if(!handle(result)){
-            return 
-        }
-        if(result.response) {
-            let resp = JSON.parse(result.response);
-            if(resp.code==codeConstant.ServiceFormVaild){
-                success(resp);
-                return
+        .then(result => {
+            if (!handle(result)) {
+                return;
             }
-            let respData = resp.data;
-            let decryptData = decrypt(respData)
-            success(decryptData ? JSON.parse(decryptData) : undefined);
-        }
-        else {
-            success();
-        }
-    })
-    .fail((result) => {
-        handle(result);
-        if(fail) {
-            if(result.code){
-                fail(result);
+            if (result.response) {
+                let resp = JSON.parse(result.response);
+                if (resp.code == codeConstant.ServiceFormVaild) {
+                    success(resp);
+                    return;
+                }
+                let respData = resp.data;
+                let decryptData = decrypt(respData);
+                success(decryptData ? JSON.parse(decryptData) : undefined);
+            } else {
+                success();
             }
-            if(result.response) {
-                fail(JSON.parse(result.response));
+        })
+        .fail(result => {
+            handle(result);
+
+            if (fail) {
+                if (result.code) {
+                    fail(result);
+                }
+                if (result.response) {
+                    fail(JSON.parse(result.response));
+                }
             }
-        }
-    })
-}
-function handleMehtod(method,url,data) {
-    let contentType="";
-    if((method.toUpperCase() == "GET" || method.toUpperCase() == "DELETE")) {
-        if(data&&data.param) {
-            url += "?param=" + encodeURIComponent(encrypt(JSON.stringify(data.param)));
+        });
+};
+function handleMehtod(method, url, data) {
+    let contentType = "";
+    if (method.toUpperCase() == "GET" || method.toUpperCase() == "DELETE") {
+        if (data && data.param) {
+            url +=
+                "?param=" +
+                encodeURIComponent(encrypt(JSON.stringify(data.param)));
         }
         data = {};
         contentType = "application/x-www-form-urlencoded";
-    }
-    else {
+    } else {
         data = JSON.stringify({
-            param:encrypt(data && data.param ? JSON.stringify(data.param) : undefined)
-        })
+            param: encrypt(
+                data && data.param ? JSON.stringify(data.param) : undefined
+            )
+        });
+
         contentType = "application/json";
     }
     return {
         method,
         contentType,
         url,
-        data,
-    }
+        data
+    };
 }
-export default  reqwest
+export default reqwest;

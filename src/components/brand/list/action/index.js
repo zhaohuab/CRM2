@@ -6,7 +6,7 @@ import { brand as url } from 'api';
 
 const showForm = (flag, editData = {}, index) => {
     return (dispatch) => {
-        dispatch(fetchData('BARD_LIST_SHOWFORM', { visible: flag, editData }));
+        dispatch(fetchData('BRAND_LIST_SHOWFORM', { visible: flag, editData }));
     }
 }
 
@@ -26,6 +26,7 @@ const getListData = (params) => {
 }
 
 const onSave4Add = (data) => {
+    debugger
     data.enableState = "1";
     return (dispatch) => {
         reqwest({

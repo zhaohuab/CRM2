@@ -11,13 +11,13 @@ const fetchData = (type, payload) => {
 }
 
 //获取所有数据
-export function getlist(params) {//这个searchMap的作用是什么？分页信息么？？
+export function getlist(params) {
     if (typeof params == 'undefined') {
         params = {
             searchMap:{}
         }
     }
-    return (dispatch, getState) => {//这个getState干什么用的，没看到传实参的地方？？？       
+    return (dispatch, getState) => {    
         dispatch({ type: 'PRDTYPE_LIST_GETLISTSTART' })
         request({
             url: url.prdtype,
@@ -57,13 +57,15 @@ export function showForm(flag, editData = {}) {
 	}
 }
 
-const transData = (data) => {//这个transData的作用是？？
+const transData = (data) => {
 	data.fatherTypeId = data.fatherTypeId.key
 	return data;
 }
 
 //新增数据
 export function listadd(list) {
+ 
+    list.fatherTypeId = list.fatherTypeId.key
     return (dispatch, getState) => {
         request({
             url: url.prdtype,   
@@ -91,6 +93,7 @@ export function listadd(list) {
 export function listchange(value) {
     return (dispatch, getState) => {
         let id = value.id
+        value.fatherTypeId = value.fatherTypeId.key;
         request({
             url: url.prdtype+'/'+id,
             method: 'put',
@@ -103,7 +106,7 @@ export function listchange(value) {
                 url: url.prdtype, 
                 method: 'get',
                 data: {
-                    param: {//这里的params是个什么意思？没有定义直接使用？作用是什么？
+                    param: {
                         condMap: typeof(params) == "undefined" ? {} : params
                     }           
                 }
@@ -154,6 +157,7 @@ export function listdel(record, treeId, searchFilter) {
 			}
         }
         ,(dataResult) => {
+            dispatch({ type:'PRDTYPE_LIST_DELETELISTSUCCESS', tableListCheckbox: [] })
             const listData = dataResult;
             request({
                 url: url.prdtypeTree,

@@ -35,7 +35,7 @@ class List extends Component {
           }, 
           {
             title: '状态',
-            dataIndex: 'enableState'
+            dataIndex: 'enableStateName'
           },
            {
             title: '停用时间',
@@ -200,7 +200,6 @@ class List extends Component {
         let treeLoading = prdState.get('treeLoading')
         let treeSelect = prdState.get('treeSelect');
         let searchFilter = prdState.get('searchFilter');
-
         let listData = prdState.get('listData').toJS();
         let treeData = prdState.get('treeData').toJS();
         let tableListCheckbox = prdState.get('tableListCheckbox').toJS();
@@ -225,7 +224,7 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect,searchFilter)} deleteList={this.btnDelete.bind(this,treeSelect,searchFilter)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect,searchFilter)} enablestate={this.state.searchMap.enableState} deleteList={this.btnDelete.bind(this,treeSelect,searchFilter)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <ButtonGroup className='list-add-group'>
                                     <Button><i className='iconfont icon-daochu'></i>导入</Button>
@@ -234,7 +233,7 @@ class List extends Component {
                                 <Button type='primary' onClick={this.addFormBtn.bind(this)}><Icon type="plus" />新建</Button>
                             </div>
                         </div>
-                        <div className='org-tabel'>
+                        <div className='org-tabel' id = 'prdtype'>
                             <Table columns={this.columns} rowKey ='id' dataSource={listData} loading={tabelLoading}  rowSelection={this.rowSelectionFn} size='middle' 
                             pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:listData.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
                         </div>

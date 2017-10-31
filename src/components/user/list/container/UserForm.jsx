@@ -1,9 +1,9 @@
 import { Form, Input, Select } from 'antd';
 
-import Email from 'utils/components/email'
+import Email from 'utils/components/emails'
 import Department from 'components/refs/departments'
-import Enum from 'utils/components/enum'
-import RadioGroup from 'utils/components/radio'
+import Enum from 'utils/components/enums'
+import RadioGroup from 'utils/components/radios'
 const FormItem = Form.Item;
 const Option = Select.Option;
 class Card extends React.Component {
