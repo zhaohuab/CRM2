@@ -48,9 +48,6 @@ let rootReducer = combineReducers({
     commonMenu,
     header,
     componentReducer,
-<<<<<<< HEAD
-   
-=======
     userlist,
     orgReducers,
     projectList,
@@ -67,7 +64,6 @@ let rootReducer = combineReducers({
     opportunityList,
     oppactionlist,
     visitroute,
->>>>>>> 0ab79c810e785f61861de88d5728bd8bb9e0aedd
     visitRules,
 });
 

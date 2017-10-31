@@ -1,5 +1,5 @@
 import { Form, Row, Col, Input, Select, Button,Modal, Table} from 'antd';
-import Enum from 'utils/components/enum';
+import Enum from 'utils/components/enums';
 import './index.less';
 import React from 'react'
 import {bindActionCreators} from 'redux';
