@@ -15,7 +15,7 @@ function pageAdd(page,item) {
 	return page;
 }
 function pageEdit(page,item) {
-	debugger
+	
 	let {data} = page;
 	for(let i=0,len=data.length;i<len;i++) {
 		if(data[i].code == item.code) {
@@ -27,7 +27,6 @@ function pageEdit(page,item) {
 	return page;
 }
 function reducer ($$state = Immutable.fromJS(initialState), action){
-   debugger
     switch(action.type){
         case 'PRODUCT_LIST_GETLISTSUCCESS': 
 	        return $$state.merge({

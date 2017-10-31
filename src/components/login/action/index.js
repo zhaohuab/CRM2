@@ -1,14 +1,13 @@
-import fetchData from 'utils/fetchdata';
-import reqwest from 'utils/reqwest';
-import { login as url } from 'api';
-
+import fetchData from "utils/fetchdata";
+import reqwest from "utils/reqwest";
+import { login as url } from "api";
+import { codeConstant } from "utils/reqwest/HandleReqwest";
 //定义方法 action
 const login = (params) => {
 	
 	return (dispatch) => {
 	    dispatch(fetchData('LOGIN_MAIN_LOGIN_START', {}))
 		const { user,password } = params;
-		console.info(url);
 		reqwest({
 			url: url,
 			method : 'POST',
@@ -16,13 +15,22 @@ const login = (params) => {
 				param : {username:user,password},
 			}
 		},(result) => {
-			dispatch(fetchData('LOGIN_MAIN_LOGIN_START_SUCCESS', {}))
+			if(result&&result.code&&result.code==codeConstant.ServiceFormVaild){
+				//登录失败时result返回错误message信息
+				dispatch(fetchData('LOGIN_MAIN_LOGIN_START_FAIL', result.message))
+			}else{
+				dispatch(fetchData('LOGIN_MAIN_LOGIN_START_SUCCESS', {}))
+			}
+			
 		})
 	}
 }
 
+const setLogout = () => {
+    return dispatch => {
+        dispatch(fetchData("LOGIN_MAIN_SETLOGOUT", {}));
+    };
+};
 
 //输出 type 与 方法
-export {
-    login,
-}
+export { login, setLogout };
