@@ -19,6 +19,8 @@ let initialState = {
     }],
     selectedVisitData:[],
     saveData:[],
+    finished:false,
+    keys:[],
 };
 
 function pageAdd(page,item) {
@@ -29,10 +31,10 @@ function pageAdd(page,item) {
 }
 
 function pageEdit(page,item) {
-	
+	debugger
 	let {data} = page;
 	for(let i=0,len=data.length;i<len;i++) {
-		if(data[i].code == item.code) {
+		if(data[i].id == item.id) {
 			data[i] = item;
 			break;
 		}
@@ -68,8 +70,8 @@ export default function reducer ($$state = Immutable.fromJS(initialState), actio
                 visible : action.content.visible,
                 data : pageAdd($$state.get('data').toJS(),action.content)
             })
-        case 'VISITRULES_CARD_EDITADD': //编辑保存
-       
+        case 'VISITRULES_CARD_SAVEEDIT': //编辑保存
+  
             return $$state.merge({
                 visible : action.content.visible,
                 data : pageEdit($$state.get('data').toJS(),action.content)
@@ -84,6 +86,16 @@ export default function reducer ($$state = Immutable.fromJS(initialState), actio
             return $$state.merge({
                 selectedVisitData: action.content
             })
+        
+        case 'VISITCARD_FORM_FINISHED'://新增or保存是否结束
+            return $$state.merge({
+                finished: action.content
+            })
+        case 'VISITCARD_KEYS_SETTING'://设置form的key
+            return $$state.merge({
+                keys: action.content
+            })
+
 
         default:
             return $$state;
