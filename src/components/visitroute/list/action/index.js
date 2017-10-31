@@ -19,7 +19,6 @@ export function getVisitrouteList(pagination, searchMap) {
                 }
             },
             result => {
-                debugger;
                 dispatch({ type: "VISITROUTE_LIST_GETLIST", data: result });
             }
         );
@@ -47,7 +46,6 @@ export function cardSaved(values, pagination, searchMap) {
                 }
             },
             result => {
-                debugger;
                 dispatch({ type: "VISITROUTE_LIST_ADDLIST", data: result });
             }
         );
@@ -65,7 +63,7 @@ export function selectData(data) {
 
 //删除已选择数据
 
-export function onEdit(selectedRowKeys, pagination, searchMap) {
+export function onDelete(selectedRowKeys, pagination, searchMap) {
     return dispatch => {
         reqwest(
             {
@@ -82,11 +80,32 @@ export function onEdit(selectedRowKeys, pagination, searchMap) {
                 }
             },
             result => {
-                debugger;
                 dispatch({
                     type: "VISITROUTE_LIST_DELETELIST",
                     data: result,
                     del: selectedRowKeys
+                });
+            }
+        );
+    };
+}
+//编辑一条数据
+export function onEdit(values, pagination, searchMa) {
+    return dispatch => {
+        reqwest(
+            {
+                url: `${visitRouter.visit}/${values.id}`,
+                method: "PUT",
+                data: {
+                    param: {
+                        ...values
+                    }
+                }
+            },
+            result => {
+                dispatch({
+                    type: "VISITROUTE_LIST_UPDATELIST",
+                    data: result
                 });
             }
         );
