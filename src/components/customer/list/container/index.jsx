@@ -1,17 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {
-    Select,
-    Input,
-    Form,
-    Table,
-    Modal,
-    Button,
-    Icon,
-    Row,
-    Col
-} from "antd";
+import {Select,Input,Form,Table,Modal,Button,Icon,Row,Col} from "antd";
 import ToolForm from "./ButtonTool.jsx";
 let Search = Input.Search;
 const FormItem = Form.Item;
@@ -62,6 +52,10 @@ class List extends React.Component {
             {
                 title: "行业",
                 dataIndex: "industryName"
+            },
+            {
+                title: "状态",
+                dataIndex: "enableState"
             },
             {
                 title: "地址",
@@ -212,7 +206,6 @@ class List extends React.Component {
         const viewData = $$state.get("viewData").toJS();
         const viewFormVisible = $$state.get("viewFormVisible");
         const h = this.props.$$stateCommon.toJS().height - 90;
-        console.log(h, "hhhhhhhhhhhhhhh");
         return (
             <div className="custom-warpper" style={{ height: h + "px" }}>
                 <ToolForm
@@ -227,6 +220,7 @@ class List extends React.Component {
                     cityData={cityData}
                     searchMap={searchMap}
                     btnDelete={this.btnDeleteList.bind(this)}
+                    selectedData={selectedRows}
                 />
                 <div className="custom-tabel">
                     <Table
@@ -238,7 +232,8 @@ class List extends React.Component {
                     />
                 </div>
                 <Modal
-                    title="增加客户"
+                    title={this.state.isEdit?"编辑客户":"新增客户"}
+
                     visible={formVisitable}
                     onOk={this.formHandleOk.bind(this)}
                     onCancel={this.formHandleCancel.bind(this)}

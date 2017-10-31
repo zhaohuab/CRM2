@@ -35,15 +35,15 @@ class BtnPanel extends React.Component {
     render() {
         return (
             <div className='hide-label'>
-                
+
                 <div className='hide-label-left'>
-                <div className='actionButtons-chioce'>
+                    <div className='actionButtons-chioce'>
                         已选择：{this.props.selectedData.length}条
-                </div> 
+                </div>
                     <Button className='returnbtn-class' onClick={this.btnBack.bind(this)}><i className='iconfont icon-fanhui'></i>返回</Button>
                     <Button className='returnbtn-class' onClick={this.btnDelete.bind(this)}><i className='iconfont icon-shanchu'></i>删除</Button>
 
-                   
+
                     <Button className='returnbtn-class'><i className='iconfont icon-daochu'></i>导出</Button>
                 </div>
                 <div className='hide-label-right'>
@@ -98,7 +98,7 @@ class SimForm extends React.Component {
                                     )}
                             </FormItem>
                         </Col>
-                       
+
                         <Col span={8}>
                             <div className='more-btn'>
                                 <Button htmlType="submit" >搜索</Button>
@@ -141,7 +141,7 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('searchKey', {
-                                   
+
                                 })(
                                     <Input type='text' placeholder="查询条件" />
                                     )}
@@ -150,7 +150,7 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('level', {
-                                   
+
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.level}
@@ -163,7 +163,7 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('saleArea', {
-                                   
+
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.saleArea}
@@ -176,10 +176,13 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('province_city_district', {
-                                  
-                                })(
-                                    <Cascader options={this.props.cityData} placeholder="省/市/区/县" />
 
+                                })(
+                                    <Enum
+                                        initValue={this.props.searchMap.saleArea}
+                                        addOptionAll={'营销区域'}
+                                        dataSource={this.props.enumData.saleAreaEnum}
+                                    />
                                     )}
                             </FormItem>
                         </Col>
@@ -188,7 +191,7 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('parentId', {
-                                 
+
                                 })(
                                     <Input type='text' placeholder="上级客户" />
                                     )}
@@ -197,7 +200,7 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout} >
                                 {getFieldDecorator('industry', {
-                                   
+
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.industry}
@@ -210,7 +213,7 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('cannelType', {
-                                   
+
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.cannelType}
@@ -223,7 +226,7 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('lifecycle', {
-                                   
+
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.lifecycle}
@@ -238,7 +241,7 @@ class MilForm extends React.Component {
                         <Col span={6}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('enableState', {
-                                   
+
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.enableState}
@@ -292,9 +295,9 @@ class ToolForm extends React.Component {
                         <div>
                             <BtnPanel
                                 btnBack={this.props.btnBack}
-                                
+
                                 btnDelete={this.props.btnDelete}
-                                selectedData = {this.props.selectedData}
+                                selectedData={this.props.selectedData}
                             />
                         </div> :
                         <div>
@@ -328,7 +331,6 @@ class ToolForm extends React.Component {
                             <div className={this.props.visible.milForm ? 'label-form-bottom' : 'form-hide'}>
                                 <WarpMilForm
                                     enumData={this.props.enumData}
-                                    cityData={this.props.cityData}
                                     handleSearch={this.props.handleSearch}
                                     btnLess={this.props.btnLess}
                                     searchMap={this.props.searchMap}
