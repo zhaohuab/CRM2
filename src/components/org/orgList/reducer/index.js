@@ -11,6 +11,11 @@ let $$initialState = {
 	editData: [],
 	searchFilter: undefined,
 };
+function pageAdd(page,item) {
+	page.data.unshift(item)
+	return page;
+}
+
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
 
 	switch (action.type) {
@@ -29,7 +34,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				tabelLoading: false,
 				treeSelect: action.payload.treeSelect,
 				formVisitable: false,
-				searchFilter: undefined
+				searchFilter: undefined,
+				tableListCheckbox:[]
 			})
 		case 'ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH':
 			return $$state.merge({
@@ -49,10 +55,11 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({ formVisitable: false })
 
 		case 'ORG_LIST_LISTADDSUCCESS':
-			let $$list = Immutable.fromJS(action.payload);
+			debugger
 			return $$state.merge({
-				listData: $$state.get('listData').unshift($$list),
-				formVisitable: false
+				listData : pageAdd($$state.get("listData").toJS(),action.payload.data),
+				formVisitable: false,
+				treeData:action.payload.treeData
 			});
 
 		case 'ORG_LIST_LISTDELSUCCESS':
@@ -66,7 +73,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
 		case 'ORG_LIST_GETTREELISTSUCCESS':
 			let treeNew = $$state.set('treeData', Immutable.fromJS(action.data))
-			return treeNew.merge({ treeLoading: false })
+			return treeNew.merge({ treeLoading: false,tableListCheckbox:[] })
 
 		case 'ORG_LIST_SHOWBUTTONSTART':
 			return $$state.set('tableListCheckbox', Immutable.fromJS(action.rows))

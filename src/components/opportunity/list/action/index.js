@@ -34,22 +34,34 @@ function transData(data) {
     if (data == null) {
         return data
     }
-    data.createdTime = data.createdTime.format('X')
-    data.expectSignTime = data.expectSignTime.format('X');
+    if(data.createdTime){
+        data.createdTime = data.createdTime.format('X')
+    }
+    if(data.expectSignTime){
+        data.expectSignTime = data.expectSignTime.format('X');
+    }
     return data
 }
 
 const transReceiveData = (data) => {
     for (let i = 0; i < data.data.length; i++) {
-        data.data[i].createdTime = transDate(new Date(data.data[i].createdTime.time))
-        data.data[i].expectSignTime = transDate(new Date(data.data[i].expectSignTime.time))
+        if(data.data[i].createdTime){
+            data.data[i].createdTime = transDate(new Date(data.data[i].createdTime.time))
+        }
+        if(data.data[i].expectSignTime){
+            data.data[i].expectSignTime = transDate(new Date(data.data[i].expectSignTime.time))
+        }
     }
-
     return data;
 }
+
 const transReceiveDataOne = (data) => {
-    data.createdTime = transDate(new Date(data.createdTime.time))
-    data.expectSignTime = transDate(new Date(data.expectSignTime.time))
+    if(data.createdTime){
+        data.createdTime = transDate(new Date(data.createdTime.time))
+    }
+    if(data.expectSignTime){
+        data.expectSignTime = transDate(new Date(data.expectSignTime.time))
+    }
     return data;
 }
 //定义方法 action
