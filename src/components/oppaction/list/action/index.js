@@ -20,6 +20,7 @@ const getListData = (params) => {
 				}
 			},
 		},result => {
+			debugger
 			dispatch(fetchData('OPPACTION_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}

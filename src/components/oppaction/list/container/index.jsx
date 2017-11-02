@@ -146,7 +146,7 @@ const aaa = this.state.pagination
     pagination = { page: pagination.page, pageSize: pageSize };
     this.setState({ pagination })
     this.props.action.getListData({ pagination });
-    console.info(`pageSize:${pageSize}`)
+   
   }
   render() {
     let page = this.props.$$state.get("data").toJS();

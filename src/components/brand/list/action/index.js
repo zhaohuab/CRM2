@@ -4,19 +4,28 @@ import { brand as url } from 'api';
 
 
 
-const showForm = (flag, editData = {}, index) => {
+const showForm = (flag, editData = {}) => {
     return (dispatch) => {
         dispatch(fetchData('BRAND_LIST_SHOWFORM', { visible: flag, editData }));
     }
 }
 
-const getListData = (params) => {
+const showViewForm = (flag, editData = {}) => {
+    return (dispatch) => {
+        dispatch(fetchData('BRAND_LIST_SHOWVIEWFORM', { visible: flag, editData }));
+    }
+}
 
+const getListData = (params) => {
     return (dispatch) => {
         reqwest({
         	url: url.brand,
         	method: "GET",
         	data: {
+                param: {
+					...params.pagination,
+					searchMap: params.searchMap,
+				}
         	},
         },result => {
         	dispatch(fetchData('BRAND_LIST_GETLISTSUCCESS', { ...result }));
@@ -26,7 +35,6 @@ const getListData = (params) => {
 }
 
 const onSave4Add = (data) => {
-    debugger
     data.enableState = "1";
     return (dispatch) => {
         reqwest({
@@ -92,6 +100,7 @@ const onSetState = (ids, enable) => {
 export {
     getListData,
     showForm,
+    showViewForm,
     onSave4Add,
     onSave4Edit,
     onDelete,

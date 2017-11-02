@@ -1,4 +1,4 @@
-import { Form, Input, Select,Radio } from 'antd';
+import { Form, Input, Select, Radio } from 'antd';
 import Department from 'components/refs/departments'
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -8,10 +8,11 @@ class Card extends React.Component {
     constructor(props) {
         super(props)
     }
-    
+
     componentDidMount() {
         //装箱过程
-        this.props.form.setFieldsValue(this.props.dataSource);
+        debugger
+        // this.props.form.setFieldsValue(this.props.dataSource);
     }
     componentWillMount() {
 
@@ -35,56 +36,54 @@ class Card extends React.Component {
                 <Input />
                 )
         }
-       
+
         return (
+
+            // <Row>
+            //     <Col span={6}>品牌</Col>
+            //     <Col span={14}></Col>
+            // </Row>
+            // <Row>
+            //     <Col span={6}>英文</Col>
+            //     <Col span={14}></Col>
+            // </Row>
+            // <Row>
+            //     <Col span={6}>启用状态</Col>
+            //     <Col span={14}></Col>
+            // </Row>
+            // <Row>
+            //     <Col span={6}>备注</Col>
+            //     <Col span={14}></Col>
+            // </Row>
             <Form >
                 <FormItem
                     label="品牌"
                     {...formItemLayout}
                 >
-                    {getFieldDecorator('name', {
-                        rules: [{
-                            required: true, message: '请输出品牌',
-                        }],
-                    })(
-                        <Input placeholder='请输入...' />
-                        )}
+                  
+                        {this.props.dataSource.name}
+                       
                 </FormItem>
 
                 <FormItem
                     label="英文"
                     {...formItemLayout}
                 >
-                    {getFieldDecorator('enName', {
-                        rules: [],
-                    })(
-                        <Input placeholder='请输入...' />
-                        )}
+                    {this.props.dataSource.enName}
                 </FormItem>
-               
+
                 <FormItem
                     label="启用状态"
                     {...formItemLayout}
                 >
-                    {getFieldDecorator('enableState', {
-                        initialValue:1
-                    })(
-                        <RadioGroup >
-                            <Radio value={1}>启用</Radio>
-                            <Radio value={2}>停用</Radio>
-                        </RadioGroup>
-                        )}
+                        {this.props.dataSource.enableStateName}
                 </FormItem>
-              
+
                 <FormItem
                     label="备注"
                     {...formItemLayout}
                 >
-                    {getFieldDecorator('description', {
-                        rules: [],
-                    })(
-                        <TextArea rows='4' placeholder='请输入...' />
-                        )}
+                        {this.props.dataSource.description}
                 </FormItem>
             </Form>)
     }

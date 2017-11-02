@@ -2,9 +2,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button, Icon, Input, Radio, Popconfirm, Form } from 'antd';
+import { Table, Modal, Button, Icon, Input, Radio, Popconfirm, Form, Select, Row, Col } from 'antd';
 import * as Actions from "../action"
 import Card from './Card'
+import ViewCard from './ViewCard'
+import SearchForm from './SearchForm'
+const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 
@@ -16,7 +19,13 @@ class List extends React.Component {
         this.columns = [
             {
                 title: "品牌",
-                dataIndex: "name"
+                dataIndex: "name",
+                render: (text, record) => (
+                    <a onClick={this.onView.bind(this, record)}>
+                        {" "}
+                        {record.name}
+                    </a>
+                )
             },
             {
                 title: "英文",
@@ -27,43 +36,36 @@ class List extends React.Component {
                 dataIndex: "description"
             },
             {
-                title: "对应ERP",
-                dataIndex: "erpCode"
-            },
-            {
                 title: "启用状态",
                 dataIndex: "enableStateName"
-            },
-            {
-                title: "操作",
-                render: (key, record) => {
-                    return (
-                        <span>
-                            <a href="#" onClick={this.onEdit.bind(this, record)}>修改  </a>
-                            <a href="#">删除  </a>
-                            <a href="#">启停</a>
-                        </span>
-                    )
-                }
-            },
+            }
+
         ]
 
         this.state = {
             headLabel: false,
             selectedRows: [],
             isEdit: false,
+            pagination: {
+                pageSize: 10,
+                page: 1
+            },
+            searchMap: {}
         }
         let that = this
         this.rowSelectionFn = {
-
             onChange(selected, selectedRows) {
-                that.setState({ selectedRows: selectedRows, headLabel: true })
+                if (selectedRows && selectedRows.length > 0) {
+                    that.setState({ selectedRows: selectedRows, headLabel: true })
+                } else {
+                    that.setState({ selectedRows: selectedRows, headLabel: false })
+                }
             }
         }
     }
     componentDidMount() {
-        // let { pagination,searchMap } = this.state;
-        this.props.action.getListData();
+        let { pagination, searchMap } = this.state;
+        this.props.action.getListData({ pagination, searchMap });
     }
 
     onAdd() {
@@ -73,6 +75,10 @@ class List extends React.Component {
     onEdit(record) {
         this.setState({ isEdit: true })
         this.props.action.showForm(true, record)
+    }
+
+    onView(record) {
+        this.props.action.showViewForm(true, record);
     }
 
     onDelete(rows) {
@@ -96,7 +102,7 @@ class List extends React.Component {
                 console.log('Cancel');
             },
         });
-        
+
     }
     //保存事件
     onSave() {
@@ -114,6 +120,13 @@ class List extends React.Component {
         }
     }
 
+    onSearch() {
+        let searchMap = this.searchformRef.props.form.getFieldsValue();
+        this.setState({ searchMap });
+        let { pagination } = this.state;
+        this.props.action.getListData({ pagination, searchMap });
+    }
+
     onBack() {
         this.setState({ headLabel: false })
     }
@@ -122,49 +135,99 @@ class List extends React.Component {
         this.props.action.showForm(false, {});
     }
 
-    onSetState(rows,state){
+    onSetState(rows, state) {
         const ids = [];
         for (let i = 0; i < rows.length; i++) {
             ids.push(rows[i].id)
         }
-        this.props.action.onSetState(ids,state);
+        this.props.action.onSetState(ids, state);
+    }
+
+    showTotal(total) {
+        return `共 ${total} 条`;
+    }
+    onPageChange(page, pageSize) {
+        let { pagination, searchMap } = this.state;
+        //可能有问题
+        pagination = { page: page, pageSize: pageSize };
+        this.setState({ pagination });
+        this.props.action.getListData({ pagination, searchMap });
+    }
+    onPageSizeChange(current, pageSize) {
+        let { pagination, searchMap } = this.state;
+        pagination = { page: pagination.page, pageSize: pageSize };
+        this.setState({ pagination });
+        this.props.action.getListData({ pagination, searchMap });
     }
 
     render() {
+        let { pagination, searchMap } = this.state;
         const page = this.props.$$state.get("data").toJS();
         const editData = this.props.$$state.get("editData").toJS();
-        const visible = this.props.$$state.get("visible")
-        const WrapCard = Form.create()(Card)
-        const selectedRows = this.state.selectedRows
-        const rowNum = selectedRows.length
+        const visible = this.props.$$state.get("visible");
+        const viewVisible = this.props.$$state.get("viewVisible");
+        const WrapCard = Form.create()(Card);
+        const WrapViewCard = Form.create()(ViewCard);
+        const WrapSearchForm = Form.create()(SearchForm);
+        const selectedRows = this.state.selectedRows;
+        const rowNum = selectedRows.length;
         return (
             <div className='user-warpper'>
-                <div className='head_panel'>
-                    {
-                        this.state.headLabel ?
-                            <div className='head_edit'>
-                                <div className='edit-inner-left'>已选中<span>{selectedRows.length}</span>条</div>
-                                <div className='edit-inner-right'>
-                                    <Button className="default_button" onClick={this.onBack.bind(this)}><i className='iconfont icon-fanhui'></i>返回</Button>
-                                    {this.props.children}
+                <div className='crm-container-header'>
+
+                    <Row>
+                        <Col span={18}>
+                            {
+                                this.state.headLabel ?
+                                    <div className='head_edit'>
+                                        <div className='edit-inner-left'>已选中<span>{selectedRows.length}</span>条</div>
+                                        <div className='edit-inner-right'>
+                                            <Button className="default_button" onClick={this.onBack.bind(this)}><i className='iconfont icon-fanhui'></i>返回</Button>
+                                            {this.props.children}
+                                        </div>
+                                        {rowNum == 1 ? <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
+                                            : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
+
+                                        <Button className="default_button" onClick={this.onDelete.bind(this, selectedRows)}><i className='iconfont icon-shanchu'></i>删除</Button>
+                                        <ButtonGroup className='returnbtn-class'>
+                                            <Button className="default_button" onClick={this.onSetState.bind(this, selectedRows, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
+                                            <Button className="default_button" onClick={this.onSetState.bind(this, selectedRows, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
+                                        </ButtonGroup>
+                                    </div> :
+                                    <div>
+                                        {/* <Row>
+                                    <Col span={6}>
+                                        <Input placeholder='品牌' />
+                                    </Col>
+                                    <Col span={6}>
+                                        <Select placeholder='启用状态'>
+                                            <Option value="1">启用</Option>
+                                            <Option value="2">停用</Option>
+                                        </Select>
+                                    </Col>
+                                </Row> */}
+                                        <WrapSearchForm dataSource={searchMap} onSearch={this.onSearch.bind(this)} wrappedComponentRef={(inst) => this.searchformRef = inst} />
+                                    </div>
+                            }
+                        </Col>
+                        <Col span={6}>
+                            <Row
+                                align="middle"
+                                type="flex"
+                                justify="end"
+                                gutter={15}
+                            >
+                                <div>
+                                    <Button><i className='iconfont icon-daochu'></i>导入</Button>
+                                    <Button><i className='iconfont icon-daoru'></i>导出</Button>
                                 </div>
-                                {rowNum == 1 ? <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
-                                    : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
+                                <div>
+                                    <Button type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
 
-                                {/* <Popconfirm placement="bottom" title="确认删除吗" onConfirm={} okText="是" cancelText="否"> */}
-                                <Button className="default_button" onClick={this.onDelete.bind(this, selectedRows)}><i className='iconfont icon-shanchu'></i>删除</Button>
-                                {/* </Popconfirm> */}
-                                <ButtonGroup className='returnbtn-class'>
-                                    <Button className="default_button" onClick={this.onSetState.bind(this,selectedRows,1)}><i className='iconfont icon-qiyong'></i>启用</Button>
-                                    <Button className="default_button" onClick={this.onSetState.bind(this,selectedRows,2)}><i className='iconfont icon-tingyong'></i>停用</Button>
-                                </ButtonGroup>
-                            </div> : ""}
-
-                    <div className='head_panel-right'>
-                        <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                        <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                        <Button type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
-                    </div>
+                                </div>
+                            </Row>
+                        </Col>
+                    </Row>
                 </div>
 
                 <div className="list-box">
@@ -174,11 +237,19 @@ class List extends React.Component {
                         columns={this.columns}
                         dataSource={page.data}
                         rowKey="id"
-                        pagination={false}
+                        pagination={{
+                            size: "large",
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            total: page.total,
+                            showTotal: this.showTotal,
+                            onChange: this.onPageChange.bind(this),
+                            onShowSizeChange: this.onPageSizeChange.bind(this)
+                        }}
                     />
                 </div>
                 <Modal
-                    title={this.state.isEdit?"修改品牌":"新增品牌"}
+                    title={this.state.isEdit ? "修改品牌" : "新增品牌"}
                     visible={visible}
                     width={500}
                     onOk={this.onSave.bind(this)}
@@ -186,6 +257,19 @@ class List extends React.Component {
                 >
                     <div className='model-height'>
                         <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
+                    </div>
+                </Modal>
+
+                <Modal
+                    title={"查看品牌"}
+                    visible={viewVisible}
+                    width={500}
+                    onOk={this.onEdit.bind(this, editData)}
+                    okText={"编辑"}
+                    onCancel={this.onClose.bind(this)}
+                >
+                    <div className='model-height'>
+                        <WrapViewCard dataSource={editData} wrappedComponentRef={(inst) => this.viewformRef = inst} />
                     </div>
                 </Modal>
             </div>

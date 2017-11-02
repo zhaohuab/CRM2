@@ -4,6 +4,8 @@ let $$initialState = {
 	editData: {},
 	data: [],
 	visible: false,
+	viewVisible:false,
+	
 };
 
 function pageAdd(page, item) {
@@ -33,6 +35,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'BRAND_LIST_SHOWFORM':
 			return $$state.merge({
 				visible: action.content.visible,
+				editData: action.content.editData,
+				viewVisible:false
+			})
+			case 'BRAND_LIST_SHOWVIEWFORM':
+			return $$state.merge({
+				viewVisible: action.content.visible,
 				editData: action.content.editData
 			})
 		case 'BRAND_CARD_SAVEADD':
