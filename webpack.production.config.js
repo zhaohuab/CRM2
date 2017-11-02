@@ -22,7 +22,7 @@ const environments = {
     // 测试环境
     'btest': '//172.20.18.154',
     // 正式环境
-    'bup': 'http://static-scrm.upesn.com',
+    'bup': '//172.20.18.155',
 };
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
