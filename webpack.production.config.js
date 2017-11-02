@@ -33,7 +33,8 @@ require('./before-build.script');
 
 module.exports = {
     entry: {
-        main: __dirname + "/src/main.jsx", //入口文件
+        //main: __dirname + "/src/main.jsx", //入口文件
+        main: ['babel-polyfill', './src/main.js'], //添加垫片，支持es6新的api， 如[].fill(), [].form();
         vendor: ['redux', 'react-redux', 'react-router', 'react-router-redux', 'redux-thunk']
     },
     output: {
