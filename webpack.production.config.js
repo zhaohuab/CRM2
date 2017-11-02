@@ -20,9 +20,9 @@ var theme = require('./theme.config.js')
 
 const environments = {
     // 测试环境
-	'btest': '//172.20.18.154',  //old //172.20.18.154
-    // 正式环境
-    'bup': '//10.1.214.78',
+    'btest1': '//172.20.18.154',  //172.20.18.154
+    // 测试环境
+	'btest2': '//172.20.18.155',  //172.20.18.155
 };
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
