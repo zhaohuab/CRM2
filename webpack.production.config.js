@@ -111,6 +111,9 @@ module.exports = {
         new webpack.optimize.MinChunkSizePlugin({
             minChunkSize: 10240
         }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': '"production"'
+        }),
         new webpack.BannerPlugin(`yonyou_cloud_crm \n update: ${nowDateStr}`),
     ]
 }
