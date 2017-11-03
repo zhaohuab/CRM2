@@ -1,18 +1,4 @@
-import {
-    Modal,
-    Popover,
-    Collapse,
-    Tabs,
-    Row,
-    Col,
-    Layout,
-    Menu,
-    Breadcrumb,
-    Icon,
-    Button,
-    Dropdown,
-    Timeline
-} from "antd";
+import {Modal,Popover, Collapse,Tabs, Row,Col,Layout,Menu, Breadcrumb,Icon,Button,Dropdown, Timeline} from "antd";
 import { browserHistory } from "react-router";
 const TabPane = Tabs.TabPane;
 const { Header, Content, Sider } = Layout;

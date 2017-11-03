@@ -22,6 +22,11 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 
 export default class Card extends React.Component {
+    componentDidMount() {
+        debugger;
+        this.props.form.setFieldsValue(this.props.dataSource);
+    }
+
     render() {
         let formItemLayout = {
             labelCol: { span: 7 },
@@ -35,37 +40,37 @@ export default class Card extends React.Component {
 
                     <FormItem label="拜访路线名称">
                         {getFieldDecorator("name", {
-                            rules: [{ require: true, message: "请" }]
+                            rules: [{ required: true, message: "请" }]
                         })(<Input placeholder="请输入..." />)}
                     </FormItem>
                     <FormItem label="负责人">
                         {getFieldDecorator("ownerUserId", {
-                            rules: [{ require: true, message: "请" }]
+                            rules: [{ required: false, message: "请" }]
                         })(<Input placeholder="请输入..." />)}
                     </FormItem>
                     <FormItem label="所属部门">
                         {getFieldDecorator("deptId", {
-                            rules: [{ require: true, message: "请" }]
+                            rules: [{ required: true, message: "请" }]
                         })(<Input placeholder="请输入..." />)}
                     </FormItem>
                     <FormItem label="覆盖网点数">
                         {getFieldDecorator("coverNodeNum", {
-                            rules: [{ require: true, message: "请" }]
+                            rules: [{ required: true, message: "请" }]
                         })(<Input placeholder="请输入..." />)}
                     </FormItem>
                     <FormItem label="负责网点数">
                         {getFieldDecorator("ownerNodeNum", {
-                            rules: [{ require: true, message: "请" }]
+                            rules: [{ required: true, message: "请" }]
                         })(<Input placeholder="请输入..." />)}
                     </FormItem>
                     <FormItem label="网点名称">
                         {getFieldDecorator("nodeId", {
-                            rules: [{ require: true, message: "请" }]
+                            rules: [{ required: true, message: "请" }]
                         })(<Input placeholder="请输入..." />)}
                     </FormItem>
                     <FormItem label="备注">
                         {getFieldDecorator("remarks", {
-                            rules: [{ require: true, message: "请" }]
+                            rules: [{ required: true, message: "请" }]
                         })(
                             <Input
                                 type="textarea"

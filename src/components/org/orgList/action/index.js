@@ -74,8 +74,8 @@ export function listadd(list){
                 data:{}
             }
             ,(data) => {
-                dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
-                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData}));
+            debugger;
+                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData,treeData:data.data}));
             })
         })
     }

@@ -73,7 +73,6 @@ export default class ViewPanel extends React.Component {
         if (this.props.data && this.props.data.childList) {
             dataSource = this.props.data.childList;
         }
-        debugger
         const WarpCacd = Form.create()(Card)
         const WarpViewCacd = Form.create()(ViewCard)
         const menu = (
