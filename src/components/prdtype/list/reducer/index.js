@@ -78,8 +78,8 @@ export default function prdtypeReducers($$state = Immutable.fromJS($$initialStat
 
 		case 'PRDTYPE_LIST_SHOWBUTTONSTART':
 			return $$state.set('tableListCheckbox',Immutable.fromJS(action.rows)) 
-		/* case 'PRDTYPE_LIST_DELETELISTSUCCESS':
-	    	return $$state.set('tableListCheckbox',[]) */
+		  case 'PRDTYPE_LIST_DELETELISTSUCCESS':
+	    	return $$state.merge({tableListCheckbox:action.payload.tableListCheckbox}) 
 			 
 	    default: 
 	        return $$state;

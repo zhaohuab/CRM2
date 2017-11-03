@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Table, Modal, Button,Icon } from 'antd';
 import {Input,Radio,Popconfirm,Form} from 'antd';
-import Card from './UserForm.jsx';
+import Card from './listForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import Department from 'components/refs/departments';
 import Tables from './table.jsx';
@@ -116,7 +116,7 @@ class List extends React.Component {
       }
     });  
     let data = form.getFieldsValue();
-    if (!data.name||!data.description) return;
+    if (!data.name||!data.description) return;//问题
     data.sysDocDetailList = [];
     let docDetailList = this.ref.getTableData();   
     for (let i=0,len=docDetailList.length; i<len; i++){

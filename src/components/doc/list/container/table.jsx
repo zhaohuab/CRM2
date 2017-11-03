@@ -104,6 +104,7 @@ export default class EditableTable extends React.Component {
       deleDetail:[]
     };
   }
+
   renderColumns(data, index, key, text) {
     const { editable, status } = data[index][key];
     if (typeof editable === 'undefined') {
@@ -116,11 +117,13 @@ export default class EditableTable extends React.Component {
       status={status}
     />);
   }
+
   handleChange(key, index, value) {
     const { docDetail } = this.state;
     docDetail[index][key].value = value;
     this.setState({ docDetail });
   }
+
   edit(index) {//编辑明细
     const { docDetail } = this.state;
     Object.keys(docDetail[index]).forEach((item) => {
@@ -131,6 +134,7 @@ export default class EditableTable extends React.Component {
     });
     this.setState({ docDetail });
   }
+
   editDone(index, type) {//编辑明细，确定
     const { docDetail } = this.state;
     Object.keys(docDetail[index]).forEach((item) => {
@@ -184,6 +188,7 @@ export default class EditableTable extends React.Component {
     } 
     this.setState({docDetail:arr})
   }
+
   onCancel(){return}
   onDelete(record){//档案明细删除
     let id = record.key;
@@ -238,11 +243,11 @@ export default class EditableTable extends React.Component {
     } 
   }
 
-  title(){return <div style={{color:'rgba(0,0,0,0.85)',padding:'5px 0', fontSize:'15px' }}>档案明细:</div>} 
+  title(){//档案明细title
+    return (
+      <div style={{color:'rgba(0,0,0,0.85)',padding:'5px 0', fontSize:'15px' }}>档案明细:</div>
+    )} 
 
-componentDidMount(){
-  console.log('=======',this.state.docDetail.length)
-}
   render() {
     const { docDetail } = this.state;
     const dataSource = docDetail.map((item) => {
@@ -255,12 +260,25 @@ componentDidMount(){
     const columns = this.columns;
     return (
         <div id='doc-table'>
-          { this.state.docDetail.length ? 
-            <Table title={this.title} dataSource={dataSource} columns={columns} pagination={false} showHeader={false} /> :'' } 
-         <div style={{ marginTop:'20px', overflow: 'hidden'}}>
-           <input ref={ref => this.input=ref} placeholder='请输入档案明细...' style={{width:'50%', float:'left'}}></input>
-           <button style={{width:'15%', float:'right'}} onClick={this.add.bind(this)}>添加</button>
-         </div>
+          { 
+            this.state.docDetail.length ? 
+            <Table 
+              title={this.title} 
+              dataSource={dataSource} 
+              columns={columns} 
+              pagination={false} 
+              showHeader={false} 
+            /> :'' 
+          } 
+          <div style={{ marginTop:'20px', overflow: 'hidden'}}>
+            <input 
+              ref={ref => this.input=ref} 
+              placeholder='请输入档案明细...' 
+              style={{width:'50%', float:'left'}}
+            >
+            </input>
+            <button style={{width:'15%', float:'right'}} onClick={this.add.bind(this)}>添加</button>
+          </div>
         </div>
         );
   }
