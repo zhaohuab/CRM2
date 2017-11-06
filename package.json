@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "webpack-dev-server --progress --colors --display-error-details --display-modules --config ./webpack.config.js",
     "btest1": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress",
-    "btest2": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress"
+    "btest2": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress",
+    "btest3": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress"
     
   },
   "author": "",

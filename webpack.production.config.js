@@ -22,7 +22,9 @@ const environments = {
     // 测试环境
     'btest1': '//172.20.18.154',  //172.20.18.154
     // 测试环境
-	'btest2': '//172.20.18.155',  //172.20.18.155
+    'btest2': '//172.20.18.155',  //172.20.18.155
+    // 测试环境
+    'btest3': '//10.6.250.52',  //10.6.250.52
 };
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
