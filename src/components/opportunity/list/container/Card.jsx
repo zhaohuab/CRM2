@@ -11,6 +11,7 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
+        debugger
         if (this.props.isEdit) {
             //装箱过程
             this.props.data.createdTime = moment(this.props.data.createdTime);

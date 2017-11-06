@@ -1,17 +1,8 @@
-import {
-    Cascader,
-    Table,
-    Icon,
-    Button,
-    Form,
-    Input,
-    Checkbox,
-    Col,
-    DatePicker,
-    message,
-    Radio,
-    Row
-} from "antd";
+import {Cascader,Table,Icon,Button, Form,Input, Checkbox,Col,DatePicker,message,Radio,Row} from "antd";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+//导入action方法
+import * as Actions from "../action";
 import moment from "moment";
 import Department from "components/refs/departments";
 import Enum from "utils/components/enums";
@@ -19,7 +10,7 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 
 const RadioGroup = Radio.Group;
-export default class EditForm extends React.Component {
+class EditForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,14 +24,20 @@ export default class EditForm extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.isEdit == true) {
-            let { fatherorgId, fatherorgName } = this.props.data;
-            this.props.data.fatherorgId = {
+        if (this.props.$$state.get("isEdit") == true) {
+            const viewData = this.props.$$state.get("viewData").toJS();
+            let { fatherorgId, fatherorgName } = viewData;
+            viewData.fatherorgId = {
                 key: fatherorgId,
                 title: fatherorgName
             };
-
-            this.props.form.setFieldsValue(this.props.data);
+            const province_city_district = [];
+            debugger
+            province_city_district.push(String(viewData.province));
+            province_city_district.push(String(viewData.city));
+            province_city_district.push(String(viewData.district));
+            viewData.province_city_district = province_city_district;
+            this.props.form.setFieldsValue(viewData);
         }
     }
     handleChangeLevel = value => {
@@ -84,9 +81,10 @@ export default class EditForm extends React.Component {
             wrapperCol: { span: 12 }
         };
         const { getFieldDecorator } = this.props.form;
+        const viewData = this.props.$$state.get("viewData").toJS();
         return (
             <Row id="form-input-recover">
-                {this.props.data ? (
+                {viewData ? (
                     <Row>
                         <Form layout="inline" className="login-form">
                             <Row className="form-bottom">
@@ -298,10 +296,6 @@ export default class EditForm extends React.Component {
                                                             }}
                                                             placeholder="请输入"
                                                         />
-                                                        // <Input
-                                                        //     type="text"
-                                                        //     placeholder="请输入"
-                                                        // />
                                                     )}
                                                 </FormItem>
                                             </Col>
@@ -508,3 +502,20 @@ export default class EditForm extends React.Component {
         );
     }
 }
+
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.customerList,
+        $$stateCommon: state.componentReducer
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(EditForm);

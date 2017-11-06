@@ -42,6 +42,7 @@ const appendAddressOne = (data) =>{
 }
 //定义方法 action
 const getListData = (pagination,searchMap) => {
+    debugger
 	return (dispatch) => {
         dispatch(fetchData('CUSTOMER_LIST_SAVESEARCHMAP',  searchMap));
         reqwest({
@@ -54,7 +55,8 @@ const getListData = (pagination,searchMap) => {
                 }
             }
         },(data) => {
-            dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data)}));
+            debugger
+            dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data),pagination}));
         })
 	   
 	}
@@ -111,20 +113,18 @@ const changeVisible = (visible)=>{
     }
 }
 
-const selectRow=(rows,visible)=>{
+const selectRow=(selectedRows,selectedRowKeys,toolVisible)=>{
     return{
         type:'CUSTOMER_LIST_SELECTROW',
-        payload:{rows:rows,toolVisible:visible}
+        payload:{selectedRows,selectedRowKeys,toolVisible:toolVisible}
     }
 }
 
-const showForm=(visible)=>{
-    return fetchData('CUSTOMER_LIST_SHOWFORM', {visible});
+const showForm=(visible,isEdit)=>{
+    return fetchData('CUSTOMER_LIST_SHOWFORM', {visible,isEdit});
 }
 
-const showFormEdit=(visible)=>{
-    return fetchData('CUSTOMER_LIST_SHOWFORM', {visible});
-}
+
 const showViewForm=(visible,record)=>{
     return fetchData('CUSTOMER_LIST_SHOWVIEWFORM',{visible,record})
 }
@@ -174,7 +174,6 @@ export {
     changeVisible,
     selectRow,
     showForm,
-    showFormEdit,
     listAddSave,
     listEditSave,
     showViewForm,

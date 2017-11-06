@@ -5,7 +5,8 @@ let $$initialState = {
 	data: [],
 	visible: false,
 	viewVisible:false,
-	
+	selectedRows:[],
+	selectedRowKeys:[]
 };
 
 function pageAdd(page, item) {
@@ -60,6 +61,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'BRAND_LIST_SETSTATESUCCESS':
 			return $$state.merge({
 				data: action.content,
+			})
+
+		case 'BRAND_LIST_SELECTDATA':
+			return $$state.merge({
+				selectedRows: action.content.selectedRows,
+				selectedRowKeys: action.content.selectedRowKeys,
 			})
 		default:
 			return $$state;

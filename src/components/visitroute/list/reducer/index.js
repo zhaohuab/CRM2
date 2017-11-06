@@ -7,6 +7,24 @@ let $$initialState = {
     visible: false
 };
 
+function pageAdd(page, item) {
+    page.total += 1;
+    page.data.unshift(item);
+    page.page = Math.ceil(page.total / page.pageSize);
+    return page;
+}
+function pageEdit(page, item) {
+    let { data } = page;
+    for (let i = 0, len = data.length; i < len; i++) {
+        if (data[i].id == item.id) {
+            data[i] = item;
+            break;
+        }
+    }
+    page.data = data;
+    return page;
+}
+
 export default function reducer(
     $$state = Immutable.fromJS($$initialState),
     action
@@ -28,23 +46,62 @@ export default function reducer(
                 return action.data;
             });
         case "VISITROUTE_LIST_ADDLIST": //增加一条数据
-            let newData = $$state
-                .getIn(["data", "data"])
-                .unshift(Immutable.fromJS(action.data));
-            $$state = $$state.setIn(["data", "data"], newData);
-            return $$state.update("visible", value => {
-                return false;
+            return $$state.merge({
+                visible: false,
+                data: pageAdd($$state.get("data").toJS(), action.data)
             });
         case "VISITROUTE_LIST_SELECTDATA": //把选择的数据保存在redux中
             return $$state.update("editData", value => {
-                return action.data;
+                return Immutable.fromJS(action.data);
             });
         case "VISITROUTE_LIST_DELETELIST": //删除一到多条数据
             $$state = $$state.update("data", value => {
                 return Immutable.fromJS(action.data);
             });
-            let c = $$state.getIn(["editData", "selectedRowKeys"]);
-            debugger;
+            $$state = $$state.setIn(
+                ["editData", "selectedRowKeys"],
+                Immutable.fromJS(
+                    $$state
+                        .getIn(["editData", "selectedRowKeys"])
+                        .filter(item => {
+                            for (var i = 0; i < action.del.length; i++) {
+                                if (action.del[i] == item) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        })
+                )
+            );
+
+            $$state = $$state.setIn(
+                ["editData", "selectedRows"],
+                Immutable.fromJS(
+                    $$state.getIn(["editData", "selectedRows"]).filter(item => {
+                        for (var i = 0; i < action.del.length; i++) {
+                            if (action.del[i] == item.get("id")) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    })
+                )
+            );
+            return $$state;
+
+        case "VISITROUTE_LIST_UPDATELIST":
+            let id = action.data.id;
+            $$state = $$state.setIn(
+                ["data", "data"],
+                $$state.getIn(["data", "data"]).map(item => {
+                    if (item.get("id") == id) {
+                        return Immutable.fromJS(action.data);
+                    }
+                    return item;
+                })
+            );
+            $$state = $$state.set("visible", false);
+            return $$state;
         default:
             return $$state;
     }

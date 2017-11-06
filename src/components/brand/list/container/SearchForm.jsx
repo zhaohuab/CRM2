@@ -28,13 +28,16 @@ class SearchForm extends React.Component {
         }
 
         return (
-
-            <Form >
+         
+            // <Form layout="inline">
+                 <Form >
                 <Row
+               
                     type="flex"
                     gutter={15}
+                 
                 >
-                    <Col span={6}>
+                    <Col span={6}  >
                         <FormItem
                         >
                             {getFieldDecorator('searchKey', {
@@ -45,12 +48,12 @@ class SearchForm extends React.Component {
                         </FormItem>
                     </Col>
                     <Col span={6}>
-                        <FormItem
+                        <FormItem 
                         >
                             {getFieldDecorator('enableState', {
                                 rules: [],
                             })(
-                                <Select placeholder='启用状态'>
+                                <Select placeholder='启用状态' >
                                     <Option value="1">启用</Option>
                                     <Option value="2">停用</Option>
                                 </Select>
@@ -61,7 +64,9 @@ class SearchForm extends React.Component {
                         <a onClick={this.props.onSearch}>搜索</a>
                     </Col>
                 </Row>
-            </Form>)
+            </Form>
+           
+            )
     }
 }
 

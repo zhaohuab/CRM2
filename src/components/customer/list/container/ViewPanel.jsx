@@ -1,19 +1,28 @@
-import {Modal,Popover, Collapse,Tabs, Row,Col,Layout,Menu, Breadcrumb,Icon,Button,Dropdown, Timeline} from "antd";
+import { Modal, Popover, Collapse, Tabs, Row, Col, Layout, Menu, Breadcrumb, Icon, Button, Dropdown, Timeline } from "antd";
 import { browserHistory } from "react-router";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+//导入action方法
+import * as Actions from "../action";
 const TabPane = Tabs.TabPane;
 const { Header, Content, Sider } = Layout;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
 
-export default class ViewPanel extends React.Component {
+class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            enableState: this.props.data.enableState
+            enableState: 2
         };
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        const viewData = this.props.$$state.get("viewData").toJS();
+        this.setState({
+            enableState: viewData.enableState
+        });
+    }
     showContact() {
         let path = browserHistory.getCurrentLocation().pathname;
         browserHistory.push(
@@ -21,22 +30,35 @@ export default class ViewPanel extends React.Component {
         );
     }
     btnEnable() {
-        debugger;
-        this.setState({
-            enableState: 2
-        });
+        let enableState = this.state.enableState;
         if (this.state.enableState == 1) {
             this.setState({
                 enableState: 2
             });
-            this.props.btnSetEnable(2);
+            enableState = 2;
         } else {
             this.setState({
                 enableState: 1
             });
-            this.props.btnSetEnable(1);
+            enableState = 1;
         }
+        const searchMap = this.props.$$state.get("searchMap").toJS();
+        const viewData = this.props.$$state.get("viewData").toJS();
+        const pagination =this.props.$$state.get("pagination").toJS();
+        const ids = [];
+        ids.push(viewData.id);
+        this.props.action.setEnableState(ids, enableState, pagination, searchMap);
+
     }
+
+    btnNew() {
+        this.props.action.showForm(true, false);
+    }
+
+    btnEdit() {
+        this.props.action.showForm(true, true);
+    }
+
     btnDelete() {
         let that = this;
         confirm({
@@ -46,12 +68,28 @@ export default class ViewPanel extends React.Component {
             okType: "danger",
             cancelText: "否",
             onOk() {
-                that.props.btnDelete();
+                const searchMap = that.props.$$state.get("searchMap").toJS();
+                const viewData = that.props.$$state.get("viewData").toJS();
+                const ids = [];
+                ids.push(viewData.id);
+                that.props.action.deleteData(ids, searchMap, that.state.pagination);
             },
             onCancel() {
                 console.log("Cancel");
             }
         });
+    }
+
+    btnClosePanel() {
+        this.props.action.closePanel();
+    }
+
+    btnDeleteView() {
+        const searchMap = this.props.$$state.get("searchMap").toJS();
+        const viewData = this.props.$$state.get("viewData").toJS();
+        const ids = [];
+        ids.push(viewData.id);
+        this.props.action.deleteData(ids, searchMap, this.state.pagination);
     }
 
     panelHeader(obj) {
@@ -67,24 +105,7 @@ export default class ViewPanel extends React.Component {
         );
     }
     render() {
-        // const content = (
-        //     <div>
-        //         <div>
-        //             <Button>调整负责人</Button>
-        //         </div>
-        //         <div>
-        //             <Button>查重</Button>
-        //         </div>
-        //         <div>
-        //             <Button onClick={this.btnEnable.bind(this)}>
-        //                 {this.state.enableState == 1 ? "停用" : "启用"}
-        //             </Button>
-        //         </div>
-        //         <div>
-        //             <Button onClick={this.btnDelete.bind(this)}>删除</Button>
-        //         </div>
-        //     </div>
-        // );
+        const viewData = this.props.$$state.get("viewData").toJS();
         const menu = (
             <Menu>
                 <Menu.Item key="1">调整负责人</Menu.Item>
@@ -92,7 +113,7 @@ export default class ViewPanel extends React.Component {
                 <Menu.Item key="3" onClick={this.btnEnable.bind(this)}>
                     {this.state.enableState == 1 ? "停用" : "启用"}
                 </Menu.Item>
-                <Menu.Item key="4" onClick={this.btnDelete.bind(this)}>
+                <Menu.Item key="4" onClick={this.btnDeleteView.bind(this)}>
                     删除
                 </Menu.Item>
             </Menu>
@@ -109,7 +130,7 @@ export default class ViewPanel extends React.Component {
                             />
                             <div className="customer-main">
                                 <div className="customer-main-top">
-                                    <span>{this.props.data.name}</span>
+                                    <span>{viewData.name}</span>
                                     <span>
                                         <img
                                             src={require("assets/images/header/VIP.png")}
@@ -135,14 +156,13 @@ export default class ViewPanel extends React.Component {
                         </Col>
                         <Col span={9} className="customer-btn">
                             <Button
-                                onClick={this.props.btnEdit.bind(
-                                    this,
-                                    this.props.data
+                                onClick={this.btnEdit.bind(
+                                    this
                                 )}
                             >
                                 <i className="iconfont icon-bianji" />编辑
                             </Button>
-                            <Button onClick={this.props.btnNew}>
+                            <Button onClick={this.btnNew.bind(this)}>
                                 <i className="iconfont icon-xinzeng-huise" />新增
                             </Button>
                             <Dropdown.Button overlay={menu}>更多</Dropdown.Button>
@@ -174,25 +194,25 @@ export default class ViewPanel extends React.Component {
                         <Row>
                             <Col span={6}>
                                 <div className="info-tabel">
-                                    {this.props.data.tel}1
+                                    {viewData.tel}
                                 </div>
                             </Col>
                             <Col span={6}>
                                 <div className="info-tabel">
-                                    {this.props.data.address}1
+                                    {viewData.address}1
                                 </div>
                             </Col>
                             <Col span={6}>
                                 <div className="info-tabel">负责人1</div>
                             </Col>
                             <Col span={6}>
-                                <div className="info-tabel">负责人1</div>
+                                <div className="info-tabel">负责部门1</div>
                             </Col>
                         </Row>
                     </Row>
                     <div
                         className="warrper-header-close"
-                        onClick={this.props.btnClosePanel}
+                        onClick={this.btnClosePanel.bind(this)}
                     >
                         <i className="iconfont icon-guanbi" />
                     </div>
@@ -372,3 +392,20 @@ export default class ViewPanel extends React.Component {
         );
     }
 }
+
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.customerList,
+        $$stateCommon: state.componentReducer
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(ViewPanel);

@@ -7,6 +7,7 @@ import * as Actions from "../action"
 import Card from './Card'
 import ViewCard from './ViewCard'
 import SearchForm from './SearchForm'
+import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
@@ -43,7 +44,7 @@ class List extends React.Component {
         ]
 
         this.state = {
-            headLabel: false,
+
             selectedRows: [],
             isEdit: false,
             pagination: {
@@ -53,15 +54,23 @@ class List extends React.Component {
             searchMap: {}
         }
         let that = this
-        this.rowSelectionFn = {
-            onChange(selected, selectedRows) {
-                if (selectedRows && selectedRows.length > 0) {
-                    that.setState({ selectedRows: selectedRows, headLabel: true })
-                } else {
-                    that.setState({ selectedRows: selectedRows, headLabel: false })
-                }
-            }
-        }
+        // this.rowSelectionFn = {
+        //     onChange(selected, selectedRows) {
+        //         if (selectedRows && selectedRows.length > 0) {
+        //             that.setState({ selectedRows: selectedRows, headLabel: true })
+        //         } else {
+        //             that.setState({ selectedRows: selectedRows, headLabel: false })
+        //         }
+        //     }
+        // }
+
+        this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            debugger
+            this.setState({
+                more: false
+            });
+            this.props.action.selectData({ selectedRows, selectedRowKeys });
+        };
     }
     componentDidMount() {
         let { pagination, searchMap } = this.state;
@@ -128,7 +137,7 @@ class List extends React.Component {
     }
 
     onBack() {
-        this.setState({ headLabel: false })
+        this.props.action.selectData({ selectedRows: [], selectedRowKeys: [] });
     }
     //form表单关闭按钮事件
     onClose() {
@@ -169,71 +178,66 @@ class List extends React.Component {
         const WrapCard = Form.create()(Card);
         const WrapViewCard = Form.create()(ViewCard);
         const WrapSearchForm = Form.create()(SearchForm);
-        const selectedRows = this.state.selectedRows;
-        const rowNum = selectedRows.length;
+        // const selectedRows = this.state.selectedRows;
+
+        const selectedRows = this.props.$$state.get("selectedRows").toJS();
+        const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
+        let rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
         return (
             <div className='user-warpper'>
-                <div className='crm-container-header'>
+                {
+                    selectedRows.length > 0 ?
+                        <HeaderButton
+                            length={selectedRows.length}
+                            goBack={this.onBack.bind(this)}>
+                            {selectedRows.length == 1 ? <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
+                                : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
 
-                    <Row>
-                        <Col span={18}>
-                            {
-                                this.state.headLabel ?
-                                    <div className='head_edit'>
-                                        <div className='edit-inner-left'>已选中<span>{selectedRows.length}</span>条</div>
-                                        <div className='edit-inner-right'>
-                                            <Button className="default_button" onClick={this.onBack.bind(this)}><i className='iconfont icon-fanhui'></i>返回</Button>
-                                            {this.props.children}
+                            <Button className="default_button" onClick={this.onDelete.bind(this, selectedRows)}><i className='iconfont icon-shanchu'></i>删除</Button>
+                            <ButtonGroup className='returnbtn-class'>
+                                <Button className="default_button" onClick={this.onSetState.bind(this, selectedRows, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
+                                <Button className="default_button" onClick={this.onSetState.bind(this, selectedRows, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
+                            </ButtonGroup>
+                        </HeaderButton> :
+                        <div className='crm-container-header'>
+                            <Row>
+                                <div>
+                                    <Select defaultValue="全部">
+                                        <Option value="1">最近创建</Option>
+                                        <Option value="2">最近查看</Option>
+                                    </Select>
+                                </div>
+                                <Col span={18}><WrapSearchForm dataSource={searchMap} onSearch={this.onSearch.bind(this)} wrappedComponentRef={(inst) => this.searchformRef = inst} /></Col>
+                                <Col span={6}>
+                                    <Row
+                                        align="middle"
+                                        type="flex"
+                                        justify="end"
+                                        gutter={15}
+                                    >
+                                        <div>
+                                            <Button><i className='iconfont icon-daoru'></i>导入</Button>
+                                            <Button><i className='iconfont icon-daochu'></i>导出</Button>
                                         </div>
-                                        {rowNum == 1 ? <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
-                                            : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
+                                        <div>
+                                            <Button type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
 
-                                        <Button className="default_button" onClick={this.onDelete.bind(this, selectedRows)}><i className='iconfont icon-shanchu'></i>删除</Button>
-                                        <ButtonGroup className='returnbtn-class'>
-                                            <Button className="default_button" onClick={this.onSetState.bind(this, selectedRows, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
-                                            <Button className="default_button" onClick={this.onSetState.bind(this, selectedRows, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
-                                        </ButtonGroup>
-                                    </div> :
-                                    <div>
-                                        {/* <Row>
-                                    <Col span={6}>
-                                        <Input placeholder='品牌' />
-                                    </Col>
-                                    <Col span={6}>
-                                        <Select placeholder='启用状态'>
-                                            <Option value="1">启用</Option>
-                                            <Option value="2">停用</Option>
-                                        </Select>
-                                    </Col>
-                                </Row> */}
-                                        <WrapSearchForm dataSource={searchMap} onSearch={this.onSearch.bind(this)} wrappedComponentRef={(inst) => this.searchformRef = inst} />
-                                    </div>
-                            }
-                        </Col>
-                        <Col span={6}>
-                            <Row
-                                align="middle"
-                                type="flex"
-                                justify="end"
-                                gutter={15}
-                            >
-                                <div>
-                                    <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                                    <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                                </div>
-                                <div>
-                                    <Button type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
-
-                                </div>
+                                        </div>
+                                    </Row>
+                                </Col>
                             </Row>
-                        </Col>
-                    </Row>
-                </div>
+
+                        </div>
+
+                }
 
                 <div className="list-box">
                     <Table
                         size="middle"
-                        rowSelection={this.rowSelectionFn}
+                        rowSelection={rowSelection}
                         columns={this.columns}
                         dataSource={page.data}
                         rowKey="id"

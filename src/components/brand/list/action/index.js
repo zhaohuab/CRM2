@@ -16,6 +16,12 @@ const showViewForm = (flag, editData = {}) => {
     }
 }
 
+const selectData = (data) => {
+    return (dispatch)=>{
+        dispatch(fetchData('BRAND_LIST_SELECTDATA',data))
+    }
+}
+
 const getListData = (params) => {
     return (dispatch) => {
         reqwest({
@@ -104,5 +110,6 @@ export {
     onSave4Add,
     onSave4Edit,
     onDelete,
-    onSetState
+    onSetState,
+    selectData
 }
