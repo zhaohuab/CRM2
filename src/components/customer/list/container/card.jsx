@@ -32,7 +32,6 @@ class EditForm extends React.Component {
                 title: fatherorgName
             };
             const province_city_district = [];
-            debugger
             province_city_district.push(String(viewData.province));
             province_city_district.push(String(viewData.city));
             province_city_district.push(String(viewData.district));

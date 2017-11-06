@@ -3,15 +3,14 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Table, Button, Popconfirm, Input, Icon, Form, Modal} from 'antd'
 import Card from './VisitRulesForm.jsx';
-import EditCard from './EditVisitRulesForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
-import './index.less';
 
+import './index.less';
 import * as Actions from '../action'
+import 'assets/stylesheet/all/iconfont.css'
 
 let Search = Input.Search;
 const ButtonGroup = Button.Group;
-import 'assets/stylesheet/all/iconfont.css'
 
 class List extends React.Component{
     constructor(props){
@@ -28,7 +27,7 @@ class List extends React.Component{
             searchMap : {
               enableState:1,
             },
-            keys:[1],
+            keys:[],
             listLen:{},
         },      
         
@@ -93,8 +92,11 @@ class List extends React.Component{
 
     onAdd() {
         this.setState({isEdit:false});
-        this.props.action.showForm(true,{});
+        this.props.action.finish(false);
+        this.props.action.setKeys([1]);
+        this.props.action.showForm(true,{orgId:1087,refIndex:1,orgName:'湛江粤海包装材料有限公司',refIndexName:'客户等级'});
     }
+
     onBack = ()=>{
         this.setState({headLabel:false});
     }
@@ -104,62 +106,40 @@ class List extends React.Component{
     }
 
     onDelete = () => {
-        let { pagination,searchMap } = this.state;
-        
+        let { pagination,searchMap } = this.state;        
         this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
         this.setState({headLabel:false,selectedRowKeys:[]});
     }
 
     onEdit = () => {
-
         this.setState({isEdit:true});
         let rowKey = this.state.selectedRowKeys[0];//只能编辑第一条选中数据
         let rowData = {};
-
         let page = this.props.$$state.get("data").toJS();
-
-       for(let i=0,len=page.data.length;i<len;i++) {
-         if(rowKey == page.data[i].id) {
-            rowData = page.data[i];
-            break;
-          }
+        for(let i=0,len=page.data.length;i<len;i++) {
+            if(rowKey == page.data[i].id) {
+                rowData = page.data[i];
+                break;
+            }
         }
         let cardLen = rowData.taskcardList.length; 
         let {keys} = this.state;
         for(let i =0; i<cardLen+1; i++){
-            keys[i] = i+1;
+           keys[i] = i+1;
         }
     
         this.setState({keys:keys});
-        this.setState({listLen: cardLen});
         this.props.action.showForm(true,rowData);
-    }
-
-    onEditClose(){
-        this.props.action.showForm(false,{});
-    } 
-
-    onEditSave(){
-        let form = this.editFormRef.props.form;
-        form.validateFieldsAndScroll((err, values) => {
-          if (!err) {
-            console.log('Received values of form: ', values);
-          }
-        });
-        let data = form.getFieldsValue();
-        if(this.state.isEdit) {         
-          this.props.action.onSave4Edit(data);
-        } else {
-          this.props.action.onSave4Add(data);
-        }
+        this.props.action.finish(false);
 
     }
 
+  
     onEnable(enable) {
         return (enable) => {
-          let { pagination,searchMap } = this.state;
-          this.setState({headLabel:false});
-          this.props.action.onEnable(this.state.selectedRowKeys,enable,{ pagination,searchMap });
+            let { pagination,searchMap } = this.state;
+            this.setState({headLabel:false});
+            this.props.action.onEnable(this.state.selectedRowKeys,enable,{ pagination,searchMap });
         }
     }
 
@@ -195,7 +175,7 @@ class List extends React.Component{
           }
         });
         let data = form.getFieldsValue();
-        
+       
         if(this.state.isEdit) {     
            
           this.props.action.onSave4Edit(data);
@@ -203,6 +183,8 @@ class List extends React.Component{
        
           this.props.action.onSave4Add(data);
         }
+        this.props.action.finish(true);
+        this.props.action.setKeys(1);
     }
 
     onSelectChange(selectedRowKeys){
@@ -226,8 +208,8 @@ class List extends React.Component{
         let visible = this.props.$$state.get('visible');
         let {headLabel,selectedRowKeys} = this.state;
         let rowSelection = {
-          selectedRowKeys,
-          onChange: this.onSelectChange.bind(this),
+            selectedRowKeys,
+            onChange: this.onSelectChange.bind(this),
         };
 
         let editData = this.props.$$state.get('editData').toJS();
@@ -271,7 +253,7 @@ class List extends React.Component{
                 </div>
                 <Modal title="新建/编辑" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={500}>
                     <div className='model-height'>
-                        <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} keys ={this.state.keys} listLen = {this.state.listLen} />
+                        <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} isEdit={this.state.isEdit} keys ={this.state.keys} listLen = {this.state.listLen} />
                     </div>                   
                 </Modal>
             </div>

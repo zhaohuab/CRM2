@@ -20,9 +20,9 @@ var theme = require('./theme.config.js')
 
 const environments = {
     // 测试环境
-    'btest': '//172.20.18.154',
+	'btest': '//172.20.18.154',  //old //172.20.18.154
     // 正式环境
-    'bup': 'http://static-scrm.upesn.com',
+    'bup': '//10.1.214.78',
 };
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
@@ -36,7 +36,8 @@ require('./before-build.script');
 
 module.exports = {
     entry: {
-        main: __dirname + "/src/main.jsx", //入口文件
+        //main: __dirname + "/src/main.jsx", //入口文件
+        main: ['babel-polyfill', './src/main.jsx'], //添加垫片，支持es6新的api， 如[].fill(), [].form();
         vendor: ['redux', 'react-redux', 'react-router', 'react-router-redux', 'redux-thunk']
     },
     output: {
