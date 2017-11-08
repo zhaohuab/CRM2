@@ -335,7 +335,10 @@ export default class ViewPanel extends React.Component {
                         </Col>
                         <Col span={6} className="warrper-main-right">
                             <div className="main-right-state">动态</div>
-                            <div className="main-right-timeline">
+                            <div
+                                className="main-right-timeline"
+                                id="timeline-recoverd "
+                            >
                                 <Timeline>
                                     <Timeline.Item>
                                         <p>

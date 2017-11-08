@@ -25,10 +25,34 @@ export function getContactList(pagination, searchMap) {
                 }
             },
             result => {
-                debugger;
                 dispatch({ type: "CONTACTS_LIST_GETLIST", data: result });
             }
         );
+    };
+}
+
+let change = data => {
+    let newData = data.split(/;|,/g);
+    let result = [];
+    newData.forEach(item => {
+        result.push({ title: item, select: false, disable: "disabled" });
+    });
+    return result;
+};
+
+//新增联系人
+
+export function addPerson(show) {
+    return dispatch => {
+        let tags = {
+            role: "决策人;商务决策人;技术决策人,财务决策人,项目决策人,审批者,评估者,影响人,使用人,普通人",
+            attitude: "还不错,非常好,一般,恶略,无视",
+            hobby: "踢球,跑步"
+        };
+        tags.role = change(tags.role);
+        tags.attitude = change(tags.attitude);
+        tags.hobby = change(tags.hobby);
+        dispatch({ type: "CONTACTS_LIST_ADDPERSON", tags, show });
     };
 }
 //显示modal
@@ -64,9 +88,8 @@ export function selectData(data) {
     };
 }
 //删除已选择的数据
-export function onDelete(delKey, pagination, searchMap) {
-    debugger;
-    return dispatch => {
+export function onDelete(delKey, pagination, searchMap, fn) {
+    return (dispatch, getState) => {
         reqwest(
             {
                 url: `${contacts.contacts}/batch`,
@@ -105,7 +128,6 @@ export function onEdit(values, pagination, searchMa) {
                 }
             },
             result => {
-                debugger;
                 dispatch({
                     type: "CONTACTS_LIST_UPDATELIST",
                     data: result

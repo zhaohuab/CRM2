@@ -36,8 +36,8 @@ class LoginForm extends React.Component {
             <div className="login-form-warpper">
                 <div className="login-shadow" />
                 <div className="login-form">
-                    <p className='login-form-title'>欢迎登录</p>
-                    <div className='login-form-error'>{loginError}</div>
+                    <p className="login-form-title">欢迎登录</p>
+                    <div className="login-form-error">{loginError}</div>
                     <Form onSubmit={this.handleSubmit} width={300}>
                         <FormItem
                             validateStatus={userError ? "error" : ""}
@@ -104,7 +104,11 @@ class LoginCon extends React.Component {
     constructor(props) {
         super(props);
     }
+    afterFn(from, to) {
+        console.log(from, to);
+    }
 
+    componentDidMount() {}
     render() {
         let { $$state } = this.props;
         let logined = $$state.get("logined");
@@ -118,6 +122,11 @@ class LoginCon extends React.Component {
 
         let heightPx = document.documentElement.clientHeight;
         let errorMessage = $$state.get("errorMessage");
+
+        let width =
+            document.documentElement.clientWidth || document.body.clientWidth;
+        let height =
+            document.documentElement.clientHeight || document.body.clientHeight;
         return (
             <div className="login-warpper">
                 <div className="login-carousel">
@@ -128,18 +137,75 @@ class LoginCon extends React.Component {
                         autoplaySpeed="6000"
                         dots={true}
                     >
-                        <div>
+                        <div
+                            ref="loginBg1"
+                            style={{
+                                width: width + "px",
+                                height:
+                                    height >= 658 ? height + "px" : 658 + "px"
+                            }}
+                        >
                             <img
+                                style={{
+                                    width:
+                                        width >= 1240
+                                            ? width + "px"
+                                            : 1240 + "px",
+                                    height:
+                                        height >= 658 && width >= 1240
+                                            ? height + "px"
+                                            : 780 + "px"
+                                }}
+                                ref="loginImg"
+                                className="login-img"
                                 src={require("assets/images/login/banner1.jpg")}
                             />
                         </div>
-                        <div>
+                        <div
+                            ref="loginBg1"
+                            style={{
+                                width:
+                                    width >= 1240 ? width + "px" : 1240 + "px",
+                                height:
+                                    height >= 658 && width >= 1240
+                                        ? height + "px"
+                                        : 780 + "px"
+                            }}
+                        >
                             <img
+                                style={{
+                                    width:
+                                        width >= 1240
+                                            ? width + "px"
+                                            : 1240 + "px",
+                                    height:
+                                        height >= 658 && width >= 1240
+                                            ? height + "px"
+                                            : 780 + "px"
+                                }}
+                                ref="loginImg"
+                                className="login-img"
                                 src={require("assets/images/login/banner2.jpg")}
                             />
                         </div>
-                        <div>
+                        <div
+                            ref="loginBg1"
+                            style={{
+                                width: width + "px",
+                                height:
+                                    height >= 658 ? height + "px" : 658 + "px"
+                            }}
+                        >
                             <img
+                                style={{
+                                    width:
+                                        width >= 1240
+                                            ? width + "px"
+                                            : 1240 + "px",
+                                    height: height >= 658 ? "auto" : 658 + "px"
+                                }}
+                                ref="loginImg"
+                                className="login-img"
                                 src={require("assets/images/login/banner3.jpg")}
                             />
                         </div>
