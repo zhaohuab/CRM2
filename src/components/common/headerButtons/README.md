@@ -9,32 +9,29 @@
 
 > 参数
 
-| 参数           | 说明         
-| ------------- |-------------|
-| length        | 显示已选择条数 
-| goBack        | 点击X按钮和返回按钮的回调方法 |
+| 参数           | 说明         | 值类型
+| ------------- |-------------|-------------|
+| length        | 显示已选择条数 |number|
+| goBack        | 点击X按钮和返回按钮的回调方法 |function|
 
 
 > 调用展示
 ```
-<HeaderButton
-    length={selectData.length}
-    goBack={this.headerBack.bind(this)}
->
-    <Button onClick={this.headerBack.bind(this)}>
-        <i className="iconfont icon-fanhui" />返回
-    </Button>
-    <Button onClick={this.onDelete.bind(this)}>
-        <i className="iconfont icon-shanchu" />删除
-    </Button>
-    {selectData.length == 1 ? (
-        <Button onClick={this.onEdit.bind(this)}>
-            <i className="iconfont icon-bianji" />编辑
+ <HeaderButton
+        length={selectedRowKeys.length}
+        goBack={this.headerBack.bind(this)}
+    >
+        <Button onClick={this.onDelete.bind(this)}>
+            <i className="iconfont icon-shanchu" />删除
         </Button>
-    ) : (
-        ""
-    )}
-    <Button>刷新</Button>
+        {selectedRowKeys.length == 1 ? (
+            <Button onClick={this.onEdit.bind(this)}>
+                <i className="iconfont icon-bianji" />编辑
+            </Button>
+        ) : (
+            ""
+        )}
+        <Button>刷新</Button>
 </HeaderButton>
 
 ```
