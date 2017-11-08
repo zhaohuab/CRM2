@@ -30,8 +30,7 @@ import LessCard from "./lessCard.jsx";
 import MoreCard from "./moreCard.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
 import PanelView from "./panel.jsx";
-import Tags from "./tags.jsx";
-import CustomTags from "./custom-tags.jsx";
+
 
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
@@ -127,24 +126,15 @@ class Contacts extends React.Component {
     //modal点击确定按钮
     handleOk() {
         let { pagination, searchMap } = this.state; //获取分页信息
-        let hobby = this.refs.hobby.result();
-        let role = this.refs.role.result();
-        let attitude = this.refs.attitude.result();
 
-        let change = values => {
-            values.hobby = hobby;
-            values.role = role;
-            values.attitude = attitude;
-            return values;
-        };
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 if (values.id) {
-                    values = change(values);
+                    //values = change(values);
                     debugger;
                     this.props.action.onEdit(values, pagination, searchMap);
                 } else {
-                    values = change(values);
+                    //values = change(values);
                     debugger;
                     this.props.action.cardSaved(values, pagination, searchMap);
                 }
@@ -162,8 +152,8 @@ class Contacts extends React.Component {
         this.setState({
             editData: { mainContact: 1 }
         });
-        this.props.action.addPerson(true);
-        //this.props.action.showForm(true);
+        //this.props.action.addPerson(true);
+        this.props.action.showForm(true);
     }
 
     //删除按钮
@@ -214,29 +204,32 @@ class Contacts extends React.Component {
 
         let newObj = {};
         for (var key in resultNew[0]) {
-            if (key == "id") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "name") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "customer") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "ownerUserId") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "mainContact") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "deptId") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "post") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "mobile") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "officePhone") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "email") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "remarks") {
-                newObj[key] = resultNew[0][key];
-            }
+            newObj[key] = resultNew[0][key];
+            // if (key == "id") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "name") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "customer") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "ownerUserId") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "mainContact") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "deptId") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "post") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "mobile") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "officePhone") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "email") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "remarks") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "role") {
+            //     newObj[key] = resultNew[0][key];
+            // }
         }
         //获取存在redux中保存的固定值的值 与 点击编辑获取的标签值进行对比，把redux中的值改为编辑中为true的
         this.setState(
@@ -310,9 +303,7 @@ class Contacts extends React.Component {
             onChange: this.onSelectChange
         };
 
-        const roleData = tags.role;
-        const attitudeData = tags.attitude;
-        const hobbyData = tags.hobby;
+        let editData = selectedRows ? selectedRows[0] :{};
 
         return (
             <div className="crm-container">
@@ -444,60 +435,12 @@ class Contacts extends React.Component {
                     >
                         <div className="modal-height">
                             <ContactsForm
-                                dataSource={this.state.editData}
+                                dataSource={editData}
                                 wrappedComponentRef={inst =>
                                     (this.formRef = inst)}
                             />
-                            <div className="card-header-title">
-                                标签
-                                <i className="iconfont icon-xiajiantou-lanse" />
-                            </div>
-                            <Row>
-                                <Col push={2} span={20}>
-                                    <Row
-                                        type="flex"
-                                        className="contact-tag-warrper"
-                                        gutter={15}
-                                    >
-                                        <Col span={3}>角色</Col>
-                                        <Col span={21}>
-                                            <Tags
-                                                dataSource={roleData}
-                                                ref="role"
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row
-                                        type="flex"
-                                        align="middle"
-                                        gutter={15}
-                                        className="contact-tag-warrper"
-                                    >
-                                        <Col span={3}>态度</Col>
-                                        <Col span={21}>
-                                            <Tags
-                                                dataSource={attitudeData}
-                                                ref="attitude"
-                                            />
-                                        </Col>
-                                    </Row>
-                                    <Row
-                                        type="flex"
-                                        align="middle"
-                                        gutter={15}
-                                        className="contact-tag-warrper"
-                                    >
-                                        <Col span={3}>兴趣爱好</Col>
-                                        <Col span={21}>
-                                            <CustomTags
-                                                dataSource={hobbyData}
-                                                flag={this.state.editData.id}
-                                                ref="hobby"
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
+                            
+                            
                         </div>
                     </Modal>
 
