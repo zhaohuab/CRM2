@@ -4,7 +4,8 @@ let $$initialState = {
     loading: false,
     editData: {},
     data: {},
-    visible: false
+    visible: false,
+    tags: {}
 };
 
 function pageAdd(page, item) {
@@ -28,6 +29,14 @@ export default function reducer(
                 return false;
             });
             return $$state.set("data", Immutable.fromJS(action.data));
+        case "CONTACTS_LIST_ADDPERSON":
+            $$state = $$state.update("tags", val => {
+                return action.tags;
+            });
+
+            return $$state.update("visible", val => {
+                return action.show;
+            });
         case "CONTACTS_LIST_SHOWFORM": //显示、关闭modal层
             return $$state.update("visible", val => {
                 return action.data;

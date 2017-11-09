@@ -14,17 +14,23 @@ import {
     Table,
     Modal,
     Form,
-    Select
+    Select,
+    Tabs,
+    Timeline
 } from "antd";
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const Option = Select.Option;
+const TabPane = Tabs.TabPane;
 
 import * as Actions from "../action/index.js";
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import Card from "./card.jsx";
 import LessCard from "./lessCard.jsx";
 import MoreCard from "./moreCard.jsx";
+import SlidePanel from "../../../common/slidePanel/index.jsx";
+import PanelView from "./panel.jsx";
+
 
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
@@ -35,7 +41,17 @@ class Contacts extends React.Component {
         this.columns = [
             {
                 title: "姓名",
-                dataIndex: "name"
+                dataIndex: "name",
+                render: text => {
+                    return (
+                        <div
+                            onClick={this.slideShow.bind(this)}
+                            className="crm-pointer"
+                        >
+                            {text}
+                        </div>
+                    );
+                }
             },
             {
                 title: "客户",
@@ -67,7 +83,9 @@ class Contacts extends React.Component {
             //存放编辑数据
             editData: [],
             //上方条件选择保存更多状态
-            more: false
+            more: false,
+            viewState: false,
+            hasPanel: false
         };
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -84,6 +102,22 @@ class Contacts extends React.Component {
         );
     }
 
+    //点击姓名出侧滑面板
+    slideShow() {
+        if (!this.state.hasPanel) {
+            this.setState({
+                hasPanel: true
+            });
+        }
+        this.setState({
+            viewState: true
+        });
+    }
+    slideHide() {
+        this.setState({
+            viewState: false
+        });
+    }
     //头部按钮层返回按钮方法
     headerBack() {
         this.props.action.selectData([]);
@@ -92,12 +126,16 @@ class Contacts extends React.Component {
     //modal点击确定按钮
     handleOk() {
         let { pagination, searchMap } = this.state; //获取分页信息
+
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {
-            debugger;
             if (!err) {
                 if (values.id) {
+                    //values = change(values);
+                    debugger;
                     this.props.action.onEdit(values, pagination, searchMap);
                 } else {
+                    //values = change(values);
+                    debugger;
                     this.props.action.cardSaved(values, pagination, searchMap);
                 }
             }
@@ -112,8 +150,9 @@ class Contacts extends React.Component {
     //新增按钮
     addContacts() {
         this.setState({
-            editData: {}
+            editData: { mainContact: 1 }
         });
+        //this.props.action.addPerson(true);
         this.props.action.showForm(true);
     }
 
@@ -161,34 +200,38 @@ class Contacts extends React.Component {
         resultNew = resultNew.filter(item => {
             return item.id == selectedRowKeys[0];
         });
+        debugger;
 
         let newObj = {};
         for (var key in resultNew[0]) {
-            if (key == "id") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "name") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "customer") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "ownerUserId") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "mainContact") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "deptId") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "post") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "mobile") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "officePhone") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "email") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "remarks") {
-                newObj[key] = resultNew[0][key];
-            }
+            newObj[key] = resultNew[0][key];
+            // if (key == "id") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "name") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "customer") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "ownerUserId") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "mainContact") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "deptId") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "post") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "mobile") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "officePhone") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "email") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "remarks") {
+            //     newObj[key] = resultNew[0][key];
+            // } else if (key == "role") {
+            //     newObj[key] = resultNew[0][key];
+            // }
         }
-
+        //获取存在redux中保存的固定值的值 与 点击编辑获取的标签值进行对比，把redux中的值改为编辑中为true的
         this.setState(
             {
                 editData: newObj
@@ -236,7 +279,7 @@ class Contacts extends React.Component {
     }
 
     render() {
-        let { data, visible, loading } = this.props.$$state.toJS();
+        let { data, visible, loading, tags } = this.props.$$state.toJS();
 
         //获取列表所需字段
         let newData;
@@ -259,6 +302,8 @@ class Contacts extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+
+        let editData = selectedRows ? selectedRows[0] :{};
 
         return (
             <div className="crm-container">
@@ -358,7 +403,7 @@ class Contacts extends React.Component {
                             </Row>
                         </div>
                     )}
-                    <div style={{ background: "white" }}>
+                    <div className="tabel-bg">
                         <Table
                             size="middle"
                             columns={this.columns}
@@ -379,21 +424,33 @@ class Contacts extends React.Component {
                             }}
                         />
                     </div>
+
+                    <Modal
+                        title={this.state.editData.id ? "修改联系人" : "新增联系人"}
+                        visible={visible}
+                        onOk={this.handleOk.bind(this)}
+                        onCancel={this.handleCancel.bind(this)}
+                        width={900}
+                        maskClosable={false}
+                    >
+                        <div className="modal-height">
+                            <ContactsForm
+                                dataSource={editData}
+                                wrappedComponentRef={inst =>
+                                    (this.formRef = inst)}
+                            />
+                            
+                            
+                        </div>
+                    </Modal>
+
+                    <SlidePanel
+                        viewState={this.state.viewState}
+                        onClose={this.slideHide.bind(this)}
+                    >
+                        <PanelView />
+                    </SlidePanel>
                 </div>
-                <Modal
-                    title={this.state.editData.id ? "修改联系人" : "新增联系人"}
-                    visible={visible}
-                    onOk={this.handleOk.bind(this)}
-                    onCancel={this.handleCancel.bind(this)}
-                    width={815}
-                >
-                    <div className="modal-height">
-                        <ContactsForm
-                            dataSource={this.state.editData}
-                            wrappedComponentRef={inst => (this.formRef = inst)}
-                        />
-                    </div>
-                </Modal>
             </div>
         );
     }
@@ -411,3 +468,5 @@ export default connect(
         };
     }
 )(Contacts);
+
+//<Tags dataSource={tagData} />

@@ -25,10 +25,20 @@ export function getContactList(pagination, searchMap) {
                 }
             },
             result => {
-                debugger;
                 dispatch({ type: "CONTACTS_LIST_GETLIST", data: result });
             }
         );
+    };
+}
+
+
+
+//新增联系人
+
+export function addPerson(show) {
+    return dispatch => {
+        
+        dispatch({ type: "CONTACTS_LIST_ADDPERSON", tags, show });
     };
 }
 //显示modal
@@ -64,9 +74,8 @@ export function selectData(data) {
     };
 }
 //删除已选择的数据
-export function onDelete(delKey, pagination, searchMap) {
-    debugger;
-    return dispatch => {
+export function onDelete(delKey, pagination, searchMap, fn) {
+    return (dispatch, getState) => {
         reqwest(
             {
                 url: `${contacts.contacts}/batch`,
@@ -105,7 +114,6 @@ export function onEdit(values, pagination, searchMa) {
                 }
             },
             result => {
-                debugger;
                 dispatch({
                     type: "CONTACTS_LIST_UPDATELIST",
                     data: result
