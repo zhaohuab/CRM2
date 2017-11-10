@@ -115,7 +115,7 @@ class Department extends React.Component {
                     width={400}
                     closable={false}
                 >
-                    <div className="add-inset-modal" id="tree-icon">
+                    <div className="add-inset-modal tree-icon" id="tree-icon">
                         <Tree onSelect={this.onSelect} showLine={true}>
                             {this.renderTreeNodes(this.state.dataSource)}
                         </Tree>

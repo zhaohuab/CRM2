@@ -21,10 +21,9 @@ import CustomTags from "./custom-tags.jsx";
 
 export default class Card extends React.Component {
     componentDidMount() {
-        debugger
         this.props.form.setFieldsValue(this.props.dataSource);
     }
-        
+
     render() {
         let formItemLayout = {
             labelCol: { span: 7 },
@@ -38,11 +37,10 @@ export default class Card extends React.Component {
 
         return (
             <div>
-                
                 <Form>
-                <div className="card-header-title">
-                    基本信息 <i className="iconfont icon-xiajiantou-lanse" />
-                </div>
+                    <div className="card-header-title">
+                        基本信息 <i className="iconfont icon-xiajiantou-lanse" />
+                    </div>
                     <Row type="flex" justify="center">
                         <Col span={11}>
                             <FormItem style={{ display: "none" }}>
@@ -84,7 +82,14 @@ export default class Card extends React.Component {
                         <Col span={11}>
                             {" "}
                             <FormItem label="主联系人" {...formItemLayout}>
-                                {getFieldDecorator("mainContact")(
+                                {getFieldDecorator("mainContact", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            message: "请输入..."
+                                        }
+                                    ]
+                                })(
                                     <RadioGroup>
                                         <Radio value={1}>是</Radio>
                                         <Radio value={2}>否</Radio>
@@ -150,34 +155,49 @@ export default class Card extends React.Component {
                         <i className="iconfont icon-xiajiantou-lanse" />
                     </div>
                     <Row>
-                        <Col >
+                        <Col>
                             <FormItem label="角色" {...formItemLayout}>
                                 {getFieldDecorator("role")(
                                     <Tags
-                                        dataSource={["决策人","商务决策人","技术决策人","财务决策人","项目决策人","审批者","评估者","影响人","使用人","普通人"]}
+                                        dataSource={[
+                                            "决策人",
+                                            "商务决策人",
+                                            "技术决策人",
+                                            "财务决策人",
+                                            "项目决策人",
+                                            "审批者",
+                                            "评估者",
+                                            "影响人",
+                                            "使用人",
+                                            "普通人"
+                                        ]}
                                     />
                                 )}
                             </FormItem>
                         </Col>
                     </Row>
                     <Row>
-                        <Col >
+                        <Col>
                             <FormItem label="态度" {...formItemLayout}>
                                 {getFieldDecorator("attitude")(
                                     <Tags
-                                        dataSource={["还不错","非常好","一般","恶略","无视"]}
+                                        dataSource={[
+                                            "还不错",
+                                            "非常好",
+                                            "一般",
+                                            "恶略",
+                                            "无视"
+                                        ]}
                                     />
                                 )}
                             </FormItem>
                         </Col>
                     </Row>
                     <Row>
-                        <Col >
+                        <Col>
                             <FormItem label="兴趣爱好" {...formItemLayout}>
                                 {getFieldDecorator("hobby")(
-                                    <CustomTags
-                                        dataSource={["踢球","跑步"]}
-                                    />
+                                    <CustomTags dataSource={["踢球", "跑步"]} />
                                 )}
                             </FormItem>
                         </Col>

@@ -269,7 +269,7 @@ class List extends React.Component {
                     </div>
                 )}
 
-                <div className="list-box">
+                <div className="list-box tabel-recoverd">
                     <Table
                         size="middle"
                         columns={this.columns}
