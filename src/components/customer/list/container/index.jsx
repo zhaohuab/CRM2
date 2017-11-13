@@ -60,23 +60,6 @@ class List extends React.Component {
             }
         ];
         const that = this;
-        // this.rowSelectionFn = {
-        //     onChange(selected, selectedRows) {
-        //         const nowVisible = that.props.$$state.get("toolVisible").toJS();
-        //         if (selectedRows.length > 0) {
-        //             nowVisible.simForm = false;
-        //             nowVisible.btnPanel = true;
-        //         } else {
-        //             nowVisible.btnPanel = false;
-        //             if (nowVisible.milForm == true) {
-        //                 nowVisible.simForm = false;
-        //             } else {
-        //                 nowVisible.simForm = true;
-        //             }
-        //         }
-        //         that.props.action.selectRow(selectedRows, nowVisible);
-        //     }
-        // };
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
             const nowVisible = that.props.$$state.get("toolVisible").toJS();
@@ -97,6 +80,7 @@ class List extends React.Component {
 
     componentDidMount() {
         this.props.action.getListData(this.props.$$state.get("pagination").toJS());
+        this.props.action.getEnumData();
     }
     formHandleOk() {
         const isEdit = this.props.$$state.get("isEdit");
@@ -132,7 +116,6 @@ class List extends React.Component {
     }
     onPageSizeChange(current, pageSize) {
         let pagination = { page: current, pageSize: pageSize };
-        debugger
         this.props.action.getListData( pagination, this.props.$$state.get("searchMap").toJS() );
     }
     render() {

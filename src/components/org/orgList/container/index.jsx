@@ -60,31 +60,27 @@ class List extends Component {
         };
         //点击每行table触发的onchange方法
         let that = this;
-        this.rowSelectionFn = {
-            onChange(selected, selectedRows) {
-                if (selectedRows.length) {
-                    that.props.orgAction.buttonEdit(selectedRows);
-                } else {
-                    that.props.orgAction.buttonEdit(selectedRows);
-                }
-            }
+     
+        this.onSelectChange = (selectedRowKeys, selectedRows) => {
+          
+            this.props.action.selectData({ selectedRows, selectedRowKeys });
         };
     }
 
     //修改一条数据方法
     changeForm(record) {
         this.setState({ isEdit: true });
-        this.props.orgAction.showForm(true, record);
+        this.props.action.showForm(true, record);
     }
 
     //删除一条数据方法
     btnDelete(treeSelect, searchFilter, record) {
-        this.props.orgAction.listdel(record, treeSelect, searchFilter);
+        this.props.action.listdel(record, treeSelect, searchFilter);
     }
 
     //启停用按钮
     btnSetEnablestate(treeSelect, searchFilter, data, state) {
-        this.props.orgAction.setEnablestate(
+        this.props.action.setEnablestate(
             treeSelect,
             searchFilter,
             data,
@@ -94,7 +90,7 @@ class List extends Component {
 
     //修改页面取消按钮
     handleCancel() {
-        this.props.orgAction.showForm(false, {});
+        this.props.action.showForm(false, {});
     }
 
     //表单页面确定方法
@@ -102,9 +98,9 @@ class List extends Component {
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
                 if (this.state.isEdit) {
-                    this.props.orgAction.listchange(values);
+                    this.props.action.listchange(values);
                 } else {
-                    this.props.orgAction.listadd(values);
+                    this.props.action.listadd(values);
                 }
             }
         });
@@ -113,51 +109,45 @@ class List extends Component {
     //点击增加组织
     addFormBtn() {
         this.setState({ isEdit: false });
-        this.props.orgAction.showForm(true, {});
-        // this.props.orgAction.changeAdd()
+        this.props.action.showForm(true, {});
+        // this.props.action.changeAdd()
     }
 
     //显示每行数据后的返回按钮
     btnBack() {
-        this.props.orgAction.buttonEdit([]);
+        this.props.action.selectData({ selectedRows: [], selectedRowKeys: [] });
     }
 
-    //点击树节点触发的方法
-    treeSelectFn(selectedKeys, obj) {
-        if (selectedKeys.length) {
-            this.props.orgAction.listTreeChange(selectedKeys[0]);
-        }
-    }
 
     //点击一个节点数的编辑操作
     treeSelectEditFn(rowKey) {
         this.setState({ isEdit: true });
         let rowData = {};
-        let data = this.props.orgState.get("listData").toJS().data;
+        let data = this.props.$$state.get("listData").toJS().data;
         for (let i = 0, len = data.length; i < len; i++) {
             if (rowKey == data[i].id) {
                 rowData = data[i];
                 break;
             }
         }
-        this.props.orgAction.showForm(true, rowData);
+        this.props.action.showForm(true, rowData);
     }
     //点击一个节点数的增加操作
     treeSelectAddFn(item) {
         this.setState({ isEdit: false });
         let rowData = { fatherorgId: item.id, fatherorgName: item.name };
-        this.props.orgAction.showForm(true, rowData);
+        this.props.action.showForm(true, rowData);
     }
 
     //点击一个节点数的删除操作
     treeSelectDeleteFn(item) {
         const record = [];
         record.push(item);
-        this.props.orgAction.listdel(record, item.id);
+        this.props.action.listdel(record, item.id);
     }
     //点击查询按钮
     searchList(item) {
-        this.props.orgAction.getlistByClickSearch({ searchKey: item });
+        this.props.action.getlistByClickSearch({ searchKey: item });
     }
     reSizeFn() {
         let h = document.documentElement.clientHeight;
@@ -168,8 +158,8 @@ class List extends Component {
 
     //组件渲染完毕获取数据
     componentDidMount() {
-        this.props.orgAction.getlist();
-        this.props.orgAction.getTreeList();
+        this.props.action.getlist();
+        this.props.action.getTreeList();
         this.setState({
             minH: document.documentElement.clientHeight - 70
         });
@@ -180,43 +170,24 @@ class List extends Component {
     showTotal(total) {
         return `共 ${total} 条`;
     }
-    onPageChange(page, pageSize) {
-        debugger;
-        // let { orgState } = this.props;
-        // let treeSelect = orgState.get("treeSelect")
-        // let searchFilter = orgState.get("searchFilter");
-        // if(treeSelect){
-        //     this.props.orgAction.listTreeChange(treeSelect)
-        // }else if(searchFilter){
-        //     this.props.orgAction.listTreeChange(searchFilter)
-        // }else {
-        //     this.props.orgAction.getlist();
-        // }
-
-        // let pagination = { page: page, pageSize: pageSize };
-        // this.setState({ pagination })
-        // this.props.action.getListData({ pagination, searchMap });
-    }
-    onPageSizeChange(current, pageSize) {
-        // let pagination = { page: pagination.page, pageSize: pageSize };
-        // this.setState({ pagination })
-        // this.props.action.getListData({ pagination, searchMap });
-    }
+    
     render() {
         //这获取总的状态  //拿到想要的之后再toJS
-        debugger
-        let { orgState } = this.props;
-        let tabelLoading = orgState.get("tabelLoading");
-        let formVisitable = orgState.get("formVisitable");
-        let treeLoading = orgState.get("treeLoading");
-        let treeSelect = orgState.get("treeSelect");
-        let searchFilter = orgState.get("searchFilter");
-        let page = orgState.get("listData").toJS();
-        let treeData = orgState.get("treeData").toJS();
-        let tableListCheckbox = orgState.get("tableListCheckbox").toJS();
-
+        let { $$state } = this.props;
+        let tabelLoading = $$state.get("tabelLoading");
+        let formVisitable = $$state.get("formVisitable");
+        let treeLoading = $$state.get("treeLoading");
+        let treeSelect = $$state.get("treeSelect");
+        let searchFilter = $$state.get("searchFilter");
+        let page = $$state.get("listData").toJS();
+        let selectedRows = $$state.get("selectedRows").toJS();
+        let selectedRowKeys = $$state.get("selectedRowKeys").toJS();
+        let rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
         const WrapCard = Form.create()(card);
-        let editData = orgState.get("editData").toJS();
+        let editData = $$state.get("editData").toJS();
         return (
             <div className="list-warpper">
                 <div className="list-main">
@@ -237,8 +208,6 @@ class List extends Component {
                         </div>
                         <Spin spinning={treeLoading} tip="正在加载" />
                         <ListTree
-                            data={treeData}
-                            onSelect={this.treeSelectFn.bind(this)}
                             edit={this.treeSelectEditFn.bind(this)}
                             add={this.treeSelectAddFn.bind(this)}
                             delete={this.treeSelectDeleteFn.bind(this)}
@@ -246,9 +215,9 @@ class List extends Component {
                     </div>
                     <div className="list-table" ref="listTablePanel">
                         <div className="table-header">
-                            {tableListCheckbox.length ? (
+                            {selectedRows.length ? (
                                 <EditButton
-                                    data={tableListCheckbox}
+                                    data={selectedRows}
                                     setEnablestate={this.btnSetEnablestate.bind(
                                         this,
                                         treeSelect,
@@ -288,7 +257,7 @@ class List extends Component {
                                 rowKey="id"
                                 dataSource={page.data}
                                 loading={tabelLoading}
-                                rowSelection={this.rowSelectionFn}
+                                rowSelection={rowSelection}
                                 size="middle"
                                 pagination={{
                                     size: "large",
@@ -323,12 +292,12 @@ class List extends Component {
 export default connect(
     state => {
         return {
-            orgState: state.orgReducers
+            $$state: state.orgReducers
         };
     },
     dispatch => {
         return {
-            orgAction: bindActionCreators(Actions, dispatch)
+            action: bindActionCreators(Actions, dispatch)
         };
     }
 )(List);

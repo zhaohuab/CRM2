@@ -23,12 +23,6 @@ class ViewPanel extends React.Component {
             enableState: viewData.enableState
         });
     }
-    showContact() {
-        let path = browserHistory.getCurrentLocation().pathname;
-        browserHistory.push(
-            "/crm_web/page/contacts/" + encodeURIComponent(path)
-        );
-    }
     btnEnable() {
         let enableState = this.state.enableState;
         if (this.state.enableState == 1) {
@@ -48,7 +42,6 @@ class ViewPanel extends React.Component {
         const ids = [];
         ids.push(viewData.id);
         this.props.action.setEnableState(ids, enableState, pagination, searchMap);
-
     }
 
     btnNew() {
@@ -72,10 +65,9 @@ class ViewPanel extends React.Component {
                 const viewData = that.props.$$state.get("viewData").toJS();
                 const ids = [];
                 ids.push(viewData.id);
-                that.props.action.deleteData(ids, searchMap, that.state.pagination);
+                that.props.action.deleteData(ids, searchMap, that.props.$$state.get("pagination").toJS());
             },
             onCancel() {
-                console.log("Cancel");
             }
         });
     }
@@ -84,16 +76,7 @@ class ViewPanel extends React.Component {
         this.props.action.closePanel();
     }
 
-    btnDeleteView() {
-        const searchMap = this.props.$$state.get("searchMap").toJS();
-        const viewData = this.props.$$state.get("viewData").toJS();
-        const ids = [];
-        ids.push(viewData.id);
-        this.props.action.deleteData(ids, searchMap, this.state.pagination);
-    }
-
     panelHeader(obj) {
-        console.log(obj.title, "33333333");
         return (
             <div className="panel-header">
                 <p>{obj.title}</p>
@@ -110,11 +93,14 @@ class ViewPanel extends React.Component {
             <Menu>
                 <Menu.Item key="1">调整负责人</Menu.Item>
                 <Menu.Item key="2">查重</Menu.Item>
-                <Menu.Item key="3" onClick={this.btnEnable.bind(this)}>
-                    {this.state.enableState == 1 ? "停用" : "启用"}
+                <Menu.Item key="3">
+                    <div  onClick={this.btnEnable.bind(this)}>
+                    {this.state.enableState == 1 ? "停用" : "启用"}</div>
                 </Menu.Item>
-                <Menu.Item key="4" onClick={this.btnDeleteView.bind(this)}>
+                <Menu.Item key="4" >
+                    <div onClick={this.btnDelete.bind(this)}>
                     删除
+                    </div>
                 </Menu.Item>
             </Menu>
         );
@@ -199,7 +185,7 @@ class ViewPanel extends React.Component {
                             </Col>
                             <Col span={6}>
                                 <div className="info-tabel">
-                                    {viewData.address}1
+                                    {viewData.address}
                                 </div>
                             </Col>
                             <Col span={6}>
@@ -235,12 +221,7 @@ class ViewPanel extends React.Component {
                                                 key="1"
                                             >
                                                 <Row className="main-left-customer">
-                                                    <Col
-                                                        onClick={this.showContact.bind(
-                                                            this
-                                                        )}
-                                                        span={8}
-                                                    >
+                                                    <Col span={8}>
                                                         <div className="inner">
                                                             <div>李丽</div>
                                                             <div>

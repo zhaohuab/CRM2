@@ -21,7 +21,6 @@ class SimForm extends React.Component {
         this.props.handleSearch(this.props.form.getFieldsValue());
     }
     componentDidMount() {
-      
         this.props.form.setFieldsValue(this.props.searchMap);
     }
     render() {
@@ -30,9 +29,6 @@ class SimForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        const children = [];
-        // this.props.searchMap
-        
         return (
             <div className="form-top" id="recover-btn">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -50,10 +46,9 @@ class SimForm extends React.Component {
                                 {getFieldDecorator('level', {
                                 })(
                                     <Enum
-                                        initValue={this.props.searchMap.level}
                                         addOptionAll={"客户等级"}
                                         dataSource={
-                                            this.props.enumData.levelEnum
+                                            this.props.refData.level
                                         }
                                     />
                                     )}
@@ -95,7 +90,7 @@ class MilForm extends React.Component {
         super(props);
     }
     componentDidMount() {
-       // this.props.form.setFieldsValue(this.props.searchMap);
+        this.props.form.setFieldsValue(this.props.searchMap);
     }
 
     handleSearch(e) {
@@ -108,7 +103,6 @@ class MilForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        const children = [];
         return (
             <div className="form-bottom" id="recover-btn">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -129,7 +123,7 @@ class MilForm extends React.Component {
                                       //  initValue={this.props.searchMap.level}
                                         addOptionAll={"客户等级"}
                                         dataSource={
-                                            this.props.enumData.levelEnum
+                                            this.props.refData.level
                                         }
                                     />
                                     )}
@@ -192,7 +186,7 @@ class MilForm extends React.Component {
                                         //initValue={this.props.searchMap.cannelType}
                                         addOptionAll={"渠道类型"}
                                         dataSource={
-                                            this.props.enumData.cannelTypeEnum
+                                            this.props.refData.cannelType
                                         }
                                     />
                                     )}
@@ -335,6 +329,7 @@ class ToolForm extends React.Component {
     render() {
         const WarpSimForm = Form.create()(SimForm);
         const WarpMilForm = Form.create()(MilForm);
+        const enumData = this.props.$$state.get("enumData").toJS();
         const selectedRows = this.props.$$state.get("selectedRows").toJS();
         const searchMap = this.props.$$state.get("searchMap").toJS();
         return (
@@ -378,6 +373,7 @@ class ToolForm extends React.Component {
                                 >
                                     <WarpSimForm
                                     searchMap={searchMap}
+                                        refData={enumData}
                                         enumData={this.props.enumData}
                                         handleSearch={this.handleSearch.bind(this)}
                                         btnMore={this.changeVisible.bind(this)}
@@ -413,6 +409,7 @@ class ToolForm extends React.Component {
                         <WarpMilForm
                         searchMap={searchMap}
                             enumData={this.props.enumData}
+                            refData={enumData}
                             cityData={this.props.cityData}
                             handleSearch={this.handleSearch.bind(this)}
                             btnLess={this.changeVisible.bind(this)}

@@ -2,8 +2,12 @@ import Immutable from 'immutable'
 
 let $$initialState = {
 	data: [],
+	enumData:{
+		level:[],
+		cannelType:[]
+	},
 	selectedRows: [],
-	selectedRowKeys:[],
+	selectedRowKeys: [],
 	formVisitable: false,
 	toolVisible: {
 		btnPanel: false,
@@ -41,7 +45,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
 	switch (action.type) {
 		case 'CUSTOMER_LIST_GETDATA':
-			return $$state.merge({ data: action.payload.data,pagination:action.payload.pagination })
+			return $$state.merge({ data: action.payload.data, pagination: action.payload.pagination })
 
 		case 'CUSTOMER_LIST_SHOWFORM':
 			return $$state.merge({ formVisitable: action.payload.visible, isEdit: action.payload.isEdit })
@@ -50,10 +54,10 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({ toolVisible: action.payload.toolVisible })
 
 		case 'CUSTOMER_LIST_SELECTROW':
-			return $$state.merge({ 
+			return $$state.merge({
 				selectedRows: Immutable.fromJS(action.payload.selectedRows),
 				selectedRowKeys: Immutable.fromJS(action.payload.selectedRowKeys),
-				toolVisible: action.payload.toolVisible 
+				toolVisible: action.payload.toolVisible
 			})
 
 		case 'CUSTOMER_LIST_SAVESEARCHMAP':
@@ -81,6 +85,9 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 		case 'CUSTOMER_LIST_DELETE':
 			return $$state.merge({ data: action.payload.data, viewFormVisible: false })
+
+		case 'CUSTOMER_LIST_GETENUMDATA':
+			return $$state.merge({ enumData: action.payload.enumData })
 		default:
 			return $$state;
 	}

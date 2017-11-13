@@ -4,27 +4,46 @@ const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const confirm = Modal.confirm;
 import './index.less'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Actions from "../action/index.js";
 
-
-export default class ListTree extends Component {
+class ListTree extends Component {
     constructor(props){
         super(props)
         this.state={
             edit:''
         }
     }
-    onSelect(selectedKeys,obj){
-        this.props.onSelect(selectedKeys,obj)  
+  
+
+    onSelect(selectedKeys, obj) {
+        if (selectedKeys.length) {
+            this.props.action.listTreeChange(selectedKeys[0]);
+        }
     }
 
     edit(item,e){
         e.stopPropagation()
         this.props.edit(item.id)
+
+        this.setState({ isEdit: true });
+        let rowData = {};
+        let data = this.props.$$state.get("listData").toJS().data;
+        for (let i = 0, len = data.length; i < len; i++) {
+            if (rowKey == data[i].id) {
+                rowData = data[i];
+                break;
+            }
+        }
+        this.props.action.showForm(true, rowData);
     }
 
     add(item,e){
         e.stopPropagation()
-        this.props.add(item)
+        this.setState({ isEdit: false });
+        let rowData = { fatherorgId: item.id, fatherorgName: item.name };
+        this.props.action.showForm(true, rowData);
     }
 
     delete(item,e){
@@ -38,7 +57,9 @@ export default class ListTree extends Component {
         okType: 'danger',
         cancelText: '否',
         onOk() {
-            that.props.delete(item)
+            const record = [];
+            record.push(item);
+            that.props.action.listdel(record, item.id);
         },
         onCancel() {
         console.log('Cancel');
@@ -74,7 +95,7 @@ export default class ListTree extends Component {
             }
             return <TreeNode key={item.id} title={this.getCustomTitle(item) }/>;
         });
-        let {data} = this.props
+        let data = this.props.$$state.get("treeData").toJS();
         return(
             <div>
                 {
@@ -95,3 +116,16 @@ export default class ListTree extends Component {
         )
     }
 }
+
+export default connect(
+    state => {
+        return {
+            $$state: state.orgReducers
+        };
+    },
+    dispatch => {
+        return {
+            action: bindActionCreators(Actions, dispatch)
+        };
+    }
+)(ListTree);

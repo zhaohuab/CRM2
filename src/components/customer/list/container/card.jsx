@@ -26,10 +26,14 @@ class EditForm extends React.Component {
     componentDidMount() {
         if (this.props.$$state.get("isEdit") == true) {
             const viewData = this.props.$$state.get("viewData").toJS();
-            let { fatherorgId, fatherorgName } = viewData;
+            let { fatherorgId, fatherorgName,level,levelName } = viewData;
             viewData.fatherorgId = {
                 key: fatherorgId,
                 title: fatherorgName
+            };
+            viewData.level = {
+                key: level,
+                title: levelName
             };
             const province_city_district = [];
             province_city_district.push(String(viewData.province));
@@ -39,17 +43,7 @@ class EditForm extends React.Component {
             this.props.form.setFieldsValue(viewData);
         }
     }
-    handleChangeLevel = value => {
-        if (value == "0") {
-            this.setState({
-                selectValueLevel: "客户等级"
-            });
-        } else {
-            this.setState({
-                selectValueLevel: value
-            });
-        }
-    };
+
     handleChangeSaleArea = value => {
         if (value == "0") {
             this.setState({
@@ -81,6 +75,7 @@ class EditForm extends React.Component {
         };
         const { getFieldDecorator } = this.props.form;
         const viewData = this.props.$$state.get("viewData").toJS();
+        const enumData = this.props.$$state.get("enumData").toJS();
         return (
             <Row id="form-input-recover">
                 {viewData ? (
@@ -126,20 +121,7 @@ class EditForm extends React.Component {
                                                         {}
                                                     )(
                                                         <Enum
-                                                            isAddAll={true}
-                                                            dataSource={
-                                                                this.props
-                                                                    .enumData
-                                                                    .levelEnum
-                                                            }
-                                                            selectValue={
-                                                                this.state
-                                                                    .selectValueLevel
-                                                            }
-                                                            handleChange={
-                                                                this
-                                                                    .handleChangeLevel
-                                                            }
+                                                            dataSource={enumData.level}
                                                         />
                                                     )}
                                                 </FormItem>

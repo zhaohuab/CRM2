@@ -1,8 +1,7 @@
 import reqwest from 'utils/reqwest'
 import { message} from 'antd';
 
-import { cum as url } from 'api';
-
+import { cum as url,doc } from 'api';
 const fetchData = (type, payload) => {
         return {
             type,
@@ -42,7 +41,6 @@ const appendAddressOne = (data) =>{
 }
 //定义方法 action
 const getListData = (pagination,searchMap) => {
-    debugger
 	return (dispatch) => {
         dispatch(fetchData('CUSTOMER_LIST_SAVESEARCHMAP',  searchMap));
         reqwest({
@@ -55,7 +53,6 @@ const getListData = (pagination,searchMap) => {
                 }
             }
         },(data) => {
-            debugger
             dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data),pagination}));
         })
 	   
@@ -138,7 +135,7 @@ const deleteData=(ids,searchMap,pagination)=>{
                 param: {
                     ids:ids.join(","),
                     ...pagination,
-                    searchMap:searchMap
+                    searchMap:transData(searchMap)
                 },
             }
         }
@@ -157,17 +154,30 @@ const setEnableState=(ids,state,page,searchMap)=>{
 				param: {
 					ids: ids.join(","),
 					...page,
-                    searchMap:searchMap,
+                    searchMap:transData(searchMap),
                     enableState: String(state),
 				},
 			}
 		},(dataResult) => {
-                const listData=dataResult;
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data.data}));
+            dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(dataResult),pagination:page}));
         })
 	}
 }
 
+
+const getEnumData = () =>{
+    return (dispatch)=>{
+        reqwest({
+            url:url.doc,
+            method:"get",
+            data:{
+                param: {ids:"1,2,3,4,5,6"}
+            }
+        },(data)=>{
+            dispatch(fetchData('CUSTOMER_LIST_GETENUMDATA', {enumData:data.enumData}));
+        })
+    }
+}
 //输出 type 与 方法
 export {
     getListData,
@@ -179,5 +189,6 @@ export {
     showViewForm,
     closePanel,
     deleteData,
-    setEnableState
+    setEnableState,
+    getEnumData
 }

@@ -22,7 +22,8 @@ const measure = {
     measureBatch: baseDir + "base/measures/batch"
 };
 const cum = {
-    customer: baseDir + "cum/customers"
+    customer: baseDir + "cum/customers",
+    doc:baseDir + "cum/customers/docs",
 };
 
 const role = {

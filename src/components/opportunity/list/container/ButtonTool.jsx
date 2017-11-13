@@ -293,7 +293,6 @@ class ToolForm extends React.Component {
                         <div>
                             <BtnPanel
                                 btnBack={this.props.btnBack}
-
                                 btnDelete={this.props.btnDelete}
                                 selectedData={this.props.selectedData}
                             />
