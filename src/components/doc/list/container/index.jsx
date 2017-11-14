@@ -97,15 +97,15 @@ class List extends React.Component {
   onSave = () => {
     let data = this.props.$$state.get("editData").toJS();
     data.baseDocDetailList = this.props.$$state.get('storage').toJS().filter(item=>item.name!='');
-    if (!data.name||!data.description){
-        this.props.action.empoty(data.name.length,data.description.length)
-        return;
-    } 
-    if (this.state.isEdit) {
-      this.props.action.onSave4Edit(data);
-    }else {
-      this.props.action.onSave4Add(data);
-    }   
+    this.formRef.props.form.validateFields((err, values) => {
+      if (!err) {                  
+        if (this.state.isEdit) {
+          this.props.action.onSave4Edit(data);
+        }else {
+          this.props.action.onSave4Add(data);
+        }   
+      } 
+    })
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -145,10 +145,12 @@ class List extends React.Component {
     this.props.action.getListData({ pagination, searchMap });
     console.info(`pageSize: ${pageSize}`)
   }
+  onChange = (data) => {
+    this.props.action.valueChange(data)
+  }
   render() {
-   // debugger;
     let page = this.props.$$state.get("data").toJS();
-    console.log('page=======',page)
+     let editData = this.props.$$state.get("editData").toJS();
     let visible = this.props.$$state.get("visible");
     let { headLabel, selectedRowKeys } = this.state;
     let rowSelection = {
@@ -156,7 +158,6 @@ class List extends React.Component {
       onChange: this.onSelectChange,
     };
     const detail = this.props.action.detail;
-    //const WrapCard = Form.create()(Card)
     return (
       <div className= 'user-warpper'>
         {
@@ -228,7 +229,7 @@ class List extends React.Component {
           width= { 500 }
         >
           <div className = 'model-height' id = 'doc'>
-            <Card/>
+            <Card onChange={this.onChange.bind(this) } editData = { editData } wrappedComponentRef={ref => this.formRef = ref}/>
           </div>
         </Modal>
       </div>

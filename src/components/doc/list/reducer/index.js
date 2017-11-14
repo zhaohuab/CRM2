@@ -5,11 +5,9 @@ let $$initialState = {
 	editData:{},//单条主子数据
 	data:[],//所有数据
 	visible:false,
-	isDefault:1,
+	isDefault:2,
 	storage:[],//修改过要提交的数据
 	dataSource:[],//档案明细数据
-	name:false,
-	description:false	 
 };
 
 function pageAdd(page,item) {
@@ -60,8 +58,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				visible : action.content.visible,
 				editData : action.content.editData,
 				dataSource:action.content.editData.baseDocDetailList,
-				name: action.content.name,
-				description:action.content.description,
+			  isDefault:action.content.isDefault
 			})				
 		case 'DOC_CARD_SAVEADD' : 
 			return $$state.merge({

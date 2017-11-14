@@ -144,8 +144,7 @@ function mapDispatchToProps(dispatch) {
 //输出绑定state和action后组件
 
 const WrapCard = Form.create({
-    onFieldsChange(props, changedFields) {
-    
+    onFieldsChange(props, changedFields) {   
     props.onChange(changedFields);
     },
     mapPropsToFields(props) {

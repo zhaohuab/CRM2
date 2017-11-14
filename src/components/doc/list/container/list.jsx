@@ -26,8 +26,7 @@ class Card extends React.Component {
     this.props.action.valueChange(editData)
   }
 
-  render() {   //非空验证的时候，这个render方法没有重新渲染！！！redux中的数据改变了，这里为啥没有重新走哪？？
-   // debugger;
+  render() { 
     let editData = this.props.$$state.get('editData').toJS();
     let {isDefault} = editData;
     let name = this.props.$$state.get('name');
