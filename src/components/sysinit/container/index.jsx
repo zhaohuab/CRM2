@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Table, Button, message, Steps, Form } from 'antd';
+import moment from 'moment'
 import './index.less'
 import { Input } from 'antd';
 //导入action方法
@@ -39,13 +40,14 @@ class Page extends React.Component {
   render() {
     
     let current = this.props.$$state.get("current");
+    let orgFields = this.props.$$state.get("tenantFields").toJS();
     let orgInfo = this.props.$$state.get("tenantInfo").toJS();
 
     let content = "";
-    const WrapInfoCard = Form.create()(InfoCard);
+    let WrapInfoCard = InfoCard;
     switch (current) {
       case 0:
-        content = <WrapInfoCard dataSource={orgInfo} wrappedComponentRef={(inst) => this.formRef = inst} />;
+        content = <WrapInfoCard onChange={this.props.action.onOrgChange} dataSource={orgFields} wrappedComponentRef={(inst) => this.formRef = inst} />;
         break;
       case 1:
         content = <div><InfoView dataSource={orgInfo}/><AdminList editable={true}/></div>;

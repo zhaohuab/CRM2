@@ -2,9 +2,10 @@ import Immutable from "immutable";
 
 let $$initialState = {
     loading: false,
-    editData: {},
+    rowKeys: {},
     data: {},
-    visible: false
+    visible: false,
+    editData: {}
 };
 
 function pageAdd(page, item) {
@@ -50,8 +51,15 @@ export default function reducer(
                 visible: false,
                 data: pageAdd($$state.get("data").toJS(), action.data)
             });
+        case "CONTACTS_LIST_EDIT":
+            $$state = $$state.update("visible", val => {
+                return action.show;
+            });
+            return $$state.update("editData", val => {
+                return action.edit;
+            });
         case "VISITROUTE_LIST_SELECTDATA": //把选择的数据保存在redux中
-            return $$state.update("editData", value => {
+            return $$state.update("rowKeys", value => {
                 return Immutable.fromJS(action.data);
             });
         case "VISITROUTE_LIST_DELETELIST": //删除一到多条数据
@@ -59,10 +67,10 @@ export default function reducer(
                 return Immutable.fromJS(action.data);
             });
             $$state = $$state.setIn(
-                ["editData", "selectedRowKeys"],
+                ["rowKeys", "selectedRowKeys"],
                 Immutable.fromJS(
                     $$state
-                        .getIn(["editData", "selectedRowKeys"])
+                        .getIn(["rowKeys", "selectedRowKeys"])
                         .filter(item => {
                             for (var i = 0; i < action.del.length; i++) {
                                 if (action.del[i] == item) {
@@ -75,9 +83,9 @@ export default function reducer(
             );
 
             $$state = $$state.setIn(
-                ["editData", "selectedRows"],
+                ["rowKeys", "selectedRows"],
                 Immutable.fromJS(
-                    $$state.getIn(["editData", "selectedRows"]).filter(item => {
+                    $$state.getIn(["rowKeys", "selectedRows"]).filter(item => {
                         for (var i = 0; i < action.del.length; i++) {
                             if (action.del[i] == item.get("id")) {
                                 return false;

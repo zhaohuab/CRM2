@@ -2,10 +2,11 @@ import Immutable from "immutable";
 
 let $$initialState = {
     loading: false,
-    editData: {},
+    rowKeys: {},
     data: {},
     visible: false,
-    tags: {}
+    tags: {},
+    editData: {}
 };
 
 function pageAdd(page, item) {
@@ -29,17 +30,18 @@ export default function reducer(
                 return false;
             });
             return $$state.set("data", Immutable.fromJS(action.data));
-        case "CONTACTS_LIST_ADDPERSON":
-            $$state = $$state.update("tags", val => {
-                return action.tags;
-            });
 
-            return $$state.update("visible", val => {
-                return action.show;
-            });
         case "CONTACTS_LIST_SHOWFORM": //显示、关闭modal层
             return $$state.update("visible", val => {
                 return action.data;
+            });
+
+        case "CONTACTS_LIST_EDIT":
+            $$state = $$state.update("visible", val => {
+                return action.show;
+            });
+            return $$state.update("editData", val => {
+                return action.edit;
             });
         case "CONTACTS_CARD_SAVEADD": //新增一条数据
             return $$state.merge({
@@ -48,13 +50,13 @@ export default function reducer(
             });
 
         case "CONTACTS_LIST_SELECTDATA": //保存已选择的数据
-            return $$state.update("editData", val => {
+            return $$state.update("rowKeys", val => {
                 return Immutable.fromJS(action.data);
             });
         case "CONTACTS_LIST_GETLISTUPDATE": //删除一到多条数据
             $$state = $$state.set("data", Immutable.fromJS(action.data)).toJS();
             //selectedRows中删除已选择的
-            $$state.editData["selectedRows"] = $$state.editData[
+            $$state.rowKeys["selectedRows"] = $$state.rowKeys[
                 "selectedRows"
             ].filter((item, index) => {
                 for (var i = 0; i < action.del.length; i++) {
@@ -65,7 +67,7 @@ export default function reducer(
                 return true;
             });
             //从selectedRowKeys中删除已选择的
-            $$state.editData["selectedRowKeys"] = $$state.editData[
+            $$state.rowKeys["selectedRowKeys"] = $$state.rowKeys[
                 "selectedRowKeys"
             ].filter((item, index) => {
                 for (var i = 0; i < action.del.length; i++) {
@@ -88,6 +90,8 @@ export default function reducer(
                 return item;
             });
             upList.visible = false;
+
+            upList.editData = action.data;
 
             return Immutable.fromJS(upList);
         default:

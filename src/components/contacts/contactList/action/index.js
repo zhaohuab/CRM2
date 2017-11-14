@@ -31,16 +31,6 @@ export function getContactList(pagination, searchMap) {
     };
 }
 
-
-
-//新增联系人
-
-export function addPerson(show) {
-    return dispatch => {
-        
-        dispatch({ type: "CONTACTS_LIST_ADDPERSON", tags, show });
-    };
-}
 //显示modal
 export function showForm(data) {
     return dispatch => {
@@ -68,6 +58,7 @@ export function cardSaved(data, pagination, searchMap) {
 }
 //保存已选择的数据
 export function selectData(data) {
+    debugger;
     return {
         type: "CONTACTS_LIST_SELECTDATA",
         data
@@ -120,5 +111,13 @@ export function onEdit(values, pagination, searchMa) {
                 });
             }
         );
+    };
+}
+
+export function edit(edit, show) {
+    return {
+        type: "CONTACTS_LIST_EDIT",
+        edit,
+        show
     };
 }

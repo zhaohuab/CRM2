@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Table, Icon,Button, Form,Input,Checkbox,Col, Modal,Spin} from "antd";
+import {
+    Table,
+    Icon,
+    Button,
+    Form,
+    Input,
+    Checkbox,
+    Col,
+    Modal,
+    Spin
+} from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action/index.js";
@@ -204,7 +214,7 @@ class List extends Component {
     }
     render() {
         //这获取总的状态  //拿到想要的之后再toJS
-        debugger
+        debugger;
         let { orgState } = this.props;
         let tabelLoading = orgState.get("tabelLoading");
         let formVisitable = orgState.get("formVisitable");
@@ -282,7 +292,7 @@ class List extends Component {
                                 </Button>
                             </div>
                         </div>
-                        <div className="org-tabel">
+                        <div className="org-tabel tabel-recoverd">
                             <Table
                                 columns={this.columns}
                                 rowKey="id"

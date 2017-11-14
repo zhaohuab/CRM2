@@ -17,15 +17,6 @@ class Card extends React.Component {
         key : 2,
         title : "公司型企业"
     }]
-    componentDidMount() {
-        if(this.props.dataSource) {
-            
-            let data = this.props.dataSource;
-            data.companyType = {key:data.companyType,title:data.companyTypeName}
-            data.companyCreatedTime = data.companyCreatedTime ? moment(data.companyCreatedTime.time) : undefined;
-            this.props.form.setFieldsValue(this.props.dataSource);
-        }
-    }
     tranCol(formitem) {
         return <Col span={8}>
                     {formitem}
@@ -41,6 +32,7 @@ class Card extends React.Component {
     }
 
     render() {
+        
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 5 },
@@ -150,4 +142,27 @@ function mapDispatchToProps(dispatch) {
     }
 }
 //输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(Card);
+
+const WrapCard = Form.create({
+    onFieldsChange(props, changedFields) {
+    
+    props.onChange(changedFields);
+    },
+    mapPropsToFields(props) {
+        let data = props.dataSource;
+        if(data) {
+            if(data.companyType && !data.companyType.isTrans) {
+                data.companyType.value = {key:data.companyType.value,title:(data.companyTypeName?data.companyTypeName.value:undefined)};
+                data.companyType.isTrans = true;
+            }
+            if(data.companyCreatedTime && !data.companyCreatedTime.isTrans) {
+                data.companyCreatedTime.value = moment(data.companyCreatedTime.value.time);
+                data.companyCreatedTime.isTrans = true;
+            }
+        }
+        return {
+            ...data,
+        }
+    }
+})(Card);
+export default connect(mapStateToProps, mapDispatchToProps)(WrapCard);

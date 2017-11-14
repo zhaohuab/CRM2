@@ -16,6 +16,7 @@ const getSysInitInfo = () => {
 }
 
 const transOrg = (data) => {
+	debugger
 	data.companyCreatedTime = data.companyCreatedTime.format("YYYY-MM-DD hh:mm:ss");
 	data.companyType = data.companyType.key;
 	return data;
@@ -36,6 +37,11 @@ const onOrgSave = (data, index) => {
 	}
 }
 
+const onOrgChange = (data, index) => {
+	return (dispatch) => { 
+		dispatch(fetchData('SYSINIT_PAGE_ORGCHANGE', { tenantFields:data }));
+	}
+}
 const transAdmin = (data) => {
 	//如果是新增态，去除id属性
 	
@@ -86,6 +92,7 @@ const onEdit = (data) => {
 //输出 type 与 方法
 export {
 	getSysInitInfo,
+	onOrgChange,
 	onOrgSave,
 	onAdminListChange,
 	onAdminListSave,
