@@ -1,4 +1,4 @@
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select, Row, Col } from 'antd';
 
 import Email from 'utils/components/emails'
 import Department from 'components/refs/departments'
@@ -31,16 +31,6 @@ class Card extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
 
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 6 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 14 },
-            },
-        };
         {
             getFieldDecorator('id', {
             })(
@@ -48,10 +38,14 @@ class Card extends React.Component {
                 )
         }
         return (
+           
+               
         <Form >
+             <Row gutter={32}>
+        <Col span={10} >
             <FormItem
                 label="编码"
-                {...formItemLayout}
+               // {...formItemLayout}
             >
                 {getFieldDecorator('code', {
                     rules: [{
@@ -61,9 +55,11 @@ class Card extends React.Component {
                     <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+        </Col>
+        <Col span={10}>
             <FormItem
                 label="名称"
-                {...formItemLayout}
+               // {...formItemLayout}
             >
                 {getFieldDecorator('name', {
                     rules: [{
@@ -73,33 +69,43 @@ class Card extends React.Component {
                     <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+            </Col>
+            </Row>  
+            <Row gutter={32}>
+            <Col span={10}>
             <FormItem
                 label="助记码"
-                {...formItemLayout}
+              //  {...formItemLayout}
             >
                 {getFieldDecorator('memCode', {
                     rules: [{
                         required: false, message: '请输入助记码',
                     }],
                 })(
-                    <Email/>
+                    <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+            </Col>
+            <Col span={10}>
             <FormItem
                 label="规格"
-                {...formItemLayout}
+               // {...formItemLayout}
             >
                 {getFieldDecorator('specific', {
                     rules: [{
                         required: false, message: '',
                     }],
                 })(
-                    <RadioGroup type="button" dataSource={this.genderEnum}/>
+                    <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+            </Col>
+            </Row>  
+            <Row gutter={32}>
+            <Col span={10}>
             <FormItem
                 label="产品分类"
-                {...formItemLayout}
+               // {...formItemLayout}
             >
                 {getFieldDecorator('prdtypeId', {
                     rules: [{
@@ -109,9 +115,11 @@ class Card extends React.Component {
                     <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+            </Col>
+            <Col span={10}>
             <FormItem
                 label="主单位"
-                {...formItemLayout}
+               // {...formItemLayout}
             >
                 {getFieldDecorator('measureId', {
 
@@ -119,9 +127,40 @@ class Card extends React.Component {
                     <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+            </Col>
+            </Row>  
+            <Row gutter={32}>
+            <Col span={10}>
+            <FormItem
+                label="销售单位"
+               // {...formItemLayout}
+            >
+                {getFieldDecorator('saleUnitName', {
+
+                })(
+                    <Input placeholder='请输入...'/>
+                    )}
+            </FormItem>
+            </Col>
+           
+            <Col span={10}>
+            <FormItem
+                label="品牌"
+              //  {...formItemLayout}
+            >
+                {getFieldDecorator('brandId', {
+
+                })(
+                    <Input placeholder='请输入...'/>
+                    )}
+            </FormItem>
+            </Col>
+            </Row>  
+            <Row gutter={32}>
+            <Col span={10}>
             <FormItem
                 label="参考售价"
-                {...formItemLayout}
+               // {...formItemLayout}
             >
                 {getFieldDecorator('price', {
 
@@ -129,19 +168,25 @@ class Card extends React.Component {
                     <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+            </Col>
+            <Col span={10}>
             <FormItem
-                label="品牌"
-                {...formItemLayout}
+                label="适用组织"
+              //  {...formItemLayout}
             >
-                {getFieldDecorator('brandId', {
+                {getFieldDecorator('orgId', {
 
                 })(
-                    <Enum dataSource={this.jobEnum}/>
+                    <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+            </Col>
+            </Row>  
+            <Row gutter={32}>
+            <Col span={10}>
             <FormItem
                 label="属性组"
-                {...formItemLayout}
+              //  {...formItemLayout}
             >
                 {getFieldDecorator('attrGroupId', {
 
@@ -149,37 +194,49 @@ class Card extends React.Component {
                     <Input placeholder='请输入...'/>
                     )}
             </FormItem>
-            <FormItem
-                label="适用组织"
-                {...formItemLayout}
-            >
-                {getFieldDecorator('orgId', {
-
-                })(
-                    <Enum dataSource={this.jobEnum}/>
-                    )}
-            </FormItem>
-            <FormItem
-                label="产品描述"
-                {...formItemLayout}
-            >
-                {getFieldDecorator('description', {
-
-                })(
-                    <Enum dataSource={this.jobEnum}/>
-                    )}
-            </FormItem>
+            </Col>
+            <Col span={10}>
             <FormItem
                 label="产品图片"
-                {...formItemLayout}
+            //    {...formItemLayout}
             >
                 {getFieldDecorator('photo', {
 
                 })(
-                    <Enum dataSource={this.jobEnum}/>
+                    <Input placeholder='请输入...'/>
                     )}
             </FormItem>
+            </Col>
+            </Row>  
+            <Row gutter={32}>
+            <Col span={10}>
+            <FormItem
+                label="启用状态"
+             //   {...formItemLayout}
+            >
+                {getFieldDecorator('description', {
+
+                })(
+                    <Input placeholder='请输入...'/>
+                    )}
+            </FormItem>
+            </Col>
+            <Col span={10}>
+            <FormItem
+                label="产品描述"
+             //   {...formItemLayout}
+            >
+                {getFieldDecorator('description', {
+
+                })(
+                    <Input placeholder='请输入...'/>
+                    )}
+            </FormItem>
+            </Col>           
+          
+            </Row>  
         </Form>)
+  
     }
 }
 
