@@ -50,7 +50,7 @@ class Page extends React.Component {
         content = <WrapInfoCard onChange={this.props.action.onOrgChange} dataSource={orgFields} wrappedComponentRef={(inst) => this.formRef = inst} />;
         break;
       case 1:
-        content = <div><WrapInfoCard onChange={this.props.action.onOrgChange} dataSource={orgFields} wrappedComponentRef={(inst) => this.formRef = inst} /><AdminList editable={true}/></div>;
+        content = <div><InfoView dataSource={orgInfo}/><AdminList editable={true}/></div>;
         break;
       case 2:
         content = <div><InfoView dataSource={orgInfo}/><AdminList editable={false}/></div>;
