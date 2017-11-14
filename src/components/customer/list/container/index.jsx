@@ -1,7 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import {Select,Input,Form,Table,Modal,Button,Icon,Row,Col} from "antd";
+import {
+    Select,
+    Input,
+    Form,
+    Table,
+    Modal,
+    Button,
+    Icon,
+    Row,
+    Col
+} from "antd";
 import ToolForm from "./ButtonTool.jsx";
 let Search = Input.Search;
 const FormItem = Form.Item;
@@ -222,7 +232,7 @@ class List extends React.Component {
                     btnDelete={this.btnDeleteList.bind(this)}
                     selectedData={selectedRows}
                 />
-                <div className="custom-tabel">
+                <div className="custom-tabel tabel-recoverd">
                     <Table
                         columns={this.columns}
                         dataSource={page.data}
@@ -232,8 +242,7 @@ class List extends React.Component {
                     />
                 </div>
                 <Modal
-                    title={this.state.isEdit?"编辑客户":"新增客户"}
-
+                    title={this.state.isEdit ? "编辑客户" : "新增客户"}
                     visible={formVisitable}
                     onOk={this.formHandleOk.bind(this)}
                     onCancel={this.formHandleCancel.bind(this)}

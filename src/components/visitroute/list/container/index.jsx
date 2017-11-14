@@ -62,10 +62,6 @@ class VisitRoute extends React.Component {
             searchMap: {
                 enableState: 1
             },
-            //存放点击table时获取的行数据
-            selectedRowKeys: [],
-            //存放编辑数据
-            editData: [],
             //上方条件选择保存更多状态
             more: false
         };
@@ -129,14 +125,12 @@ class VisitRoute extends React.Component {
     }
     //新建路线
     addVisitRoute() {
-        this.setState({
-            editData: {}
-        });
+        this.formRef.props.form.resetFields();
         this.props.action.showForm(true);
     }
     //删除路线
     onDelete() {
-        let selectedRowKeys = this.props.$$state.toJS().editData[
+        let selectedRowKeys = this.props.$$state.toJS().rowKeys[
             "selectedRowKeys"
         ];
         let { pagination, searchMap } = this.state; //获取分页信息
@@ -144,7 +138,7 @@ class VisitRoute extends React.Component {
     }
     //编辑路线
     onEdit() {
-        let selectedRowKeys = this.props.$$state.toJS().editData[
+        let selectedRowKeys = this.props.$$state.toJS().rowKeys[
             "selectedRowKeys"
         ];
         let resultNew = this.props.$$state.toJS().data.data;
@@ -154,32 +148,9 @@ class VisitRoute extends React.Component {
 
         let newObj = {};
         for (var key in resultNew[0]) {
-            if (key == "id") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "name") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "ownerUserId") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "deptId") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "coverNodeNum") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "ownerNodeNum") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "nodeId") {
-                newObj[key] = resultNew[0][key];
-            } else if (key == "remarks") {
-                newObj[key] = resultNew[0][key];
-            }
+            newObj[key] = resultNew[0][key];
         }
-        this.setState(
-            {
-                editData: newObj
-            },
-            () => {
-                this.props.action.showForm(true);
-            }
-        );
+        this.props.action.edit(newObj, true);
     }
     //获取列表所需展示字段
     changeValue(data) {
@@ -212,7 +183,7 @@ class VisitRoute extends React.Component {
     }
 
     render() {
-        const { loading, data, visible } = this.props.$$state.toJS();
+        const { loading, data, visible, editData } = this.props.$$state.toJS();
 
         let tableData;
         if (data.data) {
@@ -223,7 +194,7 @@ class VisitRoute extends React.Component {
         let {
             selectedRowKeys,
             selectedRows
-        } = this.props.$$state.toJS().editData;
+        } = this.props.$$state.toJS().rowKeys;
 
         let rowSelection = {
             selectedRowKeys,
@@ -301,7 +272,7 @@ class VisitRoute extends React.Component {
                     </div>
                 )}
 
-                <div style={{ background: "white" }}>
+                <div style={{ background: "white" }} className="tabel-recoverd">
                     <Table
                         size="middle"
                         columns={this.columns}
@@ -321,7 +292,7 @@ class VisitRoute extends React.Component {
                     />
                 </div>
                 <Modal
-                    title="新增拜访路线"
+                    title={editData.id ? "修改拜访路线" : "新增拜访路线"}
                     visible={visible}
                     onOk={this.handleOk.bind(this)}
                     onCancel={this.handleCancel.bind(this)}
@@ -329,7 +300,7 @@ class VisitRoute extends React.Component {
                 >
                     <div className="modal-height">
                         <VisitCard
-                            dataSource={this.state.editData}
+                            dataSource={editData}
                             wrappedComponentRef={inst => (this.formRef = inst)}
                         />
                     </div>

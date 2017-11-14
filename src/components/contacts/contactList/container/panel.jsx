@@ -103,10 +103,10 @@ export default class PanelView extends React.Component {
                     style={{ minHeight: "600px" }}
                 >
                     <Col span={18} className="panel-main-left">
-                        <div className="inner" id="tab-recoverd">
+                        <div className="inner tab-recoverd">
                             <Tabs defaultActiveKey="1">
                                 <TabPane tab="相关" key="1">
-                                    <div id="collapse-recover">
+                                    <div className="collapse-recover">
                                         <Collapse defaultActiveKey={["1", "2"]}>
                                             <Panel header="联系人信息" key="1">
                                                 <ul className="contacts-info-ul">
@@ -167,7 +167,7 @@ export default class PanelView extends React.Component {
                         </div>
                     </Col>
                     <Col span={6} className="panel-main-right">
-                        <div id="timeline-recoverd">
+                        <div className="timeline-recoverd">
                             <div className="contacts-timeline-title">动态</div>
                             <div className="contacts-timeline">
                                 <Timeline>
