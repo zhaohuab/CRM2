@@ -57,20 +57,18 @@ class List extends React.Component {
   }
  
   onAdd = () => {
-    setTimeout(()=>{
-        this.ref.clearState();  
-    }, 0)  
       this.setState({isEdit:false});
-      this.props.action.showForm(true,{});   
+      this.props.action.showFormAdd(true,{});   
   }
 
   onDelete = () => {
+    let aa=this.state.selectedRowKeys;
     let { pagination,searchMap } = this.state;
     this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
     this.setState({headLabel:false,selectedRowKeys:[]});
   }
 
-  onEdit = () => {   
+  onEdit = () => {  
     this.setState({isEdit:true});
     let rowKey = this.state.selectedRowKeys[0];
     let rowData = {};
@@ -81,25 +79,13 @@ class List extends React.Component {
         break;
       }
     }
-    this.props.action.showForm(true,rowData);
-    setTimeout(() => {
-        this.ref.setTableData(rowData)
-    }, 0)
+    this.props.action.showFormEdit(true,rowData);
   }
 
   onClose = () => {
     this.props.action.showForm(false, {});
   }
 
-  translate(data){//转换table组件引入的数据结构
-     let obj = {};
-     data.flag ? null : obj.id = data.key;
-     obj.name = data.name.value;      
-     obj.enableStateName = '启用';
-     obj.editState = data.editState1||data.editState2||data.editState;
-     obj.enableState = data.enableState.value;  
-     return obj   
-  }
   onEnable = (enable) => {
     return (enable) => {
       let { pagination, searchMap } = this.state;
@@ -109,25 +95,16 @@ class List extends React.Component {
   }
 
   onSave = () => {
-    let form = this.formRef.props.form;
-    form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });  
-    let data = form.getFieldsValue();
-    if (!data.name||!data.description) return;//问题
-    data.sysDocDetailList = [];
-    let docDetailList = this.ref.getTableData();   
-    for (let i=0,len=docDetailList.length; i<len; i++){
-      let cur = this.translate(docDetailList[i]);
-      data.sysDocDetailList.push(cur)
-    }
+    let data = this.props.$$state.get("editData").toJS();
+    data.baseDocDetailList = this.props.$$state.get('storage').toJS().filter(item=>item.name!='');
+    if (!data.name||!data.description){
+        this.props.action.empoty(data.name.length,data.description.length)
+        return;
+    } 
     if (this.state.isEdit) {
       this.props.action.onSave4Edit(data);
     }else {
       this.props.action.onSave4Add(data);
-      this.ref.clearState();
     }   
   }
 
@@ -169,16 +146,17 @@ class List extends React.Component {
     console.info(`pageSize: ${pageSize}`)
   }
   render() {
+   // debugger;
     let page = this.props.$$state.get("data").toJS();
+    console.log('page=======',page)
     let visible = this.props.$$state.get("visible");
     let { headLabel, selectedRowKeys } = this.state;
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    let editData = this.props.$$state.get("editData").toJS();
     const detail = this.props.action.detail;
-    const WrapCard = Form.create()(Card);
+    //const WrapCard = Form.create()(Card)
     return (
       <div className= 'user-warpper'>
         {
@@ -232,19 +210,25 @@ class List extends React.Component {
             dataSource = { page.data }
             rowSelection = { rowSelection }
             rowKey = "id"
-            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
+            pagination={{
+              size:"large",
+              showSizeChanger:true,
+              showQuickJumper:true,
+              total:page.total,
+              showTotal: this.showTotal, 
+              onChange: this.onPageChange.bind(this), 
+              onShowSizeChange: this.onPageSizeChange.bind(this) }}
           />
         </div>
         <Modal
-          title = { headLabel ? "编辑档案" : "新增档案" }
+          title = { headLabel ? "编辑" : "新增" }
           visible = {visible}
           onOk = { this.onSave.bind(this) }
           onCancel = { this.onClose.bind(this) }
           width= { 500 }
         >
           <div className = 'model-height' id = 'doc'>
-            <WrapCard dataSource = { editData } wrappedComponentRef ={ (inst) => this.formRef = inst} />
-            <Tables ref = { ref => this.ref = ref} />
+            <Card/>
           </div>
         </Modal>
       </div>
