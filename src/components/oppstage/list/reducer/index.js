@@ -1,0 +1,57 @@
+import Immutable from 'immutable'
+
+let $$initialState = {
+	loading: false,
+	editData:{},
+	data:[],
+	visible:false,
+};
+
+function listAdd(data,item) {	
+	debugger
+	data.voList.unshift(item);
+	return data;
+}
+
+function listEdit(data,item) {
+	debugger
+	for(let i=0,len=data.voList.length;i<len;i++) {
+		if(data.voList[i].id == item.id) {
+			data.voList[i] = item;
+			break;
+		}
+	}
+	return data;
+}
+export default function reducer($$state = Immutable.fromJS($$initialState), action){
+	switch (action.type) {
+	    case 'OPPSTAGE_LIST_GETLIST':
+	        return $$state.merge({
+                loading: true
+            })
+		case 'OPPSTAGE_LIST_GETLISTSUCCESS': 
+	        return $$state.merge({
+	        	loading: false,
+				data: action.content,
+				visible : action.content.visible,
+			})
+		case 'OPPSTAGE_LIST_SHOWFORM':
+			return $$state.merge({
+				visible : action.content.visible,
+				editData : action.content.editData,
+			})
+		case 'OPPSTAGE_CARD_SAVEADD' : 
+		debugger
+			return $$state.merge({
+				visible : action.content.visible,
+				data : listAdd($$state.get('data').toJS(),action.content),
+			})
+		case 'OPPSTAGE_CARD_SAVEEDIT' : 
+			return $$state.merge({
+				visible : action.content.visible,
+				data : listEdit($$state.get("data").toJS(),action.content),
+			})
+	    default: 
+	        return $$state;
+	}
+};

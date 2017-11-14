@@ -77,6 +77,10 @@ const oppaction = {
 const visitrules = {
     visitrules: baseDir + 'sact/visitrules',
 }
+
+const oppstage = {
+    oppstage: baseDir + 'sprc/oppstages',
+}
 export {
     login,
     menu,
@@ -97,4 +101,5 @@ export {
     oppaction,
     visitRouter,
     visitrules,
+    oppstage,
 }
