@@ -7,6 +7,7 @@ export function getCollaps() {
     };
 }
 
+//获取联系人信息
 export function getContactList(pagination, searchMap) {
     return dispatch => {
         dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
@@ -24,19 +25,29 @@ export function getContactList(pagination, searchMap) {
                 }
             },
             result => {
-                debugger;
                 dispatch({ type: "CONTACTS_LIST_GETLIST", data: result });
             }
         );
     };
 }
 
+
+
+//新增联系人
+
+export function addPerson(show) {
+    return dispatch => {
+        
+        dispatch({ type: "CONTACTS_LIST_ADDPERSON", tags, show });
+    };
+}
+//显示modal
 export function showForm(data) {
     return dispatch => {
         dispatch({ type: "CONTACTS_LIST_SHOWFORM", data });
     };
 }
-
+//保存新增联系人
 export function cardSaved(data, pagination, searchMap) {
     return dispatch => {
         reqwest(
@@ -55,17 +66,16 @@ export function cardSaved(data, pagination, searchMap) {
         );
     };
 }
-
+//保存已选择的数据
 export function selectData(data) {
     return {
         type: "CONTACTS_LIST_SELECTDATA",
         data
     };
 }
-
-export function onDelete(delKey, pagination, searchMap) {
-    debugger;
-    return dispatch => {
+//删除已选择的数据
+export function onDelete(delKey, pagination, searchMap, fn) {
+    return (dispatch, getState) => {
         reqwest(
             {
                 url: `${contacts.contacts}/batch`,
@@ -90,7 +100,7 @@ export function onDelete(delKey, pagination, searchMap) {
         );
     };
 }
-
+//编辑已选择
 export function onEdit(values, pagination, searchMa) {
     return dispatch => {
         reqwest(
@@ -104,7 +114,6 @@ export function onEdit(values, pagination, searchMa) {
                 }
             },
             result => {
-                debugger;
                 dispatch({
                     type: "CONTACTS_LIST_UPDATELIST",
                     data: result

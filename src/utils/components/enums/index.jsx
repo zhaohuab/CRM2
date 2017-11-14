@@ -11,7 +11,9 @@ class Enum extends React.Component {
     }
 
     trans = (dataSource) => {
+        debugger
         return dataSource.map((item) => {
+            item.key = String(item.key);
             return <Option key={item.key}>{item.title}</Option>
         })
     }
@@ -24,6 +26,7 @@ class Enum extends React.Component {
     }
 
     render() {
+        debugger
         let key="";
         if(this.props.value) {
             key = this.props.value.key;
@@ -31,10 +34,11 @@ class Enum extends React.Component {
         if(key) {
             key = String(key);
         }
+        console.info(typeof key);
         return (
             <div>
-                <Select defaultValue={this.props.addOptionAll!=undefined?"0":key} onSelect={this.onSelect}  >
-                    {this.props.addOptionAll!=undefined? <Option key={"0"}>{'全部'+this.props.addOptionAll}</Option>:''}
+                <Select value={key} onSelect={this.onSelect}>
+                    {/*this.props.addOptionAll!=undefined? <Option key={"0"}>{'全部'+this.props.addOptionAll}</Option>:''*/}
                     {this.trans(this.props.dataSource)}
                 </Select>
             </div>

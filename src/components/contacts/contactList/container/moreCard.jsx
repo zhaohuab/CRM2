@@ -129,9 +129,9 @@ export default class MoreCard extends React.Component {
                         <Col span={6}>
                             <FormItem>
                                 <div className="more-btn">
-                                    <Button htmlType="submit">搜索</Button>
+                                    <Button htmlType="submit">查询</Button>
                                     <span onClick={this.showFn.bind(this)}>
-                                        更多<Icon type="up" />
+                                        收起<Icon type="up" />
                                     </span>
                                 </div>
                             </FormItem>

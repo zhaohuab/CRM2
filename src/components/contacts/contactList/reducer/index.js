@@ -4,7 +4,8 @@ let $$initialState = {
     loading: false,
     editData: {},
     data: {},
-    visible: false
+    visible: false,
+    tags: {}
 };
 
 function pageAdd(page, item) {
@@ -13,53 +14,46 @@ function pageAdd(page, item) {
     page.page = Math.ceil(page.total / page.pageSize);
     return page;
 }
-function pageEdit(page, item) {
-    debugger;
-    let { data } = page;
-    for (let i = 0, len = data.length; i < len; i++) {
-        if (data[i].id == item.id) {
-            data[i] = item;
-            break;
-        }
-    }
-    page.data = data;
-    return page;
-}
+
 export default function reducer(
     $$state = Immutable.fromJS($$initialState),
     action
 ) {
     switch (action.type) {
-        case "CONTACTS_LIST_GETLISTSUCCESS":
+        case "CONTACTS_LIST_GETLISTSUCCESS": //table显示加载数据动画
             return $$state.update("loading", val => {
                 return true;
             });
-        case "CONTACTS_LIST_GETLIST":
+        case "CONTACTS_LIST_GETLIST": //获取查询的数据，关闭table加载动画
             $$state = $$state.update("loading", val => {
                 return false;
             });
             return $$state.set("data", Immutable.fromJS(action.data));
-        case "CONTACTS_LIST_SHOWFORM":
+        case "CONTACTS_LIST_ADDPERSON":
+            $$state = $$state.update("tags", val => {
+                return action.tags;
+            });
+
+            return $$state.update("visible", val => {
+                return action.show;
+            });
+        case "CONTACTS_LIST_SHOWFORM": //显示、关闭modal层
             return $$state.update("visible", val => {
                 return action.data;
             });
-        case "CONTACTS_CARD_SAVEADD":
-            debugger;
-            $$state = $$state.update("visible", val => {
-                return false;
+        case "CONTACTS_CARD_SAVEADD": //新增一条数据
+            return $$state.merge({
+                visible: false,
+                data: pageAdd($$state.get("data").toJS(), action.data)
             });
-            let newData = $$state.toJS();
-            newData.data.data.unshift(action.data);
 
-            return $$state.update("data", val => {
-                return Immutable.fromJS(newData.data);
-            });
-        case "CONTACTS_LIST_SELECTDATA":
+        case "CONTACTS_LIST_SELECTDATA": //保存已选择的数据
             return $$state.update("editData", val => {
                 return Immutable.fromJS(action.data);
             });
-        case "CONTACTS_LIST_GETLISTUPDATE":
+        case "CONTACTS_LIST_GETLISTUPDATE": //删除一到多条数据
             $$state = $$state.set("data", Immutable.fromJS(action.data)).toJS();
+            //selectedRows中删除已选择的
             $$state.editData["selectedRows"] = $$state.editData[
                 "selectedRows"
             ].filter((item, index) => {
@@ -70,7 +64,7 @@ export default function reducer(
                 }
                 return true;
             });
-
+            //从selectedRowKeys中删除已选择的
             $$state.editData["selectedRowKeys"] = $$state.editData[
                 "selectedRowKeys"
             ].filter((item, index) => {
@@ -84,8 +78,7 @@ export default function reducer(
 
             return Immutable.fromJS($$state);
 
-        case "CONTACTS_LIST_UPDATELIST":
-            debugger;
+        case "CONTACTS_LIST_UPDATELIST": //更改一条数据
             let id = action.data.id;
             let upList = $$state.toJS();
             upList.data.data = upList.data.data.map(item => {

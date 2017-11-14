@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Icon, Button, Dropdown, Menu, Input, Badge } from "antd";
+import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row } from "antd";
 import cookie from "utils/cookie";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action/index.js";
@@ -16,19 +16,16 @@ class Header extends React.Component {
             <Menu>
                 <Menu.Item key="1">
                     <p className="menu-more">
-                        <Icon type="question-circle-o" />
                         <span>个人信息</span>
                     </p>
                 </Menu.Item>
                 <Menu.Item key="3">
                     <p className="menu-more">
-                        <Icon type="question-circle-o" />
                         <span>修改密码</span>
                     </p>
                 </Menu.Item>
                 <Menu.Item key="4">
                     <p className="menu-more" onClick={this.loginOut.bind(this)}>
-                        <Icon type="setting" />
                         <span>退出</span>
                     </p>
                 </Menu.Item>
@@ -57,53 +54,81 @@ class Header extends React.Component {
         let title = this.props.$$state.get("title");
         return (
             <div className="app-header">
-                <div className="app-header-title">{title}</div>
-                <div className="app-header-right">
-                    <main className="client-header-left">
-                        <Search
-                            className="clinet-search del-border"
-                            placeholder="客户名称、地址、联系人"
-                            onSearch={value => console.log(value)}
-                            className="clinet-search-style"
-                        />
-                    </main>
-                    <main className="client-header-right">
+                <Row
+                    className="app-header-inner"
+                    type="flex"
+                    align="middle"
+                    justify="end"
+                >
+                    <Col span={4}>
                         <div>
-                            <img
-                                src={require("assets/images/header/photo.png")}
-                                alt=""
-                            />
+                            <span className="header-title">{title}</span>
+                        </div>
+                    </Col>
+                    <Col span={20}>
+                        <Row
+                            type="flex"
+                            align="middle"
+                            justify="end"
+                            gutter={15}
+                        >
+                            <Col span={7}>
+                                <Search
+                                    placeholder="客户名称、地址、联系人"
+                                    onSearch={value => console.log(value)}
+                                />
+                            </Col>
 
-                            <Dropdown
-                                overlay={this.menuSys}
-                                trigger={["click"]}
-                            >
-                                <a className="menu-down">
-                                    <div className="header-right-title">
-                                        {userName}
-                                    </div>
-                                    <Icon type="caret-down" />
-                                </a>
-                            </Dropdown>
-                        </div>
-                        <div>
-                            <i className="iconfont icon-xiaoxi clinet-alert-icon" />
-                            <Badge count={99} showZero className="Badge-custom">
-                                <a href="#" className="head-example" />
-                            </Badge>
-                        </div>
-                        <div>
-                            <Dropdown
-                                overlay={this.menuMore}
-                                trigger={["click"]}
-                            >
-                                <a className="menu-down">
-                                    <i className="iconfont icon-gengduo1" />
-                                </a>
-                            </Dropdown>
-                        </div>
-                    </main>
-                </div>
+                            <Col span={4}>
+                                <Row
+                                    type="flex"
+                                    align="middle"
+                                    justify="center"
+                                >
+                                    <img
+                                        src={require("assets/images/header/photo.png")}
+                                        alt=""
+                                        className="header-img"
+                                    />
+
+                                    <Dropdown
+                                        overlay={this.menuSys}
+                                        trigger={["click"]}
+                                    >
+                                        <a className="menu-down">
+                                            <div className="header-username">
+                                                {userName}
+                                            </div>
+                                            <Icon type="caret-down" />
+                                        </a>
+                                    </Dropdown>
+                                </Row>
+                            </Col>
+                            <Col span={2}>
+                                <Row type="flex" align="middle">
+                                    <i className="iconfont icon-xiaoxi" />
+                                    <Badge
+                                        count={99}
+                                        showZero
+                                        className="Badge-custom"
+                                    >
+                                        <a href="#" className="head-example" />
+                                    </Badge>
+                                </Row>
+                            </Col>
+                            <Col span={1}>
+                                <Dropdown
+                                    overlay={this.menuMore}
+                                    trigger={["click"]}
+                                >
+                                    <a className="more-icon-warpper">
+                                        <i className="iconfont icon-gengduo1 more-icon" />
+                                    </a>
+                                </Dropdown>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
             </div>
         );
     }

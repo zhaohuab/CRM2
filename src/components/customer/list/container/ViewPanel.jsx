@@ -1,18 +1,4 @@
-import {
-    Modal,
-    Popover,
-    Collapse,
-    Tabs,
-    Row,
-    Col,
-    Layout,
-    Menu,
-    Breadcrumb,
-    Icon,
-    Button,
-    Dropdown,
-    Timeline
-} from "antd";
+import {Modal,Popover, Collapse,Tabs, Row,Col,Layout,Menu, Breadcrumb,Icon,Button,Dropdown, Timeline} from "antd";
 import { browserHistory } from "react-router";
 const TabPane = Tabs.TabPane;
 const { Header, Content, Sider } = Layout;
@@ -335,7 +321,10 @@ export default class ViewPanel extends React.Component {
                         </Col>
                         <Col span={6} className="warrper-main-right">
                             <div className="main-right-state">动态</div>
-                            <div className="main-right-timeline">
+                            <div
+                                className="main-right-timeline"
+                                id="timeline-recoverd "
+                            >
                                 <Timeline>
                                     <Timeline.Item>
                                         <p>

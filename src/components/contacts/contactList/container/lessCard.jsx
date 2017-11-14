@@ -53,9 +53,9 @@ export default class LessCard extends React.Component {
                         <Col span={6}>
                             <FormItem>
                                 <div className="more-btn">
-                                    <Button htmlType="submit">搜索</Button>
+                                    <Button htmlType="submit">查询</Button>
                                     <span onClick={this.showFn.bind(this)}>
-                                        更多<Icon type="down" />
+                                        展开<Icon type="down" />
                                     </span>
                                 </div>
                             </FormItem>
