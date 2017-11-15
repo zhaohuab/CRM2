@@ -42,6 +42,8 @@ import oppactionlist from 'components/oppaction/list/reducer'
 import visitroute from "components/visitroute/list/reducer/index.js";
 //拜访规则
 import visitRules from '../components/visitrules/reducer'
+//商机阶段
+import oppstagelist from 'components/oppstage/list/reducer'
 
 let rootReducer = combineReducers({
     login,
@@ -65,6 +67,7 @@ let rootReducer = combineReducers({
     oppactionlist,
     visitroute,
     visitRules,
+    oppstagelist,
 });
 
 export { rootReducer };
