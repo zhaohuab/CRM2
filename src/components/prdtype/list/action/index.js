@@ -58,7 +58,9 @@ export function showForm(flag, editData = {}) {
 }
 
 const transData = (data) => {
-	data.fatherTypeId = data.fatherTypeId.key
+    debugger;
+    data.fatherTypeId = data.fatherTypeId.key
+    data.fatherTypeName = data.fatherTypeId.title
 	return data;
 }
 
@@ -71,7 +73,7 @@ export function listadd(list) {
             url: url.prdtype,   
             method: 'post',
             data: {
-                param: list
+                param: transData(list)
             }
         }, (dataResult) => {
             const listData = dataResult;
@@ -91,13 +93,14 @@ export function listadd(list) {
 
 //改变一条数据
 export function listchange(value) {
+    debugger
     return (dispatch, getState) => {
         let id = value.id
         value.fatherTypeId = value.fatherTypeId.key;
         request({
             url: url.prdtype+'/'+id,
             method: 'put',
-            data: { param: value }
+            data: { param: transData(value) }
         },(dataResult) => {    
             let listData = dataResult;
             let arr = []; 
@@ -144,7 +147,6 @@ export function listdel(record, treeId, searchFilter) {
         ids.push(record[i].id);
     }
     return (dispatch, getState) => {
-       
         let id = record[0].id
         request({
             url: url.prdtype+'/batch',//这里我们约定的与组织的
@@ -156,8 +158,7 @@ export function listdel(record, treeId, searchFilter) {
 				},
 			}
         }
-        ,(dataResult) => {
-            dispatch({ type:'PRDTYPE_LIST_DELETELISTSUCCESS', tableListCheckbox: [] })
+        ,(dataResult) => {           
             const listData = dataResult;
             request({
                 url: url.prdtypeTree,
@@ -165,6 +166,7 @@ export function listdel(record, treeId, searchFilter) {
                 data: {}
             }
             ,(data) => {
+                dispatch(fetchData('PRDTYPE_LIST_DELETELISTSUCCESS', { tableListCheckbox: []}))
                 dispatch({ type:'PRDTYPE_LIST_GETTREELISTSUCCESS', data: data.data })
                 dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: listData.data }));
             })

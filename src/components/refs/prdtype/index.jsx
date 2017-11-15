@@ -1,6 +1,6 @@
 import { Input, Modal, Tree, Icon } from "antd";
 
-import { org as url } from "api";
+import { prdtype as url } from "api";
 import reqwest from "utils/reqwest";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -48,10 +48,9 @@ class Department extends React.Component {
 
     getData = () => {
         let that = this;
-      console.log('===================')  
         reqwest(
             {
-                url: url.orgTree,
+                url: url.prdtypeTree,
                 method: "get",
                 data: {}
             },
@@ -89,12 +88,11 @@ class Department extends React.Component {
     }
     render() {
         let key = "",
-            title = "";
-            debugger;
+            title = "xxxxxxx";
+            //debugger;
         if (this.props.value) {
             key = this.props.value.key;
             title = this.props.value.title;
-            console.log('title============',title)
         }
         const suffix =
             this.props.value && this.props.value.key ? (
@@ -118,7 +116,7 @@ class Department extends React.Component {
                     width={400}
                     closable={false}
                 >
-                    <div className="add-inset-modal tree-icon" id="tree-icon">
+                    <div className="add-inset-modal" id="tree-icon">
                         <Tree onSelect={this.onSelect} showLine={true}>
                             {this.renderTreeNodes(this.state.dataSource)}
                         </Tree>

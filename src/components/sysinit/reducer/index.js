@@ -3,8 +3,26 @@ let $$initialState = {
     current:0,
     isInit : false,
     tenantInfo:{},
-    adminList:[]
+    adminList:[],
+    tenantFields:{},
 };
+let transToFields = (values)=>{
+    let result = {};
+    for(let field in values) {
+        result[field] = {
+            value : values[field],
+        }
+    }
+    return result;
+}
+
+let transToValues = (fields) => {
+    let result = {};
+    for(let field in fields) {
+        result[field] = fields[field];
+    }
+    return result;
+}
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
     switch (action.type) {
         case 'SYSINIT_PAGE_INFO':
@@ -15,6 +33,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             return $$state.merge({
                 isInit:action.content.isInit,
                 tenantInfo:action.content.tenantInfo,
+                tenantFields:transToFields(action.content.tenantInfo),
                 adminList:action.content.adminList || [],
                 current:action.content.isInit? 2: 0, /*如果初始化过，则直接进入第三阶段，否则从第一阶段开始*/
             })
@@ -22,6 +41,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             return $$state.merge({
                 tenantInfo: action.content.tenantInfo,
                 current:1,
+            })
+        case 'SYSINIT_PAGE_ORGCHANGE':
+            return $$state.mergeDeep({
+                tenantInfo:transToValues(action.content.tenantFields),
+                tenantFields:action.content.tenantFields,
             })
         case 'SYSINIT_PAGE_ADMINLISTCHANGE':
             return $$state.merge({
