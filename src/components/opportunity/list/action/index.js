@@ -3,15 +3,6 @@ import { message } from 'antd';
 
 import { opportunity as url } from 'api';
 
-const data1 = {
-    total: 1,
-    data: [
-        {
-            id:'1',
-            name: "1"
-        }
-    ]
-}
 
 const fetchData = (type, payload) => {
     return {
@@ -34,6 +25,7 @@ function transData(data) {
     if (data == null) {
         return data
     }
+    
     if(data.createdTime){
         data.createdTime = data.createdTime.format('X')
     }
@@ -45,6 +37,7 @@ function transData(data) {
 
 const transReceiveData = (data) => {
     for (let i = 0; i < data.data.length; i++) {
+        
         if(data.data[i].createdTime){
             data.data[i].createdTime = transDate(new Date(data.data[i].createdTime.time))
         }
@@ -80,7 +73,6 @@ const getListData = (pagination, searchMap) => {
         }, (data) => {
             dispatch(fetchData('OPPORTUNITY_LIST_GETDATA', { data: transReceiveData(data) }));
         })
-        dispatch(fetchData('OPPORTUNITY_LIST_GETDATA', { data: data1 }));
     }
 }
 
@@ -157,7 +149,6 @@ const showViewForm = (visible, record) => {
               
             }
         }, (data) => {
-            debugger
             dispatch(fetchData('OPPORTUNITY_LIST_SHOWVIEWFORM', { visible,record: transReceiveDataOne(data) }));
         })
     }

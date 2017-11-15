@@ -24,27 +24,26 @@ import cityData from "./citydata";
 import ViewPanel from "./ViewPanel";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
+import SlidePanel from "../../../common/slidePanel/index.jsx";
 
 class List extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pagination: {
-                pageSize: 20,
-                page: 1
-            },
             classStyle: [],
-            hasPanel: false
+            viewState: false
         };
         this.columns = [
             {
                 title: "客户名称",
                 dataIndex: "name",
                 render: (text, record) => (
-                    <a onClick={this.btnView.bind(this, record)}>
-                        {" "}
+                    <div
+                        onClick={this.slideShow.bind(this, record)}
+                        className="crm-pointer"
+                    >
                         {record.name}
-                    </a>
+                    </div>
                 )
             },
             {
@@ -73,58 +72,30 @@ class List extends React.Component {
             }
         ];
         const that = this;
-        this.rowSelectionFn = {
-            onChange(selected, selectedRows) {
-                const nowVisible = that.props.$$state.get("toolVisible").toJS();
-                if (selectedRows.length > 0) {
-                    nowVisible.simForm = false;
-                    nowVisible.btnPanel = true;
-                } else {
-                    nowVisible.btnPanel = false;
-                    if (nowVisible.milForm == true) {
-                        nowVisible.simForm = false;
-                    } else {
-                        nowVisible.simForm = true;
-                    }
-                }
-                that.props.action.selectRow(selectedRows, nowVisible);
-            }
+
+        this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            debugger;
+            this.props.action.selectRow(selectedRows, selectedRowKeys);
         };
     }
 
-    changeVisible(visible) {
-        const nowVisible = this.props.$$state.get("toolVisible").toJS();
-        if (visible.simForm != undefined) {
-            nowVisible.simForm = visible.simForm;
-            if (nowVisible.btnPanel == true) {
-                nowVisible.simForm = false;
-            }
-        }
-        if (visible.milForm != undefined) {
-            nowVisible.milForm = visible.milForm;
-        }
-
-        this.props.action.changeVisible(nowVisible);
+    //显示面板
+    slideShow(record) {
+        debugger;
+        this.props.action.showViewForm(true, record);
+    }
+    //隐藏面版
+    slideHide() {
+        debugger;
+        this.props.action.showViewForm(false, {});
     }
 
-    btnBack() {
-        const nowVisible = this.props.$$state.get("toolVisible").toJS();
-        nowVisible.btnPanel = false;
-        if (nowVisible.milForm == true) {
-            nowVisible.simForm = false;
-        } else {
-            nowVisible.simForm = true;
-        }
-        this.props.action.changeVisible(nowVisible);
-    }
-
-    componentDidMount() {
-        this.props.action.getListData(this.state.pagination);
-    }
+    //form新增、或者修改
     formHandleOk() {
+        const isEdit = this.props.$$state.get("isEdit");
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
-                if (this.state.isEdit) {
+                if (isEdit) {
                     this.props.action.listEditSave(values);
                 } else {
                     this.props.action.listAddSave(values);
@@ -132,151 +103,102 @@ class List extends React.Component {
             }
         });
     }
+
+    //form取消
     formHandleCancel() {
         this.props.action.showForm(false);
     }
 
-    handleSearch(searchMap) {
-        this.props.action.getListData(this.state.pagination, searchMap);
+    showTotal(total) {
+        return `共 ${total} 条`;
     }
-
-    btnSetEnableList(enableState) {
-        const searchMap = this.props.$$state.get("searchMap").toJS();
-        const selectRow = this.props.$$state.get("selectedRows").toJS();
-        const ids = [];
-        for (let i = 0; i < selectRow.length; i++) {
-            ids.push(selectRow[i].id);
-        }
-        this.props.action.setEnableState(
-            ids,
-            enableState,
-            this.state.pagination,
-            searchMap
+    onPageChange(page, pageSize) {
+        let pagination = { page: page, pageSize: pageSize };
+        this.props.action.getListData(
+            pagination,
+            this.props.$$state.get("searchMap").toJS()
+        );
+    }
+    onPageSizeChange(current, pageSize) {
+        let pagination = { page: current, pageSize: pageSize };
+        this.props.action.getListData(
+            pagination,
+            this.props.$$state.get("searchMap").toJS()
         );
     }
 
-    btnSetEnableView(enableState) {
-        const searchMap = this.props.$$state.get("searchMap").toJS();
-        const viewData = this.props.$$state.get("viewData").toJS();
-        const ids = [];
-        ids.push(viewData.id);
-        debugger;
-        this.props.action.setEnableState(
-            ids,
-            enableState,
-            this.state.pagination,
-            searchMap
+    componentDidMount() {
+        this.props.action.getListData(
+            this.props.$$state.get("pagination").toJS()
         );
-    }
-    btnNew() {
-        this.setState({ isEdit: false });
-        this.props.action.showForm(true);
-    }
-    btnView(record) {
-        if (!this.state.hasPanel) {
-            this.setState({
-                hasPanel: true
-            });
-        }
-        this.props.action.showViewForm(true, record);
-    }
-    btnEdit(data) {
-        this.setState({ isEdit: true });
-        this.props.action.showFormEdit(true);
-    }
-    btnDeleteList() {
-        const searchMap = this.props.$$state.get("searchMap").toJS();
-        const selectRow = this.props.$$state.get("selectedRows").toJS();
-        const ids = [];
-        for (let i = 0; i < selectRow.length; i++) {
-            ids.push(selectRow[i].id);
-        }
-        this.props.action.deleteData(ids, searchMap, this.state.pagination);
-    }
-    btnDeleteView() {
-        const searchMap = this.props.$$state.get("searchMap").toJS();
-        const viewData = this.props.$$state.get("viewData").toJS();
-        const ids = [];
-        ids.push(viewData.id);
-        this.props.action.deleteData(ids, searchMap, this.state.pagination);
+        this.props.action.getEnumData();
     }
 
-    btnClosePanel() {
-        this.props.action.closePanel();
-    }
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
-        const selectedRows = $$state.get("selectedRows").toJS();
-        const searchMap = $$state.get("searchMap").toJS();
-        const toolVisible = $$state.get("toolVisible").toJS();
-        const formVisitable = $$state.get("formVisitable");
+        debugger;
+        const {
+            selectedRows,
+            selectedRowKeys,
+            formVisitable,
+            isEdit,
+            viewState
+        } = this.props.$$state.toJS();
+
+        let rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
+
         const CardForm = Form.create()(Card);
-        const editData = $$state.get("editData").toJS();
-        const viewData = $$state.get("viewData").toJS();
-        const viewFormVisible = $$state.get("viewFormVisible");
-        const h = this.props.$$stateCommon.toJS().height - 90;
+
         return (
-            <div className="custom-warpper" style={{ height: h + "px" }}>
+            <div className="custom-warpper">
                 <ToolForm
-                    visible={toolVisible}
-                    btnBack={this.btnBack.bind(this)}
-                    btnLess={this.changeVisible.bind(this)}
-                    btnMore={this.changeVisible.bind(this)}
-                    btnSetEnable={this.btnSetEnableList.bind(this)}
-                    handleSearch={this.handleSearch.bind(this)}
-                    btnNew={this.btnNew.bind(this)}
+                    visible={selectedRowKeys}
                     enumData={enumData}
                     cityData={cityData}
-                    searchMap={searchMap}
-                    btnDelete={this.btnDeleteList.bind(this)}
-                    selectedData={selectedRows}
                 />
-                <div className="custom-tabel tabel-recoverd">
+                <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
                         dataSource={page.data}
                         rowKey="id"
-                        rowSelection={this.rowSelectionFn}
+                        rowSelection={rowSelection}
                         size="middle"
+                        pagination={{
+                            size: "large",
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            total: page.total,
+                            showTotal: this.showTotal,
+                            onChange: this.onPageChange.bind(this),
+                            onShowSizeChange: this.onPageSizeChange.bind(this)
+                        }}
                     />
                 </div>
                 <Modal
-                    title={this.state.isEdit ? "编辑客户" : "新增客户"}
+                    title={isEdit ? "编辑客户" : "新增客户"}
                     visible={formVisitable}
                     onOk={this.formHandleOk.bind(this)}
                     onCancel={this.formHandleCancel.bind(this)}
-                    width="90%"
+                    width={900}
                 >
-                    <div className="model-height">
+                    <div className="modal-height">
                         <CardForm
                             wrappedComponentRef={inst => (this.formRef = inst)}
-                            data={viewData}
-                            isEdit={this.state.isEdit}
                             enumData={enumData}
                             cityData={cityData}
                         />
                     </div>
                 </Modal>
-                {this.state.hasPanel ? (
-                    <div
-                        className={
-                            viewFormVisible
-                                ? "viewPanel viewShow"
-                                : "viewPanelFalse viewHide"
-                        }
-                    >
-                        <ViewPanel
-                            data={viewData}
-                            btnNew={this.btnNew.bind(this)}
-                            btnEdit={this.btnEdit.bind(this)}
-                            btnClosePanel={this.btnClosePanel.bind(this)}
-                            btnSetEnable={this.btnSetEnableView.bind(this)}
-                            btnDelete={this.btnDeleteView.bind(this)}
-                            ref="panelHeight"
-                        />
-                    </div>
-                ) : null}
+                <SlidePanel
+                    viewState={viewState}
+                    onClose={this.slideHide.bind(this)}
+                >
+                    <ViewPanel ref="panelHeight" />
+                </SlidePanel>
             </div>
         );
     }
