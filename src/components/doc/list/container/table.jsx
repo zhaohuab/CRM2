@@ -104,7 +104,6 @@ class FileDetail extends React.Component {
   }
 
   onDelete(record){
-    //debugger;
     record.editState='DELETE';
     let dataSource = this.props.$$state.get('dataSource').toJS();
     let storage = this.props.$$state.get('storage').toJS();
