@@ -52,6 +52,15 @@ export function cardSaved(values, pagination, searchMap) {
     };
 }
 
+//保存获取的一条编辑信息
+export function edit(edit, show) {
+    return {
+        type: "CONTACTS_LIST_EDIT",
+        edit,
+        show
+    };
+}
+
 //保存已选择数据
 
 export function selectData(data) {
@@ -89,7 +98,7 @@ export function onDelete(selectedRowKeys, pagination, searchMap) {
         );
     };
 }
-//编辑一条数据
+//新增、保存一条数据
 export function onEdit(values, pagination, searchMa) {
     return dispatch => {
         reqwest(

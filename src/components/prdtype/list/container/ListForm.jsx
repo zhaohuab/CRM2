@@ -1,6 +1,6 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio, Select } from 'antd';
 import moment from 'moment';
-import Department from 'components/refs/departments'
+import Department from 'components/refs/prdtype'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -14,7 +14,8 @@ export default class NormalLoginForm extends React.Component {
     componentDidMount() {
     //装箱过程
         let { fatherorgId,fatherorgName} = this.props.data; 
-        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};    
+        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};   
+         
         this.props.form.setFieldsValue(this.props.data);
     }
 
@@ -56,7 +57,7 @@ export default class NormalLoginForm extends React.Component {
                                         <Input type='text' placeholder="请输入名称!" />
                                         )}
                                 </FormItem>
-                                  <FormItem
+                                <FormItem
                                     label="上级分类"
                                     {...formItemLayout}
                                 >
@@ -66,32 +67,6 @@ export default class NormalLoginForm extends React.Component {
                                         <Department />
                                         )}
                                 </FormItem>
-                                {                             
-                               /*  <FormItem  {...formItemLayout} label='上级分类'>
-                                    {getFieldDecorator('fatherTypeId', {
-                                        rules: [],
-                                    })(
-                                         <Select style={{ width: 120 }} placeholder = '请选择...'>
-                                            <Option value = { 1 }>肥料</Option>
-                                            <Option value = { 2 }>农药</Option>
-                                            <Option value = { 3 }>种子</Option>
-                                            <Option value = { 4 }>农膜</Option>
-                                          </Select>
-                                        )}
-                                </FormItem> */
-                       /*          <FormItem  {...formItemLayout} label='属性组'>
-                                    {getFieldDecorator('attrGroupId', {
-                                        rules: [],
-                                    })(
-                                          <Select style={{ width: 120 }} placeholder = '请选择...'>
-                                            <Option value = { 1 }>肥料属性</Option>
-                                            <Option value = { 2 }>农药属性</Option>
-                                            <Option value = { 3 }>种子属性</Option>
-                                            <Option value = { 4 }>农膜属性</Option>
-                                          </Select>
-                                        )}
-                                </FormItem> */
-                                 }
                                 <FormItem  { ...formItemLayout } label='对应ERP组织'>
                                     { getFieldDecorator('erpCode', {
                                         rules: [],

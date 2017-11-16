@@ -31,6 +31,7 @@ class RadioGroup extends React.Component {
         }
     }
     onChange = (e) => {
+        debugger
         const onChange = this.props.onChange;
         let key = Number(e.target.value);
         if (onChange) {
@@ -38,6 +39,7 @@ class RadioGroup extends React.Component {
         }
     }
     render() {
+        debugger
         let key=undefined;
         if(this.props.value) {
             key = this.props.value.key;

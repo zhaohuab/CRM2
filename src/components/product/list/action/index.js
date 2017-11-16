@@ -47,7 +47,6 @@ const showForm = (flag, editData = {}, index) => {
 
 
 const onSave4Add = (data, index) => {
-debugger
 	return (dispatch) => {
 		reqwest({
 			url: url.product,
@@ -61,17 +60,16 @@ debugger
 	}
 }
 
-const onSave4Edit = (data, originCode) => {
-	debugger
+const onSave4Edit = (data) => {
 	return (dispatch) => {
-
 		reqwest({
-			url: `${url.product}/${originCode}`,
+			url: `${url.product}/${data.id}`,
 			method: "PUT",
 			data: {
 				param: data
 			}
 		}, result => {
+			debugger
 			dispatch(fetchData('PRODUCT_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
 	}

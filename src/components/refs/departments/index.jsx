@@ -48,6 +48,7 @@ class Department extends React.Component {
 
     getData = () => {
         let that = this;
+      console.log('===================')  
         reqwest(
             {
                 url: url.orgTree,
@@ -89,9 +90,11 @@ class Department extends React.Component {
     render() {
         let key = "",
             title = "";
+            debugger;
         if (this.props.value) {
             key = this.props.value.key;
             title = this.props.value.title;
+            console.log('title============',title)
         }
         const suffix =
             this.props.value && this.props.value.key ? (
@@ -115,7 +118,7 @@ class Department extends React.Component {
                     width={400}
                     closable={false}
                 >
-                    <div className="add-inset-modal" id="tree-icon">
+                    <div className="add-inset-modal tree-icon" id="tree-icon">
                         <Tree onSelect={this.onSelect} showLine={true}>
                             {this.renderTreeNodes(this.state.dataSource)}
                         </Tree>

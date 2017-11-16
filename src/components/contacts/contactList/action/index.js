@@ -25,12 +25,12 @@ export function getContactList(pagination, searchMap) {
                 }
             },
             result => {
-                debugger;
                 dispatch({ type: "CONTACTS_LIST_GETLIST", data: result });
             }
         );
     };
 }
+
 //显示modal
 export function showForm(data) {
     return dispatch => {
@@ -58,15 +58,15 @@ export function cardSaved(data, pagination, searchMap) {
 }
 //保存已选择的数据
 export function selectData(data) {
+    debugger;
     return {
         type: "CONTACTS_LIST_SELECTDATA",
         data
     };
 }
 //删除已选择的数据
-export function onDelete(delKey, pagination, searchMap) {
-    debugger;
-    return dispatch => {
+export function onDelete(delKey, pagination, searchMap, fn) {
+    return (dispatch, getState) => {
         reqwest(
             {
                 url: `${contacts.contacts}/batch`,
@@ -105,12 +105,19 @@ export function onEdit(values, pagination, searchMa) {
                 }
             },
             result => {
-                debugger;
                 dispatch({
                     type: "CONTACTS_LIST_UPDATELIST",
                     data: result
                 });
             }
         );
+    };
+}
+
+export function edit(edit, show) {
+    return {
+        type: "CONTACTS_LIST_EDIT",
+        edit,
+        show
     };
 }

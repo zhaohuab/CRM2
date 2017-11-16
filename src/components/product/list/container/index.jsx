@@ -39,37 +39,51 @@ class List extends React.Component{
             dataIndex: 'code',
             key: 'code'           
         },{
-            title: '商品名称',
+            title: '名称',
             dataIndex: 'name',
             key: 'name'           
+        },
+        {
+            title: '助记码',
+            dataIndex: 'memCode',
+            key: 'memCode'           
+        },
+        {
+            title: '规格',
+            dataIndex: 'spec',
+            key: 'spec'           
         },{
-            title: '商品分类',
+            title: '产品分类',
             dataIndex: 'prdtypeName',
-            key: 'category'  
-        },{
-            title: '属性组',
-            dataIndex: 'attrGroupName',
-            key: 'property'  
+            key: 'prdtypeName'  
         },{
             title: '主单位',
             dataIndex:'measureName',
-            key: 'unit',             
+            key: 'measureName',             
         },{
-            title: '参考价',
+            title: '品牌',
+            dataIndex: 'brandId',
+            key: 'brandId'  
+        },{
+            title: '参考售价',
             dataIndex: 'price',
-            key: 'RP'  
-        },{
-            title: '销售单位',
-            dataIndex: 'saleUnitName',
-            key: 'tradeunit'  
+            key: 'price'  
         },{
             title: '适用组织',
             dataIndex: 'orgName',
-            key: 'apporg'  
+            key: 'orgName'  
         },{
-            title: '状态',
+            title: '属性组',
+            dataIndex: 'attrGroupName',
+            key: 'attrGroupName'  
+        },{
+            title: '启用状态',
             dataIndex: 'enableStateName',
-            key: 'status'  
+            key: 'enableStateName'  
+        },{
+            title: '产品描述',
+            dataIndex: 'description',
+            key: 'description'  
         }]
     }
     componentDidMount() {
@@ -90,7 +104,6 @@ class List extends React.Component{
     }
 
     onDelete = () => {
-        debugger
         let { pagination,searchMap } = this.state;
         
         this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
@@ -98,19 +111,17 @@ class List extends React.Component{
     }
 
     onEdit = () => {
-        debugger
         this.setState({isEdit:true});
         console.info(this.state.selectedRowKeys);
         let rowKey = this.state.selectedRowKeys[0];
         let rowData = {};
         let page = this.props.$$state.get("data").toJS();
         for(let i=0,len=page.data.length;i<len;i++) {
-          if(rowKey == page.data[i].code) {
+          if(rowKey == page.data[i].id) {
             rowData = page.data[i];
             break;
           }
         }      
-        this.setState({originCode:rowData.code});
         this.props.action.showForm(true,rowData);
     }
 
@@ -138,7 +149,6 @@ class List extends React.Component{
     }
 
     onPageSizeChange(current,pageSize) {
-        debugger
         let { pagination,searchMap } = this.state;
         pagination = {page:pagination.page,pageSize:pageSize};
         this.setState({pagination})
@@ -146,16 +156,14 @@ class List extends React.Component{
         console.info(`pageSize:${pageSize}`)
     }
     onSave(){
-        debugger
         let form = this.formRef.props.form;
         form.validateFieldsAndScroll((err, values) => {
           if (!err) {
             console.log('Received values of form: ', values);
           }
         });
-        //this.setState({headLabel:false});
         if(this.state.isEdit) {         
-          this.props.action.onSave4Edit(form.getFieldsValue() , this.state.originCode);
+          this.props.action.onSave4Edit(form.getFieldsValue());
         } else {
           this.props.action.onSave4Add(form.getFieldsValue());
         }
@@ -172,7 +180,6 @@ class List extends React.Component{
     }
     
     render(){
-        //debugger
         let page = this.props.$$state.get("data").toJS();
         let visible = this.props.$$state.get("visible");
         let {headLabel,selectedRowKeys} = this.state;
@@ -243,10 +250,10 @@ class List extends React.Component{
                     </div>   
                 }       
                 <div className = 'list-box'>
-                    <Table  size="middle" rowSelection={rowSelection} dataSource={page.data} rowKey="code" columns = {this.columns}
+                    <Table  size="middle" rowSelection={rowSelection} dataSource={page.data} rowKey="id" columns = {this.columns}
                     pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
                 </div>
-                <Modal title="新增/编辑 产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={500}>
+                <Modal title="新增/编辑 产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={800}>
                     <div className='model-height'>
                         <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
                     </div>
