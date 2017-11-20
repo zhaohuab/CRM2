@@ -69,7 +69,7 @@ const onSave4Edit = (data, index) => {
 }
 
 const onDelete = (rowKeys, params) => {
-debugger
+
 	return (dispatch) => {
 		reqwest({
 			url: url.userBatch,
@@ -101,7 +101,7 @@ const onEnable = (rowKeys, enable, params) => {
 				},
 			}
 		}, result => {
-			debugger
+		
 			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}

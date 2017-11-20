@@ -207,10 +207,7 @@ class ViewPanel extends React.Component {
                 <Row className="view-warrper-main">
                     <div>
                         <Col span={18} className="warrper-main-left">
-                            <div
-                                className="main-left-inner"
-                                id="collapse-recover"
-                            >
+                            <div className="main-left-inner collapse-recover">
                                 <Tabs defaultActiveKey="1">
                                     <TabPane tab="相关" key="1">
                                         <Collapse defaultActiveKey={["1"]}>
@@ -322,7 +319,7 @@ class ViewPanel extends React.Component {
                         </Col>
                         <Col span={6} className="warrper-main-right">
                             <div className="main-right-state">动态</div>
-                            <div className="main-right-timeline">
+                            <div className="main-right-timeline timeline-recoverd">
                                 <Timeline>
                                     <Timeline.Item>
                                         <p>

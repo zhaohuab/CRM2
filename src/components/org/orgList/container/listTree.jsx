@@ -1,5 +1,18 @@
-import  React, { Component } from 'react';
-import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,DatePicker,message,Modal,Spin ,Tree} from 'antd';
+import React, { Component } from "react";
+import {
+    Table,
+    Icon,
+    Button,
+    Form,
+    Input,
+    Checkbox,
+    Col,
+    DatePicker,
+    message,
+    Modal,
+    Spin,
+    Tree
+} from "antd";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const confirm = Modal.confirm;
@@ -46,10 +59,10 @@ class ListTree extends Component {
         this.props.action.showForm(true, rowData);
     }
 
-    delete(item,e){
-        e.stopPropagation()
+    delete(item, e) {
+        e.stopPropagation();
 
-        let that =this
+        let that = this;
         confirm({
         title: '确定要删除吗?',
         content: '此操作不可逆',
@@ -66,23 +79,50 @@ class ListTree extends Component {
         },
      });
     }
-    showEdit(item){
+    showEdit(item) {
         this.setState({
-            edit:item.id
-        })
+            edit: item.id
+        });
     }
 
-    getCustomTitle(item){
-        return(
-            <span className='show-edit-warpper'>
-                <span title={item.name} className='show-edit-title' onClick={this.showEdit.bind(this,item)}>{item.name}</span>
-                <span className={this.state.edit == item.id?'show-edit-inner':'show-edit-inner-hide'}>
-                    <span><Icon type="plus-circle-o" onClick={this.add.bind(this,item)}/></span>
-                    <span><Icon type="minus-circle-o"  onClick={this.delete.bind(this,item)}/></span>
-                    <span><Icon type="edit"  onClick={this.edit.bind(this,item)}/></span>
+    getCustomTitle(item) {
+        return (
+            <span className="show-edit-warpper">
+                <span
+                    title={item.name}
+                    className="show-edit-title"
+                    onClick={this.showEdit.bind(this, item)}
+                >
+                    {item.name}
+                </span>
+                <span
+                    className={
+                        this.state.edit == item.id
+                            ? "show-edit-inner"
+                            : "show-edit-inner-hide"
+                    }
+                >
+                    <span>
+                        <Icon
+                            type="plus-circle-o"
+                            onClick={this.add.bind(this, item)}
+                        />
+                    </span>
+                    <span>
+                        <Icon
+                            type="minus-circle-o"
+                            onClick={this.delete.bind(this, item)}
+                        />
+                    </span>
+                    <span>
+                        <Icon
+                            type="edit"
+                            onClick={this.edit.bind(this, item)}
+                        />
+                    </span>
                 </span>
             </span>
-        )
+        );
     }
     render(){
         const loop = data => data.map((item) => {
@@ -100,20 +140,22 @@ class ListTree extends Component {
             <div>
                 {
                     data.length? 
-                    <div>
-                        <div className='org-tree-main'>
+                    (<div>
+                        <div className="org-tree-main">
                             <Tree
                                 showLine
-                                defaultExpandedKeys={['1015']}
+                                defaultExpandedKeys={["1015"]}
                                 onSelect={this.onSelect.bind(this)}
                             >
                                 {loop(data)}
                             </Tree>
                         </div>
-                    </div>:''
-                }
+                    </div>
+                ) : (
+                    ""
+                )}
             </div>
-        )
+        );
     }
 }
 

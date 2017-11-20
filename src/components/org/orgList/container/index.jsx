@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import { Table, Icon,Button, Form,Input,Checkbox,Col, Modal,Spin} from "antd";
+import {
+    Table,
+    Icon,
+    Button,
+    Form,
+    Input,
+    Checkbox,
+    Col,
+    Modal,
+    Spin
+} from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action/index.js";
@@ -251,7 +261,7 @@ class List extends Component {
                                 </Button>
                             </div>
                         </div>
-                        <div className="org-tabel">
+                        <div className="org-tabel tabel-recoverd">
                             <Table
                                 columns={this.columns}
                                 rowKey="id"

@@ -142,7 +142,7 @@ class List extends React.Component {
                     enumData={enumData}
                     cityData={cityData}
                 />
-                <div className="custom-tabel">
+                <div className="custom-tabel tabel-recoverd">
                     <Table
                         columns={this.columns}
                         dataSource={page.data}

@@ -125,7 +125,7 @@ class List extends Component {
         }
     }
    
-    //点击一个节点数的编辑操作
+    //点击一个节点树的编辑操作
     treeSelectEditFn(rowKey){
         this.setState({isEdit:true});
         let rowData = {};
@@ -138,14 +138,14 @@ class List extends Component {
         }
         this.props.prdAction.showForm(true,rowData);
     }
-    //点击一个节点数的增加操作
+    //点击一个节点树的增加操作
     treeSelectAddFn(item){
         this.setState({isEdit:false});
         let rowData = {fatherorgId:item.id,fatherorgName:item.name}
         this.props.prdAction.showForm(true,rowData);
     }
 
-    //点击一个节点数的删除操作
+    //点击一个节点树的删除操作
     treeSelectDeleteFn(item){//这里的record和item不用传参，点击的时候是ant design插件自动传递的么    
         const record = [];
         record.push(item)

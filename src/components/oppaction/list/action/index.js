@@ -8,21 +8,25 @@ const showForm = (flag, editData = {}, index) => {
 	}
 }
 
-const getListData = (params) => {
-	
+const getListData = (pagination) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.oppaction,
 			method: "GET",
 			data: {
 				param: {
-					...params.pagination,
+					...pagination,
 				}
 			},
 		},result => {
 			dispatch(fetchData('OPPACTION_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
+}
+
+function transData (data) {
+	data.dimension = data.dimension.key;
+	return data;
 }
 
 const onSave4Add = (data, index) => {
@@ -32,7 +36,7 @@ const onSave4Add = (data, index) => {
 			url: url.oppaction,
 			method: "POST",
 			data: {
-				param: data
+				param: transData(data)
 			}
 		}, result => {
 			dispatch(fetchData('OPPACTION_CARD_SAVEADD', { ...result, visible: false }));
@@ -47,7 +51,7 @@ const onSave4Edit = (data, index) => {
 			url: `${url.oppaction}/${data.id}`,
 			method: "PUT",
 			data: {
-				param: data
+				param: transData(data)
 			}
 		}, result => {
 			dispatch(fetchData('OPPACTION_CARD_SAVEEDIT', { ...result, visible: false }));
@@ -55,7 +59,7 @@ const onSave4Edit = (data, index) => {
 	}
 }
 
-const onDelete = (rowKeys, params) => {
+const onDelete = (rowKeys, pagination) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.oppaction+"/batch",
@@ -63,7 +67,7 @@ const onDelete = (rowKeys, params) => {
 			data: {
 				param: {
 					ids: rowKeys.join(","),
-					...params.pagination
+					...pagination
 				},
 			}
 		}, result => {
@@ -72,7 +76,7 @@ const onDelete = (rowKeys, params) => {
 	}
 }
 
-const onEnable = (rowKeys, enable, params) => {
+const onEnable = (rowKeys, enable, pagination) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.oppaction+"/state",
@@ -81,7 +85,7 @@ const onEnable = (rowKeys, enable, params) => {
 				param: {
 					ids: rowKeys.join(","),
 					enableState: enable,
-					...params.pagination,
+					...pagination,
 				},
 			}
 		}, result => {
@@ -90,6 +94,22 @@ const onEnable = (rowKeys, enable, params) => {
 	}
 }
 
+const getEnumData = () =>{
+    return (dispatch)=>{
+        reqwest({
+            url:url.doc,
+            method:"get",
+        },(data)=>{
+            dispatch(fetchData('OPPACTION_LIST_GETENUMDATA', {enumData:data.enumData}));
+        })
+    }
+}
+
+const selectData = (params ) => {
+    return (dispatch)=>{
+        dispatch(fetchData('OPPACTION_LIST_SETDATA',params ))
+    }
+}
 
 //输出 type 与 方法
 export {
@@ -99,4 +119,6 @@ export {
 	onSave4Add,
 	onSave4Edit,
 	onEnable,
+	getEnumData,
+	selectData
 }

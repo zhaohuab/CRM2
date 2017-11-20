@@ -34,8 +34,8 @@ const brand = {
     brand: baseDir + "base/brands"
 };
 const prdtype = {
-    prdtype: baseDir + "base/prdtype",
-    prdtypeTree: baseDir + "base/prdtypeTree"
+    prdtype: baseDir + "base/prdtypes",
+    prdtypeTree: baseDir + "base/prdtypes/prdtypeTree"
 };
 
 const product = {
@@ -52,14 +52,14 @@ const visitRouter = {
 };
 
 const taskcard = {
-    taskcard: baseDir + 'sact/taskcard',
-    taskcardBatch: baseDir + 'sact/taskcard/batch',
-    enable: baseDir + 'sact/taskcard/state' 
+    taskcard: baseDir + 'sact/taskcards',
+    taskcardBatch: baseDir + 'sact/taskcards/batch',
+    enable: baseDir + 'sact/taskcards/state' 
 }
 const doc = {
-    doc: baseDir + 'base/doc',
-    docBatch: baseDir + 'base/doc/batch',
-    enable: baseDir + 'base/doc/state' 
+    doc: baseDir + 'base/docs',
+    docBatch: baseDir + 'base/docs/batch',
+    enable: baseDir + 'base/docs/state' 
 }
 
 const sysinit = {
@@ -73,10 +73,15 @@ const opportunity = {
 
 const oppaction = {
     oppaction: baseDir + 'sprc/oppactions',
+    doc:baseDir + "sprc/oppactions/docs",
 }
 
 const visitrules = {
     visitrules: baseDir + 'sact/visitrules',
+}
+
+const oppstage = {
+    oppstage: baseDir + 'sprc/oppstages',
 }
 export {
     login,
@@ -98,4 +103,5 @@ export {
     oppaction,
     visitRouter,
     visitrules,
+    oppstage,
 }
