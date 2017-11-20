@@ -79,7 +79,6 @@ class SimForm extends React.Component {
                         <Col span={8}>
                             <FormItem  {...formItemLayout} >
                                 {getFieldDecorator('searchKey', {
-                                    rules: [{ required: true, message: '请输入查询条件!' }],
                                 })(
                                     <Input type='text' placeholder="查询条件" />
                                     )}
@@ -88,7 +87,6 @@ class SimForm extends React.Component {
                         <Col span={8}>
                             <FormItem   {...formItemLayout} >
                                 {getFieldDecorator('level', {
-                                    rules: [{ required: true, message: '请输入客户等级!' }],
                                 })(
                                     <Enum
                                         initValue={this.props.searchMap.level}
@@ -295,7 +293,6 @@ class ToolForm extends React.Component {
                         <div>
                             <BtnPanel
                                 btnBack={this.props.btnBack}
-
                                 btnDelete={this.props.btnDelete}
                                 selectedData={this.props.selectedData}
                             />

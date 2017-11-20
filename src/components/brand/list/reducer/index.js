@@ -4,6 +4,9 @@ let $$initialState = {
 	editData: {},
 	data: [],
 	visible: false,
+	viewVisible:false,
+	selectedRows:[],
+	selectedRowKeys:[]
 };
 
 function pageAdd(page, item) {
@@ -33,6 +36,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'BRAND_LIST_SHOWFORM':
 			return $$state.merge({
 				visible: action.content.visible,
+				editData: action.content.editData,
+				viewVisible:false
+			})
+			case 'BRAND_LIST_SHOWVIEWFORM':
+			return $$state.merge({
+				viewVisible: action.content.visible,
 				editData: action.content.editData
 			})
 		case 'BRAND_CARD_SAVEADD':
@@ -52,6 +61,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'BRAND_LIST_SETSTATESUCCESS':
 			return $$state.merge({
 				data: action.content,
+			})
+
+		case 'BRAND_LIST_SELECTDATA':
+			return $$state.merge({
+				selectedRows: action.content.selectedRows,
+				selectedRowKeys: action.content.selectedRowKeys,
 			})
 		default:
 			return $$state;

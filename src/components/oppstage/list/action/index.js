@@ -20,14 +20,17 @@ const getListData = (params,) => {
 				}
 			},
 		},result => {
-			debugger
 			dispatch(fetchData('OPPSTAGE_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
 }
 
+function transData (data) {
+	data.dimension = data.dimension.key;
+	return data;
+}
+
 const onSave4Add = (data) => {
-debugger
 	return (dispatch) => {
 		reqwest({
 			url: url.oppstage,
@@ -90,6 +93,22 @@ const onEnable = (rowKeys, enable, params) => {
 	}
 }
 
+const getEnumData = () =>{
+    return (dispatch)=>{
+        reqwest({
+            url:url.doc,
+            method:"get",
+        },(data)=>{
+            dispatch(fetchData('OPPSTAGE_LIST_GETENUMDATA', {enumData:data.enumData}));
+        })
+    }
+}
+
+const selectData = (params ) => {
+    return (dispatch)=>{
+        dispatch(fetchData('OPPSTAGE_LIST_SETDATA',params ))
+    }
+}
 
 //输出 type 与 方法
 export {
@@ -99,4 +118,6 @@ export {
 	onSave4Add,
 	onSave4Edit,
 	onEnable,
+	getEnumData,
+	selectData
 }

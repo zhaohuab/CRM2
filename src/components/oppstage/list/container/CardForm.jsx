@@ -1,5 +1,7 @@
 import { Form, Input, Select } from 'antd';
-
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as Actions from "../action"
 import Email from 'utils/components/emails'
 import Department from 'components/refs/departments'
 import Enum from 'utils/components/enums'
@@ -12,12 +14,13 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        this.props.form.setFieldsValue(this.props.dataSource);
+        let data = this.props.$$state.get("editData").toJS();
+        this.props.form.setFieldsValue(data);
     }
   
     render() {
         const { getFieldDecorator } = this.props.form;
-
+        const enumData=this.props.$$state.get("enumData").toJS();
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -42,20 +45,21 @@ class Card extends React.Component {
             >
                 {getFieldDecorator('name', {
                     rules: [{
-                        required: true, message: '请输入关键动作名称',
+                        required: true, message: '请输入销售阶段名称',
                     }],
                 })(
-                    <Input placeholder='请输入...'/>
+                    <Input placeholder='请输入销售阶段名称'/>
                     )}
             </FormItem>
+            
             <FormItem
-                label="销售流程描述"
+                label="销售阶段描述"
                 {...formItemLayout}
             >
                 {getFieldDecorator('description', {
                 
                 })(
-                    <Input type="textarea" placeholder='请输入...'/>
+                    <Input type="textarea" placeholder='请输入销售阶段描述'/>
                     )}
             </FormItem>
 
@@ -63,4 +67,19 @@ class Card extends React.Component {
     }
 }
 
-export default Card;
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+      $$state: state.oppstagelist
+    }
+  }
+  
+  //绑定action到组件props
+  function mapDispatchToProps(dispatch) {
+    return {
+      action: bindActionCreators(Actions, dispatch)
+    }
+  }
+  
+  //输出绑定state和action后组件
+  export default connect(mapStateToProps, mapDispatchToProps)(Card);

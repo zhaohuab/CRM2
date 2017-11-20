@@ -7,8 +7,8 @@ const login = baseDir + "login";
 const menu = baseDir + "sys/menuitem";
 
 const org = {
-    org: baseDir + "sys/org/",
-    orgTree: baseDir + "sys/orgTree/"
+    org: baseDir + "sys/orgs",
+    orgTree: baseDir + "sys/orgs/orgTree"
 };
 
 const user = {
@@ -22,7 +22,8 @@ const measure = {
     measureBatch: baseDir + "base/measures/batch"
 };
 const cum = {
-    customer: baseDir + "cum/customers"
+    customer: baseDir + "cum/customers",
+    doc:baseDir + "cum/customers/docs",
 };
 
 const role = {
@@ -72,6 +73,7 @@ const opportunity = {
 
 const oppaction = {
     oppaction: baseDir + 'sprc/oppactions',
+    doc:baseDir + "sprc/oppactions/docs",
 }
 
 const visitrules = {
