@@ -26,10 +26,8 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
-        this.props.handleSearch(this.props.form.getFieldsValue());
-    }
-    componentDidMount() {
-        this.props.form.setFieldsValue(this.props.searchMap);
+
+        this.props.handleSearch(this.props.$$state.toJS().searchMap);
     }
     moreFn() {
         this.props.formMore();
@@ -40,7 +38,7 @@ class LessForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-
+        let { enumData } = this.props.$$state.toJS();
         return (
             <div className="less-form">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -54,10 +52,10 @@ class LessForm extends React.Component {
                         </Col>
                         <Col span={8}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("level", {})(
+                                {getFieldDecorator("type", {})(
                                     <Enum
                                         addOptionAll={"客户类型"}
-                                        dataSource={this.props.refData.level}
+                                        dataSource={enumData.type}
                                     />
                                 )}
                             </FormItem>
@@ -82,16 +80,28 @@ class LessForm extends React.Component {
 }
 
 const WarpMilForm = Form.create({
-    mapPropsToFields: (props, onChangeFild) => {
-        //从redux中读值
+    mapPropsToFields: props => {
+        //把redux中的值取出来赋给表单
+        let searchMap = props.$$state.toJS().searchMap;
+        let value = {};
+        for (let key in searchMap) {
+            value[key] = { value: searchMap[key] };
+        }
         return {
-            //...obj
+            ...value
         };
     },
     onFieldsChange: (props, onChangeFild) => {
-        //往redux中写值
-        //把值进行更新改变
-        //this.props.action.hhh(props);
+        //往redux中写值//把值进行更新改变
+        let searchMap = props.$$state.toJS().searchMap;
+        for (let key in onChangeFild) {
+            if (onChangeFild[key].value.key) {
+                searchMap[key] = onChangeFild[key].value.key;
+            } else {
+                searchMap[key] = onChangeFild[key].value;
+            }
+        }
+        props.searchMapFn(searchMap);
     }
 })(LessForm);
 

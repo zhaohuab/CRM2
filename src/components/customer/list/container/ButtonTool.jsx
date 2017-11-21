@@ -85,26 +85,28 @@ class ToolForm extends React.Component {
     changeVisible() {
         this.props.action.changeVisible();
     }
-    //查询
+    //扩展条件、基础条件查询
     handleSearch(searchMap) {
+        debugger;
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS(),
             searchMap
         );
     }
 
-    render() {
-        //const WarpSimForm = Form.create()(SimForm);
-        //const WarpMilForm = Form.create()(MilForm);
+    //存储建议查询条件
+    searchMapFn(searchMap) {
+        this.props.action.saveSearchMap(searchMap);
+    }
 
-        let { enumData, searchMap, moreShow } = this.props.$$state.toJS();
-        debugger;
+    render() {
+        let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
         return (
             <Row className="header-warpper">
-                {this.props.visible && this.props.visible.length >= 1 ? (
+                {selectedRowKeys && selectedRowKeys.length >= 1 ? (
                     <HeaderButton
                         goBack={this.btnBack.bind(this)}
-                        length={this.props.visible.length}
+                        length={selectedRowKeys.length}
                     >
                         <Button
                             className="returnbtn-class"
@@ -149,15 +151,15 @@ class ToolForm extends React.Component {
                                         }
                                     >
                                         <LessForm
-                                            searchMap={searchMap}
-                                            refData={enumData}
-                                            enumData={this.props.enumData}
                                             handleSearch={this.handleSearch.bind(
                                                 this
-                                            )}
+                                            )} //点击查询方法
+                                            searchMapFn={this.searchMapFn.bind(
+                                                this
+                                            )} //动态赋值查询条件到redux中
                                             formMore={this.changeVisible.bind(
                                                 this
-                                            )}
+                                            )} //控制查询显隐
                                         />
                                     </Col>
                                 </Row>
@@ -195,11 +197,8 @@ class ToolForm extends React.Component {
                                 }
                             >
                                 <MoreForm
-                                    searchMap={searchMap} //
-                                    enumData={this.props.enumData}
-                                    refData={enumData}
-                                    cityData={this.props.cityData} //城市数据 假
                                     handleSearch={this.handleSearch.bind(this)} //点击查询方法
+                                    searchMapFn={this.searchMapFn.bind(this)} //动态赋值查询条件到redux中
                                     formMore={this.changeVisible.bind(this)} //控制查询显隐
                                 />
                             </Row>

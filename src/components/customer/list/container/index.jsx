@@ -19,8 +19,7 @@ const ButtonGroup = Button.Group;
 import Card from "./card";
 //导入action方法
 import * as Actions from "../action";
-import * as enumData from "./enumdata";
-import cityData from "./citydata";
+
 import ViewPanel from "./ViewPanel";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
@@ -74,28 +73,26 @@ class List extends React.Component {
         const that = this;
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
-            debugger;
             this.props.action.selectRow(selectedRows, selectedRowKeys);
         };
     }
 
     //显示面板
     slideShow(record) {
-        debugger;
         this.props.action.showViewForm(true, record);
     }
     //隐藏面版
     slideHide() {
-        debugger;
+        //关闭面板清空数据
         this.props.action.showViewForm(false, {});
     }
 
     //form新增、或者修改
     formHandleOk() {
-        const isEdit = this.props.$$state.get("isEdit");
         this.formRef.props.form.validateFields((err, values) => {
+            debugger;
             if (!err) {
-                if (isEdit) {
+                if (values.id) {
                     this.props.action.listEditSave(values);
                 } else {
                     this.props.action.listAddSave(values);
@@ -107,6 +104,11 @@ class List extends React.Component {
     //form取消
     formHandleCancel() {
         this.props.action.showForm(false);
+    }
+
+    //保存修改、编辑等动作后，把修改的值保存在redux中
+    editCardFn(changeData) {
+        this.props.action.editCardFn(changeData);
     }
 
     showTotal(total) {
@@ -137,13 +139,12 @@ class List extends React.Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
-        debugger;
         const {
             selectedRows,
             selectedRowKeys,
             formVisitable,
-            isEdit,
-            viewState
+            viewState,
+            viewData
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -151,15 +152,9 @@ class List extends React.Component {
             onChange: this.onSelectChange
         };
 
-        const CardForm = Form.create()(Card);
-
         return (
             <div className="custom-warpper">
-                <ToolForm
-                    visible={selectedRowKeys}
-                    enumData={enumData}
-                    cityData={cityData}
-                />
+                <ToolForm />
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
@@ -179,17 +174,17 @@ class List extends React.Component {
                     />
                 </div>
                 <Modal
-                    title={isEdit ? "编辑客户" : "新增客户"}
+                    title={viewData.id ? "编辑客户" : "新增客户"}
                     visible={formVisitable}
                     onOk={this.formHandleOk.bind(this)}
                     onCancel={this.formHandleCancel.bind(this)}
                     width={900}
+                    maskClosable={false}
                 >
                     <div className="modal-height">
-                        <CardForm
+                        <Card
                             wrappedComponentRef={inst => (this.formRef = inst)}
-                            enumData={enumData}
-                            cityData={cityData}
+                            editCardFn={this.editCardFn.bind(this)}
                         />
                     </div>
                 </Modal>

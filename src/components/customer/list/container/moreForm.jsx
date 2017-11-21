@@ -18,18 +18,18 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 import "assets/stylesheet/all/iconfont.css";
 import * as Actions from "../action";
+import cityData from "./citydata";
+import * as enumDataFake from "./enumdata";
+import Industry from "./industry";
 
 class MoreForm extends React.Component {
     constructor(props) {
         super(props);
     }
-    componentDidMount() {
-        this.props.form.setFieldsValue(this.props.searchMap);
-    }
 
     handleSearch(e) {
         e.preventDefault();
-        this.props.handleSearch(this.props.form.getFieldsValue());
+        this.props.handleSearch(this.props.$$state.toJS().searchMap);
     }
 
     moreFn() {
@@ -42,7 +42,7 @@ class MoreForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-
+        let { enumData } = this.props.$$state.toJS();
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -56,22 +56,20 @@ class MoreForm extends React.Component {
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("level", {})(
+                                {getFieldDecorator("type", {})(
                                     <Enum
-                                        addOptionAll={"客户等级"}
-                                        dataSource={this.props.refData.level}
+                                        addOptionAll={"客户类型"}
+                                        dataSource={enumData.type}
                                     />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("saleArea", {})(
+                                {getFieldDecorator("level", {})(
                                     <Enum
-                                        addOptionAll={"营销区域"}
-                                        dataSource={
-                                            this.props.enumData.saleAreaEnum
-                                        }
+                                        addOptionAll={"客户等级"}
+                                        dataSource={enumData.level}
                                     />
                                 )}
                             </FormItem>
@@ -83,8 +81,8 @@ class MoreForm extends React.Component {
                                     {}
                                 )(
                                     <Cascader
-                                        options={this.props.cityData}
-                                        placeholder="省/市/区/县"
+                                        options={cityData}
+                                        placeholder="省/市/区/"
                                     />
                                 )}
                             </FormItem>
@@ -93,20 +91,18 @@ class MoreForm extends React.Component {
                     <Row>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("parentId", {})(
-                                    <Input type="text" placeholder="上级客户" />
+                                {getFieldDecorator("isGroup", {})(
+                                    <Enum
+                                        addOptionAll={"集团客户"}
+                                        dataSource={enumDataFake.isGroupEnum}
+                                    />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("industry", {})(
-                                    <Enum
-                                        addOptionAll={"行业"}
-                                        dataSource={
-                                            this.props.enumData.industryEnum
-                                        }
-                                    />
+                                    <Industry />
                                 )}
                             </FormItem>
                         </Col>
@@ -115,21 +111,17 @@ class MoreForm extends React.Component {
                                 {getFieldDecorator("cannelType", {})(
                                     <Enum
                                         addOptionAll={"渠道类型"}
-                                        dataSource={
-                                            this.props.enumData.cannelTypeEnum
-                                        }
+                                        dataSource={enumData.cannelType}
                                     />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("lifecycle", {})(
+                                {getFieldDecorator("state", {})(
                                     <Enum
-                                        addOptionAll={"生命周期"}
-                                        dataSource={
-                                            this.props.enumData.lifecycleEnum
-                                        }
+                                        addOptionAll={"客户状态"}
+                                        dataSource={enumData.state}
                                     />
                                 )}
                             </FormItem>
@@ -142,7 +134,7 @@ class MoreForm extends React.Component {
                                     <Enum
                                         addOptionAll={"启用状态"}
                                         dataSource={
-                                            this.props.enumData.enableStateEnum
+                                            enumDataFake.enableStateEnum
                                         }
                                     />
                                 )}
@@ -169,14 +161,26 @@ class MoreForm extends React.Component {
 const WarpMilForm = Form.create({
     mapPropsToFields: (props, onChangeFild) => {
         //从redux中读值
+        let searchMap = props.$$state.toJS().searchMap;
+        let value = {};
+        for (let key in searchMap) {
+            value[key] = { value: searchMap[key] };
+        }
         return {
-            //...obj
+            ...value
         };
     },
     onFieldsChange: (props, onChangeFild) => {
-        //往redux中写值
-        //把值进行更新改变
-        //this.props.action.hhh(props);
+        //往redux中写值//把值进行更新改变
+        let searchMap = props.$$state.toJS().searchMap;
+        for (let key in onChangeFild) {
+            if (onChangeFild[key].value.key) {
+                searchMap[key] = onChangeFild[key].value.key;
+            } else {
+                searchMap[key] = onChangeFild[key].value;
+            }
+        }
+        props.searchMapFn(searchMap);
     }
 })(MoreForm);
 
