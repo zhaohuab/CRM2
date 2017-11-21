@@ -7,8 +7,8 @@ const login = baseDir + "login";
 const menu = baseDir + "sys/menuitem";
 
 const org = {
-    org: baseDir + "sys/org/",
-    orgTree: baseDir + "sys/orgTree/"
+    org: baseDir + "sys/orgs",
+    orgTree: baseDir + "sys/orgs/orgTree"
 };
 
 const user = {
@@ -73,10 +73,15 @@ const opportunity = {
 
 const oppaction = {
     oppaction: baseDir + 'sprc/oppactions',
+    doc:baseDir + "sprc/oppactions/docs",
 }
 
 const visitrules = {
     visitrules: baseDir + 'sact/visitrules',
+}
+
+const oppstage = {
+    oppstage: baseDir + 'sprc/oppstages',
 }
 export {
     login,
@@ -98,4 +103,5 @@ export {
     oppaction,
     visitRouter,
     visitrules,
+    oppstage,
 }

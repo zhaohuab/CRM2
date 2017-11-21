@@ -85,6 +85,7 @@ class Contacts extends React.Component {
         };
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            debugger;
             this.setState({
                 more: false
             });

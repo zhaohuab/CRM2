@@ -15,9 +15,6 @@ class Card extends React.Component {
 
     componentDidMount() {
         let data = this.props.$$state.get("editData").toJS();
-        if(data.dimension){
-            data.dimension = {key:data.dimension,title:""};
-        }
         this.props.form.setFieldsValue(data);
     }
   
@@ -43,51 +40,26 @@ class Card extends React.Component {
         return (
         <Form >
             <FormItem
-                label="关键动作名称"
+                label="销售阶段名称"
                 {...formItemLayout}
             >
                 {getFieldDecorator('name', {
                     rules: [{
-                        required: true, message: '请输入关键动作名称',
+                        required: true, message: '请输入销售阶段名称',
                     }],
                 })(
-                    <Input placeholder='请输入关键动作名称'/>
+                    <Input placeholder='请输入销售阶段名称'/>
                     )}
             </FormItem>
+            
             <FormItem
-                label="动作维度"
-                {...formItemLayout}
-            >
-                {getFieldDecorator('dimension', {
-                    rules: [{
-                        required: true, message: '请输入动作维度',
-                    }],
-                })(
-                    <Enum
-                        dataSource={enumData.dimension}
-                    />
-                    )}
-            </FormItem>
-            <FormItem
-                label="动作分值"
-                {...formItemLayout}
-            >
-                {getFieldDecorator('score', {
-                    rules: [{
-                        required: true, message: '请输入关键动作分值',
-                    }],
-                })(
-                    <Input placeholder='请输入关键动作分值'/>
-                    )}
-            </FormItem>
-            <FormItem
-                label="关键动作描述"
+                label="销售阶段描述"
                 {...formItemLayout}
             >
                 {getFieldDecorator('description', {
                 
                 })(
-                    <Input type="textarea" placeholder='请输入关键动作描述'/>
+                    <Input type="textarea" placeholder='请输入销售阶段描述'/>
                     )}
             </FormItem>
 
@@ -98,7 +70,7 @@ class Card extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-      $$state: state.oppactionlist
+      $$state: state.oppstagelist
     }
   }
   

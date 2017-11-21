@@ -12,7 +12,6 @@ class Card extends React.Component {
     componentDidMount() {
         //装箱过程
         debugger
-        // this.props.form.setFieldsValue(this.props.dataSource);
     }
     componentWillMount() {
 
@@ -39,22 +38,6 @@ class Card extends React.Component {
 
         return (
 
-            // <Row>
-            //     <Col span={6}>品牌</Col>
-            //     <Col span={14}></Col>
-            // </Row>
-            // <Row>
-            //     <Col span={6}>英文</Col>
-            //     <Col span={14}></Col>
-            // </Row>
-            // <Row>
-            //     <Col span={6}>启用状态</Col>
-            //     <Col span={14}></Col>
-            // </Row>
-            // <Row>
-            //     <Col span={6}>备注</Col>
-            //     <Col span={14}></Col>
-            // </Row>
             <Form >
                 <FormItem
                     label="品牌"

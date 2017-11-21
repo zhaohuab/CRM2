@@ -87,7 +87,7 @@ export function listchange(data){
     return(dispatch)=>{
         let id=data.id
         request({
-            url: `${url.org}${id}`,
+            url: `${url.org}/${id}`,
             method:'put',
             data:{
                 param: transData(data)
@@ -166,7 +166,7 @@ export function setEnablestate(treeId,searchFilter,data,state){
     }
     return (dispatch) => {
 		request({
-			url: url.org+'enable',
+			url: url.org+'/enable',
 			method: "PUT",
 			data: {
 				param: {

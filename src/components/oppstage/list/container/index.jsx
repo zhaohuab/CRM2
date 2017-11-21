@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Table, Modal, Button, Icon, Input, Radio, Popconfirm, Form } from 'antd';
 import Card from './CardForm.jsx';
-import HeadLabel from './HeadLabel.jsx';
 import Department from 'components/refs/departments'
 import './index.less'
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
@@ -24,22 +23,15 @@ class List extends React.Component {
 
     this.columns = [
       {
-        title: '动作名称',
+        title: '阶段名称',
         dataIndex: 'name',
       },
       {
-        title: '动作描述',
+        title: '阶段描述',
         dataIndex: 'description',
       },
       {
-        title: '动作维度',
-        dataIndex: 'dimensionName',
-      }, {
-        title: '动作分值',
-        dataIndex: 'score',
-      },
-      {
-        title: '预制关键动作',
+        title: '预制销售阶段',
         dataIndex: 'isPresetedName',
       },
       {
@@ -62,7 +54,6 @@ class List extends React.Component {
 
   componentDidMount() {
     this.props.action.getListData(this.props.$$state.get("pagination").toJS());
-    this.props.action.getEnumData();
   }
 
   onAdd() {
@@ -84,6 +75,7 @@ class List extends React.Component {
         console.log('Cancel');
       },
     });
+
   }
   onEdit = () => {
     this.setState({ isEdit: true });
@@ -111,6 +103,7 @@ class List extends React.Component {
     else {
       this.props.action.onSave4Add(form.getFieldsValue());
     }
+
   }
 
   showTotal(total) {
@@ -130,6 +123,7 @@ class List extends React.Component {
     this.props.action.selectData({ selectedRows: [], selectedRowKeys: [] });
   }
   render() {
+    debugger
     let { $$state } = this.props;
     let page = $$state.get("data").toJS();
     let visible = $$state.get("visible");
@@ -146,6 +140,8 @@ class List extends React.Component {
         {
           selectedRowKeys && selectedRowKeys.length ?
             <div className='head_edit'>
+
+
               <HeaderButton
                 length={selectedRows.length}
                 goBack={this.onBack.bind(this)}>
@@ -153,12 +149,16 @@ class List extends React.Component {
                   <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button> :
                   <Button className="default_button" onClick={this.onEdit.bind(this)}><i className='iconfont icon-bianji'></i>编辑</Button>
                 }
+
                 <Button className="default_button" onClick={this.onDelete.bind(this)}><i className='iconfont icon-shanchu'></i>删除</Button>
+
                 <Button className="default_button" onClick={this.onEnable(2).bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
                 <Button className="default_button" onClick={this.onEnable(1).bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
 
               </HeaderButton>
             </div>
+
+
             :
             <div className='head_panel'>
               <div className='head_panel-left'>
@@ -176,14 +176,14 @@ class List extends React.Component {
           <Table
             size="middle"
             columns={this.columns}
-            dataSource={page.data}
+            dataSource={page.voList}
             rowSelection={rowSelection}
             rowKey="id"
             pagination={{ size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
           />
         </div>
         <Modal
-          title={this.state.isEdit ? "编辑关键动作" : "新增关键动作"}
+          title={this.state.isEdit ? "编辑销售阶段" : "新增销售阶段"}
           visible={visible}
           onOk={this.onSave.bind(this)}
           onCancel={this.onClose.bind(this)}
@@ -201,7 +201,7 @@ class List extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
   return {
-    $$state: state.oppactionlist
+    $$state: state.oppstagelist
   }
 }
 

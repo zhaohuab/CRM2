@@ -1,25 +1,26 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { oppaction as url } from 'api';
+import { oppstage as url } from 'api';
 
 const showForm = (flag, editData = {}, index) => {
 	return (dispatch) => {
-		dispatch(fetchData('OPPACTION_LIST_SHOWFORM', { visible: flag, editData }));
+		dispatch(fetchData('OPPSTAGE_LIST_SHOWFORM', { visible: flag, editData }));
 	}
 }
 
-const getListData = (pagination) => {
+const getListData = (params,) => {
+	let ur = url.oppstage;
 	return (dispatch) => {
 		reqwest({
-			url: url.oppaction,
+			url: url.oppstage,
 			method: "GET",
 			data: {
 				param: {
-					...pagination,
+
 				}
 			},
 		},result => {
-			dispatch(fetchData('OPPACTION_LIST_GETLISTSUCCESS', { ...result }));
+			dispatch(fetchData('OPPSTAGE_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
 }
@@ -29,67 +30,65 @@ function transData (data) {
 	return data;
 }
 
-const onSave4Add = (data, index) => {
+const onSave4Add = (data) => {
 	return (dispatch) => {
-
 		reqwest({
-			url: url.oppaction,
+			url: url.oppstage,
 			method: "POST",
 			data: {
-				param: transData(data)
+				param: data
 			}
 		}, result => {
-			dispatch(fetchData('OPPACTION_CARD_SAVEADD', { ...result, visible: false }));
+			dispatch(fetchData('OPPSTAGE_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
 }
 
 const onSave4Edit = (data, index) => {
 	return (dispatch) => {
-
 		reqwest({
-			url: `${url.oppaction}/${data.id}`,
+			url: `${url.oppstage}/${data.id}`,
 			method: "PUT",
 			data: {
-				param: transData(data)
+				param: data
 			}
 		}, result => {
-			dispatch(fetchData('OPPACTION_CARD_SAVEEDIT', { ...result, visible: false }));
+			dispatch(fetchData('OPPSTAGE_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
 	}
 }
 
-const onDelete = (rowKeys, pagination) => {
+const onDelete = (rowKeys, params) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.oppaction+"/batch",
+			url: url.oppstage+"/batch",
 			method: "DELETE",
 			data: {
 				param: {
 					ids: rowKeys.join(","),
-					...pagination
+					searchMap:{}
 				},
 			}
 		}, result => {
-			dispatch(fetchData('OPPACTION_LIST_GETLISTSUCCESS', { ...result }));
+			dispatch(fetchData('OPPSTAGE_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
 }
 
-const onEnable = (rowKeys, enable, pagination) => {
+const onEnable = (rowKeys, enable, params) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.oppaction+"/state",
+			url: url.oppstage+"/state",
 			method: "PUT",
 			data: {
 				param: {
 					ids: rowKeys.join(","),
 					enableState: enable,
-					...pagination,
+					...params.pagination,
 				},
 			}
 		}, result => {
-			dispatch(fetchData('OPPACTION_LIST_GETLISTSUCCESS', { ...result }));
+			dispatch(fetchData('OPPSTAGE_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
 }
@@ -100,14 +99,14 @@ const getEnumData = () =>{
             url:url.doc,
             method:"get",
         },(data)=>{
-            dispatch(fetchData('OPPACTION_LIST_GETENUMDATA', {enumData:data.enumData}));
+            dispatch(fetchData('OPPSTAGE_LIST_GETENUMDATA', {enumData:data.enumData}));
         })
     }
 }
 
 const selectData = (params ) => {
     return (dispatch)=>{
-        dispatch(fetchData('OPPACTION_LIST_SETDATA',params ))
+        dispatch(fetchData('OPPSTAGE_LIST_SETDATA',params ))
     }
 }
 
