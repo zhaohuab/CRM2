@@ -65,107 +65,76 @@ const treeData = [
     }
 ];
 
-const treeDataList = [
-    {
-        key: 1,
-        value: "机械1"
-    },
-    {
-        key: 2,
-        value: "机械2"
-    },
-    {
-        key: 3,
-        value: "机械3"
-    },
-    {
-        key: 4,
-        value: "机械4"
-    },
-    {
-        key: 5,
-        value: "机械5"
-    },
-    {
-        key: 6,
-        value: "机械6"
-    },
-    {
-        key: 7,
-        value: "机械7"
-    },
-    {
-        key: 8,
-        value: "机械8"
-    },
-    {
-        key: 9,
-        value: "机械9"
-    },
-    {
-        key: 10,
-        value: "机械10"
-    },
-    {
-        key: 11,
-        value: "机械11"
-    }
-];
-
 export default class Industry extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
             industryData: [],
-            industryListData: [],
             select: {},
-            expandedKeys: []
+            expandedKeys: [],
+            selectKeys: []
         };
     }
     getIndustry(flag) {
         //这里需要Request请求
-        this.setState({
-            visible: flag,
-            industryData: treeData
-        });
-    }
-
-    treeSelect(selectedKeys, selectArrays) {
-        debugger;
-
-        if (selectArrays.node.props.children) {
+        if (!flag) {
             this.setState({
-                expandedKeys: selectedKeys
+                visible: false,
+                selectKeys: []
             });
         } else {
-            if (selectedKeys.length) {
-                //这里需要Request请求
-                this.setState({
-                    industryListData: treeDataList
-                });
-            }
+            this.setState({
+                visible: flag,
+                industryData: treeData
+            });
         }
     }
 
-    selectList(item) {
-        this.setState(
-            {
-                select: { value: item.value, id: item.key }
-            },
-            () => {
-                console.log(this.state.select);
-            }
-        );
+    treeSelect(selectedKeys, selectArrays) {
+        // if (selectArrays.node.props.children) {
+        //     debugger;
+        //     this.setState({
+        //         expandedKeys: selectedKeys
+        //     });
+        // } else {
+        if (selectedKeys.length) {
+            //这里需要Request请求
+            this.setState({
+                select: {
+                    value: selectArrays.node.props.title,
+                    id: selectArrays.node.props.eventKey
+                },
+                selectKeys: [selectedKeys[0]]
+            });
+        } else {
+            this.setState({
+                selectKeys: [selectedKeys[0]]
+            });
+        }
     }
 
     onOk() {
         debugger;
         if (this.props.onChange) {
             this.props.onChange(this.state.select);
+            this.setState({
+                visible: false,
+                selectKeys: []
+            });
         }
     }
-    cccc(expandedKeys, obj) {
+
+    onCancel() {
+        if (this.props.onChange) {
+            this.setState({
+                visible: false,
+                selectKeys: []
+            });
+        }
+    }
+
+    onExpand(expandedKeys, obj) {
         console.log(expandedKeys, obj);
         debugger;
         // if (selectArrays.node.props.children) {
@@ -181,6 +150,12 @@ export default class Industry extends React.Component {
         //     }
         // }
     }
+    emitEmpty() {
+        if (this.props.onChange) {
+            this.props.onChange({});
+        }
+    }
+
     choiceIndustry() {
         const loop = data =>
             data.map(item => {
@@ -201,44 +176,17 @@ export default class Industry extends React.Component {
                     className="industry-main-header"
                 >
                     <div className="title">行业</div>
-                    <div>
-                        <Search
-                            placeholder="请输入关键字"
-                            style={{ width: 200 }}
-                            onSearch={value => console.log(value)}
-                        />
-                    </div>
                 </Row>
                 <Row className="industry-main-choice" type="flex">
                     <Tree
                         className="industry-tree"
                         onSelect={this.treeSelect.bind(this)}
-                        onExpand={this.cccc.bind(this)}
-                        expandedKeys={this.state.expandedKeys}
+                        selectedKeys={this.state.selectKeys}
+                        //onExpand={this.onExpand.bind(this)}
+                        //expandedKeys={this.state.expandedKeys}
                     >
                         {loop(this.state.industryData)}
                     </Tree>
-                    <div className="industry-tree-choice">
-                        <div className="title">行业名称</div>
-                        <ul>
-                            {this.state.industryListData &&
-                            this.state.industryListData.length
-                                ? this.state.industryListData.map(item => {
-                                      return (
-                                          <li
-                                              title="item.value"
-                                              onClick={this.selectList.bind(
-                                                  this,
-                                                  item
-                                              )}
-                                          >
-                                              {item.value}
-                                          </li>
-                                      );
-                                  })
-                                : ""}
-                        </ul>
-                    </div>
                 </Row>
                 <Row
                     type="flex"
@@ -248,7 +196,9 @@ export default class Industry extends React.Component {
                 >
                     <Row type="flex" justify="end" align="middle" gutter={15}>
                         <div>
-                            <Button>取消</Button>
+                            <Button onClick={this.onCancel.bind(this)}>
+                                取消
+                            </Button>
                         </div>
                         <div>
                             <Button
@@ -265,7 +215,11 @@ export default class Industry extends React.Component {
     }
 
     render() {
-        debugger;
+        const suffix =
+            this.props.value && this.props.value.value ? (
+                <Icon type="close" onClick={this.emitEmpty.bind(this)} />
+            ) : null;
+
         return (
             <div className="industry-warpper">
                 <Dropdown
@@ -277,6 +231,7 @@ export default class Industry extends React.Component {
                     <Input
                         placeholder="行业"
                         value={this.props.value ? this.props.value.value : "行业"}
+                        suffix={suffix}
                     />
                 </Dropdown>
             </div>
