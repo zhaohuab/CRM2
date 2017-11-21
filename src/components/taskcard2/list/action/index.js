@@ -14,15 +14,32 @@ const getListData = (params) => { //获取列表
 			url: url.taskcard,
 			method: "GET",
 			data: {
-				param: {}
+				param: {//这个地方修改为...params？
+					...params.pagination,
+					searchMap: params.searchMap,
+				}
 			},
 		},result => {
-			debugger;
 			dispatch(fetchData('TASKCARD_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
 }
-const transData = (data) => {
+const transData = (data) => {//对弹出框的默认显示值进行转换
+/* 	let { gender, orgId, deptId, job } = data;
+	data.gender = gender.key;
+	data.genderName = gender.title;
+	data.orgId = orgId.key;
+	data.orgName = orgId.title;
+	data.deptId = deptId.key;
+	data.deptName = deptId.title;
+	data.job = job.key;
+	data.jobName = job.title; */
+
+/* 	let { mtObjId, mtBiztypeId } = data;
+	data.mtObjId = mtObjId.key;
+	data.mtObjName = mtObjId.title;
+	data.mtBiztypeId = mtBiztypeId.key;
+	data.mtBiztypeName = mtBiztypeId.title; */
 	let { mtObjName, mtBiztypeName } = data;
 	data.mtObjId = data.mtObjName;
 	data.mtBiztypeId = data.mtBiztypeName;

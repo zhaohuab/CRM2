@@ -4,9 +4,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button, Icon, Checkbox  } from 'antd';
-import { Input, Radio, Popconfirm, Form, Card, Col, Row } from 'antd';
-import FormCard from './listForm.jsx';
+import { Table, Modal, Button,Icon } from 'antd';
+import { Input, Radio, Popconfirm, Form } from 'antd';
+import Card from './listForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import Department from 'components/refs/departments'
 import './index.less'
@@ -23,72 +23,53 @@ class List extends React.Component {
     super(props)    
     this.columns = [
       {
+        title: '序号',
+        dataIndex: 'id',
+      },
+      {
+        title: '名称',
+        dataIndex:'name',
+      },
+      
+      {
         title: '业务对象',
         dataIndex: 'mtObjName',
       },
       {
         title: '业务类型',
-        dataIndex:'mtBiztypeName',
+        dataIndex: 'mtBiztypeName',
       },
-      
       {
-        title: '简介',
-        dataIndex: 'remark',
+        title: '状态',
+        dataIndex: 'enableStateName',
       },
       {
         title: '创建人',
         dataIndex: 'userName',
       },
       {
-        title: '创建时间',
-        dataIndex: 'sysCreatedTime',
-      }    
-    ]
-    this.data = [
-      {
-        mtObjName:'对象1',
-        mtBiztypeName:'类型1',
-        remark:'简介1',
-        userName:'楠楠',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象2',
-        mtBiztypeName:'类型2',
-        remark:'简介2',
-        userName:'楠楠',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象3',
-        mtBiztypeName:'类型3',
-        remark:'简介3',
-        userName:'楠楠',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象4',
-        mtBiztypeName:'类型4',
-        remark:'简介4',
-        userName:'楠楠',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象5',
-        mtBiztypeName:'类型5',
-        remark:'简介5',
-        userName:'婷婷',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象6',
-        mtBiztypeName:'类型6',
-        remark:'简介6',
-        userName:'婷婷',
-        sysCreatedTime:'2017:11:20'
-      }   
+        title: '备注',
+        dataIndex: 'remark',
+      }
     ]
     this.state = {
       headLabel: false,
       selectedRowKeys: [],
       isEdit: false,
       enable: 1,
+      pagination: {
+        pageSize: 10,
+        page: 1,
+      },
+      searchMap: {
+        enableState: 1,
+      }
     }
+  }
+
+  componentDidMount() {
+    let { pagination, searchMap } = this.state;
+    this.props.action.getListData({ pagination, searchMap });
   }
 
   onAdd() {//添加按钮
@@ -173,41 +154,18 @@ class List extends React.Component {
     this.props.action.getListData({ pagination, searchMap });
     console.info(`pageSize:${pageSize}`)
   }
-
-  renderCardList=(data)=>{
-    
-    if(data){
-      return data.map(item => (
-        <Col span={8}>
-          <Card title="任务卡" extra={<a href="#">。。。</a>} bordered={false} style={{position:'relative'}} >
-            <div>
-              <Checkbox style={{position:'absoulte',left:'-20px',top:'-57px'}} />
-              <p><span>业务对象：</span>{item.mtObjId}</p>
-              <p><span>业务类型：</span>{item.mtBiztypeName}</p>
-              <p><span>简介：</span>{item.remark}</p>
-              <p><span>创建人：</span>{item.userName}</p>
-              <p><span>创建时间：</span>2017/11/20</p>
-            </div>
-          </Card>
-        </Col>
-      )) 
-       
-    }   
-  }
-  componentDidMount() {
-    this.props.action.getListData({});
-  }
-
   render() {
     let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
-    let { headLabel, selectedRowKeys } = this.state; 
+
+    let { headLabel, selectedRowKeys } = this.state;
+    
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
     let editData = this.props.$$state.get("editData").toJS();
-    const WrapCard = Form.create()(FormCard);
+    const WrapCard = Form.create()(Card);
     return (
       <div className = 'user-warpper'>
         {
@@ -252,11 +210,17 @@ class List extends React.Component {
               </div>
           </div>
         }
-          <Row gutter={16}>
-            {this.renderCardList(page.data)}
-          </Row>
-        
-     
+
+        <div className="list-box" id='taskcard'>
+          <Table
+            size="middle"
+            columns={this.columns}
+            dataSource={page.data}
+            rowSelection={rowSelection}
+            rowKey="id"
+            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}
+          />
+        </div>
         <Modal
           title="新增任务卡"
           visible={visible}
@@ -289,13 +253,3 @@ function mapDispatchToProps(dispatch) {
 
 //输出绑定state和action后组件
 export default  connect( mapStateToProps, mapDispatchToProps)(List);
-
-
-
-
-
-/*  {
-   column.map((item,index)=> {
-                return  <p>{item.title}:{data[index][item.dataIndex]}</p>
-              })
-            } */ 

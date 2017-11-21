@@ -33,7 +33,8 @@ import contacts from "components/contacts/contactList/reducer/index.js";
 //任务卡
 import taskcard from '../components/taskcard/list/reducer'
 //档案管理
-import doc from '../components/doc/list/reducer'
+import doc from
+'../components/doc/list/reducer'
 //商机
 import opportunityList from '../components/opportunity/list/reducer/index.js'
 //商机动作
@@ -43,7 +44,9 @@ import visitroute from "components/visitroute/list/reducer/index.js";
 //拜访规则
 import visitRules from '../components/visitrules/reducer'
 
-let rootReducer = combineReducers({
+let rootReducer = combineReducers({ 
+    login, 
+    doc,
     login,
     commonMenu,
     header,

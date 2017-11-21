@@ -2,13 +2,16 @@ import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { doc as url } from 'api';
 
-
+const langChange = (lan='zh') =>{
+    return (dispatch)=>{
+		dispatch(fetchData('DOC_LANG_CHANGE', { lang:lan }))
+	}
+}
 const showForm = (flag,editData={}) =>{
 	return (dispatch)=>{
 		dispatch(fetchData('DOC_LIST_SHOWFORM', { visible: flag, editData, storage:[] }))
 	}
 }
-
 const showFormAdd = (flag, editData = {}) => {	
 		return (dispatch) => {
 			let obj = {};
@@ -21,7 +24,6 @@ const showFormAdd = (flag, editData = {}) => {
 		dispatch(fetchData('DOC_LIST_SHOWFORM_ADD', { visible: flag, editData, dataSource: arr,name:false, description:false }));
 	}	
 }
-
 const showFormEdit = (flag, editData = {}) => {	
 	return (dispatch) => {
 		reqwest({
@@ -50,7 +52,6 @@ const showFormEdit = (flag, editData = {}) => {
       
     }	
 }
-
 const getListData = (params) => {
 	
 	return (dispatch) => {
@@ -184,6 +185,7 @@ const detailDelete = (data) =>{
 	}
  }
 export {
+	langChange,
 	getListData,
 	onDelete,
 	showForm,
