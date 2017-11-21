@@ -1,7 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Select, Input, Form, Table, Modal, Button, Icon, Row, Col } from "antd";
+import {
+    Select,
+    Input,
+    Form,
+    Table,
+    Modal,
+    Button,
+    Icon,
+    Row,
+    Col
+} from "antd";
 import ToolForm from "./ButtonTool.jsx";
 let Search = Input.Search;
 const FormItem = Form.Item;
@@ -9,29 +19,30 @@ const ButtonGroup = Button.Group;
 import Card from "./card";
 //导入action方法
 import * as Actions from "../action";
-import * as enumData from "./enumdata";
-import cityData from "./citydata";
+
 import ViewPanel from "./ViewPanel";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
+import SlidePanel from "../../../common/slidePanel/index.jsx";
 
 class List extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
             classStyle: [],
-            hasPanel: false
+            viewState: false
         };
         this.columns = [
             {
                 title: "客户名称",
                 dataIndex: "name",
                 render: (text, record) => (
-                    <a onClick={this.btnView.bind(this, record)}>
-                        {" "}
+                    <div
+                        onClick={this.slideShow.bind(this, record)}
+                        className="crm-pointer"
+                    >
                         {record.name}
-                    </a>
+                    </div>
                 )
             },
             {
@@ -62,31 +73,26 @@ class List extends React.Component {
         const that = this;
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
-            const nowVisible = that.props.$$state.get("toolVisible").toJS();
-            if (selectedRows.length > 0) {
-                nowVisible.simForm = false;
-                nowVisible.btnPanel = true;
-            } else {
-                nowVisible.btnPanel = false;
-                if (nowVisible.milForm == true) {
-                    nowVisible.simForm = false;
-                } else {
-                    nowVisible.simForm = true;
-                }
-            }
-            this.props.action.selectRow( selectedRows, selectedRowKeys,nowVisible );
+            this.props.action.selectRow(selectedRows, selectedRowKeys);
         };
     }
 
-    componentDidMount() {
-        this.props.action.getListData(this.props.$$state.get("pagination").toJS());
-        this.props.action.getEnumData();
+    //显示面板
+    slideShow(record) {
+        this.props.action.showViewForm(true, record);
     }
+    //隐藏面版
+    slideHide() {
+        //关闭面板清空数据
+        this.props.action.showViewForm(false, {});
+    }
+
+    //form新增、或者修改
     formHandleOk() {
-        const isEdit = this.props.$$state.get("isEdit");
         this.formRef.props.form.validateFields((err, values) => {
+            debugger;
             if (!err) {
-                if (isEdit) {
+                if (values.id) {
                     this.props.action.listEditSave(values);
                 } else {
                     this.props.action.listAddSave(values);
@@ -94,17 +100,15 @@ class List extends React.Component {
             }
         });
     }
+
+    //form取消
     formHandleCancel() {
         this.props.action.showForm(false);
     }
 
-    btnView(record) {
-        if (!this.state.hasPanel) {
-            this.setState({
-                hasPanel: true
-            });
-        }
-        this.props.action.showViewForm(true, record);
+    //保存修改、编辑等动作后，把修改的值保存在redux中
+    editCardFn(changeData) {
+        this.props.action.editCardFn(changeData);
     }
 
     showTotal(total) {
@@ -112,37 +116,46 @@ class List extends React.Component {
     }
     onPageChange(page, pageSize) {
         let pagination = { page: page, pageSize: pageSize };
-        this.props.action.getListData( pagination, this.props.$$state.get("searchMap").toJS()  );
+        this.props.action.getListData(
+            pagination,
+            this.props.$$state.get("searchMap").toJS()
+        );
     }
     onPageSizeChange(current, pageSize) {
         let pagination = { page: current, pageSize: pageSize };
-        this.props.action.getListData( pagination, this.props.$$state.get("searchMap").toJS() );
+        this.props.action.getListData(
+            pagination,
+            this.props.$$state.get("searchMap").toJS()
+        );
     }
+
+    componentDidMount() {
+        this.props.action.getListData(
+            this.props.$$state.get("pagination").toJS()
+        );
+        this.props.action.getEnumData();
+    }
+
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
-        const selectedRows = this.props.$$state.get("selectedRows").toJS();
-        const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
+        const {
+            selectedRows,
+            selectedRowKeys,
+            formVisitable,
+            viewState,
+            viewData
+        } = this.props.$$state.toJS();
+
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-        const searchMap = $$state.get("searchMap").toJS();
-        const toolVisible = $$state.get("toolVisible").toJS();
-        const formVisitable = $$state.get("formVisitable");
-        const CardForm = Form.create()(Card);
-        const viewData = $$state.get("viewData").toJS();
-        const viewFormVisible = $$state.get("viewFormVisible");
-        const isEdit = $$state.get("isEdit");
-        const h = this.props.$$stateCommon.toJS().height - 90;
+
         return (
-            <div className="custom-warpper" style={{ height: h + "px" }}>
-                <ToolForm
-                    visible={toolVisible}
-                    enumData={enumData}
-                    cityData={cityData}
-                />
-                <div className="custom-tabel tabel-recoverd">
+            <div className="custom-warpper">
+                <ToolForm />
+                <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
                         dataSource={page.data}
@@ -161,31 +174,26 @@ class List extends React.Component {
                     />
                 </div>
                 <Modal
-                    title={isEdit ? "编辑客户" : "新增客户"}
+                    title={viewData.id ? "编辑客户" : "新增客户"}
                     visible={formVisitable}
                     onOk={this.formHandleOk.bind(this)}
                     onCancel={this.formHandleCancel.bind(this)}
-                    width="90%"
+                    width={900}
+                    maskClosable={false}
                 >
-                    <div className="model-height">
-                        <CardForm
+                    <div className="modal-height">
+                        <Card
                             wrappedComponentRef={inst => (this.formRef = inst)}
-                            enumData={enumData}
-                            cityData={cityData}
+                            editCardFn={this.editCardFn.bind(this)}
                         />
                     </div>
                 </Modal>
-                {this.state.hasPanel ? (
-                    <div
-                        className={
-                            viewFormVisible
-                                ? "viewPanel viewShow"
-                                : "viewPanelFalse viewHide"
-                        }
-                    >
-                        <ViewPanel ref="panelHeight" />
-                    </div>
-                ) : null}
+                <SlidePanel
+                    viewState={viewState}
+                    onClose={this.slideHide.bind(this)}
+                >
+                    <ViewPanel ref="panelHeight" />
+                </SlidePanel>
             </div>
         );
     }

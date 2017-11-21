@@ -29,14 +29,12 @@
     color: #333;
 }
 
-
 /*modal头部样式*/
 
 .ant-modal-header {
     background: #fafafa;
     height: 50px;
 }
-
 
 /*表单必输星号*/
 
@@ -48,22 +46,20 @@
     color: #333;
 }
 
-
 /*input输入框禁用，鼠标样式*/
 
 .ant-input-disabled {
     cursor: default;
 }
 
-
 /* ant.design  表格样式 */
 
-.tabel-recoverd .ant-table .ant-table-thead>tr,
-.tabel-recoverd .ant-table .ant-table-tbody>tr:nth-child(even) {
+.tabel-recoverd .ant-table .ant-table-thead > tr,
+.tabel-recoverd .ant-table .ant-table-tbody > tr:nth-child(even) {
     background: #f3faff;
 }
 
-.tabel-recoverd .ant-table .ant-table-thead>tr>th {
+.tabel-recoverd .ant-table .ant-table-thead > tr > th {
     color: #666;
 }
 
@@ -76,39 +72,49 @@
     color: #999;
 }
 
-.tabel-recoverd .ant-table .ant-table-thead>tr>th,
-.tabel-recoverd .ant-table .ant-table-tbody>tr>td {
+.tabel-recoverd .ant-table .ant-table-thead > tr > th,
+.tabel-recoverd .ant-table .ant-table-tbody > tr > td {
     border: none;
 }
 
-.tabel-recoverd .ant-table .ant-tree.ant-tree-show-line li:not(:last-child):before {
+.tabel-recoverd
+    .ant-table
+    .ant-tree.ant-tree-show-line
+    li:not(:last-child):before {
     border-left: 1px solid #ececec;
 }
 
-.tabel-recoverd .ant-table-thead>tr,
-.tabel-recoverd .ant-table-tbody>tr {
+.tabel-recoverd .ant-table-thead > tr,
+.tabel-recoverd .ant-table-tbody > tr {
     background: white;
 }
 
-
 /* ant.design  菜单样式*/
 
-.ant-menu-inline-collapsed>.ant-menu-item .anticon+span,
-.ant-menu-inline-collapsed>.ant-menu-submenu>.ant-menu-submenu-title .iconfont+span {
+.ant-menu-inline-collapsed > .ant-menu-item .anticon + span,
+.ant-menu-inline-collapsed
+    > .ant-menu-submenu
+    > .ant-menu-submenu-title
+    .iconfont
+    + span {
     opacity: 0;
 }
 
-.ant-menu-item .anticon+span,
-.ant-menu-submenu-title .iconfont+span {
-    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+.ant-menu-item .anticon + span,
+.ant-menu-submenu-title .iconfont + span {
+    transition: opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+        width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-.ant-menu-inline-collapsed>.ant-menu-item>.iconfont+span {
+.ant-menu-inline-collapsed > .ant-menu-item > .iconfont + span {
     opacity: 0;
 }
 
-.ant-menu-inline-collapsed>.ant-menu-item .anticon,
-.ant-menu-inline-collapsed>.ant-menu-submenu>.ant-menu-submenu-title .anticon {
+.ant-menu-inline-collapsed > .ant-menu-item .anticon,
+.ant-menu-inline-collapsed
+    > .ant-menu-submenu
+    > .ant-menu-submenu-title
+    .anticon {
     font-size: 20px;
     position: relative;
     left: -1px;
@@ -119,17 +125,26 @@
 }
 
 //tree
-.tree-icon .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher-noop:after {
+.tree-icon
+    .ant-tree.ant-tree-show-line
+    li
+    span.ant-tree-switcher.ant-tree-switcher-noop:after {
     content: "\E621";
     color: #3ca4fb;
 }
 
-.tree-icon .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_open:after {
+.tree-icon
+    .ant-tree.ant-tree-show-line
+    li
+    span.ant-tree-switcher.ant-tree-switcher_open:after {
     content: "\E6C1";
     color: #3ca4fb;
 }
 
-.tree-icon .ant-tree.ant-tree-show-line li span.ant-tree-switcher.ant-tree-switcher_close:after {
+.tree-icon
+    .ant-tree.ant-tree-show-line
+    li
+    span.ant-tree-switcher.ant-tree-switcher_close:after {
     content: "\E6C0";
     color: #3ca4fb;
 }
@@ -140,24 +155,36 @@
     background: white;
 }
 
-.collapse-recover .ant-collapse>.ant-collapse-item>.ant-collapse-header {
+.collapse-recover .ant-collapse > .ant-collapse-item > .ant-collapse-header {
     background: #f2f2f2;
 }
 
-.collapse-recover .ant-collapse>.ant-collapse-item>.ant-collapse-header .arrow:before {
+.collapse-recover
+    .ant-collapse
+    > .ant-collapse-item
+    > .ant-collapse-header
+    .arrow:before {
     content: "\E604";
 }
 
-.collapse-recover .ant-collapse-borderless>.ant-collapse-item>.ant-collapse-content {
+.collapse-recover
+    .ant-collapse-borderless
+    > .ant-collapse-item
+    > .ant-collapse-content {
     border-top: none;
+    padding: 0 15px;
 }
 
-.collapse-recover .ant-collapse>.ant-collapse-item {
+.collapse-recover .ant-collapse > .ant-collapse-item {
     border-bottom: none;
     margin-bottom: 12px;
     border: 1px solid #f2f2f2;
 }
 
+.collapse-recover .ant-collapse-content > .ant-collapse-content-box {
+    padding-top: 0;
+    padding-bottom: 0;
+}
 
 /*ant下拉框单独样式修改*/
 

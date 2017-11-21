@@ -16,19 +16,18 @@ import {
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const confirm = Modal.confirm;
-import './index.less'
+import "./index.less";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action/index.js";
 
 class ListTree extends Component {
-    constructor(props){
-        super(props)
-        this.state={
-            edit:''
-        }
+    constructor(props) {
+        super(props);
+        this.state = {
+            edit: ""
+        };
     }
-  
 
     onSelect(selectedKeys, obj) {
         if (selectedKeys.length) {
@@ -36,9 +35,9 @@ class ListTree extends Component {
         }
     }
 
-    edit(item,e){
-        e.stopPropagation()
-        this.props.edit(item.id)
+    edit(item, e) {
+        e.stopPropagation();
+        this.props.edit(item.id);
 
         this.setState({ isEdit: true });
         let rowData = {};
@@ -52,8 +51,8 @@ class ListTree extends Component {
         this.props.action.showForm(true, rowData);
     }
 
-    add(item,e){
-        e.stopPropagation()
+    add(item, e) {
+        e.stopPropagation();
         this.setState({ isEdit: false });
         let rowData = { fatherorgId: item.id, fatherorgName: item.name };
         this.props.action.showForm(true, rowData);
@@ -64,20 +63,20 @@ class ListTree extends Component {
 
         let that = this;
         confirm({
-        title: '确定要删除吗?',
-        content: '此操作不可逆',
-        okText: '是',
-        okType: 'danger',
-        cancelText: '否',
-        onOk() {
-            const record = [];
-            record.push(item);
-            that.props.action.listdel(record, item.id);
-        },
-        onCancel() {
-        console.log('Cancel');
-        },
-     });
+            title: "确定要删除吗?",
+            content: "此操作不可逆",
+            okText: "是",
+            okType: "danger",
+            cancelText: "否",
+            onOk() {
+                const record = [];
+                record.push(item);
+                that.props.action.listdel(record, item.id);
+            },
+            onCancel() {
+                console.log("Cancel");
+            }
+        });
     }
     showEdit(item) {
         this.setState({
@@ -124,23 +123,28 @@ class ListTree extends Component {
             </span>
         );
     }
-    render(){
-        const loop = data => data.map((item) => {
-            if (item.children && item.children.length) {
-              return (
-                 <TreeNode key={item.id} title={this.getCustomTitle(item)}>
-                    {loop(item.children)}
-                 </TreeNode>
-              );
-            }
-            return <TreeNode key={item.id} title={this.getCustomTitle(item) }/>;
-        });
+    render() {
+        const loop = data =>
+            data.map(item => {
+                if (item.children && item.children.length) {
+                    return (
+                        <TreeNode
+                            key={item.id}
+                            title={this.getCustomTitle(item)}
+                        >
+                            {loop(item.children)}
+                        </TreeNode>
+                    );
+                }
+                return (
+                    <TreeNode key={item.id} title={this.getCustomTitle(item)} />
+                );
+            });
         let data = this.props.$$state.get("treeData").toJS();
-        return(
+        return (
             <div>
-                {
-                    data.length? 
-                    (<div>
+                {data.length ? (
+                    <div>
                         <div className="org-tree-main">
                             <Tree
                                 showLine
