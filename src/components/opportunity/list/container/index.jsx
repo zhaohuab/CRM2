@@ -137,7 +137,7 @@ class List extends React.Component {
 
     //编辑页面关闭事件
     formHandleCancel() {
-        this.props.action.closeForm();
+        this.props.action.showForm({},false);
     }
 
     //查询按钮事件
@@ -157,7 +157,7 @@ class List extends React.Component {
         if (this.refs.editPanel) {
             this.refs.editPanel.refs.table.setTableData([])
         }
-        this.props.action.showNewForm(true);
+        this.props.action.showForm({},true);
     }
 
     //点击查看按钮打开查看页面
@@ -180,7 +180,7 @@ class List extends React.Component {
         this.setState({ isEdit: true });
         //点击编辑按钮将查看页面数据存入编辑页面
         this.refs.editPanel.refs.table.setTableData(this.props.$$state.get("viewData").toJS().childList)
-        this.props.action.showEditForm(true);
+        this.props.action.showForm({},true);
     }
 
     //批量删除
@@ -222,11 +222,12 @@ class List extends React.Component {
         const selectedRows = $$state.get("selectedRows").toJS();
         const searchMap = $$state.get("searchMap").toJS();
         const toolVisible = $$state.get("toolVisible").toJS();
-        const editFormVisible = $$state.get("formVisitable");
+        const formVisible = $$state.get("formVisitable");
         const CardForm = Form.create()(Card);
         const viewData = $$state.get("viewData").toJS();
         const viewFormVisible = $$state.get("viewFormVisible");
         const h = this.props.$$stateCommon.toJS().height - 90;
+        const isEdit =true;
         return (
             <div className="custom-warpper" style={{ height: h + "px" }}>
                 <ToolForm
@@ -234,7 +235,6 @@ class List extends React.Component {
                     btnBack={this.btnBack.bind(this)}
                     btnLess={this.changeVisible.bind(this)}
                     btnMore={this.changeVisible.bind(this)}
-
                     handleSearch={this.handleSearch.bind(this)}
                     btnNew={this.btnNew.bind(this)}
                     enumData={enumData}
@@ -254,8 +254,23 @@ class List extends React.Component {
                     />
                 </div>
 
+                <Modal
+                    title={isEdit ? "编辑商机" : "新增商机"}
+                    visible={formVisible}
+                    onOk={this.formHandleOk.bind(this)}
+                    onCancel={this.formHandleCancel.bind(this)}
+                    width="50%"
+                >
+                    <div className="model-height">
+                        <CardForm
+                            wrappedComponentRef={inst => (this.formRef = inst)}
+                            enumData={enumData}
+                        />
+                    </div>
+                </Modal>
+
                 {this.state.hasPanel ? (
-                    <div>
+                    
                         <div
                             className={
                                 viewFormVisible
@@ -272,24 +287,8 @@ class List extends React.Component {
                                 ref="panelHeight"
                             />
                         </div>
-                        <div
-                            className={
-                                editFormVisible
-                                    ? "viewPanel viewShow"
-                                    : "viewPanelFalse viewHide"
-                            }
-                        >
-                            <EditPanel
-                                ref="editPanel"
-                                isEdit={this.state.isEdit}
-                                data={viewData}
-                                btnNew={this.btnNew.bind(this)}
-                                btnEdit={this.btnEdit.bind(this)}
-                                btnClosePanel={this.btnClosePanel.bind(this)}
-                                btnSave={this.formHandleOk.bind(this)}
-                            />
-                        </div>
-                    </div>
+                
+                    
                 ) : null}
             </div>
         );

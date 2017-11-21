@@ -132,13 +132,11 @@ const selectRow = (rows, visible) => {
     }
 }
 
-const showNewForm = (visible) => {
+const showForm = (editData,visible) => {
     return fetchData('OPPORTUNITY_LIST_SHOWNEWFORM', { visible });
 }
 
-const showEditForm = (visible) => {
-    return fetchData('OPPORTUNITY_LIST_SHOWEDITFORM', { visible });
-}
+
 
 const showViewForm = (visible, record) => {
     return (dispatch) => {
@@ -180,11 +178,10 @@ export {
     getListData,
     changeVisible,
     selectRow,
-    showNewForm,
-    showEditForm,
     listAddSave,
     listEditSave,
     showViewForm,
     closePanel,
-    deleteData
+    deleteData,
+    showForm
 }
