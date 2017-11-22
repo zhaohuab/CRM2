@@ -18,7 +18,7 @@ function pageEdit(page,item) {
 	
 	let {data} = page;
 	for(let i=0,len=data.length;i<len;i++) {
-		if(data[i].code == item.code) {
+		if(data[i].id == item.id) {
 			data[i] = item;
 			break;
 		}

@@ -1,8 +1,7 @@
 import reqwest from 'utils/reqwest'
 import { message} from 'antd';
 
-import { cum as url } from 'api';
-
+import { cum as url,doc } from 'api';
 const fetchData = (type, payload) => {
         return {
             type,
@@ -54,7 +53,7 @@ const getListData = (pagination,searchMap) => {
                 }
             }
         },(data) => {
-            dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data)}));
+            dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(data),pagination}));
         })
 	   
 	}
@@ -111,20 +110,18 @@ const changeVisible = (visible)=>{
     }
 }
 
-const selectRow=(rows,visible)=>{
+const selectRow=(selectedRows,selectedRowKeys,toolVisible)=>{
     return{
         type:'CUSTOMER_LIST_SELECTROW',
-        payload:{rows:rows,toolVisible:visible}
+        payload:{selectedRows,selectedRowKeys,toolVisible:toolVisible}
     }
 }
 
-const showForm=(visible)=>{
-    return fetchData('CUSTOMER_LIST_SHOWFORM', {visible});
+const showForm=(visible,isEdit)=>{
+    return fetchData('CUSTOMER_LIST_SHOWFORM', {visible,isEdit});
 }
 
-const showFormEdit=(visible)=>{
-    return fetchData('CUSTOMER_LIST_SHOWFORM', {visible});
-}
+
 const showViewForm=(visible,record)=>{
     return fetchData('CUSTOMER_LIST_SHOWVIEWFORM',{visible,record})
 }
@@ -138,7 +135,7 @@ const deleteData=(ids,searchMap,pagination)=>{
                 param: {
                     ids:ids.join(","),
                     ...pagination,
-                    searchMap:searchMap
+                    searchMap:transData(searchMap)
                 },
             }
         }
@@ -157,28 +154,41 @@ const setEnableState=(ids,state,page,searchMap)=>{
 				param: {
 					ids: ids.join(","),
 					...page,
-                    searchMap:searchMap,
+                    searchMap:transData(searchMap),
                     enableState: String(state),
 				},
 			}
 		},(dataResult) => {
-                const listData=dataResult;
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data.data}));
+            dispatch(fetchData('CUSTOMER_LIST_GETDATA', {data: appendAddress(dataResult),pagination:page}));
         })
 	}
 }
 
+
+const getEnumData = () =>{
+    return (dispatch)=>{
+        reqwest({
+            url:url.doc,
+            method:"get",
+            data:{
+                param: {ids:"1,2,3,4,5,6"}
+            }
+        },(data)=>{
+            dispatch(fetchData('CUSTOMER_LIST_GETENUMDATA', {enumData:data.enumData}));
+        })
+    }
+}
 //输出 type 与 方法
 export {
     getListData,
     changeVisible,
     selectRow,
     showForm,
-    showFormEdit,
     listAddSave,
     listEditSave,
     showViewForm,
     closePanel,
     deleteData,
-    setEnableState
+    setEnableState,
+    getEnumData
 }
