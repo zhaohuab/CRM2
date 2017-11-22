@@ -5,10 +5,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Table, Modal, Button, Icon, Checkbox  } from 'antd';
-import { Input, Radio, Popconfirm, Form, Card, Col, Row } from 'antd';
+import { Input, Radio, Popconfirm, Form, Col, Row } from 'antd';
 import FormCard from './listForm.jsx';
+import Cards from './card.jsx';
 import HeadLabel from './HeadLabel.jsx';
-import Department from 'components/refs/departments'
+
 import './index.less'
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
@@ -30,7 +31,6 @@ class List extends React.Component {
         title: '业务类型',
         dataIndex:'mtBiztypeName',
       },
-      
       {
         title: '简介',
         dataIndex: 'remark',
@@ -44,64 +44,31 @@ class List extends React.Component {
         dataIndex: 'sysCreatedTime',
       }    
     ]
-    this.data = [
-      {
-        mtObjName:'对象1',
-        mtBiztypeName:'类型1',
-        remark:'简介1',
-        userName:'楠楠',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象2',
-        mtBiztypeName:'类型2',
-        remark:'简介2',
-        userName:'楠楠',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象3',
-        mtBiztypeName:'类型3',
-        remark:'简介3',
-        userName:'楠楠',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象4',
-        mtBiztypeName:'类型4',
-        remark:'简介4',
-        userName:'楠楠',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象5',
-        mtBiztypeName:'类型5',
-        remark:'简介5',
-        userName:'婷婷',
-        sysCreatedTime:'2017:11:20'
-      },{
-        mtObjName:'对象6',
-        mtBiztypeName:'类型6',
-        remark:'简介6',
-        userName:'婷婷',
-        sysCreatedTime:'2017:11:20'
-      }   
-    ]
+
     this.state = {
-      headLabel: false,
-      selectedRowKeys: [],
       isEdit: false,
       enable: 1,
+      headLabel:false,
     }
   }
 
-  onAdd() {//添加按钮
+  onAdd=()=> {//添加按钮
     this.setState({ isEdit: false });
     this.props.action.showForm(true, {});
   }
-  onDelete = () => {//删除按钮
-    let { pagination, searchMap } = this.state;
-    this.props.action.onDelete(this.state.selectedRowKeys, { pagination, searchMap });
-    this.setState({ headLabel: false, selectedRowKeys: [] });
+
+  singleDelete = (id) => {//删除按钮
+    let arr = [];
+    arr.push(id);
+    this.props.action.onDelete(arr);
   }
-  onEdit = () => { //编辑按钮
-    this.setState({ isEdit: true });
+   onDelete = () => {
+     let { selectedRowKeys } = this.state;
+     //debugger;
+     this.props.action.onDelete(selectedRowKeys);
+     this.setState({selectedRowKeys:[], headLabel:false})
+   }
+  /*
     let rowKey = this.state.selectedRowKeys[0];
     let rowData = {};
     let page = this.props.$$state.get("data").toJS();
@@ -111,39 +78,47 @@ class List extends React.Component {
         break;
       }
     }
-    this.props.action.showForm(true, rowData);
+   */
+  onEdit = (item) => { //编辑按钮
+    this.setState({ isEdit: true });
+    this.props.action.showForm(true, item);
   }
-  onClose() {//弹出框的取消和关闭按钮
+  onClose=()=> {//弹出框的取消和关闭按钮
     this.props.action.showForm(false, {});
   }
-  onEnable(enable) { //停启用
+  onEnable=(enable)=> { //停启用
     return (enable) => {
       let { pagination, searchMap } = this.state;
       this.setState({ headLabel: false });
       this.props.action.onEnable(this.state.selectedRowKeys, enable, { pagination, searchMap });
     }
   }
+
   onSave() { //确认
     let form = this.formRef.props.form;
+    let data = form.getFieldsValue();
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
       }
     });
     if (this.state.isEdit) {
-      this.props.action.onSave4Edit(form.getFieldsValue());
+      this.props.action.onSave4Edit(data);
     }
     else {
-      this.props.action.onSave4Add(form.getFieldsValue());
+      this.props.action.onSave4Add(data);
     }
     
   }
-  onSelectChange = (selectedRowKeys) => { //选中列表数据触发
-    let state = {//如果这个state中只有一个参数的话，是否setState的时候就只会改变全局state中的同名参数，而不是把全局state覆盖掉了？
-      selectedRowKeys: selectedRowKeys
-    }
-    state.headLabel = selectedRowKeys.length ? true : false;
-    this.setState(state);
+  onSelectChange = (id,e) => { //选中列表数据触发
+    let { selectedRowKeys, headLabel } =this.state;
+     if (e.target.checked){
+       selectedRowKeys.push(id)
+     }else{
+       selectedRowKeys=selectedRowKeys.filter(item => item.id==id)
+     }
+    headLabel = selectedRowKeys.length ? true : false;
+    this.setState({selectedRowKeys:selectedRowKeys,headLabel:headLabel});
   }
   onBack = () => { //列表头操作中的返回按钮
     this.setState({ headLabel: false });
@@ -156,65 +131,41 @@ class List extends React.Component {
     this.props.action.getListData({ pagination, searchMap });
     this.setState({ enable, selectedRowKeys: [], searchMap });
   }
-  showTotal (total) { //显示条数
-    return `共 ${total} 条`;
+  singleOPerate=()=>{//单个卡片删除编辑显隐
+    //debugger;
+     let operate1 = this.state.operate;
+     operate1 = !operate1;
+     this.setState({operate:operate1})
   }
-  onPageChange (page, pageSize) { //页面跳转
-    let { pagination, searchMap } = this.state;
-    //可能有问题
-    pagination = { page: page, pageSize: pageSize };
-    this.setState({ pagination })
-    this.props.action.getListData({ pagination, searchMap });
-  }
-  onPageSizeChange (current, pageSize) { //页面条数
-    let { pagination, searchMap } = this.state;
-    pagination = { page: pagination.page, pageSize: pageSize };
-    this.setState({ pagination })
-    this.props.action.getListData({ pagination, searchMap });
-    console.info(`pageSize:${pageSize}`)
-  }
-
-  renderCardList=(data)=>{
-    
+   renderCardList=(data)=>{//循环生成卡片
     if(data){
-      return data.map(item => (
-        <Col span={8}>
-          <Card title="任务卡" extra={<a href="#">。。。</a>} bordered={false} style={{position:'relative'}} >
-            <div>
-              <Checkbox style={{position:'absoulte',left:'-20px',top:'-57px'}} />
-              <p><span>业务对象：</span>{item.mtObjId}</p>
-              <p><span>业务类型：</span>{item.mtBiztypeName}</p>
-              <p><span>简介：</span>{item.remark}</p>
-              <p><span>创建人：</span>{item.userName}</p>
-              <p><span>创建时间：</span>2017/11/20</p>
-            </div>
-          </Card>
+      return data.map(item => {
+        return (
+        <Col span={6}>
+          <Cards dataSource={item}/>
         </Col>
-      )) 
+      )}) 
        
     }   
-  }
-  componentDidMount() {
+  } 
+  componentWillMount() {
     this.props.action.getListData({});
   }
 
-  render() {
+  render() {   //只能通过this.props和this.state访问数据;不能在render方法中任何位置修改state状态或者是DOM输出；
     let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
-    let { headLabel, selectedRowKeys } = this.state; 
-    let rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
     let editData = this.props.$$state.get("editData").toJS();
+    let selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
+    let headLabel =  selectedRowKeys.length ? true : false;
     const WrapCard = Form.create()(FormCard);
     return (
-      <div className = 'user-warpper'>
+      <div className = 'user-warpper taskcard-user-warpper'>
         {
           headLabel ? 
           <div className='head_edit'>
             <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
-              { this.state.selectedRowKeys.length === 1 ?
+              { selectedRowKeys.length === 1 ?
                 <Button className="default_button" onClick={this.onEdit}><i className='iconfont icon-bianji'></i>编辑</Button> : ''}
               <Popconfirm placement="bottom"  title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
                 <Button className="default_button" ><i className='iconfont icon-shanchu'></i>删除</Button>
@@ -251,18 +202,18 @@ class List extends React.Component {
                 <Button type="primary" className="button_add" onClick={this.onAdd.bind(this) }><Icon type="plus" />新增</Button>
               </div>
           </div>
-        }
-          <Row gutter={16}>
-            {this.renderCardList(page.data)}
-          </Row>
+        } 
         
-     
+          <Row gutter={16}>
+           {this.renderCardList(page.data)}
+          </Row>
+              
         <Modal
-          title="新增任务卡"
-          visible={visible}
-          onOk={this.onSave.bind(this)}
-          onCancel={this.onClose.bind(this)}
-          width={500}
+          title = "新增任务卡"
+          visible = { visible }
+          onOk = { this.onSave.bind(this) }
+          onCancel = { this.onClose.bind(this) }
+          width = { 500 }
         >
           <div className='model-height'>
             <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
@@ -299,3 +250,17 @@ export default  connect( mapStateToProps, mapDispatchToProps)(List);
                 return  <p>{item.title}:{data[index][item.dataIndex]}</p>
               })
             } */ 
+
+
+
+
+
+
+            /* 
+                <a href="javascript:;" onClick={this.singleOPerate.bind(this)}>操作{
+                    this.state.operate ? 
+                    <div>
+                    <a href='javascript:;' onClick= {this.singleDelete.bind(this,item.id)}>删除</a>
+                    <a href='javascript:;' onClick = {this.onEdit(this,item)}>编辑</a>
+                    </div>:''
+                }</a>*/

@@ -2,7 +2,7 @@ import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { taskcard as url } from 'api';
 
-const showForm = (flag, editData = {}, index) => {//index的作用？
+const showForm = (flag, editData = {}) => {
 	return (dispatch) => {
 		dispatch(fetchData('TASKCARD_LIST_SHOWFORM', { visible: flag, editData }));
 	}
@@ -17,7 +17,6 @@ const getListData = (params) => { //获取列表
 				param: {}
 			},
 		},result => {
-			debugger;
 			dispatch(fetchData('TASKCARD_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
@@ -37,7 +36,7 @@ const onSave4Add = (data, index) => { //增加
 				param: data
 			}
 		}, result => {
-			dispatch(fetchData('TASKCARD_CARD_SAVEADD', { ...result, visible: false }));
+			dispatch(fetchData('TASKCARD_CARD_SAVEADD', {result:result, visible: false }));
 		})
 	}
 }
@@ -51,12 +50,12 @@ const onSave4Edit = (data, index) => { //修改
 				param: data
 			}
 		}, result => {
-			dispatch(fetchData('TASKCARD_CARD_SAVEEDIT', { ...result, visible: false }));
+			dispatch(fetchData('TASKCARD_CARD_SAVEEDIT', { result:result, visible: false }));
 		})
 	}
 }
 
-const onDelete = (rowKeys, params) => { //删除
+const onDelete = (rowKeys) => { //删除
 	return (dispatch) => {
 		reqwest({
 			url: url.taskcardBatch,
@@ -64,8 +63,6 @@ const onDelete = (rowKeys, params) => { //删除
 			data: {
 				param: {
 					ids: rowKeys.join(","),
-					...params.pagination,
-					searchMap: params.searchMap,
 				},
 			}
 		}, result => {
@@ -93,7 +90,11 @@ const onEnable = (rowKeys, enable, params) => {
 	}
 }
 
-
+const onSelected = (rowKeys) =>{
+    return (dispatch) => {
+		dispatch(fetchData('TASKCARD_HEADER_SHOW', { rowKeys }));
+	}
+}
 
 
 //输出 type 与 方法
@@ -104,4 +105,5 @@ export {
 	onSave4Add,
 	onSave4Edit,
 	onEnable,
+	onSelected
 }

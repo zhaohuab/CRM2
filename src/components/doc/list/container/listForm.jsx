@@ -94,7 +94,6 @@ let WrapedCard = Form.create({
       description: { value: props.editData.description }
     };
   },
-
 })(Child)
 
 function mapStateToProps(state, ownProps) {

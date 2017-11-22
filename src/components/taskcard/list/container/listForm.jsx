@@ -6,6 +6,7 @@ import Enum from 'utils/components/enums'
 //import RadioGroup from 'utils/components/radios'
 const RadioGroup = Radio.Group
 const FormItem = Form.Item;
+const Option = Select.Option;
 const { TextArea } = Input;
 class Card extends React.Component {
     constructor(props) {
@@ -46,14 +47,19 @@ class Card extends React.Component {
         return (
         <Form >
           
-            <FormItem  
+          <FormItem  
                 label = '业务对象'
                 { ...formItemLayout } 
             >              
                 { getFieldDecorator('mtObjId', {
                     rules: [{ required: true, message: '请选择业务对象!' }],
                     })(
-                        <Input placeholder = '请输入...' />
+                        <Select style = {{ width: 120 }} placeholder = '请选择...'>
+                            <Option value = { 1 }>联系人</Option>
+                            <Option value = { 2 }>线索</Option>
+                            <Option value = { 3 }>商机</Option>
+                            <Option value = { 4 }>竞品采集</Option>
+                        </Select>
                       )}
             </FormItem>
             <FormItem  
@@ -64,7 +70,13 @@ class Card extends React.Component {
                    // initialValue:{ mtBiztypeId },
                     rules: [{ required: true, message: '请选择业务类型!' }],
                     })(
-                        <Input placeholder = '请输入...' />
+                        <Select style = {{ width: 120 }} placeholder = '请选择...'>
+                            <Option value = { 1 }>重点联系人</Option>
+                            <Option value = { 2 }>线索</Option>
+                            <Option value = { 3 }>普通商机</Option>
+                            <Option value = { 4 }>重点商机</Option>
+                            <Option value = { 5 }>竞品采集</Option>
+                        </Select>
                       )}
             </FormItem>
               <FormItem
