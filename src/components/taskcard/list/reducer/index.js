@@ -5,11 +5,12 @@ let $$initialState = {
 	editData: {},
 	data: [],
 	visible: false,
-	selectedRowKeys: [],
+	isEdit: false,
 };
-
 function pageAdd(page, item) {
+	page.total+=1;
 	page.data.unshift(item)
+	page.page = Math.ceil(page.total / page.pageSize);
 	return page;
 }
 function pageEdit(page, item) {
@@ -37,23 +38,22 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		case 'TASKCARD_LIST_SHOWFORM':
 			return $$state.merge({
+				isEdit: action.content.isEdit,
 				visible: action.content.visible,
 				editData: action.content.editData,
 			})
 		case 'TASKCARD_CARD_SAVEADD': 
 			return $$state.merge({
+				isEdit: action.content.isEdit,
 				visible: action.content.visible,
 				data: pageAdd($$state.get("data").toJS(),action.content),
 			})
 		case 'TASKCARD_CARD_SAVEEDIT': 
 			return $$state.merge({
+				isEdit: action.content.isEdit,
 				visible: action.content.visible,
 				data: pageEdit($$state.get("data").toJS(),action.content),
-			})
-		case 'TASKCARD_HEADER_SHOW': 
-			return $$state.merge({
-				selectedRowKeys:action.content.rowKeys,
-			})			
+			})		
 	    default: 
 	        return $$state;
 	}

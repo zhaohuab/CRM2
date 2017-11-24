@@ -14,7 +14,8 @@ class Card extends React.Component {
         const value = this.props.value || {};
         this.state = {
           mtObjId:'',
-          mtBiztypeId:''
+          mtBiztypeId:'',
+          value:1
     };
     }
    
@@ -86,7 +87,7 @@ class Card extends React.Component {
                 { getFieldDecorator('enableState', {
                     rules: [{ required: true, message: '请输入名称' }],
                 })(
-                       <RadioGroup value={this.state.value}>
+                       <RadioGroup value={this.state.value} defaultValue={1}>
                          <Radio value={1}>启用</Radio>
                          <Radio value={2}>停用</Radio>
                        </RadioGroup>

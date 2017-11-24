@@ -48,7 +48,7 @@ class FileDetail extends React.Component {
           <Option value = { 2 }>{ getLang.call(this, lang, 'ty') }</Option>
         </Select>)
     },
-     {
+    {
       title: 'add',
       width: '11%',
       dataIndex: 'add',

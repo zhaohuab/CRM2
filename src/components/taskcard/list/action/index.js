@@ -2,9 +2,9 @@ import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { taskcard as url } from 'api';
 
-const showForm = (flag, editData = {}) => {
+const showForm = (flag, editData = {}, isEdit = false) => {
 	return (dispatch) => {
-		dispatch(fetchData('TASKCARD_LIST_SHOWFORM', { visible: flag, editData }));
+		dispatch(fetchData('TASKCARD_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
 	}
 }
 
@@ -36,7 +36,7 @@ const onSave4Add = (data, index) => { //增加
 				param: data
 			}
 		}, result => {
-			dispatch(fetchData('TASKCARD_CARD_SAVEADD', {result:result, visible: false }));
+			dispatch(fetchData('TASKCARD_CARD_SAVEADD', {...result, visible: false, isEdit: false }));
 		})
 	}
 }
@@ -50,7 +50,7 @@ const onSave4Edit = (data, index) => { //修改
 				param: data
 			}
 		}, result => {
-			dispatch(fetchData('TASKCARD_CARD_SAVEEDIT', { result:result, visible: false }));
+			dispatch(fetchData('TASKCARD_CARD_SAVEEDIT', { ...result, visible: false, isEdit: false }));
 		})
 	}
 }
@@ -90,11 +90,6 @@ const onEnable = (rowKeys, enable, params) => {
 	}
 }
 
-const onSelected = (rowKeys) =>{
-    return (dispatch) => {
-		dispatch(fetchData('TASKCARD_HEADER_SHOW', { rowKeys }));
-	}
-}
 
 
 //输出 type 与 方法
@@ -105,5 +100,4 @@ export {
 	onSave4Add,
 	onSave4Edit,
 	onEnable,
-	onSelected
 }
