@@ -1,7 +1,9 @@
 import { DatePicker, Form, Input, Select, InputNumber, Row, Col } from 'antd';
 import Department from 'components/refs/departments'
-
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import moment from "moment";
+import * as Actions from "../action";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -11,12 +13,10 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        if (this.props.isEdit) {
-            //装箱过程
-            this.props.data.createdTime = moment(this.props.data.createdTime);
-            this.props.data.expectSignTime = moment(this.props.data.expectSignTime);
-            this.props.form.setFieldsValue(this.props.data);
-        }
+        let data = this.props.$$state.get("editData").toJS();
+        data.createdTime=moment(data.createdTime);
+        data.expectSignTime=moment(data.expectSignTime);
+        this.props.form.setFieldsValue(data);
     }
     componentWillMount() {
 
@@ -185,4 +185,18 @@ class Card extends React.Component {
     }
 }
 
-export default Card;
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.opportunityList,
+        $$stateCommon: state.componentReducer
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

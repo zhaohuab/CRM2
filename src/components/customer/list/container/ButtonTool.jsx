@@ -101,6 +101,7 @@ class ToolForm extends React.Component {
 
     render() {
         let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
+        debugger
         return (
             <Row className="header-warpper">
                 {selectedRowKeys && selectedRowKeys.length >= 1 ? (

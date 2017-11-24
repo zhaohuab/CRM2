@@ -88,6 +88,11 @@ const oppdimension = {
     oppdimension: baseDir + 'sprc/oppdimensions',
     doc:baseDir + "sprc/oppdimensions/docs",
 }
+
+const oppflow = {
+    oppflow: baseDir + 'sprc/oppflows',
+    doc:baseDir + "sprc/oppflows/docs",
+}
 export {
     login,
     menu,
@@ -109,5 +114,6 @@ export {
     visitRouter,
     visitrules,
     oppstage,
-    oppdimension
+    oppdimension,
+    oppflow
 }

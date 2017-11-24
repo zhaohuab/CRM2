@@ -44,8 +44,10 @@ import visitroute from "components/visitroute/list/reducer/index.js";
 import visitRules from '../components/visitrules/reducer'
 //商机阶段
 import oppstagelist from 'components/oppstage/list/reducer'
-
+//商机维度
 import oppdimensionlist from 'components/oppdimension/list/reducer';
+//商机流程
+import oppflowList from 'components/oppflow/list/reducer';
 
 let rootReducer = combineReducers({
     login,
@@ -70,7 +72,8 @@ let rootReducer = combineReducers({
     visitroute,
     visitRules,
     oppstagelist,
-    oppdimensionlist
+    oppdimensionlist,
+    oppflowList
 });
 
 export { rootReducer };
