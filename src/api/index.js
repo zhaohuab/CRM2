@@ -81,6 +81,10 @@ const visitrules = {
 const oppstage = {
     oppstage: baseDir + 'sprc/oppstages',
 }
+
+const prdattr = {
+    prdattr: baseDir + 'base/attrs',
+}
 export {
     login,
     menu,
@@ -102,4 +106,5 @@ export {
     visitRouter,
     visitrules,
     oppstage,
+    prdattr,
 }
