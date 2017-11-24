@@ -16,27 +16,47 @@ import {
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 const confirm = Modal.confirm;
-import "./index.less";
+import './index.less'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Actions from "../action/index.js";
 
-export default class ListTree extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            edit: ""
-        };
+class ListTree extends Component {
+    constructor(props){
+        super(props)
+        this.state={
+            edit:''
+        }
     }
+  
+
     onSelect(selectedKeys, obj) {
-        this.props.onSelect(selectedKeys, obj);
+        if (selectedKeys.length) {
+            this.props.action.listTreeChange(selectedKeys[0]);
+        }
     }
 
-    edit(item, e) {
-        e.stopPropagation();
-        this.props.edit(item.id);
+    edit(item,e){
+        e.stopPropagation()
+        this.props.edit(item.id)
+
+        this.setState({ isEdit: true });
+        let rowData = {};
+        let data = this.props.$$state.get("listData").toJS().data;
+        for (let i = 0, len = data.length; i < len; i++) {
+            if (rowKey == data[i].id) {
+                rowData = data[i];
+                break;
+            }
+        }
+        this.props.action.showForm(true, rowData);
     }
 
-    add(item, e) {
-        e.stopPropagation();
-        this.props.add(item);
+    add(item,e){
+        e.stopPropagation()
+        this.setState({ isEdit: false });
+        let rowData = { fatherorgId: item.id, fatherorgName: item.name };
+        this.props.action.showForm(true, rowData);
     }
 
     delete(item, e) {
@@ -44,18 +64,20 @@ export default class ListTree extends Component {
 
         let that = this;
         confirm({
-            title: "确定要删除吗?",
-            content: "此操作不可逆",
-            okText: "是",
-            okType: "danger",
-            cancelText: "否",
-            onOk() {
-                that.props.delete(item);
-            },
-            onCancel() {
-                console.log("Cancel");
-            }
-        });
+        title: '确定要删除吗?',
+        content: '此操作不可逆',
+        okText: '是',
+        okType: 'danger',
+        cancelText: '否',
+        onOk() {
+            const record = [];
+            record.push(item);
+            that.props.action.listdel(record, item.id);
+        },
+        onCancel() {
+        console.log('Cancel');
+        },
+     });
     }
     showEdit(item) {
         this.setState({
@@ -102,28 +124,23 @@ export default class ListTree extends Component {
             </span>
         );
     }
-    render() {
-        const loop = data =>
-            data.map(item => {
-                if (item.children && item.children.length) {
-                    return (
-                        <TreeNode
-                            key={item.id}
-                            title={this.getCustomTitle(item)}
-                        >
-                            {loop(item.children)}
-                        </TreeNode>
-                    );
-                }
-                return (
-                    <TreeNode key={item.id} title={this.getCustomTitle(item)} />
-                );
-            });
-        let { data } = this.props;
-        return (
-            <div className="tree-icon">
-                {data.length ? (
-                    <div>
+    render(){
+        const loop = data => data.map((item) => {
+            if (item.children && item.children.length) {
+              return (
+                 <TreeNode key={item.id} title={this.getCustomTitle(item)}>
+                    {loop(item.children)}
+                 </TreeNode>
+              );
+            }
+            return <TreeNode key={item.id} title={this.getCustomTitle(item) }/>;
+        });
+        let data = this.props.$$state.get("treeData").toJS();
+        return(
+            <div>
+                {
+                    data.length? 
+                    (<div>
                         <div className="org-tree-main">
                             <Tree
                                 showLine
@@ -141,3 +158,16 @@ export default class ListTree extends Component {
         );
     }
 }
+
+export default connect(
+    state => {
+        return {
+            $$state: state.orgReducers
+        };
+    },
+    dispatch => {
+        return {
+            action: bindActionCreators(Actions, dispatch)
+        };
+    }
+)(ListTree);

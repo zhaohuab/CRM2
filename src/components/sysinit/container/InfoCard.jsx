@@ -145,8 +145,7 @@ function mapDispatchToProps(dispatch) {
 
 const WrapCard = Form.create({
     onFieldsChange(props, changedFields) {
-    
-    props.onChange(changedFields);
+        props.onChange(changedFields);
     },
     mapPropsToFields(props) {
         let data = props.dataSource;

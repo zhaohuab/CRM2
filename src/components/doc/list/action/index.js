@@ -45,7 +45,7 @@ const showFormEdit = (flag, editData = {}) => {
 					cur.key=cur.id+'';
 				}
 			}
-			return dispatch(fetchData('DOC_LIST_SHOWFORM_EDIT', { visible: flag, editData:result, dataSource: result.baseDocDetailList,name:false, description:false }));
+			return dispatch(fetchData('DOC_LIST_SHOWFORM_EDIT', { visible: flag, editData:result, dataSource: result.baseDocDetailList, isDefault:result.isDefault }));
 		})
       
     }	
@@ -136,13 +136,6 @@ const onEnable = (rowKeys, enable, params) => {
 	}
 }
 
-const empoty=(name=false,description=false)=>{
-	debugger;
-	return (dispatch)=>{
-		dispatch(fetchData('DOC_FORM_EMPOTY',{ name, description }))
-	}
-}
-
 //=============以下是弹框中的方法
 //表单中的方法
 const valueChange=(data)=>{
@@ -167,7 +160,6 @@ const changeEnabe = (data) => {
 }
 
 const storage = (data) => {//储存改动过的数据
-	//debugger;
 	return dispatch => {
 		dispatch(fetchData('DOC_DETAIL_STORAGE',{storage:data}))
 	}
@@ -187,7 +179,6 @@ const detailDelete = (data) =>{
 	}
 }
  const detailAdd = (data) => {
-	 //debugger;
 	return dispatch => {
 		dispatch(fetchData('DOC_DETAIL_ADD',{dataSource:data}))
 	}
@@ -201,7 +192,6 @@ export {
 	onEnable,
 	showFormAdd,
 	showFormEdit,
-	empoty,
 	onBlur,
 	changeEnabe,
 	storage,

@@ -50,7 +50,7 @@ class Child extends React.Component {
                             )}
                             </Col>
                             <Col span={4}>
-                              {isDefault==1?<span>系统预制档案</span>:<span>非预制档案</span>}                   
+                              {isDefault==1?<span style={{fontSize:'10px'}}>系统预制档案</span>:''}                   
                             </Col>
                          </Row>
                     </FormItem>
@@ -58,7 +58,8 @@ class Child extends React.Component {
                     <FormItem
                         label="档案描述"
                         {...formItemLayout}
-                    >
+                    >  <Row gutter={10}>
+                          <Col span={20}>
                         {getFieldDecorator('description', {
                             rules: [{
                                 required: true, message: '请输入描述',
@@ -66,6 +67,10 @@ class Child extends React.Component {
                         })(
                             <Input type='textarea'placeholder='请输入...'/>
                             )}
+                               </Col>
+                            <Col span={4}>                  
+                            </Col>
+                         </Row>
                     </FormItem>
                     <FormItem
                         label="档案明细"
@@ -79,43 +84,20 @@ class Child extends React.Component {
 
 let WrapedCard = Form.create({
  onFieldsChange(props, changedFields) {//当 Form.Item 子节点的值发生改变时触发，可以把对应的值转存到 Redux store  ;
+    let data = props.editData;
     for(let key in changedFields){
-        props[key]=changedFields[key].value
+        data[key]=changedFields[key].value
     }
-    props.onChange(props);
+    props.onChange(data);
   },
   mapPropsToFields(props) {//把redux中的数据读出
     return {
-      ...props
+      name:{value: props.editData.name},
+      description:{value: props.editData.description}
     };
   },
- /*  onValuesChange(props, values) {//任一表单域的值发生改变时的回调
-    console.log(values);
-  }, */
-})(Child)
 
-class Card extends React.Component {
-  constructor(props){
-    super(props)
-  }
-  handleFormChange = (changedFields) => {
-    this.props.action.valueChange(changedFields)
-  }
-  render() {  
-    const editData = this.props.$$state.get('editData').toJS();
-    let valueObj={};
-    valueObj.name={}
-    valueObj.description={};
-    valueObj.name.value=editData.name;
-    valueObj.description.value=editData.description;
-    /* debugger; */
-    return (
-      <div>
-        <WrapedCard { ...editData } onChange={this.handleFormChange} />
-      </div>
-    );
-  }
-}
+})(Child)
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -129,7 +111,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default  connect( mapStateToProps, mapDispatchToProps)(Card);
+export default  connect( mapStateToProps, mapDispatchToProps)(WrapedCard);
 
 /* 
 最大的问题：怎么一次性获取到所有formItem的值;getFieldsValue()这个方法在哪里执行？？？

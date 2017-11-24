@@ -87,7 +87,7 @@ export function listchange(data){
     return(dispatch)=>{
         let id=data.id
         request({
-            url: `${url.org}${id}`,
+            url: `${url.org}/${id}`,
             method:'put',
             data:{
                 param: transData(data)
@@ -166,7 +166,7 @@ export function setEnablestate(treeId,searchFilter,data,state){
     }
     return (dispatch) => {
 		request({
-			url: url.org+'enable',
+			url: url.org+'/enable',
 			method: "PUT",
 			data: {
 				param: {
@@ -221,12 +221,10 @@ export function listTreeChange(id){
 }
 
 
-//点击操作按钮方法
-
-export function buttonEdit(rows){
-    return{
-        type:'ORG_LIST_SHOWBUTTONSTART',
-        rows
+export function selectData(data){
+    return (dispatch)=>{
+        dispatch(fetchData('ORG_LIST_SELECTDATA',data))
     }
 }
+
 
