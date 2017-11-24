@@ -79,7 +79,7 @@ class ToolForm extends React.Component {
     }
     //点击新建按钮
     btnNew() {
-        this.props.action.showForm(true, false);
+        this.props.action.deletePanel(true);
     }
     //上下表单控制显隐
     changeVisible() {

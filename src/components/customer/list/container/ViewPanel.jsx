@@ -135,7 +135,7 @@ class ViewPanel extends React.Component {
                             >
                                 <div>
                                     <Button onClick={this.btnEdit.bind(this)}>
-                                        <i className="iconfont icon-gongshangheshi" />工商认证
+                                        <i className="iconfont icon-gongshangheshi" />工商核实
                                     </Button>
                                 </div>
                                 <div>
@@ -237,7 +237,9 @@ class ViewPanel extends React.Component {
                                                                 span={8}
                                                                 className="custom-info-title"
                                                             >
-                                                                <span>电话:</span>
+                                                                <span>
+                                                                    电话:
+                                                                </span>
                                                             </Col>
                                                             <Col
                                                                 span={16}
@@ -258,7 +260,9 @@ class ViewPanel extends React.Component {
                                                                 span={8}
                                                                 className="custom-info-title"
                                                             >
-                                                                <span>邮箱:</span>
+                                                                <span>
+                                                                    邮箱:
+                                                                </span>
                                                             </Col>
                                                             <Col
                                                                 span={16}
@@ -327,7 +331,9 @@ class ViewPanel extends React.Component {
                                                                 span={8}
                                                                 className="custom-info-title"
                                                             >
-                                                                <span>备注:</span>
+                                                                <span>
+                                                                    备注:
+                                                                </span>
                                                             </Col>
                                                             <Col
                                                                 span={16}
@@ -408,7 +414,9 @@ class ViewPanel extends React.Component {
                                                                 span={16}
                                                                 className="custom-info-content"
                                                             >
-                                                                <span>到的</span>
+                                                                <span>
+                                                                    到的
+                                                                </span>
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -639,7 +647,9 @@ class ViewPanel extends React.Component {
                                         <p>
                                             <span className="timeline-import">
                                                 winni
-                                            </span>创建了任务<span className="timeline-import">AAA</span>
+                                            </span>创建了任务<span className="timeline-import">
+                                                AAA
+                                            </span>
                                         </p>
                                         <p className="timeline-time">
                                             2017-08-18 14:30
@@ -649,7 +659,9 @@ class ViewPanel extends React.Component {
                                         <p>
                                             <span className="timeline-import">
                                                 winni
-                                            </span>创建了任务<span className="timeline-import">AAA</span>
+                                            </span>创建了任务<span className="timeline-import">
+                                                AAA
+                                            </span>
                                         </p>
                                         <p className="timeline-time">
                                             2017-08-18 14:30
@@ -659,7 +671,9 @@ class ViewPanel extends React.Component {
                                         <p>
                                             <span className="timeline-import">
                                                 winni
-                                            </span>创建了任务<span className="timeline-import">AAA</span>
+                                            </span>创建了任务<span className="timeline-import">
+                                                AAA
+                                            </span>
                                         </p>
                                         <p className="timeline-time">
                                             2017-08-18 14:30
@@ -669,7 +683,9 @@ class ViewPanel extends React.Component {
                                         <p>
                                             <span className="timeline-import">
                                                 winni
-                                            </span>创建了任务<span className="timeline-import">AAA</span>
+                                            </span>创建了任务<span className="timeline-import">
+                                                AAA
+                                            </span>
                                         </p>
                                         <p className="timeline-time">
                                             2017-08-18 14:30

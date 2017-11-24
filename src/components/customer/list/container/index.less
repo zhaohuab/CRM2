@@ -53,13 +53,13 @@
             height: 28px;
             color: #666;
         }
-        ::-webkit-input-placeholder {
+         ::-webkit-input-placeholder {
             color: #666;
         }
-        :-moz-placeholder {
+         :-moz-placeholder {
             color: #666;
         }
-        :-ms-input-placeholde {
+         :-ms-input-placeholde {
             color: #666;
         }
         input-placeholde {
@@ -164,7 +164,7 @@
                         flex-wrap: wrap;
                         margin-left: 10px;
                     }
-                    .main-left-customer > div {
+                    .main-left-customer>div {
                         cursor: pointer;
                         padding-right: 10px;
                         box-sizing: border-box;
@@ -206,7 +206,7 @@
                 }
             }
         }
-        .view-warrper-main > div {
+        .view-warrper-main>div {
             display: flex;
             height: 100%;
         }
@@ -300,6 +300,44 @@
     }
 }
 
+
+/*最外层在加个样式，在最外层*/
+
+.icbc-btn {
+    color: #3ca4fb;
+    .iconfont {
+        font-size: 12px;
+        margin-right: 0;
+        color: #3ca4fb;
+    }
+}
+
+.icbc-item {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eeeeee;
+    cursor: pointer;
+}
+
+.icbc-item:last-child {
+    border-bottom: none;
+}
+
+.icbc-item:nth-child(even) {
+    background: #f6faff;
+}
+
+.icbc-item-choice {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #eeeeee;
+    cursor: pointer;
+    background: #3ca4fb;
+    color: white
+}
+
 .industry-main {
     width: 300px;
     border-radius: 5px;
@@ -338,5 +376,35 @@
             height: 280px;
             overflow: auto;
         }
+        .inner {
+            width: 100%;
+            border: 1px solid #eeeeee;
+            height: 280px;
+            overflow: auto;
+        }
     }
+}
+
+.industry-search {
+    width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: white;
+    box-shadow: 0 0 15px rgb(136, 136, 136);
+}
+
+.industry-search-choice {
+    background: red;
+}
+
+.industry-search-list {
+    min-height: 40px;
+    padding: 15px 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+.industry-search-list:last-child {
+    border-bottom: none;
 }

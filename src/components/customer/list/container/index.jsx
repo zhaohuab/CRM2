@@ -89,6 +89,7 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
+        debugger;
         this.formRef.props.form.validateFields((err, values) => {
             debugger;
             if (!err) {
@@ -144,9 +145,13 @@ class List extends React.Component {
             selectedRowKeys,
             formVisitable,
             viewState,
-            viewData
-        } = this.props.$$state.toJS();
+            viewData,
+            icbcVisible,
 
+            icbcSelect,
+            icbcInfo
+        } = this.props.$$state.toJS();
+        console.log(icbcSelect);
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange

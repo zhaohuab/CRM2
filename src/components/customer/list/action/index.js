@@ -14,7 +14,7 @@ function transData(searchMap) {
     if (searchMap == null) {
         return searchMap;
     }
-    debugger;
+
     // searchMap.level =
     //     searchMap.level == undefined ? undefined : searchMap.level;
     // searchMap.saleArea =
@@ -152,7 +152,6 @@ const appendAddress = data => {
 
 //获取数据、基础查询数据、扩展查询数据
 const getListData = (pagination, searchMap) => {
-    debugger;
     return dispatch => {
         dispatch(fetchData("CUSTOMER_LIST_SAVESEARCHMAP", searchMap));
         reqwest(
@@ -167,7 +166,6 @@ const getListData = (pagination, searchMap) => {
                 }
             },
             data => {
-                debugger;
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {
                         data: appendAddress(data),
@@ -246,6 +244,45 @@ const showViewForm = (visible, record) => {
     return fetchData("CUSTOMER_LIST_SHOWVIEWFORM", { visible, record });
 };
 
+//获取通过模糊匹配选择list后，点击list获取的工商信息id
+// const icbcInfo = IcbcId => {
+//     //客户name AJAX请求   获取data数据
+//     return dispatch => {
+//         dispatch({ type: "CUSTOMER_LIST_ICBCINFO", IcbcId });
+//     };
+// };
+
+const customList = [{ id: 1, value: "用友1" }, { id: 2, value: "用友2" }];
+
+//存放工商信息详细数据
+const customerListInfo = (id, visible) => {
+    return dispatch => {
+        //使用id获取详情发Request
+        dispatch({
+            type: "CUSTOMER_LIST_ICBCDETAILINFO",
+            data: customList,
+            visible
+        });
+    };
+};
+
+//控制modal1状态显隐的
+
+const customerModal1Show = visible => {
+    return {
+        type: "CUSTOMER_LIST_MODALSHOW1",
+        visible
+    };
+};
+
+//点击新建按钮清空viewPanel面板数据
+const deletePanel = data => {
+    return {
+        type: "CUSTOMER_LIST_DELECTVIEWPANEL",
+        data
+    };
+};
+
 //往redux中存基础、扩展查询条件
 const saveSearchMap = data => {
     return {
@@ -275,5 +312,9 @@ export {
     setEnableState,
     getEnumData,
     saveSearchMap,
-    editCardFn
+    editCardFn,
+    deletePanel,
+    // icbcInfo,
+    customerListInfo,
+    customerModal1Show
 };

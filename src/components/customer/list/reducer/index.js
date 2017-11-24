@@ -21,7 +21,11 @@ let $$initialState = {
         page: 1
     },
     moreShow: false, //查询条件显隐,
-    viewState: false //滑动面板显隐
+    viewState: false, //滑动面板显隐,
+    icbcInfo: [], //根据客户工商id查询出来的所有详情信息
+    icbcSelect: {}, //存放选中模糊查询条件后获取的客户工商id
+    icbcVisible: false, //工商信息查询详情面板显隐
+    icbcVisible2: false //工商信息查询详情面板显隐
 };
 
 function pageAdd(page, item) {
@@ -66,6 +70,26 @@ export default function orgReducers(
                     action.payload.selectedRowKeys
                 )
             });
+        case "CUSTOMER_LIST_DELECTVIEWPANEL": //点击新建按钮时，清空viewPanel数据
+            return $$state.merge({
+                viewData: {},
+                formVisitable: action.data
+            });
+        // case "CUSTOMER_LIST_ICBCINFO"://
+        //     return $$state.merge({
+        //         icbcSelect: action.IcbcId
+        //     });
+        case "CUSTOMER_LIST_ICBCDETAILINFO": //保存客户工商id
+            return $$state.merge({
+                icbcInfo: action.data,
+                icbcVisible: action.visible
+            });
+        case "CUSTOMER_LIST_MODALSHOW1":
+            return $$state.merge({
+                //编辑中的modal显示、关闭
+                icbcVisible: action.visible
+            });
+
         case "CUSTOMER_LIST_SEARCHMAP": //存放扩展、基础查询条件
             return $$state.merge({
                 searchMap: action.data
