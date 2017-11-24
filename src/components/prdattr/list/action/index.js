@@ -7,6 +7,11 @@ const showForm = (flag, editData = {}, index) => {
 		dispatch(fetchData('PRDATTR_LIST_SHOWFORM', { visible: flag, editData }));
 	}
 }
+const showAddForm = (flag) => {
+	return (dispatch) => {
+		dispatch(fetchData('PRDATTR_LIST_ADDSHOWFORM', { visible: flag }));
+	}
+}
 
 const getListData = (pagination, searchMap) => {
 	let url = prdattr.prdattr;
@@ -36,39 +41,41 @@ const onSave4Add = (data) => {
 				param: data
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('PRDATTR_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
 }
 
-const onSave4Edit = (data, index) => {
+const onSave4Edit = (data) => {
 	return (dispatch) => {
+		let id = data.id;
 		reqwest({
-			url: `${url.oppstage}/${data.id}`,
+			url: prdattr.prdattr + "/" +id,
 			method: "PUT",
 			data: {
 				param: data
 			}
 		}, result => {
-			dispatch(fetchData('OPPSTAGE_CARD_SAVEEDIT', { ...result, visible: false }));
+			dispatch(fetchData('PRDATTR_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
 	}
 }
 
-const onDelete = (rowKeys, params) => {
+const onDelete = (rowKeys,  pagination, searchMap) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.oppstage+"/batch",
+			url: prdattr.prdattr +"/batch",
 			method: "DELETE",
 			data: {
 				param: {
 					ids: rowKeys.join(","),
-					searchMap:{}
+					searchMap:searchMap,
+					page:pagination.page,
+					pageSize:pagination.pageSize
 				},
 			}
 		}, result => {
-			dispatch(fetchData('OPPSTAGE_LIST_GETLISTSUCCESS', { ...result }));
+			dispatch(fetchData('PRDATTR_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
 }
@@ -76,7 +83,7 @@ const onDelete = (rowKeys, params) => {
 const onEnable = (rowKeys, enable, params) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.oppstage+"/state",
+			url: prdattr.prdattr+"/state",
 			method: "PUT",
 			data: {
 				param: {
@@ -86,7 +93,7 @@ const onEnable = (rowKeys, enable, params) => {
 				},
 			}
 		}, result => {
-			dispatch(fetchData('OPPSTAGE_LIST_GETLISTSUCCESS', { ...result }));
+			dispatch(fetchData('PRDATTR_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
 }
@@ -136,6 +143,19 @@ const setAttrData = (attrData) => {
 	}
 }
 
+const getAttrDetail = (id) => {
+	return (dispatch) => {
+		reqwest({
+			url: prdattr.prdattr + "/" + id.toString(),
+			method: "GET",
+			data: {
+				param:{}
+			}
+		}, result => {
+			dispatch(fetchData('PRDATTR_LIST_SHOWFORM', { visible:true, data:result }));
+		})
+	}
+} 
 //输出 type 与 方法
 export {
 	getListData,
@@ -149,5 +169,7 @@ export {
 	onChangeAttrVa,
 	resetAddNum,
 	onEditAttrVa,
-	setAttrData
+	setAttrData,
+	getAttrDetail,
+	showAddForm
 }

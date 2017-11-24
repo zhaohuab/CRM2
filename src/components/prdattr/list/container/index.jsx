@@ -28,11 +28,7 @@ class List extends React.Component {
       },
       {
         title: '属性值',
-        dataIndex: 'childrens',
-      },
-      {
-        title: '对应ERP',
-        dataIndex: 'isPresetedName',
+        dataIndex: 'values',
       },
       {
         title: '状态',
@@ -61,11 +57,12 @@ class List extends React.Component {
 
   onAdd() {
     this.setState({ isEdit: false });
-    this.props.action.showForm(true, {});
+    this.props.action.showAddForm(true, {});
   }
 
   onDelete(){
     let that = this
+    let { pagination, searchMap } = this.state;
     confirm({
       title: '确定要删除吗?',
       content: '此操作不可逆',
@@ -73,8 +70,8 @@ class List extends React.Component {
       okType: 'danger',
       cancelText: '否',
       onOk() {
-      //  let { pagination } = that.state;
-        that.props.action.onDelete(that.state.selectedRowKeys, );
+        debugger
+        that.props.action.onDelete(that.state.selectedRowKeys, pagination, searchMap);
         that.setState({ headLabel: false, selectedRowKeys: [] });
       },
       onCancel() {
@@ -84,7 +81,6 @@ class List extends React.Component {
   }
 
   onEdit = () => {
-    debugger
     this.setState({ isEdit: true });
     let rowKey = this.state.selectedRowKeys[0];
     let rowData = {};
@@ -95,14 +91,13 @@ class List extends React.Component {
         break;
       }
     }
-    let attrData = rowData.children;
-    this.props.action.setAttrData(attrData);
-    this.props.action.showForm(true, rowData);
+    let id = rowData.id;  
+    this.props.action.getAttrDetail(id);
   }
 
   onClose() {
     this.props.action.showForm(false, {});
-    this.props.action.resetAddNum();
+    this.props.action.resetAddNum();   
   }
 
   onEnable(enable) {
@@ -114,26 +109,25 @@ class List extends React.Component {
   }
 
   onSave() {
-    debugger
+    let { isEdit } = this.state;
     let formData = this.props.$$state.get("formData").toJS();
     let changeData = this.props.$$state.get("changeData").toJS();
     let erpCode = formData.erpCode.value;
     let name = formData.name.value;
-    
-    let addAttr = {erpCode:erpCode, name:name, children: changeData};
-    // let form = this.formRef.props.form;
-    // form.validateFieldsAndScroll((err, values) => {
-    //   if (!err) {
-    //     console.log('Received values of form: ', values);
-    //   }
-    // });
+    let id = "";
+    if(isEdit){
+      id = formData.id.value;
+    }else{
+      id = formData.id;
+    }
+   // let id = formData.id.value;
+    let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
     if (this.state.isEdit) {
-       this.props.action.onSave4Edit(form.getFieldsValue());
+      this.props.action.onSave4Edit(addAttr);
     }else{
       this.props.action.onSave4Add(addAttr);
       this.props.action.resetAddNum();
     }
-
   }
 
   onSelectChange = (selectedRowKeys) => {

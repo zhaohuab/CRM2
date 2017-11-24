@@ -69,7 +69,8 @@ class AttrValueTable extends React.Component {
           break;
         }
       }
-      if (flag){ changeData.push(record) };    
+      if (flag){ changeData.push(record) };   
+      this.props.action.onChangeAttrVa(changeData); 
     }
   }
 
@@ -81,18 +82,15 @@ class AttrValueTable extends React.Component {
       if (record.editState!='ADD'){ 
         record.editState='UPDATE';
       }
-
-      let changeData = this.props.$$state.get('changeData').toJS();
-      
+      let changeData = this.props.$$state.get('changeData').toJS();      
       for (let i=0,len=changeData.length; i<len; i++){
         if(changeData[i].id==record.id){
-         //changeData[i]=record;
          Object.assign(changeData[i],record);
          flag = false;
+         break;
         }
       }
-      if (flag){ changeData.push(record) };
- 
+      if (flag){ changeData.push(record) }; 
       this.props.action.onChangeAttrVa(changeData);
     }
   }

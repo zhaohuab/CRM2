@@ -6,7 +6,6 @@ let $$initialState = {
 	data:[],
 	visible:false,
 	attrValue:[],
-	attrBakValue:[],
 	formData:{},
 	addNum:0,
 	changeData:[]
@@ -20,9 +19,9 @@ function listAdd(page,item) {
 }
 
 function listEdit(data,item) {
-	for(let i=0,len=data.voList.length;i<len;i++) {
-		if(data.voList[i].id == item.id) {
-			data.voList[i] = item;
+	for(let i=0,len=data.data.length;i<len;i++) {
+		if(data.data[i].id == item.id) {
+			data.data[i] = item;
 			break;
 		}
 	}
@@ -38,6 +37,7 @@ function addRow (attrValue, item) {
 	attrValue.push(item);
 	return attrValue;
 }
+
 function addNum(addNum){
 	addNum++;
 	return addNum;
@@ -53,14 +53,19 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'PRDATTR_LIST_SHOWFORM':
 			return $$state.merge({
 				visible : action.content.visible,
-				editData : action.content.editData,
+				editData : action.content.data,
+				attrValue:action.content.data.valueList
+			})
+		case 'PRDATTR_LIST_ADDSHOWFORM':
+			return $$state.merge({
+				visible : action.content.visible,
 			})
 		case 'PRDATTR_CARD_SAVEADD' : 
 			return $$state.merge({
 				visible : action.content.visible,
 				data : listAdd($$state.get('data').toJS(),action.content),
 			})
-		case 'OPPSTAGE_CARD_SAVEEDIT' : 
+		case 'PRDATTR_CARD_SAVEEDIT' : 
 			return $$state.merge({
 				visible : action.content.visible,
 				data : listEdit($$state.get("data").toJS(),action.content),
@@ -89,8 +94,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'PRDATTR_CARD_SETATTRDATA' : 
 			return $$state.merge({
 				attrValue:action.content,
-				attrBakValue:action.content
-			})											
+			})
+		case 'PRDATTR_DETAIL_GETSUCCESS' : 
+			return $$state.merge({
+				attrValue:action.content,
+				visible:true
+			})															
 	  default: 
 	    return $$state;
 	}
