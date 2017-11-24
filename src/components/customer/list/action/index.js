@@ -166,6 +166,7 @@ const getListData = (pagination, searchMap) => {
                 }
             },
             data => {
+                debugger;
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {
                         data: appendAddress(data),
@@ -176,7 +177,6 @@ const getListData = (pagination, searchMap) => {
         );
     };
 };
-
 //获取查询条件初始值
 const getEnumData = () => {
     return dispatch => {
@@ -241,6 +241,9 @@ const listAddSave = data => {
 
 //展示面板，把点击某个客户的所有值，放在redux中
 const showViewForm = (visible, record) => {
+    // data.industry = data.industry.id;
+    // data.parentId = data.parentId.id;
+    // record.industry = {name}
     return fetchData("CUSTOMER_LIST_SHOWVIEWFORM", { visible, record });
 };
 

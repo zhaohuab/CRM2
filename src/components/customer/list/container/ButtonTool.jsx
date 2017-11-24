@@ -87,11 +87,12 @@ class ToolForm extends React.Component {
     }
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
-        debugger;
+        searchMap.industry = searchMap.industry.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS(),
             searchMap
         );
+        console.log(searchMap);
     }
 
     //存储建议查询条件

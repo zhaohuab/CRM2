@@ -75,10 +75,6 @@ export default function orgReducers(
                 viewData: {},
                 formVisitable: action.data
             });
-        // case "CUSTOMER_LIST_ICBCINFO"://
-        //     return $$state.merge({
-        //         icbcSelect: action.IcbcId
-        //     });
         case "CUSTOMER_LIST_ICBCDETAILINFO": //保存客户工商id
             return $$state.merge({
                 icbcInfo: action.data,
@@ -119,14 +115,10 @@ export default function orgReducers(
                 viewState: action.payload.visible,
                 viewData: action.payload.record
             });
-        // case "CUSTOMER_LIST_CLOSEPANEL":
-        //     return $$state.merge({
-        //         viewFormVisible: false
-        //     });
+
         case "CUSTOMER_LIST_DELETE": //删除客户
             return $$state.merge({
                 data: action.payload.data
-                //viewFormVisible: false
             });
 
         case "CUSTOMER_LIST_GETENUMDATA":

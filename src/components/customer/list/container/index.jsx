@@ -60,6 +60,11 @@ class List extends React.Component {
             {
                 title: "行业",
                 dataIndex: "industryName"
+                // render: (text, record) => (
+                //     <div>
+                //         {record.name}
+                //     </div>
+                // )
             },
             {
                 title: "状态",
@@ -87,12 +92,20 @@ class List extends React.Component {
         this.props.action.showViewForm(false, {});
     }
 
+    trancFn(data) {
+        data.industry = data.industry.id;
+        data.parentId = data.parentId.id;
+        debugger;
+        return data;
+    }
+
     //form新增、或者修改
     formHandleOk() {
         debugger;
         this.formRef.props.form.validateFields((err, values) => {
             debugger;
             if (!err) {
+                values = this.trancFn(values);
                 if (values.id) {
                     this.props.action.listEditSave(values);
                 } else {

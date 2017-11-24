@@ -44,6 +44,7 @@ node server
 7， 目录：api,   接口统一管理目录
 
 # 开发流程
+
 1，routes目录下建一个路由
 
 2，components目录下建业务组件（注意一级目录二级目录层级）
@@ -51,6 +52,8 @@ node server
 3，根reducers目录下引用components业务组件下的reducer
 
 4，业务组件引入action，与对应的reducer状态
+
+5, components下建api目录，保存该模块接口地址及说明
 
 # 开发规范
 
@@ -63,3 +66,7 @@ actionType 全部大写并且全局唯一 例如 “GET_USERLIST_INFO”
 reduser 根据actionType修改状态
 
 contaniner 绑定state用两个$$   例如$$stateHome: state.home
+
+# 注意事项
+
+开发阶段，如果需要跨机访问静态资源，把webpack.config.ip.js.bak 去掉.bak 改成 webpack.config.ip.js （注意，不可改成其他名字）, 修改里面的ip地址即可。

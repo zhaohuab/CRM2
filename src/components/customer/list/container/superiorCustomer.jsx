@@ -52,7 +52,12 @@ export default class CuperiorCustomer extends React.Component {
             keyDownVisiable: false, //是否显示手输查询面板
             selectKeyUp: {}, //手输入时获取的选择字段
             industryDataSearch: [], //获取手输入时获取的数据
-            selectedRowKeys: []
+            selectedRowKeys: [], //保存table行选中信息
+            pagination: {
+                pageSize: 5,
+                page: 1,
+                current: 1
+            } //分页信息
         };
         this.columns = [
             {
@@ -63,71 +68,77 @@ export default class CuperiorCustomer extends React.Component {
             },
             {
                 title: "等级",
-                dataIndex: "level",
-                key: "level"
+                dataIndex: "levelName",
+                key: "levelName"
             },
             {
                 title: "区域",
                 dataIndex: "saleArea",
                 key: "saleArea"
-            },
-            {
-                title: "负责人",
-                dataIndex: "ownerUseId",
-                key: "ownerUseId"
             }
+            // {
+            //     title: "负责人",
+            //     dataIndex: "ownerUseId",
+            //     key: "ownerUseId"
+            // }
         ];
-        this.data = [
+    }
+
+    //点击分页时触发的方法
+    onPageChange(page, pageSize) {
+        debugger;
+        //let { page, pageSize } = this.state.pagination;
+        let pagination = {
+            page,
+            pageSize
+        };
+        this.setState(
             {
-                id: 1,
-                name: "黎明",
-                level: 1,
-                saleArea: "华东",
-                ownerUseId: 45
+                pagination
             },
-            {
-                id: 2,
-                name: "燕云",
-                level: 3,
-                saleArea: "华东",
-                ownerUseId: 45
-            },
-            {
-                id: 3,
-                name: "东风",
-                level: 1,
-                saleArea: "华西",
-                ownerUseId: 45
-            },
-            {
-                id: 4,
-                name: "白天",
-                level: 2,
-                saleArea: "华东",
-                ownerUseId: 45
-            },
-            {
-                id: 5,
-                name: "黑夜",
-                level: 1,
-                saleArea: "华北",
-                ownerUseId: 45
+            () => {
+                this.getListData(true, pagination);
             }
-        ];
+        );
+        console.log(page, pageSize);
+    }
+
+    //获取table选择数据
+    getListData(flag, pagination) {
+        reqwest(
+            {
+                url: baseDir + "cum/customers/ref",
+                method: "GET",
+                data: {
+                    param: {
+                        ...this.state.pagination
+                    }
+                }
+            },
+            result => {
+                debugger;
+                this.setState({
+                    visible: flag,
+                    industryData: result,
+                    keyDownVisiable: false
+                });
+            }
+        );
     }
 
     //点击input弹出下拉面板
     getIndustry(flag) {
         //这里需要Request请求
         if (flag) {
-            this.setState({
-                visible: flag,
-                industryData: this.data,
-                keyDownVisiable: false
-            });
+            let { page, pageSize } = this.state.pagination;
+            this.getListData(flag, { page, pageSize });
         } else {
             this.setState({
-                visible: flag
+                visible: flag,
+                pagination: {
+                    pageSize: 5,
+                    page: 1
+                }
             });
         }
     }
@@ -181,7 +192,11 @@ export default class CuperiorCustomer extends React.Component {
         this.setState(
             {
                 visible: false,
-                selectedRowKeys: []
+                selectedRowKeys: [],
+                pagination: {
+                    pageSize: 5,
+                    page: 1
+                }
             },
             () => {
                 this.props.onChange({});
@@ -233,6 +248,7 @@ export default class CuperiorCustomer extends React.Component {
             type: "radio",
             selectedRowKeys: this.state.selectedRowKeys
         };
+        let tableData = this.state.industryData;
         return (
             <div>
                 {this.state.keyDownVisiable ? (
@@ -271,16 +287,17 @@ export default class CuperiorCustomer extends React.Component {
                         <Row className="tabel-recoverd industry-main-choice ">
                             <Table
                                 columns={this.columns}
-                                dataSource={this.state.industryData}
+                                dataSource={tableData.data}
                                 rowKey="id"
                                 size="small"
                                 rowSelection={rowSelection}
                                 pagination={{
                                     size: "small",
-                                    total: 5,
-                                    showTotal: this.showTotal
-                                    //onChange: this.onPageChange.bind(this),
-                                    //onShowSizeChange: this.onPageSizeChange.bind(this)
+                                    total: tableData.total,
+                                    showTotal: this.showTotal,
+                                    onChange: this.onPageChange.bind(this),
+                                    pageSize: 5,
+                                    current: tableData.page
                                 }}
                             />
                         </Row>

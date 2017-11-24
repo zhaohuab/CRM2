@@ -43,6 +43,7 @@ class MoreForm extends React.Component {
             wrapperCol: { span: 22 }
         };
         let { enumData } = this.props.$$state.toJS();
+
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -162,6 +163,7 @@ const WarpMilForm = Form.create({
     mapPropsToFields: (props, onChangeFild) => {
         //从redux中读值
         let searchMap = props.$$state.toJS().searchMap;
+        debugger;
         let value = {};
         for (let key in searchMap) {
             value[key] = { value: searchMap[key] };
@@ -178,7 +180,12 @@ const WarpMilForm = Form.create({
             if (onChangeFild[key].value.key) {
                 searchMap[key] = onChangeFild[key].value.key;
             } else {
+                // if (key == "industry") {
+                //     debugger;
+                //     searchMap[key] = onChangeFild[key].value.id;
+                // } else {
                 searchMap[key] = onChangeFild[key].value;
+                //}
             }
         }
         props.searchMapFn(searchMap);

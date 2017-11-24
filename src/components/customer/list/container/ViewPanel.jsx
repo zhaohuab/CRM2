@@ -93,6 +93,7 @@ class ViewPanel extends React.Component {
 
     render() {
         const viewData = this.props.$$state.get("viewData").toJS();
+        console.log(viewData);
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">

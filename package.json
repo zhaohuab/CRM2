@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "dev": "webpack-dev-server --progress --colors --display-error-details --display-modules --config ./webpack.config.js",
+    "devip": "webpack-dev-server --progress --colors --display-error-details --display-modules --config ./webpack.config.ip.js",
     "btest": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress",
     "bup": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress"
   },
@@ -46,7 +47,8 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.9",
     "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "^1.16.2",
+    "webpack-merge": "^4.1.1"
   },
   "dependencies": {
     "antd": "^2.13.0",

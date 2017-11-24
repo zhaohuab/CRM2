@@ -24,28 +24,6 @@ const confirm = Modal.confirm;
 const Search = Input.Search;
 const TreeNode = Tree.TreeNode;
 
-const searchList = [
-    {
-        id: "0-1",
-        name:
-            "广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠"
-    },
-    { id: "0-2", name: "广式腊肠" },
-    { id: "0-3", name: "广式腊肠" },
-    { id: "0-4", name: "广式腊肠" },
-    { id: "0-5", name: "广式腊肠" },
-    { id: "0-6", name: "广式腊肠" },
-    { id: "0-7", name: "广式腊肠" },
-    { id: "0-8", name: "广式腊肠" },
-    { id: "0-9", name: "广式腊肠" },
-    { id: "0-10", name: "广式腊肠" },
-    { id: "0-11", name: "广式腊肠" },
-    { id: "0-12", name: "广式腊肠" },
-    { id: "0-13", name: "广式腊肠" },
-    { id: "0-14", name: "广式腊肠" },
-    { id: "0-15", name: "广式腊肠" }
-];
-
 export default class Industry extends React.Component {
     constructor(props) {
         super(props);
@@ -57,10 +35,11 @@ export default class Industry extends React.Component {
             selectKeys: [], //存放选择面板已选择的keys
             keyDownVisiable: false, //是否显示手输查询面板
             selectKeyUp: {}, //手输入时获取的选择字段
-            industryDataSearch: [], //获取手输入时获取的数据,
-            value: ""
+            industryDataSearch: [] //获取手输入时获取的数据,
         };
-        this.lodashSearch = debounce(this.lodashSearch, 800);
+        this.lodashSearch = debounce(this.lodashSearch, 800, {
+            trailing: true
+        });
     }
 
     //获取树的数据
@@ -82,7 +61,8 @@ export default class Industry extends React.Component {
                 data => {
                     this.setState({
                         visible: flag,
-                        industryData: data.data
+                        industryData: data.data,
+                        keyDownVisiable: false
                     });
                 }
             );
@@ -121,11 +101,21 @@ export default class Industry extends React.Component {
 
     //搜索面板选择方法
     searchChoice(item) {
-        if (this.props.onChange) {
+        debugger;
+        if (!item.id) {
             this.setState(
                 {
                     visible: false,
-                    selectKeys: [],
+                    keyDownVisiable: false
+                },
+                () => {
+                    this.props.onChange({});
+                }
+            );
+        } else if (this.props.onChange) {
+            this.setState(
+                {
+                    visible: false,
                     keyDownVisiable: false
                 },
                 () => {
@@ -184,6 +174,7 @@ export default class Industry extends React.Component {
 
     //每隔500毫秒执行一次查找请求
     lodashSearch(value) {
+        debugger;
         reqwest(
             {
                 url: baseDir + "/base/industrys/list",
@@ -212,7 +203,7 @@ export default class Industry extends React.Component {
                 } else {
                     this.setState({
                         keyDownVisiable: true,
-                        industryDataSearch: resultEnd
+                        industryDataSearch: [{ id: null, name: "暂无数据" }]
                     });
                 }
             }
@@ -233,7 +224,7 @@ export default class Industry extends React.Component {
             );
         } else {
             this.setState({
-                keyDownVisiable: false,
+                //keyDownVisiable: false,
                 industryDataSearch: []
             });
         }
@@ -347,6 +338,7 @@ export default class Industry extends React.Component {
                         onKeyUp={this.keyDownUp.bind(this)}
                         value={this.props.value ? this.props.value.name : ""}
                         suffix={suffix}
+                        onFocus={this.getIndustry.bind(this, true)}
                         addonAfter={
                             <Icon
                                 type="search"
