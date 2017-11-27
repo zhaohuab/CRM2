@@ -26,10 +26,6 @@ let transToValues = (fields) => {
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
     switch (action.type) {
         case 'SYSINIT_PAGE_INFO':
-            let current = 0;
-            if(action.content.isInit) {
-                current=2;
-            }
             return $$state.merge({
                 isInit:action.content.isInit,
                 tenantInfo:action.content.tenantInfo,
