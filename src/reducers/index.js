@@ -33,7 +33,8 @@ import contacts from "components/contacts/contactList/reducer/index.js";
 //任务卡
 import taskcard from '../components/taskcard/list/reducer'
 //档案管理
-import doc from '../components/doc/list/reducer'
+import doc from
+'../components/doc/list/reducer'
 //商机
 import opportunityList from '../components/opportunity/list/reducer/index.js'
 //商机动作
@@ -41,7 +42,7 @@ import oppactionlist from 'components/oppaction/list/reducer'
 //拜访路线
 import visitroute from "components/visitroute/list/reducer/index.js";
 //拜访规则
-import visitRules from '../components/visitrules/reducer'
+import visitrules from '../components/visitrules/list/reducer'
 //商机阶段
 import oppstagelist from 'components/oppstage/list/reducer'
 //商机维度
@@ -51,7 +52,9 @@ import oppflowList from 'components/oppflow/list/reducer';
 //产品属性
 import prdattr from 'components/prdattr/list/reducer'
 
-let rootReducer = combineReducers({
+let rootReducer = combineReducers({ 
+    login, 
+    doc,
     login,
     commonMenu,
     header,
@@ -72,7 +75,7 @@ let rootReducer = combineReducers({
     opportunityList,
     oppactionlist,
     visitroute,
-    visitRules,
+    visitrules,
     oppstagelist,
     oppdimensionlist,
     oppflowList,

@@ -3,7 +3,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Input, Radio, Form, Col, Row, Modal, Button, Icon, Select } from 'antd';
-import FormCard from './listForm.jsx';
 import Cards from './card.jsx';
 import './index.less'
 let Search = Input.Search;
@@ -61,10 +60,6 @@ class List extends React.Component {
     }   
   } 
 
-  typeSelected = (id) => {//选择业务对象
-    this.props.action.typeSelected(id)
-  }
-  
   inputChange = (e) => {//搜索中的输入框
     let { value } = e.target;
     this.props.action.inputChange(value)
@@ -97,8 +92,8 @@ class List extends React.Component {
 
   render() { //只能通过this.props和this.state访问数据;不能在render方法中任何位置修改state状态或者是DOM输出；
     let page = this.props.$$state.get("data").toJS();
-    let data = page.data || [];
-    this.state.more ? null : data = data.slice(0,12);   
+    let moreData = page.voList ? page.voList.slice(0,12) : [];
+    let data = this.state.more ? page.voList:moreData;
     let visible = this.props.$$state.get("visible");
     let more = this.props.$$state.get("more");
     let editData = this.props.$$state.get("editData").toJS();
@@ -128,11 +123,7 @@ class List extends React.Component {
                 <span onClick={this.onSearch.bind(this,false)} style={{marginLeft:'20px',cursor:'pointer'}}>搜索</span>
               </div>
               <div className='head_panel-right'>
-                <ButtonGroup className='add-more'>
-                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                </ButtonGroup>
-                <Button type="primary" className="button_add" onClick={this.onAdd.bind(this) }><Icon type="plus" />新增</Button>
+                <Button type="primary" className="button_add" onClick={this.onAdd.bind(this) }>刷新</Button>
               </div>
           </div>
           <div>
@@ -149,7 +140,6 @@ class List extends React.Component {
           width = { 500 }
         >
           <div className='model-height'>
-              <FormCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
           </div>
         </Modal>
       </div>
@@ -159,7 +149,7 @@ class List extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    $$state: state.taskcard
+    $$state: state.visitrules
   }
 }
 
