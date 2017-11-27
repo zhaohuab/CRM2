@@ -65,6 +65,8 @@ const rootRoutes = {
                                 require("./routes/visitroute").default,
                                 require('./routes/visitrules').default,
                                 require('./routes/oppstage').default,
+                                require('./routes/oppdimension').default,
+                                require('./routes/oppflow').default,
                                 {
                                     //未开发页面
                                     path: "developing",

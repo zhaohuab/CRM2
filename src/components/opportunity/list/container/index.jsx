@@ -11,7 +11,7 @@ import Card from "./card";
 import * as Actions from "../action";
 import * as enumData from "./enumdata";
 import ViewPanel from "./ViewPanel";
-import EditPanel from "./EditPanel";
+import Funnel from "./Funnel.jsx"
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
@@ -19,11 +19,6 @@ class List extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pagination: {
-                pageSize: 20,
-                page: 1
-            },
-            hasPanel: false,
             isEdit: false
         };
 
@@ -73,55 +68,13 @@ class List extends React.Component {
         ]
 
         const that = this;
-        this.rowSelectionFn = {
-            onChange(selected, selectedRows) {
-                const nowVisible = that.props.$$state.get("toolVisible").toJS();
-                if (selectedRows.length > 0) {
-                    nowVisible.simForm = false;
-                    nowVisible.btnPanel = true;
-                } else {
-                    nowVisible.btnPanel = false;
-                    if (nowVisible.milForm == true) {
-                        nowVisible.simForm = false;
-                    } else {
-                        nowVisible.simForm = true;
-                    }
-                }
-                that.props.action.selectRow(selectedRows, nowVisible);
-            }
+        this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            this.props.action.selectRow(selectedRows, selectedRowKeys);
         };
     }
 
-    //查询面板点击展开收缩按钮事件
-    changeVisible(visible) {
-        const nowVisible = this.props.$$state.get("toolVisible").toJS();
-        if (visible.simForm != undefined) {
-            nowVisible.simForm = visible.simForm;
-            if (nowVisible.btnPanel == true) {
-                nowVisible.simForm = false;
-            }
-        }
-        if (visible.milForm != undefined) {
-            nowVisible.milForm = visible.milForm;
-        }
-
-        this.props.action.changeVisible(nowVisible);
-    }
-
-    //返回按钮事件
-    btnBack() {
-        const nowVisible = this.props.$$state.get("toolVisible").toJS();
-        nowVisible.btnPanel = false;
-        if (nowVisible.milForm == true) {
-            nowVisible.simForm = false;
-        } else {
-            nowVisible.simForm = true;
-        }
-        this.props.action.changeVisible(nowVisible);
-    }
-
     componentDidMount() {
-        this.props.action.getListData(this.state.pagination);
+        this.props.action.getListData(this.props.$$state.get("pagination").toJS());
     }
 
     //保存按钮事件
@@ -137,63 +90,23 @@ class List extends React.Component {
 
     //编辑页面关闭事件
     formHandleCancel() {
-        this.props.action.closeForm();
+        this.props.action.showForm({}, false);
     }
 
-    //查询按钮事件
-    handleSearch(searchMap) {
-        this.props.action.getListData(this.state.pagination, searchMap);
-    }
-    
-    //新增按钮点击打开新增界面
-    btnNew() {
-        if (!this.state.hasPanel) {
-            this.setState({
-                hasPanel: true
-            });
-        }
-        this.setState({ isEdit: false });
-        //点击新增时，清空editpanel的列表
-        if (this.refs.editPanel) {
-            this.refs.editPanel.refs.table.setTableData([])
-        }
-        this.props.action.showNewForm(true);
-    }
+
 
     //点击查看按钮打开查看页面
     btnView(record) {
-        if (!this.state.hasPanel) {
-            this.setState({
-                hasPanel: true
-            });
-        }
         this.props.action.showViewForm(true, record);
-    }
-
-    //点击编辑按钮打开编辑页面
-    btnEdit(data) {
-        if (!this.state.hasPanel) {
-            this.setState({
-                hasPanel: true
-            });
-        }
-        this.setState({ isEdit: true });
-        //点击编辑按钮将查看页面数据存入编辑页面
-        this.refs.editPanel.refs.table.setTableData(this.props.$$state.get("viewData").toJS().childList)
-        this.props.action.showEditForm(true);
     }
 
     //批量删除
     btnDeleteList() {
         const searchMap = this.props.$$state.get("searchMap").toJS();
-        const selectRow = this.props.$$state.get("selectedRows").toJS();
-        const ids = [];
-        for (let i = 0; i < selectRow.length; i++) {
-            ids.push(selectRow[i].id);
-        }
-        this.props.action.deleteData(ids, searchMap, this.state.pagination);
+        const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
+        const pagination = this.props.$$state.get("pagination").toJS()
+        this.props.action.deleteData(selectedRowKeys, searchMap, pagination);
     }
-
 
     btnClosePanel() {
         this.props.action.closePanel();
@@ -203,94 +116,88 @@ class List extends React.Component {
         return `共 ${total} 条`;
     }
     onPageChange(page, pageSize) {
-        let { pagination, searchMap } = this.state;
+        let searchMap = this.props.$$state.get("searchMap").toJS()
+        let pagination = this.props.$$state.get("pagination").toJS()
         //可能有问题
         pagination = { page: page, pageSize: pageSize };
-        this.setState({ pagination })
         this.props.action.getListData(pagination, searchMap);
     }
     onPageSizeChange(current, pageSize) {
-        let { pagination, searchMap } = this.state;
+        let searchMap = this.props.$$state.get("searchMap").toJS()
+        let pagination = this.props.$$state.get("pagination").toJS()
         pagination = { page: pagination.page, pageSize: pageSize };
-        this.setState({ pagination })
         this.props.action.getListData(pagination, searchMap);
-        console.info(`pageSize:${pageSize}`)
     }
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         const selectedRows = $$state.get("selectedRows").toJS();
+        const selectedRowKeys = $$state.get("selectedRowKeys").toJS();
         const searchMap = $$state.get("searchMap").toJS();
-        const toolVisible = $$state.get("toolVisible").toJS();
-        const editFormVisible = $$state.get("formVisitable");
+        const formVisible = $$state.get("formVisitable");
         const CardForm = Form.create()(Card);
-        const viewData = $$state.get("viewData").toJS();
+        const editData = $$state.get("editData").toJS();
         const viewFormVisible = $$state.get("viewFormVisible");
         const h = this.props.$$stateCommon.toJS().height - 90;
+        const isEdit = true;
+        let rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
         return (
             <div className="custom-warpper" style={{ height: h + "px" }}>
-                <ToolForm
-                    visible={toolVisible}
-                    btnBack={this.btnBack.bind(this)}
-                    btnLess={this.changeVisible.bind(this)}
-                    btnMore={this.changeVisible.bind(this)}
-
-                    handleSearch={this.handleSearch.bind(this)}
-                    btnNew={this.btnNew.bind(this)}
-                    enumData={enumData}
-                    searchMap={searchMap}
-                    btnDelete={this.btnDeleteList.bind(this)}
-                    selectedData={selectedRows}
-                />
+                <ToolForm />
                 <div className="custom-tabel">
-                    <Table
-                        columns={this.columns}
-                        dataSource={page.data}
-                        rowKey="id"
-                        rowSelection={this.rowSelectionFn}
-                        size="middle"
-                        pagination={{ size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
 
+                    <Row>
+                        <Col span={16}>
+                            <Table
+                                columns={this.columns}
+                                dataSource={page.data}
+                                rowKey="id"
+                                rowSelection={rowSelection}
+                                size="middle"
+                                pagination={{ size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
+
+                            />
+                        </Col>
+                        <Col span={8}>
+                            <Funnel />
+                        </Col>
+                    </Row>
+                </div>
+
+                <Modal
+                    title={isEdit ? "编辑商机" : "新增商机"}
+                    visible={formVisible}
+                    onOk={this.formHandleOk.bind(this)}
+                    onCancel={this.formHandleCancel.bind(this)}
+                    width="50%"
+                >
+                    <div className="model-height">
+                        <CardForm
+                            wrappedComponentRef={inst => (this.formRef = inst)}
+                            enumData={enumData}
+                        />
+                    </div>
+                </Modal>
+
+
+                <div
+                    className={
+                        viewFormVisible
+                            ? "viewPanel viewShow"
+                            : "viewPanelFalse viewHide"
+                    }
+                >
+                    <ViewPanel
+                        data={editData}
+                        btnClosePanel={this.btnClosePanel.bind(this)}
+                        ref="panelHeight"
                     />
                 </div>
 
-                {this.state.hasPanel ? (
-                    <div>
-                        <div
-                            className={
-                                viewFormVisible
-                                    ? "viewPanel viewShow"
-                                    : "viewPanelFalse viewHide"
-                            }
-                        >
-                            <ViewPanel
-                                data={viewData}
-                                btnNew={this.btnNew.bind(this)}
-                                btnEdit={this.btnEdit.bind(this)}
-                                btnClosePanel={this.btnClosePanel.bind(this)}
 
-                                ref="panelHeight"
-                            />
-                        </div>
-                        <div
-                            className={
-                                editFormVisible
-                                    ? "viewPanel viewShow"
-                                    : "viewPanelFalse viewHide"
-                            }
-                        >
-                            <EditPanel
-                                ref="editPanel"
-                                isEdit={this.state.isEdit}
-                                data={viewData}
-                                btnNew={this.btnNew.bind(this)}
-                                btnEdit={this.btnEdit.bind(this)}
-                                btnClosePanel={this.btnClosePanel.bind(this)}
-                                btnSave={this.formHandleOk.bind(this)}
-                            />
-                        </div>
-                    </div>
-                ) : null}
             </div>
         );
     }
