@@ -1,49 +1,63 @@
-import { Select } from 'antd';
+import { Select } from "antd";
 
 const Option = Select.Option;
 
 class Enum extends React.Component {
     state = {
-        select : {
-            key:undefined,
-            title:undefined,
+        select: {
+            key: undefined,
+            title: undefined
         }
-    }
+    };
 
-    trans = (dataSource) => {
-        return dataSource.map((item) => {
+    trans = dataSource => {
+        return dataSource.map(item => {
             item.key = String(item.key);
-            return <Option key={item.key}>{item.title}</Option>
-        })
-    }
+            return <Option key={item.key}>{item.title}</Option>;
+        });
+    };
 
-    onSelect = (value,option) => {
+    onSelect = (value, option) => {
         const onChange = this.props.onChange;
         if (onChange) {
-            onChange({key:value,title:option.props.children});
+            onChange({ key: value, title: option.props.children });
         }
-    }
-    
+    };
+
     render() {
-        let key="";
-        if(this.props.value) {
-            key = this.props.value.key;
+        let key = "";
+        if (this.props.value) {
+            if (this.props.value.key) {
+                key = this.props.value.key;
+            } else {
+                key = this.props.value;
+            }
         }
-        if(key) {
+        if (key) {
             key = String(key);
         }
-        console.info(typeof key);
         return (
-         
             <div>
-                <Select value={this.props.addOptionAll!=undefined&&key==""?"0":key}  onSelect={this.onSelect}>
-                    {this.props.addOptionAll!=undefined? <Option key={"0"}>{'全部'+this.props.addOptionAll}</Option>:''}
+                <Select
+                    value={
+                        this.props.addOptionAll != undefined && key == ""
+                            ? "0"
+                            : key
+                    }
+                    onSelect={this.onSelect}
+                >
+                    {this.props.addOptionAll != undefined ? (
+                        <Option key={"0"}>
+                            {"全部" + this.props.addOptionAll}
+                        </Option>
+                    ) : (
+                        ""
+                    )}
                     {this.trans(this.props.dataSource)}
                 </Select>
             </div>
-
         );
     }
 }
 
-export default Enum
+export default Enum;

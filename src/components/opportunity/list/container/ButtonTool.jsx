@@ -1,343 +1,234 @@
-import { Modal, Cascader, Select, Form, Row, Col, Input, Button, Icon } from 'antd';
-
-import Enum from 'utils/components/enums'
+import {
+    Modal,
+    Cascader,
+    Select,
+    Form,
+    Row,
+    Col,
+    Input,
+    Button,
+    Icon
+} from "antd";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Enum from "utils/components/enums";
 const FormItem = Form.Item;
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
-import 'assets/stylesheet/all/iconfont.css'
+import "assets/stylesheet/all/iconfont.css";
+//导入action方法
+import * as Actions from "../action";
 
-class BtnPanel extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    btnBack() {
-        this.props.btnBack();
-    }
-
-    btnDelete() {
-        let that = this
-        confirm({
-            title: '确定要删除吗?',
-            content: '此操作不可逆',
-            okText: '是',
-            okType: 'danger',
-            cancelText: '否',
-            onOk() {
-                that.props.btnDelete();
-            },
-            onCancel() {
-                console.log('Cancel');
-            },
-        });
-    }
-
-    render() {
-        return (
-            <div className='hide-label'>
-
-                <div className='hide-label-left'>
-                    <div className='actionButtons-chioce'>
-                        已选择：{this.props.selectedData.length}条
-                </div>
-                    <Button className='returnbtn-class' onClick={this.btnBack.bind(this)}><i className='iconfont icon-fanhui'></i>返回</Button>
-                    <Button className='returnbtn-class' onClick={this.btnDelete.bind(this)}><i className='iconfont icon-shanchu'></i>删除</Button>
-
-
-                    <Button className='returnbtn-class'><i className='iconfont icon-daochu'></i>导出</Button>
-                </div>
-                <div className='hide-label-right'>
-                    <Icon type="close" />
-                </div>
-            </div>
-        );
-    }
-}
-
-class SimForm extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    handleSearch(e) {
-        e.preventDefault();
-        this.props.handleSearch(this.props.form.getFieldsValue())
-    }
-    componentDidMount() {
-        this.props.form.setFieldsValue(this.props.searchMap);
-    }
-    render() {
-        const { getFieldDecorator } = this.props.form;
-        const formItemLayout = {
-            labelCol: { span: 2 },
-            wrapperCol: { span: 22 },
-        };
-        const children = [];
-        return (
-            <div className='form-top' id='recover-btn'>
-                <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
-                    <Row>
-                        <Col span={8}>
-                            <FormItem  {...formItemLayout} >
-                                {getFieldDecorator('searchKey', {
-                                })(
-                                    <Input type='text' placeholder="查询条件" />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={8}>
-                            <FormItem   {...formItemLayout} >
-                                {getFieldDecorator('level', {
-                                })(
-                                    <Enum
-                                        initValue={this.props.searchMap.level}
-                                        addOptionAll={'客户等级'}
-                                        dataSource={this.props.enumData.levelEnum}
-                                    />
-                                    )}
-                            </FormItem>
-                        </Col>
-
-                        <Col span={8}>
-                            <div className='more-btn'>
-                                <Button htmlType="submit" >搜索</Button>
-                                <span onClick={this.props.btnMore.bind(this, { simForm: false, milForm: true })}>
-                                    更多 <Icon type='down' />
-                                </span>
-                            </div>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        );
-    }
-}
-
-
-class MilForm extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    componentDidMount() {
-        this.props.form.setFieldsValue(this.props.searchMap);
-    }
-
-    handleSearch(e) {
-        e.preventDefault();
-        this.props.handleSearch(this.props.form.getFieldsValue())
-    }
-    render() {
-        const { getFieldDecorator } = this.props.form;
-        const formItemLayout = {
-            labelCol: { span: 2 },
-            wrapperCol: { span: 22 },
-        };
-        const children = [];
-        return (
-            <div className='form-bottom' id='recover-btn'>
-                <Form layout="inline" onSubmit={this.handleSearch.bind(this)} >
-                    <Row>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout} >
-                                {getFieldDecorator('searchKey', {
-
-                                })(
-                                    <Input type='text' placeholder="查询条件" />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem  {...formItemLayout} >
-                                {getFieldDecorator('level', {
-
-                                })(
-                                    <Enum
-                                        initValue={this.props.searchMap.level}
-                                        addOptionAll={'客户等级'}
-                                        dataSource={this.props.enumData.levelEnum}
-                                    />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem  {...formItemLayout} >
-                                {getFieldDecorator('saleArea', {
-
-                                })(
-                                    <Enum
-                                        initValue={this.props.searchMap.saleArea}
-                                        addOptionAll={'营销区域'}
-                                        dataSource={this.props.enumData.saleAreaEnum}
-                                    />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout} >
-                                {getFieldDecorator('province_city_district', {
-
-                                })(
-                                    <Enum
-                                        initValue={this.props.searchMap.saleArea}
-                                        addOptionAll={'营销区域'}
-                                        dataSource={this.props.enumData.saleAreaEnum}
-                                    />
-                                    )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout} >
-                                {getFieldDecorator('parentId', {
-
-                                })(
-                                    <Input type='text' placeholder="上级客户" />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout} >
-                                {getFieldDecorator('industry', {
-
-                                })(
-                                    <Enum
-                                        initValue={this.props.searchMap.industry}
-                                        addOptionAll={'行业'}
-                                        dataSource={this.props.enumData.industryEnum}
-                                    />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem  {...formItemLayout} >
-                                {getFieldDecorator('cannelType', {
-
-                                })(
-                                    <Enum
-                                        initValue={this.props.searchMap.cannelType}
-                                        addOptionAll={'渠道类型'}
-                                        dataSource={this.props.enumData.cannelTypeEnum}
-                                    />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem  {...formItemLayout} >
-                                {getFieldDecorator('lifecycle', {
-
-                                })(
-                                    <Enum
-                                        initValue={this.props.searchMap.lifecycle}
-                                        addOptionAll={'生命周期'}
-                                        dataSource={this.props.enumData.lifecycleEnum}
-                                    />
-                                    )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={6}>
-                            <FormItem  {...formItemLayout} >
-                                {getFieldDecorator('enableState', {
-
-                                })(
-                                    <Enum
-                                        initValue={this.props.searchMap.enableState}
-                                        addOptionAll={'启用状态'}
-                                        dataSource={this.props.enumData.enableStateEnum}
-                                    />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <div className='more-btn'>
-                                <Button htmlType="submit">搜索</Button>
-                                <span onClick={this.props.btnLess.bind(this, { simForm: true, milForm: false })}>
-                                    收起 <Icon type='up' />
-                                </span>
-                            </div>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        );
-    }
-}
+import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
+import LessForm from "./lessForm.jsx";
+import MoreForm from "./moreForm.jsx";
 
 class ToolForm extends React.Component {
     constructor(props) {
-        super(props)
-    }
-    state = {
-        expand: false,
-    };
-
-    handleReset = () => {
-        this.props.form.resetFields();
+        super(props);
     }
 
-    toggle = () => {
-        const { expand } = this.state;
-        this.setState({ expand: !expand });
+    //点击返回按钮
+    btnBack() {
+        this.props.action.selectRow([], []);
     }
 
+    //点击停用启用?
+    btnSetEnable(enableState) {
+        const searchMap = this.props.$$state.get("searchMap").toJS(); //点击的时候保存的查询条件
+        const selectRow = this.props.$$state.get("selectedRows").toJS();
+        const ids = [];
+        for (let i = 0; i < selectRow.length; i++) {
+            ids.push(selectRow[i].id);
+        }
+        this.props.action.setEnableState(
+            ids,
+            enableState, //获取起停用数字
+            this.props.$$state.get("pagination").toJS(), //获取分页
+            searchMap //查询条件
+        );
+    }
+
+    //点击删除按钮?
+    btnDelete() {
+        let that = this;
+        confirm({
+            title: "确定要删除吗?",
+            content: "此操作不可逆",
+            okText: "是",
+            okType: "danger",
+            cancelText: "否",
+            onOk() {
+                const searchMap = that.props.$$state.get("searchMap").toJS();
+                const selectRow = that.props.$$state.get("selectedRows").toJS();
+                const ids = [];
+                for (let i = 0; i < selectRow.length; i++) {
+                    ids.push(selectRow[i].id);
+                }
+                that.props.action.deleteData(
+                    ids,
+                    searchMap,
+                    that.props.$$state.get("pagination").toJS()
+                );
+            },
+            onCancel() {
+                console.log("Cancel");
+            }
+        });
+    }
+    //点击新建按钮
+    btnNew() {
+        this.props.action.showForm({}, true);
+    }
+    //上下表单控制显隐
+    changeVisible() {
+        this.props.action.changeVisible();
+    }
+    //扩展条件、基础条件查询
+    handleSearch(searchMap) {
+        this.props.action.getListData(
+            this.props.$$state.get("pagination").toJS(),
+            searchMap
+        );
+    }
+
+    //存储建议查询条件
+    searchMapFn(searchMap) {
+        this.props.action.saveSearchMap(searchMap);
+    }
+
+    //点击编辑按钮打开编辑页面
+    btnEdit(data) {
+      
+        this.props.action.showForm(data,true);
+    }
 
     render() {
-        const WarpSimForm = Form.create()(SimForm);
-        const WarpMilForm = Form.create()(MilForm);
-
+        let { enumData, moreShow, selectedRows } = this.props.$$state.toJS();
         return (
-            <div className='label-form-more'>
-                {
-                    this.props.visible.btnPanel ?
-                        <div>
-                            <BtnPanel
-                                btnBack={this.props.btnBack}
-                                btnDelete={this.props.btnDelete}
-                                selectedData={this.props.selectedData}
-                            />
-                        </div> :
-                        <div>
-                            <div className='label-form-top'>
-                                <div className='label-form-topleft' >
-                                    <div id='recover-select'>
-                                        <Select defaultValue="3" className='first-select' >
+            <Row className="header-warpper">
+                {selectedRows && selectedRows.length >= 1 ? (
+                    <HeaderButton
+                        goBack={this.btnBack.bind(this)}
+                        length={selectedRows.length}
+                    >
+
+                    {selectedRows.length == 1 ? <Button className="default_button" onClick={this.btnEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
+                                : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
+
+                        <Button
+                            className="returnbtn-class"
+                            onClick={this.btnDelete.bind(this)}
+                        >
+                            <i className="iconfont icon-shanchu" />删除
+                        </Button>
+
+                        <ButtonGroup className="returnbtn-class">
+                            <Button onClick={this.btnSetEnable.bind(this, 1)}>
+                                <i className="iconfont icon-qiyong" />启用
+                            </Button>
+                            <Button onClick={this.btnSetEnable.bind(this, 2)}>
+                                <i className="iconfont icon-tingyong" />停用
+                            </Button>
+                        </ButtonGroup>
+                    </HeaderButton>
+                ) : (
+                    <Row>
+                        <Row
+                            type="flex"
+                            align="middle"
+                            justify="space-between"
+                            className="header-top"
+                        >
+                            <Col span={18}>
+                                <Row type="flex" align="middle">
+                                    <Col className="select-recover">
+                                        <Select defaultValue="3">
                                             <Option value="0">全部</Option>
                                             <Option value="1">我关注的</Option>
                                             <Option value="2">最近新建</Option>
                                             <Option value="3">最近查看</Option>
                                         </Select>
-                                    </div>
-                                    <div className={this.props.visible.simForm ? 'showleft-form' : 'form-hide'}>
-                                        <WarpSimForm
-                                            enumData={this.props.enumData}
-                                            handleSearch={this.props.handleSearch}
-                                            btnMore={this.props.btnMore}
-                                            searchMap={this.props.searchMap}
+                                    </Col>
+                                    <Col
+                                        span={18}
+                                        className={
+                                            moreShow
+                                                ? "less-hide-height"
+                                                : "less-show-height"
+                                        }
+                                    >
+                                        <LessForm
+                                            handleSearch={this.handleSearch.bind(
+                                                this
+                                            )} //点击查询方法
+                                            searchMapFn={this.searchMapFn.bind(
+                                                this
+                                            )} //动态赋值查询条件到redux中
+                                            formMore={this.changeVisible.bind(
+                                                this
+                                            )} //控制查询显隐
                                         />
-                                    </div>
-                                </div>
-                                <div className='label-form-topright'>
-                                    <ButtonGroup className='list-add-group'>
-                                        <Button><i className='iconfont icon-daoru'></i>导入</Button>
-                                        <Button><i className='iconfont icon-daochu'></i>导出</Button>
-                                    </ButtonGroup>
-                                    <Button type='primary' onClick={this.props.btnNew}><i className='iconfont icon-xinjian'></i>新建</Button>
-                                </div>
-                            </div>
-                            <div className={this.props.visible.milForm ? 'label-form-bottom' : 'form-hide'}>
-                                <WarpMilForm
-                                    enumData={this.props.enumData}
-                                    handleSearch={this.props.handleSearch}
-                                    btnLess={this.props.btnLess}
-                                    searchMap={this.props.searchMap}
+                                    </Col>
+                                </Row>
+                            </Col>
+
+                            <Col span={6}>
+                                <Row type="flex" gutter={15} justify="end">
+                                    <Col>
+                                        <ButtonGroup>
+                                            <Button>
+                                                <i className="iconfont icon-daoru" />导入
+                                            </Button>
+                                            <Button>
+                                                <i className="iconfont icon-daochu" />导出
+                                            </Button>
+                                        </ButtonGroup>
+                                    </Col>
+                                    <Col>
+                                        <Button
+                                            type="primary"
+                                            onClick={this.btnNew.bind(this)}
+                                        >
+                                            <i className="iconfont icon-xinjian" />新建
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <div className="header-bottom">
+                            <Row
+                                className={
+                                    moreShow
+                                        ? "more-show-height"
+                                        : "less-hide-height"
+                                }
+                            >
+                                <MoreForm
+                                    handleSearch={this.handleSearch.bind(this)} //点击查询方法
+                                    searchMapFn={this.searchMapFn.bind(this)} //动态赋值查询条件到redux中
+                                    formMore={this.changeVisible.bind(this)} //控制查询显隐
                                 />
-                            </div>
+                            </Row>
                         </div>
-                }
-            </div>
+                    </Row>
+                )}
+            </Row>
         );
     }
 }
-
-export default ToolForm;
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.opportunityList
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(ToolForm);

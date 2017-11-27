@@ -3,16 +3,18 @@ import Immutable from 'immutable'
 let $$initialState = {
 	
 	data:[],
+	funnelData:[],
 	selectedRows:[],
+	selectedRowKeys:[],
 	formVisitable:false,
-	toolVisible:{
-		btnPanel:false,
-		simForm:true,
-		milForm:false
-	},
+	pagination: {
+                pageSize: 20,
+                page: 1
+            },
 	searchMap:{},
 	viewFormVisible:false,
-	viewData:{}
+	editData:{},
+	moreShow:false
 };
 
 function pageAdd(page,item) {
@@ -38,21 +40,22 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			case 'OPPORTUNITY_LIST_GETDATA':
 			return $$state.merge({data:action.payload.data})
 
-			case 'OPPORTUNITY_LIST_SHOWNEWFORM':
+			case 'OPPORTUNITY_LIST_SHOWFORM':
 			return $$state.merge({
-				viewData:{},
+				editData:action.payload.editData,
 				formVisitable:action.payload.visible,
 			})
-			case 'OPPORTUNITY_LIST_SHOWEDITFORM':
-			return $$state.merge({
-				formVisitable:action.payload.visible,
-			})
+		
 			case 'OPPORTUNITY_LIST_SHOWVIEWFORM':
 			return $$state.merge({
 				viewFormVisible : action.payload.visible,
 				viewData :action.payload.record ,
 			})
 
+			case "OPPORTUNITY_LIST_CHANGEVISIBLE": //查询功能显示
+            let visit = $$state.get("moreShow");
+			return $$state.merge({ moreShow: !visit });
+			
 			case 'OPPORTUNITY_LIST_CLOSEFORM' :
 			return $$state.merge({
 				formVisitable:false,
@@ -60,9 +63,13 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 			case 'OPPORTUNITY_LIST_CHANGEVISIBLE':
 			return $$state.merge({toolVisible:action.payload.toolVisible})
-			
-			case 'OPPORTUNITY_LIST_SELECTROW':
-			return $$state.merge({selectedRows:Immutable.fromJS(action.payload.rows),toolVisible:action.payload.toolVisible})
+		
+			case "OPPORTUNITY_LIST_SELECTROW": //保存table已选择条件
+            return $$state.merge({
+                selectedRows: Immutable.fromJS(action.payload.selectedRows),
+                selectedRowKeys: Immutable.fromJS(action.payload.selectedRowKeys)
+            });
+
 
 			case 'OPPORTUNITY_LIST_SAVESEARCHMAP':
 			return $$state.merge({searchMap:action.payload==undefined?{}:action.payload})
@@ -89,6 +96,9 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 			case 'OPPORTUNITY_LIST_DELETE':
 			return $$state.merge({data:action.payload.data,viewFormVisible:false})
+
+			case 'OPPORTUNITY_LIST_GETFUNNELDATA':
+			return $$state.merge({funnelData:action.payload.data})
 	    default: 
 	        return $$state;
     }

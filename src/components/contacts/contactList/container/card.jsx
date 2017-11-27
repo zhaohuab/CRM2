@@ -34,7 +34,13 @@ export default class Card extends React.Component {
             wrapperCol: { span: 21 }
         };
         const { getFieldDecorator } = this.props.form;
-
+        let ccc = (rule, value, callback) => {
+            var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+            if (!myreg.test(value)) {
+                callback("wrong");
+            }
+            callback();
+        };
         return (
             <div>
                 <Form>
@@ -46,7 +52,11 @@ export default class Card extends React.Component {
                             <FormItem style={{ display: "none" }}>
                                 {getFieldDecorator("id", {})(<Input />)}
                             </FormItem>
-                            <FormItem label="姓名" {...formItemLayout}>
+                            <FormItem
+                                label="姓名"
+                                {...formItemLayout}
+                                hasFeedback={true}
+                            >
                                 {getFieldDecorator("name", {
                                     rules: [
                                         {
@@ -134,8 +144,21 @@ export default class Card extends React.Component {
                     </Row>
                     <Row type="flex" justify="center">
                         <Col span={11}>
-                            <FormItem label="备注" {...formItemLayout}>
-                                {getFieldDecorator("remarks")(
+                            <FormItem
+                                label="备注"
+                                {...formItemLayout}
+                                hasFeedback={true}
+                            >
+                                {getFieldDecorator("remarks", {
+                                    rules: [
+                                        {
+                                            required: true,
+                                            //message: "请输出姓名",
+                                            validator: ccc
+                                            //pattern: /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/
+                                        }
+                                    ]
+                                })(
                                     <Input
                                         placeholder="请输入..."
                                         type="textarea"

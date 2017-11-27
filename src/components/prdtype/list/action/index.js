@@ -1,6 +1,7 @@
 import request from 'utils/reqwest'
 import { message} from 'antd';
 import { prdtype as url } from 'api';
+import { debug } from 'util';
 
 
 const fetchData = (type, payload) => {
@@ -17,18 +18,21 @@ export function getlist(params) {
             searchMap:{}
         }
     }
-    return (dispatch, getState) => {    
+    return (dispatch, getState) => { 
+        debugger   
         dispatch({ type: 'PRDTYPE_LIST_GETLISTSTART' })
         request({
             url: url.prdtype,
             method: 'get', 
             data: {
                 param: {
-                    ...params.pagination,
+                    page:params.pagination.page,
+                    pageSize:params.pagination.pageSize,
 					searchMap: params.searchMap,
                 }
             }          
         },(data) => {
+            debugger
             dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: data.data }));
         })
     }

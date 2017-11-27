@@ -1,9 +1,11 @@
-import { Form, Input, Select } from 'antd';
-
-import Email from 'utils/components/emails'
-import Department from 'components/refs/departments'
-import Enum from 'utils/components/enums'
-import RadioGroup from 'utils/components/radios'
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Form, Input, Select, Radio } from 'antd';
+import Enum from 'utils/components/enums';
+import * as Actions from "../action"
+//import RadioGroup from 'utils/components/radios'
+const RadioGroup = Radio.Group
 const FormItem = Form.Item;
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -13,20 +15,17 @@ class Card extends React.Component {
         const value = this.props.value || {};
         this.state = {
           mtObjId:'',
-          mtBiztypeId:''
+          mtBiztypeId:'',
+          value:1
     };
     }
    
-    componentDidMount() {        
-        //装箱过程   
-       /*  let { mtObjId, mtObjName, mtBiztypeId, mtBiztypeName } = this.props.dataSource;  
-        this.props.dataSource.mtObjId = { key: mtObjId, title: mtObjName }; 
-        this.props.dataSource.mtBiztypeId = { key: mtBiztypeId, title: mtBiztypeId };  */      
-        this.props.form.setFieldsValue(this.props.dataSource);
-    }
-    componentWillMount() {}
+
+    componentDidMount() {}
     render() {
-        const { getFieldDecorator } = this.props.form;
+        let { getFieldDecorator } = this.props.form;
+        let bizTypes = this.props.$$state.get("bizTypes").toJS();
+        let biztypeList = bizTypes.biztypeList||[];
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -36,33 +35,17 @@ class Card extends React.Component {
                 xs: { span: 24 },
                 sm: { span: 14 },
             },
-        };
-        {
-            getFieldDecorator('id', {
-            })(
-                <Input />
-                )
         }
         return (
-        <Form >
-            <FormItem
-                label = "名称"
-                { ...formItemLayout }
-            >
-                { getFieldDecorator('name', {
-                    rules: [{ required: true, message: '请输入名称' }],
-                })(
-                    <Input placeholder = '请输入...' />
-                    )}
-            </FormItem>
-            <FormItem  
+        <Form >         
+          <FormItem  
                 label = '业务对象'
                 { ...formItemLayout } 
             >              
                 { getFieldDecorator('mtObjId', {
                     rules: [{ required: true, message: '请选择业务对象!' }],
                     })(
-                        <Select style = {{ width: 120 }} placeholder = '请选择...'>
+                        <Select  style = {{ width: 120 }} placeholder = '请选择...'>
                             <Option value = { 1 }>联系人</Option>
                             <Option value = { 2 }>线索</Option>
                             <Option value = { 3 }>商机</Option>
@@ -75,17 +58,27 @@ class Card extends React.Component {
                 { ...formItemLayout } 
             >              
                 { getFieldDecorator('mtBiztypeId', {
-                   // initialValue:{ mtBiztypeId },
                     rules: [{ required: true, message: '请选择业务类型!' }],
                     })(
                         <Select style = {{ width: 120 }} placeholder = '请选择...'>
-                            <Option value = { 1 }>重点联系人</Option>
-                            <Option value = { 2 }>线索</Option>
-                            <Option value = { 3 }>普通商机</Option>
-                            <Option value = { 4 }>重点商机</Option>
-                            <Option value = { 5 }>竞品采集</Option>
+                        {biztypeList.map(item =>(
+                          <Option value = { Number(item.key) }>{item.title}</Option>
+                        ))}
                         </Select>
                       )}
+            </FormItem>
+              <FormItem
+                label = "启用状态"
+                { ...formItemLayout }
+            >
+                { getFieldDecorator('enableState', {
+                    rules: [{ required: true, message: '请输入名称' }],
+                })(
+                       <RadioGroup>
+                         <Radio value={1}>启用</Radio>
+                         <Radio value={2}>停用</Radio>
+                       </RadioGroup>
+                    )}
             </FormItem>
             <FormItem
                 label = "备注"
@@ -99,4 +92,38 @@ class Card extends React.Component {
     }
 }
 
-export default Card;
+
+let WrapedCard = Form.create({
+ onFieldsChange(props, changedFields) {//当 Form.Item 子节点的值发生改变时触发，可以把对应的值转存到 Redux store  ;
+    let data = props.dataSource;
+    for (let key in changedFields){
+        data[key] = changedFields[key].value
+        if(key == 'mtObjId'){
+          props.action.typeSelected(data[key])
+        }
+    }
+    props.action.valueChange(data)    
+  },
+  mapPropsToFields(props) {//把redux中的数据读出
+    return {
+      mtObjId: { value: props.dataSource.mtObjId },
+      mtBiztypeId: { value: props.dataSource.mtBiztypeId },
+      enableState: { value: (props.dataSource.enableState||1) },
+      remark: { value: props.dataSource.remark }
+    };
+  },
+})(Card)
+
+function mapStateToProps(state, ownProps) {
+  return {
+    $$state: state.taskcard
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+      action: bindActionCreators(Actions, dispatch)
+  }
+}
+
+export default  connect( mapStateToProps, mapDispatchToProps)(WrapedCard);

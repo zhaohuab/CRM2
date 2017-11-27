@@ -70,9 +70,8 @@ class List extends Component {
         };
         //点击每行table触发的onchange方法
         let that = this;
-     
+
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
-          
             this.props.action.selectData({ selectedRows, selectedRowKeys });
         };
     }
@@ -90,12 +89,7 @@ class List extends Component {
 
     //启停用按钮
     btnSetEnablestate(treeSelect, searchFilter, data, state) {
-        this.props.action.setEnablestate(
-            treeSelect,
-            searchFilter,
-            data,
-            state
-        );
+        this.props.action.setEnablestate(treeSelect, searchFilter, data, state);
     }
 
     //修改页面取消按钮
@@ -127,7 +121,6 @@ class List extends Component {
     btnBack() {
         this.props.action.selectData({ selectedRows: [], selectedRowKeys: [] });
     }
-
 
     //点击一个节点数的编辑操作
     treeSelectEditFn(rowKey) {
@@ -180,7 +173,7 @@ class List extends Component {
     showTotal(total) {
         return `共 ${total} 条`;
     }
-    
+
     render() {
         //这获取总的状态  //拿到想要的之后再toJS
         let { $$state } = this.props;

@@ -12,7 +12,7 @@ let $$initialState = {//设计这些参数各自的意义是什么？？
 	searchFilter:undefined,
 };
 
-export default function prdtypeReducers($$state = Immutable.fromJS($$initialState), action){
+export default function prdAttrReducers($$state = Immutable.fromJS($$initialState), action){
 
 	switch (action.type) {
 		case 'PRDTYPE_LIST_GETLISTSTART':

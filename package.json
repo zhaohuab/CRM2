@@ -5,10 +5,9 @@
   "main": "src/main.js",
   "scripts": {
     "dev": "webpack-dev-server --progress --colors --display-error-details --display-modules --config ./webpack.config.js",
-    "btest1": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress",
-    "btest2": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress",
-    "btest3": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress"
-    
+    "devip": "webpack-dev-server --progress --colors --display-error-details --display-modules --config ./webpack.config.ip.js",
+    "btest": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress",
+    "bup": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress"
   },
   "author": "",
   "license": "ISC",
@@ -21,8 +20,8 @@
     "babel-plugin-antd": "^0.4.1",
     "babel-plugin-import": "^1.4.0",
     "babel-plugin-react-transform": "^2.0.2",
-    "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-polyfill": "^6.7.2",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
@@ -39,15 +38,17 @@
     "json-loader": "^0.5.4",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
+    "lodash": "^4.17.4",
     "open-browser-webpack-plugin": "0.0.3",
-    "react-dnd": "^2.5.1",
-    "react-dnd-html5-backend": "^2.5.1",
+    "react-dnd": "^2.5.4",
+    "react-dnd-html5-backend": "^2.5.4",
     "react-transform-hmr": "^1.0.4",
     "rimraf": "^2.6.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.9",
     "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.16.2"
+    "webpack-dev-server": "^1.16.2",
+    "webpack-merge": "^4.1.1"
   },
   "dependencies": {
     "antd": "^2.13.0",
