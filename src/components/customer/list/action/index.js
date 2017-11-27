@@ -166,7 +166,6 @@ const getListData = (pagination, searchMap) => {
                 }
             },
             data => {
-                debugger;
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {
                         data: appendAddress(data),
@@ -261,6 +260,7 @@ const customList = [{ id: 1, value: "用友1" }, { id: 2, value: "用友2" }];
 const customerListInfo = (id, visible) => {
     return dispatch => {
         //使用id获取详情发Request
+
         dispatch({
             type: "CUSTOMER_LIST_ICBCDETAILINFO",
             data: customList,

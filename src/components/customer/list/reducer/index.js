@@ -22,9 +22,10 @@ let $$initialState = {
     },
     moreShow: false, //查询条件显隐,
     viewState: false, //滑动面板显隐,
-    icbcInfo: [], //根据客户工商id查询出来的所有详情信息
-    icbcSelect: {}, //存放选中模糊查询条件后获取的客户工商id
-    icbcVisible: false, //工商信息查询详情面板显隐
+    icbcInfo: [], //根据客户工商id查询出来的所有详情信息,用在编辑和新增中
+    icbcInfo2: [], //根据客户工商id查询出来的所有详情信息,用在详情中
+    icbcSelect: {}, //存放选中模糊查询条件后获取的客户工商id,在详情中使用
+    icbcVisible: false, //工商信息查询新增编辑时面板显隐控制
     icbcVisible2: false //工商信息查询详情面板显隐
 };
 
@@ -80,7 +81,7 @@ export default function orgReducers(
                 icbcInfo: action.data,
                 icbcVisible: action.visible
             });
-        case "CUSTOMER_LIST_MODALSHOW1":
+        case "CUSTOMER_LIST_MODALSHOW1": //显示关闭新增修改modal
             return $$state.merge({
                 //编辑中的modal显示、关闭
                 icbcVisible: action.visible
@@ -94,7 +95,7 @@ export default function orgReducers(
             return $$state.merge({
                 viewData: action.data
             });
-        case "CUSTOMER_LIST_SAVESEARCHMAP":
+        case "CUSTOMER_LIST_SAVESEARCHMAP": //每次根据查询条件进行获取table数据
             return $$state.merge({
                 searchMap: action.payload == undefined ? {} : action.payload
             });
@@ -121,7 +122,7 @@ export default function orgReducers(
                 data: action.payload.data
             });
 
-        case "CUSTOMER_LIST_GETENUMDATA":
+        case "CUSTOMER_LIST_GETENUMDATA": //获取查询条件基础显示内容
             return $$state.merge({ enumData: action.payload.enumData });
         default:
             return $$state;

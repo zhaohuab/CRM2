@@ -42,10 +42,25 @@ export default class IcbcInfo extends React.Component {
             //如果有认证信息显示出列表，没有分别显示message报错或者修改用户名按钮
             //使用request,把请求完的数据放在state中进行条目遍历
             if (flag) {
-                this.setState({
-                    visible: flag,
-                    icbcList: list
-                });
+                reqwest(
+                    {
+                        url: baseDir + "cum/customers/identifications/",
+                        method: "GET",
+                        data: {
+                            param: {
+                                name: this.props.viewData.name,
+                                size: 10
+                            }
+                        }
+                    },
+                    result => {
+                        //
+                        this.setState({
+                            visible: flag,
+                            icbcList: result.data
+                        });
+                    }
+                );
             } else {
                 this.setState({
                     visible: flag
@@ -54,8 +69,9 @@ export default class IcbcInfo extends React.Component {
         }
     }
     onSelect(item, n) {
+        debugger;
         this.setState({
-            select: item.id,
+            select: item.companyid,
             index: n
         });
     }
@@ -68,7 +84,22 @@ export default class IcbcInfo extends React.Component {
             },
             () => {
                 //根据id进行action查询工商详情查询，改变modal1的显示，modal1获取工商详情查询数据
-                this.props.customerListInfo({ id: this.state.select });
+                reqwest(
+                    {
+                        url:
+                            baseDir +
+                            "cum/customers/identifications/" +
+                            this.state.select,
+                        method: "GET"
+                    },
+                    result => {
+                        debugger;
+                        this.setState({
+                            visible: false
+                        });
+                    }
+                );
+                // this.props.customerListInfo({ id: this.state.select });
             }
         );
     }
@@ -109,7 +140,7 @@ export default class IcbcInfo extends React.Component {
                                               n
                                           )}
                                       >
-                                          {item.value}
+                                          {item.companyname}
                                       </div>
                                   );
                               })
