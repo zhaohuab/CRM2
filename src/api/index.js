@@ -66,6 +66,7 @@ const doc = {
 }
 
 const sysinit = {
+    mainEditTpl : baseDir + "sys/sysinit/template/edit",
     info : baseDir + "sys/sysinit/info",
     org : baseDir + 'sys/sysinit/org',
     adminList : baseDir + 'sys/sysinit/adminlist',
