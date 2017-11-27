@@ -1,4 +1,18 @@
-import {Cascader,Table,Icon,Button, Form,Input, Checkbox,Col,DatePicker,message,Radio,Row} from "antd";
+import {
+    Cascader,
+    Table,
+    Icon,
+    Button,
+    Form,
+    Input,
+    Checkbox,
+    Col,
+    DatePicker,
+    message,
+    Radio,
+    Row,
+    Modal
+} from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 //导入action方法
@@ -8,65 +22,59 @@ import Department from "components/refs/departments";
 import Enum from "utils/components/enums";
 const FormItem = Form.Item;
 const { TextArea } = Input;
+import * as enumDataFake from "./enumdata";
+import cityData from "./citydata";
+import Industry from "./industry";
+import CuperiorCustomer from "./superiorCustomer";
+import IcbcInfo from "./icbcInfo";
 
 const RadioGroup = Radio.Group;
 class EditForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selectValueLevel: "客户等级",
-            selectValueSaleArea: "营销区域",
-            selectValueCannelType: "渠道类型",
-            selectValueIndustry: "行业",
-            selectValueLifecycle: "生命周期",
-            selectValueEnableState: "启用标识"
-        };
     }
 
-    componentDidMount() {
-        if (this.props.$$state.get("isEdit") == true) {
-            const viewData = this.props.$$state.get("viewData").toJS();
-            let { fatherorgId, fatherorgName,level,levelName } = viewData;
-            viewData.fatherorgId = {
-                key: fatherorgId,
-                title: fatherorgName
-            };
-            viewData.level = {
-                key: level,
-                title: levelName
-            };
-            const province_city_district = [];
-            province_city_district.push(String(viewData.province));
-            province_city_district.push(String(viewData.city));
-            province_city_district.push(String(viewData.district));
-            viewData.province_city_district = province_city_district;
-            this.props.form.setFieldsValue(viewData);
-        }
+    // componentDidMount() {
+    //     //用来判断是新增还是修改，添加数据用的
+    //     if (this.props.$$state.get("isEdit") == true) {
+    //         const viewData = this.props.$$state.get("viewData").toJS();
+    //         let { fatherorgId, fatherorgName, level, levelName } = viewData;
+    //         viewData.fatherorgId = {
+    //             key: fatherorgId,
+    //             title: fatherorgName
+    //         };
+    //         viewData.level = {
+    //             key: level,
+    //             title: levelName
+    //         };
+    //         const province_city_district = [];
+    //         province_city_district.push(String(viewData.province));
+    //         province_city_district.push(String(viewData.city));
+    //         province_city_district.push(String(viewData.district));
+    //         viewData.province_city_district = province_city_district;
+    //         this.props.form.setFieldsValue(viewData);
+    //     }
+    // }
+
+    //把获取到的客户工商信息放在redux中
+    customerListInfo(id) {
+        this.props.action.customerListInfo(id, true);
     }
 
-    handleChangeSaleArea = value => {
-        if (value == "0") {
-            this.setState({
-                selectValueSaleArea: "营销区域"
-            });
-        } else {
-            this.setState({
-                selectValueSaleArea: value
-            });
-        }
-    };
+    //modal取消按钮
+    onCancel() {
+        this.props.action.customerModal1Show(false);
+    }
 
-    handleChangeIndustry = value => {
-        if (value == "0") {
-            this.setState({
-                selectValueIndustry: "行业"
-            });
-        } else {
-            this.setState({
-                selectValueIndustry: value
-            });
-        }
-    };
+    //modal框底部按钮
+    footerContent() {
+        return (
+            <div>
+                <Button onClick={this.onCancel.bind(this)}>关闭</Button>
+                <Button>取消认证</Button>
+            </div>
+        );
+    }
 
     render() {
         const formItemLayout = {
@@ -74,401 +82,614 @@ class EditForm extends React.Component {
             wrapperCol: { span: 12 }
         };
         const { getFieldDecorator } = this.props.form;
-        const viewData = this.props.$$state.get("viewData").toJS();
-        const enumData = this.props.$$state.get("enumData").toJS();
+        const {
+            viewData,
+            enumData,
+            icbcVisible,
+            icbcInfo
+        } = this.props.$$state.toJS();
+
         return (
-            <Row id="form-input-recover">
-                {viewData ? (
+            <div>
+                <Row className="form-input-recover">
                     <Row>
                         <Form layout="inline" className="login-form">
+                            <FormItem
+                                style={{
+                                    display: "none"
+                                }}
+                                {...formItemLayout}
+                                label="id"
+                            >
+                                {getFieldDecorator("id", {})(
+                                    <Input type="text" placeholder="请输入" />
+                                )}
+                            </FormItem>
                             <Row className="form-bottom">
                                 <Row>
-                                    <Col span={1} className="form-label">
+                                    <Col span={2} className="form-label">
                                         客户信息:
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col offset={1}>
                                         <Row className="row-bottom">
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="客户名称"
-                                                >
-                                                    {getFieldDecorator("name", {
-                                                        rules: [
-                                                            {
-                                                                required: true,
-                                                                message:
-                                                                    "请输入客户名称!"
-                                                            }
-                                                        ]
-                                                    })(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                            <Col span={12}>
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <span className="import">
+                                                                *
+                                                            </span>客户名称：
+                                                        </Row>
+                                                    </Col>
+                                                    <Col
+                                                        span={11}
+                                                        id="upload-form-item"
+                                                    >
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "name",
+                                                                {
+                                                                    rules: [
+                                                                        {
+                                                                            required: true,
+                                                                            message:
+                                                                                "请输入客户名称!"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                    <Col span={5}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <IcbcInfo
+                                                                viewData={
+                                                                    viewData
+                                                                }
+                                                                customerListInfo={this.customerListInfo.bind(
+                                                                    this
+                                                                )}
+                                                            />
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
                                             </Col>
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="客户等级"
-                                                >
-                                                    {getFieldDecorator(
-                                                        "level",
-                                                        {}
-                                                    )(
-                                                        <Enum
-                                                            dataSource={enumData.level}
-                                                        />
-                                                    )}
-                                                </FormItem>
-                                            </Col>
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="营销区域"
-                                                >
-                                                    {getFieldDecorator(
-                                                        "saleArea",
-                                                        {}
-                                                    )(
-                                                        <Enum
-                                                            isAddAll={true}
-                                                            dataSource={
-                                                                this.props
-                                                                    .enumData
-                                                                    .saleAreaEnum
-                                                            }
-                                                            selectValue={
-                                                                this.state
-                                                                    .selectValueSaleArea
-                                                            }
-                                                            handleChange={
-                                                                this
-                                                                    .handleChangeSaleArea
-                                                            }
-                                                        />
-                                                    )}
-                                                </FormItem>
-                                            </Col>
-                                        </Row>
-                                        <Row className="row-bottom">
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="行业"
-                                                >
-                                                    {getFieldDecorator(
-                                                        "industry",
-                                                        {}
-                                                    )(
-                                                        <Enum
-                                                            isAddAll={true}
-                                                            dataSource={
-                                                                this.props
-                                                                    .enumData
-                                                                    .industryEnum
-                                                            }
-                                                            selectValue={
-                                                                this.state
-                                                                    .selectValueIndustry
-                                                            }
-                                                            handleChange={
-                                                                this
-                                                                    .handleChangeIndustry
-                                                            }
-                                                        />
-                                                    )}
-                                                </FormItem>
-                                            </Col>
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="负责人"
-                                                >
-                                                    {getFieldDecorator(
-                                                        "respoPerson",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
-                                            </Col>
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="负责部门"
-                                                >
-                                                    {getFieldDecorator(
-                                                        "respoDept",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                            <Col span={12}>
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>
+                                                                客户等级：
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "level"
+                                                            )(
+                                                                <Enum
+                                                                    dataSource={
+                                                                        enumData.level
+                                                                    }
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
                                             </Col>
                                         </Row>
                                         <Row className="row-bottom">
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="上级客户"
-                                                >
-                                                    {getFieldDecorator(
-                                                        "parentId",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                            <Col span={12}>
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>负责人：</div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "respoPerson"
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
                                             </Col>
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="员工人数"
-                                                >
-                                                    {getFieldDecorator(
-                                                        "employeeNum",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                            <Col span={12}>
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>行业：</div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "industry"
+                                                            )(<Industry />)}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
                                             </Col>
-                                            <Col span={8} />
                                         </Row>
+                                        <Row className="row-bottom">
+                                            <Col span={12}>
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>
+                                                                上级客户：
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "parentId",
+                                                                {}
+                                                            )(
+                                                                <CuperiorCustomer
+                                                                    width={500}
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                            <Col span={12}>
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>
+                                                                渠道类型：
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "respoDept",
+                                                                {}
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                        <Row className="row-bottom">
+                                            <Col span={12}>
+                                                <Row type="flex">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>备注：</div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "remark",
+                                                                {}
+                                                            )(
+                                                                <TextArea
+                                                                    autosize={{
+                                                                        minRows: 4,
+                                                                        maxRows: 8
+                                                                    }}
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                            <Col span={12}>
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>
+                                                                员工人数：
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "employeeNum",
+                                                                {}
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Row>
+
+                            <Row className="form-bottom">
+                                <Row>
+                                    <Col span={2}>
+                                        <div className="form-label">
+                                            地址信息:
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row className="row-bottom">
+                                    <Col offset={2}>
+                                        <Col span={12}>
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>省/市/区：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={16}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "province_city_district",
+                                                            {}
+                                                        )(
+                                                            <Cascader
+                                                                options={
+                                                                    cityData
+                                                                }
+                                                                placeholder="请输入"
+                                                            />
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>详细地址：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={16}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "address",
+                                                            {}
+                                                        )(
+                                                            <Input
+                                                                type="text"
+                                                                placeholder="请输入"
+                                                            />
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Col>
+                                </Row>
+                                <Row className="row-bottom">
+                                    <Col offset={2}>
+                                        <Col span={12}>
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>邮箱：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={16}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "email",
+                                                            {}
+                                                        )(
+                                                            <Input
+                                                                type="text"
+                                                                placeholder="请输入"
+                                                            />
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>电话：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={16}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "tel",
+                                                            {}
+                                                        )(
+                                                            <Input
+                                                                type="text"
+                                                                placeholder="请输入"
+                                                            />
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
                                     </Col>
                                 </Row>
                             </Row>
                             <Row className="form-bottom">
                                 <Row>
-                                    <Col span={1} className="form-label">
-                                        备注:
+                                    <Col span={2}>
+                                        <div className="form-label">
+                                            更多信息:
+                                        </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col offset={2}>
-                                        <Row>
-                                            <Col span={8}>
-                                                <FormItem {...formItemLayout}>
-                                                    {getFieldDecorator(
-                                                        "remark",
-                                                        {}
-                                                    )(
-                                                        <TextArea
-                                                            autosize={{
-                                                                minRows: 4,
-                                                                maxRows: 8
-                                                            }}
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                </Row>
-                            </Row>
-                            <Row className="form-bottom">
-                                <Row>
-                                    <Col span={1}>
-                                        <div className="form-label">地址信息:</div>
-                                    </Col>
-                                </Row>
-                                <Row className="row-bottom">
-                                    <Col offset={1}>
-                                        <Col span={8}>
-                                            <FormItem
-                                                {...formItemLayout}
-                                                label="省/市/区/县"
-                                            >
-                                                {getFieldDecorator(
-                                                    "province_city_district",
-                                                    {}
-                                                )(
-                                                    <Cascader
-                                                        options={
-                                                            this.props.cityData
-                                                        }
-                                                        placeholder="请输入"
-                                                    />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                        <Col span={8}>
-                                            <FormItem
-                                                {...formItemLayout}
-                                                label="街道号码"
-                                            >
-                                                {getFieldDecorator(
-                                                    "street",
-                                                    {}
-                                                )(
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="请输入"
-                                                    />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                        <Col span={8}>
-                                            <FormItem
-                                                {...formItemLayout}
-                                                label="电话"
-                                            >
-                                                {getFieldDecorator("tel", {})(
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="请输入"
-                                                    />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                    </Col>
-                                </Row>
-                                <Row className="row-bottom">
-                                    <Col offset={1}>
-                                        <Col span={8}>
-                                            <FormItem
-                                                {...formItemLayout}
-                                                label="邮箱"
-                                            >
-                                                {getFieldDecorator("email", {})(
-                                                    <Input
-                                                        type="text"
-                                                        placeholder="请输入"
-                                                    />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                    </Col>
-                                </Row>
-                            </Row>
-                            <Row className="form-bottom">
-                                <Row>
-                                    <Col span={1}>
-                                        <div className="form-label">更多信息:</div>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col offset={1}>
                                         <Row className="row-bottom">
-                                            <Col span={8}>
-                                                {" "}
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="注册资金"
+                                            <Col span={12}>
+                                                <Row
+                                                    type="flex"
+                                                    align="middle"
+                                                    gutter={10}
                                                 >
-                                                    {getFieldDecorator(
-                                                        "regCapital",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>
+                                                                注册资金：
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                            label=""
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "regCapital"
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
                                             </Col>
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="法定代表人"
+                                            <Col span={12}>
+                                                <Row
+                                                    type="flex"
+                                                    align="middle"
+                                                    gutter={10}
                                                 >
-                                                    {getFieldDecorator(
-                                                        "legalRepresent",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
-                                            </Col>
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="纳税人识别号"
-                                                >
-                                                    {getFieldDecorator(
-                                                        "eaxplayerNo",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>
+                                                                法定代表人：
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={16}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "legalRepresent",
+                                                                {}
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
                                             </Col>
                                         </Row>
                                         <Row className="row-bottom">
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="工商注册号"
+                                            <Col span={12}>
+                                                <Row
+                                                    type="flex"
+                                                    align="middle"
+                                                    gutter={10}
                                                 >
-                                                    {getFieldDecorator(
-                                                        "bizRegno",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            纳税人识别号：
+                                                        </Row>
+                                                    </Col>
+                                                    <Col
+                                                        span={11}
+                                                        id="upload-form-item"
+                                                    >
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "eaxplayerNo",
+                                                                {}
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                    <Col span={4}>
+                                                        <Button>+照片</Button>
+                                                    </Col>
+                                                </Row>
                                             </Col>
-                                            <Col span={8}>
-                                                <FormItem
-                                                    {...formItemLayout}
-                                                    label="组织机构代码"
+                                            <Col span={12}>
+                                                <Row
+                                                    type="flex"
+                                                    align="middle"
+                                                    gutter={10}
                                                 >
-                                                    {getFieldDecorator(
-                                                        "orgCode",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            工商注册号：
+                                                        </Row>
+                                                    </Col>
+                                                    <Col
+                                                        span={11}
+                                                        id="upload-form-item"
+                                                    >
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "bizRegno",
+                                                                {}
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                    <Col span={4}>
+                                                        <Button>+照片</Button>
+                                                    </Col>
+                                                </Row>
                                             </Col>
-                                            <Col>
-                                                <FormItem
-                                                    style={{
-                                                        display: "none"
-                                                    }}
-                                                    {...formItemLayout}
-                                                    label="id"
+                                        </Row>
+                                        <Row className="row-bottom">
+                                            <Col span={12}>
+                                                <Row
+                                                    type="flex"
+                                                    align="middle"
+                                                    gutter={10}
                                                 >
-                                                    {getFieldDecorator(
-                                                        "id",
-                                                        {}
-                                                    )(
-                                                        <Input
-                                                            type="text"
-                                                            placeholder="请输入"
-                                                        />
-                                                    )}
-                                                </FormItem>
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            组织机构代码：
+                                                        </Row>
+                                                    </Col>
+                                                    <Col
+                                                        span={11}
+                                                        id="upload-form-item"
+                                                    >
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "orgCode",
+                                                                {}
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                    <Col span={4}>
+                                                        <Button>+照片</Button>
+                                                    </Col>
+                                                </Row>
                                             </Col>
                                         </Row>
                                     </Col>
@@ -476,20 +697,59 @@ class EditForm extends React.Component {
                             </Row>
                         </Form>
                     </Row>
-                ) : (
-                    ""
-                )}
-            </Row>
+                </Row>
+                <Modal
+                    title="工商核实"
+                    visible={icbcVisible}
+                    //onOk={this.formHandleOk.bind(this)}
+                    onCancel={this.onCancel.bind(this)}
+                    footer={this.footerContent.call(this)}
+                    width={500}
+                    maskClosable={false}
+                >
+                    <div className="modal-height">
+                        {icbcInfo && icbcInfo.length
+                            ? icbcInfo.map(item => {
+                                  return <div>{item.value}</div>;
+                              })
+                            : ""}
+                    </div>
+                </Modal>
+            </div>
         );
     }
 }
 
+const cardForm = Form.create({
+    mapPropsToFields: props => {
+        //把redux中的值取出来赋给表单
+        let viewData = props.$$state.toJS().viewData;
+        let value = {};
+        for (let key in viewData) {
+            value[key] = { value: viewData[key] };
+        }
+        return {
+            ...value
+        };
+    },
+    onFieldsChange: (props, onChangeFild) => {
+        //往redux中写值//把值进行更新改变
+        let viewData = props.$$state.toJS().viewData;
+        for (let key in onChangeFild) {
+            if (onChangeFild[key].value && onChangeFild[key].value.key) {
+                viewData[key] = onChangeFild[key].value.key;
+            } else {
+                viewData[key] = onChangeFild[key].value;
+            }
+        }
+        props.editCardFn(viewData);
+    }
+})(EditForm);
 
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList,
-        $$stateCommon: state.componentReducer
+        $$state: state.customerList
     };
 }
 //绑定action到组件props
@@ -499,4 +759,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 //输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(EditForm);
+export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
