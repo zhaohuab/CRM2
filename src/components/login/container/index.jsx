@@ -1,3 +1,4 @@
+import React from 'react'
 import { Form, Icon, Input, Button, Checkbox, message, Carousel } from "antd";
 import * as Actions from "../action";
 import { connect } from "react-redux";

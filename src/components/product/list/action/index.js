@@ -1,6 +1,6 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { product as url } from 'api';
+import { product as url, measure, prdtype, brand } from 'api';
 
 const getListData = (params) => {
 	return (dispatch) => {
@@ -69,11 +69,67 @@ const onSave4Edit = (data) => {
 				param: data
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('PRODUCT_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
 	}
 }
 
+const getProdClassRef = () => {
+	return (dispatch) => {
+		reqwest({
+			url: prdtype.prdtype + '/reftree',
+			method: "GET",
+			data: {
+				param: ""
+			}
+		}, result => {
+			dispatch(fetchData('PRODUCT_CLASS_GETREFTREE', { ...result}));
+		})
+	}
+}
 
-export {showForm, onDelete, getListData, onSave4Add,onSave4Edit}
+const getMeaUnitRef = (param) => {
+	return (dispatch) => {
+		reqwest({
+			url: measure.measure+'/ref',
+			method: "GET",
+			data: {
+				param: {page: param.page,
+								pageSize: param.pageSize}
+			}
+		}, result => {
+			dispatch(fetchData('PRODUCT_MEAUNIT_GETREFLIST', { ...result}));
+		})
+	}
+}
+
+const getBrandRef = (param) => {
+	return (dispatch) => {
+		reqwest({
+			url: brand.brand+'/ref',
+			method: "GET",
+			data: {
+				param: {page: param.page,
+								pageSize: param.pageSize}
+			}
+		}, result => {
+			dispatch(fetchData('PRODUCT_BRAND_GETREFLIST', { ...result}));
+		})
+	}
+}
+
+const addRow = (item) => {
+	return {
+		type:"ADDROW",
+		content:item
+	}
+}
+
+const showSalesUnit = (flag) => {
+	return {
+		type:"PRODUCT_SALESUNIT_VISIBLE",
+		content:flag
+	}
+}
+export {showForm, onDelete, getListData, onSave4Add, onSave4Edit, getProdClassRef, 
+	getMeaUnitRef, getBrandRef, addRow, showSalesUnit}

@@ -12,6 +12,8 @@ const org = {
 };
 
 const user = {
+    listTpl : baseDir + "sys/users/template/list",
+    addTpl : baseDir + "sys/users/template/add",
     user: baseDir + "sys/users",
     userBatch: baseDir + "sys/users/batch",
     enable: baseDir + "sys/users/state" // {id}/state
@@ -54,7 +56,8 @@ const visitRouter = {
 const taskcard = {
     taskcard: baseDir + 'sact/taskcards',
     taskcardBatch: baseDir + 'sact/taskcards/batch',
-    enable: baseDir + 'sact/taskcards/state' 
+    enable: baseDir + 'sact/taskcards/state',
+    biztype:baseDir + 'sact/taskcards/biztypes'
 }
 const doc = {
     doc: baseDir + 'base/docs',
@@ -78,10 +81,25 @@ const oppaction = {
 
 const visitrules = {
     visitrules: baseDir + 'sact/visitrules',
+    enable: baseDir + '/sact/visitrules/state',
 }
 
 const oppstage = {
     oppstage: baseDir + 'sprc/oppstages',
+    
+}
+
+const oppdimension = {
+    oppdimension: baseDir + 'sprc/oppdimensions',
+    doc:baseDir + "sprc/oppdimensions/docs",
+}
+
+const oppflow = {
+    oppflow: baseDir + 'sprc/oppflows',
+    doc:baseDir + "sprc/oppflows/docs",
+}
+const prdattr = {
+    prdattr: baseDir + 'base/attrs',
 }
 export {
     login,
@@ -104,4 +122,7 @@ export {
     visitRouter,
     visitrules,
     oppstage,
+    oppdimension,
+    oppflow,
+    prdattr,
 }

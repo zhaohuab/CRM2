@@ -182,7 +182,9 @@ class List extends Component {
 
     //组件渲染完毕获取数据
     componentDidMount(){
-        this.props.prdAction.getlist();
+        let { pagination,searchMap } = this.state;
+        let params = {pagination:pagination,searchMap:searchMap};
+        this.props.prdAction.getlist(params);
         this.props.prdAction.getTreeList();
         this.setState({
             minH:document.documentElement.clientHeight- 70

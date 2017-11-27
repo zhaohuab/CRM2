@@ -118,27 +118,20 @@ const closePanel = () => {
     }
 }
 
-const changeVisible = (visible) => {
-
+//控制查询面板大小
+const changeVisible = () => {
     return {
-        type: 'OPPORTUNITY_LIST_CHANGEVISIBLE', payload: { toolVisible: visible }
-    }
+        type: "OPPORTUNITY_LIST_CHANGEVISIBLE"
+    };
+};
+
+
+
+const showForm = (editData,visible) => {
+    return fetchData('OPPORTUNITY_LIST_SHOWFORM', { editData,visible });
 }
 
-const selectRow = (rows, visible) => {
-    return {
-        type: 'OPPORTUNITY_LIST_SELECTROW',
-        payload: { rows: rows, toolVisible: visible }
-    }
-}
 
-const showNewForm = (visible) => {
-    return fetchData('OPPORTUNITY_LIST_SHOWNEWFORM', { visible });
-}
-
-const showEditForm = (visible) => {
-    return fetchData('OPPORTUNITY_LIST_SHOWEDITFORM', { visible });
-}
 
 const showViewForm = (visible, record) => {
     return (dispatch) => {
@@ -174,17 +167,43 @@ const deleteData = (ids, searchMap, pagination) => {
     }
 }
 
+//保存table已选择行数据
+const selectRow = (selectedRows, selectedRowKeys) => {
+    return {
+        type: "OPPORTUNITY_LIST_SELECTROW",
+        payload: { selectedRows, selectedRowKeys }
+    };
+};
+
+
+//定义方法 action
+const getFunnelData = (pagination, searchMap) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity+'/funnel',
+            method: 'get',
+            data: {
+                param: {
+                    searchMap: searchMap
+                }
+            }
+        }, (data) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETFUNNELDATA', data ));
+        })
+    }
+}
+
 
 //输出 type 与 方法
 export {
     getListData,
     changeVisible,
     selectRow,
-    showNewForm,
-    showEditForm,
     listAddSave,
     listEditSave,
     showViewForm,
     closePanel,
-    deleteData
+    deleteData,
+    showForm,
+    getFunnelData
 }
