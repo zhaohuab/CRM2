@@ -67,6 +67,7 @@ const rootRoutes = {
                                 require('./routes/oppstage').default,
                                 require('./routes/oppdimension').default,
                                 require('./routes/oppflow').default,
+                                require('./routes/prdattr').default,
                                 {
                                     //未开发页面
                                     path: "developing",

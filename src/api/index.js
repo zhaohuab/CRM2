@@ -94,6 +94,8 @@ const oppdimension = {
 const oppflow = {
     oppflow: baseDir + 'sprc/oppflows',
     doc:baseDir + "sprc/oppflows/docs",
+const prdattr = {
+    prdattr: baseDir + 'base/attrs',
 }
 export {
     login,
@@ -118,4 +120,5 @@ export {
     oppstage,
     oppdimension,
     oppflow
+    prdattr,
 }

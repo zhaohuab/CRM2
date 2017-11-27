@@ -48,6 +48,8 @@ import oppstagelist from 'components/oppstage/list/reducer'
 import oppdimensionlist from 'components/oppdimension/list/reducer';
 //商机流程
 import oppflowList from 'components/oppflow/list/reducer';
+//产品属性
+import prdattr from 'components/prdattr/list/reducer'
 
 let rootReducer = combineReducers({
     login,
@@ -74,6 +76,7 @@ let rootReducer = combineReducers({
     oppstagelist,
     oppdimensionlist,
     oppflowList
+    prdattr,
 });
 
 export { rootReducer };

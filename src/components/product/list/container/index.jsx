@@ -28,8 +28,7 @@ class List extends React.Component{
             },
             searchMap : {
               enableState:1,
-            },
-            originCode:{},//产品修改前的code,用于编辑功能
+            }          
         },      
         
 
@@ -80,10 +79,6 @@ class List extends React.Component{
             title: '启用状态',
             dataIndex: 'enableStateName',
             key: 'enableStateName'  
-        },{
-            title: '产品描述',
-            dataIndex: 'description',
-            key: 'description'  
         }]
     }
     componentDidMount() {
@@ -92,9 +87,14 @@ class List extends React.Component{
     }
 
     onAdd() {
+        let { pagination,searchMap } = this.state;
         this.setState({isEdit:false});
         this.props.action.showForm(true,{});
+        this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
+        this.props.action.getProdClassRef();//获取产品分类参照列表
+        this.props.action.getBrandRef(pagination);//获取品牌参照列表
     }
+
     onBack = ()=>{
         this.setState({headLabel:false});
     }
@@ -104,8 +104,7 @@ class List extends React.Component{
     }
 
     onDelete = () => {
-        let { pagination,searchMap } = this.state;
-        
+        let { pagination,searchMap } = this.state;     
         this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
         this.setState({headLabel:false,selectedRowKeys:[]});
     }
@@ -253,7 +252,7 @@ class List extends React.Component{
                     <Table  size="middle" rowSelection={rowSelection} dataSource={page.data} rowKey="id" columns = {this.columns}
                     pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
                 </div>
-                <Modal title="新增/编辑 产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={800}>
+                <Modal title="新增/编辑 产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={850}>
                     <div className='model-height'>
                         <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
                     </div>
