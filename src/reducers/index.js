@@ -75,7 +75,7 @@ let rootReducer = combineReducers({
     visitRules,
     oppstagelist,
     oppdimensionlist,
-    oppflowList
+    oppflowList,
     prdattr,
 });
 
