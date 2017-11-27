@@ -7,6 +7,7 @@ const showForm = (flag, editData = {}, index) => {
 		dispatch(fetchData('PRDATTR_LIST_SHOWFORM', { visible: flag, editData }));
 	}
 }
+
 const showAddForm = (flag) => {
 	return (dispatch) => {
 		dispatch(fetchData('PRDATTR_LIST_ADDSHOWFORM', { visible: flag }));
@@ -33,6 +34,7 @@ const getListData = (pagination, searchMap) => {
 }
 
 const onSave4Add = (data) => {
+	debugger
 	return (dispatch) => {
 		reqwest({
 			url: prdattr.prdattr,
@@ -58,6 +60,12 @@ const onSave4Edit = (data) => {
 		}, result => {
 			dispatch(fetchData('PRDATTR_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
+	}
+}
+//TEST
+const edit = () => {
+	return (dispatch) => {
+		dispatch(fetchData('PRDATTR_LIST_SHOWFORM_TEST', { visible: true }));
 	}
 }
 
@@ -101,7 +109,7 @@ const onEnable = (rowKeys, enable, params) => {
 const changeFormData = (fields) => {	
 	return {
 			 type:'PRDATTR_FORM_CHANGEDATA',
-			 content:fields  
+			 content:fields
 	}    
 }
 
@@ -156,6 +164,20 @@ const getAttrDetail = (id) => {
 		})
 	}
 } 
+
+const getAttrDetails = (id) => {
+	return (dispatch) => {
+		reqwest({
+			url: prdattr.prdattr + "/" + id.toString(),
+			method: "GET",
+			data: {
+				param:{}
+			}
+		}, result => {
+			dispatch(fetchData('PRDATTR_LIST_SHOWFORM', { detailVisible:true, data:result }));
+		})
+	}
+} 
 //输出 type 与 方法
 export {
 	getListData,
@@ -171,5 +193,6 @@ export {
 	onEditAttrVa,
 	setAttrData,
 	getAttrDetail,
-	showAddForm
+	showAddForm,
+	edit
 }

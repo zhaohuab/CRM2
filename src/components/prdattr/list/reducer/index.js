@@ -2,13 +2,14 @@ import Immutable from 'immutable'
 
 let $$initialState = {
 	loading: false,
-	editData:{},
-	data:[],
+	data:{},
 	visible:false,
 	attrValue:[],
 	formData:{},
+	valueList:[],
 	addNum:0,
-	changeData:[]
+	changeData:[],
+	detailVisible:false,
 };
 
 function listAdd(page,item) {	
@@ -53,8 +54,20 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'PRDATTR_LIST_SHOWFORM':
 			return $$state.merge({
 				visible : action.content.visible,
-				editData : action.content.data,
+				formData : action.content.data,
 				attrValue:action.content.data.valueList
+			})
+		case 'PRDATTR_LIST_SHOWFORMDETAIL':
+			return $$state.merge({
+				detailVisible : action.content.visible,
+				formData : action.content.data,
+				attrValue:action.content.data.valueList
+			})
+		case 'PRDATTR_LIST_SHOWFORM_TEST':
+			return $$state.merge({
+				visible : action.content.visible,
+				//editData : action.content.data,
+				//attrValue:action.content.data.valueList
 			})
 		case 'PRDATTR_LIST_ADDSHOWFORM':
 			return $$state.merge({

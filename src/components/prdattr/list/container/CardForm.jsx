@@ -16,7 +16,7 @@ class AttrCard extends React.Component {
     }
 
     componentDidMount() {
-        this.props.form.setFieldsValue(this.props.dataSource);
+        //this.props.form.setFieldsValue(this.props.dataSource);
     }
 
     addRow(){
@@ -66,22 +66,6 @@ class AttrCard extends React.Component {
                     <Input  placeholder='请输入...'/>
                     )}
             </FormItem>
-            {/* <FormItem
-                label="属性值"
-               // {...formItemLayout}
-            >
-                {getFieldDecorator('children', {
-                
-                })(
-                    <div >                        
-                        <AttrVaTable/>
-                        <Button type = "dashed" onclick={this.addRow} style={{width: '100%'}}>
-                            <Icon type="plus" className = 'icon' />增加属性值
-                        </Button>
-                    </div>
-                    )}
-            </FormItem> */}
-
         </Form>)
     }
 }
@@ -105,16 +89,28 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){
-           console.log(fields);
-           let data = props.$$state.get("formData").toJS();
-           console.log("data:"+data);
-            props.action.changeFormData(fields);
+        onFieldsChange(props, fields){           
+           // let data = props.$$state.get("formData").toJS();
+           debugger
+            let changeData = {};
+            for(let i in fields){
+                let key = i;
+                changeData = {[i]:fields[i].value};
+            }
+            props.action.changeFormData(changeData);
         },
         mapPropsToFields(props){
+            let data = props.$$state.get("formData").toJS();
             return{
-
-            }
+                name:{
+                    ...data.name,
+                    value:data.name
+                },
+                erpCode:{
+                    ...data.erpCode,
+                    value:data.erpCode
+                },
+            };
         },
         onValuesChange(_, values){
             //console.log(values);

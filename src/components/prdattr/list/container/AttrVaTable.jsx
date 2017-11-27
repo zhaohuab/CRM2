@@ -138,7 +138,7 @@ class AttrValueTable extends React.Component {
   }
 
   render(){ 
-    let editData = this.props.$$state.get('editData').toJS();
+    //let formData = this.props.$$state.get('formData').toJS();
     let dataSource =this.props.$$state.get('attrValue').toJS();
     let columns=this.columns;
     return (

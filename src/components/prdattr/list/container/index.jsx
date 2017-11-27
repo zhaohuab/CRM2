@@ -5,9 +5,11 @@ import { Table, Modal, Button, Icon,Input, Radio, Popconfirm, Form } from 'antd'
 import WrappedCard from './CardForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import AttrVaTable from './AttrVaTable.jsx'
+import AttrVaDeTable from './AttrVaDetailTable.jsx'
 import './index.less'
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
+const Search = Input.Search;
 import 'assets/stylesheet/all/iconfont.css'
 
 //导入action方法
@@ -21,6 +23,8 @@ class List extends React.Component {
       {
         title: '属性名称',
         dataIndex: 'name',
+        render:(text,record,index) => (
+          <a onClick = {this.showDetail.bind(this,record)}>{text}</a>)
       },
       {
         title: 'ERP',
@@ -39,7 +43,7 @@ class List extends React.Component {
     this.state = {
       headLabel: false,
       selectedRowKeys: [],
-      isEdit: false,
+      status: "",
       pagination : {
         pageSize:10,
         page:1,
@@ -56,8 +60,15 @@ class List extends React.Component {
   }
 
   onAdd() {
-    this.setState({ isEdit: false });
+    this.setState({ status: "add" });
     this.props.action.showAddForm(true, {});
+  }
+
+  showDetail (record) {
+    let id = record.id;  
+    this.setState({ status: "showdetail" });
+   // this.props.action.edit();
+    this.props.action.getAttrDetail(id);
   }
 
   onDelete(){
@@ -70,7 +81,6 @@ class List extends React.Component {
       okType: 'danger',
       cancelText: '否',
       onOk() {
-        debugger
         that.props.action.onDelete(that.state.selectedRowKeys, pagination, searchMap);
         that.setState({ headLabel: false, selectedRowKeys: [] });
       },
@@ -81,7 +91,7 @@ class List extends React.Component {
   }
 
   onEdit = () => {
-    this.setState({ isEdit: true });
+    this.setState({ status: "edit" });
     let rowKey = this.state.selectedRowKeys[0];
     let rowData = {};
     let data = this.props.$$state.get("data").toJS().data;
@@ -92,11 +102,14 @@ class List extends React.Component {
       }
     }
     let id = rowData.id;  
+   // this.props.action.edit();
     this.props.action.getAttrDetail(id);
   }
 
-  onClose() {
-    this.props.action.showForm(false, {});
+  onClose() {  
+   
+    this.props.action.showAddForm(false);
+    
     this.props.action.resetAddNum();   
   }
 
@@ -109,22 +122,27 @@ class List extends React.Component {
   }
 
   onSave() {
-    let { isEdit } = this.state;
+    let { status } = this.state;
     let formData = this.props.$$state.get("formData").toJS();
     let changeData = this.props.$$state.get("changeData").toJS();
-    let erpCode = formData.erpCode.value;
-    let name = formData.name.value;
+    let erpCode = "";
+    let name = "";
     let id = "";
-    if(isEdit){
-      id = formData.id.value;
-    }else{
-      id = formData.id;
-    }
-   // let id = formData.id.value;
-    let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
-    if (this.state.isEdit) {
+    //let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
+    if(status == "edit"){
+      erpCode = formData.erpCode;
+      id = formData.id;    
+      name = formData.name;
+     // id = formData.id.value;
+     // erpCode = formData.erpCode.value;
+      // name = formData.name.value;
+      let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
       this.props.action.onSave4Edit(addAttr);
-    }else{
+    }else if(status =="add"){
+      erpCode = formData.erpCode;
+      id = formData.id;    
+      name = formData.name;  
+      let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
       this.props.action.onSave4Add(addAttr);
       this.props.action.resetAddNum();
     }
@@ -154,13 +172,26 @@ class List extends React.Component {
   render() {
     let data = this.props.$$state.get("data").toJS().data;
     let visible = this.props.$$state.get("visible");
-    let { headLabel, selectedRowKeys } = this.state;
+    let { headLabel, selectedRowKeys,status } = this.state;
     let attrValue = this.props.$$state.get("attrValue").toJS();
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    let editData = this.props.$$state.get("editData").toJS();
+    let formData = this.props.$$state.get("formData").toJS();
+    let title = "";
+    let table = undefined;
+    if(status =="edit"){
+      title = "编辑";
+      table =  <AttrVaTable/>;
+    }else if(status == "add"){
+      title = "新增";
+      table =  <AttrVaTable/>;
+    }else if(status =="showdetail"){
+      title = "详情";
+      table = <AttrVaDeTable/>;
+    }
+
     return (
       <div className='user-warpper'>
         {
@@ -178,8 +209,9 @@ class List extends React.Component {
             </div> :
             <div className='head_panel'>
               <div className='head_panel-left'>
+                <Search placeholder = "属性值名称"></Search>
               </div>
-              <div className='head_panel-right'>
+              <div className='head_panel-right'>               
                 <ButtonGroup className='add-more'>
                   <Button><i className='iconfont icon-daochu'></i>导入</Button>
                   <Button><i className='iconfont icon-daoru'></i>导出</Button>
@@ -199,23 +231,28 @@ class List extends React.Component {
           />
         </div>
         <Modal
-          title={this.state.isEdit ? "编辑" : "新建"}
+          title={title}
           visible={visible}
           onOk={this.onSave.bind(this)}
           onCancel={this.onClose.bind(this)}
-          width={500}
+          width={600}
         >
           <div className='model-height'>
-            <WrappedCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
+            <WrappedCard dataSource={formData} wrappedComponentRef={(inst) => this.formRef = inst} />
           </div>
           <div>  
-            <span>属性值：</span>{
+           {
             attrValue.length==0?
-            <div/>:                      
-            <AttrVaTable/>}
-            <Button type = "dashed" onClick={this.addRow.bind(this)} style={{width: '100%'}}>
+            <div/>:  
+            <div>        
+            {table}
+            </div>                   
+            }{status =="showdetail"?
+          <div/>:<div>
+           <Button type = "dashed" onClick={this.addRow.bind(this)} style={{width: '100%'}}>
               <Icon type="plus" className = 'icon' />增加属性值
             </Button>
+          </div>}            
           </div>
         </Modal>
       </div>
