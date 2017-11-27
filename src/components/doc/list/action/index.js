@@ -33,6 +33,7 @@ const showFormEdit = (flag, editData = {}) => {
 				//param:editData
 			}
 		}, result => {
+			console.log('=========',result.baseDocDetailList)
 			if(result.baseDocDetailList.length==0){
 				let obj = {};
 				obj.name='';

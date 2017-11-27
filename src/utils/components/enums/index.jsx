@@ -32,7 +32,6 @@ class Enum extends React.Component {
         if(key) {
             key = String(key);
         }
-        console.info(typeof key);
         return (
          
             <div>

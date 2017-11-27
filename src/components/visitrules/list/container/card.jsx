@@ -1,8 +1,7 @@
 
-import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import moment from 'moment';
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import {  Card, Col, Row, Menu, Dropdown, Checkbox, Switch, Popconfirm, Button } from 'antd';
 import './index.less'
 
@@ -28,12 +27,9 @@ class Cards extends React.Component {
   }
   onCancel = () => { return }
   onEdit = (item) => { //编辑按钮
-    if (item.isDefault == 1){
-        alert('亲，预制档案，不可编辑！')
-        return
-    }
     this.props.action.showForm(true, item, true,[]);
-    this.props.action.typeSelected(item.mtObjId); 
+    this.props.action.typeSelected(item.mtObjId);
+    
   }
 
   enableChange=(item)=>{//停启用切换
@@ -43,13 +39,17 @@ class Cards extends React.Component {
       this.props.action.onEnable(arr, num)
   }
   translateTime = (time) => {
-    return  moment(time).format("YYYY-MM-DD")
-    /* moment(getDBStr(time,'create_date') ).format('YYYY-MM-DD') */
+    Date.prototype.toLocaleString = function() {
+          return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " 
+    };
+    let unixTimestamp = new Date( time*1000 ) ;
+     return  unixTimestamp.toLocaleString();
   }
  
 
   render() {   //只能通过this.props和this.state访问数据;不能在render方法中任何位置修改state状 态或者是DOM输出；
     let item= this.props.dataSource;
+    console.log('item=======',item)
     let menu = (
         <Menu>
             <Menu.Item key="0">
@@ -63,41 +63,22 @@ class Cards extends React.Component {
     )
     return (
             <Card 
-                title='任务卡'              
-                extra={
-                <Dropdown overlay={menu} trigger={['click']}>
-                    <div  href="javascript:;" style={{cursor:'pointer'}}>
-                    <p style={{fontSize:'30px', color:'#555'}}>...</p>
-                    </div>
-                </Dropdown>
-                }  
+                title='拜访规则'              
+                extra={<div style={{cursor:'pointer'}}>任务卡</div>} 
                 bordered={false} 
-                style={{marginTop:'16px', height:'180px'}} 
+                style={{marginTop:'16px'}} 
                 >
                   <div>
                     <Row>
-                      <Col span={8}><span>业务对象：</span></Col>
-                      <Col span={14}>{item.mtObjName}</Col>
-                      <Col span={4}></Col>
+                      <Col span={8}><span>客户等级：</span></Col>
+                      <Col span={16}>{item.cumEnumValueName}</Col>
                     </Row> 
                     <Row>
-                      <Col span={8}><span>业务类型：</span></Col>
-                      <Col span={14}>{item.mtBiztypeName}</Col>
-                      <Col span={4}></Col>
+                      <Col span={8}><span>适用公司：</span></Col>
+                      <Col span={16}>{item.orgName}</Col>
                     </Row> 
                     <Row> 
-                      <Col span={8}><span>简介：</span></Col>
-                      <Col span={14}>{item.remark}</Col>
-                      <Col span={4}></Col>
-                    </Row> 
-                    <Row> 
-                      <Col span={8}><span>创建人：</span></Col>
-                      <Col span={14}>{item.userName}</Col>
-                      <Col span={4}></Col>
-                    </Row> 
-                    <Row> 
-                      <Col span={8}><span>创建时间：</span></Col>
-                      <Col span={12}>{this.translateTime(item.time)}</Col>
+                      <Col span={20}></Col>
                       <Col span={4}>
                         <Popconfirm 
                           title = { item.enableState == 1 ? '确认停用' : '确认启用' } 
@@ -121,7 +102,7 @@ class Cards extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
   return {
-    $$state: state.taskcard
+    $$state: state.visitrules
   }
 }
 

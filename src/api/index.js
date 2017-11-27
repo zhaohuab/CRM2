@@ -54,7 +54,8 @@ const visitRouter = {
 const taskcard = {
     taskcard: baseDir + 'sact/taskcards',
     taskcardBatch: baseDir + 'sact/taskcards/batch',
-    enable: baseDir + 'sact/taskcards/state' 
+    enable: baseDir + 'sact/taskcards/state',
+    biztype:baseDir + 'sact/taskcards/biztypes'
 }
 const doc = {
     doc: baseDir + 'base/docs',
@@ -78,10 +79,12 @@ const oppaction = {
 
 const visitrules = {
     visitrules: baseDir + 'sact/visitrules',
+    enable: baseDir + '/sact/visitrules/state',
 }
 
 const oppstage = {
     oppstage: baseDir + 'sprc/oppstages',
+    
 }
 export {
     login,

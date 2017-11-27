@@ -42,7 +42,7 @@ import oppactionlist from 'components/oppaction/list/reducer'
 //拜访路线
 import visitroute from "components/visitroute/list/reducer/index.js";
 //拜访规则
-import visitRules from '../components/visitrules/reducer'
+import visitrules from '../components/visitrules/list/reducer'
 //商机阶段
 import oppstagelist from 'components/oppstage/list/reducer'
 
@@ -69,7 +69,7 @@ let rootReducer = combineReducers({
     opportunityList,
     oppactionlist,
     visitroute,
-    visitRules,
+    visitrules,
     oppstagelist,
 });
 
