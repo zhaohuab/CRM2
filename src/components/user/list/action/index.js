@@ -2,9 +2,46 @@ import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { user as url } from 'api';
 
-const showForm = (flag, editData = {}, index) => {
+
+
+const getListTpl = () => {
 	return (dispatch) => {
-		dispatch(fetchData('USER_LIST_SHOWFORM', { visible: flag, editData }));
+		reqwest({
+			url: url.listTpl,
+			method: "GET",
+		},result => {
+			dispatch(fetchData('USER_LIST_TEMPLATE', { ...result }));
+		})
+	}
+}
+const getAddTpl = () => {
+	return (dispatch) => {
+		reqwest({
+			url: url.addTpl,
+			method: "GET",
+		},result => {
+			
+			dispatch(fetchData('USER_ADD_TEMPLATE', { ...result }));
+		})
+	}
+}
+
+const getEditTpl = () => {
+	return (dispatch) => {
+		reqwest({
+			url: url.addTpl,
+			method: "GET",
+		},result => {
+			dispatch(fetchData('USER_EDIT_TEMPLATE', { ...result }));
+		})
+	}
+}
+
+
+const showForm = (flag, editData = {}, type) => {
+	return (dispatch) => {
+		
+		dispatch(fetchData('USER_LIST_SHOWFORM', { visible: flag, editData ,isEdit:type=="EDIT"}));
 	}
 }
 
@@ -25,20 +62,19 @@ const getListData = (params) => {
 		})
 	}
 }
+
+const onUserChange = (data) => {
+	return (dispatch) => { 
+		
+		dispatch(fetchData('USER_PAGE_USERCHANGE', { formFields:data }));
+	}
+}
 const transData = (data) => {
-	
-	let { gender,orgId, deptId,job } = data;
-	data.gender = gender.key;
-	data.genderName = gender.title;
-	data.orgId = orgId.key;
-	data.orgName = orgId.title;
-	data.deptId = deptId.key;
-	data.deptName = deptId.title;
-	data.job = job.key;
-	data.jobName = job.title;
+
+	debugger
 	return data;
 }
-const onSave4Add = (data, index) => {
+const onSave4Add = (data) => {
 	return (dispatch) => {
 
 		reqwest({
@@ -53,7 +89,7 @@ const onSave4Add = (data, index) => {
 	}
 }
 
-const onSave4Edit = (data, index) => {
+const onSave4Edit = (data) => {
 	return (dispatch) => {
 
 		reqwest({
@@ -112,7 +148,11 @@ const onEnable = (rowKeys, enable, params) => {
 
 //输出 type 与 方法
 export {
+	getListTpl,
+	getAddTpl,
+	getEditTpl,
 	getListData,
+	onUserChange,
 	onDelete,
 	showForm,
 	onSave4Add,

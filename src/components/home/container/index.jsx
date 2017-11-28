@@ -156,6 +156,7 @@ class Home extends React.Component {
     }
 
     componentDidMount(){
+        
         this.targetEchar = echarts.init(this.refs.target);
         this.targetEchar.setOption(this.targetOption);
 
