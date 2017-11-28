@@ -20,9 +20,7 @@ class View extends React.Component {
                 </Col>
     }
     transData(data) {
-        
         data.companyCreatedTime = data.companyCreatedTime ? moment(data.companyCreatedTime.time).format("YYYY-MM-DD") : undefined;
-        //data.orgType = {key:data.orgType,title:data.orgTypeName};
         return data;
     }
     render() {

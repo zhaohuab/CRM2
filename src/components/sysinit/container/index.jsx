@@ -35,6 +35,7 @@ class Page extends React.Component {
   
 
   componentDidMount() {
+    this.props.action.getMainEditTpl();
     this.props.action.getSysInitInfo();
   }
   render() {
@@ -42,12 +43,16 @@ class Page extends React.Component {
     let current = this.props.$$state.get("current");
     let orgFields = this.props.$$state.get("tenantFields").toJS();
     let orgInfo = this.props.$$state.get("tenantInfo").toJS();
-
+    
+    let tpl = this.props.$$state.get("template").toJS();
+    if(tpl) {
+      tpl = tpl.edit;
+    }
     let content = "";
     let WrapInfoCard = InfoCard;
     switch (current) {
       case 0:
-        content = <WrapInfoCard onChange={this.props.action.onOrgChange} dataSource={orgFields} wrappedComponentRef={(inst) => this.formRef = inst} />;
+        content = <WrapInfoCard tpl={tpl} onChange={this.props.action.onOrgChange} dataSource={orgFields} wrappedComponentRef={(inst) => this.formRef = inst} />;
         break;
       case 1:
         content = <div><InfoView dataSource={orgInfo}/><AdminList editable={true}/></div>;
