@@ -196,6 +196,7 @@ class List extends Component {
 
     render() {
         //这获取总的状态  //拿到想要的之后再toJS
+        debugger
         let {prdState} = this.props;
         let tabelLoading = prdState.get('tabelLoading');
         let formVisitable = prdState.get('formVisitable')

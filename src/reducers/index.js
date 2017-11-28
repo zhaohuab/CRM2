@@ -46,6 +46,8 @@ import visitRules from '../components/visitrules/reducer'
 import oppstagelist from 'components/oppstage/list/reducer'
 //产品属性
 import prdattr from 'components/prdattr/list/reducer'
+//产品属性组
+import prdattrgroup from 'components/prdattrgroup/list/reducer'
 
 let rootReducer = combineReducers({
     login,
@@ -71,6 +73,7 @@ let rootReducer = combineReducers({
     visitRules,
     oppstagelist,
     prdattr,
+    prdattrgroup
 });
 
 export { rootReducer };

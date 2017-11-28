@@ -87,6 +87,11 @@ const oppstage = {
 const prdattr = {
     prdattr: baseDir + 'base/attrs',
 }
+
+const prdattrgroup = {
+    prdattrgroup: baseDir + 'base/attrgroups',
+}
+
 export {
     login,
     menu,
@@ -109,4 +114,5 @@ export {
     visitrules,
     oppstage,
     prdattr,
+    prdattrgroup,
 }
