@@ -102,6 +102,11 @@ const oppflow = {
 const prdattr = {
     prdattr: baseDir + 'base/attrs',
 }
+
+const prdattrgroup = {
+    prdattrgroup: baseDir + 'base/attrgroups',
+}
+
 export {
     login,
     menu,
@@ -126,4 +131,5 @@ export {
     oppdimension,
     oppflow,
     prdattr,
+    prdattrgroup,
 }

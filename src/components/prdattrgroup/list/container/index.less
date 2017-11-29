@@ -1,14 +1,6 @@
 @simpleColor:#666;
 @deepColor:#333;
 
-.certain-category-search-dropdown{
-    color: rgb(160, 34, 34);
-    font-weight: bold;
-    border-bottom: 5px solid #F6F6F6;
-    padding-left: 16px;
-    text-align: center;
-    max-height: 30px;
-}
 .pepole-refer{
     display: flex;
     justify-content: space-between;
@@ -113,83 +105,29 @@
         }
         
     }
+
+   
 }
 
-.avatar-uploader,
-.avatar-uploader-trigger,
-.avatar {
-  width: 100px;
-  height: 40px;
-  display: block;
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-}
+.toolbar {
+    width: 100%;
+   // bottom: 0;
+   // right: 0;
+    height: 36px;
+    //line-height: 56px;
+    box-shadow: 0 -1px 2px rgb(255, 254, 254);
+    background: rgb(252, 250, 250);
+    //border-top: 1px solid @border-color-split;
+    padding: 0 24px;
+    transition: all .3s;
+  
+    button + button {
+      margin-left: 8px;
+    }
 
-.avatar-uploader-trigger {
-    display: table-cell;
-    vertical-align: middle;
-    font-size: 28px;
-    color: #999;
-  }
-
-  .head_panel-right{
-    display: flex;
-    align-items: center;
-    .deep-title-color{
-        color:@deepColor
-    }
-    .simple-title-color{
-        color:@simpleColor
-    }
-    .head_panel-state{
-        margin-right:20px;
-    }
-}
-
-.industry-main {
-    width: 300px;
-    border-radius: 5px;
-    background: white;
-    box-shadow: 0 0 15px rgb(136, 136, 136);
-    .industry-main-header {
-        height: 54px;
-        padding: 12px;
-        box-sizing: border-box;
-        background: #fafafa;
-        border-bottom: 1px solid #f0f0f0;
-        .title {
-            line-height: 34px;
-            font-size: 16px;
-            color: #666666;
-        }
-    }
-    .industry-main-footer {
-        padding: 12px;
-        box-sizing: border-box;
-        height: 60px;
-        border-top: 1px solid #f0f0f0;
-        width: 100%;
-        background: white;
-        margin-left: 0;
-    }
-    .industry-main-choice {
-        padding: 10px;
-        box-sizing: border-box;
-        .industry-tree {
-            border: 1px solid #eeeeee;
-            border-radius: 5px;
-            padding: 10px;
-            box-sizing: border-box;
-            width: 100%;
-            height: 280px;
-            overflow: auto;
-        }
-        .inner {
-            width: 100%;
-            border: 1px solid #eeeeee;
-            height: 280px;
-            overflow: auto;
-        }
+    .icon {
+        vertical-align: middle;
+        padding-right:10px;
+        margin-left: 100px;
     }
 }

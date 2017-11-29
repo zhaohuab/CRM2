@@ -5,14 +5,16 @@ import reqwest from "utils/reqwest";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import "./index.less";
-class Department extends React.Component {
+class PrdClass extends React.Component {
     state = {
         visible: false,
         select: {
             key: "",
-            title: ""
+            title: "",
+            path:""
         },
-        dataSource: []
+        dataSource: [],
+        path:{},
     };
     constructor(props) {
         super(props);
@@ -42,8 +44,12 @@ class Department extends React.Component {
     };
 
     onSelect = (key, e) => {
-        let { title } = e.node.props;
-        this.setState({ select: { key: key[0], title } });
+        debugger
+        let { title  } = e.node.props;
+        let id = e.node.props.dataRef.id.toString();
+        let path = e.node.props.dataRef.path + "," +id;
+        //let id = e.node.props.dataRef.id.toString();
+        this.setState({ select: { key: key[0], title,path } });
     };
 
     getData = () => {
@@ -88,7 +94,7 @@ class Department extends React.Component {
     }
     render() {
         let key = "",
-            title = "xxxxxxx";
+            title = "请选择父级分类";
             //debugger;
         if (this.props.value) {
             key = this.props.value.key;
@@ -127,4 +133,4 @@ class Department extends React.Component {
     }
 }
 
-export default Department;
+export default PrdClass;
