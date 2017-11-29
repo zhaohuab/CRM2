@@ -44,7 +44,6 @@ class Cards extends React.Component {
   }
   translateTime = (time) => {
     return  moment(time).format("YYYY-MM-DD")
-    /* moment(getDBStr(time,'create_date') ).format('YYYY-MM-DD') */
   }
  
 
@@ -118,21 +117,18 @@ class Cards extends React.Component {
   }
 }
 
-//绑定状态到组件props
 function mapStateToProps(state, ownProps) {
   return {
     $$state: state.taskcard
   }
 }
 
-//绑定action到组件props
 function mapDispatchToProps(dispatch) {
   return {
       action: bindActionCreators(Actions, dispatch)
   }
 }
 
-//输出绑定state和action后组件
 export default  connect( mapStateToProps, mapDispatchToProps)(Cards);
 
 

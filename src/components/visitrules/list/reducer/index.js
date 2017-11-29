@@ -4,12 +4,14 @@ let $$initialState = {
 	loading: false,
 	editData: {},//编辑时返回的数据
 	data: [],//全部列表数据
+	dataSource:[],//弹出框中所有任务卡
+	checkedData:[],//已选任务卡
 	searchKey:'',//搜索时input中的值
 	enableState:1,//搜索时停启用状态
 	visible: false,
-	isEdit: false,//是否为编辑状态
 	enable:false,//停启用
-	more:false,//点击显示更多
+	initalState:{},//拖拽数据源
+
 };
 function pageAdd(page, item) {
 	page.total+=1;
@@ -29,10 +31,7 @@ function pageEdit(page, item) {
 	return page;
 }
 
-function more(data){
-  if(data.voList.length>12) return true;
-  return false;
-}
+
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {
@@ -45,41 +44,40 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 	        	loading: false,
 				data: action.content,
 				visible: action.content.visible,
-				more: more(action.content),
 			})
 		case 'VISITRULES_LIST_SHOWFORM':
 			return $$state.merge({
-				isEdit: action.content.isEdit,
 				visible: action.content.visible,
 				editData: action.content.editData,
-				bizTypes: action.content.bizTypes,
-			})
-		case 'VISITRULES_CARD_SAVEADD': 
-			return $$state.merge({
-				isEdit: action.content.isEdit,
-				visible: action.content.visible,
-				data: pageAdd($$state.get("data").toJS(),action.content),
 			})
 		case 'VISITRULES_CARD_SAVEEDIT': 
 			return $$state.merge({
-				isEdit: action.content.isEdit,
 				visible: action.content.visible,
-				data: pageEdit($$state.get("data").toJS(),action.content),
-			})
-		case 'VISITRULES_ORDER_ENABLE': 
-			return $$state.merge({
-				enable:action.content.enable
-			})		
+			})	
 		case 'VISITRULES_INPUT_CHANGE': 
 			return $$state.merge({
-				searchKey:action.content.searchKey
+				searchKey: action.content.searchKey
 			})	
 		case 'VISITRULES_SELECT_CHANGE': 
 			return $$state.merge({
-				enableState:action.content.enableState
+				enableState: action.content.enableState
 			})		
-			
-					
+		case 'VISITRULES_CARD_VALUE': 
+			return $$state.merge({
+				dataSource: action.content.dataSource
+			})	
+		case 'VISITRULES_CHECKED_TASKCARD': 
+			return $$state.merge({
+				checkedData: action.content.checkedData
+			})	
+		case 'VISITRULES_INITAL_STATE': 
+			return $$state.merge({
+				initalState: action.content.initalState
+			})
+		case 'VISITRULES_REQUIRED_CHANGE': 
+			return $$state.merge({
+				checkedData: action.content.checkedData
+			})					
 	    default: 
 	        return $$state;
 	}
