@@ -18,8 +18,7 @@ export function getlist(params) {
             searchMap:{}
         }
     }
-    return (dispatch, getState) => { 
-        debugger   
+    return (dispatch, getState) => {  
         dispatch({ type: 'PRDTYPE_LIST_GETLISTSTART' })
         request({
             url: url.prdtype,
@@ -62,16 +61,19 @@ export function showForm(flag, editData = {}) {
 }
 
 const transData = (data) => {
-    debugger;
-    data.fatherTypeId = data.fatherTypeId.key
-    data.fatherTypeName = data.fatherTypeId.title
+    let fatherTypeId = data.fatherTypeId.key;
+    let fatherTypeName = data.fatherTypeId.title;
+    let path = data.fatherTypeId.path;
+    data.fatherTypeId = fatherTypeId;
+    data.fatherTypeName = fatherTypeName;
+    data.path = path;
+    data.attrGroupId = 0;
 	return data;
 }
 
 //新增数据
 export function listadd(list) {
- 
-    list.fatherTypeId = list.fatherTypeId.key
+   // list.fatherTypeId = list.fatherTypeId.key
     return (dispatch, getState) => {
         request({
             url: url.prdtype,   

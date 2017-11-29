@@ -24,49 +24,9 @@ class List extends React.Component {
     constructor(props) {
         super(props);
 
-        this.columns = [
-            {
-                title: "姓名",
-                dataIndex: "name"
-            },
-            {
-                title: "性别",
-                dataIndex: "genderName"
-            },
-            {
-                title: "所属公司",
-                dataIndex: "orgName"
-            },
-            {
-                title: "所属部门",
-                dataIndex: "deptName"
-            },
-            {
-                title: "职位",
-                dataIndex: "jobName"
-            },
-            {
-                title: "手机",
-                dataIndex: "phone"
-            },
-            {
-                title: "邮箱",
-                dataIndex: "email"
-            },
-            {
-                title: "角色",
-                dataIndex: "role_id"
-            },
-            {
-                title: "状态",
-                dataIndex: "enable_state"
-            }
-        ];
-
         this.state = {
             headLabel: false,
             selectedRowKeys: [],
-            isEdit: false,
             enable: 1,
             pagination: {
                 pageSize: 10,
@@ -80,12 +40,13 @@ class List extends React.Component {
 
     componentDidMount() {
         let { pagination, searchMap } = this.state;
+        this.props.action.getListTpl();
         this.props.action.getListData({ pagination, searchMap });
     }
 
     onAdd() {
-        this.setState({ isEdit: false });
-        this.props.action.showForm(true, {});
+        this.props.action.showForm(true, {},"ADD");
+        this.props.action.getAddTpl();
     }
     onDelete = () => {
         let { pagination, searchMap } = this.state;
@@ -96,7 +57,6 @@ class List extends React.Component {
         this.setState({ headLabel: false, selectedRowKeys: [] });
     };
     onEdit = () => {
-        this.setState({ isEdit: true });
         let rowKey = this.state.selectedRowKeys[0];
         let rowData = {};
         let page = this.props.$$state.get("data").toJS();
@@ -106,7 +66,8 @@ class List extends React.Component {
                 break;
             }
         }
-        this.props.action.showForm(true, rowData);
+        this.props.action.showForm(true, rowData,"EDIT");
+        this.props.action.getEditTpl();
     };
     onClose() {
         this.props.action.showForm(false, {});
@@ -125,9 +86,11 @@ class List extends React.Component {
         let form = this.formRef.props.form;
         form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                if (this.state.isEdit) {
+                let isEdit = this.props.$$state.get("isEdit");
+                if(isEdit) {
                     this.props.action.onSave4Edit(form.getFieldsValue());
-                } else {
+                }
+                else {
                     this.props.action.onSave4Add(form.getFieldsValue());
                 }
             }
@@ -171,15 +134,24 @@ class List extends React.Component {
     render() {
         let page = this.props.$$state.get("data").toJS();
         let visible = this.props.$$state.get("visible");
-
         let { headLabel, selectedRowKeys } = this.state;
 
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-        let editData = this.props.$$state.get("editData").toJS();
-        const WrapCard = Form.create()(Card);
+        let editData = this.props.$$state.get("formData").toJS();
+        let formFields = this.props.$$state.get("formFields").toJS();
+        
+        let template = this.props.$$state.get("template").toJS();
+        let isEdit = this.props.$$state.get("isEdit");
+        let tpl;
+        if(isEdit) {
+            tpl = template.edit;
+        }
+        else {
+            tpl = template.add
+        }
         return (
             <div className="user-warpper">
                 {headLabel ? (
@@ -272,7 +244,7 @@ class List extends React.Component {
                 <div className="list-box tabel-recoverd">
                     <Table
                         size="middle"
-                        columns={this.columns}
+                        columns={template.list}
                         dataSource={page.data}
                         rowSelection={rowSelection}
                         rowKey="id"
@@ -295,8 +267,10 @@ class List extends React.Component {
                     width={500}
                 >
                     <div className="modal-height">
-                        <WrapCard
-                            dataSource={editData}
+                        <Card
+                            dataSource={formFields}
+                            tpl={tpl}
+                            onChange = {this.props.action.onUserChange}
                             wrappedComponentRef={inst => (this.formRef = inst)}
                         />
                     </div>

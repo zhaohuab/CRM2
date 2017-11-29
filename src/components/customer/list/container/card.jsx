@@ -34,31 +34,46 @@ class EditForm extends React.Component {
         super(props);
     }
 
-    // componentDidMount() {
-    //     //用来判断是新增还是修改，添加数据用的
-    //     if (this.props.$$state.get("isEdit") == true) {
-    //         const viewData = this.props.$$state.get("viewData").toJS();
-    //         let { fatherorgId, fatherorgName, level, levelName } = viewData;
-    //         viewData.fatherorgId = {
-    //             key: fatherorgId,
-    //             title: fatherorgName
-    //         };
-    //         viewData.level = {
-    //             key: level,
-    //             title: levelName
-    //         };
-    //         const province_city_district = [];
-    //         province_city_district.push(String(viewData.province));
-    //         province_city_district.push(String(viewData.city));
-    //         province_city_district.push(String(viewData.district));
-    //         viewData.province_city_district = province_city_district;
-    //         this.props.form.setFieldsValue(viewData);
-    //     }
-    // }
-
     //把获取到的客户工商信息放在redux中
-    customerListInfo(id) {
-        this.props.action.customerListInfo(id, true);
+    customerListInfo(data, id, name, visiable, editId, stateIcbc, isClose) {
+        let { viewData } = this.props.$$state.toJS();
+
+        viewData.verifyId = id;
+        viewData.name = name;
+
+        if (editId) {
+            viewData.editId = editId;
+        }
+        debugger;
+        data.forEach(item => {
+            if (item.key == "address") {
+                viewData["address"] = item.value;
+            } else if (item.key == "gongsh") {
+                viewData["bizRegno"] = item.value;
+            } else if (item.key == "orgcode") {
+                viewData["orgCode"] = item.value;
+            } else if (item.key == "money") {
+                viewData["regCapital"] = item.value;
+            } else if (item.key == "proxyer") {
+                viewData["legalRepresent"] = item.value;
+            } else if (item.key == "industry") {
+                viewData["industry"] = { name: item.value };
+            } else if (item.key == "email") {
+                viewData["email"] = item.value;
+            } else if (item.key == "phone") {
+                viewData["tel"] = item.value;
+            } else if (item.key == "taxnumber") {
+                viewData["eaxplayerNo"] = item.value;
+            }
+        });
+
+        this.props.action.customerListInfo(
+            data,
+            viewData,
+            visiable,
+            stateIcbc,
+            isClose
+        );
     }
 
     //modal取消按钮
@@ -66,14 +81,45 @@ class EditForm extends React.Component {
         this.props.action.customerModal1Show(false);
     }
 
+    //取消认证
+    cancelIdenti() {
+        let { viewData } = this.props.$$state.toJS();
+        let id = viewData.verifyId;
+        console.log(id);
+        reqwest(
+            {
+                url: baseDir + `cum/customers/${id}/identifications`,
+                method: "PUT",
+                data: {
+                    status: "N"
+                }
+            },
+            data => {
+                debugger;
+                this.props.action.closeIcbcVisible1(false);
+                // this.setState({
+                //     visible: flag,
+                //     industryData: data.data,
+                //     keyDownVisiable: false
+                // });
+            }
+        );
+        //发Request请求
+    }
+
     //modal框底部按钮
     footerContent() {
         return (
             <div>
                 <Button onClick={this.onCancel.bind(this)}>关闭</Button>
-                <Button>取消认证</Button>
+                <Button onClick={this.cancelIdenti.bind(this)}>取消认证</Button>
             </div>
         );
+    }
+
+    //动态赋予表单工商id字段
+    icbcId(data) {
+        this.props.form.setFieldsValue(data);
     }
 
     render() {
@@ -82,18 +128,31 @@ class EditForm extends React.Component {
             wrapperCol: { span: 12 }
         };
         const { getFieldDecorator } = this.props.form;
-        const {
+        let {
             viewData,
             enumData,
             icbcVisible,
-            icbcInfo
+            icbcInfo,
+            icbcSelect,
+            isClose
         } = this.props.$$state.toJS();
-
+        console.log(icbcSelect);
         return (
             <div>
                 <Row className="form-input-recover">
                     <Row>
                         <Form layout="inline" className="login-form">
+                            <FormItem
+                                style={{
+                                    display: "none"
+                                }}
+                                {...formItemLayout}
+                                label="verifyId"
+                            >
+                                {getFieldDecorator("verifyId", {})(
+                                    <Input type="text" placeholder="请输入" />
+                                )}
+                            </FormItem>
                             <FormItem
                                 style={{
                                     display: "none"
@@ -161,7 +220,17 @@ class EditForm extends React.Component {
                                                                 viewData={
                                                                     viewData
                                                                 }
+                                                                icbcSelect={
+                                                                    icbcSelect
+                                                                }
                                                                 customerListInfo={this.customerListInfo.bind(
+                                                                    this
+                                                                )}
+                                                                isClose={
+                                                                    isClose
+                                                                }
+                                                                width={450}
+                                                                icbcId={this.icbcId.bind(
                                                                     this
                                                                 )}
                                                             />
@@ -701,7 +770,6 @@ class EditForm extends React.Component {
                 <Modal
                     title="工商核实"
                     visible={icbcVisible}
-                    //onOk={this.formHandleOk.bind(this)}
                     onCancel={this.onCancel.bind(this)}
                     footer={this.footerContent.call(this)}
                     width={500}
@@ -710,7 +778,13 @@ class EditForm extends React.Component {
                     <div className="modal-height">
                         {icbcInfo && icbcInfo.length
                             ? icbcInfo.map(item => {
-                                  return <div>{item.value}</div>;
+                                  return (
+                                      <div className="icbc-detail-item">
+                                          <span>{item.name}</span>:<span>
+                                              {item.value}
+                                          </span>
+                                      </div>
+                                  );
                               })
                             : ""}
                     </div>
@@ -724,6 +798,7 @@ const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
         let viewData = props.$$state.toJS().viewData;
+
         let value = {};
         for (let key in viewData) {
             value[key] = { value: viewData[key] };
@@ -739,6 +814,9 @@ const cardForm = Form.create({
             if (onChangeFild[key].value && onChangeFild[key].value.key) {
                 viewData[key] = onChangeFild[key].value.key;
             } else {
+                if (key == "name") {
+                    props.changeState(false);
+                }
                 viewData[key] = onChangeFild[key].value;
             }
         }

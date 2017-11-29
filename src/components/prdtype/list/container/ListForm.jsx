@@ -1,6 +1,6 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio, Select } from 'antd';
 import moment from 'moment';
-import Department from 'components/refs/prdtype'
+import PrdClass from 'components/refs/prdtype'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -42,7 +42,14 @@ export default class NormalLoginForm extends React.Component {
                                     })(
                                         <Input style={{ display: 'none'}} type='text' placeholder="请输入编号!" />
                                         )}
+                                           {
+                                    getFieldDecorator('path', {
+                                    })(
+                                        <Input style={{ display: 'none'}}/>
+                                        )
+                                    }
                                 </div>
+                             
                                 <FormItem {...formItemLayout} label='编码'>
                                     {getFieldDecorator('code', {
                                         rules: [{ required: true, message: '请输入编码' }],
@@ -64,7 +71,7 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('fatherTypeId', {
                                         rules: [],
                                     })(
-                                        <Department />
+                                        <PrdClass />
                                         )}
                                 </FormItem>
                                 <FormItem  { ...formItemLayout } label='对应ERP组织'>

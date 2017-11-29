@@ -163,7 +163,7 @@ const WarpMilForm = Form.create({
     mapPropsToFields: (props, onChangeFild) => {
         //从redux中读值
         let searchMap = props.$$state.toJS().searchMap;
-        debugger;
+
         let value = {};
         for (let key in searchMap) {
             value[key] = { value: searchMap[key] };
@@ -174,7 +174,7 @@ const WarpMilForm = Form.create({
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-        debugger;
+
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {
             if (onChangeFild[key].value.key) {
