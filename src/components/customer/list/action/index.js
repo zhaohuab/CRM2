@@ -166,7 +166,6 @@ const getListData = (pagination, searchMap) => {
                 }
             },
             data => {
-                debugger;
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {
                         data: appendAddress(data),
@@ -255,25 +254,41 @@ const showViewForm = (visible, record) => {
 //     };
 // };
 
-const customList = [{ id: 1, value: "用友1" }, { id: 2, value: "用友2" }];
-
 //存放工商信息详细数据
-const customerListInfo = (id, visible) => {
+const customerListInfo = (data, viewData, visible, stateIcbc, isClose) => {
     return dispatch => {
         //使用id获取详情发Request
+
         dispatch({
             type: "CUSTOMER_LIST_ICBCDETAILINFO",
-            data: customList,
-            visible
+            data: data,
+            visible,
+            viewData,
+            stateIcbc,
+            isClose
         });
     };
 };
 
-//控制modal1状态显隐的
+const changeStateFn = visiable => {
+    return {
+        type: "CUSTOMER_LIST_CHANGESTATEEDIT",
+        visiable
+    };
+};
 
+//控制modal1状态显隐的
 const customerModal1Show = visible => {
     return {
         type: "CUSTOMER_LIST_MODALSHOW1",
+        visible
+    };
+};
+
+//关闭modal1
+const closeIcbcVisible1 = visible => {
+    return {
+        type: "CUSTOMER_LIST_MODALCLOSE1",
         visible
     };
 };
@@ -319,5 +334,6 @@ export {
     deletePanel,
     // icbcInfo,
     customerListInfo,
-    customerModal1Show
+    customerModal1Show,
+    changeStateFn
 };

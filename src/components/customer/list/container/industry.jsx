@@ -101,7 +101,6 @@ export default class Industry extends React.Component {
 
     //搜索面板选择方法
     searchChoice(item) {
-        debugger;
         if (!item.id) {
             this.setState(
                 {
@@ -131,6 +130,7 @@ export default class Industry extends React.Component {
             this.props.onChange(this.state.select);
             this.setState({
                 visible: false,
+                keyDownVisiable: false,
                 selectKeys: []
             });
         }
@@ -141,6 +141,7 @@ export default class Industry extends React.Component {
         if (this.props.onChange) {
             this.setState({
                 visible: false,
+                keyDownVisiable: false,
                 selectKeys: []
             });
         }
@@ -174,7 +175,6 @@ export default class Industry extends React.Component {
 
     //每隔500毫秒执行一次查找请求
     lodashSearch(value) {
-        debugger;
         reqwest(
             {
                 url: baseDir + "/base/industrys/list",
@@ -188,7 +188,6 @@ export default class Industry extends React.Component {
                 }
             },
             result => {
-                debugger;
                 result = result.data;
                 let resultEnd = [];
                 if (result && result.length) {
@@ -197,12 +196,14 @@ export default class Industry extends React.Component {
                     });
 
                     this.setState({
+                        visible: true,
                         keyDownVisiable: true,
                         industryDataSearch: resultEnd
                     });
                 } else {
                     this.setState({
                         keyDownVisiable: true,
+                        visible: true,
                         industryDataSearch: [{ id: null, name: "暂无数据" }]
                     });
                 }
@@ -212,19 +213,13 @@ export default class Industry extends React.Component {
 
     //触发键盘事件时，选择框消失，出现搜索面板
     keyDownUp(e) {
+        debugger;
         let value = e.target.value;
         if (value) {
-            this.setState(
-                {
-                    keyDownVisiable: true
-                },
-                () => {
-                    this.lodashSearch(value);
-                }
-            );
+            this.lodashSearch(value);
         } else {
             this.setState({
-                //keyDownVisiable: false,
+                keyDownVisiable: false,
                 industryDataSearch: []
             });
         }
