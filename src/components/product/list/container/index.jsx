@@ -1,10 +1,11 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Table, Button, Popconfirm, Input, Radio, Icon, Form, Modal} from 'antd'
+import {Table, Button, Popconfirm, Input, Radio, Icon, Form, Modal,Row,Col} from 'antd'
 import Card from './ProductForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import Department from 'components/refs/departments'
+import SaleUnitTable from './SaleUnitTable'
 import './index.less';
 
 import * as Actions from '../action'
@@ -255,6 +256,17 @@ class List extends React.Component{
                 <Modal title="新增/编辑 产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={850}>
                     <div className='model-height'>
                         <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+                    </div>
+                    <div >
+                        <Row>
+                            <Col span={2}>
+                                <Button>新增</Button>
+                            </Col>
+                            <Col span={2}>
+                                <Button>删除</Button>
+                            </Col>
+                        </Row>
+                        <SaleUnitTable/>
                     </div>
                 </Modal>
             </div>

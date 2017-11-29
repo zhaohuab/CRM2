@@ -1,4 +1,4 @@
-import { Form, Input, Select, Row, Col, Button, Popover,AutoComplete,Card,Table,Tree,Dropdown ,Checkbox} from 'antd';
+import { Form, Input, Select, Row, Col, Button, Popover,AutoComplete,Card,Table,Tree,Dropdown ,Checkbox, Upload,Icon} from 'antd';
 
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -34,6 +34,10 @@ class ProductCard extends React.Component {
             selectedBrandValue:"",
             suVisible:false,
             selectedSuValue:"", 
+           // visible: false,
+            icbcList: [],
+            select: "",
+            index: -1
         }
     }
 
@@ -98,7 +102,7 @@ class ProductCard extends React.Component {
     }
 
     componentDidMount() {        
-        let { code,name, memCode,specific,prdtypeId,measureId,price,brandId,attrGroupId,orgId,description,photo,saleUnits } = this.props.dataSource;
+        //let { code,name, memCode,specific,prdtypeId,measureId,price,brandId,attrGroupId,orgId,description,photo,saleUnits } = this.props.dataSource;
        // this.props.form.setFieldsValue(this.props.dataSource);
     }
     
@@ -122,15 +126,6 @@ class ProductCard extends React.Component {
     onCheckChange = (e) => {
 
     }
-    // onSave() {
-    //     let {visible} = this.state;
-    //     this.setState({visible:false});
-    // }
-
-    // onClose() {
-    //     let {visible} = this.state;
-    //     this.setState({visible:false});
-    // }
 
     handleVisibleChange = (flag) => {
         this.setState({ visible: flag });
@@ -157,23 +152,18 @@ class ProductCard extends React.Component {
     }
 
     onMeaRowClick = (record, index) => {
-        debugger
+      
         this.setState({selectedMeaValue:record.name});
         this.handleMeaVisibleChange(false);
     }
 
     onSuRowClick = (record, index) => {
-        debugger
+       
         this.setState({selectedSuValue:record.name});
         this.handleSuVisibleChange(false);
         this.handleSalesUnitVisibleChange(true);
     }
    
-    // onSalesUnitRowClick = (record, index) => {
-        
-    //     this.setState({selectedsalesUnitValue:record.name});
-    //     this.handleSUVisibleChange(false);
-    // }
 
     onBrandRowClick = (record, index) => {
         this.setState({selectedBrandValue:record.name});
@@ -194,27 +184,25 @@ class ProductCard extends React.Component {
         //this.handleSUVisibleChange(true);
     }
 
-    // onCheck = (checkedKeys,info) =>{
-    //     debugger
-    //     let {preCheckedKeys, preInfo} = this.state;
-         
-    //     if(preCheckedKeys!==undefined && preCheckedKeys.length !== 0){
-    //         let preSel = new Set(preCheckedKeys.checked);
-    //         let sel = new Set(checkedKeys.checked);
-    //         let preInfo = new Set(preInfo.checkedNodes)
-    //         let diff = new Set([...sel].filter(x => !preSel.has(x)));
-    //         checkedKeys = Array.from(diff);         
-    //     }           
-    //     this.setState({preCheckedKeys:checkedKeys});
-    //     this.setState({preInfo:info})
-    // }
+    onOk() {
+        this.setState(
+            {
+                visible: false,
+                index: -1
+            },
+            () => {
+                //根据id进行action查询工商详情查询，改变modal1的显示，modal1获取工商详情查询数据
+                this.props.customerListInfo({ id: this.state.select });
+            }
+        );
+    }
 
-    // onClick = () => {
-    //     let {info} = this.state;
-    //     debugger
-    //     this.setState({selectedValue:info.node.props.title});
-    //     this.handleVisibleChange(false);
-    // }
+    onCancel() {
+        this.setState({
+            visible: false,
+            index: -1
+        });
+    }
     render() {
         
         const { getFieldDecorator } = this.props.form;
@@ -231,6 +219,7 @@ class ProductCard extends React.Component {
             onChange: this.onSelectChange,
         };
 
+       
         //const reflist= ()=>{return <div><Table columns = {this.columns} dataSource = {this.dataSource}/></div>};
         const meaRefList = (
             <div> 
@@ -247,7 +236,7 @@ class ProductCard extends React.Component {
         );
 
         const salesUnitRefTable = (
-            <div> 
+            <div  className = "industry-main"> 
                 <Button onClick={this.onAdd}>新增</Button>
                 <Table columns = {this.salesunitcolumns} 
                     dataSource = {salesunitTable} 
@@ -261,16 +250,48 @@ class ProductCard extends React.Component {
         );
         
         const brandRefList = (
-            <div> 
+            <div  className = "industry-main"> 
+                <Row
+                    type="flex"
+                    justify="space-between"
+                    className="industry-main-header"
+                >
+                    <div className="title">品牌</div>
+                </Row>
+                <Row className="industry-main-choice" type="flex">
                 <Table columns = {this.columns} 
                     dataSource = {brandRefData} 
                     bordered="true" 
                     style = {{background:"white"}}
-                    showHeader={false}
+                   // showHeader={false}
                     onRowClick={this.onBrandRowClick}
-                    pagination={false}
+                    //pagination={false}
                     scroll={{ y: 150 }}
+                    className="inner"
                    />
+                     </Row>
+                <Row
+                    type="flex"
+                    justify="end"
+                    align="middle"
+                    className="industry-main-footer"
+                >
+                    <Row type="flex" justify="end" align="middle" gutter={15}>
+                        <div>
+                            <Button onClick={this.onCancel}>
+                                取消
+                            </Button>
+                        </div>
+                        <div>
+                            <Button
+                                type="primary"
+                                onClick={this.onOk}
+                            >
+                                确定
+                            </Button>
+                        </div>
+                    </Row>
+                </Row>
             </div>
         );
 
@@ -349,8 +370,7 @@ class ProductCard extends React.Component {
                     )}
             </FormItem>
             </Col>
-            </Row>  
-            <Row gutter={0}>
+          
             <Col span={12}>
             <FormItem
                 label="助记码"
@@ -383,8 +403,7 @@ class ProductCard extends React.Component {
                     )}
             </FormItem>
             </Col>
-            </Row>  
-            <Row gutter={0}>
+          
             <Col span={12}>
             <FormItem
                 label="产品分类"
@@ -428,33 +447,13 @@ class ProductCard extends React.Component {
                     )}
             </FormItem>
             </Col>
-            </Row>  
-            <Row gutter={0}>
-            <Col span={12}>
-            <FormItem
-                label="销售单位"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-            >
-                {getFieldDecorator('saleUnitName', {
-
-                })(
-                    <Dropdown overlay={salesUnitRefTable} 
-                    trigger="click"
-                    onVisibleChange={this.handleSalesUnitVisibleChange}
-                    visible={salesUnitVisible}
-                >                        
-                    <Search value = {this.state.selectedsalesUnitValue}/>
-                </Dropdown>
-                    )}
-            </FormItem>
-            </Col>
-           
+            
             <Col span={12}>
             <FormItem
                 label="品牌"
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span:13 }}
+                
             >
                 {getFieldDecorator('brandId', {
 
@@ -463,14 +462,14 @@ class ProductCard extends React.Component {
                     trigger="click"
                     onVisibleChange={this.handleBrandVisibleChange}
                     visible={this.state.brandVisible}
+                   
                 >                        
                     <Search value = {this.state.selectedBrandValue}/>
                 </Dropdown>
                     )}
             </FormItem>
             </Col>
-            </Row>  
-            <Row gutter={0}>
+         
             <Col span={12}>
             <FormItem
                 label="参考售价"
@@ -493,12 +492,11 @@ class ProductCard extends React.Component {
                 {getFieldDecorator('orgId', {
 
                 })(
-                    <Input placeholder='请输入...'/>
+                    <Input  disabled = {true}/>
                     )}
             </FormItem>
             </Col>
-            </Row>  
-            <Row gutter={0}>
+        
             <Col span={12}>
             <FormItem
                 label="属性组"
@@ -512,22 +510,7 @@ class ProductCard extends React.Component {
                     )}
             </FormItem>
             </Col>
-            <Col span={12}>
-            <FormItem
-                label="产品图片"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-            //    {...formItemLayout}
-            >
-                {getFieldDecorator('photo', {
-
-                })(
-                    <Input placeholder='请输入...'/>
-                    )}
-            </FormItem>
-            </Col>
-            </Row>  
-            <Row gutter={0}>
+           
             <Col span={12}>
             <FormItem
                 label="启用状态"
@@ -544,6 +527,34 @@ class ProductCard extends React.Component {
             </Col>
             <Col span={12}>
             <FormItem
+                label="产品图片"
+                labelCol={{ span: 6 }}
+                wrapperCol={{ span:13 }}
+            //    {...formItemLayout}
+            >
+                {getFieldDecorator('photo', {
+
+                })(
+                    <Upload
+                    className="avatar-uploader"
+                    name="avatar"
+                    showUploadList={false}
+                   // action="//jsonplaceholder.typicode.com/posts/"
+                   // beforeUpload={beforeUpload}
+                   // onChange={this.handleChange}
+                  >
+                    {
+                   //   imageUrl ?
+                    //    <img src={imageUrl} alt="" className="avatar" /> :
+                        <Icon type="plus" className="avatar-uploader-trigger" />
+                    }
+                  </Upload>
+                    )}
+            </FormItem>
+            </Col>
+        
+            <Col span={12}>
+            <FormItem
                 label="产品描述"
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span:13 }}
@@ -552,7 +563,7 @@ class ProductCard extends React.Component {
                 {getFieldDecorator('description', {
 
                 })(
-                    <Input placeholder='请输入...'/>
+                    <Input  type="textarea" placeholder='请输入...'/>
                     )}
             </FormItem>
             </Col>           
@@ -576,4 +587,18 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(ProductCard);
+export default connect(mapStateToProps, mapDispatchToProps)(
+    Form.create({
+        onFieldsChange(props, fields){           
+           // let data = props.$$state.get("formData").toJS();
+          
+        },
+        mapPropsToFields(props){
+         
+        },
+        onValuesChange(_, values){
+            //console.log(values);
+        },
+    })(ProductCard));
+
+
