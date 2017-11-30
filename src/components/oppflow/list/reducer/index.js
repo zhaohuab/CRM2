@@ -16,6 +16,11 @@ let $$initialState = {
 		pageSize: 10,
 		page: 1,
 	},
+	allStage:[],
+	allDimension:[],
+	allAction:[],
+	step:1,
+	result:[]
 };
 
 function pageAdd(page, item) {
@@ -53,6 +58,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				visible: action.content.visible,
 				editData: action.content.editData,
+				step:action.content.visible?1:$$state.get("step")
 			})
 		case 'OPPFLOW_CARD_SAVEADD':
 			return $$state.merge({
@@ -76,6 +82,34 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRows: action.content.selectedRows,
 				selectedRowKeys: action.content.selectedRowKeys
 			})
+			case 'OPPFLOW_LIST_GETALLOPPSTAGE':
+			return $$state.merge({
+				allStage: action.content.voList,
+			})
+			case 'OPPFLOW_LIST_GETALLOPPDIMENSION':
+			return $$state.merge({
+				allDimension: action.content.voList,
+			})
+			case 'OPPFLOW_LIST_GETACTIONSUCCESS':
+			return $$state.merge({
+				allAction: action.content.action,
+				step:2
+			})
+			
+			case 'OPPFLOW_LIST_SAVEEDITDATA':
+			return $$state.merge({
+				editData: action.content
+			})
+			case 'OPPFLOW_LIST_CHANGESTEP':
+			return $$state.merge({
+				step: action.content
+			})
+			case 'OPPFLOW_LIST_SAVERESULT':
+			return $$state.merge({
+				result: action.content
+			})
+
+			
 		default:
 			return $$state;
 	}

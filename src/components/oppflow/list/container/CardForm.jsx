@@ -1,4 +1,4 @@
-import { Form, Input, Select, Row, Col } from 'antd';
+import { Form, Input, Select, Row, Col, Card as AntdCard } from 'antd';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from "../action"
@@ -6,6 +6,8 @@ import Email from 'utils/components/emails'
 import Department from 'components/refs/departments'
 import Enum from 'utils/components/enums'
 import RadioGroup from 'utils/components/radios'
+
+import BatchSelect from './BatchSelect.jsx'
 const FormItem = Form.Item;
 const Option = Select.Option;
 class Card extends React.Component {
@@ -15,15 +17,21 @@ class Card extends React.Component {
 
     componentDidMount() {
         let data = this.props.$$state.get("editData").toJS();
-        if (data.dimension) {
-            data.dimension = { key: data.dimension, title: "" };
+        if(data.oppdimension==undefined){
+            data.oppdimension = [] ;
+        }
+        if(data.oppstage==undefined){
+            data.oppstage = [] ;
         }
         this.props.form.setFieldsValue(data);
     }
 
     render() {
+        
         const { getFieldDecorator } = this.props.form;
         const enumData = this.props.$$state.get("enumData").toJS();
+        const allStage = this.props.$$state.get("allStage").toJS();
+        const allDimension = this.props.$$state.get("allDimension").toJS();
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -40,8 +48,11 @@ class Card extends React.Component {
                 <Input />
                 )
         }
+  
         return (
-            <Form >
+            
+             <Form >
+                     
                 <Row>
                     <Col span={12}>
                         <FormItem
@@ -105,7 +116,26 @@ class Card extends React.Component {
                         </FormItem>
                     </Col>
                 </Row>
-            </Form>)
+                <Row>
+                    <AntdCard title="销售阶段" bordered={false} >
+                        {getFieldDecorator('oppstage', {
+                        
+                        })(
+                            <BatchSelect dataSource={allStage} />
+                            )}
+                    </AntdCard>
+                </Row>
+                <Row>
+                    <AntdCard title="商机维度" bordered={false} >
+                        {getFieldDecorator('oppdimension', {
+                          
+                        })(
+                            <BatchSelect dataSource={allDimension} />
+                            )}
+                    </AntdCard>
+                </Row>
+            </Form>
+        )
     }
 }
 
