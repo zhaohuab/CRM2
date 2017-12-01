@@ -1,10 +1,12 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio, Select } from 'antd';
 import moment from 'moment';
 import PrdClass from 'components/refs/prdtype'
+import AttrsGrpRef from './AttrsGrpRef'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+const Search = Input.Search;
 
 export default class NormalLoginForm extends React.Component {
     constructor(props) {
@@ -13,11 +15,12 @@ export default class NormalLoginForm extends React.Component {
  
     componentDidMount() {
     //装箱过程
-        let { fatherorgId,fatherorgName} = this.props.data; 
-        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};   
-         
+       // let { fatherTypeId,fatherTypeName} = this.props.data; 
+       // let sel = this.props.selec;
+        //this.props.data.fatherTypeId = {key:fatherTypeId,title:fatherTypeId};   
         this.props.form.setFieldsValue(this.props.data);
     }
+
 
     render() {
         const formItemLayout = {
@@ -52,16 +55,16 @@ export default class NormalLoginForm extends React.Component {
                              
                                 <FormItem {...formItemLayout} label='编码'>
                                     {getFieldDecorator('code', {
-                                        rules: [{ required: true, message: '请输入编码' }],
+                                        rules: [{ required: true, message: '' }],
                                     })(
-                                        <Input  type="text" placeholder="请输入编码" />
+                                        <Input  type="text" placeholder=" "/>
                                         )}
                                 </FormItem>
                                 <FormItem {...formItemLayout} label='名称'>
                                     {getFieldDecorator('name', {
-                                        rules: [{ required: true, message: '请输入名称!' }],
+                                        rules: [{ required: true, message: '' }],
                                     })(
-                                        <Input type='text' placeholder="请输入名称!" />
+                                        <Input type='text' placeholder="" />
                                         )}
                                 </FormItem>
                                 <FormItem
@@ -71,14 +74,21 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('fatherTypeId', {
                                         rules: [],
                                     })(
-                                        <PrdClass />
+                                        <Input  disabled = {true}/>
                                         )}
                                 </FormItem>
-                                <FormItem  { ...formItemLayout } label='对应ERP组织'>
+                                <FormItem  { ...formItemLayout } label='属性组'>
+                                    { getFieldDecorator('attrGrpId', {
+                                        rules: [],
+                                    })(
+                                        <AttrsGrpRef/>
+                                        )}
+                                </FormItem>
+                                <FormItem  { ...formItemLayout } label='对应ERP'>
                                     { getFieldDecorator('erpCode', {
                                         rules: [],
                                     })(
-                                        <Input type='text' placeholder = "无" />
+                                        <Input type='text' placeholder = "" />
                                         )}
                                 </FormItem>
                             </Form>

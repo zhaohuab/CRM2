@@ -44,12 +44,10 @@ class PrdClass extends React.Component {
     };
 
     onSelect = (key, e) => {
-        debugger
         let { title  } = e.node.props;
         let id = e.node.props.dataRef.id.toString();
         let path = e.node.props.dataRef.path + "," +id;
-        //let id = e.node.props.dataRef.id.toString();
-        this.setState({ select: { key: key[0], title,path } });
+        this.setState({ select: { key: key[0], title , path } });
     };
 
     getData = () => {
@@ -82,7 +80,7 @@ class PrdClass extends React.Component {
     aa() {
         return (
             <div className="pepole-refer">
-                <div>组织</div>
+                <div>产品分类</div>
                 <div className="pepole-refer-search">
                     <Search
                         placeholder="请输入关键字"
@@ -94,8 +92,7 @@ class PrdClass extends React.Component {
     }
     render() {
         let key = "",
-            title = "请选择父级分类";
-            //debugger;
+            title = "";
         if (this.props.value) {
             key = this.props.value.key;
             title = this.props.value.title;
@@ -107,10 +104,9 @@ class PrdClass extends React.Component {
 
         return (
             <div>
-                {/* <Input value={key}/> */}
-                <Input
+                <Search
                     value={title}
-                    placeholder="请选择..."
+                    placeholder=""
                     onClick={this.onClick}
                     suffix={suffix}
                 />

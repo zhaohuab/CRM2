@@ -1,16 +1,21 @@
 import Immutable from 'immutable'
 
-let initialState = {
-   
-    data:[],
-    loading: false,
+let initialState = {   
+  data:[],
+  loading: false,
 	editData:{},
 	visible:false,
-	classRefTree :[],
+	classRefTree:[],
 	meaunitRefList:[],
 	brandRefList:[],
-	salesunitTable:[],
-	salesUnitVisible:false
+	salesunitTable:[],//销售单位table数据
+	salesUnitVisible:false,
+	addNum:0,
+	changedData:[],//销售单位变更数据
+	suSelectedRowKeys:[],
+	formData:{},
+	fieldsChangeData:{},
+	attrgrpRefList:[],
 };
 
 function pageAdd(page,item) {
@@ -34,8 +39,18 @@ function pageEdit(page,item) {
 }
 
 function addRow (salesunitTable, item) {
-	salesunitTable.unshift(item);
+	salesunitTable.push(item);
 	return salesunitTable;
+}
+
+function addNum(addNum){
+	addNum++;
+	return addNum;
+}
+
+function getFormData(target, source){
+	Object.assign(target,source);
+	return target;
 }
 
 function reducer ($$state = Immutable.fromJS(initialState), action){
@@ -43,9 +58,9 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
         case 'PRODUCT_LIST_GETLISTSUCCESS': 
 	        return $$state.merge({
 	        	loading: false,
-				data: action.content,
-				visible : action.content.visible,
-			})
+						data: action.content,
+						visible : action.content.visible,
+				})
         case 'PRODUCT_LIST_SHOWFORM':
             return $$state.merge({
 				visible : action.content.visible,
@@ -73,6 +88,10 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 			return $$state.merge({
 				brandRefList : action.content,
 			})
+		case 'PRODUCT_ATTRGROUP_GETREFLISTDATA' : 
+			return $$state.merge({
+				attrgrpRefList : action.content,
+			})
 		case 'ADDROW' : 
 			return $$state.merge({
 				salesunitTable : addRow($$state.get("salesunitTable").toJS(),action.content),
@@ -81,11 +100,49 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 		case 'PRODUCT_SALESUNIT_VISIBLE' : 
 			return $$state.merge({
 				salesUnitVisible:action.content
-			})             
-        default: 
-            return $$state;
-    }
-    
+			}) 
+		case 'PRODUCT_SALESUNIT_ADDROW' : 
+			return $$state.merge({
+				salesunitTable: addRow($$state.get("salesunitTable").toJS(),action.content),
+				addNum:addNum($$state.get('addNum'))
+			}) 
+		case 'PRODUCT_SALESUNIT_CHANGEDATA' : 
+			return $$state.merge({
+				changedData:action.content
+			}) 
+		case 'PRODUCT_SALESUNIT_SETSECROWKEYS' : 
+			return $$state.merge({
+				suSelectedRowKeys:action.content
+			}) 
+		case 'PRODUCT_SALESUNIT_SETSUTABLE' : 
+			return $$state.merge({
+				salesunitTable:action.content
+			})  
+		case 'PRODUCT_FORM_SETFORM' : 
+			return $$state.merge({
+				editData:action.content
+			})   
+		case 'PRODUCT_FORM_FIELDSCHANGE' : 
+			return $$state.merge({
+				fieldsChangeData:getFormData($$state.get('fieldsChangeData').toJS(),action.content),
+			})  
+		case 'PRODUCT_FORM_RESETFIELDSCHANGE' : 
+			return $$state.merge({
+				fieldsChangeData:action.content,
+			})  
+		case 'PRODUCT_FORM_SETADDNUM' : 
+			return $$state.merge({
+				addNum:action.content
+			}) 		
+		case 'PRODUCT_LIST_SHOWEDITFORM':
+			return $$state.merge({
+				visible : action.content.visible,
+				editData : action.content.formdata,
+				salesunitTable:action.content.formdata.saleUnits
+			})   
+		default: 
+      return $$state;
+    }    
 }
 
 export default reducer;
