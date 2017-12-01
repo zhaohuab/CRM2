@@ -60,11 +60,6 @@ class List extends React.Component {
             {
                 title: "行业",
                 dataIndex: "industryName"
-                // render: (text, record) => (
-                //     <div>
-                //         {record.name}
-                //     </div>
-                // )
             },
             {
                 title: "状态",
@@ -81,9 +76,14 @@ class List extends React.Component {
             this.props.action.selectRow(selectedRows, selectedRowKeys);
         };
     }
+    //改变编辑状态
+    changeState(visiable) {
+        this.props.action.changeStateFn(visiable);
+    }
 
     //显示面板
     slideShow(record) {
+        debugger;
         this.props.action.showViewForm(true, record);
     }
     //隐藏面版
@@ -93,19 +93,24 @@ class List extends React.Component {
     }
 
     trancFn(data) {
-        data.industry = data.industry.id;
-        data.parentId = data.parentId.id;
+        let { viewData } = this.props.$$state.toJS();
         debugger;
+        if (data.industry) {
+            data.industry = data.industry.id;
+        }
+        if (data.parentId) {
+            data.parentId = data.parentId.id;
+        }
+
         return data;
     }
 
     //form新增、或者修改
     formHandleOk() {
-        debugger;
         this.formRef.props.form.validateFields((err, values) => {
-            debugger;
             if (!err) {
                 values = this.trancFn(values);
+                debugger;
                 if (values.id) {
                     this.props.action.listEditSave(values);
                 } else {
@@ -153,7 +158,7 @@ class List extends React.Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
-        const {
+        let {
             selectedRows,
             selectedRowKeys,
             formVisitable,
@@ -164,7 +169,7 @@ class List extends React.Component {
             icbcSelect,
             icbcInfo
         } = this.props.$$state.toJS();
-        console.log(icbcSelect);
+        console.log(viewData);
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
@@ -203,6 +208,7 @@ class List extends React.Component {
                         <Card
                             wrappedComponentRef={inst => (this.formRef = inst)}
                             editCardFn={this.editCardFn.bind(this)}
+                            changeState={this.changeState.bind(this)}
                         />
                     </div>
                 </Modal>

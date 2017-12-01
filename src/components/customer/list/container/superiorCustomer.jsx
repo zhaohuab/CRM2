@@ -189,19 +189,14 @@ export default class CuperiorCustomer extends React.Component {
 
     //点击取消
     onCancel() {
-        this.setState(
-            {
-                visible: false,
-                selectedRowKeys: [],
-                pagination: {
-                    pageSize: 5,
-                    page: 1
-                }
-            },
-            () => {
-                this.props.onChange({});
+        this.setState({
+            visible: false,
+            selectedRowKeys: [],
+            pagination: {
+                pageSize: 5,
+                page: 1
             }
-        );
+        });
     }
     //input框输入值的时候
     keyDownUp(e) {
