@@ -33,7 +33,6 @@ class List extends React.Component {
   }
 
   onSave() { //确认
-     
     let isEdit = this.props.$$state.get("isEdit");
     let data = this.props.$$state.get("editData").toJS()
     this.formRef.props.form.validateFieldsAndScroll((err, values) => {
@@ -56,8 +55,7 @@ class List extends React.Component {
         <Col span = { 6 }>
           <Cards dataSource = { item }/>
         </Col>
-      )}) 
-       
+      )})     
     }   
   } 
 
@@ -79,11 +77,13 @@ class List extends React.Component {
     let enableState = this.props.$$state.get('enableState');
     if (flag){//如果只点击输入框的搜索按钮
       let data = {};
-      data.searchKey=searchKey;
+      if(searchKey){
+        data.searchKey=searchKey;
+      }
       this.props.action.search(data)
     }else{
       let data = {};
-      data.searchKey=searchKey;
+      if(searchKey){ data.searchKey=searchKey;}
       data.enableState=enableState; 
       this.props.action.search(data)
     }
@@ -95,7 +95,7 @@ class List extends React.Component {
 
   componentWillMount() { this.props.action.getListData() }
 
-  render() { //只能通过this.props和this.state访问数据;不能在render方法中任何位置修改state状态或者是DOM输出；
+  render() { 
     let page = this.props.$$state.get("data").toJS();
     let data = page.data || [];
     this.state.more ? null : data = data.slice(0,12);   

@@ -46,8 +46,7 @@ class Cards extends React.Component {
     return  moment(time).format("YYYY-MM-DD")
   }
  
-
-  render() {   //只能通过this.props和this.state访问数据;不能在render方法中任何位置修改state状 态或者是DOM输出；
+  render() {
     let item= this.props.dataSource;
     let menu = (
         <Menu>
@@ -122,7 +121,6 @@ function mapStateToProps(state, ownProps) {
     $$state: state.taskcard
   }
 }
-
 function mapDispatchToProps(dispatch) {
   return {
       action: bindActionCreators(Actions, dispatch)
@@ -131,15 +129,4 @@ function mapDispatchToProps(dispatch) {
 
 export default  connect( mapStateToProps, mapDispatchToProps)(Cards);
 
-
-
-
-
-/*  
-{
-   column.map((item,index)=> {
-                return  <p>{item.title}:{data[index][item.dataIndex]}</p>
-              })
-            } 
-*/
-            
+       

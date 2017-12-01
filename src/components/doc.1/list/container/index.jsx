@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button,Icon, Input, Radio, Popconfirm, Form, Row, Col } from 'antd';
+import { LocaleProvider, Table, Modal, Button,Icon, Input, Radio, Popconfirm, Form } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
-import Cards from './listForm.jsx';
+import Card from './listForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import Tables from './table.jsx';
 import './index.less'
@@ -12,19 +12,23 @@ let RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
 import 'assets/stylesheet/all/iconfont.css'
 import * as Actions from "../action"
+import  en from './lang/en/en_header.jsx'
+import  zh from './lang/zh/zh_header.jsx'
 
 class List extends React.Component {
   constructor(props) {
     super(props) 
+    let lang = this.props.$$state.get("lang")
+    let title = this.getLang(lang, 'damc')  
     this.columns = [
       {
-        title: '档案名称',
+        title: title,
         dataIndex:'name',
-        render:(text, record)=><a href='javascript:;' onClick={this.onDetail.bind(this,record)} style={{  textDecoration:'none' }}>{text}</a>,
       },
       {
         title: '档案描述',
         dataIndex: 'description',
+        render:(text, record)=><a href='javascript:;' onClick={this.onDetail.bind(this,record)}>{text}</a>
       },
       {
         title: '系统档案',
@@ -52,8 +56,8 @@ class List extends React.Component {
   }
 
  
-  onDetail = (record) => {//详情展示;;
-    this.props.action.onDetail(record, true)
+  onDetail = (record) => {//详情展示
+
   }
 
   onAdd = () => {
@@ -68,27 +72,22 @@ class List extends React.Component {
     this.setState({ headLabel: false, selectedRowKeys: [] }); 
   }
 
-  onEdit = (data) => {  
+  onEdit = () => {  
     this.setState({ isEdit: true });
+    let rowKey = this.state.selectedRowKeys[0];
     let rowData = {};
-    if(data){//如果是从详情中点击的编辑按钮
-      rowData=data;
-      this.onClose('detail')
-    }else{
-      let rowKey = this.state.selectedRowKeys[0];
-      let page = this.props.$$state.get("data").toJS();
-      for(let i=0,len=page.data.length;i<len;i++) {
-        if(rowKey == page.data[i].id) {
-          rowData = page.data[i];
-          break;
-        }
+    let page = this.props.$$state.get("data").toJS();
+    for(let i=0,len=page.data.length;i<len;i++) {
+      if(rowKey == page.data[i].id) {
+        rowData = page.data[i];
+        break;
       }
     }
     this.props.action.showFormEdit(true, rowData);
   }
 
-  onClose = (detail) => {
-    this.props.action.showForm(detail, false);
+  onClose = () => {
+    this.props.action.showForm(false, {});
   }
 
   onEnable = (enable) => {
@@ -97,6 +96,11 @@ class List extends React.Component {
       this.setState({ headLabel: false });
       this.props.action.onEnable(this.state.selectedRowKeys, enable, { pagination, searchMap });
     }
+  }
+
+  componentDidMount() {
+    let { pagination, searchMap } = this.state;
+    this.props.action.getListData({ pagination, searchMap });
   }
 
   onSave = () => {
@@ -151,48 +155,56 @@ class List extends React.Component {
   onChange = (data) => {
     this.props.action.valueChange(data)
   }
-
-   componentDidMount() {
-    let { pagination, searchMap } = this.state;
-    this.props.action.getListData({ pagination, searchMap });
+  langChange = (lan) => {//语言变换
+    this.props.action.langChange(lan)
+  }
+  getLang = (lan, name) => {
+    let key;
+    switch (lan){
+      case 'zh':
+        key = zh[name]
+        break;
+      case 'en':
+        key = en[name]
+        break
+    }
+    return key
   }
 
   render() {
-    //debugger;
+    let lang = this.props.$$state.get("lang")
+    let getLang = this.getLang;
     let page = this.props.$$state.get("data").toJS();
-    let editData = this.props.$$state.get("editData").toJS();
-    let detailContent = this.props.$$state.get("detailContent").toJS();
-    let detailSource = this.props.$$state.get("detailSource").toJS();
-    let detailVisible = this.props.$$state.get("detailVisible");
+     let editData = this.props.$$state.get("editData").toJS();
     let visible = this.props.$$state.get("visible");
     let { headLabel, selectedRowKeys } = this.state;
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    let detail = this.props.action.detail;
+    const detail = this.props.action.detail;
     return (
       <div className= 'user-warpper'>
         {
           headLabel ? 
           <div className= 'head_edit'>
-            <HeadLabel selectedRowKeys= { selectedRowKeys } onBack= { this.onBack }>
+            <HeadLabel selectedRowKeys= { selectedRowKeys } onBack= { this.onBack } getLang={getLang} lang={lang}>
             {             
-              this.state.selectedRowKeys.length == 1 ? <Button className="default_button" onClick = { this.onEdit.bind(this,false) }><i className = 'iconfont icon-bianji'></i>编辑</Button> :''}
+              this.state.selectedRowKeys.length == 1 ? <Button className="default_button" onClick = { this.onEdit.bind(this) }><i className = 'iconfont icon-bianji'></i>'编辑'</Button> :''}
                     
               <Popconfirm placement = "bottom"  title = '确认删除' onConfirm = { this.onDelete } okText = '是' cancelText = '否'>
-                <Button className = "default_button" ><i className = 'iconfont icon-shanchu'>删除</i></Button>
+                <Button className = "default_button" ><i className = 'iconfont icon-shanchu'>'删除'</i></Button>
               </Popconfirm>
               
-              { this.state.enable == 1 ? <Button className = "default_button" onClick = { this.onEnable(2).bind(this, 2) }><i className = 'iconfont icon-tingyong'></i>停用</Button>:
-              <Button className = "default_button" onClick = { this.onEnable(1).bind(this, 1) }><i className = 'iconfont icon-qiyong-lanse'></i>启用</Button>}
-              <Button className = "default_button"><i className = 'iconfont icon-fenpeijiaose'></i>分配角色</Button>
+              { this.state.enable == 1 ? <Button className = "default_button" onClick = { this.onEnable(2).bind(this, 2) }><i className = 'iconfont icon-tingyong'></i>'停用'</Button>:
+              <Button className = "default_button" onClick = { this.onEnable(1).bind(this, 1) }><i className = 'iconfont icon-qiyong-lanse'></i>'启用'</Button>}
+              <Button className = "default_button"><i className = 'iconfont icon-fenpeijiaose'></i>'分配角色'</Button>
             </HeadLabel> 
           </div>: 
           <div className = 'head_panel'>
               <div className = 'head_panel-left'>
                 <div>
-                  <span className = 'deep-title-color'>所属部门:</span>
+                  <span className = 'deep-title-color'>'所属部门':</span>
                   <Input
                     placeholder = "请选择..."
                     className = "search"
@@ -200,24 +212,25 @@ class List extends React.Component {
                   />
                 </div>
                 <div className = 'head_panel-state'>
-                  <span className = 'simple-title-color'>状态：</span>
+                  <span className = 'simple-title-color'>{getLang.call(this,lang,'zt')}：</span>
                   <RadioGroup onChange = { this.onEableRadioChange } value = { this.state.enable } className = 'simple-title-color'>
-                    <Radio value = { 1 }>启用</Radio>
-                    <Radio value = { 2 }>停用</Radio>
+                    <Radio value = { 1 }>{getLang.call(this,lang,'qy')}</Radio>
+                    <Radio value = { 2 }>{getLang.call(this,lang,'zt')}</Radio>
                   </RadioGroup>
                 </div>
               </div>
               <div className = 'head_panel-right'>
                 <ButtonGroup className = 'add-more'>
-                  <Button><i className = 'iconfont icon-daochu' >导入</i></Button>
-                  <Button><i className = 'iconfont icon-daoru' >导出</i></Button>
+                  <Button onClick = {this.langChange.bind(this,'zh')}><i className = 'iconfont icon-daochu' ></i>中文</Button>
+                  <Button onClick = {this.langChange.bind(this,'en')}><i className = 'iconfont icon-daoru' ></i>English</Button>
                 </ButtonGroup>
-                <Button  type = "primary" className = "button_add" onClick = { this.onAdd.bind(this) }><Icon type = "plus" />新增</Button>
+                <Button  type = "primary" className = "button_add" onClick = { this.onAdd.bind(this) }><Icon type = "plus" />{getLang.call(this,lang,'xz')}</Button>
               </div>
           </div>
         }
 
         <div className = "list-box" >
+        <LocaleProvider locale={lang=='en'?enUS:''}>
           <Table
             size = "middle"
             columns = { this.columns }
@@ -229,62 +242,30 @@ class List extends React.Component {
               showSizeChanger: true,
               showQuickJumper: true,
               total: page.total,
-              showTotal: this.showTotal, 
+              showTotal: this.showTotal.bind(this, lang, 'gong', 'tiao'), 
               onChange: this.onPageChange.bind(this), 
               onShowSizeChange: this.onPageSizeChange.bind(this) }}
           />
+          </LocaleProvider>
         </div>
+        <LocaleProvider locale = { lang == 'en' ? enUS : '' }>
         <Modal
-          title = { headLabel ? '编辑' : '新增' }
+          title = { headLabel ? getLang(lang,'bj') : getLang(lang,'xz') }
           visible = { visible }
           onOk = { this.onSave.bind(this) }
           onCancel = { this.onClose.bind(this) }
           width= { 500 }
         >
           <div className = 'model-height' id = 'doc'>
-            <Cards           
+            <Card
+              getLang = { getLang }              
               editData = { editData } 
               onChange={ this.onChange.bind(this) }
               wrappedComponentRef={ ref => this.formRef = ref } 
             />
           </div>
         </Modal>
-        <Modal
-          title = '详情'
-          visible = { detailVisible }
-          cancelText = {<span><Icon type="poweroff" />关闭</span>}
-          okText = {<span><Icon type="edit" />编辑</span>}
-          onOk = { this.onEdit.bind(this,detailContent) }
-          onCancel = { this.onClose.bind(this,'detail') }
-          width= { 500 }
-        >
-          <div className = 'model-height' id = 'doc'>           
-            <Row gutter={16} style={{marginTop:'20px'}}>
-              <Col span={8}><span style={{float:'right'}}>档案名称：</span></Col>
-              <Col span={10}>{detailContent.name}</Col>
-              <Col style={{color:'rgb(102,144,204)'}} span={6}>{detailContent.isDefault==1?'系统档案':''}</Col>
-            </Row>  
-            <Row gutter={16} style={{marginTop:'20px'}}>
-              <Col span={8}><span style={{float:'right'}}>档案描述：</span></Col>
-              <Col span={16}>{detailContent.description}</Col>
-            </Row>
-            <Row gutter={16} style={{marginTop:'20px'}}>
-              <Col span={8}><span style={{float:'right'}}>档案明细：</span></Col>
-              <Col span={12}>           
-                {
-                  detailSource.map(item=>{     
-                    return (
-                      <div style={{marginBottom:'15px',overflow: 'hidden', whiteSpace: 'nowrap' ,textOverflow: 'ellipsis'}}>
-                        {item.enableState==1?<span>{item.name}</span>:<span style={{color:'#f3f3f3'}}>{item.name}</span>}
-                      </div>
-                    )
-                  })
-                }
-              </Col>
-              <Col span={4}></Col>
-            </Row>
-          </div>
-        </Modal>
+        </LocaleProvider>
       </div>
     )
   }
@@ -303,8 +284,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default  connect( mapStateToProps, mapDispatchToProps)(List);
-
-/* 
- 未解决：新增和编辑之后，立即点击详情按钮，会报错，说id不能为空
-
-*/
