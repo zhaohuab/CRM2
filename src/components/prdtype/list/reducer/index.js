@@ -12,8 +12,14 @@ let $$initialState = {
 	editData:[],
 	searchFilter:undefined,
 	attrgrpRef:[],
-	selectedKeys:[]
+	selectedKeys:[],
+	fieldsChangeData:{},
 };
+
+function getFormData(target, source){
+	Object.assign(target,source);
+	return target;
+}
 
 export default function prdAttrReducers($$state = Immutable.fromJS($$initialState), action){
 
@@ -85,14 +91,22 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 			return $$state.set('tableListCheckbox',Immutable.fromJS(action.rows)) 
 		case 'PRDTYPE_LIST_DELETELISTSUCCESS':
 	    	return $$state.merge({tableListCheckbox:action.payload.tableListCheckbox}) 
-		case 'PRODUCT_ATTRGROUP_GETREFLIST' : 
+		case 'PRODUCTCLASS_ATTRGROUP_GETREFLIST' : 
 				return $$state.merge({
 					attrgrpRef : action.payload.data,
 				})
 		case 'PRDCLASS_FORM_GETSECL' : 
 				return $$state.merge({
 					selectedKeys : action.sel,
-				})	 	 
+				})	
+		case 'PRDCLASS_FORM_FIELDSCHANGE' : 
+				return $$state.merge({
+					fieldsChangeData:getFormData($$state.get('fieldsChangeData').toJS(),action.content),
+				})  
+		case 'PRDCLASS_FORM_SETFORM' : 
+				return $$state.merge({
+					editData:action.content
+				})  	 
 	  default: 
 	      return $$state;
     }

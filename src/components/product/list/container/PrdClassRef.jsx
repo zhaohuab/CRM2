@@ -20,13 +20,6 @@ import * as Actions from "../action"
         refData:""
     };
   }
-  componentWillReceiveProps(nextProps) {
-    // Should be a controlled component.
-    if ('value' in nextProps) {
-      const value = nextProps.value;
-      this.setState(value);
-    }
-  }
  
 
   handleVisibleChange = (flag) => {
@@ -54,24 +47,23 @@ import * as Actions from "../action"
     }
 
   render() {
-    debugger
     const classRefTree = this.props.$$state.get("classRefTree").toJS().voList;
     let loop = () =>{};
     if(classRefTree!== undefined && classRefTree.length>0){
          loop = data => data.map((item) => {
-            
-                     if (item.children && item.children.length>0) {
-                       return (
-                         <TreeNode  key={item.id 
-         
-                          } title={item.name 
-         
-                          } disableCheckbox >
-                              {loop(item.children)}
-                         </TreeNode>
-                       );
-                     }
-                     return <TreeNode key={item.id } title={item.name }/>;
+            if (item.children && item.children.length>0) {
+                return (
+                  <TreeNode  key={item.id 
+  
+                   } title={item.name 
+  
+                   } disableCheckbox >
+                       {loop(item.children)}
+                  </TreeNode>
+                );
+              }
+              return <TreeNode key={item.id } title={item.name }/>;    
+                     
             });
     }else{
         
