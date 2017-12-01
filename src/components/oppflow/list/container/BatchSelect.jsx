@@ -31,6 +31,14 @@ class BatchSelect extends React.Component {
             onChange(result);
         }
     };
+
+    // onLeftClick(value){
+    //     const leftData = this.state.leftData;
+    //     for (let i = 0; i < leftData.length; i++) {
+    //         if(leftData[i].)
+    //     }
+    // }
+
     add(value) {
         const leftData = this.state.leftData;
         const rightData = this.state.rightData;
@@ -38,6 +46,8 @@ class BatchSelect extends React.Component {
             if (leftData[i].id == value && !leftData[i].selected) {
                 leftData[i].selected = true;
                 rightData.push(leftData[i])
+            }else if(leftData[i].id == value && leftData[i].selected){
+                this.remove(value)
             }
         }
 

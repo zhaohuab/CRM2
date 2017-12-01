@@ -11,8 +11,10 @@ import ActionCard from './ActionCard.jsx';
 import Department from 'components/refs/departments'
 import './index.less'
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
+import SearchPanel from "./SearchPanel.jsx";
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
+const FormItem = Form.Item;
 import 'assets/stylesheet/all/iconfont.css'
 
 
@@ -29,15 +31,22 @@ class List extends React.Component {
   }
 
   componentDidMount() {
-    this.props.action.getListData(this.props.$$state.get("pagination").toJS());
+    this.props.action.getListData();
     this.props.action.getEnumData();
   }
 
   onAdd() {
-    this.setState({ isEdit: false });
-    this.props.action.showForm(true, {});
+
+    this.props.action.setIsEdit(false);
+    this.props.action.showForm(true);
   }
   onDelete(id) {
+    const listData = this.props.$$state.get("data").toJS().data;
+    for (let i = 0; i < listData.length; i++) {
+      if (listData[i].id == id) {
+        listData.splice(i, 1)
+      }
+    }
 
     let that = this
     confirm({
@@ -47,24 +56,22 @@ class List extends React.Component {
       okType: 'danger',
       cancelText: '否',
       onOk() {
-        that.props.action.onDelete(id);
+        that.props.action.onDelete(id, listData);
       },
       onCancel() {
         console.log('Cancel');
       },
     });
   }
-  onEdit = (item) => {
-    this.props.action.showForm(true, item);
+  onEdit(id) {
+    this.props.action.setIsEdit(true);
+    this.props.action.showForm(true);
+    this.props.action.getEditData(id)
   }
   onClose() {
-    this.props.action.showForm(false, {});
+    this.props.action.showForm(false);
   }
-  onEnable(enable) {
-    return (enable) => {
-      this.props.action.onEnable(this.props.$$state.get("selectedRowKeys").toJS(), enable, this.props.$$state.get("pagination").toJS());
-    }
-  }
+
   onSave() {
     let form = this.actionRef.props.form;
     let that = this;
@@ -73,47 +80,32 @@ class List extends React.Component {
         console.log('Received values of form: ', values);
       }
       const editData = this.props.$$state.get("editData").toJS();
-      editData.oppdimension=undefined;
-      editData.oppstage=undefined;
-      editData.flowState = editData.flowState.key;
+      editData.oppdimension = undefined;
+      editData.oppstage = undefined;
+      if (editData.flowState) {
+        editData.flowState = editData.flowState.key;
+      }
       const result = this.props.$$state.get("result").toJS();
-      for(let i=0;i<result.length;i++){
-        if(result[i].key == values.nowStage){
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].key == values.nowStage) {
+          result[i].winProbability = values.winProbability
           const stage = result[i];
           const dimensions = stage.children
-          for(let i=0;i<dimensions.length;i++){
-            const actions = values['oppdimension'+dimensions[i].key];
-            dimensions[i].children = [];
-            dimensions[i].children.push(actions)
+          for (let i = 0; i < dimensions.length; i++) {
+            const actions = values['oppdimension' + dimensions[i].key];
+            dimensions[i].children = actions
           }
           break;
         }
       }
-
-      if (this.state.isEdit) {
-        this.props.action.onSave4Edit(form.getFieldsValue());
+    
+      if (that.props.$$state.get('isEdit')) {
+        that.props.action.onSave4Edit(editData, result);
       }
       else {
-        this.props.action.onSave4Add(editData,result);
+        that.props.action.onSave4Add(editData, result);
       }
     });
-  }
-
-  showTotal(total) {
-    return `共 ${total} 条`;
-  }
-  onPageChange(page, pageSize) {
-    //可能有问题
-    let pagination = { page: page, pageSize: pageSize };
-    this.props.action.getListData(pagination);
-  }
-  onPageSizeChange(page, pageSize) {
-    let pagination = { page: page, pageSize: pageSize };
-    this.props.action.getListData(pagination);
-  }
-
-  onBack() {
-    this.props.action.selectData({ selectedRows: [], selectedRowKeys: [] });
   }
 
 
@@ -121,38 +113,125 @@ class List extends React.Component {
     this.props.action.getOppaction(this.props.$$state.get("allDimension").toJS())
     const data = this.formRef.props.form.getFieldsValue();
     this.props.action.saveEditData(data)
+    const result = this.props.$$state.get("result").toJS();
     const oppstage = data.oppstage;
     const oppdimension = data.oppdimension;
-    for(let i=0;i<oppstage.length;i++){
-      for(let i=0;i<oppdimension.length;i++){
-        oppstage[i].children = oppdimension;
+    oppdimension.children = [];
+    let i,j,k;
+    let flag;
+
+    for(i=0;i<oppstage.length;i++){
+      oppstage[i].children = []
+    }
+    for(i=0;i<oppdimension.length;i++){
+      oppdimension[i].children = []
+    }
+    for( i=result.length-1;i>=0;i--){
+      flag = false
+      for( j=0;j<oppstage.length;j++){
+        if(result[i].key==oppstage[j].key){
+          flag = true
+         break;
+        }
+      }
+      if(flag == false){
+        result.splice(i,1)
       }
     }
-    this.props.action.saveResult(oppstage)
+
+    for(i=0;i<oppstage.length;i++){
+      flag = false
+      for(j=0;j<result.length;j++){
+        if(oppstage[i].key==result[j].key){
+          flag = true;
+          break;
+        }
+      }
+      if(flag == false){
+        oppstage[i].children=oppdimension;
+        result.push(oppstage[i])
+      }
+    }
+
+    for(i=0;i<result.length;i++){
+      if(!result[i].children){
+        break;
+      }
+      for(j=result[i].children.length-1;j>=0;j--){
+        flag = false;
+        for(k=0;k<oppdimension.length;k++){
+          if(result[i].children[j].key==oppdimension[k].key){
+            flag = true;
+            break;
+          }
+        }
+        if(flag ==false){
+          result[i].children.splice(j,1)
+        }
+      }
+    }
+
+    for(i=0;i<result.length;i++){
+      for(j=0;j<oppdimension.length;j++){
+        flag = false;
+        if(!result[i].children){
+          result[i].children = oppdimension;
+          break;
+        }
+        for(k=0;k<result[i].children.length;k++){
+          if(oppdimension[j].key ==result[i].children[k].key){
+            flag = true
+            break;
+          }
+        }
+        if(flag == false){
+          result[i].children.push(oppdimension[j])
+        }
+      }
+    }
+
+
+
+    this.props.action.saveResult(result)
   }
 
   changeStep(index) {
     this.props.action.changeStep(index)
   }
 
-  render() {
+  onChangeEnabel(id, oldState) {
+    let state = 1
+    if (oldState == 1) {
+      state = 2
+    }
+    const listData = this.props.$$state.get("data").toJS().data;
+    for (let i = 0; i < listData.length; i++) {
+      if (listData[i].id == id) {
+        listData[i].enableState = state
+      }
+    }
+    this.props.action.onEnable(id, state, listData)
+  }
 
+  render() {
     let { $$state } = this.props;
     let data = $$state.get("data").toJS().data;
     let visible = $$state.get("visible");
     let editData = $$state.get("editData").toJS();
     const WrapCard = Form.create()(Card);
     const WrapActionCard = Form.create()(ActionCard);
+    const WrapSearchPanel = Form.create()(SearchPanel);
     const step = this.props.$$state.get("step");
     const showFlow = data =>
       data.map(item => {
+        debugger
         return (
           <Col span={6}>
             <Row>
-              流程名称
+              流程名称：{item.name}
             </Row>
             <Row>
-              业务类型：{item.name}
+              业务类型：{item.bizType}
             </Row>
             <Row>
               流程描述：{item.description}
@@ -160,35 +239,38 @@ class List extends React.Component {
             <Row
               type="flex"
               justify="end">
-              <Col span={3} >
-                <div onClick={this.onEdit.bind(this, item)}>编辑</div>
+              <Col span={3} class='data_box'>
+                <div onClick={this.onEdit.bind(this, item.id)}>编辑</div>
               </Col>
               <Col span={3}>
                 <div onClick={this.onDelete.bind(this, item.id)}>删除</div>
               </Col>
               <Col span={3}>
-                <div onClick={this.onDelete.bind(this, item.id)}>启用</div>
+                <div onClick={this.onChangeEnabel.bind(this, item.id, item.enableState)}>{item.enableState == 1 ? '启用' : '停用'}</div>
               </Col>
             </Row>
           </Col>
         );
 
       });
-
     return (
       <div className='user-warpper'>
         <Row>
           <Button onClick={this.onAdd.bind(this)}>新建</Button>
         </Row>
         <Row>
+        <WrapSearchPanel />
+        </Row>
+        <Row>
           {showFlow(data)}
         </Row>
         <Modal
-          title={this.state.isEdit ? "编辑销售流程" : "新增销售流程"}
+          title={this.props.$$state.get('isEdit') ? "编辑销售流程" : "新增销售流程"}
           visible={visible}
           onOk={this.onSave.bind(this)}
           onCancel={this.onClose.bind(this)}
           width="60%"
+          maskClosable={false}
           footer={
             step == 1 ? <div>
               <Button onClick={this.onClose.bind(this)}>取消</Button>

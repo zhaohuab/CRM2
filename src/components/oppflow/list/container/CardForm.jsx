@@ -16,18 +16,27 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        let data = this.props.$$state.get("editData").toJS();
-        if(data.oppdimension==undefined){
-            data.oppdimension = [] ;
+        if(this.props.$$state.get("isEdit")){
+            let data = this.props.$$state.get("editData").toJS();
+            let result = this.props.$$state.get("result").toJS();
+            data.oppstage = result
+            
+            if(result[0]&&result[0].children){
+                data.oppdimension = result[0].children
+            }else{
+                data.oppdimension = []
+            }
+            this.props.form.setFieldsValue(data);
+        }else{
+            const data ={}
+            data.oppstage=[]
+            data.oppdimension=[]
+            this.props.form.setFieldsValue(data);
         }
-        if(data.oppstage==undefined){
-            data.oppstage = [] ;
-        }
-        this.props.form.setFieldsValue(data);
+        
     }
 
     render() {
-        
         const { getFieldDecorator } = this.props.form;
         const enumData = this.props.$$state.get("enumData").toJS();
         const allStage = this.props.$$state.get("allStage").toJS();

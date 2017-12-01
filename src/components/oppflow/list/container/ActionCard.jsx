@@ -18,21 +18,13 @@ class ActionCard extends React.Component {
     componentDidMount() {
         let data = this.props.$$state.get("editData").toJS();
         let result = this.props.$$state.get("result").toJS();
-        debugger
         if (data.nowStage == undefined) {
             data.nowStage = data.oppstage[0].key;
         }
-        // if (data.oppdimension == undefined) {
-        //     data.oppdimension = [];
-        // }else{
-        //     for(let i=0;i<data.oppdimension.length;i++){
-        //         const key = 'oppdimension'+data.oppdimension[i].key;
-        //         data[key] = []
-        //     }
-        // }
-        debugger
+        
         for(let i=0;i<result.length;i++){
             if(result[i].key == data.nowStage){
+                data.winProbability = result[i].winProbability;
                 const oppdimension = result[i].children;
                 for(let i=0;i<oppdimension.length;i++){
                     const actions = oppdimension[i].children?oppdimension[i].children:[];
@@ -42,9 +34,6 @@ class ActionCard extends React.Component {
                 break;
             }
         }
-
-        
-        
         this.props.form.setFieldsValue(data);
     }
 
@@ -66,12 +55,12 @@ class ActionCard extends React.Component {
         const editData = this.props.$$state.get("editData").toJS();
         for(let i=0;i<result.length;i++){
           if(result[i].key == values.nowStage){
+              result[i].winProbability = values.winProbability
             const stage = result[i];
             const dimensions = stage.children
             for(let i=0;i<dimensions.length;i++){
               const actions = values['oppdimension'+dimensions[i].key];
-              dimensions[i].children = [];
-              dimensions[i].children.push(actions)
+              dimensions[i].children = actions;
             }
             break;
           }
@@ -140,7 +129,7 @@ class ActionCard extends React.Component {
             <div>
 
                 <Row>
-                    {showStage(editData.oppstage)}
+                    {editData.oppstage?showStage(editData.oppstage):""}
                 </Row>
                 <Form >
                     <Row>
