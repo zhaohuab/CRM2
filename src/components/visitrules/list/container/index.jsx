@@ -2,63 +2,41 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Input, Radio, Form, Col, Row, Modal, Button, Icon, Select } from 'antd';
+import { Input, Col, Row, Modal, Button, Select } from 'antd';
 import Cards from './card.jsx';
 import './index.less'
 let Search = Input.Search;
 const Option = Select.Option
-let RadioGroup = Radio.Group;
-const ButtonGroup = Button.Group;
 import 'assets/stylesheet/all/iconfont.css'
 import * as Actions from "../action"
+import TaskCards from './transform/index.jsx'
 
 class List extends React.Component {
   constructor(props) {
     super(props)    
     this.state = {
-      enable: 1,
-      headLabel:false,
-      more:false,
+      more:false
     }
   }
 
-  onAdd=()=> {//添加按钮
-    this.setState({ isEdit: false });
-    this.props.action.showForm(true, {});
-  }
+  refresh = () => { this.props.action.getListData() };//刷新按钮
 
   onClose=()=> {//弹出框的取消和关闭按钮
     this.props.action.showForm(false, {});
   }
 
-  onSave() { //确认
-     
-    let isEdit = this.props.$$state.get("isEdit");
-    let data = this.props.$$state.get("editData").toJS()
-    this.formRef.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
-    if (isEdit) {
-      this.props.action.onSave4Edit(data);
-    }
-    else {
-      this.props.action.onSave4Add(data);
-    }
+  onSave() { //保存
+    let editData =this.props.$$state.get("editData").toJS();
+    let id = editData.id;
+    let num=1;
+    let checkedData = this.props.$$state.get("checkedData").toJS();
+    checkedData.forEach(item=>{
+      item.visitruleId=id;
+      item.orderNum=num;
+      num++;
+    })
+    this.props.action.onSave4Edit(id, checkedData)
   }
-
-  renderCardList = (data) => {//循环生成卡片
-    if (data){
-      return data.map(item => {
-        return (
-        <Col span = { 6 }>
-          <Cards dataSource = { item }/>
-        </Col>
-      )}) 
-       
-    }   
-  } 
 
   inputChange = (e) => {//搜索中的输入框
     let { value } = e.target;
@@ -88,18 +66,28 @@ class List extends React.Component {
     this.setState({more:!this.state.more})
   }
 
+  renderCardList = (data) => {//循环生成卡片
+    if (data){
+      return data.map(item => {
+        return (
+        <Col span = { 6 }>
+          <Cards dataSource = { item }/>
+        </Col>
+      )}) 
+       
+    }   
+  } 
+
   componentWillMount() { this.props.action.getListData() }
 
-  render() { //只能通过this.props和this.state访问数据;不能在render方法中任何位置修改state状态或者是DOM输出；
+  render() {
     let page = this.props.$$state.get("data").toJS();
     let moreData = page.voList ? page.voList.slice(0,12) : [];
     let data = this.state.more ? page.voList:moreData;
     let visible = this.props.$$state.get("visible");
     let more = this.props.$$state.get("more");
-    let editData = this.props.$$state.get("editData").toJS();
     let searchKey = this.props.$$state.get("searchKey");
-    let enableState = this.props.$$state.get("enableState");
-    
+    let enableState = this.props.$$state.get("enableState");   
     return (
       <div className = 'user-warpper taskcard-user-warpper'>
           <div className='head_panel'>
@@ -123,7 +111,7 @@ class List extends React.Component {
                 <span onClick={this.onSearch.bind(this,false)} style={{marginLeft:'20px',cursor:'pointer'}}>搜索</span>
               </div>
               <div className='head_panel-right'>
-                <Button type="primary" className="button_add" onClick={this.onAdd.bind(this) }>刷新</Button>
+                <Button type="primary" className="button_add" onClick={ this.refresh }>刷新</Button>
               </div>
           </div>
           <div>
@@ -131,15 +119,16 @@ class List extends React.Component {
               {this.renderCardList(data)}
             </Row>
           </div>
-          { more ? <div onClick={this.moreCard} style={{marginTop:'15px',fontSize:'20px', cursor:'pointer'}}>{this.state.more?'收起':'更多' }</div>:'' }
+         { more ? <div onClick={this.moreCard} style={{marginTop:'15px',fontSize:'20px', cursor:'pointer'}}>{this.state.more?'收起':'更多' }</div>:'' }
         <Modal
-          title = "新增任务卡"
+          title = "任务卡"
           visible = { visible }
           onOk = { this.onSave.bind(this) }
           onCancel = { this.onClose.bind(this) }
-          width = { 500 }
+          width = { 800 }
         >
           <div className='model-height'>
+          <TaskCards />
           </div>
         </Modal>
       </div>
@@ -152,10 +141,12 @@ function mapStateToProps(state, ownProps) {
     $$state: state.visitrules
   }
 }
-
 function mapDispatchToProps(dispatch) {
   return {
     action: bindActionCreators(Actions, dispatch)
   }
 }
 export default  connect( mapStateToProps, mapDispatchToProps)(List);
+
+
+

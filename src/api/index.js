@@ -66,6 +66,7 @@ const doc = {
 }
 
 const sysinit = {
+    mainEditTpl : baseDir + "sys/sysinit/template/edit",
     info : baseDir + "sys/sysinit/info",
     org : baseDir + 'sys/sysinit/org',
     adminList : baseDir + 'sys/sysinit/adminlist',
@@ -101,6 +102,11 @@ const oppflow = {
 const prdattr = {
     prdattr: baseDir + 'base/attrs',
 }
+
+const prdattrgroup = {
+    prdattrgroup: baseDir + 'base/attrgroups',
+}
+
 export {
     login,
     menu,
@@ -125,4 +131,5 @@ export {
     oppdimension,
     oppflow,
     prdattr,
+    prdattrgroup,
 }

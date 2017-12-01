@@ -2,6 +2,18 @@ import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { sysinit as url } from 'api'
 
+const getMainEditTpl = () => {
+	return (dispatch) => {
+		
+		 reqwest({
+		 	url: url.mainEditTpl,
+		 	method: "GET",
+		 }, result => {
+			 
+			dispatch(fetchData('SYSINIT_EDIT_TEMPLATE', { ...result }));
+		 })
+	}
+}
 const getSysInitInfo = () => {
 	return (dispatch) => {
 		
@@ -16,12 +28,11 @@ const getSysInitInfo = () => {
 }
 
 const transOrg = (data) => {
-	debugger
-	data.companyCreatedTime = data.companyCreatedTime.format("YYYY-MM-DD hh:mm:ss");
-	data.companyType = data.companyType.key;
+
 	return data;
 }
 const onOrgSave = (data, index) => {
+	debugger
 	return (dispatch) => {
 		
 		 reqwest({
@@ -91,6 +102,7 @@ const onEdit = (data) => {
 
 //输出 type 与 方法
 export {
+	getMainEditTpl,
 	getSysInitInfo,
 	onOrgChange,
 	onOrgSave,

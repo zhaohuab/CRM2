@@ -1,10 +1,11 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Table, Button, Popconfirm, Input, Radio, Icon, Form, Modal} from 'antd'
-import Card from './ProductForm.jsx';
+import {Table, Button, Popconfirm, Input, Radio, Icon, Form, Modal,Row,Col} from 'antd'
+import WrapCard from './ProductForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import Department from 'components/refs/departments'
+import SaleUnitTable from './SaleUnitTable'
 import './index.less';
 
 import * as Actions from '../action'
@@ -61,8 +62,8 @@ class List extends React.Component{
             key: 'measureName',             
         },{
             title: '品牌',
-            dataIndex: 'brandId',
-            key: 'brandId'  
+            dataIndex: 'brandName',
+            key: 'brandName'  
         },{
             title: '参考售价',
             dataIndex: 'price',
@@ -81,18 +82,50 @@ class List extends React.Component{
             key: 'enableStateName'  
         }]
     }
+
     componentDidMount() {
         let { pagination,searchMap } = this.state;
         this.props.action.getListData({ pagination,searchMap });
     }
 
+    //点击新增编辑界面销售单位的新增按钮，增加一行
+    addRow() {
+        let k = this.props.$$state.get("addNum");
+        this.props.action.addSaleUnitRow({id:'add_'+k.toString(),editState:'ADD'});
+    }
+    //销售单位删除
+    onSuDelete(){
+        let flag = false;
+        let changedData = this.props.$$state.get('changedData').toJS();
+        let selectedRowKeys =this.props.$$state.get('suSelectedRowKeys').toJS();
+        let salesunitTable =this.props.$$state.get('salesunitTable').toJS();       
+         //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
+        for(let rowKey of selectedRowKeys){
+            changedData = changedData.filter(change => { return change.id !== rowKey});
+            salesunitTable = salesunitTable.filter(data => {
+                if(data.id !== rowKey){
+                    data.editState = "delete";
+                    changedData.push(data);
+                }
+                return data.id !== rowKey
+            });
+        }
+        let sel = [];
+        this.props.action.setSecRowKeys([]);
+        this.props.action.onChangeSuVa(changedData);
+        this.props.action.setSuTableData(salesunitTable);
+    }
+
     onAdd() {
+        let dataSource =this.props.$$state.get('salesunitTable').toJS();
         let { pagination,searchMap } = this.state;
         this.setState({isEdit:false});
         this.props.action.showForm(true,{});
         this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
         this.props.action.getProdClassRef();//获取产品分类参照列表
         this.props.action.getBrandRef(pagination);//获取品牌参照列表
+        this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
+
     }
 
     onBack = ()=>{
@@ -101,6 +134,10 @@ class List extends React.Component{
 
     onClose(){
         this.props.action.showForm(false,{});
+        this.props.action.onChangeSuVa([]);
+        this.props.action.setAddNum(0);
+        this.props.action.setSuTableData([]);
+        this.props.action.setFormData({});
     }
 
     onDelete = () => {
@@ -110,6 +147,11 @@ class List extends React.Component{
     }
 
     onEdit = () => {
+        let { pagination,searchMap } = this.state;
+        this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
+        this.props.action.getProdClassRef();//获取产品分类参照列表
+        this.props.action.getBrandRef(pagination);//获取品牌参照列表
+        this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
         this.setState({isEdit:true});
         console.info(this.state.selectedRowKeys);
         let rowKey = this.state.selectedRowKeys[0];
@@ -117,11 +159,10 @@ class List extends React.Component{
         let page = this.props.$$state.get("data").toJS();
         for(let i=0,len=page.data.length;i<len;i++) {
           if(rowKey == page.data[i].id) {
-            rowData = page.data[i];
+            this.props.action.showEditForm(rowKey ,true);
             break;
-          }
+          }          
         }      
-        this.props.action.showForm(true,rowData);
     }
 
     onEnable(enable) {
@@ -154,19 +195,28 @@ class List extends React.Component{
         this.props.action.getListData({ pagination,searchMap });
         console.info(`pageSize:${pageSize}`)
     }
-    onSave(){
-        let form = this.formRef.props.form;
-        form.validateFieldsAndScroll((err, values) => {
-          if (!err) {
-            console.log('Received values of form: ', values);
-          }
-        });
+
+    onSave(){    
+        debugger
+        let editData = this.props.$$state.get("editData").toJS();
+        let formData = this.props.$$state.get("formData").toJS();
+        let id = editData.id;
+        let fieldsChangeData = this.props.$$state.get("fieldsChangeData").toJS();
+        Object.assign(formData,fieldsChangeData);
+        //Object.assign(editData,formData);
+        let saleUnits =this.props.$$state.get('changedData').toJS();
+        let addData = {...formData,saleUnits:saleUnits}; 
         if(this.state.isEdit) {         
-          this.props.action.onSave4Edit(form.getFieldsValue());
+          this.props.action.onSave4Edit(addData,id);
         } else {
-          this.props.action.onSave4Add(form.getFieldsValue());
+          this.props.action.onSave4Add(addData);
         }
+        this.props.action.setAddNum(0);
+        this.props.action.setSuTableData([]);
+        this.props.action.setFormData({});
+       
     }
+
     onSelectChange(selectedRowKeys){
         let state = {
             selectedRowKeys:selectedRowKeys
@@ -179,6 +229,7 @@ class List extends React.Component{
     }
     
     render(){
+        //debugger
         let page = this.props.$$state.get("data").toJS();
         let visible = this.props.$$state.get("visible");
         let {headLabel,selectedRowKeys} = this.state;
@@ -188,7 +239,6 @@ class List extends React.Component{
           onChange: this.onSelectChange.bind(this),
         };
         let editData = this.props.$$state.get("editData").toJS();
-        const WrapCard = Form.create()(Card);
         return(
             <div className='user-warpper'>  
                 {
@@ -252,9 +302,20 @@ class List extends React.Component{
                     <Table  size="middle" rowSelection={rowSelection} dataSource={page.data} rowKey="id" columns = {this.columns}
                     pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
                 </div>
-                <Modal title="新增/编辑 产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={850}>
+                <Modal title="新增产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={850}>
                     <div className='model-height'>
                         <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+                    </div>
+                    <div >
+                        <Row>
+                            <Col span={2}>
+                                <Button onClick = {this.addRow.bind(this)}>新增</Button>
+                            </Col>
+                            <Col span={2}>
+                                <Button onClick = {this.onSuDelete.bind(this)}>删除</Button>
+                            </Col>
+                        </Row>
+                        <SaleUnitTable/>
                     </div>
                 </Modal>
             </div>
