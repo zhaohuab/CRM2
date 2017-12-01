@@ -28,6 +28,9 @@ class AttrValueDetailTable extends React.Component {
     {
       title:'启用状态',
       dataIndex:'enableState',
+      render:(text,record,index) => (
+        text == 2? text = "停用" : text = "启用"
+       )
     }
     ]
   }

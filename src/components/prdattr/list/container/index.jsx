@@ -237,9 +237,16 @@ class List extends React.Component {
           onCancel={this.onClose.bind(this)}
           width={600}
         >
+         {status =="showdetail"?
+         <div>
+            <p>属性名称:</p>
+            <p>{formData.name}</p>
+            <p>对应ERP:</p>                     
+            <p>{formData.erpCode}</p>
+          </div>:
           <div className='model-height'>
             <WrappedCard dataSource={formData} wrappedComponentRef={(inst) => this.formRef = inst} />
-          </div>
+          </div>}
           <div>  
            {
             attrValue.length==0?

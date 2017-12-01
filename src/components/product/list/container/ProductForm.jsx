@@ -1,18 +1,24 @@
-import { Form, Input, Select, Row, Col, Button, Popover,AutoComplete,Card,Table,Tree,Dropdown ,Checkbox, Upload,Icon} from 'antd';
+import { Form, Input, Select, Row, Col, Button, Popover,AutoComplete,Card,
+        Table,Tree,Dropdown ,Checkbox, Upload,Icon,Radio} from 'antd';
 
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as Actions from '../action'
 import './index.less';
 
-import Department from 'components/refs/departments'
-import RadioGroup from 'utils/components/radios'
+import PrdClassRef from './PrdClassRef'
+import BrandRef from './BrandRef'
+import MeaUnitRef from './MeaUnitRef'
+import AttrsGrpRef from './AttrsGrpRef'
+
 const TreeNode = Tree.TreeNode;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const Search = Input.Search;
 const AutoOption = AutoComplete.Option;
 const OptGroup = AutoComplete.OptGroup;
+const RadioGroup = Radio.Group;
+
 class ProductCard extends React.Component {
     constructor(props) {
         super(props)
@@ -25,7 +31,7 @@ class ProductCard extends React.Component {
             title:{},
             data:[],
             column:[],
-            selectedKeys:[],
+            selectedKeys:0,
             info:[],           
             selectedValue:"",           
             meaVisible:false,
@@ -34,15 +40,11 @@ class ProductCard extends React.Component {
             selectedBrandValue:"",
             suVisible:false,
             selectedSuValue:"", 
-           // visible: false,
-            icbcList: [],
-            select: "",
-            index: -1
+            brandRefData:"",
+            prdClassRefData:""
         }
     }
 
-    dataSource = [{title:'品牌',list:[{id:1, name:'pinpai1',enName:'brand1',description:'wu'},
-                    {id:2, name:'pinpai2',enName:'brand2',description:'wu'}]}];
 
     columns = [ {
         title: '名称',
@@ -51,65 +53,15 @@ class ProductCard extends React.Component {
         }            
     ];
 
-    saleunitRefList = (
-        <div> 
-            <Table columns = {this.columns} 
-                dataSource = {this.props.$$state.get("meaunitRefList").toJS().data} 
-                style = {{background:"lightblue"}}
-                showHeader={false}
-                onRowClick={this.onSuRowClick}
-                pagination={false}
-                scroll={{ y: 150 }}
-               // rowSelection={rowSelection}
-               />
-        </div>
-    );
-
-    salesunitcolumns = [{
-        title: '销售单位',
-        dataIndex: 'name',
-        key: 'name',
-        render: (text,record,index) => (
-            <Dropdown overlay={this.saleunitRefList} 
-            trigger="click"
-            onVisibleChange={this.handleSuVisibleChange}
-            visible={this.state.suVisible}
-        >                        
-            <Input value = {this.state.selectedSuValue} onClick = {this.handleSalesUnitVisibleChange(true)}/>
-        </Dropdown>
-        )                        
-        },
-        {
-
-            title: '换算率',
-            dataIndex: 'convertRate',
-            key: 'convertRate' ,
-                    
-              },
-            
-             {
-                title: '固定换算',
-                dataIndex: 'fixedConvert',
-                key: 'fixedConvert' ,  
-                render: (text,record,index) => (
-                    <Checkbox defaultChecked = {true} onChange={this.onCheckChange}></Checkbox>
-                )
-            }                
-            ] ;          
 
     componentWillMount() {
         
     }
 
     componentDidMount() {        
-        //let { code,name, memCode,specific,prdtypeId,measureId,price,brandId,attrGroupId,orgId,description,photo,saleUnits } = this.props.dataSource;
-       // this.props.form.setFieldsValue(this.props.dataSource);
+       
     }
     
-    getProductClass() {
-       // this.props.action.getProdClass();
-    }
-
     getMeasurementUnit() {
 
         let {pagination, visible, title} = this.state;
@@ -120,20 +72,11 @@ class ProductCard extends React.Component {
             data: unitRefList
         } 
         this.setState(state);
-       // this.props.action.getMeaUnit(pagination);
     }
 
     onCheckChange = (e) => {
 
-    }
-
-    handleVisibleChange = (flag) => {
-        this.setState({ visible: flag });
-    }
-
-    handleMeaVisibleChange = (flag) => {
-        this.setState({ meaVisible: flag });
-    }
+    }   
 
     handleSuVisibleChange = (flag) => {
         this.setState({ suVisible: flag });
@@ -142,20 +85,7 @@ class ProductCard extends React.Component {
     handleSalesUnitVisibleChange = (flag) => {
         this.props.action.showSalesUnit(flag);
     }
-
-    handleBrandVisibleChange = (flag) => {
-        this.setState({ brandVisible: flag });
-    }
-
-    onSelectChange = (selectedRowkeys) => {
-
-    }
-
-    onMeaRowClick = (record, index) => {
-      
-        this.setState({selectedMeaValue:record.name});
-        this.handleMeaVisibleChange(false);
-    }
+  
 
     onSuRowClick = (record, index) => {
        
@@ -165,50 +95,13 @@ class ProductCard extends React.Component {
     }
    
 
-    onBrandRowClick = (record, index) => {
-        this.setState({selectedBrandValue:record.name});
-        this.handleBrandVisibleChange(false);
-    }
-
-    onSelect = (selectedKeys, info)=> {
-        if(info.node.props.children == undefined){
-            this.setState({selectedKeys:selectedKeys});
-            this.setState({selectedValue:info.node.props.title});
-            this.handleVisibleChange(false);
-        }        
-    }
-
     onAdd = () => {
         const item = {convertRate:"r",fixedConvert:true};
         this.props.action.addRow(item);
-        //this.handleSUVisibleChange(true);
     }
 
-    onOk() {
-        this.setState(
-            {
-                visible: false,
-                index: -1
-            },
-            () => {
-                //根据id进行action查询工商详情查询，改变modal1的显示，modal1获取工商详情查询数据
-                this.props.customerListInfo({ id: this.state.select });
-            }
-        );
-    }
-
-    onCancel() {
-        this.setState({
-            visible: false,
-            index: -1
-        });
-    }
     render() {
-        
         const { getFieldDecorator } = this.props.form;
-        const classRefTree = this.props.$$state.get("classRefTree").toJS().voList;
-        const meaRefData = this.props.$$state.get("meaunitRefList").toJS().data;
-        const brandRefData = this.props.$$state.get("brandRefList").toJS().data;
         const salesunitTable = this.props.$$state.get("salesunitTable").toJS();
 
         const salesUnitVisible = this.props.$$state.get("salesUnitVisible");
@@ -218,22 +111,6 @@ class ProductCard extends React.Component {
             selectedRowkeys,
             onChange: this.onSelectChange,
         };
-
-       
-        //const reflist= ()=>{return <div><Table columns = {this.columns} dataSource = {this.dataSource}/></div>};
-        const meaRefList = (
-            <div> 
-                <Table columns = {this.columns} 
-                    dataSource = {meaRefData} 
-                    style = {{background:"white",height:100}}
-                    showHeader={false}
-                    onRowClick={this.onMeaRowClick}
-                    pagination={false}
-                    scroll={{ y: 150 }}
-                   // rowSelection={rowSelection}
-                   />
-            </div>
-        );
 
         const salesUnitRefTable = (
             <div  className = "industry-main"> 
@@ -248,85 +125,6 @@ class ProductCard extends React.Component {
                    />
             </div>
         );
-        
-        const brandRefList = (
-            <div  className = "industry-main"> 
-                <Row
-                    type="flex"
-                    justify="space-between"
-                    className="industry-main-header"
-                >
-                    <div className="title">品牌</div>
-                </Row>
-                <Row className="industry-main-choice" type="flex">
-                <Table columns = {this.columns} 
-                    dataSource = {brandRefData} 
-                    bordered="true" 
-                    style = {{background:"white"}}
-                   // showHeader={false}
-                    onRowClick={this.onBrandRowClick}
-                    //pagination={false}
-                    scroll={{ y: 150 }}
-                    className="inner"
-                   />
-                     </Row>
-                <Row
-                    type="flex"
-                    justify="end"
-                    align="middle"
-                    className="industry-main-footer"
-                >
-                    <Row type="flex" justify="end" align="middle" gutter={15}>
-                        <div>
-                            <Button onClick={this.onCancel}>
-                                取消
-                            </Button>
-                        </div>
-                        <div>
-                            <Button
-                                type="primary"
-                                onClick={this.onOk}
-                            >
-                                确定
-                            </Button>
-                        </div>
-                    </Row>
-                </Row>
-            </div>
-        );
-
-        const loop = data => data.map((item) => {
-            if (item.children && item.children.length>0) {
-              return (
-                <TreeNode  key={item.id} title={item.name} disableCheckbox >
-                  {loop(item.children)}
-                </TreeNode>
-              );
-            }
-            return <TreeNode key={item.id} title={item.name}/>;
-        });
-
-        const refTree = (
-            <div style={{background : "white"}}>
-            <div>
-                <Search/>
-                </div>
-                <div>
-                <Tree 
-                    onClick = {this.handleTreeClick}
-                    //checkable
-                    checkStrictly={true}
-                    onSelect={this.onSelect}
-                    //onCheck={this.onCheck}
-                    selectedKeys={this.state.selectedKeys}
-                    //checkedKeys={this.state.preCheckedKeys}
-                    >
-                    {loop(classRefTree)}
-                </Tree>
-                </div>
-            </div>
-        );
-
 
         {
             getFieldDecorator('id', {
@@ -394,7 +192,7 @@ class ProductCard extends React.Component {
                 wrapperCol={{ span:13 }}
                // {...formItemLayout}
             >
-                {getFieldDecorator('specific', {
+                {getFieldDecorator('spec', {
                     rules: [{
                         required: false, message: '',
                     }],
@@ -415,14 +213,7 @@ class ProductCard extends React.Component {
                         required: true
                     }],
                 })(
-                    <Dropdown overlay={refTree} 
-                    trigger="click"
-                    onVisibleChange={this.handleVisibleChange}
-                    visible={this.state.visible}
-                >                        
-                    <Search value = {this.state.selectedValue}/>
-                </Dropdown>
-                
+                    <PrdClassRef/>
                     )}
             </FormItem>
             </Col>
@@ -437,13 +228,7 @@ class ProductCard extends React.Component {
                         required: true
                     }],
 
-                })(<Dropdown overlay={meaRefList} 
-                    trigger="click"
-                    onVisibleChange={this.handleMeaVisibleChange}
-                    visible={this.state.meaVisible}
-                >                        
-                    <Search value = {this.state.selectedMeaValue}/>
-                </Dropdown>
+                })(<MeaUnitRef/>
                     )}
             </FormItem>
             </Col>
@@ -456,16 +241,9 @@ class ProductCard extends React.Component {
                 
             >
                 {getFieldDecorator('brandId', {
-
+        
                 })(
-                    <Dropdown overlay={brandRefList} 
-                    trigger="click"
-                    onVisibleChange={this.handleBrandVisibleChange}
-                    visible={this.state.brandVisible}
-                   
-                >                        
-                    <Search value = {this.state.selectedBrandValue}/>
-                </Dropdown>
+                   <BrandRef/>
                     )}
             </FormItem>
             </Col>
@@ -477,7 +255,9 @@ class ProductCard extends React.Component {
                 wrapperCol={{ span:13 }}
             >
                 {getFieldDecorator('price', {
-
+                    rules: [{
+                        required: true
+                    }],
                 })(
                     <Input placeholder='请输入...'/>
                     )}
@@ -504,9 +284,11 @@ class ProductCard extends React.Component {
                 wrapperCol={{ span:13 }}
             >
                 {getFieldDecorator('attrGroupId', {
-
+                     rules: [{
+                        required: true
+                    }],
                 })(
-                    <Input placeholder='请输入...'/>
+                    <AttrsGrpRef/>
                     )}
             </FormItem>
             </Col>
@@ -518,10 +300,13 @@ class ProductCard extends React.Component {
                 wrapperCol={{ span:13 }}
              //   {...formItemLayout}
             >
-                {getFieldDecorator('description', {
+                {getFieldDecorator('enableState', {
 
                 })(
-                    <Input placeholder='请输入...'/>
+                    <RadioGroup>
+                        <Radio value={1}>启用</Radio>
+                        <Radio value={2}>停用</Radio>
+                    </RadioGroup>
                     )}
             </FormItem>
             </Col>
@@ -539,13 +324,8 @@ class ProductCard extends React.Component {
                     className="avatar-uploader"
                     name="avatar"
                     showUploadList={false}
-                   // action="//jsonplaceholder.typicode.com/posts/"
-                   // beforeUpload={beforeUpload}
-                   // onChange={this.handleChange}
                   >
                     {
-                   //   imageUrl ?
-                    //    <img src={imageUrl} alt="" className="avatar" /> :
                         <Icon type="plus" className="avatar-uploader-trigger" />
                     }
                   </Upload>
@@ -575,30 +355,92 @@ class ProductCard extends React.Component {
     }
 }
 
+//绑定状态到组件props
 function mapStateToProps(state, ownProps) {
-    return{
-        $$state: state.product
+    return {
+      $$state: state.product
     }
-}
-
+  }
+  
+  //绑定action到组件props
 function mapDispatchToProps(dispatch) {
     return {
-       action: bindActionCreators(Actions,dispatch)
+      action: bindActionCreators(Actions, dispatch)
     }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){           
-           // let data = props.$$state.get("formData").toJS();
-          
+        onFieldsChange(props, fields){  
+            let fieldsChangeData = {};
+            let dataSource = props.dataSource;
+            for(let item in fields){
+                if(item == "prdtypeId"){                   
+                    fieldsChangeData = {[item]:parseInt(fields[item].value[0])};
+                }else if(item == "brandId"){
+                    fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                }else if(item == "measureId"){
+                    fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                }else if(item == "attrGroupId"){
+                    fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                }else{           
+                    fieldsChangeData = {[item]:fields[item].value};
+                }
+            }
+            Object.assign(props.dataSource, fieldsChangeData);
+            props.action.setFieldsChangeData(fieldsChangeData);
+            props.action.setFormData(props.dataSource);
         },
         mapPropsToFields(props){
-         
-        },
-        onValuesChange(_, values){
-            //console.log(values);
-        },
+            let data = props.dataSource;
+            return{
+                code:{
+                    ...data.code,
+                    value:data.code
+                },
+                name:{
+                    ...data.name,
+                    value:data.name
+                }, 
+                memCode:{
+                    ...data.memCode,
+                    value:data.memCode
+                },  
+                spec:{
+                    ...data.spec,
+                    value:data.spec
+                },  
+                price:{
+                    ...data.price,
+                    value:data.price
+                },  
+                orgId:{
+                    ...data.orgId,
+                    value:data.orgId
+                },  
+                description:{
+                    ...data.description,
+                    value:data.description
+                },  
+                prdtypeId:{
+                    ...data.prdtypeName,
+                    value:data.prdtypeName
+                },  
+                brandId:{
+                    ...data.brandId,
+                    value:data.brandName
+                },  
+                measureId:{
+                    ...data.measureId,
+                    value:data.measureName
+                },  
+                attrGroupId:{
+                    ...data.attrGroupId,
+                    value:data.attrGroupName
+                },  
+                
+            };
+        }
     })(ProductCard));
 
 
