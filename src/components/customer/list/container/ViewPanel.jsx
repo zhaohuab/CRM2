@@ -22,84 +22,100 @@ const TabPane = Tabs.TabPane;
 const { Header, Content, Sider } = Layout;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
+import IcbcSimpleinfo from "./icbcSimpleinfo";
 
 class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     enableState: 2
-        // };
     }
-
-    // componentDidMount() {
-    //     const viewData = this.props.$$state.get("viewData").toJS();
-    //     // this.setState({
-    //     //     enableState: viewData.enableState
-    //     // });
-    // }
-    // btnEnable() {
-    //     let enableState = this.state.enableState;
-    //     if (this.state.enableState == 1) {
-    //         this.setState({
-    //             enableState: 2
-    //         });
-    //         enableState = 2;
-    //     } else {
-    //         this.setState({
-    //             enableState: 1
-    //         });
-    //         enableState = 1;
-    //     }
-    //     const searchMap = this.props.$$state.get("searchMap").toJS();
-    //     const viewData = this.props.$$state.get("viewData").toJS();
-    //     const pagination = this.props.$$state.get("pagination").toJS();
-    //     const ids = [];
-    //     ids.push(viewData.id);
-    //     this.props.action.setEnableState(
-    //         ids,
-    //         enableState,
-    //         pagination,
-    //         searchMap
-    //     );
-    // }
-
-    // btnDelete() {
-    //     let that = this;
-    //     confirm({
-    //         title: "确定要删除吗?",
-    //         content: "此操作不可逆",
-    //         okText: "是",
-    //         okType: "danger",
-    //         cancelText: "否",
-    //         onOk() {
-    //             const searchMap = that.props.$$state.get("searchMap").toJS();
-    //             const viewData = that.props.$$state.get("viewData").toJS();
-    //             const ids = [];
-    //             ids.push(viewData.id);
-    //             that.props.action.deleteData(
-    //                 ids,
-    //                 searchMap,
-    //                 that.props.$$state.get("pagination").toJS()
-    //             );
-    //         },
-    //         onCancel() {}
-    //     });
-    // }
 
     //打开编辑按钮
     btnEdit() {
         this.props.action.showForm(true);
     }
 
+    //选择列表获取工商信息详情
+    customerListInfo(data, id, visiable) {
+        debugger;
+        this.props.action.icbcDetailInfo(data, id, visiable);
+    }
+
+    //认证
+    trueIdenti() {
+        //获取已选择的公司id
+        let { viewData, icbcSelect2 } = this.props.$$state.toJS();
+        //modal点击认证的时候，把icbcSelect2清空，往viewData中存储verifyId的值
+        let visiable = false;
+        let id = viewData.id;
+        debugger;
+        this.props.action.checkedFn(id, visiable, icbcSelect2);
+    }
+
+    //取消认证
+    cancelIdenti() {
+        let { viewData } = this.props.$$state.toJS();
+        let id = viewData.id;
+        let visiable = false;
+        this.props.action.checkedCancelFn(id, visiable);
+    }
+
+    //modal底部显示按钮
+    footerContent() {
+        let { viewData } = this.props.$$state.toJS();
+        return (
+            <div>
+                <Button onClick={this.onCancel.bind(this)}>关闭</Button>
+                {viewData.verifyId ? (
+                    <Button onClick={this.cancelIdenti.bind(this)}>
+                        取消认证
+                    </Button>
+                ) : (
+                    <Button onClick={this.trueIdenti.bind(this)}>
+                        确定认证
+                    </Button>
+                )}
+            </div>
+        );
+    }
+    //点击已核实按钮
+    checked() {
+        let { viewData } = this.props.$$state.toJS();
+        let verifyId = viewData.verifyId;
+        debugger;
+        this.props.action.modalDetalVisiable(true, verifyId);
+    }
+
+    //modal层点击取消按钮触发方法
+    onCancel() {
+        this.props.action.modalDetalVisiableFalse(false);
+    }
+
+    //点击关注触发的方法
+    attentionFn(state) {
+        let { viewData } = this.props.$$state.toJS();
+        let id = viewData.id;
+        this.props.action.attentionFn(id, state);
+    }
+
     render() {
-        const viewData = this.props.$$state.get("viewData").toJS();
-        console.log(viewData);
+        let {
+            viewData,
+            icbcSelect2,
+            icbcVisible2,
+            icbcInfo1
+        } = this.props.$$state.toJS();
+
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">
                     <Row>
                         <Col span={15}>
-                            <Row type="flex" align="middle" gutter={5}>
+                            <Row
+                                type="flex"
+                                align="middle"
+                                gutter={5}
+                                className="header-button-pointer"
+                            >
                                 <Row type="flex" align="middle">
                                     <img
                                         src={require("assets/images/header/photo.png")}
@@ -116,11 +132,44 @@ class ViewPanel extends React.Component {
                                             align="middle"
                                             gutter={15}
                                         >
-                                            <div>
-                                                <i className="iconfont icon-bianji" />未核实
+                                            <div className="checked-iconfont">
+                                                {viewData.verifyId ? (
+                                                    <span
+                                                        onClick={this.checked.bind(
+                                                            this
+                                                        )}
+                                                        className="blue"
+                                                    >
+                                                        <i className="iconfont icon-yiheshi-" />已核实
+                                                    </span>
+                                                ) : (
+                                                    <span className="red">
+                                                        <i className="iconfont icon-weiheshi-" />未核实
+                                                    </span>
+                                                )}
                                             </div>
                                             <div>
-                                                <i className="iconfont icon-bianji" />已关注
+                                                {viewData.followState == 0 ? (
+                                                    <span
+                                                        className="red"
+                                                        onClick={this.attentionFn.bind(
+                                                            this,
+                                                            0
+                                                        )}
+                                                    >
+                                                        <i className="iconfont icon-guanzhu1" />未关注
+                                                    </span>
+                                                ) : (
+                                                    <span
+                                                        className="blue"
+                                                        onClick={this.attentionFn.bind(
+                                                            this,
+                                                            1
+                                                        )}
+                                                    >
+                                                        <i className="iconfont icon-yiguanzhu" />已关注
+                                                    </span>
+                                                )}
                                             </div>
                                         </Row>
                                     </Row>
@@ -135,10 +184,20 @@ class ViewPanel extends React.Component {
                                 gutter={15}
                             >
                                 <div>
-                                    <Button onClick={this.btnEdit.bind(this)}>
-                                        <i className="iconfont icon-gongshangheshi" />工商核实
-                                    </Button>
+                                    {viewData.verifyId ? (
+                                        ""
+                                    ) : (
+                                        <IcbcSimpleinfo
+                                            viewData={viewData}
+                                            icbcSelect={icbcSelect2} //显隐
+                                            customerListInfo={this.customerListInfo.bind(
+                                                this
+                                            )} //点确定触发的条件
+                                            width={450}
+                                        />
+                                    )}
                                 </div>
+
                                 <div>
                                     <Button onClick={this.btnEdit.bind(this)}>
                                         <i className="iconfont icon-bianji" />编辑
@@ -697,6 +756,28 @@ class ViewPanel extends React.Component {
                         </Col>
                     </div>
                 </Row>
+                <Modal
+                    title="工商核实"
+                    visible={icbcVisible2}
+                    onCancel={this.onCancel.bind(this)}
+                    footer={this.footerContent.call(this)}
+                    width={500}
+                    maskClosable={false}
+                >
+                    <div className="modal-height">
+                        {icbcInfo1 && icbcInfo1.length
+                            ? icbcInfo1.map(item => {
+                                  return (
+                                      <div className="icbc-detail-item">
+                                          <span>{item.name}</span>:<span>
+                                              {item.value}
+                                          </span>
+                                      </div>
+                                  );
+                              })
+                            : ""}
+                    </div>
+                </Modal>
             </div>
         );
     }

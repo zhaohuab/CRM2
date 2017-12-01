@@ -27,6 +27,8 @@ import cityData from "./citydata";
 import Industry from "./industry";
 import CuperiorCustomer from "./superiorCustomer";
 import IcbcInfo from "./icbcInfo";
+import reqwest from "utils/reqwest";
+import { baseDir } from "api";
 
 const RadioGroup = Radio.Group;
 class EditForm extends React.Component {
@@ -34,17 +36,10 @@ class EditForm extends React.Component {
         super(props);
     }
 
-    //把获取到的客户工商信息放在redux中
-    customerListInfo(data, id, name, visiable, editId, stateIcbc, isClose) {
+    //把获取到的客户工商信息放在redux中 id, name, visiable, editId, stateIcbc, isClose
+    customerListInfo(data, visiable, id) {
         let { viewData } = this.props.$$state.toJS();
-
         viewData.verifyId = id;
-        viewData.name = name;
-
-        if (editId) {
-            viewData.editId = editId;
-        }
-        debugger;
         data.forEach(item => {
             if (item.key == "address") {
                 viewData["address"] = item.value;
@@ -66,14 +61,8 @@ class EditForm extends React.Component {
                 viewData["eaxplayerNo"] = item.value;
             }
         });
-
-        this.props.action.customerListInfo(
-            data,
-            viewData,
-            visiable,
-            stateIcbc,
-            isClose
-        );
+        debugger;
+        this.props.action.customerListInfo(data, visiable, viewData);
     }
 
     //modal取消按钮
@@ -84,24 +73,21 @@ class EditForm extends React.Component {
     //取消认证
     cancelIdenti() {
         let { viewData } = this.props.$$state.toJS();
-        let id = viewData.verifyId;
+        let id = viewData.id;
         console.log(id);
         reqwest(
             {
                 url: baseDir + `cum/customers/${id}/identifications`,
                 method: "PUT",
                 data: {
-                    status: "N"
+                    param: {
+                        status: "N"
+                    }
                 }
             },
             data => {
                 debugger;
                 this.props.action.closeIcbcVisible1(false);
-                // this.setState({
-                //     visible: flag,
-                //     industryData: data.data,
-                //     keyDownVisiable: false
-                // });
             }
         );
         //发Request请求
@@ -115,11 +101,6 @@ class EditForm extends React.Component {
                 <Button onClick={this.cancelIdenti.bind(this)}>取消认证</Button>
             </div>
         );
-    }
-
-    //动态赋予表单工商id字段
-    icbcId(data) {
-        this.props.form.setFieldsValue(data);
     }
 
     render() {
@@ -218,21 +199,21 @@ class EditForm extends React.Component {
                                                         >
                                                             <IcbcInfo
                                                                 viewData={
+                                                                    //获取当前数据所有信息
                                                                     viewData
                                                                 }
                                                                 icbcSelect={
+                                                                    //当前数据编辑状态
                                                                     icbcSelect
                                                                 }
                                                                 customerListInfo={this.customerListInfo.bind(
                                                                     this
-                                                                )}
+                                                                )} //获取信息详情的方法
                                                                 isClose={
+                                                                    //判断是否为编辑状态初始值
                                                                     isClose
                                                                 }
                                                                 width={450}
-                                                                icbcId={this.icbcId.bind(
-                                                                    this
-                                                                )}
                                                             />
                                                         </Row>
                                                     </Col>
@@ -258,6 +239,9 @@ class EditForm extends React.Component {
                                                                 "level"
                                                             )(
                                                                 <Enum
+                                                                    addOptionAll={
+                                                                        "客户等级"
+                                                                    }
                                                                     dataSource={
                                                                         enumData.level
                                                                     }
@@ -363,12 +347,15 @@ class EditForm extends React.Component {
                                                             {...formItemLayout}
                                                         >
                                                             {getFieldDecorator(
-                                                                "respoDept",
-                                                                {}
+                                                                "cannelType"
                                                             )(
-                                                                <Input
-                                                                    type="text"
-                                                                    placeholder="请输入"
+                                                                <Enum
+                                                                    addOptionAll={
+                                                                        "渠道类型"
+                                                                    }
+                                                                    dataSource={
+                                                                        enumData.cannelType
+                                                                    }
                                                                 />
                                                             )}
                                                         </FormItem>
@@ -734,7 +721,7 @@ class EditForm extends React.Component {
                                                             type="flex"
                                                             justify="end"
                                                         >
-                                                            组织机构代码：
+                                                            组织机构代码证：
                                                         </Row>
                                                     </Col>
                                                     <Col
@@ -809,14 +796,15 @@ const cardForm = Form.create({
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
+        debugger;
         let viewData = props.$$state.toJS().viewData;
         for (let key in onChangeFild) {
             if (onChangeFild[key].value && onChangeFild[key].value.key) {
                 viewData[key] = onChangeFild[key].value.key;
             } else {
-                if (key == "name") {
-                    props.changeState(false);
-                }
+                // if (key == "name") {
+                //     props.changeState(false);
+                // }
                 viewData[key] = onChangeFild[key].value;
             }
         }

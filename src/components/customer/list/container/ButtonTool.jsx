@@ -143,9 +143,14 @@ class ToolForm extends React.Component {
                                     <Col className="select-recover">
                                         <Select defaultValue="3">
                                             <Option value="0">全部</Option>
-                                            <Option value="1">我关注的</Option>
-                                            <Option value="2">最近新建</Option>
+                                            <Option value="1">我关注</Option>
+                                            <Option value="2">最近创建</Option>
                                             <Option value="3">最近查看</Option>
+                                            <Option value="4">
+                                                一周前跟进
+                                            </Option>
+                                            <Option value="5">未分配</Option>
+                                            <Option value="6">已分配</Option>
                                         </Select>
                                     </Col>
                                     <Col

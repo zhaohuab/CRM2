@@ -23,7 +23,7 @@ let $$initialState = {
     moreShow: false, //查询条件显隐,
     viewState: false, //滑动面板显隐,
     icbcInfo: [], //根据客户工商id查询出来的所有详情信息,用在编辑和新增中
-    icbcInfo2: [], //根据客户工商id查询出来的所有详情信息,用在详情中
+    icbcInfo1: [], //根据客户工商id查询出来的所有详情信息,用在详情中
     icbcSelect: false, //存放选中模糊查询条件后获取的客户工商id,在新增编辑中使用
     icbcSelect2: "", //存放选中模糊查询条件后获取的客户工商id,在详情中使用
     icbcVisible: false, //工商信息查询新增编辑时面板显隐控制
@@ -32,6 +32,7 @@ let $$initialState = {
 };
 
 function pageAdd(page, item) {
+    debugger;
     page.total += 1;
     page.data.unshift(item);
     page.page = Math.ceil(page.total / page.pageSize);
@@ -79,17 +80,43 @@ export default function orgReducers(
                 formVisitable: action.data
             });
         case "CUSTOMER_LIST_ICBCDETAILINFO": //保存客户工商id
+            debugger;
             return $$state.merge({
                 icbcInfo: action.data,
                 icbcVisible: action.visible,
-                viewData: action.viewData,
-                icbcSelect: action.stateIcbc,
-                isClose: action.isClose == undefined ? false : action.isClose
+                viewData: action.viewData
+            });
+        case "CUSTOMER_LIST_ICBCINFODETAIL":
+            debugger;
+            return $$state.merge({
+                icbcInfo1: action.data,
+                icbcVisible2: action.visiable,
+                icbcSelect2: action.id
             });
 
+        case "CUSTOMER_LIST_MODALDETALHIDE":
+            return $$state.merge({
+                icbcVisible2: action.visiable
+            });
+
+        case "CUSTOMER_LIST_CLEANSELECT":
+            debugger;
+            let v = $$state.get("viewData").merge({
+                verifyId: action.verifyId
+            });
+            return $$state.merge({
+                icbcVisible2: action.visiable,
+                icbcSelect2: "",
+                viewData: v
+            });
         case "CUSTOMER_LIST_CHANGESTATEEDIT":
             return $$state.merge({
                 icbcSelect: action.visiable
+            });
+        case "CUSTOMER_LIST_MODALDETALSHOW":
+            return $$state.merge({
+                icbcVisible2: action.visiable,
+                icbcInfo1: action.data
             });
         case "CUSTOMER_LIST_MODALSHOW1": //显示关闭新增修改modal
             return $$state.merge({
@@ -115,26 +142,54 @@ export default function orgReducers(
             });
 
         case "CUSTOMER_LIST_ADDSAVE": //增加客户
+            debugger;
             return $$state.merge({
                 formVisitable: false,
-                data: pageAdd($$state.get("data").toJS(), action.payload),
+                data: pageAdd($$state.get("data").toJS(), action.data),
                 icbcSelect: false
                 //isClose: false
             });
         case "CUSTOMER_LIST_EDITSAVE": //修改客户
+            debugger;
             return $$state.merge({
                 formVisitable: false,
-                data: pageEdit($$state.get("data").toJS(), action.payload),
-                viewData: action.payload,
-                icbcSelect: false,
-                isClose: false
+                data: pageEdit($$state.get("data").toJS(), action.data)
             });
-        case "CUSTOMER_LIST_SHOWVIEWFORM": //显示面板时，获取数据
+        case "CUSTOMER_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
+            let actionData = action.data;
+            actionData.industry = {
+                id: actionData.industry,
+                name: actionData.industryName
+            };
+            actionData.parentId = {
+                id: actionData.parentId,
+                name: actionData.parentName
+            };
+            actionData.followState = action.state.followState;
+
+            return $$state.merge({
+                viewState: action.visible,
+                viewData: actionData
+            });
+        case "CUSTOMER_LIST_FOLLOWSTATECHANGE": //更改关注未关注
+            return $$state.setIn(
+                ["viewData", "followState"],
+                action.state.followState
+            );
+        case "CUSTOMER_LIST_HIDEVIEWFORM":
             return $$state.merge({
                 viewState: action.payload.visible,
-                viewData: action.payload.record
+                icbcInfo1: []
             });
-
+        case "CUSTOMER_LIST_CLEANVERIFYID":
+            debugger;
+            let c = $$state.get("viewData").merge({
+                verifyId: ""
+            });
+            return $$state.merge({
+                icbcVisible2: action.visiable,
+                viewData: c
+            });
         case "CUSTOMER_LIST_DELETE": //删除客户
             return $$state.merge({
                 data: action.payload.data

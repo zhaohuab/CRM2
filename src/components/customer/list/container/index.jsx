@@ -46,24 +46,31 @@ class List extends React.Component {
                 )
             },
             {
-                title: "渠道类型",
-                dataIndex: "cannelTypeName"
+                title: "客户类型",
+                dataIndex: "typeName"
             },
+
             {
                 title: "客户等级",
                 dataIndex: "levelName"
             },
             {
-                title: "营销区域",
-                dataIndex: "saleAreaName"
+                title: "客户状态",
+                dataIndex: "stateName"
             },
+
             {
                 title: "行业",
                 dataIndex: "industryName"
             },
             {
-                title: "状态",
-                dataIndex: "enableState"
+                title: "启用状态",
+                dataIndex: "enableState",
+                render: text => <span>{text == 1 ? "启用" : "未启用"}</span>
+            },
+            {
+                title: "渠道类型",
+                dataIndex: "cannelTypeName"
             },
             {
                 title: "地址",
@@ -83,25 +90,27 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
-        debugger;
-        this.props.action.showViewForm(true, record);
+        this.props.action.showViewForm(true, record.id);
     }
     //隐藏面版
     slideHide() {
         //关闭面板清空数据
-        this.props.action.showViewForm(false, {});
+        this.props.action.hideViewForm(false);
     }
 
+    //上传数据时，各种参照的数据转换
     trancFn(data) {
-        let { viewData } = this.props.$$state.toJS();
-        debugger;
-        if (data.industry) {
+        //行业
+        if (data.industry && data.industry.id) {
             data.industry = data.industry.id;
+        } else {
+            data.industry = "";
         }
+        //上级客户
         if (data.parentId) {
             data.parentId = data.parentId.id;
         }
-
+        //城市
         return data;
     }
 
@@ -166,8 +175,7 @@ class List extends React.Component {
             viewData,
             icbcVisible,
 
-            icbcSelect,
-            icbcInfo
+            icbcSelect
         } = this.props.$$state.toJS();
         console.log(viewData);
         let rowSelection = {
