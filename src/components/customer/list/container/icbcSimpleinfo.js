@@ -22,7 +22,7 @@ import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 const Search = Input.Search;
 
-export default class IcbcInfo extends React.Component {
+export default class IcbcSimpleinfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +51,7 @@ export default class IcbcInfo extends React.Component {
         );
     }
 
-    //根据客户id获取详细客户工商信息 id为公司id
+    //根据客户id获取详细客户工商信息
     getIcbcDetal(id, visiable) {
         reqwest(
             {
@@ -60,40 +60,25 @@ export default class IcbcInfo extends React.Component {
             },
             result => {
                 debugger;
-                //把获取到的工商信息放在redux中
-                //或获取到的id客户详细信息，id号保存在redux中
-                this.props.customerListInfo(result.data, visiable, id);
+                this.props.customerListInfo(result.data, id, visiable);
             }
         );
     }
 
-    //点击核实按钮，判断有工商id与否
     getIcbc(flag) {
         let icbcName = this.props.viewData.name;
-        let verifyId = this.props.viewData.verifyId;
-        let icbcSelect = this.props.icbcSelect;
-        let isClose = this.props.isClose;
+
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
-                if (verifyId) {
-                    let visiable = true;
-                    //getIcbcDetal(verifyId, visiable)
-                } else {
-                    this.getIcbcList(icbcName, result => {
-                        if (result.data && result.data.length) {
-                            this.setState({
-                                visible: flag,
-                                icbcList: result.data
-                            });
-                        }
-                    });
-                }
-            } else {
-                //没输入客户名称，搜索没有查询条件，列表没有数据
-                this.setState({
-                    visible: flag,
-                    icbcList: []
+                debugger;
+                this.getIcbcList(icbcName, result => {
+                    if (result.data && result.data.length) {
+                        this.setState({
+                            visible: flag,
+                            icbcList: result.data
+                        });
+                    }
                 });
             }
         } else {
@@ -124,9 +109,9 @@ export default class IcbcInfo extends React.Component {
                 index: -1
             },
             () => {
+                let modalVisiable = true;
                 debugger;
-                let visiable = true;
-                this.getIcbcDetal(this.state.select, visiable);
+                this.getIcbcDetal(this.state.select, modalVisiable);
             }
         );
     }
@@ -140,7 +125,7 @@ export default class IcbcInfo extends React.Component {
 
     choiceIndustry() {
         let index = this.state.index;
-        console.log(this.props.viewData.name);
+
         return (
             <div
                 className="industry-main"
@@ -233,8 +218,8 @@ export default class IcbcInfo extends React.Component {
                     onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
                     visible={this.state.visible} //受控面板显示
                 >
-                    <Button size="small" className="icbc-btn">
-                        <i className="iconfont icon-gongshangheshi" />企业核实
+                    <Button>
+                        <i className="iconfont icon-gongshangheshi" />核实
                     </Button>
                 </Dropdown>
             </div>

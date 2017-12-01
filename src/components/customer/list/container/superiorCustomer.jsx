@@ -49,7 +49,6 @@ export default class CuperiorCustomer extends React.Component {
             industryData: [], //获取树数据
             select: {}, //选择面板选择出的行业
             selectKeys: [], //存放选择面板已选择的keys
-            keyDownVisiable: false, //是否显示手输查询面板
             selectKeyUp: {}, //手输入时获取的选择字段
             industryDataSearch: [], //获取手输入时获取的数据
             selectedRowKeys: [], //保存table行选中信息
@@ -119,8 +118,7 @@ export default class CuperiorCustomer extends React.Component {
                 debugger;
                 this.setState({
                     visible: flag,
-                    industryData: result,
-                    keyDownVisiable: false
+                    industryData: result
                 });
             }
         );
@@ -148,8 +146,8 @@ export default class CuperiorCustomer extends React.Component {
         if (this.props.onChange) {
             this.setState(
                 {
-                    visible: false,
-                    keyDownVisiable: false
+                    visible: false
+                    //keyDownVisiable: false
                 },
                 () => {
                     this.props.onChange({});
@@ -198,42 +196,31 @@ export default class CuperiorCustomer extends React.Component {
             }
         });
     }
-    //input框输入值的时候
-    keyDownUp(e) {
-        let value = e.target.value;
-        if (value) {
-            this.setState({
-                keyDownVisiable: true,
-                industryDataSearch: searchList
-            });
-        } else {
-            this.setState({
-                keyDownVisiable: false
-            });
-        }
-    }
 
-    //input触发onchange方法
-    inputChange(e) {
-        let value = e.target.value;
-        if (this.props.onChange) {
-            this.props.onChange({ name: value, id: null });
-        }
-    }
-
-    //下拉列表选择时触发方法
-    searchChoice(item) {
-        if (this.props.onChange) {
-            this.setState(
-                {
-                    visible: false,
-                    keyDownVisiable: false
-                },
-                () => {
-                    this.props.onChange({ name: item.name, id: item.id });
+    //搜索框输入方法
+    onSearch(value) {
+        console.log(value);
+        debugger;
+        reqwest(
+            {
+                url: baseDir + "cum/customers",
+                method: "GET",
+                data: {
+                    param: {
+                        ...this.state.pagination,
+                        searchMap: {
+                            name: value
+                        }
+                    }
                 }
-            );
-        }
+            },
+            result => {
+                debugger;
+                this.setState({
+                    industryData: result
+                });
+            }
+        );
     }
 
     //下拉时显示的面板布局
@@ -246,85 +233,69 @@ export default class CuperiorCustomer extends React.Component {
         let tableData = this.state.industryData;
         return (
             <div>
-                {this.state.keyDownVisiable ? (
-                    <div className="industry-search">
-                        {this.state.industryDataSearch &&
-                        this.state.industryDataSearch.length ? (
-                            this.state.industryDataSearch.map(item => {
-                                return (
-                                    <div
-                                        className="industry-search-list"
-                                        onClick={this.searchChoice.bind(
-                                            this,
-                                            item
-                                        )}
-                                    >
-                                        {item.name}
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <div className="industry-search-list">暂无数据</div>
-                        )}
-                    </div>
-                ) : (
-                    <div
-                        className="industry-main"
-                        style={{ width: this.props.width + "px" }}
+                <div
+                    className="industry-main"
+                    style={{ width: this.props.width + "px" }}
+                >
+                    <Row
+                        type="flex"
+                        justify="space-between"
+                        className="industry-main-header"
                     >
-                        <Row
-                            type="flex"
-                            justify="space-between"
-                            className="industry-main-header"
-                        >
-                            <div className="title">上级客户</div>
-                        </Row>
-                        <Row className="tabel-recoverd industry-main-choice ">
-                            <Table
-                                columns={this.columns}
-                                dataSource={tableData.data}
-                                rowKey="id"
-                                size="small"
-                                rowSelection={rowSelection}
-                                pagination={{
-                                    size: "small",
-                                    total: tableData.total,
-                                    showTotal: this.showTotal,
-                                    onChange: this.onPageChange.bind(this),
-                                    pageSize: 5,
-                                    current: tableData.page
-                                }}
+                        <div className="title">上级客户</div>
+                        <div>
+                            <Search
+                                placeholder="搜索上级客户"
+                                style={{ width: 200 }}
+                                onSearch={this.onSearch.bind(this)}
                             />
-                        </Row>
+                        </div>
+                    </Row>
+                    <Row className="tabel-recoverd industry-main-choice ">
+                        <Table
+                            columns={this.columns}
+                            dataSource={tableData.data}
+                            rowKey="id"
+                            size="small"
+                            rowSelection={rowSelection}
+                            pagination={{
+                                size: "small",
+                                total: tableData.total,
+                                showTotal: this.showTotal,
+                                onChange: this.onPageChange.bind(this),
+                                pageSize: 5,
+                                current: tableData.page
+                            }}
+                        />
+                    </Row>
+                    <Row
+                        type="flex"
+                        justify="end"
+                        align="middle"
+                        className="industry-main-footer"
+                    >
                         <Row
                             type="flex"
                             justify="end"
                             align="middle"
-                            className="industry-main-footer"
+                            gutter={15}
                         >
-                            <Row
-                                type="flex"
-                                justify="end"
-                                align="middle"
-                                gutter={15}
-                            >
-                                <div>
-                                    <Button onClick={this.onCancel.bind(this)}>
-                                        取消
-                                    </Button>
-                                </div>
-                                <div>
-                                    <Button
-                                        type="primary"
-                                        onClick={this.onOk.bind(this)}
-                                    >
-                                        确定
-                                    </Button>
-                                </div>
-                            </Row>
+                            <div>
+                                <Button onClick={this.onCancel.bind(this)}>
+                                    取消
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    type="primary"
+                                    onClick={this.onOk.bind(this)}
+                                >
+                                    确定
+                                </Button>
+                            </div>
                         </Row>
-                    </div>
-                )}
+                    </Row>
+                </div>
             </div>
         );
     }
@@ -347,8 +318,8 @@ export default class CuperiorCustomer extends React.Component {
                         placeholder="上级客户"
                         value={this.props.value ? this.props.value.name : ""}
                         suffix={suffix}
-                        onKeyUp={this.keyDownUp.bind(this)}
-                        onChange={this.inputChange.bind(this)}
+                        //onKeyUp={this.keyDownUp.bind(this)}
+                        //onChange={this.inputChange.bind(this)}
                         addonAfter={
                             <Icon
                                 type="search"
