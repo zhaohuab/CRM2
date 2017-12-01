@@ -91,7 +91,7 @@ class List extends React.Component{
     //点击新增编辑界面销售单位的新增按钮，增加一行
     addRow() {
         let k = this.props.$$state.get("addNum");
-        this.props.action.addSaleUnitRow({id:'add_'+k.toString(),editState:'ADD'});
+        this.props.action.addSaleUnitRow({id:'add_'+k.toString(),editState:'ADD',fixedConvert:1});
     }
     //销售单位删除
     onSuDelete(){
@@ -196,14 +196,12 @@ class List extends React.Component{
         console.info(`pageSize:${pageSize}`)
     }
 
-    onSave(){    
-        debugger
+    onSave(){       
         let editData = this.props.$$state.get("editData").toJS();
         let formData = this.props.$$state.get("formData").toJS();
         let id = editData.id;
         let fieldsChangeData = this.props.$$state.get("fieldsChangeData").toJS();
         Object.assign(formData,fieldsChangeData);
-        //Object.assign(editData,formData);
         let saleUnits =this.props.$$state.get('changedData').toJS();
         let addData = {...formData,saleUnits:saleUnits}; 
         if(this.state.isEdit) {         
@@ -213,8 +211,8 @@ class List extends React.Component{
         }
         this.props.action.setAddNum(0);
         this.props.action.setSuTableData([]);
-        this.props.action.setFormData({});
-       
+        this.props.action.setFormData({});  
+        this.props.action.onChangeSuVa([]);    
     }
 
     onSelectChange(selectedRowKeys){
@@ -232,7 +230,7 @@ class List extends React.Component{
         //debugger
         let page = this.props.$$state.get("data").toJS();
         let visible = this.props.$$state.get("visible");
-        let {headLabel,selectedRowKeys} = this.state;
+        let {headLabel,selectedRowKeys,isEdit} = this.state;
         
         let rowSelection = {
           selectedRowKeys,
@@ -302,7 +300,7 @@ class List extends React.Component{
                     <Table  size="middle" rowSelection={rowSelection} dataSource={page.data} rowKey="id" columns = {this.columns}
                     pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
                 </div>
-                <Modal title="新增产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={850}>
+                <Modal title={isEdit?"编辑产品":"新增产品"} visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={850}>
                     <div className='model-height'>
                         <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
                     </div>
