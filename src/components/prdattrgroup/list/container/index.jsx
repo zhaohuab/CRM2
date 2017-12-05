@@ -46,7 +46,7 @@ class List extends React.Component {
         page:1,
       },
       searchMap : {
-        enableState:1,
+        //enableState:1,
       }         
     }
   }
@@ -158,6 +158,20 @@ class List extends React.Component {
     this.setState(state);
   }
 
+  onPageChange(page,pageSize) {
+    let { pagination,searchMap } = this.state;
+    pagination = {page:page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData( pagination,searchMap );
+}
+
+  onPageSizeChange(current,pageSize) {
+    let { pagination,searchMap } = this.state;
+   // pagination = {page:pagination.page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData( pagination,searchMap );
+    console.info(`pageSize:${pageSize}`)
+}
   onBack = () => {
     this.setState({ headLabel: false });
   }
@@ -172,7 +186,7 @@ class List extends React.Component {
   }
 
   render() {
-    let data = this.props.$$state.get("data").toJS().data;
+    let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
     let attrGrpName = this.props.$$state.get("name");
     let { headLabel, selectedRowKeys,status } = this.state;
@@ -224,10 +238,12 @@ class List extends React.Component {
           <Table
             size="middle"
             columns={this.columns}
-            dataSource={data}
+            dataSource={page.data}
             rowSelection={rowSelection}
             rowKey="id"
-            //pagination={ size: "large", showSizeChanger: true, showQuickJumper: true,  showTotal: this.showTotal}
+            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,
+            showTotal:this.showTotal,onChange:this.onPageChange.bind(this),
+            onShowSizeChange:this.onPageSizeChange.bind(this)}}
           />
         </div>
         <Modal

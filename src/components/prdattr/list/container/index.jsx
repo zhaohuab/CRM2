@@ -49,7 +49,7 @@ class List extends React.Component {
         page:1,
       },
       searchMap : {
-        enableState:1,
+        //enableState:1,
       }         
     }
   }

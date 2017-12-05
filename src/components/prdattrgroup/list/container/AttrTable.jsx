@@ -67,12 +67,10 @@ class AttrTable extends React.Component {
     let savedData =this.props.$$state.get('savedData').toJS();
     let flag = false;
     let id = record.id;
-debugger
     let selectedAttrs = this.props.$$state.get("selectedAttrs").toJS();
   //  let selectedRowKeys = this.props.$$state.get("selectedAttrVas").toJS();
     for (let id of selectedAttrs){
       if(id == attrId){
-        debugger
         this.props.action.attrIsSelected(true);
         break;
       }

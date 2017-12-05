@@ -54,7 +54,7 @@ class List extends Component {
               page:1,
             },
             searchMap : {
-              enableState:1,
+              //enableState:1,
             },
             selectedKey:[]
         }
@@ -114,7 +114,6 @@ class List extends Component {
 
     //点击增加组织
     addFormBtn(){
-        debugger
         let item =  this.props.prdState.get("editData").toJS();
         this.treeSelectAddFn(item);
         // let {pagination, selectedKey} = this.state;
