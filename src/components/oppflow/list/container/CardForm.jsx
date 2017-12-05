@@ -16,7 +16,7 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        if(this.props.$$state.get("isEdit")){
+        // if(this.props.$$state.get("isEdit")){
             let data = this.props.$$state.get("editData").toJS();
             let result = this.props.$$state.get("result").toJS();
             data.oppstage = result
@@ -27,12 +27,12 @@ class Card extends React.Component {
                 data.oppdimension = []
             }
             this.props.form.setFieldsValue(data);
-        }else{
-            const data ={}
-            data.oppstage=[]
-            data.oppdimension=[]
-            this.props.form.setFieldsValue(data);
-        }
+        // }else{
+        //     const data ={}
+        //     data.oppstage=[]
+        //     data.oppdimension=[]
+        //     this.props.form.setFieldsValue(data);
+        // }
         
     }
 
@@ -131,7 +131,9 @@ class Card extends React.Component {
                 <Row>
                     <AntdCard title="销售阶段" bordered={false} >
                         {getFieldDecorator('oppstage', {
-                        
+                            rules: [{
+                                    required: true, message: '请选择销售阶段',
+                                }],
                         })(
                             <BatchSelect dataSource={allStage} />
                             )}
@@ -140,7 +142,9 @@ class Card extends React.Component {
                 <Row>
                     <AntdCard title="商机维度" bordered={false} >
                         {getFieldDecorator('oppdimension', {
-                          
+                            rules: [{
+                                    required: true, message: '请选择商机维度',
+                                }],
                         })(
                             <BatchSelect dataSource={allDimension} />
                             )}

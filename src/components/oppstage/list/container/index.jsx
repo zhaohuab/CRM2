@@ -123,7 +123,6 @@ class List extends React.Component {
     this.props.action.selectData({ selectedRows: [], selectedRowKeys: [] });
   }
   render() {
-    debugger
     let { $$state } = this.props;
     let page = $$state.get("data").toJS();
     let visible = $$state.get("visible");

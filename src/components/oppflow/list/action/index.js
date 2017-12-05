@@ -46,7 +46,7 @@ const getEditData = (id) => {
 
 
 const getOppaction = (dimension) => {
-	console.log(oppaction)
+	console.log(dimension)
 	return (dispatch) => {
 		reqwest({
 			url: oppaction.oppaction + '/dimension',
@@ -57,6 +57,7 @@ const getOppaction = (dimension) => {
 				}
 			},
 		}, result => {
+			debugger
 			dispatch(fetchData('OPPFLOW_LIST_GETACTIONSUCCESS', { ...result }));
 		})
 	}
@@ -167,6 +168,7 @@ const getEnumData = () => {
 				url: url.oppflow+"/biztype",
 				method: "get",
 			}, (bizData) => {
+				
 				dispatch(fetchData('OPPFLOW_LIST_GETENUMDATA', { enumData: data.enumData ,biztype:bizData.biztypeList}));
 			})
 		})

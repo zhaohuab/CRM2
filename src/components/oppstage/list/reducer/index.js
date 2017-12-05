@@ -18,13 +18,11 @@ let $$initialState = {
 
 
 function listAdd(data,item) {	
-	debugger
 	data.voList.unshift(item);
 	return data;
 }
 
 function listEdit(data,item) {
-	debugger
 	for(let i=0,len=data.voList.length;i<len;i++) {
 		if(data.voList[i].id == item.id) {
 			data.voList[i] = item;
@@ -53,7 +51,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				editData : action.content.editData,
 			})
 		case 'OPPSTAGE_CARD_SAVEADD' : 
-		debugger
 			return $$state.merge({
 				visible : action.content.visible,
 				data : listAdd($$state.get('data').toJS(),action.content),

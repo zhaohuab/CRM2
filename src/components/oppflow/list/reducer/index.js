@@ -65,7 +65,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				data: pageEdit($$state.get("data").toJS(), action.content)
 			})
 		case 'OPPFLOW_LIST_GETENUMDATA':
-		debugger
 			return $$state.merge({ enumData: action.content.enumData,biztype:action.content.biztype })
 
 		case 'OPPFLOW_LIST_GETALLOPPSTAGE':

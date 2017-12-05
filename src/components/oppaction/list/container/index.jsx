@@ -131,6 +131,7 @@ class List extends React.Component {
   }
   render() {
     let { $$state } = this.props;
+    debugger
     let page = $$state.get("data").toJS();
     let visible = $$state.get("visible");
     let selectedRows = $$state.get("selectedRows").toJS();

@@ -5,7 +5,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button, Icon, Input, Radio, Popconfirm, Form, Row, Col, Switch ,Card as AntdCard} from 'antd';
+import { Table, Modal, Button, Icon, Input, Radio, Popconfirm, Form, Row, Col, Switch, Card as AntdCard,message } from 'antd';
 import Card from './CardForm.jsx';
 import ActionCard from './ActionCard.jsx';
 import Department from 'components/refs/departments'
@@ -36,9 +36,10 @@ class List extends React.Component {
   }
 
   onAdd() {
-
     this.props.action.setIsEdit(false);
     this.props.action.showForm(true);
+    this.props.action.saveEditData({})
+    this.props.action.saveResult([])
   }
   onDelete(id) {
     const listData = this.props.$$state.get("data").toJS().data;
@@ -110,89 +111,103 @@ class List extends React.Component {
 
 
   configAction() {
-    this.props.action.getOppaction(this.props.$$state.get("allDimension").toJS())
-    const data = this.formRef.props.form.getFieldsValue();
-    this.props.action.saveEditData(data)
-    const result = this.props.$$state.get("result").toJS();
-    const oppstage = data.oppstage;
-    const oppdimension = data.oppdimension;
-    oppdimension.children = [];
-    let i, j, k;
-    let flag;
 
-    for (i = 0; i < oppstage.length; i++) {
-      oppstage[i].children = []
-    }
-    for (i = 0; i < oppdimension.length; i++) {
-      oppdimension[i].children = []
-    }
-    for (i = result.length - 1; i >= 0; i--) {
-      flag = false
-      for (j = 0; j < oppstage.length; j++) {
-        if (result[i].key == oppstage[j].key) {
-          flag = true
-          break;
+    this.formRef.props.form.validateFields((err, values) => {
+     
+     
+      if (!err) {
+        const data = this.formRef.props.form.getFieldsValue();
+        this.props.action.getOppaction(data.oppdimension)
+     
+        this.props.action.saveEditData(data)
+        const result = this.props.$$state.get("result").toJS();
+        const oppstage = data.oppstage;
+        const oppdimension = data.oppdimension;
+        oppdimension.children = [];
+        let i, j, k;
+        let flag;
+    
+        for (i = 0; i < oppstage.length; i++) {
+          oppstage[i].children = []
         }
-      }
-      if (flag == false) {
-        result.splice(i, 1)
-      }
-    }
-
-    for (i = 0; i < oppstage.length; i++) {
-      flag = false
-      for (j = 0; j < result.length; j++) {
-        if (oppstage[i].key == result[j].key) {
-          flag = true;
-          break;
+        for (i = 0; i < oppdimension.length; i++) {
+          oppdimension[i].children = []
         }
-      }
-      if (flag == false) {
-        oppstage[i].children = oppdimension;
-        result.push(oppstage[i])
-      }
-    }
-
-    for (i = 0; i < result.length; i++) {
-      if (!result[i].children) {
-        break;
-      }
-      for (j = result[i].children.length - 1; j >= 0; j--) {
-        flag = false;
-        for (k = 0; k < oppdimension.length; k++) {
-          if (result[i].children[j].key == oppdimension[k].key) {
-            flag = true;
-            break;
+        for (i = result.length - 1; i >= 0; i--) {
+          flag = false
+          for (j = 0; j < oppstage.length; j++) {
+            if (result[i].key == oppstage[j].key) {
+              flag = true
+              break;
+            }
+          }
+          if (flag == false) {
+            result.splice(i, 1)
           }
         }
-        if (flag == false) {
-          result[i].children.splice(j, 1)
-        }
-      }
-    }
-
-    for (i = 0; i < result.length; i++) {
-      for (j = 0; j < oppdimension.length; j++) {
-        flag = false;
-        if (!result[i].children) {
-          result[i].children = oppdimension;
-          break;
-        }
-        for (k = 0; k < result[i].children.length; k++) {
-          if (oppdimension[j].key == result[i].children[k].key) {
-            flag = true
-            break;
+    
+        for (i = 0; i < oppstage.length; i++) {
+          flag = false
+          for (j = 0; j < result.length; j++) {
+            if (oppstage[i].key == result[j].key) {
+              flag = true;
+              break;
+            }
+          }
+          if (flag == false) {
+            oppstage[i].children = oppdimension;
+            result.push(oppstage[i])
           }
         }
-        if (flag == false) {
-          result[i].children.push(oppdimension[j])
+    
+        for (i = 0; i < result.length; i++) {
+          if (!result[i].children) {
+            break;
+          }
+          for (j = result[i].children.length - 1; j >= 0; j--) {
+            flag = false;
+            for (k = 0; k < oppdimension.length; k++) {
+              if (result[i].children[j].key == oppdimension[k].key) {
+                flag = true;
+                break;
+              }
+            }
+            if (flag == false) {
+              result[i].children.splice(j, 1)
+            }
+          }
+        }
+    
+        for (i = 0; i < result.length; i++) {
+          for (j = 0; j < oppdimension.length; j++) {
+            flag = false;
+            if (!result[i].children) {
+              result[i].children = oppdimension;
+              break;
+            }
+            for (k = 0; k < result[i].children.length; k++) {
+              if (oppdimension[j].key == result[i].children[k].key) {
+                flag = true
+                break;
+              }
+            }
+            if (flag == false) {
+              result[i].children.push(oppdimension[j])
+            }
+          }
+        }
+    
+        this.props.action.saveResult(result)
+      }else{
+        if(err.oppstage){
+          message.error("请选择至少一个销售阶段");
+        }
+        if(err.oppdimension){
+          message.error("请选择至少一个商机维度");
         }
       }
-    }
+    });
 
-
-
-    this.props.action.saveResult(result)
   }
 
   changeStep(index) {
@@ -272,14 +287,8 @@ class List extends React.Component {
                         <i className="iconfont icon-bianji" />
                       </div>
                     </Row>
-
-
-
                   </Col>
                 </Row>
-
-
-
               </Col>
             </Row>
           </Col>
@@ -308,7 +317,7 @@ class List extends React.Component {
             step == 1 ? <div>
               <Button onClick={this.onClose.bind(this)}>取消</Button>
               <Button type="primary" onClick={this.configAction.bind(this)}>配置阶段动作</Button>
-              
+
             </div> :
               <div>
                 <Button onClick={this.onClose.bind(this)}>取消</Button>
