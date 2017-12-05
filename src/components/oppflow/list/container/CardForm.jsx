@@ -1,0 +1,127 @@
+import { Form, Input, Select, Row, Col } from 'antd';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as Actions from "../action"
+import Email from 'utils/components/emails'
+import Department from 'components/refs/departments'
+import Enum from 'utils/components/enums'
+import RadioGroup from 'utils/components/radios'
+const FormItem = Form.Item;
+const Option = Select.Option;
+class Card extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
+    componentDidMount() {
+        let data = this.props.$$state.get("editData").toJS();
+        if (data.dimension) {
+            data.dimension = { key: data.dimension, title: "" };
+        }
+        this.props.form.setFieldsValue(data);
+    }
+
+    render() {
+        const { getFieldDecorator } = this.props.form;
+        const enumData = this.props.$$state.get("enumData").toJS();
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 6 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 14 },
+            },
+        };
+        {
+            getFieldDecorator('id', {
+            })(
+                <Input />
+                )
+        }
+        return (
+            <Form >
+                <Row>
+                    <Col span={12}>
+                        <FormItem
+                            label="销售流程名称"
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('name', {
+                                rules: [{
+                                    required: true, message: '请输入销售流程名称',
+                                }],
+                            })(
+                                <Input placeholder='请输入销售流程名称' />
+                                )}
+                        </FormItem>
+                    </Col>
+                    <Col span={12}>
+                        <FormItem
+                            label="流程状态"
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('flowState', {
+                                rules: [{
+                                    required: true, message: '请输入流程状态',
+                                }],
+                            })(
+                                <Enum
+                                    dataSource={enumData.flowState}
+                                />
+                                )}
+                        </FormItem>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={12}>
+                        <FormItem
+                            label="适用业务类型"
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('biztype', {
+                                rules: [{
+                                    required: true, message: '请输入销售流程名称',
+                                }],
+                            })(
+                                <Input placeholder='请输入销售流程名称' />
+                                )}
+                        </FormItem>
+                    </Col>
+
+                </Row>
+                <Row>
+                    <Col span={24}>
+                        <FormItem
+                            label="销售流程描述"
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('description', {
+
+                            })(
+                                <Input type="textarea" placeholder='请输入销售流程描述' />
+                                )}
+                        </FormItem>
+                    </Col>
+                </Row>
+            </Form>)
+    }
+}
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.oppflowList
+    }
+}
+
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    }
+}
+
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(Card);
