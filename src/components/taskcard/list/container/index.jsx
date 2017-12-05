@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Input, Radio, Form, Col, Row, Modal, Button, Icon, Select } from 'antd';
+import { Input, Radio, Form, Col, Row, Modal, Button, Icon, Select, Menu, Dropdown } from 'antd';
 import FormCard from './listForm.jsx';
 import Cards from './card.jsx';
 import './index.less'
@@ -92,6 +92,17 @@ class List extends React.Component {
   moreCard = () => {//显示更多
     this.setState({more:!this.state.more})
   }
+  
+  refesh = () => {//刷新按钮
+    this.props.action.getListData();
+  }
+
+  menu = (
+    <Menu>
+      <Menu.Item key="1">导入</Menu.Item>
+      <Menu.Item key="2">导出</Menu.Item>
+    </Menu>
+  )
 
   componentWillMount() { this.props.action.getListData() }
 
@@ -128,11 +139,11 @@ class List extends React.Component {
                 <span onClick={this.onSearch.bind(this,false)} style={{marginLeft:'20px',cursor:'pointer'}}>搜索</span>
               </div>
               <div className='head_panel-right'>
-                <ButtonGroup className='add-more'>
-                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                </ButtonGroup>
+                <Button type="primary" style={{margin:'0 10px'}} className="button_add" onClick={this.refesh.bind(this) }>刷新</Button>
                 <Button type="primary" className="button_add" onClick={this.onAdd.bind(this) }><Icon type="plus" />新增</Button>
+                <Dropdown.Button overlay={this.menu} style={{margin:'0 10px'}}>
+                  更多
+                </Dropdown.Button>
               </div>
           </div>
           <div>

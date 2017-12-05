@@ -98,15 +98,15 @@
   color: #666;
   font-weight: 400;
 }
-#docDetail table {
+#doc table {
   border: none;
 }
-#docDetail table tr {
+#doc table tr {
   background-color: white;
 }
-#docDetail table td {
+#doc table td {
   padding: 6px 4px;
 }
-#docDetail .ant-col-17 {
+#doc .ant-col-17 {
   margin-top: -8px;
 }

@@ -43,7 +43,7 @@ class Child extends React.Component {
             )}
           </Col>
           <Col span = { 4 }>
-            { isDefault == 1 ? <span>系统档案</span>:''}
+            { isDefault == 1 ? <span style={{whiteSpace:'nowrap'}}>系统档案</span>:''}
           </Col>
         </Row>
         </FormItem>                    

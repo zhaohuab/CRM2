@@ -137,7 +137,17 @@ const onEnable = (rowKeys, enable, params) => {
 		})
 	}
 }
+const inputChange = (value) => {//搜索按钮input框中的值写入redux
+	return (dispatch) => {
+		dispatch(fetchData('TASKCARD_INPUT_CHANGE', { searchKey: value }));
+	}
+}
 
+const selectChange = (value) => {//搜索按钮select框中的值写入redux
+	return (dispatch) => {
+		dispatch(fetchData('TASKCARD_SELECT_CHANGE', { enableState: value }));
+	}
+}
 //=============以下是弹框中的方法
 //表单中的方法
 const valueChange=(data)=>{//表单中的值变化时调用。
@@ -206,6 +216,8 @@ export {
 	onSave4Add,
 	onSave4Edit,
 	onEnable,
+	inputChange,
+	selectChange,
 	showFormAdd,
 	showFormEdit,
 	onBlur,

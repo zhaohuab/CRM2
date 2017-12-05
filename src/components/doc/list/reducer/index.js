@@ -10,7 +10,9 @@ let $$initialState = {
 	storage: [],//修改过要提交的数据
 	dataSource: [],//档案明细数据
 	detailContent:{},//
-	detailSource:[],//档案详情中的档案明细
+	detailSource:[],//
+	searchKey:null,//搜索时input中的值
+	enableState:1,//搜索时停启用状态
 };
 
 function pageAdd(page, item) {

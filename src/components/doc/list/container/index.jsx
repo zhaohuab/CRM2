@@ -1,15 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button,Icon, Input, Radio, Popconfirm, Form, Row, Col } from 'antd';
+import { Table, Modal, Button,Icon, Input, Radio, Popconfirm, Form, Row, Col, Select, Menu, Dropdown } from 'antd';
 import enUS from 'antd/lib/locale-provider/en_US';
 import Cards from './listForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import Tables from './table.jsx';
 import './index.less'
 let Search = Input.Search;
+let Option = Select.Option
 let RadioGroup = Radio.Group;
-const ButtonGroup = Button.Group;
+let ButtonGroup = Button.Group;
 import 'assets/stylesheet/all/iconfont.css'
 import * as Actions from "../action"
 
@@ -122,7 +123,7 @@ class List extends React.Component {
   }
 
   onBack = () => {
-    this.setState({ eadLabel: false });
+    this.setState({ headLabel: false,selectedRowKeys:[]});
   }
 
   onEableRadioChange = (e) => {
@@ -135,7 +136,7 @@ class List extends React.Component {
   showTotal = (total) => {
    return `共 ${total} 条`;
   }
-  onPageChange = (page, pageSize) => {
+  onPageChange = (page, pageSize) => { 
     let { pagination, searchMap } = this.state;
     pagination = { page: page, pageSize: pageSize };
     this.setState({ pagination })
@@ -146,25 +147,67 @@ class List extends React.Component {
     pagination = { page: pagination.page, pageSize: pageSize };
     this.setState({ pagination })
     this.props.action.getListData({ pagination, searchMap });
-    console.info(`pageSize: ${pageSize}`)
   }
   onChange = (data) => {
     this.props.action.valueChange(data)
   }
 
-   componentDidMount() {
+   inputChange = (e) => {//搜索中的输入框
+    let { value } = e.target;
+    this.props.action.inputChange(value)
+  }
+
+  selectChange = (value) => {//搜索中的选择框
+    this.props.action.selectChange(value)
+  }
+
+  onSearch = (flag) => {//搜索
+    let searchKey = this.props.$$state.get('searchKey');
+    let enableState = this.props.$$state.get('enableState');
+    if (flag){//如果只点击输入框的搜索按钮
+      let data = {};
+      if(searchKey){
+        data.searchKey=searchKey;
+      }
+      this.props.action.search(data)
+    }else{
+      let data = {};
+      if(searchKey){ data.searchKey=searchKey;}
+      data.enableState=enableState; 
+      this.props.action.search(data)
+    }
+  }
+
+  menu1 = (
+    <Menu>
+      <Menu.Item key="0">全部</Menu.Item>
+      <Menu.Item key="1">最近创建</Menu.Item>
+      <Menu.Item key="2">最近查看</Menu.Item>
+    </Menu>
+  );
+  menu2 = (
+    <Menu>
+      <Menu.Item key="0">导入</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="2">导出</Menu.Item>
+    </Menu>
+  );
+
+  componentDidMount() {
     let { pagination, searchMap } = this.state;
     this.props.action.getListData({ pagination, searchMap });
   }
 
   render() {
-    //debugger;
     let page = this.props.$$state.get("data").toJS();
+    /* 后台返回来的数据中有一个total：73的键值对；这个导致'共73条'一直不会变化，后台只要动态返回数据库中的真实条数在这里，应该就没问题了 */
     let editData = this.props.$$state.get("editData").toJS();
     let detailContent = this.props.$$state.get("detailContent").toJS();
     let detailSource = this.props.$$state.get("detailSource").toJS();
     let detailVisible = this.props.$$state.get("detailVisible");
     let visible = this.props.$$state.get("visible");
+    let searchKey = this.props.$$state.get("searchKey");
+    let enableState = this.props.$$state.get("enableState");
     let { headLabel, selectedRowKeys } = this.state;
     let rowSelection = {
       selectedRowKeys,
@@ -190,29 +233,35 @@ class List extends React.Component {
             </HeadLabel> 
           </div>: 
           <div className = 'head_panel'>
-              <div className = 'head_panel-left'>
+               <div className='head_panel-left'>
+                <Dropdown overlay={this.menu1} trigger={['click']}>
+                  <span className="ant-dropdown-link" style={{cursor:'pointer', margin:'0 20px'}}>
+                    最近查看 <Icon type="down" />
+                  </span>
+                </Dropdown>
                 <div>
-                  <span className = 'deep-title-color'>所属部门:</span>
-                  <Input
-                    placeholder = "请选择..."
-                    className = "search"
-                    onSearch = { value => console.log(value) }
+                  <Search
+                    className = 'search'
+                    placeholder="请输入"
+                    style={{ width: 200 }}
+                    value={searchKey}
+                    onChange={this.inputChange.bind(this)}
+                    onSearch={this.onSearch.bind(this,true)}
                   />
                 </div>
-                <div className = 'head_panel-state'>
-                  <span className = 'simple-title-color'>状态：</span>
-                  <RadioGroup onChange = { this.onEableRadioChange } value = { this.state.enable } className = 'simple-title-color'>
-                    <Radio value = { 1 }>启用</Radio>
-                    <Radio value = { 2 }>停用</Radio>
-                  </RadioGroup>
+                <div className='head_panel-state'>
+                  <Select value={enableState}  onChange={this.selectChange.bind(this)} style={{ width: 120 }}>
+                    <Option value = { 1 }>启用状态</Option>
+                    <Option value = { 2 }>停用状态</Option>
+                  </Select>
                 </div>
+                <span onClick={this.onSearch.bind(this,false)} style={{marginLeft:'20px',cursor:'pointer'}}>搜索</span>
               </div>
               <div className = 'head_panel-right'>
-                <ButtonGroup className = 'add-more'>
-                  <Button><i className = 'iconfont icon-daochu' >导入</i></Button>
-                  <Button><i className = 'iconfont icon-daoru' >导出</i></Button>
-                </ButtonGroup>
-                <Button  type = "primary" className = "button_add" onClick = { this.onAdd.bind(this) }><Icon type = "plus" />新增</Button>
+                <Button  type = "primary" className = "button_add" onClick = { this.onAdd.bind(this) }><Icon type = "plus" />新增</Button>          
+                <Dropdown overlay={this.menu2} trigger={['click']} className = 'add-more' >
+                  <Button className="ant-dropdown-link" style={{cursor:'pointer', margin:'0 10px'}}>更多</Button>
+                </Dropdown>
               </div>
           </div>
         }
