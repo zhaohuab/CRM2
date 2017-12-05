@@ -14,7 +14,7 @@ class List extends React.Component {
       //dataSource : [],
     }
     this.enableColumns = [
-      "code", "name", "phone", "email", "password",
+      "code", "name", "phone", "email",
     ];
     this.columns = [
       {
@@ -44,7 +44,7 @@ class List extends React.Component {
       {
         title: '密码',
         dataIndex: 'password',
-        render: (text, record, index) => this.renderColumn('password', text, record, index),
+        render: (text, record, index) => this.renderColumn('password', "******", record, index),
       },
       // {
       //   title: '确认密码',

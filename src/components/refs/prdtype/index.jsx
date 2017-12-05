@@ -5,14 +5,16 @@ import reqwest from "utils/reqwest";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import "./index.less";
-class Department extends React.Component {
+class PrdClass extends React.Component {
     state = {
         visible: false,
         select: {
             key: "",
-            title: ""
+            title: "",
+            path:""
         },
-        dataSource: []
+        dataSource: [],
+        path:{},
     };
     constructor(props) {
         super(props);
@@ -42,8 +44,10 @@ class Department extends React.Component {
     };
 
     onSelect = (key, e) => {
-        let { title } = e.node.props;
-        this.setState({ select: { key: key[0], title } });
+        let { title  } = e.node.props;
+        let id = e.node.props.dataRef.id.toString();
+        let path = e.node.props.dataRef.path + "," +id;
+        this.setState({ select: { key: key[0], title , path } });
     };
 
     getData = () => {
@@ -76,7 +80,7 @@ class Department extends React.Component {
     aa() {
         return (
             <div className="pepole-refer">
-                <div>组织</div>
+                <div>产品分类</div>
                 <div className="pepole-refer-search">
                     <Search
                         placeholder="请输入关键字"
@@ -88,8 +92,7 @@ class Department extends React.Component {
     }
     render() {
         let key = "",
-            title = "xxxxxxx";
-            //debugger;
+            title = "";
         if (this.props.value) {
             key = this.props.value.key;
             title = this.props.value.title;
@@ -101,10 +104,9 @@ class Department extends React.Component {
 
         return (
             <div>
-                {/* <Input value={key}/> */}
-                <Input
+                <Search
                     value={title}
-                    placeholder="请选择..."
+                    placeholder=""
                     onClick={this.onClick}
                     suffix={suffix}
                 />
@@ -127,4 +129,4 @@ class Department extends React.Component {
     }
 }
 
-export default Department;
+export default PrdClass;

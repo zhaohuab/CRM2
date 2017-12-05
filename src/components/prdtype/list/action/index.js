@@ -1,6 +1,7 @@
 import request from 'utils/reqwest'
 import { message} from 'antd';
-import { prdtype as url } from 'api';
+import { prdtype as url,prdattrgroup } from 'api';
+import { debug } from 'util';
 
 
 const fetchData = (type, payload) => {
@@ -17,19 +18,20 @@ export function getlist(params) {
             searchMap:{}
         }
     }
-    return (dispatch, getState) => {    
+    return (dispatch, getState) => {  
         dispatch({ type: 'PRDTYPE_LIST_GETLISTSTART' })
         request({
             url: url.prdtype,
             method: 'get', 
             data: {
                 param: {
-                    ...params.pagination,
+                    page:params.pagination.page,
+                    pageSize:params.pagination.pageSize,
 					searchMap: params.searchMap,
                 }
             }          
         },(data) => {
-            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: data.data }));
+            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: data }));
         })
     }
 }
@@ -51,29 +53,33 @@ export function getlistByClickSearch(searchMap) {
 }
 
 //打开新增/编辑页面
-export function showForm(flag, editData = {}) {
+export function showForm(flag, editData ) {
     return (dispatch) => {
 		dispatch(fetchData('PRDTYPE_LIST_SHOWFORM', { visible: flag, editData }));
 	}
 }
 
 const transData = (data) => {
-    debugger;
-    data.fatherTypeId = data.fatherTypeId.key
-    data.fatherTypeName = data.fatherTypeId.title
+    let fatherTypeId = data.fatherTypeId.key;
+    let fatherTypeName = data.fatherTypeId.title;
+    let path = data.fatherTypeId.path;
+    data.fatherTypeId = fatherTypeId;
+    data.fatherTypeName = fatherTypeName;
+    data.path = path;
+    data.attrGroupId = 0;
 	return data;
 }
 
 //新增数据
 export function listadd(list) {
- 
-    list.fatherTypeId = list.fatherTypeId.key
+    debugger
+   // list.fatherTypeId = list.fatherTypeId.key
     return (dispatch, getState) => {
         request({
             url: url.prdtype,   
             method: 'post',
             data: {
-                param: transData(list)
+                param:list
             }
         }, (dataResult) => {
             const listData = dataResult;
@@ -83,6 +89,7 @@ export function listadd(list) {
                 data: {}
             }
             ,(data) => {
+                debugger
                 dispatch({ type: 'PRDTYPE_LIST_GETTREELISTSUCCESS', data: data.data })
                 dispatch(fetchData('PRDTYPE_LIST_LISTADDSUCCESS', { data: listData }));
             })
@@ -92,11 +99,10 @@ export function listadd(list) {
 
 
 //改变一条数据
-export function listchange(value) {
-    debugger
+export function listchange(value,id) {
     return (dispatch, getState) => {
-        let id = value.id
-        value.fatherTypeId = value.fatherTypeId.key;
+        //let id = value.id
+       // value.fatherTypeId = value.fatherTypeId.key;
         request({
             url: url.prdtype+'/'+id,
             method: 'put',
@@ -132,7 +138,7 @@ export function listchange(value) {
 
 
 //删除数据
-export function listdel(record, treeId, searchFilter) {
+export function listdel(record, treeId, searchFilter,pagination) {
     var ids = [];
     let searchMap = {};
     if (treeId!=null && treeId!=undefined && treeId!="") {
@@ -154,7 +160,9 @@ export function listdel(record, treeId, searchFilter) {
 			data: {
 				param: {
 					ids: ids.join(","),
-					searchMap: searchMap
+                    searchMap: searchMap,
+                    page:pagination.page,
+                    pageSize:pagination.pageSize,
 				},
 			}
         }
@@ -176,8 +184,7 @@ export function listdel(record, treeId, searchFilter) {
 
 
 //启停用功能
-export function setEnablestate(treeId, searchFilter, data, state) {
-
+export function setEnablestate(treeId, searchFilter, data, state,pagination) {
     var ids = [];
     let searchMap = {};
     if (treeId!=null && treeId!=undefined && treeId!="") {
@@ -191,13 +198,15 @@ export function setEnablestate(treeId, searchFilter, data, state) {
     }
     return (dispatch) => {
 		request({
-			url: url.prdtype+'enable',
+			url: url.prdtype+'/state',
 			method: "PUT",
 			data: {
 				param: {
 					ids: ids.join(","),
-					enablestate: state,
-					searchMap: searchMap
+					enableState: state,
+                    searchMap: searchMap,
+                    page:pagination.page,
+                    pageSize:pagination.pageSize
 				},
 			}
 		},(dataResult) => {
@@ -224,27 +233,27 @@ export function getTreeList() {
 }
 
 
-//获取一个部门tree信息，变换表格数据
-export function listTreeChange(id) {
+//获取一个产品分类信息，变换表格数据
+export function listTreeChange(pagination,id) {
     return (dispatch, getState) => {
         request({
             url: url.prdtype,           
             method: 'get',
             data: {
                 param: {
+                    page:pagination.page,
+                    pageSize:pagination.pageSize,
                     searchMap: { id }
                 }
             }
         },(data) => {
-            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESSBYCLICKTREE', { data: data.data, treeSelect: id }));
-        })
-        
+            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESSBYCLICKTREE', { data: data, treeSelect: id }));
+        })       
     } 
 }
 
 
 //点击操作按钮方法
-
 export function buttonEdit(rows) {
     return {
         type: 'PRDTYPE_LIST_SHOWBUTTONSTART',
@@ -252,3 +261,42 @@ export function buttonEdit(rows) {
     }
 }
 
+//获取属性组参照
+export function getAttrsGrpRef  (param)  {
+    
+    let url =  prdattrgroup.prdattrgroup + '/ref';
+	return (dispatch) => {
+		request({
+			url: url ,
+			method: "GET",
+			data: {
+				param: {page: param.page,
+					    pageSize: param.pageSize}
+			}
+		}, result => {
+			dispatch(fetchData('PRODUCTCLASS_ATTRGROUP_GETREFLIST', { ...result}));
+		})
+	}
+} 
+
+//获取当前选中树节点
+export function setSelTreeNode(sel) {
+    return {
+        type: 'PRDCLASS_FORM_GETSECL',
+        sel
+    }
+}
+
+export function setFieldsChangeData(fields)  {	
+	return {
+			 type:'PRDCLASS_FORM_FIELDSCHANGE',
+			 content:fields
+	}    
+}
+
+export function setFormData  (fields)  {	
+	return {
+			 type:'PRDCLASS_FORM_SETFORM',
+			 content:fields
+	}    
+}

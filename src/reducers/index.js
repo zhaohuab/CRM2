@@ -45,6 +45,14 @@ import visitroute from "components/visitroute/list/reducer/index.js";
 import visitrules from '../components/visitrules/list/reducer'
 //商机阶段
 import oppstagelist from 'components/oppstage/list/reducer'
+//商机维度
+import oppdimensionlist from 'components/oppdimension/list/reducer';
+//商机流程
+import oppflowList from 'components/oppflow/list/reducer';
+//产品属性
+import prdattr from 'components/prdattr/list/reducer'
+//产品属性组
+import prdattrgroup from 'components/prdattrgroup/list/reducer'
 
 let rootReducer = combineReducers({ 
     login, 
@@ -71,6 +79,10 @@ let rootReducer = combineReducers({
     visitroute,
     visitrules,
     oppstagelist,
+    oppdimensionlist,
+    oppflowList,
+    prdattr,
+    prdattrgroup
 });
 
 export { rootReducer };

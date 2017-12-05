@@ -12,6 +12,8 @@ const org = {
 };
 
 const user = {
+    listTpl : baseDir + "sys/users/template/list",
+    addTpl : baseDir + "sys/users/template/add",
     user: baseDir + "sys/users",
     userBatch: baseDir + "sys/users/batch",
     enable: baseDir + "sys/users/state" // {id}/state
@@ -64,6 +66,7 @@ const doc = {
 }
 
 const sysinit = {
+    mainEditTpl : baseDir + "sys/sysinit/template/edit",
     info : baseDir + "sys/sysinit/info",
     org : baseDir + 'sys/sysinit/org',
     adminList : baseDir + 'sys/sysinit/adminlist',
@@ -86,6 +89,24 @@ const oppstage = {
     oppstage: baseDir + 'sprc/oppstages',
     
 }
+
+const oppdimension = {
+    oppdimension: baseDir + 'sprc/oppdimensions',
+    doc:baseDir + "sprc/oppdimensions/docs",
+}
+
+const oppflow = {
+    oppflow: baseDir + 'sprc/oppflows',
+    doc:baseDir + "sprc/oppflows/docs",
+}
+const prdattr = {
+    prdattr: baseDir + 'base/attrs',
+}
+
+const prdattrgroup = {
+    prdattrgroup: baseDir + 'base/attrgroups',
+}
+
 export {
     login,
     menu,
@@ -107,4 +128,8 @@ export {
     visitRouter,
     visitrules,
     oppstage,
+    oppdimension,
+    oppflow,
+    prdattr,
+    prdattrgroup,
 }
