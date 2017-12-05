@@ -5,7 +5,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button, Icon, Input, Radio, Popconfirm, Form, Row, Col } from 'antd';
+import { Table, Modal, Button, Icon, Input, Radio, Popconfirm, Form, Row, Col, Switch ,Card as AntdCard} from 'antd';
 import Card from './CardForm.jsx';
 import ActionCard from './ActionCard.jsx';
 import Department from 'components/refs/departments'
@@ -82,9 +82,9 @@ class List extends React.Component {
       const editData = this.props.$$state.get("editData").toJS();
       editData.oppdimension = undefined;
       editData.oppstage = undefined;
-      if (editData.flowState) {
-        editData.flowState = editData.flowState.key;
-      }
+      // if (editData.flowState) {
+      //   editData.flowState = editData.flowState.key;
+      // }
       const result = this.props.$$state.get("result").toJS();
       for (let i = 0; i < result.length; i++) {
         if (result[i].key == values.nowStage) {
@@ -98,7 +98,7 @@ class List extends React.Component {
           break;
         }
       }
-    
+
       if (that.props.$$state.get('isEdit')) {
         that.props.action.onSave4Edit(editData, result);
       }
@@ -117,74 +117,74 @@ class List extends React.Component {
     const oppstage = data.oppstage;
     const oppdimension = data.oppdimension;
     oppdimension.children = [];
-    let i,j,k;
+    let i, j, k;
     let flag;
 
-    for(i=0;i<oppstage.length;i++){
+    for (i = 0; i < oppstage.length; i++) {
       oppstage[i].children = []
     }
-    for(i=0;i<oppdimension.length;i++){
+    for (i = 0; i < oppdimension.length; i++) {
       oppdimension[i].children = []
     }
-    for( i=result.length-1;i>=0;i--){
+    for (i = result.length - 1; i >= 0; i--) {
       flag = false
-      for( j=0;j<oppstage.length;j++){
-        if(result[i].key==oppstage[j].key){
+      for (j = 0; j < oppstage.length; j++) {
+        if (result[i].key == oppstage[j].key) {
           flag = true
-         break;
+          break;
         }
       }
-      if(flag == false){
-        result.splice(i,1)
+      if (flag == false) {
+        result.splice(i, 1)
       }
     }
 
-    for(i=0;i<oppstage.length;i++){
+    for (i = 0; i < oppstage.length; i++) {
       flag = false
-      for(j=0;j<result.length;j++){
-        if(oppstage[i].key==result[j].key){
+      for (j = 0; j < result.length; j++) {
+        if (oppstage[i].key == result[j].key) {
           flag = true;
           break;
         }
       }
-      if(flag == false){
-        oppstage[i].children=oppdimension;
+      if (flag == false) {
+        oppstage[i].children = oppdimension;
         result.push(oppstage[i])
       }
     }
 
-    for(i=0;i<result.length;i++){
-      if(!result[i].children){
+    for (i = 0; i < result.length; i++) {
+      if (!result[i].children) {
         break;
       }
-      for(j=result[i].children.length-1;j>=0;j--){
+      for (j = result[i].children.length - 1; j >= 0; j--) {
         flag = false;
-        for(k=0;k<oppdimension.length;k++){
-          if(result[i].children[j].key==oppdimension[k].key){
+        for (k = 0; k < oppdimension.length; k++) {
+          if (result[i].children[j].key == oppdimension[k].key) {
             flag = true;
             break;
           }
         }
-        if(flag ==false){
-          result[i].children.splice(j,1)
+        if (flag == false) {
+          result[i].children.splice(j, 1)
         }
       }
     }
 
-    for(i=0;i<result.length;i++){
-      for(j=0;j<oppdimension.length;j++){
+    for (i = 0; i < result.length; i++) {
+      for (j = 0; j < oppdimension.length; j++) {
         flag = false;
-        if(!result[i].children){
+        if (!result[i].children) {
           result[i].children = oppdimension;
           break;
         }
-        for(k=0;k<result[i].children.length;k++){
-          if(oppdimension[j].key ==result[i].children[k].key){
+        for (k = 0; k < result[i].children.length; k++) {
+          if (oppdimension[j].key == result[i].children[k].key) {
             flag = true
             break;
           }
         }
-        if(flag == false){
+        if (flag == false) {
           result[i].children.push(oppdimension[j])
         }
       }
@@ -224,29 +224,62 @@ class List extends React.Component {
     const step = this.props.$$state.get("step");
     const showFlow = data =>
       data.map(item => {
-        debugger
         return (
           <Col span={6}>
-            <Row>
-              流程名称：{item.name}
-            </Row>
-            <Row>
-              业务类型：{item.bizType}
-            </Row>
-            <Row>
-              流程描述：{item.description}
-            </Row>
-            <Row
-              type="flex"
-              justify="end">
-              <Col span={3} class='data_box'>
-                <div onClick={this.onEdit.bind(this, item.id)}>编辑</div>
-              </Col>
-              <Col span={3}>
-                <div onClick={this.onDelete.bind(this, item.id)}>删除</div>
-              </Col>
-              <Col span={3}>
-                <div onClick={this.onChangeEnabel.bind(this, item.id, item.enableState)}>{item.enableState == 1 ? '启用' : '停用'}</div>
+            <Row type="flex" justify="center">
+              <Col span={23} className='data_box'>
+                <Row className="box_title">
+                  <Col span={12} class="box_title_left">
+                    {item.name}
+                  </Col>
+                  <Col span={12} class="box_title_right" >
+                    {/* <div >{item.enableState == 1 ? '启用' : '停用'}</div> */}
+                    <Row type="flex" justify="end">
+                      <Switch defaultChecked={item.enableState == 1 ? true : false} checkedChildren="启用" unCheckedChildren="停用" onClick={this.onChangeEnabel.bind(this, item.id, item.enableState)} />
+                    </Row>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col span={16}>
+                    <Row className="box_line1">
+                      <Col className="box_line1_title">
+                        业务类型：
+                      </Col>
+                      <Col className="box_line1_value">
+                        {item.biztypeName}
+                      </Col>
+                    </Row>
+                    <Row className="box_line2">
+
+                      <Col className="box_line2_title">
+                        流程描述：
+                      </Col>
+                      <Col className="box_line2_value">
+                        {item.description}
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col span={8}>
+
+                    <Row className="box_button1">
+                      <div onClick={this.onDelete.bind(this, item.id)}>
+                        <i className="iconfont icon-shanchu" />
+                      </div>
+                    </Row>
+                    <Row className="box_button2">
+                      <div onClick={this.onEdit.bind(this, item.id)}>
+                        <i className="iconfont icon-bianji" />
+                      </div>
+                    </Row>
+
+
+
+                  </Col>
+                </Row>
+
+
+
               </Col>
             </Row>
           </Col>
@@ -254,14 +287,14 @@ class List extends React.Component {
 
       });
     return (
-      <div className='user-warpper'>
+      <div className='content'>
         <Row>
           <Button onClick={this.onAdd.bind(this)}>新建</Button>
         </Row>
         <Row>
-        <WrapSearchPanel />
+          <WrapSearchPanel />
         </Row>
-        <Row>
+        <Row gutter={0}>
           {showFlow(data)}
         </Row>
         <Modal
@@ -274,22 +307,23 @@ class List extends React.Component {
           footer={
             step == 1 ? <div>
               <Button onClick={this.onClose.bind(this)}>取消</Button>
-              <Button onClick={this.configAction.bind(this)}>配置阶段动作</Button>
-              <Button>保存</Button>
+              <Button type="primary" onClick={this.configAction.bind(this)}>配置阶段动作</Button>
+              
             </div> :
               <div>
                 <Button onClick={this.onClose.bind(this)}>取消</Button>
                 <Button onClick={this.changeStep.bind(this, 1)}>上一步</Button>
-                <Button >发布</Button>
-                <Button onClick={this.onSave.bind(this)}>保存</Button>
+                <Button className="border-blue">发布</Button>
+                <Button type="primary" onClick={this.onSave.bind(this)}>保存</Button>
               </div>
           }
         >
           <div className='model-height'>
-
-            {step == 1 ?
-              <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
-              : <WrapActionCard dataSource={editData} wrappedComponentRef={(inst) => this.actionRef = inst} />}
+            <AntdCard title="基本信息" bordered={false}>
+              {step == 1 ?
+                <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
+                : <WrapActionCard dataSource={editData} wrappedComponentRef={(inst) => this.actionRef = inst} />}
+            </AntdCard>
           </div>
         </Modal>
       </div>

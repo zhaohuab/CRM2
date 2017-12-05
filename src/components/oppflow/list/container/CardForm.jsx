@@ -39,6 +39,7 @@ class Card extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         const enumData = this.props.$$state.get("enumData").toJS();
+        const biztype = this.props.$$state.get("biztype").toJS();
         const allStage = this.props.$$state.get("allStage").toJS();
         const allDimension = this.props.$$state.get("allDimension").toJS();
         const formItemLayout = {
@@ -105,7 +106,9 @@ class Card extends React.Component {
                                     required: true, message: '请输入销售流程名称',
                                 }],
                             })(
-                                <Input placeholder='请输入销售流程名称' />
+                                <Enum
+                                    dataSource={biztype}
+                                />
                                 )}
                         </FormItem>
                     </Col>

@@ -28,10 +28,10 @@ const showForm = (flag, editData = {}, index) => {
 }
 
 const getEditData = (id) => {
-	
+
 	return (dispatch) => {
 		reqwest({
-			url: url.oppflow + "/"+id,
+			url: url.oppflow + "/" + id,
 			method: "GET",
 			data: {
 				param: {
@@ -73,7 +73,7 @@ const getListData = (searchMap) => {
 				}
 			},
 		}, result => {
-			dispatch(fetchData('OPPFLOW_LIST_GETLISTSUCCESS', {data:result,searchMap }));
+			dispatch(fetchData('OPPFLOW_LIST_GETLISTSUCCESS', { data: result, searchMap }));
 		})
 	}
 }
@@ -82,6 +82,7 @@ const getListData = (searchMap) => {
 
 function transData(data) {
 	data.flowState = data.flowState.key;
+	data.biztype = data.biztype.key;
 	return data;
 }
 
@@ -93,12 +94,11 @@ const onSave4Add = (flowData, stageData) => {
 			method: "POST",
 			data: {
 				param: {
-					flowData,
+					flowData:transData(flowData),
 					stageData
 				}
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('OPPFLOW_LIST_SAVEADD', { ...result }));
 		})
 	}
@@ -161,7 +161,14 @@ const getEnumData = () => {
 			url: url.doc,
 			method: "get",
 		}, (data) => {
-			dispatch(fetchData('OPPFLOW_LIST_GETENUMDATA', { enumData: data.enumData }));
+			
+			
+			reqwest({
+				url: url.oppflow+"/biztype",
+				method: "get",
+			}, (bizData) => {
+				dispatch(fetchData('OPPFLOW_LIST_GETENUMDATA', { enumData: data.enumData ,biztype:bizData.biztypeList}));
+			})
 		})
 	}
 }

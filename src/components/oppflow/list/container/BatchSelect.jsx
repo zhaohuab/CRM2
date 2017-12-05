@@ -104,7 +104,7 @@ class BatchSelect extends React.Component {
                 return (
                     <div onClick={this.add.bind(this, item.id)}>
                         <Col span={6}>
-                            {item.name}
+                           <div className={item.selected?"BatchSelect-box-selected":"BatchSelect-box"}> {item.name}</div>
                         </Col>
                     </div>
                 );
@@ -117,7 +117,7 @@ class BatchSelect extends React.Component {
                 return (
                     <div onClick={this.remove.bind(this, item.id)}>
                         <Col span={6}>
-                            {item.name}
+                        <div className="BatchSelect-box"> {item.name}</div>
                         </Col>
                     </div>
                 );
@@ -127,12 +127,12 @@ class BatchSelect extends React.Component {
             <div>
                 <Row>
                     <Col span={12}>
-                        <Row>
+                        <Row className="BatchSelect-content-left">
                             {showLeft(this.state.leftData)}
                         </Row>
                     </Col>
                     <Col span={12}>
-                        <Row>
+                        <Row className="BatchSelect-content-right">
                             {showRight(this.state.rightData)}
                         </Row>
                     </Col>

@@ -21,7 +21,6 @@ class ActionCard extends React.Component {
         if (data.nowStage == undefined) {
             data.nowStage = data.oppstage[0].key;
         }
-        
         for(let i=0;i<result.length;i++){
             if(result[i].key == data.nowStage){
                 data.winProbability = result[i].winProbability;
@@ -76,6 +75,7 @@ class ActionCard extends React.Component {
         const enumData = this.props.$$state.get("enumData").toJS();
         const allStage = this.props.$$state.get("allStage").toJS();
         const allDimension = this.props.$$state.get("allDimension").toJS();
+        const nowStage = this.props.form.getFieldsValue().nowStage
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -97,11 +97,11 @@ class ActionCard extends React.Component {
         const showStage = data =>
             data.map(item => {
                 return (
-                    <Col span={2}>
+                    <div span={3} className={nowStage==item.key?"stage_box_selected":"stage_box"}>
                     <div onClick={this.ChangeStage.bind(this,item.key)}>
                         {item.title}
                         </div>
-                    </Col>
+                    </div>
 
                 );
 
@@ -128,10 +128,11 @@ class ActionCard extends React.Component {
         return (
             <div>
 
-                <Row>
+                <Row type="flex">
                     {editData.oppstage?showStage(editData.oppstage):""}
                 </Row>
-                <Form >
+                <Row className="winProbability">
+                <Form>
                     <Row>
                         <Col span={12}>
                             <FormItem
@@ -148,6 +149,7 @@ class ActionCard extends React.Component {
                     {editData.oppdimension ? showAction(editData.oppdimension) : ""}
 
                 </Form>
+                </Row>
             </div>
         )
     }

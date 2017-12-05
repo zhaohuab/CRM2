@@ -10,6 +10,7 @@ let $$initialState = {
 	enumData: {
 		dimension: []
 	},
+	biztype:[],
 	allStage: [],
 	allDimension: [],
 	allAction: [],
@@ -20,7 +21,6 @@ let $$initialState = {
 };
 
 function pageAdd(page, item) {
-	debugger
 	page.total += 1;
 	page.data.unshift(item)
 	page.page = Math.ceil(page.total / page.pageSize);
@@ -55,7 +55,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				step: action.content.visible ? 1 : $$state.get("step")
 			})
 		case 'OPPFLOW_LIST_SAVEADD':
-		debugger
 			return $$state.merge({
 				visible: false,
 				data: pageAdd($$state.get("data").toJS(), action.content)
@@ -66,7 +65,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				data: pageEdit($$state.get("data").toJS(), action.content)
 			})
 		case 'OPPFLOW_LIST_GETENUMDATA':
-			return $$state.merge({ enumData: action.content.enumData })
+		debugger
+			return $$state.merge({ enumData: action.content.enumData,biztype:action.content.biztype })
 
 		case 'OPPFLOW_LIST_GETALLOPPSTAGE':
 			return $$state.merge({
