@@ -17,7 +17,14 @@ import * as Actions from "../action"
         selectedValue:"",
         selectedId:0,
         visible:false,
-        selected:""
+        selected:"",
+        pagination : {
+            pageSize:10,
+            page:1,
+          },
+          searchMap : {
+            enableState:1,
+          },
     };
   }
 
@@ -32,6 +39,7 @@ onOk() {
     this.props.onChange(selectedId);
     this.setState({selected:selectedValue});
     this.handleVisibleChange(false);
+    this.props.action.setAttrGrpValue(selectedValue);
 }
 
 onCancel() {
@@ -44,7 +52,9 @@ onClick = (record, index) => {
 }
 
 handleVisibleChange = (flag) => {
+    let {pagination} = this.state; 
     this.setState({ visible: flag });
+    this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
 }
 
   render() {
@@ -101,7 +111,7 @@ handleVisibleChange = (flag) => {
         onVisibleChange={this.handleVisibleChange}
         visible={this.state.visible}
     >                        
-        <Search value = {this.state.selected || this.props.value}/>
+        <Search placeholder = "属性组" value = { this.props.value || this.props.$$state.get("attrGrpValue")}/>
     </Dropdown>
     );
   }

@@ -33,8 +33,27 @@ const getListData = (pagination, searchMap) => {
 	}
 }
 
+const changeEnableState = (enableState,selectedRowKeys,pagination,searchMap) => {
+	return (dispatch) => {
+		reqwest({
+			url:  prdattr.prdattr + '/state',
+			method: "PUT",
+			data: {
+				param: {
+					enableState:enableState,
+					ids:selectedRowKeys,
+					page:pagination.page,
+					pageSize:pagination.pageSize,
+					searchMap:searchMap
+				}
+			},
+		},result => {
+			dispatch(fetchData('PRDATTR_LIST_GETLISTSUCCESS', { ...result }));
+		})
+	}	
+}
+
 const onSave4Add = (data) => {
-	debugger
 	return (dispatch) => {
 		reqwest({
 			url: prdattr.prdattr,
@@ -60,12 +79,6 @@ const onSave4Edit = (data) => {
 		}, result => {
 			dispatch(fetchData('PRDATTR_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
-	}
-}
-//TEST
-const edit = () => {
-	return (dispatch) => {
-		dispatch(fetchData('PRDATTR_LIST_SHOWFORM_TEST', { visible: true }));
 	}
 }
 
@@ -115,7 +128,7 @@ const changeFormData = (fields) => {
 
 const addAttrVaRow = (item) => {
 	return {
-		type:"PRDATTR_CARD_AADDROW",
+		type:"PRDATTR_ATTRVA_AADDROW",
 		content:item
 	}
 }
@@ -178,6 +191,14 @@ const getAttrDetails = (id) => {
 		})
 	}
 } 
+
+const setFormData = (formData) => {
+	return {
+		type:"PRDATTR_FORM_SETFORM",
+		content:formData
+	}
+}
+
 //输出 type 与 方法
 export {
 	getListData,
@@ -194,5 +215,6 @@ export {
 	setAttrData,
 	getAttrDetail,
 	showAddForm,
-	edit
+	setFormData,
+	changeEnableState
 }

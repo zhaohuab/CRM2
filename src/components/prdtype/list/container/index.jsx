@@ -39,7 +39,7 @@ class List extends Component {
           },
            {
             title: '停用时间',
-            dataIndex: 'enableTime',
+            dataIndex: 'disableTime',
           },
            {
             title: '对应ERP',

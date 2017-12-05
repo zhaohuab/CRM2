@@ -20,11 +20,13 @@ let $$initialState = {
 	attrId:"",
 	savedData:[],
 	selectedMap:new Map(),
-	isSelected:false
+	isSelected:false,
+	attrGrpId:0,
+	status:""
 };
 
 function listAdd(page,item) {	
-	debugger
+	//debugger
 	page.total+=1;
 	page.data.unshift(item)
 	page.page = Math.ceil(page.total / page.pageSize);
@@ -83,26 +85,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				data:action.content,
         loading: true
       })
-		case 'PRDATTR_LIST_SHOWFORM':
-			return $$state.merge({
-				visible : action.content.visible,
-				formData : action.content.data,
-				attrValue:action.content.data.valueList
-			})
-		case 'PRDATTR_LIST_SHOWFORMDETAIL':
-			return $$state.merge({
-				detailVisible : action.content.visible,
-				formData : action.content.data,
-				attrValue:action.content.data.valueList
-			})
-		case 'PRDATTR_LIST_SHOWFORM_TEST':
-			return $$state.merge({
-				visible : action.content.visible,
-			})
 		//新增显示界面 ok
 		case 'PRDATTRGRP_CARD_SHOWADDFORM':
 			return $$state.merge({
 				visible : action.content.visible,
+				status:"add"
 			})
 		//保存
 		case 'PRDATTRGROUP_CARD_SAVEADD' : 
@@ -110,46 +97,24 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				visible : action.content.visible,
 				data : listAdd($$state.get('data').toJS(),action.content),
 			})
-		case 'PRDATTR_CARD_SAVEEDIT' : 
+		//编辑
+		case 'PRDATTRGROUP_CARD_SAVEEDIT' : 
+	//	debugger
 			return $$state.merge({
 				visible : action.content.visible,
-				data : listEdit($$state.get("data").toJS(),action.content),
-			})
-		case 'PRDATTR_FORM_CHANGEDATA' : 
-			return $$state.merge({
-		    formData:getFormData($$state.get('formData').toJS(),action.content),
-			})
-		case 'PRDATTR_CARD_AADDROW' : 
-			return $$state.merge({
-				attrValue: addRow($$state.get("attrValue").toJS(),action.content),
-				addNum:addNum($$state.get('addNum'))
-			})
-		case 'PRDATTR_CARD_CHANGEATTRVA' : 
-			return $$state.merge({
-				changeData:action.content
-			})
-		case 'PRDATTR_CARD_RESETADDNUM' : 
-			return $$state.merge({
-				addNum:action.content
-			})
-		case 'PRDATTR_CARD_EDITATTRVA' : 
-			return $$state.merge({
-				attrValue:action.content
-			})		
-		case 'PRDATTR_CARD_SETATTRDATA' : 
-			return $$state.merge({
-				attrValue:action.content,
-			})
-		case 'PRDATTR_DETAIL_GETSUCCESS' : 
-			return $$state.merge({
-				attrValue:action.content,
-				visible:true
+				data : listEdit($$state.get('data').toJS(),action.content),
 			})
 		//新增界面获取属性列表	ok
 		case 'PRDATTRGROUP_ATTR_GETLIST' : 
 			return $$state.merge({
 				attrData:action.content.voList,
 			})
+		//编辑界面form值
+		case 'PRDATTRGRP_FORM_CHANGEDATA' : 
+			return $$state.merge({
+				formData:action.content,
+			})
+			
 		//新增界面获取属性值列表 本地有	ok
 		case 'PRDATTRGROUP_ATTRVA_GETLISTLOCAL' : 
 			return $$state.merge({
@@ -204,12 +169,24 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				selectedAttrVas:action.content
 			})
-		//编辑数据
+		// 编辑数据
 		case 'PRDATTRGROUP_CARD_SHOWEDIT' : 
 			return $$state.merge({
-				detailList:action.content.data.attrList,
-				name:action.content.data.name,
-				visible:action.content.visible
+				attrData:action.content.data.allList,
+				selectedAttrs:action.content.data.checkedList,
+				visible:action.content.visible,
+				attrGrpId:action.content.id,
+				status:"edit",
+				formData:{name:action.content.name}
+			})
+		//编辑界面获取属性值列表 本地有	ok
+		case 'PRDATTRGROUP_ATTRVA_GETEDITLIST' : 
+		//	debugger
+			return $$state.merge({
+				attrValueData:action.content.allList,	
+				localAttrs:addLocalAttrs(action.content.allList,$$state.get('localAttrs').toJS()),
+				selectedAttrVas:action.content.checkedList,
+				attrId:	action.content.attrid
 			})
 																
 	  default: 

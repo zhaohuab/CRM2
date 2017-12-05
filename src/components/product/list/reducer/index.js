@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
 
 let initialState = {   
-  data:[],
+  data:{data:[{code:"code"}]},
   loading: false,
 	editData:{},
 	visible:false,
@@ -16,6 +16,10 @@ let initialState = {
 	formData:{},
 	fieldsChangeData:{},
 	attrgrpRefList:[],
+	brandValue:"",
+	prdClassValue:"",
+	attrGrpValue:"",
+	meaUnitValue:""
 };
 
 function pageAdd(page,item) {
@@ -58,8 +62,8 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
         case 'PRODUCT_LIST_GETLISTSUCCESS': 
 	        return $$state.merge({
 	        	loading: false,
-						data: action.content,
-						visible : action.content.visible,
+				data: action.content,
+				visible : action.content.visible,
 				})
         case 'PRODUCT_LIST_SHOWFORM':
             return $$state.merge({
@@ -139,7 +143,24 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 				visible : action.content.visible,
 				editData : action.content.formdata,
 				salesunitTable:action.content.formdata.saleUnits
-			})   
+			})  
+		case 'PRODUCT_BRAND_VALUE' : 
+			return $$state.merge({
+				brandValue:action.content
+			}) 
+		case 'PRODUCT_PRDCLASS_VALUE' : 
+			return $$state.merge({
+				prdClassValue:action.content
+			}) 
+		case 'PRODUCT_ATTRGRP_VALUE' : 
+			return $$state.merge({
+				attrGrpValue:action.content
+			}) 
+		case 'PRODUCT_MEAUNIT_VALUE' : 
+			return $$state.merge({
+				meaUnitValue:action.content
+			}) 
+				 
 		default: 
       return $$state;
     }    

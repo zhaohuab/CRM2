@@ -2,6 +2,26 @@ import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { prdattrgroup ,prdattr} from 'api';
 
+const changeEnableState = (enableState,selectedRowKeys,pagination,searchMap) => {
+	return (dispatch) => {
+		reqwest({
+			url:  prdattrgroup.prdattrgroup + '/state',
+			method: "PUT",
+			data: {
+				param: {
+					enableState:enableState,
+					ids:selectedRowKeys,
+					page:pagination.page,
+					pageSize:pagination.pageSize,
+					searchMap:searchMap
+				}
+			},
+		},result => {
+			dispatch(fetchData('PRDATTRGROUP_LIST_GETLISTSUCCESS', { ...result }));
+		})
+	}	
+}
+
 const showForm = (flag, editData = {}, index) => {
 	return (dispatch) => {
 		dispatch(fetchData('PRDATTR_LIST_SHOWFORM', { visible: flag, editData }));
@@ -36,7 +56,8 @@ const getLocalAttrList = (data) => {
 }
 
 //ok  新增点击属性获取属性值列表
-const getAttrVaList = (id) => {	
+const getAttrVaList = ( id) => {	
+	//let url = prdattrgroup.prdattrgroup + "/" + id.toString() +"/attrs/" +attrid+ "/values/checked";
 	let url = prdattr.prdattr + "/" +id + "/values/ref";
 	return (dispatch) => {
 		reqwest({
@@ -45,7 +66,24 @@ const getAttrVaList = (id) => {
 			data: {
 			},
 		},result => {
+			//debugger
 			dispatch(fetchData('PRDATTRGROUP_ATTRVA_GETLIST', { ...result ,id:id}));
+		})
+	}
+}
+
+//ok  编辑点击属性获取属性值列表
+const getAttrVaEditList = (id,attrid) => {	
+	let url = prdattrgroup.prdattrgroup + "/" + id.toString() +"/attrs/" +attrid.toString()+ "/values/checked";
+	//let url = prdattr.prdattr + "/" +id + "/values/ref";
+	return (dispatch) => {
+		reqwest({
+			url: url ,
+			method: "GET",
+			data: {
+			},
+		},result => {
+			dispatch(fetchData('PRDATTRGROUP_ATTRVA_GETEDITLIST', { ...result ,id:id,attrid:attrid}));
 		})
 	}
 }
@@ -70,7 +108,7 @@ const getListData = (pagination, searchMap) => {
 }
 //新增保存 ok
 const onSave4Add = (data) => {
-	debugger
+//	debugger
 	return (dispatch) => {
 		reqwest({
 			url: prdattrgroup.prdattrgroup,
@@ -79,23 +117,22 @@ const onSave4Add = (data) => {
 				param: data
 			}
 		}, result => {
-			debugger
+		//	debugger
 			dispatch(fetchData('PRDATTRGROUP_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
 }
 
-const onSave4Edit = (data) => {
+const onSave4Edit = (data,id) => {
 	return (dispatch) => {
-		let id = data.id;
 		reqwest({
-			url: prdattr.prdattr + "/" +id,
+			url: prdattrgroup.prdattrgroup + "/" +id,
 			method: "PUT",
 			data: {
 				param: data
 			}
 		}, result => {
-			dispatch(fetchData('PRDATTR_CARD_SAVEEDIT', { ...result, visible: false }));
+			dispatch(fetchData('PRDATTRGROUP_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
 	}
 }
@@ -103,7 +140,7 @@ const onSave4Edit = (data) => {
 const onDelete = (rowKeys,  pagination, searchMap) => {
 	return (dispatch) => {
 		reqwest({
-			url: prdattr.prdattr +"/batch",
+			url: prdattrgroup.prdattrgroup +"/batch",
 			method: "DELETE",
 			data: {
 				param: {
@@ -137,9 +174,9 @@ const onEnable = (rowKeys, enable, params) => {
 	}
 }
 
-const changeFormData = (fields) => {	
+const changeFormData = (fields) => {
 	return {
-			 type:'PRDATTR_FORM_CHANGEDATA',
+			 type:'PRDATTRGRP_FORM_CHANGEDATA',
 			 content:fields
 	}    
 }
@@ -197,17 +234,17 @@ const getAttrGroupDetail = (id) => {
 } 
 
 //属性组编辑 ok
-const eidtAttrGroup = (id) => {
+const eidtAttrGroup = (id, name) => {
+	let url = prdattrgroup.prdattrgroup + "/" + id.toString() +"/attrs/checked";
 	return (dispatch) => {
 		reqwest({
-			url: prdattrgroup.prdattrgroup + "/" + id.toString(),
+			url: url,
 			method: "GET",
 			data: {
 				param:{}
 			}
 		}, result => {
-			debugger
-			dispatch(fetchData('PRDATTRGROUP_CARD_SHOWEDIT', { visible:true, data:result}));
+			dispatch(fetchData('PRDATTRGROUP_CARD_SHOWEDIT', { visible:true, data:result, id: id, name:name}));
 		})
 	}
 } 
@@ -307,5 +344,7 @@ export {
 	attrIsSelected,
 	setSelAttrVas,
 	saveSelectedData,
-	eidtAttrGroup
+	eidtAttrGroup,
+	getAttrVaEditList,
+	changeEnableState
 }

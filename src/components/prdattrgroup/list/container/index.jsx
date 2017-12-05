@@ -99,22 +99,24 @@ class List extends React.Component {
       }
     }
     let id = rowData.id;  
-    this.props.action.eidtAttrGroup(id);
+    let name = rowData.name;
+    this.props.action.eidtAttrGroup(id, name);
+  }
+
+  onDetailEdit () {
+
   }
 
   onClose() {  
    
     this.props.action.showAddForm(false);
     
-    //this.props.action.resetAddNum();   
   }
 
-  onEnable(enable) {
-    return (enable) => {
-     // let { pagination } = this.state;
-      this.setState({ headLabel: false, selectedRowKeys: [] });
-      this.props.action.onEnable(this.state.selectedRowKeys, enable, { pagination });
-    }
+  onEableRadioChange = (enableState) => {
+     let { pagination,searchMap,selectedRowKeys} = this.state;
+     let ids = selectedRowKeys.join();     
+     this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
   }
 
   onSave() {
@@ -138,7 +140,14 @@ class List extends React.Component {
     }
     let formData = this.props.$$state.get("formData").toJS();
     let save = {...formData, attrList:attrList};
-    this.props.action.onSave4Add(save);
+    let { status } = this.state;
+    if(status == "add"){
+      this.props.action.onSave4Add(save);
+    }else if(status == "edit"){
+      let attrGrpId = this.props.$$state.get("attrGrpId");
+      this.props.action.onSave4Edit(save,attrGrpId);
+    }
+    
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -189,13 +198,13 @@ class List extends React.Component {
           headLabel ?
             <div className='head_edit'>
               <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
-                {selectedRowKeys.length != 1 ?
+                {selectedRowKeys.length !== 1 ?
                   <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button> :
                   <Button className="default_button" onClick={this.onEdit.bind(this)}><i className='iconfont icon-bianji'></i>编辑</Button>
                 }               
                 <Button className="default_button" onClick={this.onDelete.bind(this)}><i className='iconfont icon-shanchu'></i>删除</Button>               
-                <Button className="default_button" onClick={this.onEnable(2).bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
-                <Button className="default_button" onClick={this.onEnable(1).bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
+                <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
+                <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
               </HeadLabel>
             </div> :
             <div className='head_panel'>
@@ -224,9 +233,11 @@ class List extends React.Component {
         <Modal
           title={title}
           visible={visible}
-          onOk={this.onSave.bind(this)}
+         // onOk={this.onSave.bind(this)}
           onCancel={this.onClose.bind(this)}
           width={600}
+          okText = {status == "showdetail"?"编辑":"确认"}
+          onOk={status == "showdetail"?this.onDetailEdit.bind(this):this.onSave.bind(this)} 
         >{status == "showdetail"?<div>
             <span>属性组名称：{attrGrpName}</span>
             <AttrGrpDeTable/>

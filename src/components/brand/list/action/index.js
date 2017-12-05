@@ -40,6 +40,28 @@ const getListData = (params) => {
     }
 }
 
+const changeEnableState = (enableState,selectedRowKeys,pagination,searchMap) => {
+    debugger
+	return (dispatch) => {
+		reqwest({
+			url:  url.brand + '/state',
+			method: "PUT",
+			data: {
+				param: {
+					enableState:enableState,
+					ids:selectedRowKeys,
+					page:pagination.page,
+					pageSize:pagination.pageSize,
+					searchMap:searchMap
+				}
+			},
+		},result => {
+            debugger
+			dispatch(fetchData('BRAND_LIST_GETLISTSUCCESS', { ...result }));
+		})
+	}	
+}
+
 const onSave4Add = (data) => {
     data.enableState = "1";
     return (dispatch) => {
@@ -69,14 +91,17 @@ const onSave4Edit = (data) => {
     }
 }
 
-const onDelete = (ids) => {
+const onDelete = (ids,pagination,searchMap) => {
     return (dispatch) => {
         reqwest({
             url: url.brand+"/batch",
             method: "DELETE",
             data: {
                 param: {
-                    ids: ids.join(","),
+                    ids: ids,
+                    page:pagination.page,
+                    pageSize:pagination.pageSize,
+                    searchMap:searchMap
                 },
             }
         }, result => {
@@ -111,5 +136,6 @@ export {
     onSave4Edit,
     onDelete,
     onSetState,
-    selectData
+    selectData,
+    changeEnableState
 }
