@@ -20,6 +20,27 @@ const getListData = (params) => {
 	
 }
 
+const changeEnableState = (enableState,selectedRowKeys,pagination,searchMap) => {
+	return (dispatch) => {
+		reqwest({
+			url: url.product + '/state',
+			method: "PUT",
+			data: {
+				param: {
+					enableState:enableState,
+					ids:selectedRowKeys,
+					page:pagination.page,
+					pageSize:pagination.pageSize,
+					searchMap:searchMap
+				}
+			},
+		},result => {
+			debugger
+			dispatch(fetchData('PRODUCT_LIST_GETLISTSUCCESS', { ...result }));
+		})
+	}	
+}
+
 const onDelete = (rowKeys, params) => {
 	return (dispatch) => {
 		reqwest({
@@ -27,7 +48,7 @@ const onDelete = (rowKeys, params) => {
 			method: "DELETE",
 			data: {
 				param: {
-					codes: rowKeys.join(","),
+					ids: rowKeys.join(),
 					...params.pagination,
 					searchMap: params.searchMap,
 				},
@@ -55,6 +76,7 @@ const onSave4Add = (data) => {
 				param: data
 			}
 		}, result => {
+			debugger
 			dispatch(fetchData('PRODUCT_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
@@ -134,6 +156,34 @@ const getAttrsGrpRef = (param) => {
 		})
 	}
 } 
+
+const setBrandValue = (value) => {
+	return {
+		type:"PRODUCT_BRAND_VALUE",
+		content:value
+	}
+}
+
+const setPrdClassValue = (value) => {
+	return {
+		type:"PRODUCT_PRDCLASS_VALUE",
+		content:value
+	}
+}
+
+const setAttrGrpValue = (value) => {
+	return {
+		type:"PRODUCT_ATTRGRP_VALUE",
+		content:value
+	}
+}
+
+const setMeaUnitValue = (value) => {
+	return {
+		type:"PRODUCT_MEAUNIT_VALUE",
+		content:value
+	}
+}
 
 const addRow = (item) => {
 	return {
@@ -246,5 +296,10 @@ export {
 	getAttrsGrpRef,
 	setAddNum,
 	resetFieldsChangeData,
-	showEditForm
+	showEditForm,
+	changeEnableState,
+	setBrandValue,
+	setPrdClassValue,
+	setAttrGrpValue,
+	setMeaUnitValue
 }

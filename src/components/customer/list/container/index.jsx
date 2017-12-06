@@ -111,11 +111,28 @@ class List extends React.Component {
             data.parentId = data.parentId.id;
         }
         //城市
+        if (data.province_city_district) {
+            let change = data.province_city_district;
+            data.province = change[0];
+            data.city = change[1];
+            data.district = change[2];
+            data.province_city_district = "";
+        }
+        //详细地址
+        if (data.address) {
+            debugger;
+            let value = data.address;
+            data["address"] = value.address;
+            data["latlng"] = value.latlng;
+        }
+
         return data;
     }
 
     //form新增、或者修改
     formHandleOk() {
+        debugger;
+
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
                 values = this.trancFn(values);
@@ -177,14 +194,14 @@ class List extends React.Component {
 
             icbcSelect
         } = this.props.$$state.toJS();
-        console.log(viewData);
+
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
 
         return (
-            <div className="custom-warpper">
+            <div className="custom-warpper ">
                 <ToolForm />
                 <div className="table-bg tabel-recoverd">
                     <Table

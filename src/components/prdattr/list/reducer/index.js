@@ -75,7 +75,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		case 'PRDATTR_CARD_SAVEADD' : 
 			return $$state.merge({
-				visible : action.content.visible,
+				visible : false,
 				data : listAdd($$state.get('data').toJS(),action.content),
 			})
 		case 'PRDATTR_CARD_SAVEEDIT' : 
@@ -87,7 +87,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 		    formData:getFormData($$state.get('formData').toJS(),action.content),
 			})
-		case 'PRDATTR_CARD_AADDROW' : 
+		case 'PRDATTR_ATTRVA_AADDROW' : 
 			return $$state.merge({
 				attrValue: addRow($$state.get("attrValue").toJS(),action.content),
 				addNum:addNum($$state.get('addNum'))
@@ -112,7 +112,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				attrValue:action.content,
 				visible:true
-			})															
+			})
+		case 'PRDATTR_FORM_SETFORM' : 
+			return $$state.merge({
+				formData:action.content
+			})   															
 	  default: 
 	    return $$state;
 	}

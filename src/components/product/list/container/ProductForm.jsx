@@ -237,13 +237,12 @@ class ProductCard extends React.Component {
             <FormItem
                 label="品牌"
                 labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-                
+                wrapperCol={{ span:13 }}               
             >
                 {getFieldDecorator('brandId', {
         
                 })(
-                   <BrandRef/>
+                   <BrandRef />
                     )}
             </FormItem>
             </Col>
@@ -371,7 +370,7 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){  
+        onFieldsChange(props, fields){ 
             let fieldsChangeData = {};
             let dataSource = props.dataSource;
             for(let item in fields){

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button, Icon,Input, Radio, Popconfirm, Form } from 'antd';
+import { Table, Modal, Button, Icon,Input, Radio, Popconfirm, Form ,Row, Col, message} from 'antd';
 import WrappedCard from './CardForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import AttrVaTable from './AttrVaTable.jsx'
@@ -49,7 +49,7 @@ class List extends React.Component {
         page:1,
       },
       searchMap : {
-        enableState:1,
+        //enableState:1,
       }         
     }
   }
@@ -69,6 +69,8 @@ class List extends React.Component {
     this.setState({ status: "showdetail" });
    // this.props.action.edit();
     this.props.action.getAttrDetail(id);
+    //test
+    this.props.action.showAddForm(true);
   }
 
   onDelete(){
@@ -111,31 +113,38 @@ class List extends React.Component {
     this.props.action.showAddForm(false);
     
     this.props.action.resetAddNum();   
+   // this.props.action.resetAddNum(0);
+    this.props.action.setAttrData([]);
+    this.props.action.setFormData({});
+    this.props.action.onChangeAttrVa([]);    
   }
 
-  onEnable(enable) {
-    return (enable) => {
-     // let { pagination } = this.state;
-      this.setState({ headLabel: false, selectedRowKeys: [] });
-      this.props.action.onEnable(this.state.selectedRowKeys, enable, { pagination });
-    }
+  onEableRadioChange = (enableState) => {
+   // let enable = enableState;
+    let { pagination,searchMap,selectedRowKeys} = this.state;
+   // searchMap.enableState = enableState;
+    let ids = selectedRowKeys.join();
+    
+    this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
+   // this.setState({searchMap});
   }
 
   onSave() {
     let { status } = this.state;
     let formData = this.props.$$state.get("formData").toJS();
     let changeData = this.props.$$state.get("changeData").toJS();
+    let attrValue = this.props.$$state.get("attrValue").toJS()
     let erpCode = "";
     let name = "";
     let id = "";
+    if(changeData.length == 0 && attrValue.length ==0){
+      return message.error('属性值不能为空');
+    }
     //let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
     if(status == "edit"){
       erpCode = formData.erpCode;
       id = formData.id;    
       name = formData.name;
-     // id = formData.id.value;
-     // erpCode = formData.erpCode.value;
-      // name = formData.name.value;
       let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
       this.props.action.onSave4Edit(addAttr);
     }else if(status =="add"){
@@ -144,8 +153,12 @@ class List extends React.Component {
       name = formData.name;  
       let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
       this.props.action.onSave4Add(addAttr);
-      this.props.action.resetAddNum();
     }
+      this.props.action.resetAddNum();
+      this.props.action.setAttrData([]);
+      this.props.action.setFormData({});
+      this.props.action.onChangeAttrVa([]);    
+
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -166,11 +179,48 @@ class List extends React.Component {
   
   addRow= ()=> {
     let k = this.props.$$state.get("addNum");
-    this.props.action.addAttrVaRow({id:'add_'+k.toString(),enableState:1,editState:'ADD'});
+    this.props.action.addAttrVaRow({id:'add_'+k.toString(),enableState:1,editState:'add'});
   }
 
+  onPageChange(page,pageSize) {
+    let { pagination,searchMap } = this.state;
+    pagination = {page:page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData( pagination,searchMap );
+}
+
+  onPageSizeChange(current,pageSize) {
+    let { pagination,searchMap } = this.state;
+   // pagination = {page:pagination.page,pageSize:pageSize};
+    this.setState({pagination})
+    this.props.action.getListData( pagination,searchMap );
+    console.info(`pageSize:${pageSize}`)
+}
+   //属性值删除
+   onAttrVaDelete(){
+    let flag = false;
+    let changedData = this.props.$$state.get('changedData').toJS();
+    let selectedRowKeys =this.props.$$state.get('suSelectedRowKeys').toJS();
+    let salesunitTable =this.props.$$state.get('salesunitTable').toJS();       
+     //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
+    for(let rowKey of selectedRowKeys){
+        changedData = changedData.filter(change => { return change.id !== rowKey});
+        salesunitTable = salesunitTable.filter(data => {
+            if(data.id !== rowKey){
+                data.editState = "delete";
+                changedData.push(data);
+            }
+            return data.id !== rowKey
+        });
+    }
+    let sel = [];
+    this.props.action.setSecRowKeys([]);
+    this.props.action.onChangeSuVa(changedData);
+    this.props.action.setSuTableData(salesunitTable);
+}
+
   render() {
-    let data = this.props.$$state.get("data").toJS().data;
+    let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
     let { headLabel, selectedRowKeys,status } = this.state;
     let attrValue = this.props.$$state.get("attrValue").toJS();
@@ -203,8 +253,8 @@ class List extends React.Component {
                   <Button className="default_button" onClick={this.onEdit.bind(this)}><i className='iconfont icon-bianji'></i>编辑</Button>
                 }               
                 <Button className="default_button" onClick={this.onDelete.bind(this)}><i className='iconfont icon-shanchu'></i>删除</Button>               
-                <Button className="default_button" onClick={this.onEnable(2).bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
-                <Button className="default_button" onClick={this.onEnable(1).bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
+                <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
+                <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
               </HeadLabel>
             </div> :
             <div className='head_panel'>
@@ -224,42 +274,55 @@ class List extends React.Component {
           <Table
             size="middle"
             columns={this.columns}
-            dataSource={data}
+            dataSource={page.data}
             rowSelection={rowSelection}
             rowKey="id"
-            //pagination={ size: "large", showSizeChanger: true, showQuickJumper: true,  showTotal: this.showTotal}
+            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,
+            showTotal:this.showTotal,onChange:this.onPageChange.bind(this),
+            onShowSizeChange:this.onPageSizeChange.bind(this)}}
           />
         </div>
         <Modal
           title={title}
           visible={visible}
-          onOk={this.onSave.bind(this)}
+          onOk={status == "showdetail"?this.onEdit.bind(this):this.onSave.bind(this)}
           onCancel={this.onClose.bind(this)}
           width={600}
+          cancelText = {status == "showdetail"?"关闭":"取消"}
+          okText = {status == "showdetail"?"编辑":"确认"}
         >
          {status =="showdetail"?
          <div>
-            <p>属性名称:</p>
-            <p>{formData.name}</p>
-            <p>对应ERP:</p>                     
-            <p>{formData.erpCode}</p>
+          <Row>
+            <Col span ={12}>
+              <span>属性名称:</span>
+              <span>{formData.name}</span>
+            </Col>
+            <Col span = {12}>
+              <span>对应ERP:</span>                     
+              <span>{formData.erpCode}</span>
+            </Col>
+          </Row>
+          <Row>
+            <p/>
+          </Row>
           </div>:
           <div className='model-height'>
             <WrappedCard dataSource={formData} wrappedComponentRef={(inst) => this.formRef = inst} />
           </div>}
-          <div>  
-           {
-            attrValue.length==0?
-            <div/>:  
+          <div>
+            {status !== "showdetail" ? 
+            <Row>
+              <Col span={3}>
+                <Button onClick = {this.addRow.bind(this)}>新增</Button>
+              </Col>
+              <Col span={3}>
+                <Button onClick = {this.onAttrVaDelete.bind(this)}>删除</Button>
+              </Col>
+            </Row> :<div/>}               
             <div>        
-            {table}
-            </div>                   
-            }{status =="showdetail"?
-          <div/>:<div>
-           <Button type = "dashed" onClick={this.addRow.bind(this)} style={{width: '100%'}}>
-              <Icon type="plus" className = 'icon' />增加属性值
-            </Button>
-          </div>}            
+              {table}
+            </div>                           
           </div>
         </Modal>
       </div>

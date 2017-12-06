@@ -21,12 +21,6 @@ class List extends React.Component {
             {
                 title: "品牌",
                 dataIndex: "name",
-                render: (text, record) => (
-                    <a onClick={this.onView.bind(this, record)}>
-                        {" "}
-                        {record.name}
-                    </a>
-                )
             },
             {
                 title: "英文",
@@ -87,7 +81,7 @@ class List extends React.Component {
     }
 
     onDelete(rows) {
-
+        let { pagination,searchMap } = this.state;     
         let that = this
         confirm({
             title: '确定要删除吗?',
@@ -97,11 +91,9 @@ class List extends React.Component {
             cancelText: '否',
             onOk() {
 
-                const ids = [];
-                for (let i = 0; i < rows.length; i++) {
-                    ids.push(rows[i].id)
-                }
-                that.props.action.onDelete(ids)
+                const ids = rows.join();
+                
+                that.props.action.onDelete(ids,pagination,searchMap);
             },
             onCancel() {
                 console.log('Cancel');
@@ -124,6 +116,16 @@ class List extends React.Component {
             this.props.action.onSave4Add(form.getFieldsValue());
         }
     }
+    onEableRadioChange = (enableState) => {
+        // let enable = enableState;
+        const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
+         let { pagination,searchMap} = this.state;
+        // searchMap.enableState = enableState;
+         let ids = selectedRowKeys.join();
+         
+         this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
+        // this.setState({searchMap});
+       }
 
     onSearch() {
         let searchMap = this.searchformRef.props.form.getFieldsValue();
@@ -192,10 +194,10 @@ class List extends React.Component {
                             {selectedRows.length == 1 ? <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
                                 : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
 
-                            <Button className="default_button" onClick={this.onDelete.bind(this, selectedRows)}><i className='iconfont icon-shanchu'></i>删除</Button>
+                            <Button className="default_button" onClick={this.onDelete.bind(this, selectedRowKeys)}><i className='iconfont icon-shanchu'></i>删除</Button>
                             <ButtonGroup className='returnbtn-class'>
-                                <Button className="default_button" onClick={this.onSetState.bind(this, selectedRows, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
-                                <Button className="default_button" onClick={this.onSetState.bind(this, selectedRows, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
+                                <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
+                                <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
                             </ButtonGroup>
                         </HeaderButton> :
                         <div className='crm-container-header'>

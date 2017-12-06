@@ -5,7 +5,7 @@ let $$initialState = {
 	editData: {},//编辑时返回的数据
 	data: [],//全部列表数据
 	bizTypes:[],//业务类型数据
-	searchKey:'',//搜索时input中的值
+	searchKey:null,//搜索时input中的值
 	enableState:1,//搜索时停启用状态
 	visible: false,
 	isEdit: false,//是否为编辑状态

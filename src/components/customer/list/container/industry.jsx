@@ -12,10 +12,9 @@ import {
     Dropdown,
     Tree
 } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+
 import "assets/stylesheet/all/iconfont.css";
-import * as Actions from "../action";
+
 import debounce from "lodash.debounce";
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
@@ -31,7 +30,6 @@ export default class Industry extends React.Component {
             visible: false, //整个下拉面板显示控制
             industryData: [], //获取树数据
             select: {}, //选择面板选择出的行业
-            //expandedKeys: [],
             selectKeys: [], //存放选择面板已选择的keys
             keyDownVisiable: false, //是否显示手输查询面板
             selectKeyUp: {}, //手输入时获取的选择字段
@@ -242,13 +240,13 @@ export default class Industry extends React.Component {
         return (
             <div>
                 {this.state.keyDownVisiable ? (
-                    <div className="industry-search">
+                    <div className="reference-search">
                         {this.state.industryDataSearch &&
                         this.state.industryDataSearch.length ? (
                             this.state.industryDataSearch.map(item => {
                                 return (
                                     <div
-                                        className="industry-search-list"
+                                        className="reference-search-list"
                                         onClick={this.searchChoice.bind(
                                             this,
                                             item
@@ -259,21 +257,23 @@ export default class Industry extends React.Component {
                                 );
                             })
                         ) : (
-                            <div className="industry-search-list">暂无数据</div>
+                            <div className="reference-search-list">
+                                暂无数据
+                            </div>
                         )}
                     </div>
                 ) : (
-                    <div className="industry-main">
+                    <div className="reference-main">
                         <Row
                             type="flex"
                             justify="space-between"
-                            className="industry-main-header"
+                            className="reference-main-header"
                         >
                             <div className="title">行业</div>
                         </Row>
-                        <Row className="industry-main-choice" type="flex">
+                        <Row className="reference-main-choice" type="flex">
                             <Tree
-                                className="industry-tree"
+                                className="reference-tree"
                                 onSelect={this.treeSelect.bind(this)}
                                 selectedKeys={this.state.selectKeys}
                             >
@@ -284,7 +284,7 @@ export default class Industry extends React.Component {
                             type="flex"
                             justify="end"
                             align="middle"
-                            className="industry-main-footer"
+                            className="reference-main-footer"
                         >
                             <Row
                                 type="flex"
@@ -320,7 +320,7 @@ export default class Industry extends React.Component {
             ) : null;
 
         return (
-            <div className="industry-warpper">
+            <div className="reference-warpper">
                 <Dropdown
                     overlay={this.choiceIndustry()} //生成下拉结构样式
                     trigger={["click"]}

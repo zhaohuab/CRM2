@@ -13,10 +13,9 @@ import {
     Tree,
     message
 } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+
 import "assets/stylesheet/all/iconfont.css";
-import * as Actions from "../action";
+
 import debounce from "lodash.debounce";
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
@@ -41,7 +40,7 @@ export default class IcbcSimpleinfo extends React.Component {
                 data: {
                     param: {
                         name: this.props.viewData.name,
-                        size: 10
+                        size: 30
                     }
                 }
             },
@@ -128,7 +127,7 @@ export default class IcbcSimpleinfo extends React.Component {
 
         return (
             <div
-                className="industry-main"
+                className="reference-main"
                 style={{
                     width: this.props.width ? this.props.width + "px" : "300px"
                 }}
@@ -136,9 +135,9 @@ export default class IcbcSimpleinfo extends React.Component {
                 <Row
                     type="flex"
                     justify="space-between"
-                    className="industry-main-header"
+                    className="reference-main-header"
                 >
-                    <div className="title">工商核实</div>
+                    <div className="title">企业核实</div>
                     <div>
                         <Search
                             placeholder="客户名称搜索"
@@ -152,7 +151,7 @@ export default class IcbcSimpleinfo extends React.Component {
                         />
                     </div>
                 </Row>
-                <Row className="industry-main-choice" type="flex">
+                <Row className="reference-main-choice" type="flex">
                     <div className="inner">
                         {this.state.icbcList && this.state.icbcList.length ? (
                             this.state.icbcList.map((item, n) => {
@@ -182,7 +181,7 @@ export default class IcbcSimpleinfo extends React.Component {
                     type="flex"
                     justify="end"
                     align="middle"
-                    className="industry-main-footer"
+                    className="reference-main-footer"
                 >
                     <Row type="flex" justify="end" align="middle" gutter={15}>
                         <div>
@@ -219,7 +218,7 @@ export default class IcbcSimpleinfo extends React.Component {
                     visible={this.state.visible} //受控面板显示
                 >
                     <Button>
-                        <i className="iconfont icon-gongshangheshi" />核实
+                        <i className="iconfont icon-gongshangheshi" />企业核实
                     </Button>
                 </Dropdown>
             </div>

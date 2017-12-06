@@ -48,12 +48,12 @@ class SaleUnitTable extends React.Component {
       title:'固定换算',
       dataIndex:'fixedConvert',
       render:(i,record,index)=> (  
-        <Switch defaultChecked={record.fixedConvert == 1? true: false} onChange = {this.changeFCheck.bind(this,record)} />)
+        <Switch defaultChecked={record.fixedConvert == 1? true: false} 
+          onChange = {this.changeFCheck.bind(this,record)} />)
     }]
   }
 
   changeFCheck(record,checked) {
-    debugger
     let flag = true;
     let fixedConvert = {};
     if(checked == true){
@@ -86,8 +86,8 @@ class SaleUnitTable extends React.Component {
     let {title,value}  = e.target;
     if (record[title]!=value){
       record[title]=value;    
-      if (record.editState != 'ADD') { 
-        record.editState='UPDATE';
+      if (record.editState != 'add') { 
+        record.editState='update';
       } 
       let changedData = this.props.$$state.get('changedData').toJS();
       //遍历变化值，是否有此条数据，如果没有加到变化结构里，如果有，覆盖原来数据

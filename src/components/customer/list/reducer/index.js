@@ -28,7 +28,8 @@ let $$initialState = {
     icbcSelect2: "", //存放选中模糊查询条件后获取的客户工商id,在详情中使用
     icbcVisible: false, //工商信息查询新增编辑时面板显隐控制
     icbcVisible2: false, //工商信息查询详情面板显隐
-    isClose: false
+    isClose: false,
+    upLoadList: false
 };
 
 function pageAdd(page, item) {
@@ -61,7 +62,8 @@ export default function orgReducers(
             });
         case "CUSTOMER_LIST_SHOWFORM": //新增、修改编辑菜单显示
             return $$state.merge({
-                formVisitable: action.payload.visible
+                formVisitable: action.payload.visible,
+                upLoadList: true
             });
         case "CUSTOMER_LIST_CHANGEVISIBLE": //查询功能显示
             let visit = $$state.get("moreShow");
@@ -74,10 +76,11 @@ export default function orgReducers(
                     action.payload.selectedRowKeys
                 )
             });
-        case "CUSTOMER_LIST_DELECTVIEWPANEL": //点击新建按钮时，清空viewPanel数据
+        case "CUSTOMER_LIST_ADDCUSTOMER": //点击新建按钮时，清空viewPanel数据,增加带过来的值
             return $$state.merge({
                 viewData: {},
-                formVisitable: action.data
+                formVisitable: action.data,
+                upLoadList: true
             });
         case "CUSTOMER_LIST_ICBCDETAILINFO": //保存客户工商id
             debugger;
@@ -146,14 +149,16 @@ export default function orgReducers(
             return $$state.merge({
                 formVisitable: false,
                 data: pageAdd($$state.get("data").toJS(), action.data),
-                icbcSelect: false
+                icbcSelect: false,
+                upLoadList: false
                 //isClose: false
             });
         case "CUSTOMER_LIST_EDITSAVE": //修改客户
             debugger;
             return $$state.merge({
                 formVisitable: false,
-                data: pageEdit($$state.get("data").toJS(), action.data)
+                data: pageEdit($$state.get("data").toJS(), action.data),
+                upLoadList: false
             });
         case "CUSTOMER_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
             let actionData = action.data;
@@ -166,7 +171,12 @@ export default function orgReducers(
                 name: actionData.parentName
             };
             actionData.followState = action.state.followState;
-
+            actionData.province_city_district = [
+                actionData.province.toString(),
+                actionData.city.toString(),
+                actionData.district.toString()
+            ];
+            debugger;
             return $$state.merge({
                 viewState: action.visible,
                 viewData: actionData
@@ -197,6 +207,7 @@ export default function orgReducers(
 
         case "CUSTOMER_LIST_GETENUMDATA": //获取查询条件基础显示内容
             return $$state.merge({ enumData: action.payload.enumData });
+
         default:
             return $$state;
     }
