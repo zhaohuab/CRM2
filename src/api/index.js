@@ -87,12 +87,13 @@ const visitrules = {
 
 const oppstage = {
     oppstage: baseDir + 'sprc/oppstages',
-    
+    all:baseDir + 'sprc/oppstages/all',
 }
 
 const oppdimension = {
     oppdimension: baseDir + 'sprc/oppdimensions',
     doc:baseDir + "sprc/oppdimensions/docs",
+    all:baseDir + 'sprc/oppdimensions/all',
 }
 
 const oppflow = {

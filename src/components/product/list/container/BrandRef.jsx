@@ -17,7 +17,14 @@ import * as Actions from "../action"
         selectedBrandValue:"",
         selectedId:0,
         visible:false,
-        selected:''
+        selected:'',
+        pagination : {
+            pageSize:10,
+            page:1,
+          },
+          searchMap : {
+            enableState:1,
+          },
     };
   }
   columns = [ {
@@ -32,6 +39,7 @@ onBrandOk() {
     this.props.onChange(selectedId);
     this.setState({selected:selectedBrandValue});
     this.handleBrandVisibleChange(false);
+    this.props.action.setBrandValue(selectedBrandValue);
 }
 
 onBrandCancel() {
@@ -43,12 +51,14 @@ onBrandRowClick = (record, index) => {
 }
 
 handleBrandVisibleChange = (flag) => {
+    let {pagination} = this.state; 
     this.setState({ visible: flag });
+    this.props.action.getBrandRef(pagination);//获取品牌参照列表
 }
 
   render() {
     const brandRefData = this.props.$$state.get("brandRefList").toJS().data;
-  const brandRefList = (
+    const brandRefList = (
     <div  className = "industry-main"> 
         <Row
             type="flex"
@@ -97,9 +107,9 @@ handleBrandVisibleChange = (flag) => {
         trigger="click"
         onVisibleChange={this.handleBrandVisibleChange}
         visible={this.state.visible}                   
-    >                        
-        <Search value = { this.props.value || this.state.selected}/>
-    </Dropdown>
+        >                        
+            <Search placeholder = "品牌" value = { this.props.value || this.props.$$state.get("brandValue")}/>
+        </Dropdown>
     );
   }
 }

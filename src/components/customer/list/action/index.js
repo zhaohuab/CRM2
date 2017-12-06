@@ -14,26 +14,15 @@ function transData(searchMap) {
     if (searchMap == null) {
         return searchMap;
     }
-    debugger;
-    searchMap.province_city_district =
-        searchMap.province_city_district == undefined
-            ? undefined
-            : searchMap.province_city_district.join("_");
-
+    let change = searchMap.province_city_district;
+    if (change) {
+        searchMap.province = change[0];
+        searchMap.city = change[1];
+        searchMap.district = change[2];
+        delete searchMap.province_city_district;
+    }
     return searchMap;
 }
-
-// const closeForm = () => {
-//     return {
-//         type: "CUSTOMER_LIST_CLOSEFORM"
-//     };
-// };
-
-// const closePanel = () => {
-//     return {
-//         type: "CUSTOMER_LIST_CLOSEPANEL"
-//     };
-// };
 
 //控制查询显隐
 const changeVisible = () => {
@@ -136,7 +125,6 @@ const getListData = (pagination, searchMap) => {
                 }
             },
             data => {
-                debugger;
                 console.log(data);
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {
@@ -160,7 +148,6 @@ const getEnumData = () => {
                 }
             },
             data => {
-                debugger;
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETENUMDATA", {
                         enumData: data.enumData
@@ -183,6 +170,7 @@ const listEditSave = data => {
                 }
             },
             data => {
+                debugger;
                 dispatch({
                     type: "CUSTOMER_LIST_EDITSAVE",
                     data
@@ -403,10 +391,12 @@ const closeIcbcVisible1 = visible => {
 };
 
 //点击新建按钮清空viewPanel面板数据
-const deletePanel = data => {
-    return {
-        type: "CUSTOMER_LIST_DELECTVIEWPANEL",
-        data
+const addCustomer = data => {
+    return dispatch => {
+        dispatch({
+            type: "CUSTOMER_LIST_ADDCUSTOMER",
+            data
+        });
     };
 };
 
@@ -440,7 +430,7 @@ export {
     getEnumData,
     saveSearchMap,
     editCardFn,
-    deletePanel,
+    addCustomer,
     // icbcInfo,
     customerListInfo,
     customerModal1Show,

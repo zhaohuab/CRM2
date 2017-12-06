@@ -31,7 +31,7 @@
         align-items: center
     }
 }
-.user-warpper{
+.product-warpper{
     height:100%;
     padding: 10px;
     padding-top:0;
@@ -46,6 +46,92 @@
         box-sizing: border-box;
     }
    
+    .header-warpper {
+        min-height: 54px;
+        padding: 0 15px;
+        box-sizing: border-box;
+        input {
+            height: 28px;
+            color: #666;
+        }
+        ::-webkit-input-placeholder {
+            color: #666;
+        }
+        :-moz-placeholder {
+            color: #666;
+        }
+        :-ms-input-placeholde {
+            color: #666;
+        }
+        input-placeholde {
+            color: #666;
+        }
+        .more-btn {
+            height: 28px;
+            display: flex;
+            align-items: center;
+        }
+        .more-up {
+            cursor: pointer;
+        }
+    }
+
+    .header-top {
+        height: 54px;
+        .select-recover {
+            .ant-select-selection {
+                border: none;
+            }
+        }
+    }
+
+    .less-form {
+        .ant-form-item {
+            width: 100%;
+        }
+        .ant-btn:hover,
+        .ant-btn:focus,
+        .ant-btn:active,
+        .ant-btn.active {
+            color: #666;
+            font-weight: 400;
+            margin-right: 14px;
+            height: 16px;
+            line-height: 16px;
+        }
+        .ant-btn,
+        .ant-btn:active,
+        .ant-btn:focus {
+            border: white;
+            color: #666;
+            font-weight: 400;
+            margin-right: 14px;
+            border-right: 1px solid #ccc;
+            border-radius: 0;
+            height: 16px;
+            line-height: 16px;
+        }
+        .ant-select-selection-selected-value {
+            color: #666;
+        }
+    }
+    .less-show-height {
+        display: block;
+        transition: all 0.3s linear;
+    }
+    .header-bottom {
+        width: 100%;
+        margin: 0 auto;
+    }
+    .less-hide-height {
+        display: none;
+        transition: all 0.3s linear;
+    }
+    .more-show-height {
+        display: block;
+        transition: all 0.3s linear;
+        border-top: 1px solid #efefef;
+    }
     .head_panel{
         height:54px;
         width:100%;
@@ -184,5 +270,45 @@
             overflow: auto;
             //background: rgb(215, 248, 123);
         }
+    }
+}
+
+.header-bottom-inner {
+    width: 90%;
+    margin: 0 auto;
+    padding: 15px 0 0 0;
+    box-sizing: border-box;
+    .ant-form-item {
+        width: 100%;
+        margin-bottom: 15px;
+        .ant-select-selection-selected-value {
+            color: #666;
+        }
+    }
+    .ant-btn:hover,
+    .ant-btn:focus,
+    .ant-btn:active,
+    .ant-btn.active {
+        color: #666;
+        font-weight: 400;
+        margin-right: 14px;
+        height: 16px;
+        line-height: 16px;
+    }
+    .ant-btn,
+    .ant-btn:active,
+    .ant-btn:focus {
+        border: white;
+        color: #666;
+        font-weight: 400;
+        margin-right: 14px;
+        border-right: 1px solid #ccc;
+        border-radius: 0;
+        height: 16px;
+        line-height: 16px;
+    }
+    .industry-warpper {
+        height: 28px;
+        line-height: 17px;
     }
 }

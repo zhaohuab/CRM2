@@ -72,8 +72,6 @@ const transData = (data) => {
 
 //新增数据
 export function listadd(list) {
-    debugger
-   // list.fatherTypeId = list.fatherTypeId.key
     return (dispatch, getState) => {
         request({
             url: url.prdtype,   
@@ -89,7 +87,6 @@ export function listadd(list) {
                 data: {}
             }
             ,(data) => {
-                debugger
                 dispatch({ type: 'PRDTYPE_LIST_GETTREELISTSUCCESS', data: data.data })
                 dispatch(fetchData('PRDTYPE_LIST_LISTADDSUCCESS', { data: listData }));
             })

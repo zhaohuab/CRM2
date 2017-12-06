@@ -18,10 +18,6 @@ class AttrCard extends React.Component {
     componentDidMount() {
         //this.props.form.setFieldsValue(this.props.dataSource);
     }
-
-    addRow(){
-
-    }
   
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -36,12 +32,6 @@ class AttrCard extends React.Component {
                 sm: { span: 14 },
             },
         };
-        {
-            getFieldDecorator('id', {
-            })(
-                <Input />
-                )
-        }
         return (
         <Form >
             <FormItem
@@ -89,9 +79,9 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){           
+        onFieldsChange(props, fields){  
+           // debugger         
            // let data = props.$$state.get("formData").toJS();
-           debugger
             let changeData = {};
             for(let i in fields){
                 let key = i;
@@ -101,6 +91,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         },
         mapPropsToFields(props){
             let data = props.$$state.get("formData").toJS();
+           // let data = props.dataSource;
             return{
                 name:{
                     ...data.name,
@@ -112,8 +103,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                 },
             };
         },
-        onValuesChange(_, values){
-            //console.log(values);
-        },
+        
     })(AttrCard));
 

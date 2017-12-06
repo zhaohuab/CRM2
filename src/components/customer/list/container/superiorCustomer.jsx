@@ -9,10 +9,9 @@ import {
     Dropdown,
     Table
 } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+
 import "assets/stylesheet/all/iconfont.css";
-import * as Actions from "../action";
+
 import debounce from "lodash.debounce";
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
@@ -234,13 +233,13 @@ export default class CuperiorCustomer extends React.Component {
         return (
             <div>
                 <div
-                    className="industry-main"
+                    className="reference-main"
                     style={{ width: this.props.width + "px" }}
                 >
                     <Row
                         type="flex"
                         justify="space-between"
-                        className="industry-main-header"
+                        className="reference-main-header"
                     >
                         <div className="title">上级客户</div>
                         <div>
@@ -251,7 +250,7 @@ export default class CuperiorCustomer extends React.Component {
                             />
                         </div>
                     </Row>
-                    <Row className="tabel-recoverd industry-main-choice ">
+                    <Row className="tabel-recoverd reference-main-choice ">
                         <Table
                             columns={this.columns}
                             dataSource={tableData.data}
@@ -272,7 +271,7 @@ export default class CuperiorCustomer extends React.Component {
                         type="flex"
                         justify="end"
                         align="middle"
-                        className="industry-main-footer"
+                        className="reference-main-footer"
                     >
                         <Row
                             type="flex"
@@ -307,7 +306,7 @@ export default class CuperiorCustomer extends React.Component {
             ) : null;
 
         return (
-            <div className="industry-warpper">
+            <div className="reference-warpper">
                 <Dropdown
                     overlay={this.choiceIndustry()} //生成下拉结构样式
                     trigger={["click"]}

@@ -34,7 +34,6 @@ class AttrGrpDeTable extends React.Component {
 
   render(){ 
     //let formData = this.props.$$state.get('formData').toJS();
-    debugger
     let dataSource =this.props.$$state.get("detailList").toJS();
     let columns=this.columns;
     return (

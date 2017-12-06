@@ -19,10 +19,11 @@ import { bindActionCreators } from "redux";
 //导入action方法
 import * as Actions from "../action";
 const TabPane = Tabs.TabPane;
-const { Header, Content, Sider } = Layout;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
+
 import IcbcSimpleinfo from "./icbcSimpleinfo";
+import UploadImg from "./uploadImg";
 
 class ViewPanel extends React.Component {
     constructor(props) {
@@ -104,18 +105,21 @@ class ViewPanel extends React.Component {
             icbcVisible2,
             icbcInfo1
         } = this.props.$$state.toJS();
-
+        let defaultList = [
+            {
+                uid: -1,
+                name: "xxx.png",
+                status: "done",
+                url:
+                    "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+            }
+        ];
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">
-                    <Row>
-                        <Col span={15}>
-                            <Row
-                                type="flex"
-                                align="middle"
-                                gutter={5}
-                                className="header-button-pointer"
-                            >
+                    <Row className="header-customer">
+                        <Col span={13}>
+                            <Row type="flex" align="middle" gutter={15}>
                                 <Row type="flex" align="middle">
                                     <img
                                         src={require("assets/images/header/photo.png")}
@@ -123,52 +127,90 @@ class ViewPanel extends React.Component {
                                     />
                                 </Row>
                                 <Col span={21}>
-                                    <Row type="flex" align="middle" gutter={25}>
-                                        <div className="customer-name">
-                                            {viewData.name}
-                                        </div>
+                                    <Row>
                                         <Row
                                             type="flex"
                                             align="middle"
-                                            gutter={15}
+                                            gutter={25}
                                         >
-                                            <div className="checked-iconfont">
-                                                {viewData.verifyId ? (
-                                                    <span
-                                                        onClick={this.checked.bind(
-                                                            this
-                                                        )}
-                                                        className="blue"
-                                                    >
-                                                        <i className="iconfont icon-yiheshi-" />已核实
-                                                    </span>
-                                                ) : (
-                                                    <span className="red">
-                                                        <i className="iconfont icon-weiheshi-" />未核实
-                                                    </span>
-                                                )}
+                                            <div className="customer-name">
+                                                {viewData.name}
                                             </div>
-                                            <div>
-                                                {viewData.followState == 0 ? (
-                                                    <span
-                                                        className="red"
-                                                        onClick={this.attentionFn.bind(
-                                                            this,
-                                                            0
-                                                        )}
-                                                    >
-                                                        <i className="iconfont icon-guanzhu1" />未关注
+
+                                            <Row
+                                                type="flex"
+                                                align="middle"
+                                                gutter={15}
+                                                className="pointer"
+                                            >
+                                                <div className="checked-iconfont">
+                                                    {viewData.verifyId ? (
+                                                        <span
+                                                            onClick={this.checked.bind(
+                                                                this
+                                                            )}
+                                                            className="blue"
+                                                        >
+                                                            <i className="iconfont icon-yiheshi-" />已核实
+                                                        </span>
+                                                    ) : (
+                                                        <span className="red">
+                                                            <i className="iconfont icon-weiheshi-" />未核实
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div>
+                                                    {viewData.followState ==
+                                                    0 ? (
+                                                        <span
+                                                            className="red"
+                                                            onClick={this.attentionFn.bind(
+                                                                this,
+                                                                0
+                                                            )}
+                                                        >
+                                                            <i className="iconfont icon-guanzhu1" />未关注
+                                                        </span>
+                                                    ) : (
+                                                        <span
+                                                            className="blue"
+                                                            onClick={this.attentionFn.bind(
+                                                                this,
+                                                                1
+                                                            )}
+                                                        >
+                                                            <i className="iconfont icon-yiguanzhu" />已关注
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </Row>
+                                        </Row>
+                                        <Row className="address pointer">
+                                            {viewData.address}
+                                            <i className="iconfont icon-shouye-dingwei" />
+                                        </Row>
+                                        <Row className="tags">
+                                            <div className="tag-group">
+                                                {viewData.typeName ? (
+                                                    <span>
+                                                        {viewData.typeName}
                                                     </span>
                                                 ) : (
-                                                    <span
-                                                        className="blue"
-                                                        onClick={this.attentionFn.bind(
-                                                            this,
-                                                            1
-                                                        )}
-                                                    >
-                                                        <i className="iconfont icon-yiguanzhu" />已关注
+                                                    <div />
+                                                )}
+                                                {viewData.levelName ? (
+                                                    <span>
+                                                        {viewData.levelName}
                                                     </span>
+                                                ) : (
+                                                    <div />
+                                                )}
+                                                {viewData.stateName ? (
+                                                    <span>
+                                                        {viewData.stateName}
+                                                    </span>
+                                                ) : (
+                                                    <div />
                                                 )}
                                             </div>
                                         </Row>
@@ -176,7 +218,7 @@ class ViewPanel extends React.Component {
                                 </Col>
                             </Row>
                         </Col>
-                        <Col span={9}>
+                        <Col span={11}>
                             <Row
                                 type="flex"
                                 align="middle"
@@ -198,6 +240,21 @@ class ViewPanel extends React.Component {
                                     )}
                                 </div>
 
+                                <div>
+                                    <Button>
+                                        <i className="iconfont icon-bianji" />分配
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button>
+                                        <i className="iconfont icon-bianji" />变更
+                                    </Button>
+                                </div>
+                                <div>
+                                    <Button>
+                                        <i className="iconfont icon-bianji" />升级
+                                    </Button>
+                                </div>
                                 <div>
                                     <Button onClick={this.btnEdit.bind(this)}>
                                         <i className="iconfont icon-bianji" />编辑
@@ -243,7 +300,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    潜在
+                                    {viewData.stateName}
                                 </Row>
                             </Col>
                             <Col span={8}>
@@ -277,21 +334,151 @@ class ViewPanel extends React.Component {
                                         <Collapse
                                             defaultActiveKey={["1", "2", "3"]}
                                         >
-                                            <Panel header="标签" key="1">
-                                                <div className="tag-group">
-                                                    <span>客户类型</span>
-                                                    <span>客户类型</span>
-                                                    <span>客户类型</span>
-                                                    <span>客户类型</span>
-                                                    <span>客户类型</span>
-                                                </div>
-                                            </Panel>
-                                            <Panel header="客户身份" key="2">
+                                            <Panel key="1" header="&nbsp;">
                                                 <Row className="custom-info">
                                                     <Col span={12}>
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
+                                                        >
+                                                            <Col
+                                                                span={8}
+                                                                className="custom-info-title"
+                                                            >
+                                                                <span>
+                                                                    客户类型:
+                                                                </span>
+                                                            </Col>
+                                                            <Col
+                                                                span={16}
+                                                                className="custom-info-content"
+                                                            >
+                                                                <span>
+                                                                    {
+                                                                        viewData.type
+                                                                    }
+                                                                </span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={12}>
+                                                        <Row
+                                                            type="flex"
+                                                            gutter={10}
+                                                            align="middle"
+                                                        >
+                                                            <Col
+                                                                span={8}
+                                                                className="custom-info-title"
+                                                            >
+                                                                <span>
+                                                                    行业:
+                                                                </span>
+                                                            </Col>
+                                                            <Col
+                                                                span={16}
+                                                                className="custom-info-content"
+                                                            >
+                                                                <span>
+                                                                    {
+                                                                        viewData.industryName
+                                                                    }
+                                                                </span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                                <Row className="custom-info">
+                                                    <Col span={12}>
+                                                        <Row
+                                                            type="flex"
+                                                            gutter={10}
+                                                            align="middle"
+                                                        >
+                                                            <Col
+                                                                span={8}
+                                                                className="custom-info-title"
+                                                            >
+                                                                <span>
+                                                                    客户等级:
+                                                                </span>
+                                                            </Col>
+                                                            <Col
+                                                                span={16}
+                                                                className="custom-info-content"
+                                                            >
+                                                                <span>
+                                                                    {
+                                                                        viewData.levelName
+                                                                    }
+                                                                </span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={12}>
+                                                        <Row
+                                                            type="flex"
+                                                            gutter={10}
+                                                            align="middle"
+                                                        >
+                                                            <Col
+                                                                span={8}
+                                                                className="custom-info-title"
+                                                            >
+                                                                <span>
+                                                                    渠道类型:
+                                                                </span>
+                                                            </Col>
+                                                            <Col
+                                                                span={16}
+                                                                className="custom-info-content"
+                                                            >
+                                                                <span>
+                                                                    {
+                                                                        viewData.cannelTypeName
+                                                                    }
+                                                                </span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                                <Row className="custom-info">
+                                                    <Col span={12}>
+                                                        <Row
+                                                            type="flex"
+                                                            gutter={10}
+                                                            align="middle"
+                                                        >
+                                                            <Col
+                                                                span={8}
+                                                                className="custom-info-title"
+                                                            >
+                                                                <span>
+                                                                    客户状态:
+                                                                </span>
+                                                            </Col>
+                                                            <Col
+                                                                span={16}
+                                                                className="custom-info-content"
+                                                            >
+                                                                <span>
+                                                                    {
+                                                                        viewData.stateName
+                                                                    }
+                                                                </span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                            </Panel>
+                                            <Panel key="2" header="&nbsp;">
+                                                <Row className="custom-info">
+                                                    <Col span={12}>
+                                                        <Row
+                                                            type="flex"
+                                                            gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
@@ -306,7 +493,9 @@ class ViewPanel extends React.Component {
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    1434343432443
+                                                                    {
+                                                                        viewData.tel
+                                                                    }
                                                                 </span>
                                                             </Col>
                                                         </Row>
@@ -315,6 +504,7 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
@@ -329,7 +519,9 @@ class ViewPanel extends React.Component {
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    21412434@qq.com
+                                                                    {
+                                                                        viewData.email
+                                                                    }
                                                                 </span>
                                                             </Col>
                                                         </Row>
@@ -340,13 +532,14 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
                                                                 className="custom-info-title"
                                                             >
                                                                 <span>
-                                                                    营业额:
+                                                                    营业额(万元):
                                                                 </span>
                                                             </Col>
                                                             <Col
@@ -354,7 +547,9 @@ class ViewPanel extends React.Component {
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    12222
+                                                                    {
+                                                                        viewData.turnover
+                                                                    }
                                                                 </span>
                                                             </Col>
                                                         </Row>
@@ -363,6 +558,7 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
@@ -376,7 +572,11 @@ class ViewPanel extends React.Component {
                                                                 span={16}
                                                                 className="custom-info-content"
                                                             >
-                                                                <span>133</span>
+                                                                <span>
+                                                                    {
+                                                                        viewData.employeeNum
+                                                                    }
+                                                                </span>
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -386,6 +586,7 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
@@ -400,19 +601,22 @@ class ViewPanel extends React.Component {
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    收到货了恢复拉风了
+                                                                    {
+                                                                        viewData.remark
+                                                                    }
                                                                 </span>
                                                             </Col>
                                                         </Row>
                                                     </Col>
                                                 </Row>
                                             </Panel>
-                                            <Panel header="客户身份" key="3">
+                                            <Panel key="3" header="&nbsp;">
                                                 <Row className="custom-info">
                                                     <Col span={12}>
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
@@ -427,7 +631,9 @@ class ViewPanel extends React.Component {
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    aaaa
+                                                                    {
+                                                                        viewData.fullname
+                                                                    }
                                                                 </span>
                                                             </Col>
                                                         </Row>
@@ -436,6 +642,7 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
@@ -450,7 +657,9 @@ class ViewPanel extends React.Component {
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    1000万
+                                                                    {
+                                                                        viewData.regCapital
+                                                                    }
                                                                 </span>
                                                             </Col>
                                                         </Row>
@@ -461,6 +670,10 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
+                                                            style={{
+                                                                height: "55px"
+                                                            }}
                                                         >
                                                             <Col
                                                                 span={8}
@@ -475,7 +688,9 @@ class ViewPanel extends React.Component {
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    到的
+                                                                    {
+                                                                        viewData.legalRepresent
+                                                                    }
                                                                 </span>
                                                             </Col>
                                                         </Row>
@@ -484,6 +699,7 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
@@ -494,12 +710,24 @@ class ViewPanel extends React.Component {
                                                                 </span>
                                                             </Col>
                                                             <Col
-                                                                span={16}
+                                                                span={12}
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    134234244234
+                                                                    {
+                                                                        viewData.taxpayerNo
+                                                                    }
                                                                 </span>
+                                                            </Col>
+                                                            <Col span={4}>
+                                                                <UploadImg
+                                                                    defaultList={
+                                                                        defaultList
+                                                                    }
+                                                                    showUploadList={{
+                                                                        showRemoveIcon: false
+                                                                    }}
+                                                                />
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -509,22 +737,35 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
                                                                 className="custom-info-title"
                                                             >
                                                                 <span>
-                                                                    工商注册号
+                                                                    工商注册号:
                                                                 </span>
                                                             </Col>
                                                             <Col
-                                                                span={16}
+                                                                span={12}
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    dsdfddfsfsfsd
+                                                                    {
+                                                                        viewData.bizRegno
+                                                                    }
                                                                 </span>
+                                                            </Col>
+                                                            <Col span={4}>
+                                                                <UploadImg
+                                                                    defaultList={
+                                                                        defaultList
+                                                                    }
+                                                                    showUploadList={{
+                                                                        showRemoveIcon: false
+                                                                    }}
+                                                                />
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -532,6 +773,7 @@ class ViewPanel extends React.Component {
                                                         <Row
                                                             type="flex"
                                                             gutter={10}
+                                                            align="middle"
                                                         >
                                                             <Col
                                                                 span={8}
@@ -542,12 +784,24 @@ class ViewPanel extends React.Component {
                                                                 </span>
                                                             </Col>
                                                             <Col
-                                                                span={16}
+                                                                span={12}
                                                                 className="custom-info-content"
                                                             >
                                                                 <span>
-                                                                    1eeqweweweweqwe
+                                                                    {
+                                                                        viewData.orgCode
+                                                                    }
                                                                 </span>
+                                                            </Col>
+                                                            <Col span={4}>
+                                                                <UploadImg
+                                                                    defaultList={
+                                                                        defaultList
+                                                                    }
+                                                                    showUploadList={{
+                                                                        showRemoveIcon: false
+                                                                    }}
+                                                                />
                                                             </Col>
                                                         </Row>
                                                     </Col>

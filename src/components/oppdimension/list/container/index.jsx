@@ -179,6 +179,7 @@ class List extends React.Component {
           onOk={this.onSave.bind(this)}
           onCancel={this.onClose.bind(this)}
           width={500}
+          maskClosable={false}
         >
           <div className='model-height'>
             <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />

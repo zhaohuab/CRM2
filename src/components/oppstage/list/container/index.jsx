@@ -123,7 +123,6 @@ class List extends React.Component {
     this.props.action.selectData({ selectedRows: [], selectedRowKeys: [] });
   }
   render() {
-    debugger
     let { $$state } = this.props;
     let page = $$state.get("data").toJS();
     let visible = $$state.get("visible");
@@ -188,6 +187,7 @@ class List extends React.Component {
           onOk={this.onSave.bind(this)}
           onCancel={this.onClose.bind(this)}
           width={500}
+          maskClosable={false}
         >
           <div className='model-height'>
             <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
