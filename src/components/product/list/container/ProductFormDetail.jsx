@@ -19,7 +19,7 @@ const AutoOption = AutoComplete.Option;
 const OptGroup = AutoComplete.OptGroup;
 const RadioGroup = Radio.Group;
 
-class ProductCard extends React.Component {
+class ProductCardDetail extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -112,20 +112,6 @@ class ProductCard extends React.Component {
             onChange: this.onSelectChange,
         };
 
-        const salesUnitRefTable = (
-            <div  className = "industry-main"> 
-                <Button onClick={this.onAdd}>新增</Button>
-                <Table columns = {this.salesunitcolumns} 
-                    dataSource = {salesunitTable} 
-                    bordered="true" 
-                    style = {{background:"white",width:450}}
-                    //onRowClick={this.onSalesUnitRowClick}
-                    pagination={false}
-                    rowSelection={rowSelection}
-                   />
-            </div>
-        );
-
         {
             getFieldDecorator('id', {
             })(
@@ -144,11 +130,9 @@ class ProductCard extends React.Component {
                // {...formItemLayout}
             >
                 {getFieldDecorator('code', {
-                    rules: [{
-                        required: true, message: '请输出编码',
-                    }],
+                    
                 })(
-                    <Input placeholder='请输入...'/>
+                    <span> {this.props.dataSource.code}</span>
                     )}
             </FormItem>
         </Col>
@@ -160,11 +144,9 @@ class ProductCard extends React.Component {
                // {...formItemLayout}
             >
                 {getFieldDecorator('name', {
-                    rules: [{
-                        required: true, message: '请输出名称',
-                    }],
+                   
                 })(
-                    <Input placeholder='请输入...'/>
+                    <span> {this.props.dataSource.name}</span>
                     )}
             </FormItem>
             </Col>
@@ -177,11 +159,9 @@ class ProductCard extends React.Component {
               //  {...formItemLayout}
             >
                 {getFieldDecorator('memCode', {
-                    rules: [{
-                        required: false, message: '请输入助记码',
-                    }],
+                  
                 })(
-                    <Input placeholder='请输入...'/>
+                    <span> {this.props.dataSource.memCode}</span>
                     )}
             </FormItem>
             </Col>
@@ -193,11 +173,9 @@ class ProductCard extends React.Component {
                // {...formItemLayout}
             >
                 {getFieldDecorator('spec', {
-                    rules: [{
-                        required: false, message: '',
-                    }],
+                   
                 })(
-                    <Input placeholder='请输入...'/>
+                    <span> {this.props.dataSource.spec}</span>
                     )}
             </FormItem>
             </Col>
@@ -209,11 +187,9 @@ class ProductCard extends React.Component {
                 wrapperCol={{ span:13 }}
             >
                 {getFieldDecorator('prdtypeId', {
-                    rules: [{
-                        required: true
-                    }],
+                   
                 })(
-                    <PrdClassRef/>
+                    <span> {this.props.dataSource.prdtypeName}</span>
                     )}
             </FormItem>
             </Col>
@@ -224,11 +200,9 @@ class ProductCard extends React.Component {
                 wrapperCol={{ span:13 }}
             >
                 {getFieldDecorator('measureId', {
-                    rules: [{
-                        required: true
-                    }],
+                  
 
-                })(<MeaUnitRef/>
+                })(  <span> {this.props.dataSource.measureName}</span>
                     )}
             </FormItem>
             </Col>
@@ -237,12 +211,13 @@ class ProductCard extends React.Component {
             <FormItem
                 label="品牌"
                 labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}               
+                wrapperCol={{ span:13 }}
+                
             >
                 {getFieldDecorator('brandId', {
         
                 })(
-                   <BrandRef />
+                    <span> {this.props.dataSource.brandName}</span>
                     )}
             </FormItem>
             </Col>
@@ -254,11 +229,9 @@ class ProductCard extends React.Component {
                 wrapperCol={{ span:13 }}
             >
                 {getFieldDecorator('price', {
-                    rules: [{
-                        required: true
-                    }],
+                  
                 })(
-                    <Input placeholder='请输入...'/>
+                    <span> {this.props.dataSource.price}</span>
                     )}
             </FormItem>
             </Col>
@@ -270,8 +243,7 @@ class ProductCard extends React.Component {
             >
                 {getFieldDecorator('orgId', {
 
-                })(
-                    <Input  disabled = {true}/>
+                })(  <span> {this.props.dataSource.orgName}</span>
                     )}
             </FormItem>
             </Col>
@@ -282,33 +254,13 @@ class ProductCard extends React.Component {
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span:13 }}
             >
-                {getFieldDecorator('attrGroupId', {
-                     rules: [{
-                        required: true
-                    }],
+                {getFieldDecorator('attrGroupName', {
+                     
                 })(
-                    <AttrsGrpRef/>
+                    <span> {this.props.dataSource.code}</span>
                     )}
             </FormItem>
             </Col>
-           
-            {/* <Col span={12}>
-            <FormItem
-                label="启用状态"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-             //   {...formItemLayout}
-            >
-                {getFieldDecorator('enableState', {
-
-                })(
-                    <RadioGroup>
-                        <Radio value={1}>启用</Radio>
-                        <Radio value={2}>停用</Radio>
-                    </RadioGroup>
-                    )}
-            </FormItem>
-            </Col> */}
             <Col span={12}>
             <FormItem
                 label="产品图片"
@@ -342,7 +294,7 @@ class ProductCard extends React.Component {
                 {getFieldDecorator('description', {
 
                 })(
-                    <Input  type="textarea" placeholder='请输入...'/>
+                    <span> {this.props.dataSource.description}</span>
                     )}
             </FormItem>
             </Col>           
@@ -370,7 +322,7 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){ 
+        onFieldsChange(props, fields){  
             let fieldsChangeData = {};
             let dataSource = props.dataSource;
             for(let item in fields){
@@ -440,6 +392,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                 
             };
         }
-    })(ProductCard));
+    })(ProductCardDetail));
 
 
