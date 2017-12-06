@@ -74,15 +74,16 @@ import * as Actions from "../action"
    
  
   const refTree = (
-      <div  className = "industry-main"> 
+      <div className = "reference">
+      <div  className = "reference-main"> 
           <Row
               type="flex"
               justify="space-between"
-              className="industry-main-header"
+              className="reference-main-header"
           >
               <div className="title">产品分类</div>
           </Row>
-          <Row className="industry-main-choice" type="flex">
+          <Row className="reference-main-choice" type="flex">
               <Tree 
                   onClick = {this.handleTreeClick}
                   //checkable
@@ -91,7 +92,7 @@ import * as Actions from "../action"
                   //onCheck={this.onCheck}
                   selectedKeys={this.state.selectedKeys}
                   //checkedKeys={this.state.preCheckedKeys}
-                  className="industry-tree"
+                  className="reference-tree"
                   >
                   {loop(classRefTree)}
               </Tree>                     
@@ -100,7 +101,7 @@ import * as Actions from "../action"
               type="flex"
               justify="end"
               align="middle"
-              className="industry-main-footer"
+              className="reference-main-footer"
           >
               <Row type="flex" justify="end" align="middle" gutter={15}>
                   <div>
@@ -118,7 +119,8 @@ import * as Actions from "../action"
                   </div>
               </Row>
           </Row>
-      </div>       
+      </div> 
+    </div>      
   );
     return (
       <Dropdown overlay={refTree} 

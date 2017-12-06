@@ -123,6 +123,7 @@ class SaleUnitTable extends React.Component {
     let columns=this.columns;
     let selectedRowKeys =this.props.$$state.get('suSelectedRowKeys').toJS();
     let rowSelection = {
+      selectedRowKeys,
       onChange: (selectedRowKeys,selectedRows) =>{
         this.props.action.setSecRowKeys(selectedRowKeys);
       },

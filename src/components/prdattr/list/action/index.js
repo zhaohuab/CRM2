@@ -54,6 +54,7 @@ const changeEnableState = (enableState,selectedRowKeys,pagination,searchMap) => 
 }
 
 const onSave4Add = (data) => {
+	debugger
 	return (dispatch) => {
 		reqwest({
 			url: prdattr.prdattr,
@@ -62,6 +63,7 @@ const onSave4Add = (data) => {
 				param: data
 			}
 		}, result => {
+			debugger
 			dispatch(fetchData('PRDATTR_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
@@ -199,6 +201,13 @@ const setFormData = (formData) => {
 	}
 }
 
+const setSecRowKeys = (secRowKeys) => {
+	return {
+		type:"PRDATTR_ATTRVA_SETSECROWKEYS",
+		content:secRowKeys
+	}
+}
+
 //输出 type 与 方法
 export {
 	getListData,
@@ -216,5 +225,5 @@ export {
 	getAttrDetail,
 	showAddForm,
 	setFormData,
-	changeEnableState
+	setSecRowKeys
 }

@@ -59,15 +59,16 @@ handleBrandVisibleChange = (flag) => {
   render() {
     const brandRefData = this.props.$$state.get("brandRefList").toJS().data;
     const brandRefList = (
-    <div  className = "industry-main"> 
+        <div className = "reference">
+    <div  className = "reference-main"> 
         <Row
             type="flex"
             justify="space-between"
-            className="industry-main-header"
+            className="reference-main-header"
         >
             <div className="title">品牌</div>
         </Row>
-        <Row className="industry-main-choice" type="flex">
+        <Row className="reference-main-choice" type="flex">
         <Table columns = {this.columns} 
             dataSource = {brandRefData} 
             style = {{background:"white"}}
@@ -81,7 +82,7 @@ handleBrandVisibleChange = (flag) => {
             type="flex"
             justify="end"
             align="middle"
-            className="industry-main-footer"
+            className="reference-main-footer"
         >
             <Row type="flex" justify="end" align="middle" gutter={15}>
                 <div>
@@ -99,6 +100,7 @@ handleBrandVisibleChange = (flag) => {
                 </div>
             </Row>
         </Row>
+    </div>
     </div>
 );
 
