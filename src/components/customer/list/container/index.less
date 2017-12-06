@@ -110,10 +110,21 @@
         background: white;
         .view-warrper-header {
             position: relative;
-            min-height: 161px;
+            min-height: 200px;
             padding: 0 15px;
             box-sizing: border-box;
-            .header-button-pointer {
+            .header-customer {
+                min-height: 120px;
+            }
+            .address {
+                color: #999;
+                font-size: 13px;
+            }
+            .tags {
+                margin-top: 10px;
+                margin-left: -2.5px;
+            }
+            .pointer {
                 cursor: pointer;
             }
             .checked-iconfont {
@@ -312,9 +323,62 @@
         padding-top: 0;
         box-sizing: border-box;
     }
+    .ant-upload.ant-upload-select-picture-card {
+        width: 50px;
+        height: 50px;
+        .ant-upload {
+            display: flex;
+            align-items: center;
+        }
+    }
+    .ant-upload-list-item {
+        width: 50px;
+        height: 50px;
+    }
+    .ant-upload-list-picture .ant-upload-list-item,
+    .ant-upload-list-picture-card .ant-upload-list-item {
+        padding: 0;
+    }
 }
 
-/*最外层在加个样式，在最外层*/
+/*modal中样式*/
+
+.customer-form-warpper {
+    position: relative;
+}
+
+.customer-form-uoload {
+    .ant-upload.ant-upload-select-picture-card {
+        width: 50px;
+        height: 50px;
+        .ant-upload {
+            display: flex;
+            align-items: center;
+        }
+    }
+    .ant-upload-list-item {
+        width: 50px;
+        height: 50px;
+    }
+    .ant-upload-list-picture .ant-upload-list-item,
+    .ant-upload-list-picture-card .ant-upload-list-item {
+        padding: 0;
+    }
+}
+
+.customer-form-map {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    width: 100%;
+}
+
+.customer-viewInfo-style {
+    position: relative;
+    background: white;
+    max-width: 200px;
+}
 
 .icbc-btn {
     color: #3ca4fb;
@@ -369,75 +433,4 @@
 .icbc-detail-item span:nth-of-type(3) {
     color: #999;
     margin-left: 20px;
-}
-
-.industry-main {
-    width: 300px;
-    border-radius: 5px;
-    background: white;
-    box-shadow: 0 0 15px rgb(136, 136, 136);
-    .industry-main-header {
-        height: 54px;
-        padding: 12px;
-        box-sizing: border-box;
-        background: #fafafa;
-        border-bottom: 1px solid #f0f0f0;
-        .title {
-            line-height: 34px;
-            font-size: 16px;
-            color: #666666;
-        }
-    }
-    .industry-main-footer {
-        padding: 12px;
-        box-sizing: border-box;
-        height: 60px;
-        border-top: 1px solid #f0f0f0;
-        width: 100%;
-        background: white;
-        margin-left: 0;
-    }
-    .industry-main-choice {
-        padding: 10px;
-        box-sizing: border-box;
-        .industry-tree {
-            border: 1px solid #eeeeee;
-            border-radius: 5px;
-            padding: 10px;
-            box-sizing: border-box;
-            width: 100%;
-            height: 280px;
-            overflow: auto;
-        }
-        .inner {
-            width: 100%;
-            border: 1px solid #eeeeee;
-            height: 280px;
-            overflow: auto;
-        }
-    }
-}
-
-.industry-search {
-    width: 200px;
-    max-height: 300px;
-    overflow-y: auto;
-    background: white;
-    box-shadow: 0 0 15px rgb(136, 136, 136);
-}
-
-.industry-search-choice {
-    background: red;
-}
-
-.industry-search-list {
-    min-height: 40px;
-    padding: 15px 10px;
-    box-sizing: border-box;
-    cursor: pointer;
-    border-bottom: 1px solid #ccc;
-}
-
-.industry-search-list:last-child {
-    border-bottom: none;
 }
