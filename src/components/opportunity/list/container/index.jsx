@@ -173,6 +173,7 @@ class List extends React.Component {
                     onOk={this.formHandleOk.bind(this)}
                     onCancel={this.formHandleCancel.bind(this)}
                     width="50%"
+                    maskClosable={false}
                 >
                     <div className="model-height">
                         <CardForm

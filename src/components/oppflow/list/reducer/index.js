@@ -4,18 +4,20 @@ let $$initialState = {
 	loading: false,
 	editData: {},
 	data: {
-		data:[]
+		data: []
 	},
 	visible: false,
 	enumData: {
 		dimension: []
 	},
-	selectedRows: [],
-	selectedRowKeys: [],
-	pagination: {
-		pageSize: 10,
-		page: 1,
-	},
+	biztype:[],
+	allStage: [],
+	allDimension: [],
+	allAction: [],
+	step: 1,
+	result: [],
+	searchMap: {},
+	isEdit:false
 };
 
 function pageAdd(page, item) {
@@ -44,38 +46,67 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'OPPFLOW_LIST_GETLISTSUCCESS':
 			return $$state.merge({
 				loading: false,
-				data: action.content,
-				visible: action.content.visible,
-				selectedRows:[],
-				selectedRowKeys:[]
+				data: action.content.data,
+				searchMap: action.content.searchMap
 			})
 		case 'OPPFLOW_LIST_SHOWFORM':
 			return $$state.merge({
 				visible: action.content.visible,
-				editData: action.content.editData,
+				step: action.content.visible ? 1 : $$state.get("step")
 			})
-		case 'OPPFLOW_CARD_SAVEADD':
+		case 'OPPFLOW_LIST_SAVEADD':
 			return $$state.merge({
 				visible: false,
-				data: pageAdd($$state.get("data").toJS(), action.content),
-				selectedRows:[],
-				selectedRowKeys:[]
+				data: pageAdd($$state.get("data").toJS(), action.content)
 			})
-		case 'OPPFLOW_CARD_SAVEEDIT':
+		case 'OPPFLOW_LIST_SAVEEDIT':
 			return $$state.merge({
 				visible: false,
-				data: pageEdit($$state.get("data").toJS(), action.content),
-				selectedRows:[],
-				selectedRowKeys:[]
+				data: pageEdit($$state.get("data").toJS(), action.content)
 			})
 		case 'OPPFLOW_LIST_GETENUMDATA':
-			return $$state.merge({ enumData: action.content.enumData })
+			return $$state.merge({ enumData: action.content.enumData,biztype:action.content.biztype })
 
-		case 'OPPFLOW_LIST_SETDATA':
+		case 'OPPFLOW_LIST_GETALLOPPSTAGE':
 			return $$state.merge({
-				selectedRows: action.content.selectedRows,
-				selectedRowKeys: action.content.selectedRowKeys
+				allStage: action.content.voList,
 			})
+		case 'OPPFLOW_LIST_GETALLOPPDIMENSION':
+			return $$state.merge({
+				allDimension: action.content.voList,
+			})
+		case 'OPPFLOW_LIST_GETACTIONSUCCESS':
+			return $$state.merge({
+				allAction: action.content.action,
+				step: 2
+			})
+		case 'OPPFLOW_LIST_SAVEEDITDATA':
+			return $$state.merge({
+				editData: action.content
+			})
+		case 'OPPFLOW_LIST_CHANGESTEP':
+			return $$state.merge({
+				step: action.content
+			})
+		case 'OPPFLOW_LIST_SAVERESULT':
+			return $$state.merge({
+				result: action.content
+			})
+		case 'OPPFLOW_LIST_SAVELISTDATA':
+			return $$state.merge({
+				data: action.content,
+			})
+		case 'OPPFLOW_LIST_GETEDITDATA':
+			return $$state.merge({
+				editData: action.content.flowData,
+				result: action.content.stageData,
+			})
+		case 'OPPFLOW_LIST_SETISEDIT':
+			return $$state.merge({
+				isEdit: action.content
+			})
+			
+
 		default:
 			return $$state;
 	}

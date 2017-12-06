@@ -25,10 +25,6 @@ const getListData = (pagination) => {
 	}
 }
 
-function transData (data) {
-	data.dimension = data.dimension.key;
-	return data;
-}
 
 const onSave4Add = (data, index) => {
 	return (dispatch) => {
@@ -37,10 +33,10 @@ const onSave4Add = (data, index) => {
 			url: url.oppdimension,
 			method: "POST",
 			data: {
-				param: transData(data)
+				param: data
 			}
 		}, result => {
-			dispatch(fetchData('oppdimension_CARD_SAVEADD', { ...result, visible: false }));
+			dispatch(fetchData('OPPDIMENSION_LIST_SAVEADD', { ...result, visible: false }));
 		})
 	}
 }
@@ -52,10 +48,10 @@ const onSave4Edit = (data, index) => {
 			url: `${url.oppdimension}/${data.id}`,
 			method: "PUT",
 			data: {
-				param: transData(data)
+				param: data
 			}
 		}, result => {
-			dispatch(fetchData('oppdimension_CARD_SAVEEDIT', { ...result, visible: false }));
+			dispatch(fetchData('OPPDIMENSION_LIST_SAVEEDIT', { ...result, visible: false }));
 		})
 	}
 }
