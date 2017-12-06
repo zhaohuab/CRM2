@@ -61,13 +61,13 @@ class Card extends React.Component {
                     rules: [{ required: true, message: '请选择业务类型!' }],
                     })(
                         <Select style = {{ width: 120 }} placeholder = '请选择...'>
-                        {biztypeList.map(item =>(
-                          <Option value = { Number(item.key) }>{item.title}</Option>
-                        ))}
+                        { biztypeList.map(item =>(
+                          <Option value = { item.key }>{ item.title }</Option>
+                        )) }
                         </Select>
                       )}
             </FormItem>
-              <FormItem
+            <FormItem
                 label = "启用状态"
                 { ...formItemLayout }
             >

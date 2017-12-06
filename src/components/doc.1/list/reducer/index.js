@@ -5,14 +5,10 @@ let $$initialState = {
 	editData: {},//单条主子数据
 	data: [],//所有数据
 	visible: false,
-	detailVisible:false,//档案详情显隐控制
 	isDefault: 2,
 	storage: [],//修改过要提交的数据
 	dataSource: [],//档案明细数据
-	detailContent:{},//
-	detailSource:[],//
-	searchKey:null,//搜索时input中的值
-	enableState:1,//搜索时停启用状态
+	lang: 'zh'
 };
 
 function pageAdd(page, item) {
@@ -34,6 +30,10 @@ function pageEdit(page, item) {
 }
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {		
+		case 'DOC_LANG_CHANGE':
+			return $$state.merge({
+				lang : action.content.lang,
+			})
 	  case 'DOC_LIST_GETLIST':
 	    return $$state.merge({
         loading: true
@@ -50,11 +50,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				editData: action.content.editData,
 				storage: action.content.storage,
 			})
-		case 'DOC_DETAIL_SHOWFORM':
-			return $$state.merge({
-				detailVisible: action.content.detailVisible,
-			})
-			
 		case 'DOC_LIST_SHOWFORM_ADD':
 			return $$state.merge({
 				visible: action.content.visible,
@@ -106,13 +101,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'DOC_DETAIL_ADD':
 		  return $$state.merge({
 		  	dataSource: action.content.dataSource
-			})
-		case 'DOC_DETAIL_CONTENT':
-		  return $$state.merge({
-				detailContent: action.content.detailContent,
-				detailVisible: action.content.detailVisible,
-				detailSource: action.content.detailSource
-			})						
+		  })						
 	  default: 
 	    return $$state;
 	}

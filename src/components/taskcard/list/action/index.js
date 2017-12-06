@@ -21,12 +21,7 @@ const getListData = (params) => { //获取列表
 		})
 	}
 }
-const transData = (data) => {
-	let { mtObjName, mtBiztypeName } = data;
-	data.mtObjId = data.mtObjName;
-	data.mtBiztypeId = data.mtBiztypeName;
-	return data;
-}
+
 const onSave4Add = (data) => { //增加
 	return (dispatch) => {
 		reqwest({

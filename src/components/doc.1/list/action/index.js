@@ -2,17 +2,15 @@ import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { doc as url } from 'api';
 
-const showForm = (detail,flag,editData={}) =>{
-	if(detail=='detail'){//档案详情查看
-		return (dispatch)=>{
-			dispatch(fetchData('DOC_DETAIL_SHOWFORM', { detailVisible: flag }))
-		}
-	}else{
-		return (dispatch)=>{
-		  dispatch(fetchData('DOC_LIST_SHOWFORM', { visible: flag, editData, storage:[] }))
-	    }
+const langChange = (lan='zh') =>{
+    return (dispatch)=>{
+		dispatch(fetchData('DOC_LANG_CHANGE', { lang:lan }))
 	}
-	
+}
+const showForm = (flag,editData={}) =>{
+	return (dispatch)=>{
+		dispatch(fetchData('DOC_LIST_SHOWFORM', { visible: flag, editData, storage:[] }))
+	}
 }
 const showFormAdd = (flag, editData = {}) => {	
 		return (dispatch) => {
@@ -35,6 +33,7 @@ const showFormEdit = (flag, editData = {}) => {
 				//param:editData
 			}
 		}, result => {
+			console.log('=========',result.baseDocDetailList)
 			if(result.baseDocDetailList.length==0){
 				let obj = {};
 				obj.name='';
@@ -88,6 +87,7 @@ const onSave4Add = (data, index) => {
 }
 
 const onSave4Edit = (data, index) => {
+	console.log('data==========',data)
 	return (dispatch) => {
 		reqwest({
 			url: `${url.doc}/${data.id}`,
@@ -137,20 +137,10 @@ const onEnable = (rowKeys, enable, params) => {
 		})
 	}
 }
-const inputChange = (value) => {//搜索按钮input框中的值写入redux
-	return (dispatch) => {
-		dispatch(fetchData('TASKCARD_INPUT_CHANGE', { searchKey: value }));
-	}
-}
 
-const selectChange = (value) => {//搜索按钮select框中的值写入redux
-	return (dispatch) => {
-		dispatch(fetchData('TASKCARD_SELECT_CHANGE', { enableState: value }));
-	}
-}
 //=============以下是弹框中的方法
 //表单中的方法
-const valueChange=(data)=>{//表单中的值变化时调用。
+const valueChange=(data)=>{
 	return (dispatch)=>{
 		dispatch(fetchData('DOC_FORM_CHANGE',{editData:data}))
 	}
@@ -158,7 +148,8 @@ const valueChange=(data)=>{//表单中的值变化时调用。
 
 
 //table中的方法
-const onBlur=(data)=>{//失去焦点触发
+const onBlur=(data)=>{
+
   return (dispatch)=>{
 	  dispatch(fetchData('DOC_INPUT_CHANGE',{dataSource:data}))
   }
@@ -176,7 +167,7 @@ const storage = (data) => {//储存改动过的数据
 	}
 }
 
-const detailDelete = (data) =>{//删除档案明细
+const detailDelete = (data) =>{
 	return dispatch => {
 		if(data.length==0){
 			let obj = {};
@@ -189,35 +180,19 @@ const detailDelete = (data) =>{//删除档案明细
 		dispatch(fetchData('DOC_DETAIL_DELETE',{dataSource:data}))
 	}
 }
-const detailAdd = (data) => {//添加档案明细
+ const detailAdd = (data) => {
 	return dispatch => {
 		dispatch(fetchData('DOC_DETAIL_ADD',{dataSource:data}))
 	}
  }
-
-const onDetail = (data,detailVisible) => {//档案详情	
-	return (dispatch) => {
-		reqwest({
-			url: `${url.doc}/${data.id}`,
-			method: "PUT",
-			data: {
-				param:data
-			}
-		}, result => {
-			dispatch(fetchData('DOC_DETAIL_CONTENT',{detailContent:data, detailVisible:detailVisible,detailSource:result.baseDocDetailList }))	
-		})
-	}
-}
-
 export {
+	langChange,
 	getListData,
 	onDelete,
 	showForm,
 	onSave4Add,
 	onSave4Edit,
 	onEnable,
-	inputChange,
-	selectChange,
 	showFormAdd,
 	showFormEdit,
 	onBlur,
@@ -226,5 +201,4 @@ export {
 	detailDelete,
 	detailAdd,
 	valueChange,
-	onDetail,
 }
