@@ -13,6 +13,7 @@ const fetchData = (type, payload) => {
 
 //获取所有数据
 export function getlist(params) {
+    debugger
     if (typeof params == 'undefined') {
         params = {
             searchMap:{}
@@ -31,6 +32,7 @@ export function getlist(params) {
                 }
             }          
         },(data) => {
+            debugger
             dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: data }));
         })
     }

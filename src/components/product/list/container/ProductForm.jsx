@@ -61,22 +61,6 @@ class ProductCard extends React.Component {
     componentDidMount() {        
        
     }
-    
-    getMeasurementUnit() {
-
-        let {pagination, visible, title} = this.state;
-        //const unitRefList = this.props.$$state.get("unitRefList").toJS();
-        let state = {
-            visible: true,
-            title: "计量单位",
-            data: unitRefList
-        } 
-        this.setState(state);
-    }
-
-    onCheckChange = (e) => {
-
-    }   
 
     handleSuVisibleChange = (flag) => {
         this.setState({ suVisible: flag });
@@ -126,12 +110,6 @@ class ProductCard extends React.Component {
             </div>
         );
 
-        {
-            getFieldDecorator('id', {
-            })(
-                <Input />
-                )
-        }
         return (
             <div>                          
         <Form >

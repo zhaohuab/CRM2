@@ -21,6 +21,13 @@ function getFormData(target, source){
 	return target;
 }
 
+function listAdd(page,item) {	
+	page.total+=1;
+	page.data.unshift(item.data)
+	page.page = Math.ceil(page.total / page.pageSize);
+	return page;
+}
+
 export default function prdAttrReducers($$state = Immutable.fromJS($$initialState), action){
 
 	switch (action.type) {
@@ -68,10 +75,9 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 			return $$state.merge({formVisitable:false})
 		   
 		case 'PRDTYPE_LIST_LISTADDSUCCESS':
-		  let  $$list=Immutable.fromJS(action.payload.data);
 			return $$state.merge({
-				listData:$$state.get('listData').unshift($$list),
-				formVisitable:false
+				formVisitable:false,
+				page:listAdd($$state.get('page').toJS(),action.payload)
 		});
 		  
 		case 'PRDTYPE_LIST_LISTDELSUCCESS':	
