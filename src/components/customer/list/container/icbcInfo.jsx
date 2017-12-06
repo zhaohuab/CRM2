@@ -13,10 +13,9 @@ import {
     Tree,
     message
 } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+
 import "assets/stylesheet/all/iconfont.css";
-import * as Actions from "../action";
+
 import debounce from "lodash.debounce";
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
@@ -41,7 +40,7 @@ export default class IcbcInfo extends React.Component {
                 data: {
                     param: {
                         name: this.props.viewData.name,
-                        size: 10
+                        size: 30
                     }
                 }
             },
@@ -76,19 +75,19 @@ export default class IcbcInfo extends React.Component {
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
-                if (verifyId) {
-                    let visiable = true;
-                    //getIcbcDetal(verifyId, visiable)
-                } else {
-                    this.getIcbcList(icbcName, result => {
-                        if (result.data && result.data.length) {
-                            this.setState({
-                                visible: flag,
-                                icbcList: result.data
-                            });
-                        }
-                    });
-                }
+                // if (verifyId) {//获取认证特有属性不是verifyId
+                //     let visiable = true;
+                //     //getIcbcDetal(verifyId, visiable)
+                // } else {
+                this.getIcbcList(icbcName, result => {
+                    if (result.data && result.data.length) {
+                        this.setState({
+                            visible: flag,
+                            icbcList: result.data
+                        });
+                    }
+                });
+                //}
             } else {
                 //没输入客户名称，搜索没有查询条件，列表没有数据
                 this.setState({
@@ -143,7 +142,7 @@ export default class IcbcInfo extends React.Component {
         console.log(this.props.viewData.name);
         return (
             <div
-                className="industry-main"
+                className="reference-main"
                 style={{
                     width: this.props.width ? this.props.width + "px" : "300px"
                 }}
@@ -151,7 +150,7 @@ export default class IcbcInfo extends React.Component {
                 <Row
                     type="flex"
                     justify="space-between"
-                    className="industry-main-header"
+                    className="reference-main-header"
                 >
                     <div className="title">工商核实</div>
                     <div>
@@ -167,7 +166,7 @@ export default class IcbcInfo extends React.Component {
                         />
                     </div>
                 </Row>
-                <Row className="industry-main-choice" type="flex">
+                <Row className="reference-main-choice" type="flex">
                     <div className="inner">
                         {this.state.icbcList && this.state.icbcList.length ? (
                             this.state.icbcList.map((item, n) => {
@@ -197,7 +196,7 @@ export default class IcbcInfo extends React.Component {
                     type="flex"
                     justify="end"
                     align="middle"
-                    className="industry-main-footer"
+                    className="reference-main-footer"
                 >
                     <Row type="flex" justify="end" align="middle" gutter={15}>
                         <div>

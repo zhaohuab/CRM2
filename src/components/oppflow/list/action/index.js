@@ -1,114 +1,205 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { oppflow as url } from 'api';
+import { oppflow as url, oppstage, oppdimension, oppaction } from 'api';
 
 const showForm = (flag, editData = {}, index) => {
-	return (dispatch) => {
-		dispatch(fetchData('OPPFLOW_LIST_SHOWFORM', { visible: flag, editData }));
+	if (flag) {
+		return (dispatch) => {
+			reqwest({
+				url: oppstage.all,
+				method: "GET",
+
+			}, result => {
+				dispatch(fetchData('OPPFLOW_LIST_GETALLOPPSTAGE', { ...result }));
+				reqwest({
+					url: oppdimension.all,
+					method: "GET",
+				}, result => {
+					dispatch(fetchData('OPPFLOW_LIST_GETALLOPPDIMENSION', { ...result }));
+					dispatch(fetchData('OPPFLOW_LIST_SHOWFORM', { visible: flag }));
+				})
+			})
+		}
+	} else {
+		return (dispatch) => {
+			dispatch(fetchData('OPPFLOW_LIST_SHOWFORM', { visible: flag }));
+		}
 	}
 }
 
-const getListData = (pagination) => {
+const getEditData = (id) => {
+
+	return (dispatch) => {
+		reqwest({
+			url: url.oppflow + "/" + id,
+			method: "GET",
+			data: {
+				param: {
+					id
+				}
+			},
+		}, result => {
+			dispatch(fetchData('OPPFLOW_LIST_GETEDITDATA', { ...result }));
+		})
+	}
+}
+
+
+const getOppaction = (dimension) => {
+	console.log(dimension)
+	return (dispatch) => {
+		reqwest({
+			url: oppaction.oppaction + '/dimension',
+			method: "GET",
+			data: {
+				param: {
+					dimension: dimension
+				}
+			},
+		}, result => {
+			debugger
+			dispatch(fetchData('OPPFLOW_LIST_GETACTIONSUCCESS', { ...result }));
+		})
+	}
+}
+
+const getListData = (searchMap) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.oppflow,
 			method: "GET",
 			data: {
 				param: {
-					...pagination,
+					searchMap,
 				}
 			},
-		},result => {
-			dispatch(fetchData('OPPFLOW_LIST_GETLISTSUCCESS', { ...result }));
+		}, result => {
+			dispatch(fetchData('OPPFLOW_LIST_GETLISTSUCCESS', { data: result, searchMap }));
 		})
 	}
 }
 
-function transData (data) {
+
+
+function transData(data) {
 	data.flowState = data.flowState.key;
+	data.biztype = data.biztype.key;
 	return data;
 }
 
-const onSave4Add = (data, index) => {
+const onSave4Add = (flowData, stageData) => {
 	return (dispatch) => {
 
 		reqwest({
 			url: url.oppflow,
 			method: "POST",
 			data: {
-				param: transData(data)
+				param: {
+					flowData:transData(flowData),
+					stageData
+				}
 			}
 		}, result => {
-			dispatch(fetchData('OPPACTION_CARD_SAVEADD', { ...result, visible: false }));
+			dispatch(fetchData('OPPFLOW_LIST_SAVEADD', { ...result }));
 		})
 	}
 }
 
-const onSave4Edit = (data, index) => {
+const onSave4Edit = (flowData, stageData) => {
 	return (dispatch) => {
 
 		reqwest({
-			url: `${url.oppflow}/${data.id}`,
+			url: `${url.oppflow}/${flowData.id}`,
 			method: "PUT",
 			data: {
-				param: transData(data)
+				param: {
+					flowData,
+					stageData
+				}
 			}
 		}, result => {
-			dispatch(fetchData('OPPACTION_CARD_SAVEEDIT', { ...result, visible: false }));
+			dispatch(fetchData('OPPFLOW_LIST_SAVEEDIT', { ...result }));
 		})
 	}
 }
 
-const onDelete = (rowKeys) => {
+const onDelete = (id, listData) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.oppflow+"/batch",
+			url: url.oppflow + "/batch",
 			method: "DELETE",
 			data: {
 				param: {
-					id:id
+					id: id
 				},
 			}
 		}, result => {
-			dispatch(fetchData('OPPFLOW_LIST_GETLISTSUCCESS', { ...result }));
+			dispatch(fetchData('OPPFLOW_LIST_SAVELISTDATA', { data: listData }));
 		})
 	}
 }
 
-const onEnable = (rowKeys, enable, pagination) => {
+const onEnable = (id, enable, listData) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.oppflow+"/state",
+			url: url.oppflow + "/state",
 			method: "PUT",
 			data: {
 				param: {
-					ids: rowKeys.join(","),
+					ids: id,
 					enableState: enable,
-					...pagination,
 				},
 			}
 		}, result => {
-			dispatch(fetchData('OPPFLOW_LIST_GETLISTSUCCESS', { ...result }));
+			dispatch(fetchData('OPPFLOW_LIST_SAVELISTDATA', { data: listData }));
 		})
 	}
 }
 
-const getEnumData = () =>{
-    return (dispatch)=>{
-        reqwest({
-            url:url.doc,
-            method:"get",
-        },(data)=>{
-            dispatch(fetchData('OPPFLOW_LIST_GETENUMDATA', {enumData:data.enumData}));
-        })
-    }
+const getEnumData = () => {
+	return (dispatch) => {
+		reqwest({
+			url: url.doc,
+			method: "get",
+		}, (data) => {
+			
+			
+			reqwest({
+				url: url.oppflow+"/biztype",
+				method: "get",
+			}, (bizData) => {
+				
+				dispatch(fetchData('OPPFLOW_LIST_GETENUMDATA', { enumData: data.enumData ,biztype:bizData.biztypeList}));
+			})
+		})
+	}
 }
 
-const selectData = (params ) => {
-    return (dispatch)=>{
-        dispatch(fetchData('OPPFLOW_LIST_SETDATA',params ))
-    }
+const saveEditData = (params) => {
+	return (dispatch) => {
+		dispatch(fetchData('OPPFLOW_LIST_SAVEEDITDATA', params))
+	}
 }
+
+
+const changeStep = (index) => {
+	return (dispatch) => {
+		dispatch(fetchData('OPPFLOW_LIST_CHANGESTEP', index))
+	}
+}
+
+const saveResult = (result) => {
+	return (dispatch) => {
+		dispatch(fetchData('OPPFLOW_LIST_SAVERESULT', result))
+	}
+}
+const setIsEdit = (result) => {
+	return (dispatch) => {
+		dispatch(fetchData('OPPFLOW_LIST_SETISEDIT', result))
+	}
+}
+
+
 
 //输出 type 与 方法
 export {
@@ -119,5 +210,10 @@ export {
 	onSave4Edit,
 	onEnable,
 	getEnumData,
-	selectData
+	getOppaction,
+	saveEditData,
+	changeStep,
+	saveResult,
+	getEditData,
+	setIsEdit
 }

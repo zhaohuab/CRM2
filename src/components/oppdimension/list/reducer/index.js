@@ -53,14 +53,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				visible: action.content.visible,
 				editData: action.content.editData,
 			})
-		case 'OPPACTION_CARD_SAVEADD':
+		case 'OPPDIMENSION_LIST_SAVEADD':
 			return $$state.merge({
 				visible: action.content.visible,
 				data: pageAdd($$state.get("data").toJS(), action.content),
 				selectedRows:[],
 				selectedRowKeys:[]
 			})
-		case 'OPPACTION_CARD_SAVEEDIT':
+		case 'OPPDIMENSION_LIST_SAVEEDIT':
 			return $$state.merge({
 				visible: action.content.visible,
 				data: pageEdit($$state.get("data").toJS(), action.content),

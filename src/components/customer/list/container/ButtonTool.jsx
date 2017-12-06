@@ -7,7 +7,9 @@ import {
     Col,
     Input,
     Button,
-    Icon
+    Icon,
+    Dropdown,
+    Menu
 } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -79,7 +81,7 @@ class ToolForm extends React.Component {
     }
     //点击新建按钮
     btnNew() {
-        this.props.action.deletePanel(true);
+        this.props.action.addCustomer(true);
     }
     //上下表单控制显隐
     changeVisible() {
@@ -96,7 +98,6 @@ class ToolForm extends React.Component {
             this.props.$$state.get("pagination").toJS(),
             searchMap
         );
-        //console.log(searchMap);
     }
 
     //存储建议查询条件
@@ -106,7 +107,16 @@ class ToolForm extends React.Component {
 
     render() {
         let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
-
+        const moreMenu = (
+            <Menu>
+                <Menu.Item key="0">
+                    <span>导入</span>
+                </Menu.Item>
+                <Menu.Item key="1">
+                    <span>导出</span>
+                </Menu.Item>
+            </Menu>
+        );
         return (
             <Row className="header-warpper">
                 {selectedRowKeys && selectedRowKeys.length >= 1 ? (
@@ -179,22 +189,25 @@ class ToolForm extends React.Component {
                             <Col span={6}>
                                 <Row type="flex" gutter={15} justify="end">
                                     <Col>
-                                        <ButtonGroup>
-                                            <Button>
-                                                <i className="iconfont icon-daoru" />导入
-                                            </Button>
-                                            <Button>
-                                                <i className="iconfont icon-daochu" />导出
-                                            </Button>
-                                        </ButtonGroup>
-                                    </Col>
-                                    <Col>
                                         <Button
                                             type="primary"
                                             onClick={this.btnNew.bind(this)}
                                         >
                                             <i className="iconfont icon-xinjian" />新建
                                         </Button>
+                                    </Col>
+                                    <Col>
+                                        <Button>
+                                            <i className="iconfont icon-shuaxin" />刷新
+                                        </Button>
+                                    </Col>
+                                    <Col>
+                                        <Dropdown.Button
+                                            overlay={moreMenu}
+                                            trigger={["click"]}
+                                        >
+                                            更多
+                                        </Dropdown.Button>
                                     </Col>
                                 </Row>
                             </Col>

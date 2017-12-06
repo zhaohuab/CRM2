@@ -11,26 +11,33 @@ import {
     message,
     Radio,
     Row,
-    Modal
+    Modal,
+    Upload
 } from "antd";
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 //导入action方法
 import * as Actions from "../action";
 import moment from "moment";
+import reqwest from "utils/reqwest";
+import { baseDir } from "api";
+
 import Department from "components/refs/departments";
 import Enum from "utils/components/enums";
-const FormItem = Form.Item;
-const { TextArea } = Input;
+
 import * as enumDataFake from "./enumdata";
 import cityData from "./citydata";
 import Industry from "./industry";
 import CuperiorCustomer from "./superiorCustomer";
 import IcbcInfo from "./icbcInfo";
-import reqwest from "utils/reqwest";
-import { baseDir } from "api";
+import FormMap from "./formMap";
+import UploadImg from "./uploadImg";
 
+const FormItem = Form.Item;
+const { TextArea } = Input;
 const RadioGroup = Radio.Group;
+
 class EditForm extends React.Component {
     constructor(props) {
         super(props);
@@ -74,7 +81,7 @@ class EditForm extends React.Component {
     cancelIdenti() {
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
-        console.log(id);
+
         reqwest(
             {
                 url: baseDir + `cum/customers/${id}/identifications`,
@@ -98,7 +105,7 @@ class EditForm extends React.Component {
         return (
             <div>
                 <Button onClick={this.onCancel.bind(this)}>关闭</Button>
-                <Button onClick={this.cancelIdenti.bind(this)}>取消认证</Button>
+                <Button onClick={this.onCancel.bind(this)}>取消认证</Button>
             </div>
         );
     }
@@ -115,9 +122,10 @@ class EditForm extends React.Component {
             icbcVisible,
             icbcInfo,
             icbcSelect,
-            isClose
+            isClose,
+            upLoadList
         } = this.props.$$state.toJS();
-        console.log(icbcSelect);
+        console.log(viewData);
         return (
             <div>
                 <Row className="form-input-recover">
@@ -268,7 +276,7 @@ class EditForm extends React.Component {
                                                             {...formItemLayout}
                                                         >
                                                             {getFieldDecorator(
-                                                                "respoPerson"
+                                                                "ownerUserId"
                                                             )(
                                                                 <Input
                                                                     type="text"
@@ -482,12 +490,16 @@ class EditForm extends React.Component {
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "address",
-                                                            {}
+                                                            "address"
                                                         )(
-                                                            <Input
-                                                                type="text"
-                                                                placeholder="请输入"
+                                                            // <Input />
+                                                            <FormMap
+                                                                cityCode={
+                                                                    viewData.province_city_district
+                                                                }
+                                                                viewData={
+                                                                    viewData
+                                                                }
                                                             />
                                                         )}
                                                     </FormItem>
@@ -656,8 +668,7 @@ class EditForm extends React.Component {
                                                             {...formItemLayout}
                                                         >
                                                             {getFieldDecorator(
-                                                                "eaxplayerNo",
-                                                                {}
+                                                                "eaxplayerNo"
                                                             )(
                                                                 <Input
                                                                     type="text"
@@ -667,7 +678,11 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
-                                                        <Button>+照片</Button>
+                                                        {upLoadList ? (
+                                                            <UploadImg />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -704,7 +719,11 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
-                                                        <Button>+照片</Button>
+                                                        {upLoadList ? (
+                                                            <UploadImg />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -743,7 +762,11 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
-                                                        <Button>+照片</Button>
+                                                        {upLoadList ? (
+                                                            <UploadImg />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -788,26 +811,48 @@ const cardForm = Form.create({
 
         let value = {};
         for (let key in viewData) {
-            value[key] = { value: viewData[key] };
+            if (key == "address") {
+                debugger;
+                value[key] = {
+                    value: {
+                        address: viewData[key],
+                        latlng: viewData["latlng"]
+                    }
+                };
+            } else {
+                value[key] = { value: viewData[key] };
+            }
         }
+        debugger;
+        //address  把字段合成对象
         return {
             ...value
         };
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-        debugger;
         let viewData = props.$$state.toJS().viewData;
         for (let key in onChangeFild) {
             if (onChangeFild[key].value && onChangeFild[key].value.key) {
                 viewData[key] = onChangeFild[key].value.key;
             } else {
-                // if (key == "name") {
-                //     props.changeState(false);
-                // }
-                viewData[key] = onChangeFild[key].value;
+                if (key == "address") {
+                    let value = onChangeFild[key].value;
+
+                    debugger;
+                    viewData["address"] = value.address;
+                    if (typeof value.latlng == "string") {
+                        viewData["latlng"] = value.latlng;
+                    } else {
+                        viewData["latlng"] =
+                            value.latlng.lng + "," + value.latlng.lat;
+                    }
+                } else {
+                    viewData[key] = onChangeFild[key].value;
+                } //把对像拆成字段  latlng
             }
         }
+        debugger;
         props.editCardFn(viewData);
     }
 })(EditForm);

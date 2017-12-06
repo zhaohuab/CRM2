@@ -17,6 +17,7 @@ let $$initialState = {
 };
 
 function pageAdd(page, item) {
+	debugger
 	page.total += 1;
 	page.data.unshift(item)
 	page.page = Math.ceil(page.total / page.pageSize);
@@ -54,6 +55,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				editData: action.content.editData,
 			})
 		case 'OPPACTION_CARD_SAVEADD':
+	
 			return $$state.merge({
 				visible: action.content.visible,
 				data: pageAdd($$state.get("data").toJS(), action.content),

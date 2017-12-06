@@ -37,7 +37,7 @@ export default class SlidePanel extends React.Component {
             this.flag = true;
         }
         return (
-            <div>
+            <div style={{ minWidth: "1200px" }}>
                 {this.flag ? (
                     <div
                         className={
