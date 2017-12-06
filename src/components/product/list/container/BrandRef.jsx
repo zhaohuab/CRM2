@@ -98,7 +98,7 @@ handleBrandVisibleChange = (flag) => {
         onVisibleChange={this.handleBrandVisibleChange}
         visible={this.state.visible}                   
     >                        
-        <Search value = {this.state.selected || this.props.value}/>
+        <Search value = { this.props.value || this.state.selected}/>
     </Dropdown>
     );
   }

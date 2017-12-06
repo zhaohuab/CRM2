@@ -293,7 +293,7 @@ class ProductCard extends React.Component {
             </FormItem>
             </Col>
            
-            <Col span={12}>
+            {/* <Col span={12}>
             <FormItem
                 label="启用状态"
                 labelCol={{ span: 6 }}
@@ -309,7 +309,7 @@ class ProductCard extends React.Component {
                     </RadioGroup>
                     )}
             </FormItem>
-            </Col>
+            </Col> */}
             <Col span={12}>
             <FormItem
                 label="产品图片"

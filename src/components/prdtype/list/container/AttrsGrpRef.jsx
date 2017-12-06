@@ -16,7 +16,8 @@ import * as Actions from "../action"
     this.state = {
         selectedValue:"",
         selectedId:0,
-        visible:false
+        visible:false,
+        select:""
     };
   }
   columns = [ {
@@ -29,7 +30,7 @@ import * as Actions from "../action"
 onOk() {
     let {selectedValue,selectedId} = this.state; 
     this.props.onChange(selectedId);
-    this.setState({selectedValue:selectedValue});
+    this.setState({select:selectedValue});
     this.handleVisibleChange(false);
 }
 
@@ -48,9 +49,9 @@ handleVisibleChange = (flag) => {
 
   render() {
     
-      const attrgrpRefList = this.props.$$state.get("attrgrpRef").toJS();
-  const attrgrpRefData = (
-    <div  className = "industry-main"> 
+    const attrgrpRefList = this.props.$$state.get("attrgrpRef").toJS();
+    const attrgrpRefData = (
+        <div  className = "industry-main"> 
         <Row
             type="flex"
             justify="space-between"
@@ -62,12 +63,12 @@ handleVisibleChange = (flag) => {
        
                 <Table columns = {this.columns} 
                     dataSource = {attrgrpRefList} 
-                    style = {{background:"white",height:100}}
+                    
                     showHeader={false}
                     onRowClick={this.onClick}
                     pagination={false}
-                    scroll={{ y: 150 }}
-                   // rowSelection={rowSelection}
+            
+                    className="inner"
                    />
            
         </Row>
@@ -102,7 +103,7 @@ handleVisibleChange = (flag) => {
         onVisibleChange={this.handleVisibleChange}
         visible={this.state.visible}
     >                        
-        <Search value = {this.state.selectedValue}/>
+        <Search value = {this.state.select || this.props.value}/>
     </Dropdown>
     );
   }

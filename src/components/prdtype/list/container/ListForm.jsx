@@ -1,24 +1,23 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio, Select } from 'antd';
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux';
+import * as Actions from '../action/index.js'
 import moment from 'moment';
 import PrdClass from 'components/refs/prdtype'
 import AttrsGrpRef from './AttrsGrpRef'
+import FatherClassInput from './FatherClass'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const Search = Input.Search;
 
-export default class NormalLoginForm extends React.Component {
+class PrdClassForm extends React.Component {
     constructor(props) {
         super(props);
     }
  
     componentDidMount() {
-    //装箱过程
-       // let { fatherTypeId,fatherTypeName} = this.props.data; 
-       // let sel = this.props.selec;
-        //this.props.data.fatherTypeId = {key:fatherTypeId,title:fatherTypeId};   
-        this.props.form.setFieldsValue(this.props.data);
     }
 
 
@@ -35,10 +34,8 @@ export default class NormalLoginForm extends React.Component {
         };
         const { getFieldDecorator } = this.props.form;
         return (
-            <div>
-                {
-                    this.props.data ?
-                            <Form {...formItemLayout}  className="login-form home-form" >
+            <div>               
+                <Form {...formItemLayout}  className="login-form home-form" >
                                 <div>
                                     {getFieldDecorator('id', {
                                         rules: [],
@@ -74,11 +71,11 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('fatherTypeId', {
                                         rules: [],
                                     })(
-                                        <Input  disabled = {true}/>
+                                        <FatherClassInput/>
                                         )}
                                 </FormItem>
                                 <FormItem  { ...formItemLayout } label='属性组'>
-                                    { getFieldDecorator('attrGrpId', {
+                                    { getFieldDecorator('attrGroupId', {
                                         rules: [],
                                     })(
                                         <AttrsGrpRef/>
@@ -91,10 +88,71 @@ export default class NormalLoginForm extends React.Component {
                                         <Input type='text' placeholder = "" />
                                         )}
                                 </FormItem>
-                            </Form>
-                         : ''
-                }
+                            </Form>    
+                           
+                        
             </div>
         );
     }
 }
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+      $$state: state.prdtype
+    }
+  }
+  
+  //绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+      action: bindActionCreators(Actions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+    Form.create({
+        onFieldsChange(props, fields){ 
+            let fieldsChangeData = {};
+            let dataSource = props.dataSource;
+            for(let item in fields){              
+                // if(item == "attrGroupId"){
+                //     fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                // }else
+                 if(item == "fatherTypeId"){
+                    fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                }else{           
+                    fieldsChangeData = {[item]:fields[item].value};
+                }
+            }
+            Object.assign(props.dataSource, fieldsChangeData);
+            props.action.setFieldsChangeData(fieldsChangeData);
+            props.action.setFormData(props.dataSource);
+        },
+        mapPropsToFields(props){
+            let data = props.dataSource;
+            return{
+                fatherTypeId:{
+                    ...data.fatherTypeName,
+                    value:data.fatherTypeName
+                },  
+                attrGroupId:{
+                    ...data.attrGroupName,
+                    value:data.attrGroupName
+                }, 
+                code:{
+                    ...data.code,
+                    value:data.code
+                },  
+                erpCode:{
+                    ...data.erpCode,
+                    value:data.erpCode
+                }, 
+                name:{
+                    ...data.name,
+                    value:data.name
+                }, 
+            };
+        }
+    })(PrdClassForm));
+
