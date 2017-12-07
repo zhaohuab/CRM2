@@ -12,6 +12,7 @@ const ButtonGroup = Button.Group;
 const Search = Input.Search;
 import './index.less'
 import 'assets/stylesheet/all/iconfont.css'
+import DateTime from '../../../../utils/components/datetime'
 
 class List extends Component {
     constructor(){
@@ -37,11 +38,14 @@ class List extends Component {
             title: '状态',
             dataIndex: 'enableStateName'
           },
-           {
+          {
             title: '停用时间',
             dataIndex: 'disableTime',
+            render:(text,record,index) => (
+               text == null ? text :new Date(text.time).toLocaleDateString())
+                    
           },
-           {
+          {
             title: '对应ERP',
             dataIndex: 'erpCode'
           }  
@@ -87,20 +91,20 @@ class List extends Component {
 
     //启停用按钮
     btnSetEnablestate(treeSelect,searchFilter,data,state){
-        debugger
         let {pagination} = this.state;
         this.props.prdAction.setEnablestate(treeSelect,searchFilter,data,state,pagination);
     }
 
     //修改页面取消按钮 
     handleCancel(){
-        this.props.prdAction.showForm(false,{})
+        //debugger
+        let item =  this.props.prdState.get("editData").toJS();
+        this.props.prdAction.showForm(false,{});
     }
 
-   //表单页面确定方法
+    //表单页面确定方法
     formHandelOk(){
         let editData = this.props.prdState.get("editData").toJS();
-       // let formData = this.props.prdState.get("formData").toJS();
         let id = editData.id;
         let fieldsChangeData = this.props.prdState.get("fieldsChangeData").toJS();
         Object.assign(editData,fieldsChangeData);
@@ -109,14 +113,14 @@ class List extends Component {
         }else{
             this.props.prdAction.listadd(editData);                    
         }                
-    }
-        
+    }      
     
-
     //点击增加组织
     addFormBtn(){
+        this.setState({isEdit:false});
         let item =  this.props.prdState.get("editData").toJS();
         this.treeSelectAddFn(item);
+       // this.props.prdAction.showForm(true,item);
     }
 
     //显示每行数据后的返回按钮
@@ -160,11 +164,15 @@ class List extends Component {
 
     //点击一个节点树的增加操作
     treeSelectAddFn(item){
+        // debugger
         let {pagination, searchMap} = this.state;
         this.setState({isEdit:false});
         let path ="";
-        let rowData = {fatherTypeId:item.id,fatherTypeName: item.name,
+        let rowData = {};
+        if(item !== undefined && item !== null && JSON.stringify(item) !== "{}"){
+            rowData = {fatherTypeId:item.id,fatherTypeName: item.name,
             path:(item.path !== undefined && item.path !== "")?item.path+","+item.id.toString():item.id.toString() };
+            }
         this.props.prdAction.showForm(true,rowData);
         this.props.prdAction.getAttrsGrpRef(pagination);
     }
@@ -176,6 +184,7 @@ class List extends Component {
         record.push(item);
         this.props.prdAction.listdel(record,item.id,searchMap,pagination);
     }
+
     //点击查询按钮
     searchList(item){
         this.props.prdAction.getlistByClickSearch({searchKey:item});
@@ -230,15 +239,15 @@ class List extends Component {
         let searchFilter = prdState.get('searchFilter');     
         let treeData = prdState.get('treeData').toJS();
         let page = prdState.get('page').toJS();
-     //   debugger
         let tableListCheckbox = prdState.get('tableListCheckbox').toJS();
+        let selectedTreeData = prdState.get("selectedTreeData").toJS();
         let editData = prdState.get("editData").toJS();
-        if(editData == null || editData == {} || editData == ""){
-            if(page !== undefined && page !== null && JSON.stringify(page) !== "{}"){
-                let editData = page.data[0];
-                this.props.prdAction.setFormData(editData);
-            }
-        }
+        // if(selectedTreeData == null || selectedTreeData == {} || selectedTreeData == ""){
+        //     if(page !== undefined && page !== null && JSON.stringify(page) !== "{}"){
+        //         let selectedTreeData = page.data[0];
+        //         this.props.prdAction.setFormData(selectedTreeData);
+        //     }
+        // }
         return (
             <div className='list-warpper'>
                 <div className='list-main'>
@@ -281,6 +290,7 @@ class List extends Component {
                             visible={formVisitable}
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
+                            maskClosable={false}
                         >
                             <div className='model-height'>
                                 <ClassCard wrappedComponentRef={(inst) => this.formRef = inst} dataSource={editData} /> 

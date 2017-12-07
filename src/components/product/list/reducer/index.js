@@ -80,7 +80,8 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 				visible : action.content.visible,
 				data : pageEdit($$state.get("data").toJS(),action.content),
 			})
-		case 'PRODUCT_CLASS_GETREFTREE' : 
+		case 'PRODUCT_CLASS_GETREFTREE' :
+		debugger 
 			return $$state.merge({
 				classRefTree : action.content,
 			}) 
