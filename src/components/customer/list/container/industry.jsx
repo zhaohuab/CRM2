@@ -43,13 +43,20 @@ export default class Industry extends React.Component {
     //获取树的数据
     getIndustry(flag) {
         //这里需要Request请求
-
         if (!flag) {
-            this.setState({
-                visible: false,
-                selectKeys: [],
-                keyDownVisiable: false
-            });
+            debugger;
+            this.setState(
+                {
+                    visible: false,
+                    selectKeys: [],
+                    keyDownVisiable: false
+                },
+                () => {
+                    if (!this.state.select.id) {
+                        this.props.onChange({});
+                    }
+                }
+            );
         } else {
             reqwest(
                 {
@@ -211,7 +218,6 @@ export default class Industry extends React.Component {
 
     //触发键盘事件时，选择框消失，出现搜索面板
     keyDownUp(e) {
-        debugger;
         let value = e.target.value;
         if (value) {
             this.lodashSearch(value);
@@ -238,77 +244,81 @@ export default class Industry extends React.Component {
             });
 
         return (
-            <div>
-                {this.state.keyDownVisiable ? (
-                    <div className="reference-search">
-                        {this.state.industryDataSearch &&
-                        this.state.industryDataSearch.length ? (
-                            this.state.industryDataSearch.map(item => {
-                                return (
-                                    <div
-                                        className="reference-search-list"
-                                        onClick={this.searchChoice.bind(
-                                            this,
-                                            item
-                                        )}
-                                    >
-                                        {item.name}
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <div className="reference-search-list">
-                                暂无数据
-                            </div>
-                        )}
-                    </div>
-                ) : (
-                    <div className="reference-main">
-                        <Row
-                            type="flex"
-                            justify="space-between"
-                            className="reference-main-header"
-                        >
-                            <div className="title">行业</div>
-                        </Row>
-                        <Row className="reference-main-choice" type="flex">
-                            <Tree
-                                className="reference-tree"
-                                onSelect={this.treeSelect.bind(this)}
-                                selectedKeys={this.state.selectKeys}
+            <div className="reference">
+                <div>
+                    {this.state.keyDownVisiable ? (
+                        <div className="reference-search">
+                            {this.state.industryDataSearch &&
+                            this.state.industryDataSearch.length ? (
+                                this.state.industryDataSearch.map(item => {
+                                    return (
+                                        <div
+                                            className="reference-search-list"
+                                            onClick={this.searchChoice.bind(
+                                                this,
+                                                item
+                                            )}
+                                        >
+                                            {item.name}
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div className="reference-search-list">
+                                    暂无数据
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="reference-main">
+                            <Row
+                                type="flex"
+                                justify="space-between"
+                                className="reference-main-header"
                             >
-                                {loop(this.state.industryData)}
-                            </Tree>
-                        </Row>
-                        <Row
-                            type="flex"
-                            justify="end"
-                            align="middle"
-                            className="reference-main-footer"
-                        >
+                                <div className="title">行业</div>
+                            </Row>
+                            <Row className="reference-main-choice" type="flex">
+                                <Tree
+                                    className="reference-tree"
+                                    onSelect={this.treeSelect.bind(this)}
+                                    selectedKeys={this.state.selectKeys}
+                                >
+                                    {loop(this.state.industryData)}
+                                </Tree>
+                            </Row>
                             <Row
                                 type="flex"
                                 justify="end"
                                 align="middle"
-                                gutter={15}
+                                className="reference-main-footer"
                             >
-                                <div>
-                                    <Button onClick={this.onCancel.bind(this)}>
-                                        取消
-                                    </Button>
-                                </div>
-                                <div>
-                                    <Button
-                                        type="primary"
-                                        onClick={this.onOk.bind(this)}
-                                    >
-                                        确定
-                                    </Button>
-                                </div>
+                                <Row
+                                    type="flex"
+                                    justify="end"
+                                    align="middle"
+                                    gutter={15}
+                                >
+                                    <div>
+                                        <Button
+                                            onClick={this.onCancel.bind(this)}
+                                        >
+                                            取消
+                                        </Button>
+                                    </div>
+                                    <div>
+                                        <Button
+                                            type="primary"
+                                            onClick={this.onOk.bind(this)}
+                                        >
+                                            确定
+                                        </Button>
+                                    </div>
+                                </Row>
                             </Row>
-                        </Row>
-                    </div>
-                )}
+                        </div>
+                    )}
+                </div>
             </div>
         );
     }

@@ -231,7 +231,7 @@ export default class CuperiorCustomer extends React.Component {
         };
         let tableData = this.state.industryData;
         return (
-            <div>
+            <div className="reference">
                 <div
                     className="reference-main"
                     style={{ width: this.props.width + "px" }}
@@ -306,27 +306,31 @@ export default class CuperiorCustomer extends React.Component {
             ) : null;
 
         return (
-            <div className="reference-warpper">
-                <Dropdown
-                    overlay={this.choiceIndustry()} //生成下拉结构样式
-                    trigger={["click"]}
-                    onVisibleChange={this.getIndustry.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
-                    visible={this.state.visible} //受控面板显示
-                >
-                    <Input
-                        placeholder="上级客户"
-                        value={this.props.value ? this.props.value.name : ""}
-                        suffix={suffix}
-                        //onKeyUp={this.keyDownUp.bind(this)}
-                        //onChange={this.inputChange.bind(this)}
-                        addonAfter={
-                            <Icon
-                                type="search"
-                                onClick={this.getIndustry.bind(this, true)}
-                            />
-                        }
-                    />
-                </Dropdown>
+            <div>
+                <div className="reference-warpper">
+                    <Dropdown
+                        overlay={this.choiceIndustry()} //生成下拉结构样式
+                        trigger={["click"]}
+                        onVisibleChange={this.getIndustry.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
+                        visible={this.state.visible} //受控面板显示
+                    >
+                        <Input
+                            placeholder="上级客户"
+                            value={
+                                this.props.value ? this.props.value.name : ""
+                            }
+                            suffix={suffix}
+                            //onKeyUp={this.keyDownUp.bind(this)}
+                            //onChange={this.inputChange.bind(this)}
+                            addonAfter={
+                                <Icon
+                                    type="search"
+                                    onClick={this.getIndustry.bind(this, true)}
+                                />
+                            }
+                        />
+                    </Dropdown>
+                </div>
             </div>
         );
     }
