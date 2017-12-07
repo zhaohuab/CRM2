@@ -91,32 +91,6 @@ class List extends React.Component {
       this.props.action.onChangeAttrVa(changedData);
       this.props.action.onEditAttrVa(attrValue);
   }
-// onAttrVaDelete(){
-//   let flag = false;
-//   let changeData = this.props.$$state.get('changeData').toJS();
-//   let attrValue = this.props.$$state.get('attrValue').toJS();
-//   let id =this.props.$$state.get('AttrVaSelectedKeys').toJS();
-//  // let id = record.id;
-//    //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
-//   for(let i = 0; i<changeData.length; i++){
-//     if(changeData[i].id == id){
-//       changeData.splice(i,1);
-//       //this.props.action.onChangeAttrVa(changeData);
-//       flag = true;
-//       break;
-//     }
-//   }
-//   //如果不是本次新增或编辑，则将该条数据加到change数组里，并添加DELETE标签
-//   if(!flag){
-//     record.editState = 'detele'; 
-//     changeData.push(record);         
-//   }
-//   this.props.action.setSecRowKeys([]);
-//   this.props.action.onChangeAttrVa(changeData);
-//   let k = attrValue.indexOf(record);
-//   attrValue.splice(k,1);  
-//   this.props.action.onEditAttrVa(attrValue);   
-// }
 
   showDetail (record) {
     let id = record.id;  
@@ -320,6 +294,7 @@ class List extends React.Component {
           cancelText = {status == "showdetail"?"关闭":"取消"}
           okText = {status == "showdetail"?"编辑":"确认"}
           className="detail_box"
+          maskClosable={false}
         >
          {status =="showdetail"?
          <div>

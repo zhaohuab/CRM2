@@ -115,6 +115,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         onFieldsChange(props, fields){ 
             let fieldsChangeData = {};
             let dataSource = props.dataSource;
+           // debugger
             for(let item in fields){              
                 // if(item == "attrGroupId"){
                 //     fieldsChangeData = {[item]:parseInt(fields[item].value)};

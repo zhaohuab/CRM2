@@ -34,14 +34,12 @@ import * as Actions from "../action"
         //this.handleVisibleChange(false);
     }        
     }
-    onPrdClassOk() {
-    
-    let {selectedValue, selectedKeys} = this.state; 
-    this.props.onChange(selectedKeys);
-    this.setState({refData:selectedValue});
-    this.handleVisibleChange(false);
-    this.props.action.setPrdClassValue(selectedValue);
-  //  this
+    onPrdClassOk() {    
+        let {selectedValue, selectedKeys} = this.state; 
+        this.props.onChange(selectedKeys);
+        this.setState({refData:selectedValue});
+        this.handleVisibleChange(false);
+        this.props.action.setPrdClassValue(selectedValue);
     }
 
     onPrdClassCancel() {
@@ -87,12 +85,9 @@ import * as Actions from "../action"
           <Row className="reference-main-choice" type="flex">
               <Tree 
                   onClick = {this.handleTreeClick}
-                  //checkable
                   checkStrictly={true}
-                  onSelect={this.onSelect}
-                  //onCheck={this.onCheck}
-                  selectedKeys={this.state.selectedKeys}
-                  //checkedKeys={this.state.preCheckedKeys}
+                  onSelect={this.onSelect}               
+                  selectedKeys={this.state.selectedKeys}                
                   className="reference-tree"
                   >
                   {loop(classRefTree)}
