@@ -19,7 +19,6 @@ const getListData = (pagination) => {
 				}
 			},
 		},result => {
-			debugger
 			dispatch(fetchData('OPPDIMENSION_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}

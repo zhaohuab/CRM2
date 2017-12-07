@@ -13,7 +13,7 @@ import * as Actions from "../action"
 
     const value = this.props.value || {};
     this.state = {
-        selectedKeys:0,         
+        selectedKeys:[0],         
         selectedValue:"", 
         info:[],
         visible:false,
@@ -51,6 +51,7 @@ import * as Actions from "../action"
     let loop = () =>{};
     if(classRefTree!== undefined && classRefTree.length>0){
          loop = data => data.map((item) => {
+             debugger
             if (item.children && item.children.length>0) {
                 return (
                   <TreeNode  key={item.id 
@@ -70,7 +71,7 @@ import * as Actions from "../action"
          loop = data => {return <div/>};
     }
    
- 
+ debugger
   const refTree = (
       <div className = "reference">
       <div  className = "reference-main"> 

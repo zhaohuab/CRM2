@@ -8,7 +8,7 @@ const showForm = (flag, editData = {}, index) => {
 	}
 }
 
-const getListData = (params,) => {
+const getListData = (params, ) => {
 	let ur = url.oppstage;
 	return (dispatch) => {
 		reqwest({
@@ -19,13 +19,13 @@ const getListData = (params,) => {
 
 				}
 			},
-		},result => {
+		}, result => {
 			dispatch(fetchData('OPPSTAGE_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}
 }
 
-function transData (data) {
+function transData(data) {
 	data.dimension = data.dimension.key;
 	return data;
 }
@@ -53,7 +53,18 @@ const onSave4Edit = (data, index) => {
 				param: data
 			}
 		}, result => {
-			dispatch(fetchData('OPPSTAGE_CARD_SAVEEDIT', { ...result, visible: false }));
+			// dispatch(fetchData('OPPSTAGE_CARD_SAVEEDIT', { ...result, visible: false }));
+			reqwest({
+				url: url.oppstage,
+				method: "GET",
+				data: {
+					param: {
+
+					}
+				},
+			}, result => {
+				dispatch(fetchData('OPPSTAGE_LIST_GETLISTSUCCESS', { ...result }));
+			})
 		})
 	}
 }
@@ -61,12 +72,12 @@ const onSave4Edit = (data, index) => {
 const onDelete = (rowKeys, params) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.oppstage+"/batch",
+			url: url.oppstage + "/batch",
 			method: "DELETE",
 			data: {
 				param: {
 					ids: rowKeys.join(","),
-					searchMap:{}
+					searchMap: {}
 				},
 			}
 		}, result => {
@@ -78,7 +89,7 @@ const onDelete = (rowKeys, params) => {
 const onEnable = (rowKeys, enable, params) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.oppstage+"/state",
+			url: url.oppstage + "/state",
 			method: "PUT",
 			data: {
 				param: {
@@ -93,21 +104,21 @@ const onEnable = (rowKeys, enable, params) => {
 	}
 }
 
-const getEnumData = () =>{
-    return (dispatch)=>{
-        reqwest({
-            url:url.doc,
-            method:"get",
-        },(data)=>{
-            dispatch(fetchData('OPPSTAGE_LIST_GETENUMDATA', {enumData:data.enumData}));
-        })
-    }
+const getEnumData = () => {
+	return (dispatch) => {
+		reqwest({
+			url: url.doc,
+			method: "get",
+		}, (data) => {
+			dispatch(fetchData('OPPSTAGE_LIST_GETENUMDATA', { enumData: data.enumData }));
+		})
+	}
 }
 
-const selectData = (params ) => {
-    return (dispatch)=>{
-        dispatch(fetchData('OPPSTAGE_LIST_SETDATA',params ))
-    }
+const selectData = (params) => {
+	return (dispatch) => {
+		dispatch(fetchData('OPPSTAGE_LIST_SETDATA', params))
+	}
 }
 
 //输出 type 与 方法

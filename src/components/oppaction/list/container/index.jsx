@@ -62,7 +62,7 @@ class List extends React.Component {
 
   componentDidMount() {
     this.props.action.getListData(this.props.$$state.get("pagination").toJS());
-    this.props.action.getEnumData();
+    this.props.action.getDimensionData();
   }
 
   onAdd() {

@@ -97,8 +97,8 @@ class ActionCard extends React.Component {
         const showStage = data =>
             data.map(item => {
                 return (
-                    <div span={3} className={nowStage==item.key?"stage_box_selected":"stage_box"}>
-                    <div onClick={this.ChangeStage.bind(this,item.key)}>
+                    <div onClick={this.ChangeStage.bind(this,item.key)} className={nowStage==item.key?"stage_box_selected":"stage_box"}>
+                    <div >
                         {item.title}
                         </div>
                     </div>
