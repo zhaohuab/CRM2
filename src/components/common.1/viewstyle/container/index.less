@@ -1,0 +1,50 @@
+.app-view-style {
+    z-index: 1001;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    right: -300px;
+    width: 300px;
+    background: #fff;
+    transition: right .4s cubic-bezier(.215,.61,.355,1);
+    backface-visibility: hidden;
+}
+
+#app-view-style {
+    width: 410px;
+    right: -410px;
+}
+
+#app-view-style {
+    border-left: 1px solid rgba(0,0,0,.05);
+    box-shadow: 0 0 8px rgba(0,0,0,.1);
+    background-color: #fafafa;
+    &.app-view-style-open {
+        right: 0;
+    }
+}
+
+.app-view-toggle {
+    position: absolute;
+    top: 25%;
+    width: 54px;
+    height: 50px;
+    left: -48px;
+    text-align: center;
+    line-height: 50px;
+    background-color: #fafafa;
+    border-left: 1px solid rgba(0,0,0,.05);
+    box-shadow: -2px 0 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.layout-option {
+    padding: 15px 45px;
+}
+
+.layout-option-item {
+    display: flex;
+    margin-bottom: 15px;
+    justify-content: space-between;
+    line-height: 22px;
+}

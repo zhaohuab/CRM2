@@ -9,7 +9,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 	    case 'HEADER_CHANGE':
 	        return $$state.merge({
                 title: action.content.title
-			})
+            })
 	    default: 
 	        return $$state;
 	}

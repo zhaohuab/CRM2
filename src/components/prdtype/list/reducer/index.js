@@ -114,7 +114,7 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 				return $$state.merge({
 					editData:action.content
 				})  	 
-	  default: 
+	    default: 
 	      return $$state;
     }
 }

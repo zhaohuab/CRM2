@@ -55,7 +55,6 @@ const showFormEdit = (flag, editData = {}) => {
     }	
 }
 const getListData = (params) => {
-	
 	return (dispatch) => {
 		reqwest({
 			url: url.doc,

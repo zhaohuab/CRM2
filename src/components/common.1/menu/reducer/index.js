@@ -1,15 +1,15 @@
 import Immutable from 'immutable'
 
 let $$initialState = {
-	title:"首页",
+	data:[]
 };
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {
-	    case 'HEADER_CHANGE':
+	    case 'COMMON_MENU_GETDATA':
 	        return $$state.merge({
-                title: action.content.title
-			})
+                data: action.content.data
+            })
 	    default: 
 	        return $$state;
 	}

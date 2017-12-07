@@ -104,7 +104,7 @@ const cardTarget = {
           </div>} 
           style={{marginTop:'10px',minHeight:'120px'}} 
         >
-        <p>简介：{text.taskcardName}</p>
+        <p>简介：{text.remark}</p>
         </Card>}
       </div>,
     ));
