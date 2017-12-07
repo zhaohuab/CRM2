@@ -29,7 +29,6 @@ class LessForm extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                debugger
                 this.props.action.getListData(this.props.$$state.get("pagination").toJS(), values);
             }
         });
@@ -56,7 +55,7 @@ class LessForm extends React.Component {
                         <Col span={8}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("searchKey", {})(
-                                    <Input type="text" placeholder="客户名称" />
+                                    <Input type="text" placeholder="商机名称" />
                                 )}
                             </FormItem>
                         </Col>
@@ -64,7 +63,7 @@ class LessForm extends React.Component {
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("type22", {})(
                                     <Enum
-                                        addOptionAll={"客户类型"}
+                                        addOptionAll={"商机阶段"}
                                         dataSource={enumDataFake.levelEnum}
                                     />
                                 )}

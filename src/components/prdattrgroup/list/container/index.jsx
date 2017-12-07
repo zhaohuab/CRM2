@@ -266,6 +266,7 @@ class List extends React.Component {
           width={600}
           okText = {status == "showdetail"?"编辑":"确认"}
           onOk={status == "showdetail"?this.onDetailEdit.bind(this):this.onSave.bind(this)} 
+          maskClosable={false}
         >{status == "showdetail"?<div>
             <div>
               <Form>

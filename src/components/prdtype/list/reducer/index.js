@@ -9,11 +9,12 @@ let $$initialState = {
 	treeLoading:false,
 	tableListCheckbox:[],
 	treeSelect:undefined,
-	editData:[],
+	editData:{},
 	searchFilter:undefined,
 	attrgrpRef:[],
 	selectedKeys:[],
 	fieldsChangeData:{},
+	selectedTreeData:[],
 };
 
 function getFormData(target, source){
@@ -35,7 +36,6 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 			return $$state.merge({tabelLoading:true})
 			
 		case 'PRDTYPE_LIST_GETLISTSUCCESS':
-		debugger
 			return  $$state.merge({
 				listData:action.payload.data,
 				tabelLoading:false,
@@ -108,13 +108,14 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 				})	
 		case 'PRDCLASS_FORM_FIELDSCHANGE' : 
 				return $$state.merge({
-					fieldsChangeData:getFormData($$state.get('fieldsChangeData').toJS(),action.content),
+				//	fieldsChangeData:getFormData($$state.get('fieldsChangeData').toJS(),action.content),
+				editData:getFormData($$state.get('editData').toJS(),action.content),
 				})  
 		case 'PRDCLASS_FORM_SETFORM' : 
 				return $$state.merge({
 					editData:action.content
 				})  	 
-	  default: 
+	    default: 
 	      return $$state;
     }
 }

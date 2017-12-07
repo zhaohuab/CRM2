@@ -3,7 +3,7 @@ import reqwest from 'reqwest';
 import {baseDir} from 'api'
 import { browserHistory } from 'react-router'
 
- export function loginOut(){
+export function loginOut(){
    return (dispatch)=>{
         reqwest({
             url: `${baseDir}logout`,
@@ -13,4 +13,3 @@ import { browserHistory } from 'react-router'
         })
    }
 }
-

@@ -398,7 +398,7 @@ class List extends React.Component{
                      </div>
                     </div>                             
                     }                                    
-                    </Row>   
+                </Row>   
               
                 <div className = 'list-box'>
                     <Table  size="middle" rowSelection={rowSelection} dataSource={page.data} rowKey="id" columns = {this.columns}
@@ -408,10 +408,11 @@ class List extends React.Component{
                     cancelText = {status == "showdetail"?"关闭":"取消"}
                     okText = {status == "showdetail"?"编辑":"确认"}
                     onOk={status == "showdetail"?this.onEdit.bind(this):this.onSave.bind(this)} 
-                    onCancel={this.onClose.bind(this)} width={850}>
+                    onCancel={this.onClose.bind(this)} width={850}
+                    maskClosable={false}>
                 {status !== "showdetail"?
                    <div>
-                    <div className='model-height'>
+                    <div >
                         <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
                     </div>
                     <div >
@@ -422,8 +423,10 @@ class List extends React.Component{
                             <Col span={2}>
                                 <Button onClick = {this.onSuDelete.bind(this)}>删除</Button>
                             </Col>
-                        </Row>
-                        <SaleUnitTable/>
+                        </Row >
+                        <div style ={{margin:15}}>
+                            <SaleUnitTable />
+                        </div>
                     </div>
                 </div>:<div>
                     <div className='model-height'>
