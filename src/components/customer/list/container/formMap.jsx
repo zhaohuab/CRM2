@@ -25,16 +25,15 @@ export default class FormMap extends React.Component {
 
     //点击坐标icon时触发的方法
     onSearch() {
-        debugger;
         if (!this.state.inputValue) {
             message.error("请输入地址", 3);
             return;
         }
 
         this.placeSearch.search(this.state.inputValue, (status, result) => {
-            debugger;
             if (status === "complete" && result.info === "OK") {
                 debugger;
+                //this.map.setCenter(result.geocodes[0].location);
                 this.setState({
                     markList: result.poiList.pois,
                     clickMarker: undefined,
@@ -56,7 +55,6 @@ export default class FormMap extends React.Component {
     geocoder_CallBack(data, clickMarker) {
         var address = data.regeocode.formattedAddress; //返回地址描述
         this.state.clickMarker;
-        debugger;
         this.setState({
             clickMarker,
             result: address,
@@ -66,13 +64,12 @@ export default class FormMap extends React.Component {
 
     //通过搜索方法生成坐标点
     poiToMarker(poiList) {
-        if (!poiList) {
+        if (!poiList.length) {
             return;
         }
 
         let events = {
             click: event => {
-                debugger;
                 let clickMarker = event.target.getPosition();
 
                 this.Geocoder.getAddress(clickMarker, (status, result) => {
@@ -93,15 +90,16 @@ export default class FormMap extends React.Component {
         });
     }
 
-    //点击图标，根据图标显示坐标点
+    //点击图标icon，根据图标显示坐标点
     showMap() {
-        debugger;
         this.setState(
             {
                 modalVisible: true
             },
             () => {
-                this.map.clearInfoWindow();
+                //this.props.cityCode;
+                //debugger;
+                //this.map.clearInfoWindow();
             }
         );
     }
@@ -132,7 +130,6 @@ export default class FormMap extends React.Component {
     handleOk() {
         let latlng = this.state.clickMarker;
         let address = this.state.result;
-        debugger;
         if (!latlng && !address) {
             if (this.props.value.address && this.props.value.latlng) {
                 latlng = this.props.value.latlng;
@@ -155,11 +152,9 @@ export default class FormMap extends React.Component {
 
     //生成已有坐标点
     histotyLngLat(value) {
-        debugger;
         let lngLat = value.latlng.split(",");
         let events = {
             click: event => {
-                debugger;
                 let clickMarker = event.target.getPosition();
 
                 this.Geocoder.getAddress(clickMarker, (status, result) => {
@@ -182,15 +177,17 @@ export default class FormMap extends React.Component {
         let mapEvents = {
             created: ins => {
                 this.map = ins;
-                debugger;
                 let that = this;
+                // this.map.setCity(
+                //     that.props.cityCode ? that.props.cityCode[0] : "天津"
+                // );
                 AMap.service("AMap.PlaceSearch", function() {
                     that.placeSearch = new AMap.PlaceSearch({
                         pageSize: 5,
                         pageIndex: 1,
                         city: that.props.cityCode
                             ? that.props.cityCode[0]
-                            : "010"
+                            : "021"
                     });
                 });
 

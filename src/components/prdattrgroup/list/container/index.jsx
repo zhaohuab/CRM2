@@ -11,6 +11,7 @@ import './index.less'
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 const Search = Input.Search;
+const FormItem = Form.Item;
 import 'assets/stylesheet/all/iconfont.css'
 
 //导入action方法
@@ -195,6 +196,7 @@ class List extends React.Component {
       onChange: this.onSelectChange,
     };
     let formData = this.props.$$state.get("formData").toJS();
+   // debugger
     let title = "";
     let table = undefined;
     if(status =="edit"){
@@ -206,6 +208,16 @@ class List extends React.Component {
       title = "详情";
      // table = <AttrVaDeTable/>;
     }
+    const formItemLayout = {
+      labelCol: {
+          xs: { span: 24 },
+          sm: { span: 6 },
+      },
+      wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 14 },
+      },
+   };
     return (
       <div className='user-warpper'>
         {
@@ -255,8 +267,19 @@ class List extends React.Component {
           okText = {status == "showdetail"?"编辑":"确认"}
           onOk={status == "showdetail"?this.onDetailEdit.bind(this):this.onSave.bind(this)} 
         >{status == "showdetail"?<div>
-            <span>属性组名称：{attrGrpName}</span>
-            <AttrGrpDeTable/>
+            <div>
+              <Form>
+                <FormItem   label="属性组名称"
+                  {...formItemLayout}>
+                  
+                    <span>{attrGrpName}</span>
+                  
+                </FormItem>
+              </Form>
+            </div>
+            <div>
+              <AttrGrpDeTable/>
+            </div>
           </div>:
         <div>
         <div className='model-height'>

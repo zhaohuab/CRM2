@@ -43,6 +43,7 @@ body {
     box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
+    background: #f2f2f3
 }
 
 .app-talk {
@@ -134,49 +135,51 @@ body {
 
 /*参照样式*/
 
-.reference-main {
-    width: 300px;
-    border-radius: 5px;
-    background: white;
-    box-shadow: 0 0 15px rgb(136, 136, 136);
-    .reference-main-header {
-        height: 54px;
-        padding: 12px;
-        box-sizing: border-box;
-        background: #fafafa;
-        border-bottom: 1px solid #f0f0f0;
-        .title {
-            line-height: 34px;
-            font-size: 16px;
-            color: #666666;
-        }
-    }
-    .reference-main-footer {
-        padding: 12px;
-        box-sizing: border-box;
-        height: 60px;
-        border-top: 1px solid #f0f0f0;
-        width: 100%;
+.reference {
+    .reference-main {
+        width: 300px;
+        border-radius: 5px;
         background: white;
-        margin-left: 0;
-    }
-    .reference-main-choice {
-        padding: 10px;
-        box-sizing: border-box;
-        .reference-tree {
-            border: 1px solid #eeeeee;
-            border-radius: 5px;
+        box-shadow: 0 0 15px rgb(136, 136, 136);
+        .reference-main-header {
+            height: 54px;
+            padding: 12px;
+            box-sizing: border-box;
+            background: #fafafa;
+            border-bottom: 1px solid #f0f0f0;
+            .title {
+                line-height: 34px;
+                font-size: 16px;
+                color: #666666;
+            }
+        }
+        .reference-main-footer {
+            padding: 12px;
+            box-sizing: border-box;
+            height: 60px;
+            border-top: 1px solid #f0f0f0;
+            width: 100%;
+            background: white;
+            margin-left: 0;
+        }
+        .reference-main-choice {
             padding: 10px;
             box-sizing: border-box;
-            width: 100%;
-            height: 280px;
-            overflow: auto;
-        }
-        .inner {
-            width: 100%;
-            border: 1px solid #eeeeee;
-            height: 280px;
-            overflow: auto;
+            .reference-tree {
+                border: 1px solid #eeeeee;
+                border-radius: 5px;
+                padding: 10px;
+                box-sizing: border-box;
+                width: 100%;
+                height: 280px;
+                overflow: auto;
+            }
+            .inner {
+                width: 100%;
+                border: 1px solid #eeeeee;
+                height: 280px;
+                overflow: auto;
+            }
         }
     }
     .reference-search {

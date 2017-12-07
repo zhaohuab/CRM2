@@ -57,7 +57,6 @@ const getOppaction = (dimension) => {
 				}
 			},
 		}, result => {
-			debugger
 			dispatch(fetchData('OPPFLOW_LIST_GETACTIONSUCCESS', { ...result }));
 		})
 	}
@@ -162,7 +161,6 @@ const getEnumData = () => {
 			url: url.doc,
 			method: "get",
 		}, (data) => {
-			
 			
 			reqwest({
 				url: url.oppflow+"/biztype",

@@ -87,6 +87,7 @@ class List extends Component {
 
     //启停用按钮
     btnSetEnablestate(treeSelect,searchFilter,data,state){
+        debugger
         let {pagination} = this.state;
         this.props.prdAction.setEnablestate(treeSelect,searchFilter,data,state,pagination);
     }
@@ -229,7 +230,7 @@ class List extends Component {
         let searchFilter = prdState.get('searchFilter');     
         let treeData = prdState.get('treeData').toJS();
         let page = prdState.get('page').toJS();
-        debugger
+     //   debugger
         let tableListCheckbox = prdState.get('tableListCheckbox').toJS();
         let editData = prdState.get("editData").toJS();
         if(editData == null || editData == {} || editData == ""){

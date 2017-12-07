@@ -94,6 +94,10 @@ class List extends React.Component {
           const dimensions = stage.children
           for (let i = 0; i < dimensions.length; i++) {
             const actions = values['oppdimension' + dimensions[i].key];
+            if(actions.length==0){
+              message.error("'"+stage.title+"'阶段下的'"+dimensions[i].title+"'维度没有选择动作！");
+              return null;
+            }
             dimensions[i].children = actions
           }
           break;

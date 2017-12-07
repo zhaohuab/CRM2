@@ -188,7 +188,7 @@ export default function orgReducers(
             );
         case "CUSTOMER_LIST_HIDEVIEWFORM":
             return $$state.merge({
-                viewState: action.payload.visible,
+                viewState: action.payload.visiable,
                 icbcInfo1: []
             });
         case "CUSTOMER_LIST_CLEANVERIFYID":
