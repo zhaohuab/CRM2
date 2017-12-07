@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row } from "antd";
+import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row, Modal } from "antd";
 import cookie from "utils/cookie";
 import { bindActionCreators } from "redux";
+import PhoneBooks from 'components/refs/phonebooks/index.jsx'
 import * as Actions from "../action/index.js";
 
 const Search = Input.Search;
@@ -39,19 +40,23 @@ class Header extends React.Component {
                     </p>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <p className="menu-more">
-                        <span>通讯录</span>
+                    <p className="menu-more" style={{cursor:'pointer'}}>
+                        <PhoneBooks/>
                     </p>
                 </Menu.Item>
             </Menu>
         );
     }
+
     loginOut() {
         this.props.loginAction.loginOut();
     }
+
+
     render() {
+        //debugger;
         const userName = cookie("name");
-        let title = this.props.$$state.get("title");
+        let title = this.props.$$state.get("title");      
         return (
             <div className="app-header">
                 <Row
@@ -116,7 +121,7 @@ class Header extends React.Component {
                                     </Badge>
                                 </Row>
                             </Col>
-                            <Col span={1}>
+                            <Col span={1} style={{position:'relative'}}>
                                 <Dropdown
                                     overlay={this.menuMore}
                                     trigger={["click"]}
@@ -125,6 +130,7 @@ class Header extends React.Component {
                                         <i className="iconfont icon-gengduo1 more-icon" />
                                     </a>
                                 </Dropdown>
+                              
                             </Col>
                         </Row>
                     </Col>
@@ -145,3 +151,6 @@ module.exports = connect(mapStateToProps, dispatch => {
         loginAction: bindActionCreators(Actions, dispatch)
     };
 })(Header);
+
+
+/*   { phoneBooks ? <div style={{width:'300px',height:'300px',position:'absolute',top:'10px',right:'10px',zIndex:'99999999999999999999999999999999999999999'}}><PhoneBooks/></div> : '' } */

@@ -16,7 +16,7 @@ class Card extends React.Component {
         this.state = {
           mtObjId:'',
           mtBiztypeId:'',
-          value:1
+          value:1,
     };
     }
    
@@ -95,21 +95,31 @@ class Card extends React.Component {
 
 let WrapedCard = Form.create({
  onFieldsChange(props, changedFields) {//当 Form.Item 子节点的值发生改变时触发，可以把对应的值转存到 Redux store  ;
-    let data = props.dataSource;
+    let arr = props.arr;
+    let data = props.editData;
+    let biztypeList = props.biztypeList;
     for (let key in changedFields){
-        data[key] = changedFields[key].value
+        data[key] = changedFields[key].value      
         if(key == 'mtObjId'){
-          props.action.typeSelected(data[key])
+            data.mtObjName=arr[data[key]-1]
+            props.action.typeSelected(data[key])
+        }else if(key=='mtBiztypeId'){
+            biztypeList.forEach(item=>{
+                if(item.key==changedFields[key].value){
+                    data.mtBiztypeName=item.title
+                }               
+            })
+            
         }
     }
     props.action.valueChange(data)    
   },
   mapPropsToFields(props) {//把redux中的数据读出
     return {
-      mtObjId: { value: props.dataSource.mtObjId },
-      mtBiztypeId: { value: props.dataSource.mtBiztypeId },
-      enableState: { value: (props.dataSource.enableState||1) },
-      remark: { value: props.dataSource.remark }
+      mtObjId: { value: props.editData.mtObjId },
+      mtBiztypeId: { value: props.editData.mtBiztypeId },
+      enableState: { value: (props.editData.enableState||1) },
+      remark: { value: props.editData.remark }
     };
   },
 })(Card)
