@@ -126,79 +126,89 @@ export default class IcbcSimpleinfo extends React.Component {
         let index = this.state.index;
 
         return (
-            <div
-                className="reference-main"
-                style={{
-                    width: this.props.width ? this.props.width + "px" : "300px"
-                }}
-            >
-                <Row
-                    type="flex"
-                    justify="space-between"
-                    className="reference-main-header"
+            <div className="reference">
+                <div
+                    className="reference-main"
+                    style={{
+                        width: this.props.width
+                            ? this.props.width + "px"
+                            : "300px"
+                    }}
                 >
-                    <div className="title">企业核实</div>
-                    <div>
-                        <Search
-                            placeholder="客户名称搜索"
-                            style={{ width: 200 }}
-                            onSearch={value => console.log(value)}
-                            value={
-                                this.props.viewData.name
-                                    ? this.props.viewData.name
-                                    : ""
-                            }
-                        />
-                    </div>
-                </Row>
-                <Row className="reference-main-choice" type="flex">
-                    <div className="inner">
-                        {this.state.icbcList && this.state.icbcList.length ? (
-                            this.state.icbcList.map((item, n) => {
-                                return (
-                                    <div
-                                        className={
-                                            index == n
-                                                ? "icbc-item-choice"
-                                                : "icbc-item"
-                                        }
-                                        onClick={this.onSelect.bind(
-                                            this,
-                                            item,
-                                            n
-                                        )}
-                                    >
-                                        {item.companyname}
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <div className="icbc-item">暂无数据</div>
-                        )}
-                    </div>
-                </Row>
-                <Row
-                    type="flex"
-                    justify="end"
-                    align="middle"
-                    className="reference-main-footer"
-                >
-                    <Row type="flex" justify="end" align="middle" gutter={15}>
+                    <Row
+                        type="flex"
+                        justify="space-between"
+                        className="reference-main-header"
+                    >
+                        <div className="title">企业核实</div>
                         <div>
-                            <Button onClick={this.onCancel.bind(this)}>
-                                取消
-                            </Button>
-                        </div>
-                        <div>
-                            <Button
-                                type="primary"
-                                onClick={this.onOk.bind(this)}
-                            >
-                                确定
-                            </Button>
+                            <Search
+                                placeholder="客户名称搜索"
+                                style={{ width: 200 }}
+                                onSearch={value => console.log(value)}
+                                value={
+                                    this.props.viewData.name
+                                        ? this.props.viewData.name
+                                        : ""
+                                }
+                            />
                         </div>
                     </Row>
-                </Row>
+                    <Row className="reference-main-choice" type="flex">
+                        <div className="inner">
+                            {this.state.icbcList &&
+                            this.state.icbcList.length ? (
+                                this.state.icbcList.map((item, n) => {
+                                    return (
+                                        <div
+                                            className={
+                                                index == n
+                                                    ? "icbc-item-choice"
+                                                    : "icbc-item"
+                                            }
+                                            onClick={this.onSelect.bind(
+                                                this,
+                                                item,
+                                                n
+                                            )}
+                                        >
+                                            {item.companyname}
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div className="icbc-item">暂无数据</div>
+                            )}
+                        </div>
+                    </Row>
+                    <Row
+                        type="flex"
+                        justify="end"
+                        align="middle"
+                        className="reference-main-footer"
+                    >
+                        <Row
+                            type="flex"
+                            justify="end"
+                            align="middle"
+                            gutter={15}
+                        >
+                            <div>
+                                <Button onClick={this.onCancel.bind(this)}>
+                                    取消
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    type="primary"
+                                    onClick={this.onOk.bind(this)}
+                                >
+                                    确定
+                                </Button>
+                            </div>
+                        </Row>
+                    </Row>
+                </div>
             </div>
         );
     }

@@ -68,7 +68,6 @@ class EditForm extends React.Component {
                 viewData["eaxplayerNo"] = item.value;
             }
         });
-        debugger;
         this.props.action.customerListInfo(data, visiable, viewData);
     }
 
@@ -93,7 +92,6 @@ class EditForm extends React.Component {
                 }
             },
             data => {
-                debugger;
                 this.props.action.closeIcbcVisible1(false);
             }
         );
@@ -105,7 +103,7 @@ class EditForm extends React.Component {
         return (
             <div>
                 <Button onClick={this.onCancel.bind(this)}>关闭</Button>
-                <Button onClick={this.onCancel.bind(this)}>取消认证</Button>
+                <Button onClick={this.onCancel.bind(this)}>确定</Button>
             </div>
         );
     }
@@ -812,7 +810,6 @@ const cardForm = Form.create({
         let value = {};
         for (let key in viewData) {
             if (key == "address") {
-                debugger;
                 value[key] = {
                     value: {
                         address: viewData[key],
@@ -823,7 +820,6 @@ const cardForm = Form.create({
                 value[key] = { value: viewData[key] };
             }
         }
-        debugger;
         //address  把字段合成对象
         return {
             ...value
@@ -838,8 +834,6 @@ const cardForm = Form.create({
             } else {
                 if (key == "address") {
                     let value = onChangeFild[key].value;
-
-                    debugger;
                     viewData["address"] = value.address;
                     if (typeof value.latlng == "string") {
                         viewData["latlng"] = value.latlng;
@@ -852,7 +846,6 @@ const cardForm = Form.create({
                 } //把对像拆成字段  latlng
             }
         }
-        debugger;
         props.editCardFn(viewData);
     }
 })(EditForm);
