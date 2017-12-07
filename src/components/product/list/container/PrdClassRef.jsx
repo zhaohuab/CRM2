@@ -5,7 +5,7 @@ import { Form, Input, Select, Button,Tree,Dropdown ,Row} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TreeNode = Tree.TreeNode;
-
+const Search = Input.Search;
 import * as Actions from "../action"
  class PrdClassRef extends React.Component {
     constructor(props) {
@@ -13,7 +13,7 @@ import * as Actions from "../action"
 
     const value = this.props.value || {};
     this.state = {
-        selectedKeys:0,         
+        selectedKeys:[0],         
         selectedValue:"", 
         info:[],
         visible:false,
@@ -24,6 +24,7 @@ import * as Actions from "../action"
 
   handleVisibleChange = (flag) => {
     this.setState({ visible: flag });
+    this.props.action.getProdClassRef();//获取产品分类参照列表
   }
 
     onSelect = (selectedKeys, info)=> {
@@ -39,6 +40,7 @@ import * as Actions from "../action"
     this.props.onChange(selectedKeys);
     this.setState({refData:selectedValue});
     this.handleVisibleChange(false);
+    this.props.action.setPrdClassValue(selectedValue);
   //  this
     }
 
@@ -51,6 +53,7 @@ import * as Actions from "../action"
     let loop = () =>{};
     if(classRefTree!== undefined && classRefTree.length>0){
          loop = data => data.map((item) => {
+             debugger
             if (item.children && item.children.length>0) {
                 return (
                   <TreeNode  key={item.id 
@@ -70,7 +73,7 @@ import * as Actions from "../action"
          loop = data => {return <div/>};
     }
    
- 
+ debugger
   const refTree = (
       <div  className = "industry-main"> 
           <Row
@@ -124,7 +127,7 @@ import * as Actions from "../action"
         onVisibleChange={this.handleVisibleChange}
         visible={this.state.visible}
       >                        
-        <Input value = {this.state.refData || this.props.value} />
+        <Search placeholder = "产品分类"value = {this.props.$$state.get("prdClassValue") || this.props.value} />
       </Dropdown>
     );
   }

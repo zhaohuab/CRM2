@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Input, Radio, Form, Col, Row, Modal, Button, Icon, Select } from 'antd';
+import { Input, Radio, Form, Col, Row, Modal, Button, Icon, Select, Menu, Dropdown } from 'antd';
 import FormCard from './listForm.jsx';
 import Cards from './card.jsx';
 import './index.less'
@@ -33,7 +33,6 @@ class List extends React.Component {
   }
 
   onSave() { //确认
-     
     let isEdit = this.props.$$state.get("isEdit");
     let data = this.props.$$state.get("editData").toJS()
     this.formRef.props.form.validateFieldsAndScroll((err, values) => {
@@ -56,8 +55,7 @@ class List extends React.Component {
         <Col span = { 6 }>
           <Cards dataSource = { item }/>
         </Col>
-      )}) 
-       
+      )})     
     }   
   } 
 
@@ -79,11 +77,13 @@ class List extends React.Component {
     let enableState = this.props.$$state.get('enableState');
     if (flag){//如果只点击输入框的搜索按钮
       let data = {};
-      data.searchKey=searchKey;
+      if(searchKey){
+        data.searchKey=searchKey;
+      }
       this.props.action.search(data)
     }else{
       let data = {};
-      data.searchKey=searchKey;
+      if(searchKey){ data.searchKey=searchKey;}
       data.enableState=enableState; 
       this.props.action.search(data)
     }
@@ -92,10 +92,21 @@ class List extends React.Component {
   moreCard = () => {//显示更多
     this.setState({more:!this.state.more})
   }
+  
+  refesh = () => {//刷新按钮
+    this.props.action.getListData();
+  }
+
+  menu = (
+    <Menu>
+      <Menu.Item key="1">导入</Menu.Item>
+      <Menu.Item key="2">导出</Menu.Item>
+    </Menu>
+  )
 
   componentWillMount() { this.props.action.getListData() }
 
-  render() { //只能通过this.props和this.state访问数据;不能在render方法中任何位置修改state状态或者是DOM输出；
+  render() { 
     let page = this.props.$$state.get("data").toJS();
     let data = page.data || [];
     this.state.more ? null : data = data.slice(0,12);   
@@ -128,11 +139,11 @@ class List extends React.Component {
                 <span onClick={this.onSearch.bind(this,false)} style={{marginLeft:'20px',cursor:'pointer'}}>搜索</span>
               </div>
               <div className='head_panel-right'>
-                <ButtonGroup className='add-more'>
-                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                </ButtonGroup>
+                <Button type="primary" style={{margin:'0 10px'}} className="button_add" onClick={this.refesh.bind(this) }>刷新</Button>
                 <Button type="primary" className="button_add" onClick={this.onAdd.bind(this) }><Icon type="plus" />新增</Button>
+                <Dropdown.Button overlay={this.menu} style={{margin:'0 10px'}}>
+                  更多
+                </Dropdown.Button>
               </div>
           </div>
           <div>

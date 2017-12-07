@@ -15,8 +15,6 @@ import * as Actions from "../action"
 class FileDetail extends React.Component {
   constructor(props) {
     super(props)
-    let lang = this.props.$$state.get("lang");
-    let getLang = this.props.getLang;
     this.columns = [
     {
       title: '操作',
@@ -44,8 +42,8 @@ class FileDetail extends React.Component {
           dropdownMatchSelectWidth = { true } 
           getPopupContainer = { triggerNode => triggerNode.parentNode } 
           onChange = { this.onChange.bind(this, record) }>
-          <Option value = { 1 }>{ getLang.call(this, lang, 'qy') }</Option>
-          <Option value = { 2 }>{ getLang.call(this, lang, 'ty') }</Option>
+          <Option value = { 1 }>启用</Option>
+          <Option value = { 2 }>停用</Option>
         </Select>)
     },
     {
@@ -91,6 +89,7 @@ class FileDetail extends React.Component {
   }
 
   onChange(record, value){
+    debugger;
     if (record.editState != 'ADD' ){
       record.editState = 'UPDATE';
     }
@@ -153,7 +152,6 @@ function mapStateToProps(state, ownProps) {
     $$state: state.doc
   }
 }
-
 function mapDispatchToProps(dispatch) {
   return {
       action: bindActionCreators(Actions, dispatch)

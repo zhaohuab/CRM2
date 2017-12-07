@@ -27,12 +27,30 @@ const getListData = (params) => {
 		})
 	}
 }
+const changeEnableState = (enableState,selectedRowKeys,pagination,searchMap) => {
+	return (dispatch) => {
+		reqwest({
+			url:  url.measure + '/state',
+			method: "PUT",
+			data: {
+				param: {
+					enableState:enableState,
+					ids:selectedRowKeys,
+					page:pagination.page,
+					pageSize:pagination.pageSize,
+					searchMap:searchMap
+				}
+			},
+		},result => {
+			dispatch(fetchData('MEASURE_LIST_GETLISTSUCCESS', { ...result }));
+		})
+	}	
+}
 const transData = (data) => {
 	return data;
 }
 const onSave4Add = (data, index) => {
 	return (dispatch) => {
-		debugger
 		reqwest({
 			url: url.measure,
 			method: "POST",
@@ -40,7 +58,6 @@ const onSave4Add = (data, index) => {
 				param: transData(data)
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('MEASURE_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
@@ -48,7 +65,6 @@ const onSave4Add = (data, index) => {
 
 const onSave4Edit = (data, index) => {
 	return (dispatch) => {
-		debugger
 		reqwest({
 			url: `${url.measure}/${data.id}`,
 			method: "PUT",
@@ -56,7 +72,6 @@ const onSave4Edit = (data, index) => {
 				param: transData(data)
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('MEASURE_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
 	}
@@ -86,4 +101,5 @@ export {
 	showForm,
 	onSave4Add,
 	onSave4Edit,
+	changeEnableState
 }

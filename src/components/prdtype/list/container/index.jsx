@@ -39,7 +39,7 @@ class List extends Component {
           },
            {
             title: '停用时间',
-            dataIndex: 'enableTime',
+            dataIndex: 'disableTime',
           },
            {
             title: '对应ERP',
@@ -54,7 +54,7 @@ class List extends Component {
               page:1,
             },
             searchMap : {
-              enableState:1,
+              //enableState:1,
             },
             selectedKey:[]
         }
@@ -114,15 +114,8 @@ class List extends Component {
 
     //点击增加组织
     addFormBtn(){
-        debugger
         let item =  this.props.prdState.get("editData").toJS();
         this.treeSelectAddFn(item);
-        // let {pagination, selectedKey} = this.state;
-        // this.setState({isEdit:false});
-        // this.props.prdAction.showForm(true,{});
-        // //获取属性组参照列表
-        
-        // this.props.prdAction.getAttrsGrpRef(pagination);
     }
 
     //显示每行数据后的返回按钮
@@ -142,9 +135,6 @@ class List extends Component {
         }
         let {pagination} = this.state;
         this.props.prdAction.setSelTreeNode(selectedKeys);
-            
-        //let title = obj.selectedNodes[0].props.title.props.children[0].props.title;
-        //this.props.prdAction.setFormData({fatherTypeId:parseInt(selectedKeys[0]),fatherTypeName:title});
         this.props.prdAction.setFormData(rowData);
         if(selectedKeys.length){
             this.props.prdAction.listTreeChange(pagination,selectedKeys[0])
@@ -189,6 +179,7 @@ class List extends Component {
     searchList(item){
         this.props.prdAction.getlistByClickSearch({searchKey:item});
     }
+
     reSizeFn(){
         let h=document.documentElement.clientHeight
         this.setState({
@@ -238,6 +229,7 @@ class List extends Component {
         let searchFilter = prdState.get('searchFilter');     
         let treeData = prdState.get('treeData').toJS();
         let page = prdState.get('page').toJS();
+        debugger
         let tableListCheckbox = prdState.get('tableListCheckbox').toJS();
         let editData = prdState.get("editData").toJS();
         if(editData == null || editData == {} || editData == ""){

@@ -17,7 +17,14 @@ import * as Actions from "../action"
         selectedMeaValue:"",
         selectedId:0,
         visible:false,
-        selected:""
+        selected:"",
+        pagination : {
+            pageSize:10,
+            page:1,
+          },
+          searchMap : {
+            enableState:1,
+          },
         };
     }
 
@@ -32,6 +39,8 @@ onOk() {
     this.props.onChange(selectedId);
     this.setState({selected:selectedMeaValue});
     this.handleMeaVisibleChange(false);
+   // let {selectedMeaValue,selectedId} = this.state; 
+    this.props.action.setMeaUnitValue(selectedMeaValue);
 }
 
 onCancel() {
@@ -44,12 +53,14 @@ onMeaRowClick = (record, index) => {
 }
 
 handleMeaVisibleChange = (flag) => {
+    let {pagination} = this.state; 
     this.setState({ visible: flag });
+    this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
 }
 
   render() {
-      const meaRefData = this.props.$$state.get("meaunitRefList").toJS().data;
-  const meaRefList = (
+    const meaRefData = this.props.$$state.get("meaunitRefList").toJS().data;
+    const meaRefList = (
     <div  className = "industry-main"> 
         <Row
             type="flex"
@@ -103,7 +114,7 @@ handleMeaVisibleChange = (flag) => {
         onVisibleChange={this.handleMeaVisibleChange}
         visible={this.state.visible}
     >                        
-        <Search value = {this.state.selected || this.props.value}/>
+        <Search value = {this.props.$$state.get("meaUnitValue") || this.props.value}/>
     </Dropdown>
     );
   }

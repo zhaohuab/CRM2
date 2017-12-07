@@ -61,22 +61,6 @@ class ProductCard extends React.Component {
     componentDidMount() {        
        
     }
-    
-    getMeasurementUnit() {
-
-        let {pagination, visible, title} = this.state;
-        //const unitRefList = this.props.$$state.get("unitRefList").toJS();
-        let state = {
-            visible: true,
-            title: "计量单位",
-            data: unitRefList
-        } 
-        this.setState(state);
-    }
-
-    onCheckChange = (e) => {
-
-    }   
 
     handleSuVisibleChange = (flag) => {
         this.setState({ suVisible: flag });
@@ -126,12 +110,6 @@ class ProductCard extends React.Component {
             </div>
         );
 
-        {
-            getFieldDecorator('id', {
-            })(
-                <Input />
-                )
-        }
         return (
             <div>                          
         <Form >
@@ -237,13 +215,12 @@ class ProductCard extends React.Component {
             <FormItem
                 label="品牌"
                 labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-                
+                wrapperCol={{ span:13 }}               
             >
                 {getFieldDecorator('brandId', {
         
                 })(
-                   <BrandRef/>
+                   <BrandRef />
                     )}
             </FormItem>
             </Col>
@@ -371,7 +348,7 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){  
+        onFieldsChange(props, fields){ 
             let fieldsChangeData = {};
             let dataSource = props.dataSource;
             for(let item in fields){

@@ -70,8 +70,7 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){  
-            debugger                  
+        onFieldsChange(props, fields){               
             let changeData = {};
             for(let i in fields){
                 let key = i;

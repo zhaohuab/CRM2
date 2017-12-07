@@ -1,4 +1,4 @@
-import { Form, Input, Select, Row, Col } from 'antd';
+import { Form, Input, Select, Row, Col, Card as AntdCard } from 'antd';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from "../action"
@@ -6,6 +6,8 @@ import Email from 'utils/components/emails'
 import Department from 'components/refs/departments'
 import Enum from 'utils/components/enums'
 import RadioGroup from 'utils/components/radios'
+
+import BatchSelect from './BatchSelect.jsx'
 const FormItem = Form.Item;
 const Option = Select.Option;
 class Card extends React.Component {
@@ -14,16 +16,32 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        let data = this.props.$$state.get("editData").toJS();
-        if (data.dimension) {
-            data.dimension = { key: data.dimension, title: "" };
-        }
-        this.props.form.setFieldsValue(data);
+        // if(this.props.$$state.get("isEdit")){
+            let data = this.props.$$state.get("editData").toJS();
+            let result = this.props.$$state.get("result").toJS();
+            data.oppstage = result
+            
+            if(result[0]&&result[0].children){
+                data.oppdimension = result[0].children
+            }else{
+                data.oppdimension = []
+            }
+            this.props.form.setFieldsValue(data);
+        // }else{
+        //     const data ={}
+        //     data.oppstage=[]
+        //     data.oppdimension=[]
+        //     this.props.form.setFieldsValue(data);
+        // }
+        
     }
 
     render() {
         const { getFieldDecorator } = this.props.form;
         const enumData = this.props.$$state.get("enumData").toJS();
+        const biztype = this.props.$$state.get("biztype").toJS();
+        const allStage = this.props.$$state.get("allStage").toJS();
+        const allDimension = this.props.$$state.get("allDimension").toJS();
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -40,8 +58,11 @@ class Card extends React.Component {
                 <Input />
                 )
         }
+  
         return (
-            <Form >
+            
+             <Form >
+                     
                 <Row>
                     <Col span={12}>
                         <FormItem
@@ -85,7 +106,9 @@ class Card extends React.Component {
                                     required: true, message: '请输入销售流程名称',
                                 }],
                             })(
-                                <Input placeholder='请输入销售流程名称' />
+                                <Enum
+                                    dataSource={biztype}
+                                />
                                 )}
                         </FormItem>
                     </Col>
@@ -105,7 +128,30 @@ class Card extends React.Component {
                         </FormItem>
                     </Col>
                 </Row>
-            </Form>)
+                <Row>
+                    <AntdCard title="销售阶段" bordered={false} >
+                        {getFieldDecorator('oppstage', {
+                            rules: [{
+                                    required: true, message: '请选择销售阶段',
+                                }],
+                        })(
+                            <BatchSelect dataSource={allStage} />
+                            )}
+                    </AntdCard>
+                </Row>
+                <Row>
+                    <AntdCard title="商机维度" bordered={false} >
+                        {getFieldDecorator('oppdimension', {
+                            rules: [{
+                                    required: true, message: '请选择商机维度',
+                                }],
+                        })(
+                            <BatchSelect dataSource={allDimension} />
+                            )}
+                    </AntdCard>
+                </Row>
+            </Form>
+        )
     }
 }
 

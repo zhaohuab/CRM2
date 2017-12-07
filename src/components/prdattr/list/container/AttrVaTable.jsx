@@ -19,46 +19,64 @@ class AttrValueTable extends React.Component {
     this.columns = [
     {
       title: '属性值',
-      width:'40%',
       dataIndex: 'value',
       render: (text,record,index) =>(
         <Input placeholder="属性值" 
         defaultValue={record.value}
-        onBlur={this.onValueBlur.bind(this,record)}/>
+        onBlur={this.onBlur.bind(this,record)}/>
       )
     },
     {
-      title:'对应ERP',
-      width:'40%',
+      title:'对应ERP',    
       dataIndex:'erpCode',
       render:(text,record,index) => (
         <Input placeholder="对应ERP" 
         defaultValue={record.erpCode}
-        onBlur={this.onErpBlur.bind(this,record)}/>)
+        onBlur={this.onBlur.bind(this,record)}/>)
     },
     {
-      title:'启用状态',
-      width:'10%',
+      title:'启用状态',    
       dataIndex:'enableState',
       render:(i,record,index)=> (  
-        <Switch defaultChecked={true}  />)
-    },
-    {
-      title:'删除',
-      width:'10%',
-      dataIndex:'delete',
-      render:(text,record,index) => (
-        <a onClick = {this.onDelete.bind(this,record)}>删除</a>)
+        <Switch defaultChecked={record.enableState == 1?  true:false}  
+          onChange = {this.changeFCheck.bind(this,record)}/>)
     }]
   }
 
-  onValueBlur(record,e){//输入框变化回调
+  changeFCheck(record,checked) {
+    let flag = true;
+    let fixedConvert = {};
+    if(checked == true){
+      fixedConvert = {fixedConvert:1};
+    }else{
+      fixedConvert = {fixedConvert:2};
+    }
+     
+    Object.assign(record, fixedConvert);
+    if (record.editState != 'add') { 
+      record.editState='update';
+    } 
+    let changedData = this.props.$$state.get('changeData').toJS();
+    //遍历变化值，是否有此条数据，如果没有加到变化结构里，如果有，覆盖原来数据
+    for (let i=0,len=changedData.length; i<len; i++){
+      if(changedData[i].id==record.id){         
+        Object.assign(changedData[i],record);
+        flag = false;
+        break;
+      }
+    }
+    this.setState({fchecked:checked});
+    if (flag){ changedData.push(record) };   
+    this.props.action.onChangeAttrVa(changedData); 
+  }
+
+  onBlur(record,e){//输入框变化回调
     let flag = true; 
-    let {value}  = e.target;
-    if (record.value!=value){
+    let {title,value}  = e.target;
+    if (record[title]!=value){
       record.value=value;    
-      if (record.editState != 'ADD') { 
-        record.editState='UPDATE';
+      if (record.editState != 'add') { 
+        record.editState='update';
       } 
       let changeData = this.props.$$state.get('changeData').toJS();
       //遍历变化值，是否有此条数据，如果没有变为update
@@ -74,30 +92,9 @@ class AttrValueTable extends React.Component {
     }
   }
 
-  onErpBlur(record,e){//档案明细输入框变化回调
-    let flag = true; 
-    let {value}  = e.target;
-    if (record.erpCode!=value){
-      record.erpCode=value;
-      if (record.editState!='ADD'){ 
-        record.editState='UPDATE';
-      }
-      let changeData = this.props.$$state.get('changeData').toJS();      
-      for (let i=0,len=changeData.length; i<len; i++){
-        if(changeData[i].id==record.id){
-         Object.assign(changeData[i],record);
-         flag = false;
-         break;
-        }
-      }
-      if (flag){ changeData.push(record) }; 
-      this.props.action.onChangeAttrVa(changeData);
-    }
-  }
-
   onChange(record,value){
-    if(record.editState!='ADD' ){
-      record.editState='UPDATE';
+    if(record.editState!='add' ){
+      record.editState='update';
     }
     record.enableState=value 
     let dataSource = this.props.$$state.get('dataSource').toJS(); 
@@ -127,7 +124,7 @@ class AttrValueTable extends React.Component {
     }
     //如果不是本次新增或编辑，则将该条数据加到change数组里，并添加DELETE标签
     if(!flag){
-      record.editState = 'DELETE'; 
+      record.editState = 'detele'; 
       changeData.push(record);         
     }
 
@@ -138,6 +135,7 @@ class AttrValueTable extends React.Component {
   }
 
   render(){ 
+   // debugger
     //let formData = this.props.$$state.get('formData').toJS();
     let dataSource =this.props.$$state.get('attrValue').toJS();
     let columns=this.columns;
@@ -146,7 +144,6 @@ class AttrValueTable extends React.Component {
         dataSource = { dataSource } 
         columns = { columns } 
         pagination = { false } 
-        showHeader = { false } 
         rowKey = "id"
       />)
   }
