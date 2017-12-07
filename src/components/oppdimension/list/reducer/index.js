@@ -23,7 +23,6 @@ function pageAdd(page, item) {
 	return page;
 }
 function pageEdit(page, item) {
-	debugger
 	let { data } = page;
 	for (let i = 0, len = data.length; i < len; i++) {
 		if (data[i].id == item.id) {
@@ -49,6 +48,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRowKeys:[]
 			})
 		case 'OPPDIMENSION_LIST_SHOWFORM':
+		debugger
 			return $$state.merge({
 				visible: action.content.visible,
 				editData: action.content.editData,

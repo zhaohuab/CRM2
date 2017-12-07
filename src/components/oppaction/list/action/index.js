@@ -1,6 +1,6 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { oppaction as url } from 'api';
+import { oppaction as url,oppdimension } from 'api';
 
 const showForm = (flag, editData = {}, index) => {
 	return (dispatch) => {
@@ -105,6 +105,17 @@ const getEnumData = () =>{
     }
 }
 
+const getDimensionData = () =>{
+    return (dispatch)=>{
+        reqwest({
+            url:oppdimension.oppdimension+"/enum",
+            method:"get",
+        },(data)=>{
+            dispatch(fetchData('OPPACTION_LIST_GETENUMDATA', {enumData:data}));
+        })
+    }
+}
+
 const selectData = (params ) => {
     return (dispatch)=>{
         dispatch(fetchData('OPPACTION_LIST_SETDATA',params ))
@@ -120,5 +131,6 @@ export {
 	onSave4Edit,
 	onEnable,
 	getEnumData,
-	selectData
+	selectData,
+	getDimensionData
 }

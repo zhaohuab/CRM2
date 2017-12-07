@@ -14,6 +14,7 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
+        debugger
         let data = this.props.$$state.get("editData").toJS();
         if(data.dimension){
             data.dimension = {key:data.dimension,title:""};
@@ -73,7 +74,7 @@ class Card extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-      $$state: state.oppactionlist
+      $$state: state.oppdimensionlist
     }
   }
   
