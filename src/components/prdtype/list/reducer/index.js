@@ -35,6 +35,7 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 			return $$state.merge({tabelLoading:true})
 			
 		case 'PRDTYPE_LIST_GETLISTSUCCESS':
+		debugger
 			return  $$state.merge({
 				listData:action.payload.data,
 				tabelLoading:false,

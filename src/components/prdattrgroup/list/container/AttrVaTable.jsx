@@ -52,7 +52,7 @@ class AttrValueTable extends React.Component {
     //     break;
     //   }
     // }
-    debugger
+    //debugger
     let isSelected = this.props.$$state.get("isSelected");
     let rowSelection = {
       selectedRowKeys,
