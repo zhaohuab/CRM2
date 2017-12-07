@@ -5,8 +5,7 @@ class HeadLabel extends React.Component {
     constructor(props) {
         super(props)
     }
-
-    render() {
+    render() {   
         let selectedRowLength = this.props.selectedRowKeys.length;
         return (
             <div className='edit-inner'>

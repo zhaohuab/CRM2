@@ -12,6 +12,8 @@ const org = {
 };
 
 const user = {
+    listTpl : baseDir + "sys/users/template/list",
+    addTpl : baseDir + "sys/users/template/add",
     user: baseDir + "sys/users",
     userBatch: baseDir + "sys/users/batch",
     enable: baseDir + "sys/users/state" // {id}/state
@@ -54,7 +56,8 @@ const visitRouter = {
 const taskcard = {
     taskcard: baseDir + 'sact/taskcards',
     taskcardBatch: baseDir + 'sact/taskcards/batch',
-    enable: baseDir + 'sact/taskcards/state' 
+    enable: baseDir + 'sact/taskcards/state',
+    biztype:baseDir + 'sact/taskcards/biztypes'
 }
 const doc = {
     doc: baseDir + 'base/docs',
@@ -63,6 +66,7 @@ const doc = {
 }
 
 const sysinit = {
+    mainEditTpl : baseDir + "sys/sysinit/template/edit",
     info : baseDir + "sys/sysinit/info",
     org : baseDir + 'sys/sysinit/org',
     adminList : baseDir + 'sys/sysinit/adminlist',
@@ -78,6 +82,7 @@ const oppaction = {
 
 const visitrules = {
     visitrules: baseDir + 'sact/visitrules',
+    enable: baseDir + '/sact/visitrules/state',
 }
 
 const oppstage = {
@@ -95,6 +100,14 @@ const oppflow = {
     oppflow: baseDir + 'sprc/oppflows',
     doc:baseDir + "sprc/oppflows/docs",
 }
+const prdattr = {
+    prdattr: baseDir + 'base/attrs',
+}
+
+const prdattrgroup = {
+    prdattrgroup: baseDir + 'base/attrgroups',
+}
+
 export {
     login,
     menu,
@@ -117,5 +130,7 @@ export {
     visitrules,
     oppstage,
     oppdimension,
-    oppflow
+    oppflow,
+    prdattr,
+    prdattrgroup,
 }

@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux';
 import * as Actions from '../action/index.js'
 
 import Immutable from 'immutable'
-import card from './ListForm.jsx'
+import ClassCard from './ListForm.jsx'
 import ListTree from './ListTree.jsx'
 import EditButton from './EditButtons.jsx'
 const ButtonGroup = Button.Group;
@@ -31,7 +31,7 @@ class List extends Component {
           },
           {
             title: '属性组',
-            dataIndex: 'attrGroupId',
+            dataIndex: 'attrGroupName',
           }, 
           {
             title: '状态',
@@ -39,10 +39,10 @@ class List extends Component {
           },
            {
             title: '停用时间',
-            dataIndex: 'enableTime',
+            dataIndex: 'disableTime',
           },
            {
-            title: '对应ERP组织',
+            title: '对应ERP',
             dataIndex: 'erpCode'
           }  
         ]; 
@@ -54,8 +54,9 @@ class List extends Component {
               page:1,
             },
             searchMap : {
-              enableState:1,
-            } 
+              //enableState:1,
+            },
+            selectedKey:[]
         }
         //点击每行table触发的onchange方法
         let that = this
@@ -79,13 +80,16 @@ class List extends Component {
     }
 
     //删除一条数据方法
-    btnDelete(treeSelect,searchFilter,record){
-        this.props.prdAction.listdel(record,treeSelect,searchFilter)
+    btnDelete(treeSelect,searchFilter,record,){
+        let {pagination} = this.state;
+        this.props.prdAction.listdel(record,treeSelect,searchFilter,pagination)
     }
 
     //启停用按钮
     btnSetEnablestate(treeSelect,searchFilter,data,state){
-        this.props.prdAction.setEnablestate(treeSelect,searchFilter,data,state)
+        debugger
+        let {pagination} = this.state;
+        this.props.prdAction.setEnablestate(treeSelect,searchFilter,data,state,pagination);
     }
 
     //修改页面取消按钮 
@@ -95,22 +99,24 @@ class List extends Component {
 
    //表单页面确定方法
     formHandelOk(){
-        this.formRef.props.form.validateFields((err, values) => {
-            if (!err) {                  
-                if(this.state.isEdit){
-                    this.props.prdAction.listchange(values);
-                }else{
-                    this.props.prdAction.listadd(values);                    
-                }
-            }
-        });
+        let editData = this.props.prdState.get("editData").toJS();
+       // let formData = this.props.prdState.get("formData").toJS();
+        let id = editData.id;
+        let fieldsChangeData = this.props.prdState.get("fieldsChangeData").toJS();
+        Object.assign(editData,fieldsChangeData);
+        if(this.state.isEdit){
+            this.props.prdAction.listchange(editData,id);
+        }else{
+            this.props.prdAction.listadd(editData);                    
+        }                
     }
+        
+    
 
     //点击增加组织
     addFormBtn(){
-        this.setState({isEdit:false});
-        this.props.prdAction.showForm(true,{});
-        // this.props.prdAction.changeAdd()
+        let item =  this.props.prdState.get("editData").toJS();
+        this.treeSelectAddFn(item);
     }
 
     //显示每行数据后的返回按钮
@@ -120,41 +126,61 @@ class List extends Component {
 
     //点击树节点触发的方法
     treeSelectFn(selectedKeys,obj){
+        let rowData = {};
+        let data = this.props.prdState.get("listData").toJS().data;
+        for(let i=0,len=data.length;i<len;i++) {
+            if(selectedKeys[0] == data[i].id) {
+                rowData = data[i];
+                break;
+            }
+        }
+        let {pagination} = this.state;
+        this.props.prdAction.setSelTreeNode(selectedKeys);
+        this.props.prdAction.setFormData(rowData);
         if(selectedKeys.length){
-            this.props.prdAction.listTreeChange(selectedKeys[0])
+            this.props.prdAction.listTreeChange(pagination,selectedKeys[0])
         }
     }
    
     //点击一个节点树的编辑操作
     treeSelectEditFn(rowKey){
+        let {pagination, searchMap} = this.state;
         this.setState({isEdit:true});
         let rowData = {};
-        let page = this.props.prdState.get("listData").toJS();
-        for(let i=0,len=page.length;i<len;i++) {
-            if(rowKey == page[i].id) {
-                rowData = page[i];
+        let data = this.props.prdState.get("listData").toJS().data;
+        for(let i=0,len=data.length;i<len;i++) {
+            if(rowKey == data[i].id) {
+                rowData = data[i];
                 break;
             }
         }
         this.props.prdAction.showForm(true,rowData);
+        this.props.prdAction.getAttrsGrpRef(pagination);
     }
+
     //点击一个节点树的增加操作
     treeSelectAddFn(item){
+        let {pagination, searchMap} = this.state;
         this.setState({isEdit:false});
-        let rowData = {fatherorgId:item.id,fatherorgName:item.name}
+        let path ="";
+        let rowData = {fatherTypeId:item.id,fatherTypeName: item.name,
+            path:(item.path !== undefined && item.path !== "")?item.path+","+item.id.toString():item.id.toString() };
         this.props.prdAction.showForm(true,rowData);
+        this.props.prdAction.getAttrsGrpRef(pagination);
     }
 
     //点击一个节点树的删除操作
     treeSelectDeleteFn(item){//这里的record和item不用传参，点击的时候是ant design插件自动传递的么    
+        let {pagination, searchMap} = this.state;
         const record = [];
-        record.push(item)
-        this.props.prdAction.listdel(record,item.id)
+        record.push(item);
+        this.props.prdAction.listdel(record,item.id,searchMap,pagination);
     }
     //点击查询按钮
     searchList(item){
         this.props.prdAction.getlistByClickSearch({searchKey:item});
     }
+
     reSizeFn(){
         let h=document.documentElement.clientHeight
         this.setState({
@@ -162,27 +188,29 @@ class List extends Component {
         })
     }
 
-//分页
-  showTotal(total) {
-    return `共 ${total} 条`;
-  }
-  onPageChange(page,pageSize) {
-    let { pagination,searchMap } = this.state;
+    //分页
+    showTotal(total) {
+        return `共 ${total} 条`;
+    }
+    onPageChange(page,pageSize) {
+        let { pagination,searchMap } = this.state;
     //可能有问题
-    pagination = {page:page,pageSize:pageSize};
-    this.setState({pagination})
-    this.props.prdAction.getlist({ pagination,searchMap });
-  }
-  onPageSizeChange(current,pageSize) {
-    let { pagination,searchMap } = this.state;
-    pagination = {page:pagination.page,pageSize:pageSize};
-    this.setState({pagination})
-    this.props.prdAction.getlist({ pagination,searchMap });
-  }
+        pagination = {page:page,pageSize:pageSize};
+        this.setState({pagination})
+        this.props.prdAction.getlist({ pagination,searchMap });
+    }
+    onPageSizeChange(current,pageSize) {
+        let { pagination,searchMap } = this.state;
+        pagination = {page:pagination.page,pageSize:pageSize};
+        this.setState({pagination})
+        this.props.prdAction.getlist({ pagination,searchMap });
+    }
 
     //组件渲染完毕获取数据
     componentDidMount(){
-        this.props.prdAction.getlist();
+        let { pagination,searchMap } = this.state;
+        let params = {pagination:pagination,searchMap:searchMap};
+        this.props.prdAction.getlist(params);
         this.props.prdAction.getTreeList();
         this.setState({
             minH:document.documentElement.clientHeight- 70
@@ -193,19 +221,24 @@ class List extends Component {
     }
 
     render() {
-        //这获取总的状态  //拿到想要的之后再toJS
+        let {isEdit} = this.state;
         let {prdState} = this.props;
         let tabelLoading = prdState.get('tabelLoading');
         let formVisitable = prdState.get('formVisitable')
         let treeLoading = prdState.get('treeLoading')
         let treeSelect = prdState.get('treeSelect');
-        let searchFilter = prdState.get('searchFilter');
-        let listData = prdState.get('listData').toJS();
+        let searchFilter = prdState.get('searchFilter');     
         let treeData = prdState.get('treeData').toJS();
+        let page = prdState.get('page').toJS();
+     //   debugger
         let tableListCheckbox = prdState.get('tableListCheckbox').toJS();
-        
-        const WrapCard = Form.create()(card);
         let editData = prdState.get("editData").toJS();
+        if(editData == null || editData == {} || editData == ""){
+            if(page !== undefined && page !== null && JSON.stringify(page) !== "{}"){
+                let editData = page.data[0];
+                this.props.prdAction.setFormData(editData);
+            }
+        }
         return (
             <div className='list-warpper'>
                 <div className='list-main'>
@@ -224,7 +257,12 @@ class List extends Component {
                     </div>
                     <div className='list-table' ref="listTablePanel">
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox} setEnablestate={this.btnSetEnablestate.bind(this,treeSelect,searchFilter)} enablestate={this.state.searchMap.enableState} deleteList={this.btnDelete.bind(this,treeSelect,searchFilter)} returnFn={this.btnBack.bind(this)} changeForm={this.changeForm.bind(this)}/>:'' }
+                            { tableListCheckbox.length? <EditButton data={tableListCheckbox}
+                                setEnablestate={this.btnSetEnablestate.bind(this,treeSelect,searchFilter)} 
+                                enablestate={this.state.searchMap.enableState} 
+                                deleteList={this.btnDelete.bind(this,treeSelect,searchFilter)} 
+                                returnFn={this.btnBack.bind(this)} 
+                                changeForm={this.changeForm.bind(this)}/>:'' }
                             <div className='list-add'>
                                 <ButtonGroup className='list-add-group'>
                                     <Button><i className='iconfont icon-daochu'></i>导入</Button>
@@ -234,22 +272,23 @@ class List extends Component {
                             </div>
                         </div>
                         <div className='org-tabel' id = 'prdtype'>
-                            <Table columns={this.columns} rowKey ='id' dataSource={listData} loading={tabelLoading}  rowSelection={this.rowSelectionFn} size='middle' 
-                            pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:listData.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
+                            <Table columns={this.columns} rowKey ='id' dataSource={page.data} loading={tabelLoading}  rowSelection={this.rowSelectionFn} size='middle' 
+                             pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}
+                            />
                         </div>
                         <Modal
-                            title="新增"
+                            title={isEdit?"编辑":"新增"}
                             visible={formVisitable}
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
                         >
                             <div className='model-height'>
-                                <WrapCard wrappedComponentRef={(inst) => this.formRef = inst} data={editData}/> 
+                                <ClassCard wrappedComponentRef={(inst) => this.formRef = inst} dataSource={editData} /> 
                             </div>
                         </Modal>   
                     </div>
                 </div>
-        </div>
+            </div>
         );
     }
 }

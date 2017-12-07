@@ -14,6 +14,7 @@ export default class ListTree extends Component {
         }
     }
     onSelect(selectedKeys,obj){
+       // debugger;
         this.props.onSelect(selectedKeys,obj)  
     }
 

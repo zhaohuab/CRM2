@@ -25,7 +25,6 @@ var autoprefixer = require('autoprefixer');
 var moment = require('moment')
 var nowDateStr = moment().format("YYYY-MM-DD HH:mm:ss")
 
-
 module.exports = merge(baseWebpackConfig, {
     devtool: 'cheap-module-source-map',
     postcss: [autoprefixer()],

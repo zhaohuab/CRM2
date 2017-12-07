@@ -36,6 +36,9 @@ class List extends React.Component {
       {
         title: '启用状态',
         dataIndex:'enableState',
+        render:(text,record,index) => (
+          text == 2? text = "停用" : text = "启用"
+         )
       },
     ]
 
@@ -105,6 +108,25 @@ class List extends React.Component {
   onBack = ()=>{
     this.setState({headLabel:false});
   }
+
+  onEnable(enable) {
+    return (enable) => {
+      let { pagination } = this.state;
+      this.setState({ headLabel: false, selectedRowKeys: [] });
+      this.props.action.onEnable(this.state.selectedRowKeys, enable, { pagination });
+    }
+  }
+
+  onEableRadioChange = (enableState) => {
+    // let enable = enableState;
+     let { pagination,searchMap,selectedRowKeys} = this.state;
+    // searchMap.enableState = enableState;
+     let ids = selectedRowKeys.join();
+     
+     this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
+    // this.setState({searchMap});
+   }
+
   onSave() {
     let form = this.formRef.props.form;
     form.validateFieldsAndScroll((err, values) => {
@@ -136,12 +158,16 @@ class List extends React.Component {
         {
           headLabel?
           <div className='head_edit'>
-            <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
-              <Button className="default_button" onClick={this.onEdit}><i className='iconfont icon-bianji'></i>编辑</Button>
-              <Popconfirm placement="bottom"  title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
-                <Button className="default_button" ><i className='iconfont icon-shanchu'></i>删除</Button>
-              </Popconfirm>
-            </HeadLabel> 
+              <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
+                {selectedRowKeys.length != 1 ?
+                  <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button> :
+                  <Button className="default_button" onClick={this.onEdit.bind(this)}><i className='iconfont icon-bianji'></i>编辑</Button>
+                }               
+                <Button className="default_button" onClick={this.onDelete.bind(this)}><i className='iconfont icon-shanchu'></i>删除</Button>               
+                <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
+                <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
+              </HeadLabel>
+            
           </div>:
           <div className='head_panel'>
               <div className='head_panel-left'>

@@ -1,26 +1,27 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button,Icon } from 'antd';
-import {Input,Radio,Popconfirm,Form} from 'antd';
-import Card from './listForm.jsx';
+import { Table, Modal, Button,Icon, Input, Radio, Popconfirm, Form, Row, Col, Select, Menu, Dropdown } from 'antd';
+import enUS from 'antd/lib/locale-provider/en_US';
+import Cards from './listForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
-import Department from 'components/refs/departments';
 import Tables from './table.jsx';
 import './index.less'
 let Search = Input.Search;
+let Option = Select.Option
 let RadioGroup = Radio.Group;
-const ButtonGroup = Button.Group;
+let ButtonGroup = Button.Group;
 import 'assets/stylesheet/all/iconfont.css'
 import * as Actions from "../action"
 
 class List extends React.Component {
   constructor(props) {
-    super(props)    
+    super(props) 
     this.columns = [
       {
         title: '档案名称',
         dataIndex:'name',
+        render:(text, record)=><a href='javascript:;' onClick={this.onDetail.bind(this,record)} style={{  textDecoration:'none' }}>{text}</a>,
       },
       {
         title: '档案描述',
@@ -42,48 +43,53 @@ class List extends React.Component {
       isEdit : false,
       enable : 1,
       pagination : {
-        pageSize:10,
-        page:1,
+        pageSize: 10,
+        page: 1,
       },
       searchMap : {
-        enableState:1,
+        enableState: 1,
       }
     }
   }
 
-  componentDidMount() {
-    let { pagination,searchMap } = this.state;
-    this.props.action.getListData({ pagination,searchMap });
-  }
  
+  onDetail = (record) => {//详情展示;;
+    this.props.action.onDetail(record, true)
+  }
+
   onAdd = () => {
-      this.setState({isEdit:false});
-      this.props.action.showFormAdd(true,{});   
+      this.setState({ isEdit: false });
+      this.props.action.showFormAdd(true, {});   
   }
 
   onDelete = () => {
-    let aa=this.state.selectedRowKeys;
-    let { pagination,searchMap } = this.state;
-    this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
-    this.setState({headLabel:false,selectedRowKeys:[]});
+    let aa = this.state.selectedRowKeys;
+    let { pagination, searchMap } = this.state;
+    this.props.action.onDelete(this.state.selectedRowKeys, { pagination, searchMap });
+    this.setState({ headLabel: false, selectedRowKeys: [] }); 
   }
 
-  onEdit = () => {  
-    this.setState({isEdit:true});
-    let rowKey = this.state.selectedRowKeys[0];
+  onEdit = (data) => {  
+    this.setState({ isEdit: true });
     let rowData = {};
-    let page = this.props.$$state.get("data").toJS();
-    for(let i=0,len=page.data.length;i<len;i++) {
-      if(rowKey == page.data[i].id) {
-        rowData = page.data[i];
-        break;
+    if(data){//如果是从详情中点击的编辑按钮
+      rowData=data;
+      this.onClose('detail')
+    }else{
+      let rowKey = this.state.selectedRowKeys[0];
+      let page = this.props.$$state.get("data").toJS();
+      for(let i=0,len=page.data.length;i<len;i++) {
+        if(rowKey == page.data[i].id) {
+          rowData = page.data[i];
+          break;
+        }
       }
     }
-    this.props.action.showFormEdit(true,rowData);
+    this.props.action.showFormEdit(true, rowData);
   }
 
-  onClose = () => {
-    this.props.action.showForm(false, {});
+  onClose = (detail) => {
+    this.props.action.showForm(detail, false);
   }
 
   onEnable = (enable) => {
@@ -117,23 +123,21 @@ class List extends React.Component {
   }
 
   onBack = () => {
-    this.setState({ eadLabel: false });
+    this.setState({ headLabel: false,selectedRowKeys:[]});
   }
 
   onEableRadioChange = (e) => {
     let enable = e.target.value;
     let { pagination, searchMap } = this.state;
-    //可能有问题
     searchMap.enableState = enable;
     this.props.action.getListData({ pagination, searchMap });
     this.setState({ enable, selectedRowKeys: [], searchMap });
   }
   showTotal = (total) => {
-    return `共 ${total} 条`;
+   return `共 ${total} 条`;
   }
-  onPageChange = (page, pageSize) => {
+  onPageChange = (page, pageSize) => { 
     let { pagination, searchMap } = this.state;
-    //可能有问题
     pagination = { page: page, pageSize: pageSize };
     this.setState({ pagination })
     this.props.action.getListData({ pagination, searchMap });
@@ -143,21 +147,73 @@ class List extends React.Component {
     pagination = { page: pagination.page, pageSize: pageSize };
     this.setState({ pagination })
     this.props.action.getListData({ pagination, searchMap });
-    console.info(`pageSize: ${pageSize}`)
   }
   onChange = (data) => {
     this.props.action.valueChange(data)
   }
+
+   inputChange = (e) => {//搜索中的输入框
+    let { value } = e.target;
+    this.props.action.inputChange(value)
+  }
+
+  selectChange = (value) => {//搜索中的选择框
+    this.props.action.selectChange(value)
+  }
+
+  onSearch = (flag) => {//搜索
+    let searchKey = this.props.$$state.get('searchKey');
+    let enableState = this.props.$$state.get('enableState');
+    if (flag){//如果只点击输入框的搜索按钮
+      let data = {};
+      if(searchKey){
+        data.searchKey=searchKey;
+      }
+      this.props.action.search(data)
+    }else{
+      let data = {};
+      if(searchKey){ data.searchKey=searchKey;}
+      data.enableState=enableState; 
+      this.props.action.search(data)
+    }
+  }
+
+  menu1 = (
+    <Menu>
+      <Menu.Item key="0">全部</Menu.Item>
+      <Menu.Item key="1">最近创建</Menu.Item>
+      <Menu.Item key="2">最近查看</Menu.Item>
+    </Menu>
+  );
+  menu2 = (
+    <Menu>
+      <Menu.Item key="0">导入</Menu.Item>
+      <Menu.Divider />
+      <Menu.Item key="2">导出</Menu.Item>
+    </Menu>
+  );
+
+  componentDidMount() {
+    let { pagination, searchMap } = this.state;
+    this.props.action.getListData({ pagination, searchMap });
+  }
+
   render() {
     let page = this.props.$$state.get("data").toJS();
-     let editData = this.props.$$state.get("editData").toJS();
+    /* 后台返回来的数据中有一个total：73的键值对；这个导致'共73条'一直不会变化，后台只要动态返回数据库中的真实条数在这里，应该就没问题了 */
+    let editData = this.props.$$state.get("editData").toJS();
+    let detailContent = this.props.$$state.get("detailContent").toJS();
+    let detailSource = this.props.$$state.get("detailSource").toJS();
+    let detailVisible = this.props.$$state.get("detailVisible");
     let visible = this.props.$$state.get("visible");
+    let searchKey = this.props.$$state.get("searchKey");
+    let enableState = this.props.$$state.get("enableState");
     let { headLabel, selectedRowKeys } = this.state;
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
-    const detail = this.props.action.detail;
+    let detail = this.props.action.detail;
     return (
       <div className= 'user-warpper'>
         {
@@ -165,10 +221,10 @@ class List extends React.Component {
           <div className= 'head_edit'>
             <HeadLabel selectedRowKeys= { selectedRowKeys } onBack= { this.onBack }>
             {             
-              this.state.selectedRowKeys.length == 1 ? <Button className="default_button" onClick = { this.onEdit.bind(this) }><i className = 'iconfont icon-bianji'></i>编辑</Button> :''}
+              this.state.selectedRowKeys.length == 1 ? <Button className="default_button" onClick = { this.onEdit.bind(this,false) }><i className = 'iconfont icon-bianji'></i>编辑</Button> :''}
                     
-              <Popconfirm placement = "bottom"  title = "确认删除吗" onConfirm = { this.onDelete } okText = "是" cancelText = "否">
-                <Button className = "default_button" ><i className = 'iconfont icon-shanchu'></i>删除</Button>
+              <Popconfirm placement = "bottom"  title = '确认删除' onConfirm = { this.onDelete } okText = '是' cancelText = '否'>
+                <Button className = "default_button" ><i className = 'iconfont icon-shanchu'>删除</i></Button>
               </Popconfirm>
               
               { this.state.enable == 1 ? <Button className = "default_button" onClick = { this.onEnable(2).bind(this, 2) }><i className = 'iconfont icon-tingyong'></i>停用</Button>:
@@ -177,29 +233,35 @@ class List extends React.Component {
             </HeadLabel> 
           </div>: 
           <div className = 'head_panel'>
-              <div className = 'head_panel-left'>
+               <div className='head_panel-left'>
+                <Dropdown overlay={this.menu1} trigger={['click']}>
+                  <span className="ant-dropdown-link" style={{cursor:'pointer', margin:'0 20px'}}>
+                    最近查看 <Icon type="down" />
+                  </span>
+                </Dropdown>
                 <div>
-                  <span className = 'deep-title-color'>所属部门：</span>
-                  <Input
-                    placeholder = "请选择..."
-                    className = "search"
-                    onSearch = { value => console.log(value) }
+                  <Search
+                    className = 'search'
+                    placeholder="请输入"
+                    style={{ width: 200 }}
+                    value={searchKey}
+                    onChange={this.inputChange.bind(this)}
+                    onSearch={this.onSearch.bind(this,true)}
                   />
                 </div>
-                <div className = 'head_panel-state'>
-                  <span className = 'simple-title-color'>状态：</span>
-                  <RadioGroup onChange = { this.onEableRadioChange } value = { this.state.enable } className = 'simple-title-color'>
-                    <Radio value = { 1 }>启用</Radio>
-                    <Radio value = { 2 }>停用</Radio>
-                  </RadioGroup>
+                <div className='head_panel-state'>
+                  <Select value={enableState}  onChange={this.selectChange.bind(this)} style={{ width: 120 }}>
+                    <Option value = { 1 }>启用状态</Option>
+                    <Option value = { 2 }>停用状态</Option>
+                  </Select>
                 </div>
+                <span onClick={this.onSearch.bind(this,false)} style={{marginLeft:'20px',cursor:'pointer'}}>搜索</span>
               </div>
               <div className = 'head_panel-right'>
-                <ButtonGroup className = 'add-more'>
-                  <Button><i className = 'iconfont icon-daochu'></i>导入</Button>
-                  <Button><i className = 'iconfont icon-daoru'></i>导出</Button>
-                </ButtonGroup>
-                <Button  type = "primary" className = "button_add" onClick = { this.onAdd.bind(this) }><Icon type = "plus" />新增</Button>
+                <Button  type = "primary" className = "button_add" onClick = { this.onAdd.bind(this) }><Icon type = "plus" />新增</Button>          
+                <Dropdown overlay={this.menu2} trigger={['click']} className = 'add-more' >
+                  <Button className="ant-dropdown-link" style={{cursor:'pointer', margin:'0 10px'}}>更多</Button>
+                </Dropdown>
               </div>
           </div>
         }
@@ -212,24 +274,64 @@ class List extends React.Component {
             rowSelection = { rowSelection }
             rowKey = "id"
             pagination={{
-              size:"large",
-              showSizeChanger:true,
-              showQuickJumper:true,
-              total:page.total,
+              size: "large",
+              showSizeChanger: true,
+              showQuickJumper: true,
+              total: page.total,
               showTotal: this.showTotal, 
               onChange: this.onPageChange.bind(this), 
               onShowSizeChange: this.onPageSizeChange.bind(this) }}
           />
         </div>
         <Modal
-          title = { headLabel ? "编辑" : "新增" }
-          visible = {visible}
+          title = { headLabel ? '编辑' : '新增' }
+          visible = { visible }
           onOk = { this.onSave.bind(this) }
           onCancel = { this.onClose.bind(this) }
           width= { 500 }
         >
           <div className = 'model-height' id = 'doc'>
-            <Card onChange={this.onChange.bind(this) } editData = { editData } wrappedComponentRef={ref => this.formRef = ref}/>
+            <Cards           
+              editData = { editData } 
+              onChange={ this.onChange.bind(this) }
+              wrappedComponentRef={ ref => this.formRef = ref } 
+            />
+          </div>
+        </Modal>
+        <Modal
+          title = '详情'
+          visible = { detailVisible }
+          cancelText = {<span><Icon type="poweroff" />关闭</span>}
+          okText = {<span><Icon type="edit" />编辑</span>}
+          onOk = { this.onEdit.bind(this,detailContent) }
+          onCancel = { this.onClose.bind(this,'detail') }
+          width= { 500 }
+        >
+          <div className = 'model-height' id = 'doc'>           
+            <Row gutter={16} style={{marginTop:'20px'}}>
+              <Col span={8}><span style={{float:'right'}}>档案名称：</span></Col>
+              <Col span={10}>{detailContent.name}</Col>
+              <Col style={{color:'rgb(102,144,204)'}} span={6}>{detailContent.isDefault==1?'系统档案':''}</Col>
+            </Row>  
+            <Row gutter={16} style={{marginTop:'20px'}}>
+              <Col span={8}><span style={{float:'right'}}>档案描述：</span></Col>
+              <Col span={16}>{detailContent.description}</Col>
+            </Row>
+            <Row gutter={16} style={{marginTop:'20px'}}>
+              <Col span={8}><span style={{float:'right'}}>档案明细：</span></Col>
+              <Col span={12}>           
+                {
+                  detailSource.map(item=>{     
+                    return (
+                      <div style={{marginBottom:'15px',overflow: 'hidden', whiteSpace: 'nowrap' ,textOverflow: 'ellipsis'}}>
+                        {item.enableState==1?<span>{item.name}</span>:<span style={{color:'#f3f3f3'}}>{item.name}</span>}
+                      </div>
+                    )
+                  })
+                }
+              </Col>
+              <Col span={4}></Col>
+            </Row>
           </div>
         </Modal>
       </div>
@@ -250,3 +352,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default  connect( mapStateToProps, mapDispatchToProps)(List);
+
+/* 
+ 未解决：新增和编辑之后，立即点击详情按钮，会报错，说id不能为空
+
+*/

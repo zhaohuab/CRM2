@@ -1,23 +1,25 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio, Select } from 'antd';
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux';
+import * as Actions from '../action/index.js'
 import moment from 'moment';
-import Department from 'components/refs/prdtype'
+import PrdClass from 'components/refs/prdtype'
+import AttrsGrpRef from './AttrsGrpRef'
+import FatherClassInput from './FatherClass'
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
+const Search = Input.Search;
 
-export default class NormalLoginForm extends React.Component {
+class PrdClassForm extends React.Component {
     constructor(props) {
         super(props);
     }
  
     componentDidMount() {
-    //装箱过程
-        let { fatherorgId,fatherorgName} = this.props.data; 
-        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};   
-         
-        this.props.form.setFieldsValue(this.props.data);
     }
+
 
     render() {
         const formItemLayout = {
@@ -32,29 +34,34 @@ export default class NormalLoginForm extends React.Component {
         };
         const { getFieldDecorator } = this.props.form;
         return (
-            <div>
-                {
-                    this.props.data ?
-                            <Form {...formItemLayout}  className="login-form home-form" >
+            <div>               
+                <Form {...formItemLayout}  className="login-form home-form" >
                                 <div>
                                     {getFieldDecorator('id', {
                                         rules: [],
                                     })(
                                         <Input style={{ display: 'none'}} type='text' placeholder="请输入编号!" />
                                         )}
+                                           {
+                                    getFieldDecorator('path', {
+                                    })(
+                                        <Input style={{ display: 'none'}}/>
+                                        )
+                                    }
                                 </div>
+                             
                                 <FormItem {...formItemLayout} label='编码'>
                                     {getFieldDecorator('code', {
-                                        rules: [{ required: true, message: '请输入编码' }],
+                                        rules: [{ required: true, message: '' }],
                                     })(
-                                        <Input  type="text" placeholder="请输入编码" />
+                                        <Input  type="text" placeholder=" "/>
                                         )}
                                 </FormItem>
                                 <FormItem {...formItemLayout} label='名称'>
                                     {getFieldDecorator('name', {
-                                        rules: [{ required: true, message: '请输入名称!' }],
+                                        rules: [{ required: true, message: '' }],
                                     })(
-                                        <Input type='text' placeholder="请输入名称!" />
+                                        <Input type='text' placeholder="" />
                                         )}
                                 </FormItem>
                                 <FormItem
@@ -64,20 +71,88 @@ export default class NormalLoginForm extends React.Component {
                                     {getFieldDecorator('fatherTypeId', {
                                         rules: [],
                                     })(
-                                        <Department />
+                                        <FatherClassInput/>
                                         )}
                                 </FormItem>
-                                <FormItem  { ...formItemLayout } label='对应ERP组织'>
+                                <FormItem  { ...formItemLayout } label='属性组'>
+                                    { getFieldDecorator('attrGroupId', {
+                                        rules: [],
+                                    })(
+                                        <AttrsGrpRef/>
+                                        )}
+                                </FormItem>
+                                <FormItem  { ...formItemLayout } label='对应ERP'>
                                     { getFieldDecorator('erpCode', {
                                         rules: [],
                                     })(
-                                        <Input type='text' placeholder = "无" />
+                                        <Input type='text' placeholder = "" />
                                         )}
                                 </FormItem>
-                            </Form>
-                         : ''
-                }
+                            </Form>    
+                           
+                        
             </div>
         );
     }
 }
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+      $$state: state.prdtype
+    }
+  }
+  
+  //绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+      action: bindActionCreators(Actions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+    Form.create({
+        onFieldsChange(props, fields){ 
+            let fieldsChangeData = {};
+            let dataSource = props.dataSource;
+            for(let item in fields){              
+                // if(item == "attrGroupId"){
+                //     fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                // }else
+                 if(item == "fatherTypeId"){
+                    fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                }else{           
+                    fieldsChangeData = {[item]:fields[item].value};
+                }
+            }
+            Object.assign(props.dataSource, fieldsChangeData);
+            props.action.setFieldsChangeData(fieldsChangeData);
+            props.action.setFormData(props.dataSource);
+        },
+        mapPropsToFields(props){
+            let data = props.dataSource;
+            return{
+                fatherTypeId:{
+                    ...data.fatherTypeName,
+                    value:data.fatherTypeName
+                },  
+                attrGroupId:{
+                    ...data.attrGroupName,
+                    value:data.attrGroupName
+                }, 
+                code:{
+                    ...data.code,
+                    value:data.code
+                },  
+                erpCode:{
+                    ...data.erpCode,
+                    value:data.erpCode
+                }, 
+                name:{
+                    ...data.name,
+                    value:data.name
+                }, 
+            };
+        }
+    })(PrdClassForm));
+

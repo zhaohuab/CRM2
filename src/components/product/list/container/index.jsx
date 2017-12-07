@@ -1,17 +1,23 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Table, Button, Popconfirm, Input, Radio, Icon, Form, Modal} from 'antd'
-import Card from './ProductForm.jsx';
+import {Table, Button, Popconfirm, Input, Radio, Icon, Form, Modal,Row,Col,Select} from 'antd'
+import WrapCard from './ProductForm.jsx';
+import WrapCardDetail from './ProductFormDetail.jsx';
 import HeadLabel from './HeadLabel.jsx';
-import Department from 'components/refs/departments'
+import SaleUnitTable from './SaleUnitTable'
+import SaleUnitDeTable from './SaleUnitDetailTable'
+
+import HeaderButton from '../../../common/headerButtons/headerButtons.jsx'
 import './index.less';
 
 import * as Actions from '../action'
-
+import LessForm from "./lessForm.jsx";
+import MoreForm from "./moreForm.jsx";
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
+let Option = Select.Option;
 import 'assets/stylesheet/all/iconfont.css'
 
 class List extends React.Component{
@@ -27,9 +33,10 @@ class List extends React.Component{
               page:1,
             },
             searchMap : {
-              enableState:1,
+            //  enableState:1,
             },
-            originCode:{},//产品修改前的code,用于编辑功能
+            moreShow:false,
+            status:"add"      
         },      
         
 
@@ -37,7 +44,9 @@ class List extends React.Component{
         {
             title: '编码',
             dataIndex: 'code',
-            key: 'code'           
+            key: 'code',
+            render:(text,record,index) => (
+                <a onClick = {this.showDetail.bind(this,record)}>{text}</a>)           
         },{
             title: '名称',
             dataIndex: 'name',
@@ -62,8 +71,8 @@ class List extends React.Component{
             key: 'measureName',             
         },{
             title: '品牌',
-            dataIndex: 'brandId',
-            key: 'brandId'  
+            dataIndex: 'brandName',
+            key: 'brandName'  
         },{
             title: '参考售价',
             dataIndex: 'price',
@@ -80,49 +89,117 @@ class List extends React.Component{
             title: '启用状态',
             dataIndex: 'enableStateName',
             key: 'enableStateName'  
-        },{
-            title: '产品描述',
-            dataIndex: 'description',
-            key: 'description'  
         }]
     }
+
     componentDidMount() {
         let { pagination,searchMap } = this.state;
         this.props.action.getListData({ pagination,searchMap });
     }
 
+    showDetail(record){
+        this.setState({status:"showdetail"});
+        let rowKey = record.id;
+        let rowData = {};
+        let page = this.props.$$state.get("data").toJS();
+        for(let i=0,len=page.data.length;i<len;i++) {
+          if(rowKey == page.data[i].id) {
+            this.props.action.showEditForm(rowKey ,true);
+            break;
+          }          
+        }      
+    }
+    //点击新增编辑界面销售单位的新增按钮，增加一行
+    addRow() {
+        let k = this.props.$$state.get("addNum");
+        this.props.action.addSaleUnitRow({id:'add_'+k.toString(),editState:'ADD',fixedConvert:1});
+    }
+    //销售单位删除
+    onSuDelete(){
+        let flag = false;
+        let changedData = this.props.$$state.get('changedData').toJS();
+        let selectedRowKeys =this.props.$$state.get('suSelectedRowKeys').toJS();
+        let salesunitTable =this.props.$$state.get('salesunitTable').toJS();       
+         //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
+        for(let rowKey of selectedRowKeys){
+            changedData = changedData.filter(change => { return change.id !== rowKey});
+            salesunitTable = salesunitTable.filter(data => {
+                if(data.id !== rowKey){
+                    data.editState = "delete";
+                    changedData.push(data);
+                }
+                return data.id !== rowKey
+            });
+        }
+        let sel = [];
+        this.props.action.setSecRowKeys([]);
+        this.props.action.onChangeSuVa(changedData);
+        this.props.action.setSuTableData(salesunitTable);
+    }
+
     onAdd() {
+        this.setState({status:"add"});
+        let dataSource =this.props.$$state.get('salesunitTable').toJS();
+        let { pagination,searchMap } = this.state;
         this.setState({isEdit:false});
         this.props.action.showForm(true,{});
+        //this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
+       // this.props.action.getProdClassRef();//获取产品分类参照列表
+       // this.props.action.getBrandRef(pagination);//获取品牌参照列表
+       // this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
+
     }
+
     onBack = ()=>{
-        this.setState({headLabel:false});
+        this.setState({selectedRowKeys:[]});
     }
 
     onClose(){
         this.props.action.showForm(false,{});
+        this.props.action.onChangeSuVa([]);
+        this.props.action.setAddNum(0);
+        this.props.action.setSuTableData([]);
+        this.props.action.setFormData({});
     }
 
     onDelete = () => {
-        let { pagination,searchMap } = this.state;
-        
-        this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
-        this.setState({headLabel:false,selectedRowKeys:[]});
+        let { pagination,searchMap } = this.state;     
+       // this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
+       // this.setState({headLabel:false,selectedRowKeys:[]});
+        confirm({
+            title: '确定要删除吗?',
+            content: '此操作不可逆',
+            okText: '是',
+            okType: 'danger',
+            cancelText: '否',
+            onOk() {
+                this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
+                that.setState({ headLabel: false, selectedRowKeys: [] });
+            },
+            onCancel() {
+              console.log('Cancel');
+            },
+          });  
     }
 
     onEdit = () => {
-        this.setState({isEdit:true});
+        this.setState({status:"edit"});
+        let { pagination,searchMap } = this.state;
+     //   this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
+      //  this.props.action.getProdClassRef();//获取产品分类参照列表
+      //  this.props.action.getBrandRef(pagination);//获取品牌参照列表
+      //  this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
+     //   this.setState({isEdit:true});
         console.info(this.state.selectedRowKeys);
         let rowKey = this.state.selectedRowKeys[0];
         let rowData = {};
         let page = this.props.$$state.get("data").toJS();
         for(let i=0,len=page.data.length;i<len;i++) {
           if(rowKey == page.data[i].id) {
-            rowData = page.data[i];
+            this.props.action.showEditForm(rowKey ,true);
             break;
-          }
+          }          
         }      
-        this.props.action.showForm(true,rowData);
     }
 
     onEnable(enable) {
@@ -133,12 +210,10 @@ class List extends React.Component{
         }
     }
 
-    onEableRadioChange = (e) => {
-        let enable = e.target.value;
-        let { pagination,searchMap } = this.state;
-        searchMap.enableState = enable;
-        this.props.action.getListData({ pagination,searchMap });
-        this.setState({enable,selectedRowKeys:[],searchMap});
+    onEableRadioChange = (enableState) => {
+        let { pagination,searchMap,selectedRowKeys} = this.state;      
+        let ids = selectedRowKeys.join();        
+        this.props.action.changeEnableState( enableState,ids,pagination,searchMap );      
     }
 
     onPageChange(page,pageSize) {
@@ -155,19 +230,31 @@ class List extends React.Component{
         this.props.action.getListData({ pagination,searchMap });
         console.info(`pageSize:${pageSize}`)
     }
-    onSave(){
-        let form = this.formRef.props.form;
-        form.validateFieldsAndScroll((err, values) => {
-          if (!err) {
-            console.log('Received values of form: ', values);
-          }
-        });
+
+    onSave(){       
+        let editData = this.props.$$state.get("editData").toJS();
+        let formData = this.props.$$state.get("formData").toJS();
+        let id = editData.id;
+        let fieldsChangeData = this.props.$$state.get("fieldsChangeData").toJS();
+        Object.assign(editData,fieldsChangeData);
+        let saleUnits =this.props.$$state.get('changedData').toJS();
+        let addData = {...editData,saleUnits:saleUnits}; 
         if(this.state.isEdit) {         
-          this.props.action.onSave4Edit(form.getFieldsValue());
+          this.props.action.onSave4Edit(addData,id);
         } else {
-          this.props.action.onSave4Add(form.getFieldsValue());
+          this.props.action.onSave4Add(addData);
         }
+        this.props.action.setAddNum(0);
+        this.props.action.setSuTableData([]);
+        this.props.action.setFormData({});  
+        this.props.action.onChangeSuVa([]); 
+        this.props.action.setBrandValue("");
+        this.props.action.setAttrGrpValue(""); 
+        this.props.action.setMeaUnitValue("");
+        this.props.action.setPrdClassValue("");
+        //this.props.$$state.get("brandValue")
     }
+
     onSelectChange(selectedRowKeys){
         let state = {
             selectedRowKeys:selectedRowKeys
@@ -179,92 +266,183 @@ class List extends React.Component{
         return `共 ${total} 条`;
     }
     
+    moreForm() {
+        let{ moreShow } = this.state;
+        if(moreShow == true){
+            this.setState({moreShow:false});
+        }else{
+            this.setState({moreShow:true});
+        }
+    }
     render(){
         let page = this.props.$$state.get("data").toJS();
         let visible = this.props.$$state.get("visible");
-        let {headLabel,selectedRowKeys} = this.state;
-        
+        let {headLabel,selectedRowKeys,isEdit,moreShow,status} = this.state;
         let rowSelection = {
           selectedRowKeys,
           onChange: this.onSelectChange.bind(this),
         };
         let editData = this.props.$$state.get("editData").toJS();
-        const WrapCard = Form.create()(Card);
+        let title = "";
+        if(status =="edit"){
+            title = "编辑";
+            //table =  <AttrVaTable/>;
+          }else if(status == "add"){
+            title = "新增";
+          }else if(status =="showdetail"){
+            title = "详情";
+           // table = <AttrVaDeTable/>;
+          }
         return(
-            <div className='user-warpper'>  
-                {
-                    headLabel ? 
-                    <div className='head_edit'>
-                        <HeadLabel selectedRowKeys={selectedRowKeys} onBack={this.onBack}>
-                            <Button className="default_button" onClick={this.onEdit}><i className='iconfont icon-bianji'></i>编辑</Button>
-                            <Popconfirm placement="bottom"  title="确认删除吗" onConfirm={this.onDelete} okText="是" cancelText="否">
-                                <Button className="default_button" ><i className='iconfont icon-shanchu'></i>删除</Button>
-                            </Popconfirm>
-              
-                            {this.state.enable==1 ? <Button className="default_button" onClick={this.onEnable(2).bind(this,2)}><i className='iconfont icon-tingyong'></i>停用</Button>:
-                            <Button className="default_button" onClick={this.onEnable(1).bind(this,1)}><i className='iconfont icon-qiyong-lanse'></i>启用</Button>}
-                            <Button className="default_button"><i className='iconfont icon-fenpeijiaose'></i>分配角色</Button>
-                        </HeadLabel> 
-                    </div>: 
-                    <div className='head_panel'>
-                        <div className='head_panel-left'>
-                            <div>
-                                <span className='deep-title-color'>适用组织：</span>
-                                <Input
-                                    placeholder="请选择..."
-                                    className="search"
-                                    onSearch={value => console.log(value)}
-                                />
-                            </div>
-                            <div>
-                                <span className='deep-title-color'>商品分类：</span>
-                                <Input
-                                    placeholder="请选择..."
-                                    className="search"
-                                    onSearch={value => console.log(value)}
-                                 />
-                            </div>
-                            <div>
-                                <span className='deep-title-color'>关键字：</span>
-                                <Input
-                                    placeholder="请选择..."
-                                    className="search"
-                                    onSearch={value => console.log(value)}
-                                />
-                            </div>
-                            <div className='head_panel-state'>
-                                <span className='simple-title-color'>状态：</span>
-                                <RadioGroup  onChange={this.onEableRadioChange} value={this.state.enable} className='simple-title-color'>
-                                    <Radio value={1}>启用</Radio>
-                                    <Radio value={2}>停用</Radio>
-                                </RadioGroup>
-                            </div>
-                        </div>
-                        <div className='head_panel-right'>
-                            <ButtonGroup className='add-more'>
-                                <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                                <Button><i className='iconfont icon-daoru'></i>导出</Button>
+            <div className='product-warpper'>  
+                <Row className='header-warpper'>               
+                    {selectedRowKeys && selectedRowKeys.length >= 1 ? ( 
+                        <HeaderButton
+                            goBack={this.onBack.bind(this)}
+                            length={selectedRowKeys.length}
+                        >
+                            {selectedRowKeys.length != 1 ?
+                                <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button> :
+                                <Button className="default_button" onClick={this.onEdit.bind(this)}><i className='iconfont icon-bianji'></i>编辑</Button>
+                            }   
+                            <Button
+                                className="returnbtn-class"
+                                onClick={this.onDelete.bind(this)}
+                            >
+                                <i className="iconfont icon-shanchu" />删除
+                            </Button>
+
+                            <ButtonGroup className="returnbtn-class">
+                                <Button onClick={this.onEableRadioChange.bind(this, 1)}>
+                                    <i className="iconfont icon-qiyong" />启用
+                                </Button>
+                                <Button onClick={this.onEableRadioChange.bind(this, 2)}>
+                                    <i className="iconfont icon-tingyong" />停用
+                                </Button>
                             </ButtonGroup>
-                            <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}> <Icon type="plus" />新增</Button>
-                        </div>
-                    </div>   
-                }       
+                        </HeaderButton>
+                        ):<div>
+                         <Row 
+                          type="flex"
+                          align="middle"
+                          justify="space-between"
+                          className="header-top">
+                             <Col span={18}>
+                             <Row type="flex" align="middle">
+                                 <Col className="select-recover">
+                                     <Select defaultValue="0">
+                                         <Option value="0">全部</Option>                                       
+                                         <Option value="1">最近查看</Option>                                       
+                                     </Select>
+                                 </Col>
+                                 <Col
+                                     span={18}
+                                     className={
+                                         moreShow
+                                             ? "less-hide-height"
+                                             : "less-show-height"
+                                     }
+                                 >
+                                     <LessForm
+                                         handleSearch={this.showTotal.bind(
+                                             this
+                                         )} //点击查询方法
+                                         searchMapFn={this.showTotal.bind(
+                                             this
+                                         )} //动态赋值查询条件到redux中
+                                         formMore={this.moreForm.bind(
+                                             this
+                                         )} //控制查询显隐
+                                     />
+                                 </Col>
+                             </Row>
+                         </Col>
+
+                         <Col span={6}>
+                             <Row type="flex" gutter={15} justify="end">
+                                 <Col>
+                                     <ButtonGroup>
+                                         <Button>
+                                             <i className="iconfont icon-daoru" />导入
+                                         </Button>
+                                         <Button>
+                                             <i className="iconfont icon-daochu" />导出
+                                         </Button>
+                                     </ButtonGroup>
+                                 </Col>
+                                 <Col>
+                                     <Button
+                                         type="primary"
+                                         onClick={this.onAdd.bind(this)}
+                                     >
+                                         <i className="iconfont icon-xinjian" />新建
+                                     </Button>
+                                 </Col>
+                             </Row>
+                         </Col>
+                     </Row>
+                     <div className="header-bottom">
+                         <Row
+                             className={
+                                 moreShow
+                                     ? "more-show-height"
+                                     : "less-hide-height"
+                             }
+                         >
+                             <MoreForm
+                                 handleSearch={this.onAdd.bind(this)} //点击查询方法
+                                 searchMapFn={this.onAdd.bind(this)} //动态赋值查询条件到redux中
+                                 formMore={this.moreForm.bind(this)} //控制查询显隐
+                             />
+                         </Row>
+                     </div>
+                    </div>                             
+                    }                                    
+                    </Row>   
+              
                 <div className = 'list-box'>
                     <Table  size="middle" rowSelection={rowSelection} dataSource={page.data} rowKey="id" columns = {this.columns}
                     pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
                 </div>
-                <Modal title="新增/编辑 产品" visible={visible} onOk={this.onSave.bind(this)} onCancel={this.onClose.bind(this)} width={800}>
+                <Modal title={title} visible={visible} 
+                    cancelText = {status == "showdetail"?"关闭":"取消"}
+                    okText = {status == "showdetail"?"编辑":"确认"}
+                    onOk={status == "showdetail"?this.onEdit.bind(this):this.onSave.bind(this)} 
+                    onCancel={this.onClose.bind(this)} width={850}>
+                {status !== "showdetail"?
+                   <div>
                     <div className='model-height'>
                         <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
                     </div>
+                    <div >
+                        <Row>
+                            <Col span={2}>
+                                <Button onClick = {this.addRow.bind(this)}>新增</Button>
+                            </Col>
+                            <Col span={2}>
+                                <Button onClick = {this.onSuDelete.bind(this)}>删除</Button>
+                            </Col>
+                        </Row>
+                        <SaleUnitTable/>
+                    </div>
+                </div>:<div>
+                    <div className='model-height'>
+                        <WrapCardDetail dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+                    </div>
+                    <div>
+                        <p>销售单位:</p>
+                        <SaleUnitDeTable/>
+                    </div>
+                </div>
+                }
                 </Modal>
-            </div>
-        )
+            </div>)
     }
 }
 
 function mapStateToProps(state, ownProps) {
     return{
+        
         $$state: state.product
     }
 }

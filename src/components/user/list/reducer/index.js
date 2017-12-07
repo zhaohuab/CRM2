@@ -1,10 +1,18 @@
 import Immutable from 'immutable'
-
+import { transToFields,transToValues } from 'utils/template/form/Transfer.js'
 let $$initialState = {
 	loading: false,
-	editData:{},
+	formData:{},
+	formFields:{},
 	data:[],
 	visible:false,
+	isEdit:false,
+	template:{
+		add:undefined,
+		edit:undefined,
+		list:undefined,
+		view:undefined,
+	}
 };
 
 function pageAdd(page,item) {
@@ -26,6 +34,24 @@ function pageEdit(page,item) {
 }
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {
+		case 'USER_LIST_TEMPLATE':
+	        return $$state.mergeDeep({
+                template: {
+					list : action.content.columns,
+				}
+			})
+		case 'USER_ADD_TEMPLATE':
+	        return $$state.mergeDeep({
+                template: {
+					add : action.content.fields,
+				}
+			})
+		case 'USER_EDIT_TEMPLATE':
+	        return $$state.mergeDeep({
+                template: {
+					edit : action.content.fields,
+				}
+            })
 	    case 'USER_LIST_GETLIST':
 	        return $$state.merge({
                 loading: true
@@ -37,9 +63,18 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				visible : action.content.visible,
 			})
 		case 'USER_LIST_SHOWFORM':
+		
 			return $$state.merge({
 				visible : action.content.visible,
-				editData : action.content.editData,
+				formFields : transToFields(action.content.editData),
+				formData : action.content.editData,
+				isEdit : action.content.isEdit,
+			})
+		case 'USER_PAGE_USERCHANGE':
+		
+			return $$state.mergeDeep({
+				formData : transToValues(action.content.formFields),
+				formFields : action.content.formFields,
 			})
 		case 'USER_CARD_SAVEADD' : 
 			return $$state.merge({

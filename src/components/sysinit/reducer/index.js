@@ -1,35 +1,25 @@
 import Immutable from 'immutable'
+import { transToFields,transToValues } from 'utils/template/form/Transfer.js'
 let $$initialState = {
     current:0,
     isInit : false,
     tenantInfo:{},
     adminList:[],
     tenantFields:{},
+    template:{
+        edit:undefined,
+    }
 };
-let transToFields = (values)=>{
-    let result = {};
-    for(let field in values) {
-        result[field] = {
-            value : values[field],
-        }
-    }
-    return result;
-}
 
-let transToValues = (fields) => {
-    let result = {};
-    for(let field in fields) {
-        result[field] = fields[field];
-    }
-    return result;
-}
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
     switch (action.type) {
+        case 'SYSINIT_EDIT_TEMPLATE' : 
+            return $$state.mergeDeep({
+                template:{
+                    edit : action.content.fields
+                }
+            })
         case 'SYSINIT_PAGE_INFO':
-            let current = 0;
-            if(action.content.isInit) {
-                current=2;
-            }
             return $$state.merge({
                 isInit:action.content.isInit,
                 tenantInfo:action.content.tenantInfo,

@@ -46,24 +46,31 @@ class List extends React.Component {
                 )
             },
             {
-                title: "渠道类型",
-                dataIndex: "cannelTypeName"
+                title: "客户类型",
+                dataIndex: "typeName"
             },
+
             {
                 title: "客户等级",
                 dataIndex: "levelName"
             },
             {
-                title: "营销区域",
-                dataIndex: "saleAreaName"
+                title: "客户状态",
+                dataIndex: "stateName"
             },
+
             {
                 title: "行业",
                 dataIndex: "industryName"
             },
             {
-                title: "状态",
-                dataIndex: "enableState"
+                title: "启用状态",
+                dataIndex: "enableState",
+                render: text => <span>{text == 1 ? "启用" : "未启用"}</span>
+            },
+            {
+                title: "渠道类型",
+                dataIndex: "cannelTypeName"
             },
             {
                 title: "地址",
@@ -76,22 +83,60 @@ class List extends React.Component {
             this.props.action.selectRow(selectedRows, selectedRowKeys);
         };
     }
+    //改变编辑状态
+    changeState(visiable) {
+        this.props.action.changeStateFn(visiable);
+    }
 
     //显示面板
     slideShow(record) {
-        this.props.action.showViewForm(true, record);
+        this.props.action.showViewForm(true, record.id);
     }
     //隐藏面版
     slideHide() {
         //关闭面板清空数据
-        this.props.action.showViewForm(false, {});
+        this.props.action.hideViewForm(false);
+    }
+
+    //上传数据时，各种参照的数据转换
+    trancFn(data) {
+        //行业
+        if (data.industry && data.industry.id) {
+            data.industry = data.industry.id;
+        } else {
+            data.industry = "";
+        }
+        //上级客户
+        if (data.parentId) {
+            data.parentId = data.parentId.id;
+        }
+        //城市
+        if (data.province_city_district) {
+            let change = data.province_city_district;
+            data.province = change[0];
+            data.city = change[1];
+            data.district = change[2];
+            data.province_city_district = "";
+        }
+        //详细地址
+        if (data.address) {
+            debugger;
+            let value = data.address;
+            data["address"] = value.address;
+            data["latlng"] = value.latlng;
+        }
+
+        return data;
     }
 
     //form新增、或者修改
     formHandleOk() {
+        debugger;
+
         this.formRef.props.form.validateFields((err, values) => {
-            debugger;
             if (!err) {
+                values = this.trancFn(values);
+                debugger;
                 if (values.id) {
                     this.props.action.listEditSave(values);
                 } else {
@@ -139,12 +184,15 @@ class List extends React.Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
-        const {
+        let {
             selectedRows,
             selectedRowKeys,
             formVisitable,
             viewState,
-            viewData
+            viewData,
+            icbcVisible,
+
+            icbcSelect
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -153,7 +201,7 @@ class List extends React.Component {
         };
 
         return (
-            <div className="custom-warpper">
+            <div className="custom-warpper ">
                 <ToolForm />
                 <div className="table-bg tabel-recoverd">
                     <Table
@@ -185,6 +233,7 @@ class List extends React.Component {
                         <Card
                             wrappedComponentRef={inst => (this.formRef = inst)}
                             editCardFn={this.editCardFn.bind(this)}
+                            changeState={this.changeState.bind(this)}
                         />
                     </div>
                 </Modal>

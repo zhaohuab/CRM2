@@ -7,7 +7,9 @@ import {
     Col,
     Input,
     Button,
-    Icon
+    Icon,
+    Dropdown,
+    Menu
 } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -79,7 +81,7 @@ class ToolForm extends React.Component {
     }
     //点击新建按钮
     btnNew() {
-        this.props.action.showForm(true, false);
+        this.props.action.addCustomer(true);
     }
     //上下表单控制显隐
     changeVisible() {
@@ -88,6 +90,10 @@ class ToolForm extends React.Component {
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
         debugger;
+        if (searchMap.industry) {
+            searchMap.industry = searchMap.industry.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+        }
+
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS(),
             searchMap
@@ -101,7 +107,16 @@ class ToolForm extends React.Component {
 
     render() {
         let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
-        debugger
+        const moreMenu = (
+            <Menu>
+                <Menu.Item key="0">
+                    <span>导入</span>
+                </Menu.Item>
+                <Menu.Item key="1">
+                    <span>导出</span>
+                </Menu.Item>
+            </Menu>
+        );
         return (
             <Row className="header-warpper">
                 {selectedRowKeys && selectedRowKeys.length >= 1 ? (
@@ -138,9 +153,14 @@ class ToolForm extends React.Component {
                                     <Col className="select-recover">
                                         <Select defaultValue="3">
                                             <Option value="0">全部</Option>
-                                            <Option value="1">我关注的</Option>
-                                            <Option value="2">最近新建</Option>
+                                            <Option value="1">我关注</Option>
+                                            <Option value="2">最近创建</Option>
                                             <Option value="3">最近查看</Option>
+                                            <Option value="4">
+                                                一周前跟进
+                                            </Option>
+                                            <Option value="5">未分配</Option>
+                                            <Option value="6">已分配</Option>
                                         </Select>
                                     </Col>
                                     <Col
@@ -169,22 +189,25 @@ class ToolForm extends React.Component {
                             <Col span={6}>
                                 <Row type="flex" gutter={15} justify="end">
                                     <Col>
-                                        <ButtonGroup>
-                                            <Button>
-                                                <i className="iconfont icon-daoru" />导入
-                                            </Button>
-                                            <Button>
-                                                <i className="iconfont icon-daochu" />导出
-                                            </Button>
-                                        </ButtonGroup>
-                                    </Col>
-                                    <Col>
                                         <Button
                                             type="primary"
                                             onClick={this.btnNew.bind(this)}
                                         >
                                             <i className="iconfont icon-xinjian" />新建
                                         </Button>
+                                    </Col>
+                                    <Col>
+                                        <Button>
+                                            <i className="iconfont icon-shuaxin" />刷新
+                                        </Button>
+                                    </Col>
+                                    <Col>
+                                        <Dropdown.Button
+                                            overlay={moreMenu}
+                                            trigger={["click"]}
+                                        >
+                                            更多
+                                        </Dropdown.Button>
                                     </Col>
                                 </Row>
                             </Col>

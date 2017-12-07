@@ -26,7 +26,7 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
-
+        debugger;
         this.props.handleSearch(this.props.$$state.toJS().searchMap);
     }
     moreFn() {
@@ -43,16 +43,16 @@ class LessForm extends React.Component {
             <div className="less-form">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
                     <Row type="flex" align="middle" style={{ height: "54px" }}>
-                        <Col span={8}>
+                        <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("name", {})(
+                                {getFieldDecorator("name")(
                                     <Input type="text" placeholder="客户名称" />
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={8}>
+                        <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("type", {})(
+                                {getFieldDecorator("type")(
                                     <Enum
                                         addOptionAll={"客户类型"}
                                         dataSource={enumData.type}
@@ -60,8 +60,18 @@ class LessForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
+                        <Col span={6}>
+                            <FormItem {...formItemLayout}>
+                                {getFieldDecorator("level")(
+                                    <Enum
+                                        addOptionAll={"客户等级"}
+                                        dataSource={enumData.level}
+                                    />
+                                )}
+                            </FormItem>
+                        </Col>
 
-                        <Col span={8}>
+                        <Col span={6}>
                             <div className="more-btn">
                                 <Button htmlType="submit">查询</Button>
                                 <span
