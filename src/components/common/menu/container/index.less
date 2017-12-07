@@ -91,7 +91,32 @@
     cursor: pointer;
     line-height: 13px;
 }
-
+//覆盖ant-design菜单样式
+.ant-menu-submenu-vertical > .ant-menu {
+    min-width: 300px;
+    margin-left:0;
+}
+.ant-menu-submenu > .ant-menu {
+    border-radius: 0;
+}
+.ant-menu-item-group {
+    clear:both;
+}
+.menu-even {
+    width:150px;
+    float:left;
+}
+.menu-odd {
+    width:150px;
+}
+.menu-dot {
+    width:5px;
+    height:5px;
+    border-radius: 5px;
+    background-color: white;
+    display: inline-block;
+    margin: 2px 9px 2px 3px;
+}
 .rotateMenuIn{
      animation: MenuIn .2s linear forwards
 }
