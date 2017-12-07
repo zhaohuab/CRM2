@@ -103,6 +103,7 @@ class List extends React.Component {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        return;
       }
     });
     if (this.state.isEdit) {
