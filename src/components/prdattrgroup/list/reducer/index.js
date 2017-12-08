@@ -22,7 +22,8 @@ let $$initialState = {
 	selectedMap:new Map(),
 	isSelected:false,
 	attrGrpId:0,
-	status:""
+	status:"",
+	record:{}
 };
 
 function listAdd(page,item) {	
@@ -65,6 +66,7 @@ function addLocalAttrs(item, localValues){
 }
 
 function addSelectedData(savedData, selectedRow){
+	debugger
 	savedData.push(selectedRow);
 	return savedData;
 }
@@ -188,7 +190,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedAttrVas:action.content.checkedList,
 				attrId:	action.content.attrid
 			})
-																
+				//保存当前选中属性 ok
+		case 'PRDATTR_LIST_SAVERECORD' : 
+			return $$state.merge({
+				record:action.content
+			})
+															
 	  default: 
 	    return $$state;
 	}
