@@ -37,34 +37,54 @@ const basePath = '/crm_web/';
 
         let that = this;
 
-        function tree(data,isRoot){
-           
-            return data.map((item,index) => {
-                if(item.child.length>0){
-                    return <SubMenu  key={item.id} title = {<span>
-                        {
-                            isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
-                        }
+        function tree3(data) {
+            return data.map((item, index) => {
+                return index % 2 ? <Menu.Item key={item.id} className='menu-odd'>
+                    <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
+                        <span>
+                            <i className="menu-dot"></i>
                             <span className='menu-title'>{item.name}</span>
-                        </span>}>
-                        {tree(item.child,false)}
-                    </SubMenu>
-                }else{
-                    return <Menu.Item key={item.id}>
-                            <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
-                                <span>
-                                {
-                                    isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
-                                }
-                                    <span className='menu-title'>{item.name}</span>
-                                </span>
-                            
-                            </Link>
+                        </span>
+                    </Link>
+                </Menu.Item >
+                    : <Menu.Item key={item.id} className='menu-even'>
+                        <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
+                            <span>
+                                <i className="menu-dot"></i>
+                                <span className='menu-title'>{item.name}</span>
+                            </span>
+                        </Link>
                     </Menu.Item>
+            })
+        }
+        function tree(data,level){
+            return data.map((item,index) => {
+                
+                if(level == 1){
+                    return <SubMenu  key={item.id} title = {
+                    <span>
+                        <i className={"iconfont "+that.icon[index]}></i><span className='menu-title'>{item.name}</span>
+                    </span>}>
+                        {tree(item.child,level+1)}
+                    </SubMenu>
+                }else if(level == 2 && (!item.child || item.child.length == 0)) {
+                    return  <Menu.Item key={item.id} style={{clear:"both"}}>
+                                <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
+                                    <span>
+                                  
+                                        <span className='menu-title'>{item.name}</span>
+                                    </span>
+                                </Link>
+                            </Menu.Item>
+                }else {
+                    return <Menu.ItemGroup title={item.name}>
+                        {tree3(item.child)}
+                        </Menu.ItemGroup>
                 }
             })
+            
         };
-        let isRoot = true;
+        let level = 1;
         let rootTitle = "首页";
         return (
             <div>  
@@ -81,7 +101,7 @@ const basePath = '/crm_web/';
                             <span><Icon type="home" className='menu-home'/><span className='menu-title'>{rootTitle}</span></span>
                         </Link>
                     </Menu.Item>
-                    {tree(data, isRoot)}
+                    {tree(data, level)}
                 </Menu>
             </div>
         )
