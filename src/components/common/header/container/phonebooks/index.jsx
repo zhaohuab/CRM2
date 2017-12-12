@@ -16,7 +16,8 @@ class Department extends React.Component {
     }
 
     phoneBookClosed = () => {//关闭通讯录
-        this.props.action.phoneBookClosed()
+        this.props.action.phoneBookClosed();
+        this.props.action.searchStateChange(false);
     }
 
     renderTreeNodes = data => {//组织结构
@@ -94,8 +95,8 @@ class Department extends React.Component {
         let dataSource = this.props.$$state.get('dataSource').toJS();
         return (
             <div className='wrapper-phonebooks'>               
-                    <div className='phonebooks'>
-                        <Row type='flex' align='middle' gutter={16} style={{padding:'10px 0',borderBottom:'1px solid rgb(200,200,200)'}}>
+                    <div className='phonebooks' style={{margin:0}}>
+                        <Row type='flex' align='middle' gutter={16} style={{padding:'10px 0',margin:'-10px -10px 5px ', backgroundColor:'rgb(245,245,245)'}}>
                             <Col span={6} style={{fontSize:'14px'}}>通讯录</Col>  
                             <Col span={16}>
                                 <Input addonAfter={<Icon type="search" />} placeholder='请输入关键字' onChange={this.onSearch.bind(this)}/>
