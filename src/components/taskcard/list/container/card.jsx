@@ -42,6 +42,7 @@ class Cards extends React.Component {
       arr.push(item.id);
       this.props.action.onEnable(arr, num)
   }
+  
   translateTime = (time) => {
     return  moment(time).format("YYYY-MM-DD")
   }

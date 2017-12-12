@@ -109,7 +109,10 @@ const prdattrgroup = {
 }
 
 const phonebooks = {
-    phonebooks: baseDir + 'csns/phonebooks/syn',
+    mydept: baseDir + 'csns/phonebooks/mydept',
+    organizations: baseDir + 'csns/phonebooks/organizations',
+    search: baseDir + 'csns/phonebooks/search',
+    sub: baseDir + 'csns/phonebooks/sub',
 }
 
 export {
