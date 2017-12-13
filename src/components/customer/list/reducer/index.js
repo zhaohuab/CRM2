@@ -63,7 +63,7 @@ export default function orgReducers(
         case "CUSTOMER_LIST_SHOWFORM": //新增、修改编辑菜单显示
             return $$state.merge({
                 formVisitable: action.payload.visible,
-                upLoadList: true
+                upLoadList: action.payload.visible
             });
         case "CUSTOMER_LIST_CHANGEVISIBLE": //查询功能显示
             let visit = $$state.get("moreShow");
@@ -176,6 +176,11 @@ export default function orgReducers(
                 actionData.city.toString(),
                 actionData.district.toString()
             ];
+            debugger
+            
+            // actionData.bizLicense = actionData.bizLicense?JSON.parse(actionData.bizLicense):''
+            // actionData.orgCertificate = actionData.orgCertificate?JSON.parse(actionData.orgCertificate):''
+            // actionData.taxCertificate = actionData.taxCertificate?JSON.parse(actionData.taxCertificate):''
             debugger;
             return $$state.merge({
                 viewState: action.visible,
