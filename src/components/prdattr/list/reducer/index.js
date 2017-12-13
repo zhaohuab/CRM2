@@ -10,6 +10,7 @@ let $$initialState = {
 	addNum:0,
 	changeData:[],
 	detailVisible:false,
+	AttrVaSelectedKeys:[]
 };
 
 function listAdd(page,item) {	
@@ -116,7 +117,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'PRDATTR_FORM_SETFORM' : 
 			return $$state.merge({
 				formData:action.content
-			})   															
+			})   	
+		case 'PRDATTR_ATTRVA_SETSECROWKEYS' : 
+			return $$state.merge({
+				AttrVaSelectedKeys:action.content
+			}) 														
 	  default: 
 	    return $$state;
 	}

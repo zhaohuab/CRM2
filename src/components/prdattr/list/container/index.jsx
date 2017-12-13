@@ -10,6 +10,7 @@ import './index.less'
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 const Search = Input.Search;
+const FormItem = Form.Item;
 import 'assets/stylesheet/all/iconfont.css'
 
 //导入action方法
@@ -60,16 +61,41 @@ class List extends React.Component {
   }
 
   onAdd() {
+    this.props.action.resetAddNum();
+    this.props.action.setAttrData([]);
+    this.props.action.setFormData({});
+    this.props.action.onChangeAttrVa([]);    
     this.setState({ status: "add" });
     this.props.action.showAddForm(true, {});
+  }
+
+    //属性值删除
+    onAttrVaDelete(){
+      let flag = false;
+      let changedData = this.props.$$state.get('changeData').toJS();
+      let selectedRowKeys =this.props.$$state.get('AttrVaSelectedKeys').toJS();
+      let attrValue =this.props.$$state.get('attrValue').toJS();       
+       //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
+      for(let rowKey of selectedRowKeys){
+          changedData = changedData.filter(change => { return change.id !== rowKey});
+          attrValue = attrValue.filter(data => {
+              if(data.id !== rowKey){
+                  data.editState = "delete";
+                  changedData.push(data);
+              }
+              return data.id !== rowKey
+          });
+      }
+      let sel = [];
+      this.props.action.setSecRowKeys([]);
+      this.props.action.onChangeAttrVa(changedData);
+      this.props.action.onEditAttrVa(attrValue);
   }
 
   showDetail (record) {
     let id = record.id;  
     this.setState({ status: "showdetail" });
-   // this.props.action.edit();
     this.props.action.getAttrDetail(id);
-    //test
     this.props.action.showAddForm(true);
   }
 
@@ -104,29 +130,21 @@ class List extends React.Component {
       }
     }
     let id = rowData.id;  
-   // this.props.action.edit();
     this.props.action.getAttrDetail(id);
   }
 
-  onClose() {  
-   
-    this.props.action.showAddForm(false);
-    
-    this.props.action.resetAddNum();   
-   // this.props.action.resetAddNum(0);
-    this.props.action.setAttrData([]);
-    this.props.action.setFormData({});
-    this.props.action.onChangeAttrVa([]);    
+  onClose() {     
+    this.props.action.showAddForm(false);   
+    // this.props.action.resetAddNum();   
+    // this.props.action.setAttrData([]);
+    // this.props.action.setFormData({});
+    // this.props.action.onChangeAttrVa([]);    
   }
 
   onEableRadioChange = (enableState) => {
-   // let enable = enableState;
     let { pagination,searchMap,selectedRowKeys} = this.state;
-   // searchMap.enableState = enableState;
-    let ids = selectedRowKeys.join();
-    
+    let ids = selectedRowKeys.join();  
     this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
-   // this.setState({searchMap});
   }
 
   onSave() {
@@ -137,10 +155,10 @@ class List extends React.Component {
     let erpCode = "";
     let name = "";
     let id = "";
-    if(changeData.length == 0 && attrValue.length ==0){
-      return message.error('属性值不能为空');
-    }
-    //let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
+  //  debugger
+    // if(changeData.length == 0 && attrValue.length ==0){
+    //   return message.error('属性值不能为空');
+    // }
     if(status == "edit"){
       erpCode = formData.erpCode;
       id = formData.id;    
@@ -154,10 +172,7 @@ class List extends React.Component {
       let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
       this.props.action.onSave4Add(addAttr);
     }
-      this.props.action.resetAddNum();
-      this.props.action.setAttrData([]);
-      this.props.action.setFormData({});
-      this.props.action.onChangeAttrVa([]);    
+    
 
   }
 
@@ -191,33 +206,11 @@ class List extends React.Component {
 
   onPageSizeChange(current,pageSize) {
     let { pagination,searchMap } = this.state;
-   // pagination = {page:pagination.page,pageSize:pageSize};
     this.setState({pagination})
     this.props.action.getListData( pagination,searchMap );
     console.info(`pageSize:${pageSize}`)
 }
-   //属性值删除
-   onAttrVaDelete(){
-    let flag = false;
-    let changedData = this.props.$$state.get('changedData').toJS();
-    let selectedRowKeys =this.props.$$state.get('suSelectedRowKeys').toJS();
-    let salesunitTable =this.props.$$state.get('salesunitTable').toJS();       
-     //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
-    for(let rowKey of selectedRowKeys){
-        changedData = changedData.filter(change => { return change.id !== rowKey});
-        salesunitTable = salesunitTable.filter(data => {
-            if(data.id !== rowKey){
-                data.editState = "delete";
-                changedData.push(data);
-            }
-            return data.id !== rowKey
-        });
-    }
-    let sel = [];
-    this.props.action.setSecRowKeys([]);
-    this.props.action.onChangeSuVa(changedData);
-    this.props.action.setSuTableData(salesunitTable);
-}
+ 
 
   render() {
     let page = this.props.$$state.get("data").toJS();
@@ -242,6 +235,16 @@ class List extends React.Component {
       table = <AttrVaDeTable/>;
     }
 
+    const formItemLayout = {
+      labelCol: {
+          xs: { span: 48 },
+          sm: { span: 26 },
+      },
+      wrapperCol: {
+          xs: { span: 48 },
+          sm: { span: 26 },
+      },
+    };
     return (
       <div className='user-warpper'>
         {
@@ -290,22 +293,34 @@ class List extends React.Component {
           width={600}
           cancelText = {status == "showdetail"?"关闭":"取消"}
           okText = {status == "showdetail"?"编辑":"确认"}
+          className="detail_box"
+          maskClosable={false}
         >
          {status =="showdetail"?
          <div>
+          <div>        
+          <Form layout="inline">
           <Row>
-            <Col span ={12}>
-              <span>属性名称:</span>
-              <span>{formData.name}</span>
+            <Col span={9} offset={2}>
+            <FormItem   label="属性名称"
+              {...formItemLayout}>
+              
+                <span>{formData.name}</span>
+              
+            </FormItem>
             </Col>
-            <Col span = {12}>
-              <span>对应ERP:</span>                     
-              <span>{formData.erpCode}</span>
+            <Col span={9}>
+            <FormItem   label="属性对应ERP"
+              {...formItemLayout}>
+              
+                <span>{formData.name}</span>
+              
+            </FormItem>
             </Col>
-          </Row>
-          <Row>
-            <p/>
-          </Row>
+            </Row>
+          </Form>
+          
+        </div>
           </div>:
           <div className='model-height'>
             <WrappedCard dataSource={formData} wrappedComponentRef={(inst) => this.formRef = inst} />

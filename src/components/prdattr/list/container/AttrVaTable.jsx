@@ -21,7 +21,8 @@ class AttrValueTable extends React.Component {
       title: '属性值',
       dataIndex: 'value',
       render: (text,record,index) =>(
-        <Input placeholder="属性值" 
+        <Input title="value"
+        placeholder="属性值" 
         defaultValue={record.value}
         onBlur={this.onBlur.bind(this,record)}/>
       )
@@ -30,7 +31,8 @@ class AttrValueTable extends React.Component {
       title:'对应ERP',    
       dataIndex:'erpCode',
       render:(text,record,index) => (
-        <Input placeholder="对应ERP" 
+        <Input title="erpCode"
+        placeholder="对应ERP" 
         defaultValue={record.erpCode}
         onBlur={this.onBlur.bind(this,record)}/>)
     },
@@ -45,14 +47,14 @@ class AttrValueTable extends React.Component {
 
   changeFCheck(record,checked) {
     let flag = true;
-    let fixedConvert = {};
+    let enableState = {};
     if(checked == true){
-      fixedConvert = {fixedConvert:1};
+      enableState = {enableState:1};
     }else{
-      fixedConvert = {fixedConvert:2};
+      enableState = {enableState:2};
     }
      
-    Object.assign(record, fixedConvert);
+    Object.assign(record, enableState);
     if (record.editState != 'add') { 
       record.editState='update';
     } 
@@ -74,7 +76,7 @@ class AttrValueTable extends React.Component {
     let flag = true; 
     let {title,value}  = e.target;
     if (record[title]!=value){
-      record.value=value;    
+      record[title]=value;    
       if (record.editState != 'add') { 
         record.editState='update';
       } 
@@ -92,20 +94,20 @@ class AttrValueTable extends React.Component {
     }
   }
 
-  onChange(record,value){
-    if(record.editState!='add' ){
-      record.editState='update';
-    }
-    record.enableState=value 
-    let dataSource = this.props.$$state.get('dataSource').toJS(); 
-    let data = dataSource.map(item=>{
-      if(item.key==record.key){
-        return record
-      }
-      return item 
-    })
-   this.props.action.changeEnabe(data)  
-  }
+  // onChange(record,value){
+  //   if(record.editState!='add' ){
+  //     record.editState='update';
+  //   }
+  //   record.enableState=value 
+  //   let dataSource = this.props.$$state.get('dataSource').toJS(); 
+  //   let data = dataSource.map(item=>{
+  //     if(item.key==record.key){
+  //       return record
+  //     }
+  //     return item 
+  //   })
+  //  this.props.action.changeEnabe(data)  
+  // }
 
   //属性值表删除数据
   onDelete(record){
@@ -137,14 +139,22 @@ class AttrValueTable extends React.Component {
   render(){ 
    // debugger
     //let formData = this.props.$$state.get('formData').toJS();
+    let selectedRowKeys =this.props.$$state.get('AttrVaSelectedKeys').toJS();
     let dataSource =this.props.$$state.get('attrValue').toJS();
     let columns=this.columns;
+    let rowSelection = {
+      selectedRowKeys,
+      onChange: (selectedRowKeys,selectedRows) =>{
+        this.props.action.setSecRowKeys(selectedRowKeys);
+      },
+    };
     return (
       <Table 
         dataSource = { dataSource } 
         columns = { columns } 
         pagination = { false } 
         rowKey = "id"
+        rowSelection={rowSelection}
       />)
   }
 }

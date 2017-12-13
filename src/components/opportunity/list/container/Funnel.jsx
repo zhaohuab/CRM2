@@ -1,4 +1,4 @@
-import { DatePicker, Form, Input, Select, InputNumber, Row, Col } from 'antd';
+import { DatePicker, Form, Input, Select, InputNumber, Row, Col ,Card as AntdCard} from 'antd';
 import Department from 'components/refs/departments'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -50,9 +50,9 @@ class Funnel extends React.Component {
     
     render() {
         const funnelData = this.props.$$state.get("funnelData").toJS();
+        debugger
         if(this.funnelEchar){
-         debugger;
-this.funnelOption.series[0].data = funnelData;
+            this.funnelOption.series[0].data = funnelData;
             this.funnelEchar.setOption(this.funnelOption);
             window.addEventListener('resize', this.onWindowResize.bind(this))
         }
@@ -60,8 +60,9 @@ this.funnelOption.series[0].data = funnelData;
         this.onWindowResize()
         return (
             <div className='main-middle-bottom'>
+                <AntdCard title="销售漏斗">
                 <h3 className='chart-title'>
-                    <span>销售漏斗</span>
+                   
                     <div>
                         <Select defaultValue="本年" onChange={this.changeFunnelData}>
                             <Option value="0">本年</Option>
@@ -74,7 +75,7 @@ this.funnelOption.series[0].data = funnelData;
                 <div>
                     <div ref='funnel' className='funnel-chrats'></div>
                 </div>
-                
+                </AntdCard>
             </div>
         )
     }

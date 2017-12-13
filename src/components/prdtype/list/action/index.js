@@ -13,7 +13,6 @@ const fetchData = (type, payload) => {
 
 //获取所有数据
 export function getlist(params) {
-    debugger
     if (typeof params == 'undefined') {
         params = {
             searchMap:{}
@@ -138,6 +137,7 @@ export function listchange(value,id) {
 
 //删除数据
 export function listdel(record, treeId, searchFilter,pagination) {
+    debugger
     var ids = [];
     let searchMap = {};
     if (treeId!=null && treeId!=undefined && treeId!="") {
@@ -175,7 +175,7 @@ export function listdel(record, treeId, searchFilter,pagination) {
             ,(data) => {
                 dispatch(fetchData('PRDTYPE_LIST_DELETELISTSUCCESS', { tableListCheckbox: []}))
                 dispatch({ type:'PRDTYPE_LIST_GETTREELISTSUCCESS', data: data.data })
-                dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: listData.data }));
+                dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: listData }));
             })
         })
     }
@@ -210,7 +210,7 @@ export function setEnablestate(treeId, searchFilter, data, state,pagination) {
 			}
 		},(dataResult) => {
                 const listData = dataResult;
-                dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: listData.data }));
+                dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: listData }));
         })
 			
 	}
