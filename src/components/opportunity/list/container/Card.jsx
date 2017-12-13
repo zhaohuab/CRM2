@@ -198,5 +198,57 @@ function mapDispatchToProps(dispatch) {
         action: bindActionCreators(Actions, dispatch)
     };
 }
-//输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(Card);
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+    Form.create({
+        onFieldsChange(props, fields){ 
+            let fieldsChangeData = {};
+            let data = props.$$state.get("editData");
+            for(let item in fields){              
+                fieldsChangeData = {[item]:fields[item].value};
+            }
+            Object.assign(data, fieldsChangeData);
+            props.action.setFormData(data);
+        },
+        mapPropsToFields(props){
+            
+            let data = props.$$state.get("editData");
+            return{
+                id:{
+                    value:data.id
+                },  
+                enableState:{
+                    value:data.enableState
+                },  
+                name:{
+                    value:data.name
+                }, 
+                type:{
+                    value:data.type
+                }, 
+                customerId:{
+                    value:data.customerId
+                }, 
+               
+                saleStage:{
+                    value:data.saleStage
+                }, 
+                winProbability:{
+                    value:data.winProbability
+                }, 
+                createdTime:{
+                    value:data.createdTime
+                },
+
+                expectSignTime:{
+                    value:data.expectSignTime
+                },
+                expectSignMoney:{
+                    value:data.expectSignMoney
+                },
+                description:{
+                    value:data.description
+                },
+            };
+        }
+    })(Card));

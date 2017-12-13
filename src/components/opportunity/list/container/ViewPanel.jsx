@@ -4,11 +4,14 @@ const TabPane = Tabs.TabPane;
 const { Header, Content, Sider } = Layout;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Actions from "../action";
 import Card from "./card";
 import ViewCard from "./ViewCard";
 import SaleStage from './SaleStage';
 
-export default class ViewPanel extends React.Component {
+class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +54,7 @@ export default class ViewPanel extends React.Component {
     componentDidMount() {
 
     }
- 
+
     panelHeader(obj) {
         return (
             <div className="panel-header">
@@ -68,20 +71,13 @@ export default class ViewPanel extends React.Component {
     }
 
     render() {
-        
         let dataSource = []
         if (this.props.data && this.props.data.childList) {
             dataSource = this.props.data.childList;
         }
         const WarpCacd = Form.create()(Card)
         const WarpViewCacd = Form.create()(ViewCard)
-        const menu = (
-            <Menu>
-                <Menu.Item key="1">调整负责人</Menu.Item>
-                <Menu.Item key="2">查重</Menu.Item>
-            </Menu>
-        );
-
+        const editData = this.props.$$state.get("editData").toJS();
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">
@@ -95,14 +91,6 @@ export default class ViewPanel extends React.Component {
                                 <div className="customer-main-top">
                                     <span>{this.props.data.name}</span>
                                     <span>
-                                        <img
-                                            src={require("assets/images/header/VIP.png")}
-                                        />
-                                        <i>5</i>
-                                    </span>
-                                    <span>
-                                        <i className="iconfont icon-shenfenrenzheng" />
-                                        <span>讨论一下</span>
                                     </span>
                                     <span>
                                         <i className="iconfont icon-guanzhu" />
@@ -124,22 +112,34 @@ export default class ViewPanel extends React.Component {
                             >
                                 <i className="iconfont icon-bianji" />编辑
                             </Button>
-                            <Dropdown.Button overlay={menu}>更多</Dropdown.Button>
+                            <Button
+                                onClick={this.btnEdit.bind(this)}
+                            >
+                                <i className="iconfont icon-bianji" />变更负责人
+                            </Button>
+                            <Button
+                                onClick={this.btnEdit.bind(this)}
+                            >
+                                <i className="iconfont icon-bianji" />丢单
+                            </Button>
+                            <Button
+                                onClick={this.btnEdit.bind(this)}
+                            >
+                                <i className="iconfont icon-bianji" />赢单
+                            </Button>
+
                         </Col>
                     </Row>
                     <Row className="cumtomer-detail">
-                        <WarpViewCacd
-                            wrappedComponentRef={inst => (this.formRef = inst)}
-                            data={this.props.data}
-                            isEdit={true}
-                        />
+                        <Col span={6}>商机状态</Col>
+                        <Col span={6}>预计签单金额</Col>
+                        <Col span={6}>预计签单时间</Col>
+                        <Col span={6}>负责人</Col>
+                        <Col span={6}>{editData.state}</Col>
+                        <Col span={6}>{editData.expectSignMoney}</Col>
+                        <Col span={6}>{editData.expectSignTime}</Col>
+                        <Col span={6}>{editData.ownerUserId}</Col>
                     </Row>
-                    <div
-                        className="warrper-header-close"
-                        onClick={this.props.btnClosePanel}
-                    >
-                        <i className="iconfont icon-guanbi" />
-                    </div>
                 </Row>
 
                 <Row className="view-warrper-main">
@@ -239,3 +239,20 @@ export default class ViewPanel extends React.Component {
         );
     }
 }
+
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.opportunityList,
+        $$stateCommon: state.componentReducer
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(ViewPanel);

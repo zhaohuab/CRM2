@@ -1,11 +1,14 @@
 import { Table, Icon, Button, Form, Input, Checkbox, Col, DatePicker, message, Radio } from 'antd';
 import moment from 'moment';
 import Department from 'components/refs/departments'
-
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Actions from "../action/index.js";
 const FormItem = Form.Item;
 
 const RadioGroup = Radio.Group;
-export default class NormalLoginForm extends React.Component {
+
+class ListForm extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -13,8 +16,8 @@ export default class NormalLoginForm extends React.Component {
   
     componentDidMount() {
     //装箱过程
-        let { fatherorgId,fatherorgName} = this.props.data; 
-        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName};
+        let { fatherorgId,fatherorgName,path} = this.props.data; 
+        this.props.data.fatherorgId = {key:fatherorgId,title:fatherorgName,path};
      
         this.props.form.setFieldsValue(this.props.data);
     }
@@ -113,3 +116,65 @@ export default class NormalLoginForm extends React.Component {
         );
     }
 }
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+      $$state: state.orgReducers
+    }
+  }
+  
+  //绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+      action: bindActionCreators(Actions, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+    Form.create({
+        onFieldsChange(props, fields){ 
+            let fieldsChangeData = {};
+            let data = props.data;
+            for(let item in fields){              
+                fieldsChangeData = {[item]:fields[item].value};
+            }
+            Object.assign(props.data, fieldsChangeData);
+            // props.action.setFieldsChangeData(fieldsChangeData);
+            props.action.setFormData(props.data);
+        },
+        mapPropsToFields(props){
+            let data = props.data;
+            return{
+                id:{
+                    value:data.id
+                },  
+                code:{
+                    value:data.code
+                },  
+                name:{
+                    value:data.name
+                }, 
+                simpleName:{
+                    value:data.simpleName
+                }, 
+                simpleCode:{
+                    value:data.simpleCode
+                }, 
+                fatherorgId:{
+                    value:{key:data.fatherorgId,title:data.fatherorgName,path:data.path}
+                }, 
+                respoPerson:{
+                    value:data.respoPerson
+                }, 
+                otherespoPerson:{
+                    value:data.otherespoPerson
+                }, 
+                orgType:{
+                    value:data.orgType
+                },
+
+
+            };
+        }
+    })(ListForm));
+

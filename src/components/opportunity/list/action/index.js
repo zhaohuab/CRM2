@@ -1,7 +1,7 @@
 import reqwest from 'utils/reqwest'
 import { message } from 'antd';
 
-import { opportunity as url } from 'api';
+import { opportunity as url, product } from 'api';
 
 
 const fetchData = (type, payload) => {
@@ -25,11 +25,11 @@ function transData(data) {
     if (data == null) {
         return data
     }
-    
-    if(data.createdTime){
+
+    if (data.createdTime) {
         data.createdTime = data.createdTime.format('X')
     }
-    if(data.expectSignTime){
+    if (data.expectSignTime) {
         data.expectSignTime = data.expectSignTime.format('X');
     }
     return data
@@ -37,11 +37,11 @@ function transData(data) {
 
 const transReceiveData = (data) => {
     for (let i = 0; i < data.data.length; i++) {
-        
-        if(data.data[i].createdTime){
+
+        if (data.data[i].createdTime) {
             data.data[i].createdTime = transDate(new Date(data.data[i].createdTime.time))
         }
-        if(data.data[i].expectSignTime){
+        if (data.data[i].expectSignTime) {
             data.data[i].expectSignTime = transDate(new Date(data.data[i].expectSignTime.time))
         }
     }
@@ -49,10 +49,10 @@ const transReceiveData = (data) => {
 }
 
 const transReceiveDataOne = (data) => {
-    if(data.createdTime){
+    if (data.createdTime) {
         data.createdTime = transDate(new Date(data.createdTime.time))
     }
-    if(data.expectSignTime){
+    if (data.expectSignTime) {
         data.expectSignTime = transDate(new Date(data.expectSignTime.time))
     }
     return data;
@@ -127,8 +127,8 @@ const changeVisible = () => {
 
 
 
-const showForm = (editData,visible) => {
-    return fetchData('OPPORTUNITY_LIST_SHOWFORM', { editData,visible });
+const showForm = (editData, visible) => {
+    return fetchData('OPPORTUNITY_LIST_SHOWFORM', { editData, visible });
 }
 
 
@@ -136,16 +136,16 @@ const showForm = (editData,visible) => {
 const showViewForm = (visible, record) => {
     return (dispatch) => {
         reqwest({
-            url: url.opportunity+"/"+record.id,
+            url: url.opportunity + "/" + record.id,
             method: 'get',
             data: {
-              
+
             }
         }, (data) => {
-            dispatch(fetchData('OPPORTUNITY_LIST_SHOWVIEWFORM', { visible,record: transReceiveDataOne(data) }));
+            dispatch(fetchData('OPPORTUNITY_LIST_SHOWVIEWFORM', { visible, record: transReceiveDataOne(data) }));
         })
     }
-    
+
 }
 
 const deleteData = (ids, searchMap, pagination) => {
@@ -180,7 +180,7 @@ const selectRow = (selectedRows, selectedRowKeys) => {
 const getFunnelData = (pagination, searchMap) => {
     return (dispatch) => {
         reqwest({
-            url: url.opportunity+'/funnel',
+            url: url.opportunity + '/funnel',
             method: 'get',
             data: {
                 param: {
@@ -188,10 +188,55 @@ const getFunnelData = (pagination, searchMap) => {
                 }
             }
         }, (data) => {
-            dispatch(fetchData('OPPORTUNITY_LIST_GETFUNNELDATA', data ));
+            dispatch(fetchData('OPPORTUNITY_LIST_GETFUNNELDATA', data));
         })
     }
 }
+
+const showProductCard = () => {
+    return (dispatch) => {
+        reqwest({
+            url: product.product + '/ref',
+            method: 'get',
+        }, (data) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_SHOWPRODUCTCARD', { data }));
+        })
+
+    }
+}
+
+const closeProductCard = () => {
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_CLOSEPRODUCTCARD',{} ));
+    }
+}
+
+const selectProduct =(selectedProduct)=>{
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_SELECTPRODUCT',{...selectedProduct} ));
+    }
+}
+
+
+const saveOppBList=(oppBList)=>{
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_SAVEOPPBLIST',{oppBList} ));
+    }
+}
+
+
+const selectOppB =(selectedOppB)=>{
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_SELECTOPPB',{...selectedOppB} ));
+    }
+}
+
+const setFormData =(data)=>{
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_SETFORMDATA',data));
+    }
+}
+
 
 
 //输出 type 与 方法
@@ -205,5 +250,11 @@ export {
     closePanel,
     deleteData,
     showForm,
-    getFunnelData
+    getFunnelData,
+    showProductCard,
+    closeProductCard,
+    selectProduct,
+    saveOppBList,
+    selectOppB,
+    setFormData
 }

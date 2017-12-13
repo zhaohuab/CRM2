@@ -54,7 +54,8 @@ class ListTree extends Component {
     add(item, e) {
         e.stopPropagation();
         this.setState({ isEdit: false });
-        let rowData = { fatherorgId: item.id, fatherorgName: item.name };
+        debugger
+        let rowData = { fatherorgId: item.id, fatherorgName: item.name,path:item.path };
         this.props.action.showForm(true, rowData);
     }
 

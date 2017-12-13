@@ -11,6 +11,7 @@ import Card from "./card";
 import * as Actions from "../action";
 import * as enumData from "./enumdata";
 import ViewPanel from "./ViewPanel";
+import DetailTable from "./DetailTable";
 import Funnel from "./Funnel.jsx"
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
@@ -78,12 +79,16 @@ class List extends React.Component {
     }
 
     //保存按钮事件
-    formHandleOk(data, isEdit) {
-
+    formHandleOk() {
+        const isEdit = this.props.$$state.get("isEdit");
+        const editData = this.props.$$state.get("editData").toJS();
+        const oppBList = this.props.$$state.get("oppBList").toJS();
+        editData.childList = oppBList;
+        debugger
         if (isEdit) {
             this.props.action.listEditSave(data);
         } else {
-            this.props.action.listAddSave(data);
+            this.props.action.listAddSave(editData);
         }
 
     }
@@ -92,8 +97,6 @@ class List extends React.Component {
     formHandleCancel() {
         this.props.action.showForm({}, false);
     }
-
-
 
     //点击查看按钮打开查看页面
     btnView(record) {
@@ -135,11 +138,9 @@ class List extends React.Component {
         const selectedRowKeys = $$state.get("selectedRowKeys").toJS();
         const searchMap = $$state.get("searchMap").toJS();
         const formVisible = $$state.get("formVisitable");
-        const CardForm = Form.create()(Card);
-        const editData = $$state.get("editData").toJS();
         const viewFormVisible = $$state.get("viewFormVisible");
         const h = this.props.$$stateCommon.toJS().height - 90;
-        const isEdit = true;
+        const isEdit = this.props.$$state.get('isEdit');
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
@@ -176,10 +177,11 @@ class List extends React.Component {
                     maskClosable={false}
                 >
                     <div className="model-height">
-                        <CardForm
+                        <Card
                             wrappedComponentRef={inst => (this.formRef = inst)}
                             enumData={enumData}
                         />
+                        <DetailTable />
                     </div>
                 </Modal>
 
@@ -191,11 +193,11 @@ class List extends React.Component {
                             : "viewPanelFalse viewHide"
                     }
                 >
-                    <ViewPanel
+                    {/* <ViewPanel
                         data={editData}
                         btnClosePanel={this.btnClosePanel.bind(this)}
                         ref="panelHeight"
-                    />
+                    /> */}
                 </div>
 
 

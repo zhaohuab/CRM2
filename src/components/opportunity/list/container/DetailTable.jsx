@@ -1,8 +1,10 @@
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Icon, Input, Table, Row, Col, Button } from 'antd';
+import { Icon, Input, Table, Row, Col, Button ,Modal} from 'antd';
+const Search = Input.Search;
 import * as Actions from "../action";
+import ProductTable from "./ProductTable.jsx"
 
 
 class EditableCell extends React.Component {
@@ -25,27 +27,32 @@ class EditableCell extends React.Component {
     }
     render() {
         const { value, editable } = this.state;
-        return (
-            <div className="editable-cell">
-                {
-                    editable ?
-                        <div className="editable-cell-input-wrapper">
-                            <Input
-                                value={value}
-                                onChange={this.handleChange}
-                                onPressEnter={this.check}
-                                onBlur={this.check}
-                            />
-
-                        </div>
-                        :
-                        <div onClick={this.edit} style={{ width: "100%", height: "100%" }} className="editable-cell-text-wrapper">
-                            {value || ' '}
-
-                        </div>
-                }
-            </div>
-        );
+        const {type} = this.props;
+        if(type=="first"){
+            return (<Search onClick={this.props.showProductCard.bind(this)}/>)
+        }else {
+            return (
+                <div className="editable-cell">
+                    {
+                        editable ?
+                            <div className="editable-cell-input-wrapper">
+                                <Input
+                                    value={value}
+                                    onChange={this.handleChange}
+                                    onPressEnter={this.check}
+                                    onBlur={this.check}
+                                />
+    
+                            </div>
+                            :
+                            <div onClick={this.edit} style={{ width: "100%", height: "100%" }} className="editable-cell-text-wrapper">
+                                {value || ' '}
+    
+                            </div>
+                    }
+                </div>
+            );
+        }
     }
 }
 
@@ -54,23 +61,23 @@ class DetailTable extends React.Component {
         super(props)
 
         this.state = {
-            dataSource: [],
-            //数据中包含新增、修改、已删除内容，保存使用
-            dataSourceForSave: [],
             count: 0,
             selectedRows:[],
+            tempId:0
         }
         this.columns = [
+     
             {
                 title: "产品名称",
                 dataIndex: "productId",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
-                        onChange={this.onCellChange.bind(this, index, "productId")}
+                        type={record.type}
+                        showProductCard={this.showProductCard.bind(this)}
+                        onChange={this.onCellChange.bind(this, index, "no")}
                     />
                 )
-
             },
             {
                 title: "产品分类",
@@ -113,7 +120,7 @@ class DetailTable extends React.Component {
                 )
             },
             {
-                title: "数量",
+                title: "产品数量",
                 dataIndex: "number",
                 render: (text, record, index) => (
                     <EditableCell
@@ -132,118 +139,151 @@ class DetailTable extends React.Component {
                     />
                 )
             }
+        
         ]
 
         const that = this;
-        this.rowSelectionFn = {
-            onChange(selected, selectedRows) {
-                that.setState({ selectedRows });
-            }
+        this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            that.props.action.selectOppB({selectedRows,selectedRowKeys});
         };
     }
 
     onCellChange = (index, key, value) => {
-        const dataSource = [...this.state.dataSource];
-        const dataSourceForSave = this.state.dataSourceForSave;
-        const changedRow = dataSource[index];
-        dataSource[index][key] = value;
+        const oppBList = this.props.$$state.get("oppBList").toJS();
+        oppBList[index-1][key] = value;
         //用于标识正在修改的这条数据是否是新增加的，
         let flag = false;
-        for(let i=0;i<dataSourceForSave.length;i++){
-            if(changedRow.id == dataSourceForSave[i].id){
-                if(dataSourceForSave[i].editState == "add"){
-                    flag = true
-                }
-                dataSourceForSave.splice(i,1)
-                break;
-                
-            }
+        if(oppBList[index-1].editState!="add"){
+            oppBList[index-1].editState="update"
         }
-        if(flag){
-            changedRow.editState = "add";
-        }else{
-            changedRow.editState = "update";
-        }
-        
-        dataSourceForSave.push(changedRow);
-        this.setState({ dataSource });
+        this.props.action.saveOppBList(oppBList);
     }
+
+    showProductCard(){
+        this.props.action.showProductCard();
+    }
+    
     componentDidMount() {
-        this.setState({ dataSource: [],dataSourceForSave:[] })
-    }
-    getTableData() {
-        return this.state.dataSourceForSave;
-    }
-
-    setTableData(data) {
-        this.setState({ dataSource: data,dataSourceForSave:[] })
-    }
-
-    handleAdd = () => {
-        const { count, dataSource,dataSourceForSave } = this.state;
-        const newData = {
-            productId: "1111",
-            productTypeId: "2",
-            brandId: '32',
-            measureId: '2122',
-            price: "23432",
-            number: "223",
-            sumMoney: "2333",
-            editState: "add"
-        };
-        this.setState({
-            dataSource: [...dataSource, newData],
-            dataSourceForSave: [...dataSourceForSave, newData],
-            count: count + 1,
-        });
+       
     }
 
     handleDel = () => {
-        const selectedRows = this.state.selectedRows;
-        const rows = this.state.dataSource;
-        const changedRows = this.state.dataSourceForSave;
-        //
+        debugger
+        const oppBList = this.props.$$state.get("oppBList").toJS()
+        const selectedRows = this.props.$$state.get("selectedOppB").toJS();
+        
         for(let i=0;i<selectedRows.length;i++){
-            for(let j=0;j<rows.length;j++){
-                if(selectedRows[i].id == rows[j].id){
-                    rows.splice(j,1);
-                    
-                    for(let k=0;k<changedRows.length;k++){
-                        if(selectedRows[i].id == changedRows[k].id){
-                            changedRows.splice(k,1)
-                            break;
-                        }
+            for(let j=0;j<oppBList.length;j++){
+                if(selectedRows[i].id == oppBList[j].id){
+                    if(oppBList[j].editState=="add"){
+                        oppBList.splice(j,1);
+                    }else{
+                        oppBList[j].editState="delete"
                     }
-                    selectedRows[i].editState = "delete";
-                    changedRows.push(selectedRows[i]);
                     break;
                 }
             }
         }
-        this.setState({dataSource:rows,dataSourceForSave:changedRows})
+        this.props.action.saveOppBList(oppBList);
+    }
+
+    formHandleOk(){
+        this.props.action.closeProductCard();
+        const selectedProduct = this.props.$$state.get("selectedProduct").toJS();
+        const oppBList = this.props.$$state.get("oppBList").toJS();
+        const newOppBList = this.addProductToOppB(oppBList,selectedProduct);
+        this.props.action.saveOppBList(newOppBList);
+    }
+
+
+    addProductToOppB(oppBList,product){
+        let tempId = this.state.tempId
+        for(let i=0;i<product.length;i++){
+            const newOppB = new Object()
+            newOppB.productId = product[i].id;
+            newOppB.productTypeId = product[i].prdtypeId;
+            newOppB.brandId = product[i].brandId;
+            newOppB.measureId = product[i].measureId;
+            newOppB.price = product[i].price;
+            newOppB.number = 0;
+            newOppB.sumMoney = 0;
+            newOppB.editState = "add";
+            newOppB.id = "temp"+tempId;
+            tempId++;
+            oppBList.push(newOppB);
+        }
+        this.setState({tempId})
+        return oppBList;
+    }
+
+
+    closeProductCard(){
+        this.props.action.closeProductCard();
+        this.props.action.selectProduct([]);
+    }
+
+    warpData(data){
+        for(let i=0;i<data.length;i++){
+            if(data[i].editState=="delete"){
+                data.splice(i,1);
+            }
+        }
+        data.unshift({
+            type:'first'
+        })
+        return data;
     }
 
     render() {
-        const dataSource = this.state.dataSource
+        const dataSource = this.warpData(this.props.$$state.get("oppBList").toJS());
+        const productVisible = this.props.$$state.get("productVisible");
+        const selectedRowKeys = this.props.$$state.get("selectedOppBKeys").toJS();
+        let rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
         return (
             <div><Row
              type="flex"
              gutter={5}>
-                <Col><Button className="editable-add-btn" onClick={this.handleAdd.bind(this)}>增加</Button></Col>
                 <Col><Button className="editable-add-btn" onClick={this.handleDel.bind(this)}>删除</Button></Col>
                 </Row>
                 
                 <Table
                     columns={this.columns}
                     dataSource={dataSource}
+                    pagination={false}
                     rowKey="id"
-                    rowSelection={this.rowSelectionFn}
+                    rowSelection={rowSelection}
                     size="middle"
                 />
+
+                <Modal
+                    title="产品"
+                    visible={productVisible}
+                    onOk={this.formHandleOk.bind(this)}
+                    onCancel={this.closeProductCard.bind(this)}
+                    width="30%"
+                    maskClosable={false}
+                >
+                   <ProductTable className="topWindow"/>
+                </Modal>
             </div>
         )
     }
 }
 
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.opportunityList,
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
 //输出绑定state和action后组件
-export default DetailTable;
+export default connect(mapStateToProps, mapDispatchToProps)(DetailTable);

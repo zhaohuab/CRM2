@@ -32,18 +32,18 @@ class Department extends React.Component {
         return data.map(item => {
             if (item.children && item.children.length) {
                 return (
-                    <TreeNode title={item.name} key={item.id} dataRef={item}>
+                    <TreeNode title={item.name} key={item.id} path={item.path} dataRef={item}>
                         {this.renderTreeNodes(item.children)}
                     </TreeNode>
                 );
             }
-            return <TreeNode title={item.name} key={item.id} dataRef={item} />;
+            return <TreeNode title={item.name} key={item.id} path={item.path} dataRef={item} />;
         });
     };
 
     onSelect = (key, e) => {
-        let { title } = e.node.props;
-        this.setState({ select: { key: key[0], title } });
+        let { title,path } = e.node.props;
+        this.setState({ select: { key: key[0], title,path } });
     };
 
     getData = () => {
@@ -56,6 +56,7 @@ class Department extends React.Component {
                 data: {}
             },
             dataResult => {
+                debugger
                 that.setState({ dataSource: dataResult.data });
             }
         );
@@ -90,7 +91,6 @@ class Department extends React.Component {
     render() {
         let key = "",
             title = "";
-            debugger;
         if (this.props.value) {
             key = this.props.value.key;
             title = this.props.value.title;
