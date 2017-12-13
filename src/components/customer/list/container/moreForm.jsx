@@ -77,13 +77,10 @@ class MoreForm extends React.Component {
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator(
-                                    "province_city_district",
-                                    {}
-                                )(
+                                {getFieldDecorator("province_city_district")(
                                     <Cascader
                                         options={cityData}
-                                        placeholder="省/市/区/"
+                                        placeholder="请选择城市"
                                     />
                                 )}
                             </FormItem>
@@ -180,12 +177,7 @@ const WarpMilForm = Form.create({
             if (onChangeFild[key].value.key) {
                 searchMap[key] = onChangeFild[key].value.key;
             } else {
-                // if (key == "industry") {
-                //     debugger;
-                //     searchMap[key] = onChangeFild[key].value.id;
-                // } else {
                 searchMap[key] = onChangeFild[key].value;
-                //}
             }
         }
         props.searchMapFn(searchMap);
