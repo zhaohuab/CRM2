@@ -41,6 +41,7 @@ const basePath = '/crm_web/';
            
             return data.map((item,index) => {
                 if(item.child.length>0){
+                    
                     return <SubMenu  key={item.id} title = {<span>
                         {
                             isRoot ?  <i className={"iconfont "+that.icon[index]}></i>:''
