@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row, Modal } from "antd";
+import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row, Modal} from "antd";
 import cookie from "utils/cookie";
 import { bindActionCreators } from "redux";
-import PhoneBooks from 'components/refs/phonebooks/index.jsx'
+import { phonebooks as url } from "api";
+import PhoneBooks from './phonebooks/index.jsx'
 import * as Actions from "../action/index.js";
 
 const Search = Input.Search;
@@ -40,8 +41,8 @@ class Header extends React.Component {
                     </p>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <p className="menu-more" style={{cursor:'pointer'}}>
-                        <PhoneBooks/>
+                    <p className="menu-more" onClick={this.getData} style={{cursor:'pointer'}}>
+                        通讯录
                     </p>
                 </Menu.Item>
             </Menu>
@@ -49,14 +50,19 @@ class Header extends React.Component {
     }
 
     loginOut() {
-        this.props.loginAction.loginOut();
+        this.props.action.loginOut();
     }
 
+    getData = () => {
+        this.props.action.phoneBookChange()
+        this.props.action.getData(url.mydept,url.organizations)
+    }
 
     render() {
         //debugger;
         const userName = cookie("name");
-        let title = this.props.$$state.get("title");      
+        let title = this.props.$$state.get("title");    
+        let phoneBook = this.props.$$state.get("phoneBook");                
         return (
             <div className="app-header">
                 <Row
@@ -121,15 +127,17 @@ class Header extends React.Component {
                                     </Badge>
                                 </Row>
                             </Col>
-                            <Col span={1} style={{position:'relative'}}>
+                            <Col span={1} >
                                 <Dropdown
                                     overlay={this.menuMore}
                                     trigger={["click"]}
+                                    style={{position:'relative'}}
                                 >
                                     <a className="more-icon-warpper">
                                         <i className="iconfont icon-gengduo1 more-icon" />
-                                    </a>
+                                    </a>                                   
                                 </Dropdown>
+                                 { phoneBook ? <PhoneBooks/> : '' }
                               
                             </Col>
                         </Row>
@@ -148,7 +156,7 @@ function mapStateToProps(state, ownProps) {
 
 module.exports = connect(mapStateToProps, dispatch => {
     return {
-        loginAction: bindActionCreators(Actions, dispatch)
+        action: bindActionCreators(Actions, dispatch)
     };
 })(Header);
 
