@@ -3,17 +3,17 @@ import reqwest from "utils/reqwest";
 import {baseDir} from 'api'
 import { browserHistory } from 'react-router'
 
- const loginOut = () => {
-   return (dispatch)=>{
-        reqwest({
-            url: `${baseDir}logout`,
-            method: "POST",
-        }).then(result => {
-            location.href = location.href
-        })
-   }
+const approvedClosed = () => {//打开通讯录
+    return dispatch => {
+		dispatch(fetchData('HEADER_APPROVED_SHOW',{ approval: false }))
+	}
 }
-//通讯录中的方法
+
+export {
+    approvedClosed,
+}
+
+/* 
 const getData = (path1,path2) => {//获取人员组织信息
     return dispatch => {
         reqwest(
@@ -90,46 +90,4 @@ const getDeparment = (path,id) => {
         )
     }
 }
-
-//审批流中的方法
-const approvedShow = () => {//审批流显示
-    return dispatch => {
-		dispatch(fetchData('HEADER_APPROVED_SHOW',{ approval: true }))
-    }
-}
-
-const getApprovalData = (path1,path2) => {//获取审批流数据
-    return dispatch => {
-        reqwest(
-            {
-                url: path1,
-                method: "GET",
-                data: {}
-            },
-            dataResult => {//我提交
-                dispatch(fetchData('HEADER_MYSUBMIT_SUCCESS',{ submitData: dataResult.data }))
-            }
-        );
-           reqwest(
-            { 
-                url: path2,
-                method: "GET",
-                data: {}
-            },
-            dataResult => {//我审批
-                dispatch(fetchData('HEADER_MYAPPROVED_SUCCESS',{ approvedData: dataResult.data }))
-            }
-        );
-    }
-}
-
-export {
-    loginOut,
-    getData,
-    searchData,
-    phoneBookChange,
-    phoneBookClosed,
-    searchStateChange,
-    approvedShow,
-    getApprovalData,
-}
+*/

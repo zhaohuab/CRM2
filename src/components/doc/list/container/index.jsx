@@ -200,7 +200,6 @@ class List extends React.Component {
 
   render() {
     let page = this.props.$$state.get("data").toJS();
-    /* 后台返回来的数据中有一个total：73的键值对；这个导致'共73条'一直不会变化，后台只要动态返回数据库中的真实条数在这里，应该就ok */
     let editData = this.props.$$state.get("editData").toJS();
     let detailContent = this.props.$$state.get("detailContent").toJS();
     let detailSource = this.props.$$state.get("detailSource").toJS();
