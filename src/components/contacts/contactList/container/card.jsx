@@ -45,7 +45,8 @@ export default class Card extends React.Component {
             <div>
                 <Form>
                     <div className="card-header-title">
-                        基本信息 <i className="iconfont icon-xiajiantou-lanse" />
+                        基本信息{" "}
+                        <i className="iconfont icon-xiajiantou-lanse" />
                     </div>
                     <Row type="flex" justify="center">
                         <Col span={11}>
@@ -55,7 +56,7 @@ export default class Card extends React.Component {
                             <FormItem
                                 label="姓名"
                                 {...formItemLayout}
-                                hasFeedback={true}
+                                //hasFeedback={true}
                             >
                                 {getFieldDecorator("name", {
                                     rules: [
@@ -147,18 +148,21 @@ export default class Card extends React.Component {
                             <FormItem
                                 label="备注"
                                 {...formItemLayout}
-                                hasFeedback={true}
+                                //hasFeedback={true}
                             >
-                                {getFieldDecorator("remarks", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            //message: "请输出姓名",
-                                            validator: ccc
-                                            //pattern: /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/
-                                        }
-                                    ]
-                                })(
+                                {getFieldDecorator(
+                                    "remarks"
+                                    // {
+                                    //     rules: [
+                                    //         {
+                                    //             required: true
+                                    //             //message: "请输出姓名",
+                                    //             //validator: ccc
+                                    //             //pattern: /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/
+                                    //         }
+                                    //     ]
+                                    // }
+                                )(
                                     <Input
                                         placeholder="请输入..."
                                         type="textarea"

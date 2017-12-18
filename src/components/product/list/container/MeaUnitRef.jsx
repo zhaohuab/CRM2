@@ -61,15 +61,16 @@ handleMeaVisibleChange = (flag) => {
   render() {
     const meaRefData = this.props.$$state.get("meaunitRefList").toJS().data;
     const meaRefList = (
-    <div  className = "industry-main"> 
+        <div className = "reference">
+    <div  className = "reference-main"> 
         <Row
             type="flex"
             justify="space-between"
-            className="industry-main-header"
+            className="reference-main-header"
         >
             <div className="title">计量单位</div>
         </Row>
-        <Row className="industry-main-choice" type="flex">
+        <Row className="reference-main-choice" type="flex">
        
                 <Table columns = {this.columns} 
                     dataSource = {meaRefData} 
@@ -87,7 +88,7 @@ handleMeaVisibleChange = (flag) => {
             type="flex"
             justify="end"
             align="middle"
-            className="industry-main-footer"
+            className="reference-main-footer"
         >
             <Row type="flex" justify="end" align="middle" gutter={15}>
                 <div>
@@ -105,6 +106,7 @@ handleMeaVisibleChange = (flag) => {
                 </div>
             </Row>
         </Row>
+    </div>
     </div>
 );
 

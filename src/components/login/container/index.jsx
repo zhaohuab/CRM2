@@ -161,6 +161,18 @@ class LoginCon extends React.Component {
                                 className="login-img"
                                 src={require("assets/images/login/banner1.jpg")}
                             />
+                            <img
+                                style={{
+                                    position:"absolute",
+                                    top:110,
+                                    left:90,
+                                    width:485,
+                                    height:198,
+                                }}
+                                ref="loginImg"
+                                
+                                src={require("assets/images/login/banner-text1.png")}
+                            />
                         </div>
                         <div
                             ref="loginBg1"
@@ -188,6 +200,18 @@ class LoginCon extends React.Component {
                                 className="login-img"
                                 src={require("assets/images/login/banner2.jpg")}
                             />
+                            <img
+                                style={{
+                                    position:"absolute",
+                                    top:20,
+                                    left:20,
+                                    width:685,
+                                    height:281,
+                                }}
+                                ref="loginImg"
+                                
+                                src={require("assets/images/login/banner-text2.png")}
+                            />
                         </div>
                         <div
                             ref="loginBg1"
@@ -208,6 +232,18 @@ class LoginCon extends React.Component {
                                 ref="loginImg"
                                 className="login-img"
                                 src={require("assets/images/login/banner3.jpg")}
+                            />
+                            <img
+                                style={{
+                                    position:"absolute",
+                                    top:20,
+                                    left:20,
+                                    width:685,
+                                    height:281,
+                                }}
+                                ref="loginImg"
+                                
+                                src={require("assets/images/login/banner-text3.png")}
                             />
                         </div>
                     </Carousel>

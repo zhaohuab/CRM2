@@ -148,7 +148,7 @@ class ToolForm extends React.Component {
                             justify="space-between"
                             className="header-top"
                         >
-                            <Col span={18}>
+                            <Col span={17}>
                                 <Row type="flex" align="middle">
                                     <Col className="select-recover">
                                         <Select defaultValue="3">
@@ -186,7 +186,7 @@ class ToolForm extends React.Component {
                                 </Row>
                             </Col>
 
-                            <Col span={6}>
+                            <Col span={7}>
                                 <Row type="flex" gutter={15} justify="end">
                                     <Col>
                                         <Button

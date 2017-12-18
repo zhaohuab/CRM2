@@ -9,16 +9,24 @@ let $$initialState = {
 	treeLoading:false,
 	tableListCheckbox:[],
 	treeSelect:undefined,
-	editData:[],
+	editData:{},
 	searchFilter:undefined,
 	attrgrpRef:[],
 	selectedKeys:[],
 	fieldsChangeData:{},
+	selectedTreeData:[],
 };
 
 function getFormData(target, source){
 	Object.assign(target,source);
 	return target;
+}
+
+function listAdd(page,item) {	
+	page.total+=1;
+	page.data.unshift(item.data)
+	page.page = Math.ceil(page.total / page.pageSize);
+	return page;
 }
 
 export default function prdAttrReducers($$state = Immutable.fromJS($$initialState), action){
@@ -68,10 +76,9 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 			return $$state.merge({formVisitable:false})
 		   
 		case 'PRDTYPE_LIST_LISTADDSUCCESS':
-		  let  $$list=Immutable.fromJS(action.payload.data);
 			return $$state.merge({
-				listData:$$state.get('listData').unshift($$list),
-				formVisitable:false
+				formVisitable:false,
+				page:listAdd($$state.get('page').toJS(),action.payload)
 		});
 		  
 		case 'PRDTYPE_LIST_LISTDELSUCCESS':	
@@ -101,7 +108,8 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 				})	
 		case 'PRDCLASS_FORM_FIELDSCHANGE' : 
 				return $$state.merge({
-					fieldsChangeData:getFormData($$state.get('fieldsChangeData').toJS(),action.content),
+				//	fieldsChangeData:getFormData($$state.get('fieldsChangeData').toJS(),action.content),
+				editData:getFormData($$state.get('editData').toJS(),action.content),
 				})  
 		case 'PRDCLASS_FORM_SETFORM' : 
 				return $$state.merge({

@@ -35,7 +35,6 @@ const changeEnableState = (enableState,selectedRowKeys,pagination,searchMap) => 
 				}
 			},
 		},result => {
-			debugger
 			dispatch(fetchData('PRODUCT_LIST_GETLISTSUCCESS', { ...result }));
 		})
 	}	
@@ -76,14 +75,12 @@ const onSave4Add = (data) => {
 				param: data
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('PRODUCT_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
 }
 
 const onSave4Edit = (data ,id) => {
-	debugger
 	return (dispatch) => {
 		reqwest({
 			url: `${url.product}/${id}`,
@@ -92,13 +89,13 @@ const onSave4Edit = (data ,id) => {
 				param: data
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('PRODUCT_CARD_SAVEEDIT', { ...result, visible: false }));
 		})
 	}
 }
 
 const getProdClassRef = () => {
+	debugger
 	return (dispatch) => {
 		reqwest({
 			url: prdtype.prdtype + '/reftree',
@@ -107,6 +104,7 @@ const getProdClassRef = () => {
 				param: ""
 			}
 		}, result => {
+			debugger
 			dispatch(fetchData('PRODUCT_CLASS_GETREFTREE', { ...result}));
 		})
 	}

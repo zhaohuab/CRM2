@@ -720,14 +720,14 @@ class ViewPanel extends React.Component {
                                                                 </span>
                                                             </Col>
                                                             <Col span={4}>
-                                                                <UploadImg
+                                                                {/* <UploadImg
                                                                     defaultList={
                                                                         defaultList
                                                                     }
                                                                     showUploadList={{
                                                                         showRemoveIcon: false
                                                                     }}
-                                                                />
+                                                                /> */}
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -758,14 +758,14 @@ class ViewPanel extends React.Component {
                                                                 </span>
                                                             </Col>
                                                             <Col span={4}>
-                                                                <UploadImg
+                                                                {/* <UploadImg
                                                                     defaultList={
                                                                         defaultList
                                                                     }
                                                                     showUploadList={{
                                                                         showRemoveIcon: false
                                                                     }}
-                                                                />
+                                                                /> */}
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -794,14 +794,14 @@ class ViewPanel extends React.Component {
                                                                 </span>
                                                             </Col>
                                                             <Col span={4}>
-                                                                <UploadImg
+                                                                {/* <UploadImg
                                                                     defaultList={
                                                                         defaultList
                                                                     }
                                                                     showUploadList={{
                                                                         showRemoveIcon: false
                                                                     }}
-                                                                />
+                                                                /> */}
                                                             </Col>
                                                         </Row>
                                                     </Col>

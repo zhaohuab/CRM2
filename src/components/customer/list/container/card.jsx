@@ -33,6 +33,7 @@ import CuperiorCustomer from "./superiorCustomer";
 import IcbcInfo from "./icbcInfo";
 import FormMap from "./formMap";
 import UploadImg from "./uploadImg";
+import CityChioce from "./cityChioce";
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -68,7 +69,6 @@ class EditForm extends React.Component {
                 viewData["eaxplayerNo"] = item.value;
             }
         });
-        debugger;
         this.props.action.customerListInfo(data, visiable, viewData);
     }
 
@@ -93,7 +93,6 @@ class EditForm extends React.Component {
                 }
             },
             data => {
-                debugger;
                 this.props.action.closeIcbcVisible1(false);
             }
         );
@@ -105,7 +104,7 @@ class EditForm extends React.Component {
         return (
             <div>
                 <Button onClick={this.onCancel.bind(this)}>关闭</Button>
-                <Button onClick={this.onCancel.bind(this)}>取消认证</Button>
+                <Button onClick={this.onCancel.bind(this)}>确定</Button>
             </div>
         );
     }
@@ -125,7 +124,6 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-        console.log(viewData);
         return (
             <div>
                 <Row className="form-input-recover">
@@ -461,16 +459,8 @@ class EditForm extends React.Component {
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "province_city_district",
-                                                            {}
-                                                        )(
-                                                            <Cascader
-                                                                options={
-                                                                    cityData
-                                                                }
-                                                                placeholder="请输入"
-                                                            />
-                                                        )}
+                                                            "province_city_district"
+                                                        )(<CityChioce />)}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -492,7 +482,7 @@ class EditForm extends React.Component {
                                                         {getFieldDecorator(
                                                             "address"
                                                         )(
-                                                            // <Input />
+                                                            
                                                             <FormMap
                                                                 cityCode={
                                                                     viewData.province_city_district
@@ -678,11 +668,13 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
-                                                        {upLoadList ? (
-                                                            <UploadImg />
-                                                        ) : (
-                                                            ""
-                                                        )}
+                                                        <FormItem>
+                                                            {getFieldDecorator(
+                                                                "taxCertificate",
+                                                            )(
+                                                                <UploadImg upLoadList={upLoadList}/>
+                                                            )}
+                                                        </FormItem>
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -719,11 +711,13 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
-                                                        {upLoadList ? (
-                                                            <UploadImg />
-                                                        ) : (
-                                                            ""
-                                                        )}
+                                                        <FormItem>
+                                                            {getFieldDecorator(
+                                                                "bizLicense",
+                                                            )(
+                                                                <UploadImg upLoadList={upLoadList}/>
+                                                            )}
+                                                        </FormItem>
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -762,11 +756,13 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
-                                                        {upLoadList ? (
-                                                            <UploadImg />
-                                                        ) : (
-                                                            ""
-                                                        )}
+                                                        <FormItem {...formItemLayout}>
+                                                            {getFieldDecorator(
+                                                                "orgCertificate",
+                                                            )(
+                                                                <UploadImg upLoadList={upLoadList}/>
+                                                            )}
+                                                        </FormItem>
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -808,11 +804,9 @@ const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
         let viewData = props.$$state.toJS().viewData;
-
         let value = {};
         for (let key in viewData) {
             if (key == "address") {
-                debugger;
                 value[key] = {
                     value: {
                         address: viewData[key],
@@ -823,7 +817,6 @@ const cardForm = Form.create({
                 value[key] = { value: viewData[key] };
             }
         }
-        debugger;
         //address  把字段合成对象
         return {
             ...value
@@ -838,8 +831,6 @@ const cardForm = Form.create({
             } else {
                 if (key == "address") {
                     let value = onChangeFild[key].value;
-
-                    debugger;
                     viewData["address"] = value.address;
                     if (typeof value.latlng == "string") {
                         viewData["latlng"] = value.latlng;
@@ -847,12 +838,14 @@ const cardForm = Form.create({
                         viewData["latlng"] =
                             value.latlng.lng + "," + value.latlng.lat;
                     }
+                } else if (key == "province_city_district") {
+                    viewData[key] = onChangeFild[key].value.result;
+                    viewData["cityMyself"] = onChangeFild[key].value.custom;
                 } else {
                     viewData[key] = onChangeFild[key].value;
                 } //把对像拆成字段  latlng
             }
         }
-        debugger;
         props.editCardFn(viewData);
     }
 })(EditForm);

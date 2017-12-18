@@ -51,15 +51,16 @@ handleVisibleChange = (flag) => {
     
     const attrgrpRefList = this.props.$$state.get("attrgrpRef").toJS();
     const attrgrpRefData = (
-        <div  className = "industry-main"> 
+        <div className = "reference">
+        <div  className = "reference-main"> 
         <Row
             type="flex"
             justify="space-between"
-            className="industry-main-header"
+            className="reference-main-header"
         >
             <div className="title">属性组</div>
         </Row>
-        <Row className="industry-main-choice" type="flex">
+        <Row className="reference-main-choice" type="flex">
        
                 <Table columns = {this.columns} 
                     dataSource = {attrgrpRefList} 
@@ -76,7 +77,7 @@ handleVisibleChange = (flag) => {
             type="flex"
             justify="end"
             align="middle"
-            className="industry-main-footer"
+            className="reference-main-footer"
         >
             <Row type="flex" justify="end" align="middle" gutter={15}>
                 <div>
@@ -94,6 +95,7 @@ handleVisibleChange = (flag) => {
                 </div>
             </Row>
         </Row>
+    </div>
     </div>
 );
 

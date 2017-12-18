@@ -62,7 +62,7 @@ class List extends React.Component {
 
   componentDidMount() {
     this.props.action.getListData(this.props.$$state.get("pagination").toJS());
-    this.props.action.getEnumData();
+    this.props.action.getDimensionData();
   }
 
   onAdd() {
@@ -103,6 +103,7 @@ class List extends React.Component {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        return;
       }
     });
     if (this.state.isEdit) {

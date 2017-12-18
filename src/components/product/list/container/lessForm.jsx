@@ -66,7 +66,7 @@ class LessForm extends React.Component {
                                     onClick={this.moreForm.bind(this)}
                                     className="more-up"
                                 >
-                                    更多 <Icon type="down" />
+                                    展开 <Icon type="down" />
                                 </span>
                             </div>
                         </Col>

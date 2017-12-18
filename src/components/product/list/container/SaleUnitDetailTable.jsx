@@ -59,7 +59,8 @@ class SaleUnitDeTable extends React.Component {
         columns = { columns } 
         pagination = { false } 
         showHeader = { true } 
-        rowKey = "id"s
+        rowKey = "id"
+        style = {{margin:10}}
       //  rowSelection={rowSelection}
       />)
   }
