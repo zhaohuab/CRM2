@@ -318,6 +318,14 @@ const saveSelectedData = (selectedRowKeys,attrId) => {
 		content:{id:attrId,selectedRowKeys:selectedRowKeys}
 	}
 }
+
+const setRecord = (record) => {
+	return {
+		type:"PRDATTR_LIST_SAVERECORD",
+		content:record
+	}
+}
+
 //输出 type 与 方法
 export {
 	getListData,
@@ -346,5 +354,6 @@ export {
 	saveSelectedData,
 	eidtAttrGroup,
 	getAttrVaEditList,
-	changeEnableState
+	changeEnableState,
+	setRecord
 }

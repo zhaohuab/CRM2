@@ -9,7 +9,6 @@ export default class UploadImg extends React.Component {
         this.state = {
             previewVisible: false,
             previewImage: "",
-            //fileList:props.value?props.value:[],
             loading:false
         };
     }
@@ -54,12 +53,6 @@ export default class UploadImg extends React.Component {
                         url: data.data[0],
                 }]
                 this.setState({
-                    // fileList: [{
-                    //     uid: id,
-                    //     name: data.data[1],
-                    //     status: 'done',
-                    //     url: data.data[0],
-                    // }],
                     loading:false
                 },()=>{
                     debugger
@@ -101,12 +94,7 @@ export default class UploadImg extends React.Component {
               let id = info.file.uid;
               let name = info.file.name;
               this.delFn(name,()=>{
-                    // let list = this.state.fileList
-                    // list = list.filter((item)=>{
-                    //     return item.uid != id
-                    // })
                     this.setState({
-                        //fileList: list,
                         loading:false
                     },()=>{
                         this.props.onChange([])
@@ -124,23 +112,20 @@ export default class UploadImg extends React.Component {
                 <div className="ant-upload-text">{this.state.loading ? 'loading' : '上传图片'}</div>
             </div>
         );
-       debugger
+      
        let list =this.props.value?JSON.parse(this.props.value):[]
         return (
             <div className="customer-form-uoload">
               <Upload
-                    //action={`${baseDir} /cum/customers/upload`}
-                    //beforeUpload={this.beforeUpload.bind(this)}
-                    //customRequest={this.upload.bind(this)}
                     listType="picture-card"
                     fileList={list}
                     onPreview={this.handlePreview.bind(this)}
                     onChange={this.handleChange.bind(this)}
-                    showUploadList={
-                        this.props.showUploadList
-                            ? this.props.showUploadList
-                            : {}
-                    }
+                    // showUploadList={
+                    //     this.props.showUploadList
+                    //         ? this.props.showUploadList
+                    //         : {}
+                    // }
                 >
                     {list && list.length >= 1 ? null : uploadButton}
                 </Upload>

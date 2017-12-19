@@ -34,6 +34,7 @@ import IcbcInfo from "./icbcInfo";
 import FormMap from "./formMap";
 import UploadImg from "./uploadImg";
 import CityChioce from "./cityChioce";
+import OwnUser from './ownUser'
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -276,10 +277,7 @@ class EditForm extends React.Component {
                                                             {getFieldDecorator(
                                                                 "ownerUserId"
                                                             )(
-                                                                <Input
-                                                                    type="text"
-                                                                    placeholder="请输入"
-                                                                />
+                                                                <OwnUser/>
                                                             )}
                                                         </FormItem>
                                                     </Col>
@@ -672,7 +670,7 @@ class EditForm extends React.Component {
                                                             {getFieldDecorator(
                                                                 "taxCertificate",
                                                             )(
-                                                                <UploadImg upLoadList={upLoadList}/>
+                                                                <UploadImg/>
                                                             )}
                                                         </FormItem>
                                                     </Col>
@@ -715,7 +713,7 @@ class EditForm extends React.Component {
                                                             {getFieldDecorator(
                                                                 "bizLicense",
                                                             )(
-                                                                <UploadImg upLoadList={upLoadList}/>
+                                                                <UploadImg/>
                                                             )}
                                                         </FormItem>
                                                     </Col>
@@ -760,7 +758,7 @@ class EditForm extends React.Component {
                                                             {getFieldDecorator(
                                                                 "orgCertificate",
                                                             )(
-                                                                <UploadImg upLoadList={upLoadList}/>
+                                                                <UploadImg/>
                                                             )}
                                                         </FormItem>
                                                     </Col>

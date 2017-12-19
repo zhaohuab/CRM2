@@ -16,11 +16,28 @@ const basePath = '/crm_web/';
         this.state = {
             selectedKeys:[1],
         }
-        this.icon=['icon-xiaoshoujixiao-','icon-kehuguanli-xin','icon-hangdongguanlixin','icon-xiaoshouguocheng-xin','icon-jiaoyiguanlixin','icon-jichuyewu-xin','icon-xitongguanli-xin1']
+        this.icon=['icon-xiaoshoujixiao-','icon-kehuguanli-xin','icon-hangdongguanlixin','icon-xiaoshouguochengmoren','icon-jichuyewu-moren','icon-xitongguanli-moren']
+        this.height=[]
     }
-
+    over(e){
+        if(e.target.className=='cover-span'){
+            let index = e.target.getAttribute('data-attr')
+            let target = e.target.parentNode.parentNode.nextSibling;
+            let out = document.querySelector('.menu-recover').offsetTop
+            let top = this.height[index]
+            let father = index*42+42+36+70;
+            let ref = index*42+42
+            if(father-top<out){
+                target.style.top=-(ref)+'px'
+            }else{
+                target.style.top=-top+'px'
+            }
+        }
+    }
     componentDidMount() {
         this.props.action.getMenuData();
+        let out = document.querySelector('.menu-recover')
+        out.addEventListener('mouseover',this.over.bind(this),false)
     }
 
     onSelect = ( item ) => {
@@ -36,58 +53,65 @@ const basePath = '/crm_web/';
     renderMenu = (data) => {
 
         let that = this;
-
+        that.height=[]
         function tree3(data) {
             return data.map((item, index) => {
-                return index % 2 ? <Menu.Item key={item.id} className='menu-odd'>
+                return (
+                    <Menu.Item key={item.id} >
                     <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
                         <span>
                             <i className="menu-dot"></i>
                             <span className='menu-title'>{item.name}</span>
+                           
                         </span>
                     </Link>
-                </Menu.Item >
-                    : <Menu.Item key={item.id} className='menu-even'>
-                        <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
-                            <span>
-                                <i className="menu-dot"></i>
-                                <span className='menu-title'>{item.name}</span>
-                            </span>
-                        </Link>
-                    </Menu.Item>
+                </Menu.Item>
+                )
             })
         }
         function tree(data,level){
+            
             return data.map((item,index) => {
-                
                 if(level == 1){
-                    return <SubMenu  key={item.id} title = {
-                    <span>
-                        <i className={"iconfont "+that.icon[index]}></i><span className='menu-title'>{item.name}</span>
-                    </span>}>
-                        {tree(item.child,level+1)}
-                    </SubMenu>
+                    let height= (item.childHeight/2)-21
+                    that.height.push(height)
+
+                    return (
+                        <SubMenu className={'hover-icon'+index} key={item.id}  title = {
+                            <span className='cover-warpper'>
+                                <i className={"iconfont "+that.icon[index]}></i><span className='menu-title'>{item.name}</span>
+                                <span className='cover-span' data-attr={index}></span>
+                            </span>}>
+                            {tree(item.child,level+1,height)}
+                        </SubMenu>
+                    )
                 }else if(level == 2 && (!item.child || item.child.length == 0)) {
-                    return  <Menu.Item key={item.id} style={{clear:"both"}}>
-                                <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
-                                    <span>
-                                  
-                                        <span className='menu-title'>{item.name}</span>
-                                    </span>
-                                </Link>
-                            </Menu.Item>
+                    return  (
+                        <Menu.Item key={item.id} style={{clear:"both"}}>
+                            <Link to={basePath + item.webId} onClick={that.onClick.bind(that, item.name)}>
+                                <span>
+                                    <span className='menu-title'>{item.name}</span>
+                                </span>
+                            </Link>
+                        </Menu.Item>
+                    )
                 }else {
-                    return <Menu.ItemGroup title={item.name}>
-                        {tree3(item.child)}
+                    return (
+                        <Menu.ItemGroup title={item.name}>
+                            {tree3(item.child)}
                         </Menu.ItemGroup>
+                    )
                 }
+              
             })
             
         };
         let level = 1;
         let rootTitle = "首页";
+        let homeStyle={width:'100%',display:'flex',justifyContent:'center',height:'42px',lineHeight:'42px'}
+      
         return (
-            <div>  
+            <div className='menu-recover'>  
                 <Menu
                     defaultSelectedKeys={["1"]}
                     selectedKeys={this.state.selectedKeys}
@@ -95,10 +119,11 @@ const basePath = '/crm_web/';
                     inlineCollapsed={this.props.collapsed}
                     theme={"dark"}
                     onSelect={this.onSelect}
+                    forceSubMenuRender={true}
                 >
-                    <Menu.Item key="index">
-                        <Link to={basePath + "home"} onClick={that.onClick.bind(that, rootTitle)}>
-                            <span><Icon type="home" className='menu-home'/><span className='menu-title'>{rootTitle}</span></span>
+                    <Menu.Item key="index" style={homeStyle} className='spatial-icon'>
+                        <Link to={basePath + "home"} onClick={that.onClick.bind(that, rootTitle)} >
+                            <span><i className='iconfont icon-shouye-moren'></i><span className='menu-title'>{rootTitle}<span className='fake'></span></span></span>
                         </Link>
                     </Menu.Item>
                     {tree(data, level)}
@@ -106,12 +131,30 @@ const basePath = '/crm_web/';
             </div>
         )
     }
+    dataChange(data){
+        data.forEach((item,index)=>{
+            item.height=42*index+42+36+70+42;
+            if(item.child&&item.child.length){
+                item.childHeight=34*item.child.length;
+                item.child.forEach((itemChild)=>{
+                    if(itemChild.child &&itemChild.child.length){
+                        let ceil = Math.ceil(itemChild.child.length/2)
+                        item.childHeight = item.childHeight + ceil*30
+                    }
+                })
+            }
+        })
+    }
 
     render() {
         const {$$state} = this.props;
         const data = $$state.get("data").toJS();
-        let menuClassName = this.props.collapsed ? "app-menu-con" : "app-menu-con menu-con-open";
+        let menuClassName = this.props.collapsed ? "app-menu-con menu-con-close" : "app-menu-con menu-con-open";
         let imgLogo= this.props.collapsed ? "img-logo-hide" : "img-logo";
+        if(data && data.length){
+            this.dataChange(data)
+            console.log(data)
+        }
         return (
           <div className='menu-bg-warpper'>
                 <div className='menu-bg-logo'><img src={require('assets/images/menu/crm-logo.png')} className={imgLogo}/></div>

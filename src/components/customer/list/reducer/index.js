@@ -2,8 +2,7 @@ import Immutable from "immutable";
 
 let $$initialState = {
     data: [], //tabel展示数据
-    enumData: {
-        //查询条件数据
+    enumData: {//查询条件数据
         level: [],
         cannelType: [],
         type: [],
@@ -13,10 +12,8 @@ let $$initialState = {
     selectedRowKeys: [],
     formVisitable: false, //新增、修改modal显隐
     searchMap: {}, //存放查询条件
-    //viewFormVisible: false,
     viewData: {}, //获取当前客户信息，view面板使用数据
-    pagination: {
-        //分页信息
+    pagination: {//分页信息
         pageSize: 20,
         page: 1
     },
@@ -29,7 +26,6 @@ let $$initialState = {
     icbcVisible: false, //工商信息查询新增编辑时面板显隐控制
     icbcVisible2: false, //工商信息查询详情面板显隐
     isClose: false,
-    upLoadList: false
 };
 
 function pageAdd(page, item) {
@@ -63,7 +59,6 @@ export default function orgReducers(
         case "CUSTOMER_LIST_SHOWFORM": //新增、修改编辑菜单显示
             return $$state.merge({
                 formVisitable: action.payload.visible,
-                upLoadList: action.payload.visible
             });
         case "CUSTOMER_LIST_CHANGEVISIBLE": //查询功能显示
             let visit = $$state.get("moreShow");
@@ -80,7 +75,6 @@ export default function orgReducers(
             return $$state.merge({
                 viewData: {},
                 formVisitable: action.data,
-                upLoadList: true
             });
         case "CUSTOMER_LIST_ICBCDETAILINFO": //保存客户工商id
             debugger;
@@ -150,17 +144,15 @@ export default function orgReducers(
                 formVisitable: false,
                 data: pageAdd($$state.get("data").toJS(), action.data),
                 icbcSelect: false,
-                upLoadList: false
-                //isClose: false
             });
         case "CUSTOMER_LIST_EDITSAVE": //修改客户
             debugger;
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
-                upLoadList: false
             });
         case "CUSTOMER_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
+        debugger
             let actionData = action.data;
             actionData.industry = {
                 id: actionData.industry,
@@ -176,12 +168,6 @@ export default function orgReducers(
                 actionData.city.toString(),
                 actionData.district.toString()
             ];
-            debugger
-            
-            // actionData.bizLicense = actionData.bizLicense?JSON.parse(actionData.bizLicense):''
-            // actionData.orgCertificate = actionData.orgCertificate?JSON.parse(actionData.orgCertificate):''
-            // actionData.taxCertificate = actionData.taxCertificate?JSON.parse(actionData.taxCertificate):''
-            debugger;
             return $$state.merge({
                 viewState: action.visible,
                 viewData: actionData
@@ -197,13 +183,12 @@ export default function orgReducers(
                 icbcInfo1: []
             });
         case "CUSTOMER_LIST_CLEANVERIFYID":
-            debugger;
-            let c = $$state.get("viewData").merge({
+            let cleanId = $$state.get("viewData").merge({
                 verifyId: ""
             });
             return $$state.merge({
                 icbcVisible2: action.visiable,
-                viewData: c
+                viewData: cleanId
             });
         case "CUSTOMER_LIST_DELETE": //删除客户
             return $$state.merge({
@@ -212,7 +197,9 @@ export default function orgReducers(
 
         case "CUSTOMER_LIST_GETENUMDATA": //获取查询条件基础显示内容
             return $$state.merge({ enumData: action.payload.enumData });
-
+        case 'CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
+            debugger
+            return $$state.merge({ viewData: action.viewData });
         default:
             return $$state;
     }
