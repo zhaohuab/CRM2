@@ -25,9 +25,26 @@ const confirm = Modal.confirm;
 import IcbcSimpleinfo from "./icbcSimpleinfo";
 import UploadImg from "./uploadImg";
 
+import AssignPerson from './assignPerson'
+
+//分配table头部
+const columns = [{
+    title: '姓名',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: '部门名称',
+    dataIndex: 'deptName',
+    key: 'deptName',
+  }];
+
 class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
+        this.state={
+           
+        }
     }
 
     //打开编辑按钮
@@ -86,7 +103,7 @@ class ViewPanel extends React.Component {
         this.props.action.modalDetalVisiable(true, verifyId);
     }
 
-    //modal层点击取消按钮触发方法
+    //工商核实modal层点击取消按钮触发方法
     onCancel() {
         this.props.action.modalDetalVisiableFalse(false);
     }
@@ -97,14 +114,12 @@ class ViewPanel extends React.Component {
         let id = viewData.id;
         this.props.action.attentionFn(id, state);
     }
-
+    //点击分配后改变viewData中saveOvs的值
+    changeViewData(viewData){
+        this.props.action.assignChangeViewData(viewData)
+    }
     render() {
-        let {
-            viewData,
-            icbcSelect2,
-            icbcVisible2,
-            icbcInfo1
-        } = this.props.$$state.toJS();
+        let {viewData,icbcSelect2,icbcVisible2,icbcInfo1,assignList,assignVisiable,assignPersonList} = this.props.$$state.toJS();
         let defaultList = [
             {
                 uid: -1,
@@ -114,6 +129,8 @@ class ViewPanel extends React.Component {
                     "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
             }
         ];
+        debugger
+        viewData.salesVOs[0].ownerUserName
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">
@@ -241,9 +258,7 @@ class ViewPanel extends React.Component {
                                 </div>
 
                                 <div>
-                                    <Button>
-                                        <i className="iconfont icon-bianji" />分配
-                                    </Button>
+                                    <AssignPerson viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
                                 </div>
                                 <div>
                                     <Button>
@@ -265,7 +280,7 @@ class ViewPanel extends React.Component {
                     </Row>
                     <Row>
                         <Row>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Row
                                     type="flex"
                                     justify="center"
@@ -274,7 +289,7 @@ class ViewPanel extends React.Component {
                                     <i className="iconfont icon-dianhua" />客户状态:
                                 </Row>
                             </Col>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Row
                                     type="flex"
                                     justify="center"
@@ -283,7 +298,7 @@ class ViewPanel extends React.Component {
                                     <i className="iconfont icon-dingwei" />首次跟进时间:
                                 </Row>
                             </Col>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Row
                                     type="flex"
                                     justify="center"
@@ -292,9 +307,18 @@ class ViewPanel extends React.Component {
                                     <i className="iconfont icon-fuzeren" />最近跟进时间:
                                 </Row>
                             </Col>
+                            <Col span={6}>
+                                <Row
+                                    type="flex"
+                                    justify="center"
+                                    className="info-title"
+                                >
+                                    <i className="iconfont icon-fuzeren" />负责人:
+                                </Row>
+                            </Col>
                         </Row>
                         <Row>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Row
                                     type="flex"
                                     justify="center"
@@ -303,7 +327,7 @@ class ViewPanel extends React.Component {
                                     {viewData.stateName}
                                 </Row>
                             </Col>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Row
                                     type="flex"
                                     justify="center"
@@ -312,13 +336,22 @@ class ViewPanel extends React.Component {
                                     2017-8-8
                                 </Row>
                             </Col>
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Row
                                     type="flex"
                                     justify="center"
                                     className="info-content"
                                 >
                                     2017-8-8
+                                </Row>
+                            </Col>
+                            <Col span={6}>
+                                <Row
+                                    type="flex"
+                                    justify="center"
+                                    className="info-content"
+                                >
+                                    {viewData.salesVOs[0].ownerUserName}
                                 </Row>
                             </Col>
                         </Row>
@@ -720,14 +753,7 @@ class ViewPanel extends React.Component {
                                                                 </span>
                                                             </Col>
                                                             <Col span={4}>
-                                                                {/* <UploadImg
-                                                                    defaultList={
-                                                                        defaultList
-                                                                    }
-                                                                    showUploadList={{
-                                                                        showRemoveIcon: false
-                                                                    }}
-                                                                /> */}
+                                                                <UploadImg/>
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -758,14 +784,7 @@ class ViewPanel extends React.Component {
                                                                 </span>
                                                             </Col>
                                                             <Col span={4}>
-                                                                {/* <UploadImg
-                                                                    defaultList={
-                                                                        defaultList
-                                                                    }
-                                                                    showUploadList={{
-                                                                        showRemoveIcon: false
-                                                                    }}
-                                                                /> */}
+                                                                <UploadImg/>
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -794,14 +813,7 @@ class ViewPanel extends React.Component {
                                                                 </span>
                                                             </Col>
                                                             <Col span={4}>
-                                                                {/* <UploadImg
-                                                                    defaultList={
-                                                                        defaultList
-                                                                    }
-                                                                    showUploadList={{
-                                                                        showRemoveIcon: false
-                                                                    }}
-                                                                /> */}
+                                                                <UploadImg/>
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -1032,6 +1044,7 @@ class ViewPanel extends React.Component {
                             : ""}
                     </div>
                 </Modal>
+
             </div>
         );
     }

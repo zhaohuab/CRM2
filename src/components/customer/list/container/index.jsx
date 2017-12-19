@@ -130,6 +130,13 @@ class List extends React.Component {
             data["address"] = value.address;
             data["latlng"] = value.latlng;
         }
+
+        if(data.ownerUserId){
+            let ownerUserId = data.ownerUserId.id;
+            delete data.ownerUserId
+            data.salesVOs = [{ownerUserId}]
+        }
+        debugger
         return data;
     }
 
