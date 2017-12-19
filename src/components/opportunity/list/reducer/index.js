@@ -18,11 +18,15 @@ let $$initialState = {
 	editData: {},
 	moreShow: false,
 	isEdit: false,
-	oppBList:[],
-	selectedProduct:[],
-	selectedProductKeys:[],
-	selectedOppB:[],
-	selectedOppBKeys:[]
+	oppBList: [],
+	selectedProduct: [],
+	selectedProductKeys: [],
+	selectedOppB: [],
+	selectedOppBKeys: [],
+	biztypeList: [],
+	stageData: [],
+	resultData: [],
+	selectedStage: ""
 };
 
 function pageAdd(page, item) {
@@ -49,16 +53,25 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 		case 'OPPORTUNITY_LIST_GETDATA':
 			return $$state.merge({ data: action.payload.data })
 
-		case 'OPPORTUNITY_LIST_SHOWFORM':
+		case 'OPPORTUNITY_LIST_SHOWFORMNEW':
 			return $$state.merge({
 				editData: action.payload.editData,
+				oppBList: [],
 				formVisitable: action.payload.visible,
+				isEdit: false
+			})
+		case 'OPPORTUNITY_LIST_SHOWFORMEDIT':
+			return $$state.merge({
+				editData: action.payload.editData,
+				oppBList: action.payload.editData.childList,
+				formVisitable: action.payload.visible,
+				isEdit: false
 			})
 
 		case 'OPPORTUNITY_LIST_SHOWVIEWFORM':
 			return $$state.merge({
-				viewFormVisible: action.payload.visible,
 				editData: action.payload.record,
+				viewFormVisible: action.payload.visible,
 			})
 
 		case "OPPORTUNITY_LIST_CHANGEVISIBLE": //查询功能显示
@@ -104,44 +117,64 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				formVisitable: false,
 			})
 		case 'OPPORTUNITY_LIST_DELETE':
-			return $$state.merge({ 
-				data: action.payload.data, 
-				viewFormVisible: false 
+			return $$state.merge({
+				data: action.payload.data,
+				viewFormVisible: false
 			})
 
 		case 'OPPORTUNITY_LIST_GETFUNNELDATA':
 			return $$state.merge({ funnelData: action.payload.data })
 
 		case 'OPPORTUNITY_LIST_SHOWPRODUCTCARD':
-			return $$state.merge({ 
-				productVisible: true, 
+			return $$state.merge({
+				productVisible: true,
 				allProduct: action.payload.data,
-				selectedProduct:[],
-				selectedProductKeys:[] 
+				selectedProduct: [],
+				selectedProductKeys: []
 			})
 
 		case 'OPPORTUNITY_LIST_CLOSEPRODUCTCARD':
 			return $$state.merge({ productVisible: false })
 
 		case 'OPPORTUNITY_LIST_SELECTPRODUCT':
-			return $$state.merge({ 
+			return $$state.merge({
 				selectedProduct: action.payload.selectedRows,
-				selectedProductKeys: action.payload.selectedRowKeys 
+				selectedProductKeys: action.payload.selectedRowKeys
 			})
 
 		case 'OPPORTUNITY_LIST_SAVEOPPBLIST':
 			return $$state.merge({ oppBList: action.payload.oppBList })
 
-			case 'OPPORTUNITY_LIST_SELECTOPPB':
-			return $$state.merge({ 
+		case 'OPPORTUNITY_LIST_SELECTOPPB':
+			return $$state.merge({
 				selectedOppB: action.payload.selectedRows,
-				selectedOppBKeys: action.payload.selectedRowKeys 
+				selectedOppBKeys: action.payload.selectedRowKeys
 			})
-			case 'OPPORTUNITY_LIST_SETFORMDATA' : 
-				return $$state.merge({
-					editData:action.content
-				})  
-			
+		case 'OPPORTUNITY_LIST_SETFORMDATA':
+			return $$state.merge({
+				editData: action.payload
+			})
+
+		case 'OPPORTUNITY_LIST_GETBIZTYPE':
+			return $$state.merge({
+				biztypeList: action.payload.biztypeList
+			})
+
+		case 'OPPORTUNITY_LIST_GETSTAGERESULT':
+			return $$state.merge({
+				resultData: action.payload.resultList,
+				stageData: action.payload.stageList,
+			})
+
+		case 'OPPORTUNITY_LIST_SELECTSTAGE':
+			return $$state.merge({
+				selectedStage: action.payload
+			})
+
+		case 'OPPORTUNITY_LIST_FINISHACTION':
+			return $$state.merge({
+				resultData: action.payload.data
+			})
 		default:
 			return $$state;
 	}

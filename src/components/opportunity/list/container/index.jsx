@@ -76,6 +76,7 @@ class List extends React.Component {
 
     componentDidMount() {
         this.props.action.getListData(this.props.$$state.get("pagination").toJS());
+        this.props.action.getbiztype();
     }
 
     //保存按钮事件
@@ -84,7 +85,6 @@ class List extends React.Component {
         const editData = this.props.$$state.get("editData").toJS();
         const oppBList = this.props.$$state.get("oppBList").toJS();
         editData.childList = oppBList;
-        debugger
         if (isEdit) {
             this.props.action.listEditSave(data);
         } else {
@@ -95,7 +95,7 @@ class List extends React.Component {
 
     //编辑页面关闭事件
     formHandleCancel() {
-        this.props.action.showForm({}, false);
+        this.props.action.showFormNew(false,{});
     }
 
     //点击查看按钮打开查看页面
@@ -118,6 +118,7 @@ class List extends React.Component {
     showTotal(total) {
         return `共 ${total} 条`;
     }
+
     onPageChange(page, pageSize) {
         let searchMap = this.props.$$state.get("searchMap").toJS()
         let pagination = this.props.$$state.get("pagination").toJS()
@@ -134,6 +135,7 @@ class List extends React.Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
+        const editData = $$state.get("editData").toJS();
         const selectedRows = $$state.get("selectedRows").toJS();
         const selectedRowKeys = $$state.get("selectedRowKeys").toJS();
         const searchMap = $$state.get("searchMap").toJS();
@@ -185,7 +187,6 @@ class List extends React.Component {
                     </div>
                 </Modal>
 
-
                 <div
                     className={
                         viewFormVisible
@@ -193,11 +194,11 @@ class List extends React.Component {
                             : "viewPanelFalse viewHide"
                     }
                 >
-                    {/* <ViewPanel
+                    <ViewPanel
                         data={editData}
                         btnClosePanel={this.btnClosePanel.bind(this)}
                         ref="panelHeight"
-                    /> */}
+                    />
                 </div>
 
 

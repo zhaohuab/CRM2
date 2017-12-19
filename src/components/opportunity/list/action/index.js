@@ -1,7 +1,7 @@
 import reqwest from 'utils/reqwest'
 import { message } from 'antd';
 
-import { opportunity as url, product } from 'api';
+import { opportunity as url, product,oppflow } from 'api';
 
 
 const fetchData = (type, payload) => {
@@ -25,12 +25,11 @@ function transData(data) {
     if (data == null) {
         return data
     }
-
     if (data.createdTime) {
-        data.createdTime = data.createdTime.format('X')
+        data.createdTime = data.createdTime.format('YYYY-MM-DD HH:mm:ss');
     }
     if (data.expectSignTime) {
-        data.expectSignTime = data.expectSignTime.format('X');
+        data.expectSignTime = data.expectSignTime.format('YYYY-MM-DD HH:mm:ss');
     }
     return data
 }
@@ -91,7 +90,6 @@ const listAddSave = (data) => {
 }
 
 const listEditSave = (data) => {
-
     return (dispatch) => {
         reqwest({
             url: url.opportunity + "/" + data.id,
@@ -100,7 +98,6 @@ const listEditSave = (data) => {
                 param: transData(data)
             }
         }, (data) => {
-
             dispatch(fetchData('OPPORTUNITY_LIST_EDITSAVE', transReceiveDataOne(data)));
         })
     }
@@ -127,10 +124,24 @@ const changeVisible = () => {
 
 
 
-const showForm = (editData, visible) => {
-    return fetchData('OPPORTUNITY_LIST_SHOWFORM', { editData, visible });
+const showFormNew = (visible,editData) => {
+    return fetchData('OPPORTUNITY_LIST_SHOWFORMNEW', { visible,editData });
 }
 
+const showFormEdit = (visible,id) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id,
+            method: 'get',
+            data: {
+
+            }
+        }, (data) => {
+            debugger
+            dispatch(fetchData('OPPORTUNITY_LIST_SHOWFORMEDIT', { visible, editData: transReceiveDataOne(data) }));
+        })
+    }
+}
 
 
 const showViewForm = (visible, record) => {
@@ -144,8 +155,16 @@ const showViewForm = (visible, record) => {
         }, (data) => {
             dispatch(fetchData('OPPORTUNITY_LIST_SHOWVIEWFORM', { visible, record: transReceiveDataOne(data) }));
         })
-    }
 
+        reqwest({
+            url: url.opportunity + "/result/" + record.id,
+            method: 'get',
+            data: { 
+            }
+        }, (data) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETSTAGERESULT', data));
+        })
+    }
 }
 
 const deleteData = (ids, searchMap, pagination) => {
@@ -238,6 +257,49 @@ const setFormData =(data)=>{
 }
 
 
+const getbiztype = () => {
+    return (dispatch) => {
+        reqwest({
+            url: oppflow.oppflow + '/biztype',
+            method: 'get',
+        }, (data) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETBIZTYPE',  data ));
+        })
+
+    }
+}
+
+
+
+const finishAction = (opportunity_id,oppstage_id,oppaction_id,is_finish,resultData) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + '/finishaction',
+            method: 'get',
+            data: {
+                param: {
+                    paramMap:{opportunity_id,
+                    oppstage_id,
+                    oppaction_id,
+                    is_finish}
+                }
+            }
+        }, () => {
+            dispatch(fetchData('OPPORTUNITY_LIST_FINISHACTION',  {data:resultData} ));
+        })
+
+    }
+}
+
+
+//保存table已选择行数据
+const selectStage = (oppstage_id) => {
+    return {
+        type: "OPPORTUNITY_LIST_SELECTSTAGE",
+        payload: oppstage_id
+    };
+};
+
 
 //输出 type 与 方法
 export {
@@ -249,12 +311,16 @@ export {
     showViewForm,
     closePanel,
     deleteData,
-    showForm,
+    showFormNew,
+    showFormEdit,
     getFunnelData,
     showProductCard,
     closeProductCard,
     selectProduct,
     saveOppBList,
     selectOppB,
-    setFormData
+    setFormData,
+    getbiztype,
+    selectStage,
+    finishAction
 }

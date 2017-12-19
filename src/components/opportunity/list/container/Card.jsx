@@ -13,10 +13,10 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        let data = this.props.$$state.get("editData").toJS();
-        data.createdTime=moment(data.createdTime);
-        data.expectSignTime=moment(data.expectSignTime);
-        this.props.form.setFieldsValue(data);
+        // let data = this.props.$$state.get("editData").toJS();
+        // data.createdTime=moment(data.createdTime);
+        // data.expectSignTime=moment(data.expectSignTime);
+        // this.props.form.setFieldsValue(data);
     }
     componentWillMount() {
 
@@ -49,21 +49,8 @@ class Card extends React.Component {
         return (
             <Form >
                 <Row type="flex"  >
-                    <Col span={12}>
-                        <FormItem
-                            label="商机类型"
-                            {...formItemLayout}
-                        >
-                            {getFieldDecorator('type', {
-                                rules: [{
-                                    required: true, message: '请选择商机类型',
-                                }],
-                            })(
-                                <Input />
-                                )}
-                        </FormItem>
-                    </Col>
-                    <Col span={12}>
+
+                <Col span={12}>
                         <FormItem
                             label="商机名称"
                             {...formItemLayout}
@@ -77,8 +64,6 @@ class Card extends React.Component {
                                 )}
                         </FormItem>
                     </Col>
-                </Row>
-                <Row type="flex"  >
                     <Col span={12}>
                         <FormItem
                             label="客户名称"
@@ -89,7 +74,25 @@ class Card extends React.Component {
                                     required: true, message: '请选择客户',
                                 }],
                             })(
-                                <Input />
+                                <Input  />
+                                )}
+                        </FormItem>
+                    </Col>
+                   
+                    
+                </Row>
+                <Row type="flex"  >
+                <Col span={12}>
+                        <FormItem
+                            label="商机类型"
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('type', {
+                                rules: [{
+                                    required: true, message: '请选择商机类型',
+                                }],
+                            })(
+                                <Input disabled={true}/>
                                 )}
                         </FormItem>
                     </Col>
@@ -125,22 +128,6 @@ class Card extends React.Component {
                     </Col>
                     <Col span={12}>
                         <FormItem
-                            label="商机日期"
-                            {...formItemLayout}
-                        >
-                            {getFieldDecorator('createdTime', {
-                                rules: [{
-                                    required: true, message: '请选择商机时间',
-                                }],
-                            })(
-                                <DatePicker format='YYYY/MM/DD' />
-                                )}
-                        </FormItem>
-                    </Col>
-                </Row>
-                <Row type="flex"  >
-                    <Col span={12}>
-                        <FormItem
                             label="预计签单时间"
                             {...formItemLayout}
                         >
@@ -151,6 +138,9 @@ class Card extends React.Component {
                                 )}
                         </FormItem>
                     </Col>
+                </Row>
+                <Row type="flex"  >
+                    
                     <Col span={12}>
                         <FormItem
                             label="预计签单金额"
@@ -162,6 +152,20 @@ class Card extends React.Component {
                                 }],
                             })(
                                 <InputNumber min={0} formatter={value => `¥${value}`} parser={value => value.replace("¥", "")} />
+                                )}
+                        </FormItem>
+                    </Col>
+                    <Col span={12}>
+                        <FormItem
+                            label="商机日期"
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('createdTime', {
+                                rules: [{
+                                    required: true, message: '请选择商机时间',
+                                }],
+                            })(
+                                <DatePicker format='YYYY/MM/DD' />
                                 )}
                         </FormItem>
                     </Col>
@@ -203,7 +207,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
         onFieldsChange(props, fields){ 
             let fieldsChangeData = {};
-            let data = props.$$state.get("editData");
+            let data = props.$$state.get("editData").toJS();
             for(let item in fields){              
                 fieldsChangeData = {[item]:fields[item].value};
             }
@@ -211,8 +215,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(
             props.action.setFormData(data);
         },
         mapPropsToFields(props){
-            
-            let data = props.$$state.get("editData");
+            let data = props.$$state.get("editData").toJS();
+            if(data.createdTime == null){
+                data.createdTime = undefined;
+            }
+            if(data.expectSignTime == null){
+                data.expectSignTime = undefined;
+            }
             return{
                 id:{
                     value:data.id
@@ -237,11 +246,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                     value:data.winProbability
                 }, 
                 createdTime:{
-                    value:data.createdTime
+                    value:moment(data.createdTime)
                 },
 
                 expectSignTime:{
-                    value:data.expectSignTime
+                    value:moment(data.expectSignTime)
                 },
                 expectSignMoney:{
                     value:data.expectSignMoney

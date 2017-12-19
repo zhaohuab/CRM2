@@ -82,7 +82,7 @@ class ViewPanel extends React.Component {
             <div className="view-warrper">
                 <Row className="view-warrper-header">
                     <Row>
-                        <Col span={15} className="customer-info">
+                        <Col span={14} className="customer-info">
                             <img
                                 src={require("assets/images/header/photo.png")}
                                 className="customer-image"
@@ -106,7 +106,7 @@ class ViewPanel extends React.Component {
                                 </div>
                             </div>
                         </Col>
-                        <Col span={9} className="customer-btn">
+                        <Col span={10} className="customer-btn">
                             <Button
                                 onClick={this.btnEdit.bind(this)}
                             >
@@ -127,7 +127,11 @@ class ViewPanel extends React.Component {
                             >
                                 <i className="iconfont icon-bianji" />赢单
                             </Button>
-
+                            <Button
+                                onClick={this.props.btnClosePanel.bind(this)}
+                            >
+                                X
+                            </Button>
                         </Col>
                     </Row>
                     <Row className="cumtomer-detail">

@@ -259,6 +259,7 @@ class DetailTable extends React.Component {
                 />
 
                 <Modal
+                className="topWindow"
                     title="产品"
                     visible={productVisible}
                     onOk={this.formHandleOk.bind(this)}
@@ -266,7 +267,7 @@ class DetailTable extends React.Component {
                     width="30%"
                     maskClosable={false}
                 >
-                   <ProductTable className="topWindow"/>
+                   <ProductTable />
                 </Modal>
             </div>
         )
