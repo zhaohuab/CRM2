@@ -343,7 +343,6 @@ export default class Industry extends React.Component {
                         onKeyUp={this.keyDownUp.bind(this)}
                         value={this.props.value ? this.props.value.name : ""}
                         suffix={suffix}
-                        onFocus={this.getIndustry.bind(this, true)}
                         addonAfter={
                             <Icon
                                 type="search"
