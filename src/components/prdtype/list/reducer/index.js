@@ -9,12 +9,16 @@ let $$initialState = {
 	treeLoading:false,
 	tableListCheckbox:[],
 	treeSelect:undefined,
-	editData:{},
+	editData:{},//新增|编辑form数据
 	searchFilter:undefined,
 	attrgrpRef:[],
 	selectedKeys:[],
-	fieldsChangeData:{},
-	selectedTreeData:[],
+	//fieldsChangeData:{},
+	selectedTreeData:{},
+	classattrGrpValue:"",//
+	list:[],
+	detail:{},
+	lessFormData:{},//查询form数据
 };
 
 function getFormData(target, source){
@@ -29,25 +33,36 @@ function listAdd(page,item) {
 	return page;
 }
 
+function pageEdit(page,item) {
+	let {data} = page;
+	for(let i=0,len=data.length;i<len;i++) {
+		if(data[i].id == item.id) {
+			data[i] = item;
+			break;
+		}
+	}
+	page.data = data;
+	return page;
+}
+
 export default function prdAttrReducers($$state = Immutable.fromJS($$initialState), action){
 
 	switch (action.type) {
 		case 'PRDTYPE_LIST_GETLISTSTART':
-			return $$state.merge({tabelLoading:true})
-			
+			return $$state.merge({tabelLoading:true})			
 		case 'PRDTYPE_LIST_GETLISTSUCCESS':
 			return  $$state.merge({
 				listData:action.payload.data,
 				tabelLoading:false,
 				formVisitable:false,
-				page:action.payload.data
+				page:action.payload.data,
+				list:action.payload.data.data
 			})
 		case 'PRDTYPE_EDIT_GETLISTSUCCESS':
 			return  $$state.merge({
-				listData:action.payload.data,
 				tabelLoading:false,
 				formVisitable:false,
-				tableListCheckbox: action.payload.tableListCheckbox
+				page:pageEdit($$state.get("page").toJS(),action.payload.data),
 			})
 		case 'PRDTYPE_LIST_GETLISTSUCCESSBYCLICKTREE':
 			return  $$state.merge({
@@ -59,6 +74,7 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 				page:action.payload.data
 			})
 		case 'PRDTYPE_LIST_GETLISTSUCCESSBYCLICKSEARCH':
+		debugger
 			return  $$state.merge({
 				listData:action.payload.data,
 				tabelLoading:false,
@@ -88,7 +104,7 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 			return 	$$state.set('listData',newAry)
 
 		case 'PRDTYPE_LIST_GETTREELISTSTART':
-		    return 	$$state.merge({treeLoading:true})
+		  return 	$$state.merge({treeLoading:true})
 	
 		case 'PRDTYPE_LIST_GETTREELISTSUCCESS':
 		  let treeNew=$$state.set('treeData',Immutable.fromJS(action.data))
@@ -100,21 +116,41 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 	    	return $$state.merge({tableListCheckbox:action.payload.tableListCheckbox}) 
 		case 'PRODUCTCLASS_ATTRGROUP_GETREFLIST' : 
 				return $$state.merge({
-					attrgrpRef : action.payload.data,
+					attrgrpRef : action.payload,
 				})
 		case 'PRDCLASS_FORM_GETSECL' : 
 				return $$state.merge({
 					selectedKeys : action.sel,
 				})	
-		case 'PRDCLASS_FORM_FIELDSCHANGE' : 
-				return $$state.merge({
-				//	fieldsChangeData:getFormData($$state.get('fieldsChangeData').toJS(),action.content),
-				editData:getFormData($$state.get('editData').toJS(),action.content),
-				})  
+		// case 'PRDCLASS_FORM_FIELDSCHANGE' : 
+		// 		return $$state.merge({
+		// 		editData:getFormData($$state.get('editData').toJS(),action.content),
+		// 		})  
 		case 'PRDCLASS_FORM_SETFORM' : 
 				return $$state.merge({
 					editData:action.content
-				})  	 
+				})  
+		case 'PRDCLASS_FORM_SETSELECTNODE' : 
+				return $$state.merge({
+					selectedTreeData:action.content
+				})
+		case 'PRDCLASS_ATTRGRP_VALUE' : 
+				return $$state.merge({
+					classattrGrpValue:action.content
+				})  
+		case 'PRDTYPE_LIST_GETTDETAIL' : 
+				return $$state.merge({
+					selectedTreeData:action.data.detail,
+					formVisitable:action.data.visible,				
+				})
+			case 'PRDTYPE_FORM_SETLESSFORM' : 
+				return $$state.merge({
+					lessFormData:action.content
+				}) 
+		// case 'PRDCLASS_FORM_SETVISIBLE' : 
+		// 		return $$state.merge({			
+		// 			formVisitable:action.content,				
+		// 		}) 								
 	  default: 
 	      return $$state;
     }

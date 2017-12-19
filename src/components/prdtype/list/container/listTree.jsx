@@ -1,10 +1,8 @@
 import  React, { Component } from 'react';
-import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,DatePicker,message,Modal,Spin ,Tree} from 'antd';
+import {Icon,  Modal, Tree} from 'antd';
 const TreeNode = Tree.TreeNode;
-const Search = Input.Search;
 const confirm = Modal.confirm;
 import './index.less'
-
 
 export default class ListTree extends Component {
     constructor(props){
@@ -64,6 +62,7 @@ export default class ListTree extends Component {
             </span>
         )
     }
+    
     render(){
         const loop = data => data.map((item) => {
             if (item.children && item.children.length) {
@@ -81,10 +80,10 @@ export default class ListTree extends Component {
                 {
                     data.length? 
                     <div>
-                        <div className='org-tree-main'>
+                        <div >
                             <Tree
-                                showLine
-                                defaultExpandedKeys={['1015']}
+                               // showLine
+                              //  defaultExpandedKeys={['1015']}
                                 onSelect={this.onSelect.bind(this)}
                             >
                                 {loop(data)}

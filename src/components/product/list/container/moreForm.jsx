@@ -15,6 +15,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
+import Enum from "utils/components/enums";
 import "assets/stylesheet/all/iconfont.css";
 import * as Actions from "../action";
 import PrdClassRef from './PrdClassRef'
@@ -25,15 +26,43 @@ import AttrsGrpRef from './AttrsGrpRef'
 class MoreForm extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            enumData:{enableState:[
+                        {key:1,title:"启用"},
+                        {key:2,title:"停用"}]},
+        }
     }
 
     handleSearch(e) {
         e.preventDefault();
-      //  this.props.handleSearch(this.props.$$state.toJS().searchMap);
+        let  fo = this.props.$$state.get("moreFormData").toJS();
+        debugger
+        this.props.handleSearch(this.props.$$state.get("moreFormData").toJS());
     }
 
     moreForm() {
         this.props.formMore();
+    }
+
+    onPrdCodeDelete() {
+        let code = {code:""};
+        let data = this.props.dataSource
+        Object.assign(data, code);
+        this.props.action.setMoreFormData(data);
+    }
+
+    onPrdNameDelete() {
+        let name = {name:""};
+        let data = this.props.dataSource
+        Object.assign(data, name);
+        this.props.action.setMoreFormData(data);
+    }
+
+    onPrdMemDelete() {
+        let memCode = {memCode:""};
+        let data = this.props.dataSource
+        Object.assign(data, memCode);
+        this.props.action.setMoreFormData(data);
     }
 
     render() {
@@ -42,39 +71,43 @@ class MoreForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        let { enumData } = this.props.$$state.toJS();
 
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
                     <Row type="flex" align="middle" style={{ height: "54px" }}>
-                    <Col span={6}>
-                    <FormItem {...formItemLayout}>
-                        {getFieldDecorator("name")(
-                            <Input type="text" placeholder="适用组织" />
-                        )}
-                    </FormItem>
-                </Col>
-                <Col span={6}>
-                    <FormItem {...formItemLayout}>
-                        {getFieldDecorator("type")(
-                             <PrdClassRef  placeholder="产品分类" />
-                        )}
-                    </FormItem>
-                </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("level", {})(
-                                    <Input type="text" placeholder="产品编码" />
+                                {getFieldDecorator("orgId")(
+                                    <Input type="text" placeholder="适用组织" />
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem {...formItemLayout}>
+                                {getFieldDecorator("prdtypeId")(
+                                    <PrdClassRef  placeholder="产品分类" />
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem {...formItemLayout}>
+                                {getFieldDecorator("code", {})(
+                                    this.props.dataSource.code?
+                                        <Input type="text"  
+                                            suffix={<Icon type="close" onClick={this.onPrdCodeDelete.bind(this)}/>}/>:
+                                        <Input type="text" placeholder="产品编码" />                                                          
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator(
-                                    "province_city_district",
-                                    {}
+                                    "name",{}
                                 )(
+                                    this.props.dataSource.name?
+                                    <Input type="text" 
+                                        suffix={<Icon type="close" onClick={this.onPrdNameDelete.bind(this)}/>}/>:
                                     <Input type="text" placeholder="产品名称"/>
                                 )}
                             </FormItem>
@@ -83,29 +116,35 @@ class MoreForm extends React.Component {
                     <Row>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("isGroup", {})(
-                                     <Input type="text" placeholder="助记码"/>
+                                {getFieldDecorator("memCode", {})(
+                                    this.props.dataSource.memCode?
+                                    <Input type="text"
+                                        suffix={<Icon type="close" onClick={this.onPrdMemDelete.bind(this)}/>}/>
+                                    :<Input type="text" placeholder="助记码"/>
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("industry", {})(
+                                {getFieldDecorator("brandId", {})(
                                      <BrandRef/>
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("cannelType", {})(
+                                {getFieldDecorator("attrGroupId", {})(
                                      <AttrsGrpRef/>
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("state", {})(
-                                    <Input type="text" placeholder="停启用"/>
+                                {getFieldDecorator("enableState", {})(
+                                    <Enum
+                                    addOptionAll={""}
+                                    dataSource={this.state.enumData.enableState}
+                                />
                                 )}
                             </FormItem>
                         </Col>
@@ -113,7 +152,7 @@ class MoreForm extends React.Component {
                     <Row>
                         <Col span={6}>
                             <div className="more-btn">
-                                <Button htmlType="submit">查询</Button>
+                                <Button htmlType="submit" onClick={this.handleSearch.bind(this)} >查询</Button>
                                 <span
                                     className="more-up"
                                     onClick={this.moreForm.bind(this)}
@@ -129,43 +168,113 @@ class MoreForm extends React.Component {
     }
 }
 
-const WarpMilForm = Form.create({
-    mapPropsToFields: (props, onChangeFild) => {
-        //从redux中读值
-        let searchMap = props.$$state.toJS().searchMap;
-
-        let value = {};
-        for (let key in searchMap) {
-            value[key] = { value: searchMap[key] };
-        }
-        return {
-            ...value
-        };
-    },
-    onFieldsChange: (props, onChangeFild) => {
-        //往redux中写值//把值进行更新改变
-
-        let searchMap = props.$$state.toJS().searchMap;
-        for (let key in onChangeFild) {
-            if (onChangeFild[key].value.key) {
-                searchMap[key] = onChangeFild[key].value.key;
-            } else {
-                // if (key == "industry") {
-                //     debugger;
-                //     searchMap[key] = onChangeFild[key].value.id;
-                // } else {
-                searchMap[key] = onChangeFild[key].value;
-                //}
+const WarpMoreForm = Form.create({
+    onFieldsChange(props, fields){ 
+        let fieldsChangeData = {};
+        let dataSource = props.dataSource;
+        for(let item in fields){
+            if(item == "prdtypeId"){                   
+                if("isDelete" in fields[item].value){
+                    delete props.dataSource.prdtypeId;
+                    delete props.dataSource.prdtypeName;
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
+                } 
+            }else if(item == "brandId"){
+                if("isDelete" in fields[item].value){
+                    delete props.dataSource.brandId;
+                    delete props.dataSource.brandName;
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.brandId),brandName:fields[item].value.brandName};
+                }                
+            }else if(item == "measureId"){
+                if("isDelete" in fields[item].value){
+                    delete props.dataSource.measureId;
+                    delete props.dataSource.measureName;
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.measureId[0]),measureName:fields[item].value.measureName};
+                }                 
+            }else if(item == "attrGroupId"){
+                if("isDelete" in fields[item].value){
+                    delete props.dataSource.attrGroupId;
+                    delete props.dataSource.attrGroupName;
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.attrGroupId),attrGroupName:fields[item].value.attrGroupName};
+                }              
+            }else if(item == "enableState"){
+                if(parseInt(fields[item].value.key) == 0){
+                    delete props.dataSource.enableState;
+                    fieldsChangeData = {enableStateName:fields[item].value.title};
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.key),enableStateName:fields[item].value.title};
+                }               
+            }else{           
+                fieldsChangeData = {[item]:fields[item].value};
             }
         }
-        props.searchMapFn(searchMap);
+        Object.assign(props.dataSource, fieldsChangeData);
+        props.action.setMoreFormData(props.dataSource);
+    },
+    mapPropsToFields(props){
+        let data = props.dataSource;
+        return{
+            code:{
+                ...data.code,
+                value:data.code
+            },
+            name:{
+                ...data.name,
+                value:data.name
+            }, 
+            memCode:{
+                ...data.memCode,
+                value:data.memCode
+            },  
+            spec:{
+                ...data.spec,
+                value:data.spec
+            },  
+            price:{
+                ...data.price,
+                value:data.price
+            },  
+            orgId:{
+                ...data.orgId,
+                value:data.orgId
+            },  
+            description:{
+                ...data.description,
+                value:data.description
+            },  
+            prdtypeId:{
+                ...data.prdtypeName,
+                value:data.prdtypeName
+            },  
+            brandId:{
+                ...data.brandId,
+                value:data.brandName
+            },  
+            measureId:{
+                ...data.measureId,
+                value:data.measureName
+            },  
+            attrGroupId:{
+                ...data.attrGroupId,
+                value:data.attrGroupName
+            }, 
+            enableState:{
+                ...data.enableState,
+                value:data.enableStateName
+            } 
+            
+        };
     }
 })(MoreForm);
 
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList
+        $$state: state.product
     };
 }
 //绑定action到组件props
@@ -175,4 +284,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WarpMilForm);
+export default connect(mapStateToProps, mapDispatchToProps)(WarpMoreForm);

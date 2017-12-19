@@ -89,7 +89,6 @@ class List extends React.Component {
   }
 
   onEdit = () => {
-    debugger
     this.setState({ status: "edit" });
     let rowKey = this.state.selectedRowKeys[0];
     let rowData = {};
@@ -105,9 +104,6 @@ class List extends React.Component {
     this.props.action.eidtAttrGroup(id, name);
   }
 
-  onDetailEdit () {
-
-  }
 
   onClose() {  
    
