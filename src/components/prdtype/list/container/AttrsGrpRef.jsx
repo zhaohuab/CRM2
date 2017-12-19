@@ -8,119 +8,118 @@ const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import * as Actions from "../action"
 
- class AttrsGrpRef extends React.Component {
+class AttrsGrpRef extends React.Component {
     constructor(props) {
-    super(props);
-
+        super(props);
     
-    this.state = {
-        selectedValue:"",
-        selectedId:0,
-        visible:false,
-        select:""
-    };
-  }
-  columns = [ {
-    title: '名称',
-    dataIndex: 'name',
-    key: 'name'                      
-    }            
-];
+        this.state = {
+            selectedValue:"",
+            selectedId:0,
+            visible:false,
+            pagination : {
+                pageSize:10,
+                page:1,
+            },
+            searchMap : {},
+        };
+    }
 
-onOk() {
-    let {selectedValue,selectedId} = this.state; 
-    this.props.onChange(selectedId);
-    this.setState({select:selectedValue});
-    this.handleVisibleChange(false);
-}
+    columns = [{
+        title: '名称',
+        dataIndex: 'name',
+        key: 'name'                      
+    }];
 
-onCancel() {
-    this.handleVisibleChange(false);
-}
+    onOk() {
+        let {selectedValue,selectedId} = this.state; 
+        this.props.onChange({attrGroupId:selectedId,attrGroupName:selectedValue});
+        this.handleVisibleChange(false);
+    }
 
-onClick = (record, index) => {
-    this.setState({selectedValue:record.name});
-    this.setState({selectedId:record.id});
-}
+    onCancel() {
+        this.handleVisibleChange(false);
+    }
 
-handleVisibleChange = (flag) => {
-    this.setState({ visible: flag });
-}
+    onClick = (record, index) => {
+        this.setState({selectedValue:record.name});
+        this.setState({selectedId:record.id});
+    }
 
-  render() {
-    
-    const attrgrpRefList = this.props.$$state.get("attrgrpRef").toJS();
-    const attrgrpRefData = (
-        <div className = "reference">
-        <div  className = "reference-main"> 
-        <Row
-            type="flex"
-            justify="space-between"
-            className="reference-main-header"
-        >
-            <div className="title">属性组</div>
-        </Row>
-        <Row className="reference-main-choice" type="flex">
-       
-                <Table columns = {this.columns} 
-                    dataSource = {attrgrpRefList} 
-                    
-                    showHeader={false}
-                    onRowClick={this.onClick}
-                    pagination={false}
-            
-                    className="inner"
-                   />
-           
-        </Row>
-        <Row
-            type="flex"
-            justify="end"
-            align="middle"
-            className="reference-main-footer"
-        >
-            <Row type="flex" justify="end" align="middle" gutter={15}>
-                <div>
-                    <Button onClick={this.onCancel.bind(this)}>
-                        取消
-                    </Button>
-                </div>
-                <div>
-                    <Button
-                        type="primary"
-                        onClick={this.onOk.bind(this)}
+    handleVisibleChange = (flag) => {
+        let {pagination} = this.state; 
+        this.setState({ visible: flag });
+        this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
+    }
+
+    render() {      
+        const attrgrpRefList = this.props.$$state.get("attrgrpRef").toJS().data;
+        const attrgrpRefData = (
+            <div className = "reference">
+                <div  className = "reference-main"> 
+                    <Row
+                        type="flex"
+                        justify="space-between"
+                        className="reference-main-header"
                     >
-                        确定
-                    </Button>
+                        <div className="title">属性组</div>
+                    </Row>
+                    <Row className="reference-main-choice" type="flex">       
+                        <Table columns = {this.columns} 
+                        dataSource = {attrgrpRefList} 
+                        showHeader={false}
+                        onRowClick={this.onClick}
+                        pagination={false}
+                        className="inner"
+                        />           
+                    </Row>
+                    <Row
+                        type="flex"
+                        justify="end"
+                        align="middle"
+                        className="reference-main-footer"
+                    >
+                        <Row type="flex" justify="end" align="middle" gutter={15}>
+                            <div>
+                                <Button onClick={this.onCancel.bind(this)}>
+                                    取消
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    type="primary"
+                                    onClick={this.onOk.bind(this)}
+                                >
+                                    确定
+                                </Button>
+                            </div>
+                        </Row>
+                    </Row>
                 </div>
-            </Row>
-        </Row>
-    </div>
-    </div>
-);
+            </div>
+        );
 
-    return (
-        <Dropdown overlay={attrgrpRefData} 
-        trigger="click"
-        onVisibleChange={this.handleVisibleChange}
-        visible={this.state.visible}
-    >                        
-        <Search value = {this.state.select || this.props.value}/>
-    </Dropdown>
-    );
-  }
+        return (
+            <Dropdown overlay={attrgrpRefData} 
+            trigger="click"
+            onVisibleChange={this.handleVisibleChange}
+            visible={this.state.visible}
+            >                        
+                <Search placeholder = "属性组" value = { this.props.value }/>
+            </Dropdown>
+        );
+    }
 }
 
-    function mapStateToProps(state, ownProps) {
-        return {
-            $$state: state.prdtype
-        }
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.prdtype
     }
+}
   
-    function mapDispatchToProps(dispatch) {
-        return {
-            action: bindActionCreators(Actions, dispatch)
-        }
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
     }
+}
   
-    export default  connect( mapStateToProps, mapDispatchToProps)(AttrsGrpRef);
+export default  connect( mapStateToProps, mapDispatchToProps)(AttrsGrpRef);

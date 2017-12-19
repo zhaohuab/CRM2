@@ -2,15 +2,15 @@ import Immutable from 'immutable'
 
 let $$initialState = {
 	loading: false,
-	data:{},
+	data:{},//列表数据
 	visible:false,
-	attrValue:[],
-	formData:{},
+	attrValue:[],//属性值
+	formData:{},//新增|编辑form值
 	valueList:[],
-	addNum:0,
-	changeData:[],
-	detailVisible:false,
-	AttrVaSelectedKeys:[]
+	addNum:0,//属性值列表新增行数
+	changeData:[],//本次新增|编辑 属性值的变更值
+	detailVisible:false,//是否显示详情界面
+	AttrVaSelectedKeys:[],//新增|编辑 选中的属性值
 };
 
 function listAdd(page,item) {	

@@ -1,6 +1,4 @@
-import {
-    Modal,
-    Cascader,
+import { 
     Select,
     Form,
     Row,
@@ -12,33 +10,36 @@ import {
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
+
 const FormItem = Form.Item;
 const Option = Select.Option;
-const ButtonGroup = Button.Group;
-const confirm = Modal.confirm;
+
 import "assets/stylesheet/all/iconfont.css";
-import PrdClassRef from './PrdClassRef'
 import * as Actions from "../action";
 
 class LessForm extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            enumData:
+                {enableState:[
+                    {key:1,title:"启用"},
+                    {key:2,title:"停用"}
+                ]},
+        }
     }
 
-    handleSearch(e) {
+    handleSearch(e) {     
         e.preventDefault();
         this.props.handleSearch(this.props.$$state.get("lessFormData").toJS());
     }
 
-    moreForm() {
-        this.props.formMore();
-    }
-
-    onOrgDelete() {
-        let org = {orgName:""};
+    onCodeDelete() {
+        let code = {code:""};
         let data = this.props.dataSource
-        Object.assign(data, org);
-        this.props.action.setLessFormData(data);
+        Object.assign(data, code);
+        this.props.action.setMoreFormData(data);
     }
 
     render() {
@@ -47,43 +48,37 @@ class LessForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        //let { enumData } = this.props.$$state.toJS();
         return (
             <div className="less-form">
                 <Form layout="inline" >
                     <Row type="flex" align="middle" style={{ height: "54px" }}>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("orgId")(
-                                    this.props.dataSource.orgId?
+                                {getFieldDecorator("code")(
+                                    this.props.dataSource.code?
                                     <div>
-                                        <Input type="text" placeholder="适用组织" 
-                                        suffix={<Icon type="close" onClick={this.onOrgDelete.bind(this)}/>}/>                                       
+                                        <Input type="text" 
+                                        suffix={<Icon type="close" onClick={this.onCodeDelete.bind(this)}/>}/>                                       
                                     </div>:
-                                     <div>
-                                        <Input type="text" placeholder="适用组织" 
-                                        />                                       
+                                    <div>
+                                        <Input type="text" placeholder="编码"/>                                       
                                     </div>
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("prdtypeId")(
-                                     <PrdClassRef  placeholder="产品分类" />
+                                {getFieldDecorator("enableState", {})(
+                                    <Enum
+                                   // addOptionAll={"停启用"}
+                                    dataSource={this.state.enumData.enableState}
+                                />
                                 )}
                             </FormItem>
                         </Col>
-
                         <Col span={6}>
-                            <div className="more-btn">
+                            <div >
                                 <Button htmlType="submit" onClick={this.handleSearch.bind(this)} >查询</Button>
-                                <span
-                                    onClick={this.moreForm.bind(this)}
-                                    className="more-up"
-                                >
-                                    展开 <Icon type="down" />
-                                </span>
                             </div>
                         </Col>
                     </Row>
@@ -98,13 +93,8 @@ const WarpMilForm = Form.create({
         let fieldsChangeData = {};
         let dataSource = props.dataSource;
         for(let item in fields){
-            if(item == "prdtypeId"){
-                if("isDelete" in fields[item].value){
-                    delete props.dataSource.prdtypeId;
-                    delete props.dataSource.prdtypeName;
-                }else{
-                    fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
-                }                                   
+            if(item == "prdtypeId"){                   
+                fieldsChangeData = {[item]:parseInt(fields[item].value[0])};
             }else{           
                 fieldsChangeData = {[item]:fields[item].value};
             }

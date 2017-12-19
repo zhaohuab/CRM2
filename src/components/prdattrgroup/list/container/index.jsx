@@ -104,9 +104,6 @@ class List extends React.Component {
     this.props.action.eidtAttrGroup(id, name);
   }
 
-  onDetailEdit () {
-
-  }
 
   onClose() {  
    

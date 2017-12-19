@@ -1,15 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Button,Icon, Select, Switch } from 'antd';
-import {Input,Radio,Popconfirm,Form} from 'antd';
-
-import SalesUnitRef from './SalesUnitRef'
+import { Table, Input} from 'antd';
 import './index.less'
-const Option = Select.Option;
-let Search = Input.Search;
-let RadioGroup = Radio.Group;
-const ButtonGroup = Button.Group;
+
 import 'assets/stylesheet/all/iconfont.css'
 import * as Actions from "../action"
 import { debug } from 'util';
