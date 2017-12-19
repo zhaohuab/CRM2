@@ -150,8 +150,8 @@ export default function prdAttrReducers($$state = Immutable.fromJS($$initialStat
 		// case 'PRDCLASS_FORM_SETVISIBLE' : 
 		// 		return $$state.merge({			
 		// 			formVisitable:action.content,				
-		// 		}) 								
-	  default: 
+		// 		}) 									 
+	    default: 
 	      return $$state;
     }
 }

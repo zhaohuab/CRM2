@@ -107,15 +107,17 @@ class List extends React.Component {
   componentWillMount() { this.props.action.getListData() }
 
   render() { 
+    let arr = ['联系人','线索','商机','竞品采集']
     let page = this.props.$$state.get("data").toJS();
     let data = page.data || [];
     this.state.more ? null : data = data.slice(0,12);   
     let visible = this.props.$$state.get("visible");
     let more = this.props.$$state.get("more");
     let editData = this.props.$$state.get("editData").toJS();
+    let bizTypes = this.props.$$state.get("bizTypes").toJS();
+    let biztypeList = bizTypes.biztypeList||[];
     let searchKey = this.props.$$state.get("searchKey");
     let enableState = this.props.$$state.get("enableState");
-    
     return (
       <div className = 'user-warpper taskcard-user-warpper'>
           <div className='head_panel'>
@@ -160,7 +162,7 @@ class List extends React.Component {
           width = { 500 }
         >
           <div className='model-height'>
-              <FormCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+              <FormCard editData={ editData } biztypeList={ biztypeList } arr={ arr } wrappedComponentRef={(inst) => this.formRef = inst}/>
           </div>
         </Modal>
       </div>

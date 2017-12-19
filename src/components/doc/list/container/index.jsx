@@ -72,7 +72,7 @@ class List extends React.Component {
   onEdit = (data) => {  
     this.setState({ isEdit: true });
     let rowData = {};
-    if(data){//如果是从详情中点击的编辑按钮
+    if(data){//从详情中点击编辑按钮
       rowData=data;
       this.onClose('detail')
     }else{
@@ -122,7 +122,7 @@ class List extends React.Component {
     this.setState(state);
   }
 
-  onBack = () => {
+  onBack = () => {//返回按钮
     this.setState({ headLabel: false,selectedRowKeys:[]});
   }
 
@@ -200,7 +200,7 @@ class List extends React.Component {
 
   render() {
     let page = this.props.$$state.get("data").toJS();
-    /* 后台返回来的数据中有一个total：73的键值对；这个导致'共73条'一直不会变化，后台只要动态返回数据库中的真实条数在这里，应该就没问题了 */
+    /* 后台返回来的数据中有一个total：73的键值对；这个导致'共73条'一直不会变化，后台只要动态返回数据库中的真实条数在这里，应该就ok */
     let editData = this.props.$$state.get("editData").toJS();
     let detailContent = this.props.$$state.get("detailContent").toJS();
     let detailSource = this.props.$$state.get("detailSource").toJS();

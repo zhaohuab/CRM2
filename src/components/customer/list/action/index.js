@@ -125,6 +125,7 @@ const getListData = (pagination, searchMap) => {
                 }
             },
             data => {
+               
                 console.log(data);
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {

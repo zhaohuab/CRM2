@@ -90,7 +90,6 @@ class Department extends React.Component {
     render() {
         let key = "",
             title = "";
-            debugger;
         if (this.props.value) {
             key = this.props.value.key;
             title = this.props.value.title;

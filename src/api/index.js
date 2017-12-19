@@ -108,6 +108,13 @@ const prdattrgroup = {
     prdattrgroup: baseDir + 'base/attrgroups',
 }
 
+const phonebooks = {
+    mydept: baseDir + 'csns/phonebooks/mydept',
+    organizations: baseDir + 'csns/phonebooks/organizations',
+    search: baseDir + 'csns/phonebooks/search',
+    sub: baseDir + 'csns/phonebooks/sub',
+}
+
 export {
     login,
     menu,
@@ -133,4 +140,5 @@ export {
     oppflow,
     prdattr,
     prdattrgroup,
+    phonebooks,
 }
