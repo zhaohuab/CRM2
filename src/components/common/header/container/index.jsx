@@ -59,8 +59,9 @@ class Header extends React.Component {
         this.props.action.getData(url.mydept,url.organizations)
     }
 
-    getApprovalData = () => {//获取审批流
+    getApprovalData = () => {//获取审批流列表
         this.props.action.approvedShow();
+        //this.props.action.getApprovalData();
     }
 
     render() {
@@ -69,7 +70,7 @@ class Header extends React.Component {
         let { $$state, action } = this.props;
         let title = $$state.get("title");    
         let phoneBook = $$state.get("phoneBook");  
-        let approval = $$state.get("approval");  
+        let approval = $$state.get("approval");   
                   
         return (
             <div className="app-header">
@@ -168,5 +169,3 @@ module.exports = connect(mapStateToProps, dispatch => {
     };
 })(Header);
 
-
-/*   { phoneBooks ? <div style={{width:'300px',height:'300px',position:'absolute',top:'10px',right:'10px',zIndex:'99999999999999999999999999999999999999999'}}><PhoneBooks/></div> : '' } */

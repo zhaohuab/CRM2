@@ -31,7 +31,10 @@ const approval = {//客户中审批流设置
 }
 
 const approved = {//审批流
-    approved:baseDir+'bpub/approvals/processes'
+    notfinished: baseDir+'bpub/approvals/documents/notfinished',
+    finished: baseDir+'bpub/approvals/documents/finished',
+    todo: baseDir+'bpub/approvals/tasks/todo',
+    done: baseDir+'bpub/approvals/tasks/done',   
 }
 
 export {

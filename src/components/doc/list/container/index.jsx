@@ -136,13 +136,13 @@ class List extends React.Component {
   showTotal = (total) => {
    return `共 ${total} 条`;
   }
-  onPageChange = (page, pageSize) => { 
+  onPageChange = (page, pageSize) => { //页码改变回调
     let { pagination, searchMap } = this.state;
     pagination = { page: page, pageSize: pageSize };
     this.setState({ pagination })
     this.props.action.getListData({ pagination, searchMap });
   }
-  onPageSizeChange = (current, pageSize) => {
+  onPageSizeChange = (current, pageSize) => {//每页显示条数改变回调
     let { pagination, searchMap } = this.state;
     pagination = { page: pagination.page, pageSize: pageSize };
     this.setState({ pagination })

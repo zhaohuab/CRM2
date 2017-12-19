@@ -1,7 +1,8 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from "utils/reqwest";
-import {baseDir} from 'api'
-import { browserHistory } from 'react-router'
+import {baseDir} from 'api';
+import { browserHistory } from 'react-router';
+import { approved as url } from 'api/zhb'
 
  const loginOut = () => {
    return (dispatch)=>{
@@ -98,26 +99,52 @@ const approvedShow = () => {//审批流显示
     }
 }
 
-const getApprovalData = (path1,path2) => {//获取审批流数据
+const getApprovalData = () => {//获取审批流数据
+    let aa = url;
+    debugger;
     return dispatch => {
         reqwest(
             {
-                url: path1,
+                url: url.notfinished,
                 method: "GET",
                 data: {}
             },
-            dataResult => {//我提交
-                dispatch(fetchData('HEADER_MYSUBMIT_SUCCESS',{ submitData: dataResult.data }))
+            dataResult => {//我提交--未完成
+                debugger;
+                dispatch(fetchData('HEADER_NOTFINISHED_SUCCESS',{ unfinishedData: dataResult.data }))
             }
         );
-           reqwest(
+        reqwest(
             { 
-                url: path2,
+                url: url.finished,
                 method: "GET",
                 data: {}
             },
-            dataResult => {//我审批
-                dispatch(fetchData('HEADER_MYAPPROVED_SUCCESS',{ approvedData: dataResult.data }))
+            dataResult => {//我提交--已完成
+                debugger;
+                dispatch(fetchData('HEADER_FINISHED_SUCCESS',{ finishedData: dataResult.data }))
+            }
+        );
+        reqwest(
+            {
+                url: url.todo,
+                method: "GET",
+                data: {}
+            },
+            dataResult => {//我审批--待办
+                debugger;
+                dispatch(fetchData('HEADER_TODO_SUCCESS',{ todoData: dataResult.data }))
+            }
+        );
+        reqwest(
+            { 
+                url: url.done,
+                method: "GET",
+                data: {}
+            },
+            dataResult => {//我审批--已办
+                debugger;
+                dispatch(fetchData('HEADER_DONE_SUCCESS',{ doneData: dataResult.data }))
             }
         );
     }
