@@ -65,7 +65,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				editData: action.payload.editData,
 				oppBList: action.payload.editData.childList,
 				formVisitable: action.payload.visible,
-				isEdit: false
+				isEdit: true
 			})
 
 		case 'OPPORTUNITY_LIST_SHOWVIEWFORM':

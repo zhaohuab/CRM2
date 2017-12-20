@@ -1,4 +1,4 @@
-import { Form, Modal, Popover, Collapse, Tabs, Row, Col, Layout, Menu, Breadcrumb, Icon, Button, Dropdown, Timeline, Table } from "antd";
+import { Form, Modal, Card, Popover, Collapse, Tabs, Row, Col, Layout, Menu, Breadcrumb, Icon, Button, Dropdown, Timeline, Table } from "antd";
 import { browserHistory } from "react-router";
 const TabPane = Tabs.TabPane;
 const { Header, Content, Sider } = Layout;
@@ -7,8 +7,6 @@ const confirm = Modal.confirm;
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action";
-import Card from "./card";
-import ViewCard from "./ViewCard";
 import SaleStage from './SaleStage';
 
 class ViewPanel extends React.Component {
@@ -75,9 +73,10 @@ class ViewPanel extends React.Component {
         if (this.props.data && this.props.data.childList) {
             dataSource = this.props.data.childList;
         }
-        const WarpCacd = Form.create()(Card)
-        const WarpViewCacd = Form.create()(ViewCard)
+
         const editData = this.props.$$state.get("editData").toJS();
+        debugger
+        const childList = editData.childList;
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">
@@ -155,38 +154,57 @@ class ViewPanel extends React.Component {
                             >
                                 <Row><SaleStage /></Row>
                                 <Row>
-                                    <Collapse defaultActiveKey={["1"]}>
-                                        <Panel
-                                            header={this.panelHeader({
-                                                title: "商机产品明细"
-                                            })}
-                                            key="1"
-                                        >
+                                    <Tabs defaultActiveKey="1">
+                                        <TabPane tab="资料" key="1">
+                                            <Card title="基本信息">
+
+                                                <Row>
+                                                    <Col span={12}>
+                                                        <Row>
+                                                            <Col span={12}>商机名称：</Col><Col span={12}>{editData.name}</Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col span={12}>商机类型：</Col><Col span={12}>{editData.type}</Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col span={12}>预计签单金额：</Col><Col span={12}>{editData.expectSignMoney}</Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col span={12}>商机阶段：</Col><Col span={12}>{editData.saleStage}</Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={12}>
+                                                        <Row>
+                                                            <Col span={12}>客户名称：</Col><Col span={12}>{editData.customerId}</Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col span={12}>商机状态：</Col><Col span={12}>{editData.state}</Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col span={12}>预计签单时间：</Col><Col span={12}>{editData.expectSignTime}</Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col span={12}>赢单概率：</Col><Col span={12}>{editData.winProbability}</Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>                                        </Card>
+
+
+                                        </TabPane>
+                                        <TabPane tab="相关" key="2">Content of Tab Pane 2</TabPane>
+                                        <TabPane tab="产品" key="3">
                                             <Table
-                                                columns={this.columns}
-                                                dataSource={dataSource}
-                                                rowKey="id"
-                                                rowSelection={false}
                                                 size="middle"
+                                                columns={this.columns}
+                                                dataSource={childList}
+                                                rowSelection={false}
+                                                pagination={false}
                                             />
-                                        </Panel>
-                                        <Panel
-                                            header={this.panelHeader({
-                                                title: "商机"
-                                            })}
-                                            key="2"
-                                        >
-                                            <p>wert</p>
-                                        </Panel>
-                                        <Panel
-                                            header={this.panelHeader({
-                                                title: "行动"
-                                            })}
-                                            key="3"
-                                        >
-                                            <p>asdfg</p>
-                                        </Panel>
-                                    </Collapse>
+
+
+                                        </TabPane>
+                                        <TabPane tab="新闻" key="4">Content of Tab Pane 3</TabPane>
+                                    </Tabs>
                                 </Row>
                             </div>
                         </Col>

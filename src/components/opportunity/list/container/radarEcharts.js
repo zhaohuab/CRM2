@@ -1,4 +1,4 @@
-option = {
+const option = {
     title: {
         text: '基础雷达图'
     },
@@ -17,12 +17,12 @@ option = {
            }
         },
         indicator: [
-           { name: '销售（sales）', max: 6500},
-           { name: '管理（Administration）', max: 16000},
-           { name: '信息技术（Information Techology）', max: 30000},
-           { name: '客服（Customer Support）', max: 38000},
-           { name: '研发（Development）', max: 52000},
-           { name: '市场（Marketing）', max: 25000}
+           { name: '维度1', max: 6500},
+           { name: '维度2', max: 16000},
+           { name: '维度3', max: 30000},
+           { name: '维度4', max: 38000},
+           { name: '维度5', max: 52000},
+           { name: '维度6', max: 25000}
         ]
     },
     series: [{
@@ -32,11 +32,11 @@ option = {
         data : [
             {
                 value : [4300, 10000, 28000, 35000, 50000, 19000],
-                name : '预算分配（Allocated Budget）'
+                name : '推荐值'
             },
              {
                 value : [5000, 14000, 28000, 31000, 42000, 21000],
-                name : '实际开销（Actual Spending）'
+                name : '实际值'
             }
         ]
     }]

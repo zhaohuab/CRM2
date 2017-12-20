@@ -2,6 +2,7 @@ import { Row, Col, Card, Button,Radio,Checkbox } from 'antd';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action";
+import Radar from './Radar.jsx';
 class SaleStage extends React.Component {
     constructor(props) {
         super(props);
@@ -54,7 +55,6 @@ class SaleStage extends React.Component {
         }
 
         const showStage = data =>
-
             data.map(item => {
                 return (
                     <div >
@@ -67,7 +67,6 @@ class SaleStage extends React.Component {
 
 
         const showDimension = data =>
-
             data.map(item => {
                 return (
                     <Row>
@@ -77,7 +76,6 @@ class SaleStage extends React.Component {
                         </Col>
                         {showAction(item.children)}
                     </Row>
-
                 );
             });
 
@@ -102,33 +100,11 @@ class SaleStage extends React.Component {
                 </Row>
                 <Row>
                     <Col span={12}>
-                        {/* <Card title="关键指标" bordered={false} style={{ width: 300 }}>
-                            <p>*识别客户</p>
-                            <p>*识别联系人</p>
-                        </Card> */}
-
                         {showDimension(dimension)}
                     </Col>
                     <Col span={12}>
-                        <Card title="跟进指南" bordered={false} style={{ width: 300 }}>
-                           {/* <Radar /> */}
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col span={12}>
-                        <Card title="商机关联客户新闻" bordered={false} style={{ width: 300 }}>
-                            <p>Designed as Ant Design，提炼和服务企业级中后台产品的交互语言和视觉风格。</p>
-                            <p>React Component 基础上精心封装的高质量 UI 组件。</p>
-                            <p>基于 npm + webpack + babel 的工作流，支持 ES2015 和 TypeScript。</p>
-                        </Card>
-                    </Col>
-                    <Col span={12}>
-                        <Card title="商机关联客户新闻" bordered={false} style={{ width: 300 }}>
-                            <p>Designed as Ant Design，提炼和服务企业级中后台产品的交互语言和视觉风格。</p>
-                            <p>React Component 基础上精心封装的高质量 UI 组件。</p>
-                            <p>基于 npm + webpack + babel 的工作流，支持 ES2015 和 TypeScript。</p>
-                        </Card>
+                       销售漏斗
+                        <Radar data={dimension} />
                     </Col>
                 </Row>
             </div>

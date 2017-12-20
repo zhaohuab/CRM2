@@ -5,35 +5,54 @@ import { bindActionCreators } from "redux";
 import moment from "moment";
 import * as Actions from "../action";
 var echarts = require('../../../../../node_modules/echarts/lib/echarts');
-require('../../../../../node_modules/echarts/lib/chart/funnel');
-import funnelEcharts from './funnelEcharts.js'
+require('../../../../../node_modules/echarts/lib/chart/radar');
+import radarEcharts from './radarEcharts.js'
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-const funnelChange=[{data:[60,40,20,80,90,100],data2:[30,10,5,50,70,80]},{data:[80,40,60,30,15,10],data2:[60,30,55,25,13,5]},{data:[100,20,80,10,45,60],data2:[90,10,65,5,33,40]},{data:[10,20,40,60,90,75],data2:[7,10,21,25,63,40]}] 
 
-class Funnel extends React.Component {
+class Radar extends React.Component {
     constructor(props) {
         super(props)
-        this.funnelOption=funnelEcharts;
+        this.radarOption=radarEcharts;
 
-        
-    this.changeFunnelData=(key)=>{
-        this.funnelOption.series[0].data.forEach((item,index)=>{
-            item.value=funnelChange[key].data[index]
-        })
-
-        this.funnelOption.series[1].data.forEach((item,index)=>{
-            item.value=funnelChange[key].data2[index]
-        })
-        this.funnelEchar.setOption(this.funnelOption);
-        }
+    }
+    componentDidMount() {
+        this.radarEchar = echarts.init(this.refs.radar);
+        this.radarEchar.setOption(this.radarOption);
     }
 
-    componentDidMount() {
-
-        this.funnelEchar = echarts.init(this.refs.radar);
-        this.props.action.getFunnelData()
+    setRadarData(data){
+        const indicator = []
+        const result = []
+        const suggestValue = [];
+        const actualValue = [];
+        for(let i=0;i<data.length;i++){
+            indicator.push({name:data[i].oppdimension_name,max:10})
+            const actions = data[i].children;
+            for(let j=0;j<actions.length;j++){
+                if(actions[j].is_finish == 1 && (actualValue[i]==undefined||actions[j].score>actualValue[i])){
+                    actualValue[i] = actions[j].score;
+                }
+                if(actions[j].is_suggest == 1){
+                    suggestValue[i] = actions[j].score
+                }
+            }
+            if(suggestValue[i]==undefined){
+                suggestValue[i]=0
+            }
+            if(actualValue[i]==undefined){
+                actualValue[i]=0
+            }
+        }
+        result.push({name:'推荐值',value:suggestValue})
+        result.push({name:'实际值',value:actualValue})
+        if(data.length>0&&this.radarEchar){
+            this.radarOption.radar.indicator = indicator;
+            this.radarOption.series[0].data = result;
+            this.radarEchar.setOption(this.radarOption);
+            window.addEventListener('resize', this.onWindowResize.bind(this))
+        }
     }
 
     onWindowResize(){
@@ -41,7 +60,7 @@ class Funnel extends React.Component {
             if(this.refs.target){
                 let resizeSize=this.refs.target.offsetWidth
         
-                this.funnelEchar.resize({
+                this.radarEchar.resize({
                     width:resizeSize+'px'
                 })
             }
@@ -49,22 +68,10 @@ class Funnel extends React.Component {
     }
     
     render() {
-        // const funnelData = this.props.$$state.get("funnelData").toJS();
-        // if(this.funnelEchar){
-        //     this.funnelOption.series[0].data = funnelData;
-        //     this.funnelEchar.setOption(this.funnelOption);
-        //     window.addEventListener('resize', this.onWindowResize.bind(this))
-        // }
-   
+        this.setRadarData(this.props.data)
         this.onWindowResize()
         return (
-            <div className='main-middle-bottom'>
-                <AntdCard title="销售漏斗">
-                <div>
-                    <div ref='radar' className='radar-chrats'></div>
-                </div>
-                </AntdCard>
-            </div>
+            <div ref='radar' className='radar-charts'></div>
         )
     }
 }
@@ -82,4 +89,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 //输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(Funnel);
+export default connect(mapStateToProps, mapDispatchToProps)(Radar);
