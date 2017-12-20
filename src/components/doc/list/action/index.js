@@ -194,7 +194,8 @@ const detailAdd = (data) => {//添加档案明细
 	}
  }
 
-const onDetail = (data,detailVisible) => {//档案详情	
+const onDetail = (data,detailVisible) => {//
+	debugger;	
 	return (dispatch) => {
 		reqwest({
 			url: `${url.doc}/${data.id}`,

@@ -127,6 +127,13 @@ const onSetState = (ids, enable) => {
 	}
 }
 
+//查询form赋值
+const setLessFormData = (fields) => {	
+	return {
+		type:'BRAND_FORM_SETLESSFORM',
+		content:fields
+	}    
+}
 //输出 type 与 方法
 export {
     getListData,
@@ -137,5 +144,6 @@ export {
     onDelete,
     onSetState,
     selectData,
-    changeEnableState
+    changeEnableState,
+    setLessFormData,
 }

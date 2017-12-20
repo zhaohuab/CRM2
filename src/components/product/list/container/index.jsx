@@ -1,24 +1,24 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {Table, Button, Popconfirm, Input, Radio, Icon, Form, Modal,Row,Col,Select} from 'antd'
+import {Table, Button, Input,  Icon, Form, Modal, Row, Col, Select, Tree} from 'antd'
 import WrapCard from './ProductForm.jsx';
 import WrapCardDetail from './ProductFormDetail.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import SaleUnitTable from './SaleUnitTable'
 import SaleUnitDeTable from './SaleUnitDetailTable'
-
 import HeaderButton from '../../../common/headerButtons/headerButtons.jsx'
+
 import './index.less';
+import 'assets/stylesheet/all/iconfont.css'
 
 import * as Actions from '../action'
 import LessForm from "./lessForm.jsx";
 import MoreForm from "./moreForm.jsx";
-let Search = Input.Search;
-let RadioGroup = Radio.Group;
+const Search = Input.Search;
 const ButtonGroup = Button.Group;
-let Option = Select.Option;
-import 'assets/stylesheet/all/iconfont.css'
+const Option = Select.Option;
+const TreeNode = Tree.TreeNode;
 
 class List extends React.Component{
     constructor(props){
@@ -32,11 +32,14 @@ class List extends React.Component{
               pageSize:10,
               page:1,
             },
-            searchMap : {
-            //  enableState:1,
-            },
+            searchMap : {},
             moreShow:false,
-            status:"add"      
+            status:"add" ,//状态：新增 编辑 详情
+            assignVisible:false, 
+            selectedTreeKeys:[],//分配时选中组织id
+            selectedOrgnames:[],//分配时选中组织名称
+            rootFlag:false, //分配选中组织是否是根节点 
+            editRow:{},
         },      
         
 
@@ -97,6 +100,7 @@ class List extends React.Component{
         this.props.action.getListData({ pagination,searchMap });
     }
 
+    //产品详情
     showDetail(record){
         this.setState({status:"showdetail"});
         let rowKey = record.id;
@@ -107,13 +111,16 @@ class List extends React.Component{
             this.props.action.showEditForm(rowKey ,true);
             break;
           }          
-        }      
+        }   
+        this.setState({editRow:record});   
     }
+
     //点击新增编辑界面销售单位的新增按钮，增加一行
     addRow() {
         let k = this.props.$$state.get("addNum");
         this.props.action.addSaleUnitRow({id:'add_'+k.toString(),editState:'ADD',fixedConvert:1});
     }
+    
     //销售单位删除
     onSuDelete(){
         let flag = false;
@@ -131,41 +138,42 @@ class List extends React.Component{
                 return data.id !== rowKey
             });
         }
-        let sel = [];
         this.props.action.setSecRowKeys([]);
         this.props.action.onChangeSuVa(changedData);
         this.props.action.setSuTableData(salesunitTable);
     }
 
+    //产品新增
     onAdd() {
+        this.props.action.setSuTableData([]);
+        this.props.action.setFormData({});  
+        //this.props.action.onChangeSuVa([]); 
+        this.props.action.setBrandValue("");
+        this.props.action.setAttrGrpValue(""); 
+        this.props.action.setMeaUnitValue("");
+        this.props.action.setPrdClassValue({});
         this.setState({status:"add"});
         let dataSource =this.props.$$state.get('salesunitTable').toJS();
         let { pagination,searchMap } = this.state;
         this.setState({isEdit:false});
         this.props.action.showForm(true,{});
-        //this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
-       // this.props.action.getProdClassRef();//获取产品分类参照列表
-       // this.props.action.getBrandRef(pagination);//获取品牌参照列表
-       // this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
-
     }
 
     onBack = ()=>{
         this.setState({selectedRowKeys:[]});
     }
 
+    //新增|编辑取消
     onClose(){
         this.props.action.showForm(false,{});
         this.props.action.onChangeSuVa([]);
         this.props.action.setAddNum(0);
-        this.props.action.setSuTableData([]);
-        this.props.action.setFormData({});
+        this.set({editRow:{}});
     }
 
+    //批量删除
     onDelete = () => {
         let { pagination,searchMap } = this.state;     
-       // this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
-       // this.setState({headLabel:false,selectedRowKeys:[]});
         confirm({
             title: '确定要删除吗?',
             content: '此操作不可逆',
@@ -179,17 +187,13 @@ class List extends React.Component{
             onCancel() {
               console.log('Cancel');
             },
-          });  
+        });  
     }
 
+    //编辑
     onEdit = () => {
         this.setState({status:"edit"});
         let { pagination,searchMap } = this.state;
-     //   this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
-      //  this.props.action.getProdClassRef();//获取产品分类参照列表
-      //  this.props.action.getBrandRef(pagination);//获取品牌参照列表
-      //  this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
-     //   this.setState({isEdit:true});
         console.info(this.state.selectedRowKeys);
         let rowKey = this.state.selectedRowKeys[0];
         let rowData = {};
@@ -202,14 +206,7 @@ class List extends React.Component{
         }      
     }
 
-    onEnable(enable) {
-        return (enable) => {
-          let { pagination,searchMap } = this.state;
-          this.setState({headLabel:false});
-          this.props.action.onEnable(this.state.selectedRowKeys,enable,{ pagination,searchMap });
-        }
-    }
-
+    //更改停启用状态
     onEableRadioChange = (enableState) => {
         let { pagination,searchMap,selectedRowKeys} = this.state;      
         let ids = selectedRowKeys.join();        
@@ -231,6 +228,13 @@ class List extends React.Component{
         console.info(`pageSize:${pageSize}`)
     }
 
+    //查询
+    onSearch(searchMap){
+        let { pagination } = this.state;
+        this.props.action.getListData({ pagination,searchMap });
+    }
+
+    //新增|编辑保存
     onSave(){       
         let editData = this.props.$$state.get("editData").toJS();
         let formData = this.props.$$state.get("formData").toJS();
@@ -245,14 +249,7 @@ class List extends React.Component{
           this.props.action.onSave4Add(addData);
         }
         this.props.action.setAddNum(0);
-        this.props.action.setSuTableData([]);
-        this.props.action.setFormData({});  
-        this.props.action.onChangeSuVa([]); 
-        this.props.action.setBrandValue("");
-        this.props.action.setAttrGrpValue(""); 
-        this.props.action.setMeaUnitValue("");
-        this.props.action.setPrdClassValue("");
-        //this.props.$$state.get("brandValue")
+        this.set({editRow:{}});
     }
 
     onSelectChange(selectedRowKeys){
@@ -262,10 +259,12 @@ class List extends React.Component{
         state.headLabel = selectedRowKeys.length ? true:false;
         this.setState( state );
     }
+    
     showTotal(total) {
         return `共 ${total} 条`;
     }
     
+    //点击“展开”
     moreForm() {
         let{ moreShow } = this.state;
         if(moreShow == true){
@@ -274,25 +273,165 @@ class List extends React.Component{
             this.setState({moreShow:true});
         }
     }
+
+    //分配
+    onAssign() {
+        this.setState({assignVisible: true});
+        this.props.action.getOrgTree();
+        let {selectedTreeKeys, selectedRowKeys, editRow} = this.state;
+        let rowData = {};
+        let orgIds = [];
+        let orgNames = [];
+        let page = this.props.$$state.get("data").toJS();
+        for(let i=0,len=page.data.length;i<len;i++) {
+            if(editRow !== {}){
+                if(editRow.id == page.data[i].id) {
+                    rowData = page.data[i];
+                    orgIds = rowData.orgId.split(",");
+                    orgNames = rowData.orgName.split(",");
+                    break;
+                }       
+            }else if(selectedRowKeys.length>0){
+                if(selectedRowKeys[0] == page.data[i].id) {
+                    rowData = page.data[i];
+                    orgIds = rowData.orgId.split(",");
+                    orgNames = rowData.orgName.split(",");
+                    break;
+                }       
+            }        
+        }       
+        this.setState({selectedTreeKeys:orgIds});
+        this.setState({selectedOrgnames:orgNames});           
+    }
+    //取消分配
+    onAssignClose() {
+        this.setState({assignVisible: false});      
+    }
+    //保存分配
+    onAssignOk(){
+        let {selectedTreeKeys, selectedRowKeys, selectedOrgnames} = this.state;
+        let ids = selectedTreeKeys.join();  
+        let names = selectedOrgnames.join();
+        this.props.action.prdAssign(selectedRowKeys[0] ,ids, names);  
+        this.setState({assignVisible:false});   
+    }
+
+    //分配时选择组织树节点  最顶层为集团，选中则其他节点全选，其他树节点选中与否互不相关
+    onTreeCheck(checkedKeys,e){
+        let {selectedTreeKeys, selectedOrgnames, rootFlag} = this.state;
+        let classRefTree = this.props.$$state.get("orgTree").toJS().data;
+        let node = e.node;
+        let pos = node.props.pos;
+        let loop = () =>{};
+        let keys = [];
+        let names = [];
+        loop = (data) => {
+            if(data !== undefined && data.length>0){
+                data.map((item) => {
+                    if(item.children && item.children.length>0){
+                        loop(item.children);                   
+                        if(pos !== "0-0"){
+                            keys.push(item.id.toString());
+                            names.push(item.name);
+                        }                   
+                    }else{                    
+                        if(pos !== "0-0"){
+                            keys.push(item.id.toString());
+                            names.push(item.name);
+                        }  
+                    }
+                });
+            }
+            return keys;
+        };
+        if(pos == "0-0" && rootFlag == true){
+            selectedTreeKeys = loop(classRefTree);
+            this.setState({rootFlag:false});
+            this.setState({selectedTreeKeys:selectedTreeKeys});
+            this.setState({selectedOrgnames:names});
+        }else if(pos == "0-0" && rootFlag == false){
+            this.setState({rootFlag:true});
+            this.setState({selectedTreeKeys:[]});
+            this.setState({selectedOrgnames:[]});
+        }else{
+            this.setState({selectedTreeKeys:checkedKeys.checked});
+            if(node.props.checked == true){
+                selectedOrgnames = selectedOrgnames.filter( x => {return x !== node.props.title});
+                this.setState({selectedOrgnames:selectedOrgnames});
+            }else{
+                selectedOrgnames.push(node.props.title);
+                this.setState({selectedOrgnames:selectedOrgnames});
+            }
+        }    
+    }
+
+   
     render(){
         let page = this.props.$$state.get("data").toJS();
         let visible = this.props.$$state.get("visible");
-        let {headLabel,selectedRowKeys,isEdit,moreShow,status} = this.state;
+        let {headLabel,selectedRowKeys,isEdit,moreShow,status,assignVisible,selectedTreeKeys} = this.state;
         let rowSelection = {
           selectedRowKeys,
           onChange: this.onSelectChange.bind(this),
         };
         let editData = this.props.$$state.get("editData").toJS();
+        let lessFormData = this.props.$$state.get("lessFormData").toJS();
+        let moreFormData = this.props.$$state.get("moreFormData").toJS();
+        // let classRefTree = [{title:"集团", key:"0", fatherorg_id:0,children:[{title:"公司A", key:"0-1",fatherorg_id:1,
+        //     children:[{title:"公司A-a", key:"0-1-1",fatherorg_id:2,
+        // children:[{title:"公司A-a-1", key:"0-1-1-1",fatherorg_id:3}]},
+        //{title:"公司A-b", key:"0-1-2",fatherorg_id:2}]},{title:"公司B", key:"0-2",fatherorg_id:1}]}];
+        let orgRefTree = this.props.$$state.get("orgTree").toJS().data;
         let title = "";
+        let loop = () =>{};
+        if(orgRefTree!== undefined && orgRefTree.length>0){
+            loop = data => data.map((item) => {
+                if (item.children && item.children.length>0) {
+                    return (
+                        <TreeNode  key={item.id} 
+                            title={item.name}>
+                            {loop(item.children)}
+                        </TreeNode>
+                    );
+                }else{
+                    return <TreeNode key={item.id } title={item.name }/>;       
+                }
+                                     
+                });
+        }else{            
+            loop = data => {return <div/>};
+        }
         if(status =="edit"){
             title = "编辑";
-            //table =  <AttrVaTable/>;
-          }else if(status == "add"){
+        }else if(status == "add"){
             title = "新增";
-          }else if(status =="showdetail"){
+        }else if(status =="showdetail"){
             title = "详情";
-           // table = <AttrVaDeTable/>;
-          }
+        }
+
+        let modalButton = 
+            <Row gutter={6}>
+                <Col offset={20} span={2}>
+                    <Button size='large' onClick = {this.onClose.bind(this)}>取消</Button>
+                </Col>                            
+                <Col span={2}>
+                    <Button size='large' onClick = {this.onSave.bind(this)} type="primary">保存</Button>
+                </Col>                
+            </Row>;
+
+        let detailButton =
+            <Row gutter={6}>
+                <Col offset={17} span={2}>
+                    <Button size='large' onClick = {this.onClose.bind(this)}>关闭</Button>
+                </Col>
+                <Col span={2}>
+                    <Button size='large' onClick = {this.onAssign.bind(this)}>分配</Button>
+                </Col>
+                <Col span={2}>
+                     <Button size='large' onClick = {this.onEdit.bind(this)} type="primary">编辑</Button>
+                </Col>
+            </Row>;
+
         return(
             <div className='product-warpper'>  
                 <Row className='header-warpper'>               
@@ -311,7 +450,20 @@ class List extends React.Component{
                             >
                                 <i className="iconfont icon-shanchu" />删除
                             </Button>
-
+                            {selectedRowKeys.length != 1 ?
+                                <Button                           
+                                    className="returnbtn-class"
+                                    disabled
+                                >
+                                    <Icon type="team" />分配
+                                </Button>:
+                                 <Button                           
+                                 className="returnbtn-class"
+                                 onClick={this.onAssign.bind(this)}
+                                >
+                                    <Icon type="team" />分配
+                                </Button>
+                            }
                             <ButtonGroup className="returnbtn-class">
                                 <Button onClick={this.onEableRadioChange.bind(this, 1)}>
                                     <i className="iconfont icon-qiyong" />启用
@@ -322,122 +474,147 @@ class List extends React.Component{
                             </ButtonGroup>
                         </HeaderButton>
                         ):<div>
-                         <Row 
-                          type="flex"
-                          align="middle"
-                          justify="space-between"
-                          className="header-top">
-                             <Col span={18}>
-                             <Row type="flex" align="middle">
-                                 <Col className="select-recover">
-                                     <Select defaultValue="0">
-                                         <Option value="0">全部</Option>                                       
-                                         <Option value="1">最近查看</Option>                                       
-                                     </Select>
-                                 </Col>
-                                 <Col
-                                     span={18}
-                                     className={
+                            <Row 
+                            type="flex"
+                            align="middle"
+                            justify="space-between"
+                            className="header-top">
+                                <Col span={18}>
+                                    <Row type="flex" align="middle">
+                                        <Col className="select-recover">
+                                            <Select defaultValue="0">
+                                                <Option value="0">全部</Option>                                       
+                                                <Option value="1">最近查看</Option>                                       
+                                            </Select>
+                                        </Col>
+                                        <Col
+                                        span={18}
+                                        className={
                                          moreShow
                                              ? "less-hide-height"
                                              : "less-show-height"
-                                     }
-                                 >
-                                     <LessForm
-                                         handleSearch={this.showTotal.bind(
+                                        }
+                                        >
+                                            <LessForm
+                                            dataSource={lessFormData}
+                                            handleSearch={this.onSearch.bind(
                                              this
-                                         )} //点击查询方法
-                                         searchMapFn={this.showTotal.bind(
+                                            )} //点击查询方法
+                                            //动态赋值查询条件到redux中
+                                            formMore={this.moreForm.bind(
                                              this
-                                         )} //动态赋值查询条件到redux中
-                                         formMore={this.moreForm.bind(
-                                             this
-                                         )} //控制查询显隐
-                                     />
-                                 </Col>
-                             </Row>
-                         </Col>
-
-                         <Col span={6}>
-                             <Row type="flex" gutter={15} justify="end">
-                                 <Col>
-                                     <ButtonGroup>
-                                         <Button>
-                                             <i className="iconfont icon-daoru" />导入
-                                         </Button>
-                                         <Button>
-                                             <i className="iconfont icon-daochu" />导出
-                                         </Button>
-                                     </ButtonGroup>
-                                 </Col>
-                                 <Col>
-                                     <Button
-                                         type="primary"
-                                         onClick={this.onAdd.bind(this)}
-                                     >
-                                         <i className="iconfont icon-xinjian" />新建
-                                     </Button>
-                                 </Col>
-                             </Row>
-                         </Col>
-                     </Row>
-                     <div className="header-bottom">
-                         <Row
-                             className={
-                                 moreShow
+                                            )} //控制查询显隐
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col span={6}>
+                                    <Row type="flex" gutter={15} justify="end">
+                                        <Col>
+                                            <ButtonGroup>
+                                                <Button>
+                                                    <i className="iconfont icon-daoru" />导入
+                                                </Button>
+                                                <Button>
+                                                    <i className="iconfont icon-daochu" />导出
+                                                </Button>
+                                            </ButtonGroup>
+                                        </Col>
+                                        <Col>
+                                            <Button
+                                            type="primary"
+                                            onClick={this.onAdd.bind(this)}
+                                            >
+                                                <i className="iconfont icon-xinjian" />新建
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <div className="header-bottom">
+                                <Row
+                                className={
+                                moreShow
                                      ? "more-show-height"
                                      : "less-hide-height"
-                             }
-                         >
-                             <MoreForm
-                                 handleSearch={this.onAdd.bind(this)} //点击查询方法
-                                 searchMapFn={this.onAdd.bind(this)} //动态赋值查询条件到redux中
-                                 formMore={this.moreForm.bind(this)} //控制查询显隐
-                             />
-                         </Row>
-                     </div>
-                    </div>                             
+                                }
+                                >
+                                    <MoreForm
+                                    dataSource={moreFormData}
+                                    handleSearch={this.onSearch.bind(this)} //点击查询方法
+                                    searchMapFn={this.onAdd.bind(this)} //动态赋值查询条件到redux中
+                                    formMore={this.moreForm.bind(this)} //控制查询显隐
+                                    />
+                                </Row>
+                            </div>
+                        </div>                             
                     }                                    
                 </Row>   
               
                 <div className = 'list-box'>
-                    <Table  size="middle" rowSelection={rowSelection} dataSource={page.data} rowKey="id" columns = {this.columns}
-                    pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
+                    <Table  size="middle" 
+                    rowSelection={rowSelection}
+                    dataSource={page.data} 
+                    rowKey="id" 
+                    columns = {this.columns}
+                    pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,
+                    total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),
+                    onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
                 </div>
                 <Modal title={title} visible={visible} 
                     cancelText = {status == "showdetail"?"关闭":"取消"}
                     okText = {status == "showdetail"?"编辑":"确认"}
                     onOk={status == "showdetail"?this.onEdit.bind(this):this.onSave.bind(this)} 
-                    onCancel={this.onClose.bind(this)} width={850}
-                    maskClosable={false}>
-                {status !== "showdetail"?
-                   <div>
-                    <div >
-                        <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
-                    </div>
-                    <div >
-                        <Row>
-                            <Col span={2}>
-                                <Button onClick = {this.addRow.bind(this)}>新增</Button>
-                            </Col>
-                            <Col span={2}>
-                                <Button onClick = {this.onSuDelete.bind(this)}>删除</Button>
-                            </Col>
-                        </Row >
-                        <div style ={{margin:15}}>
-                            <SaleUnitTable />
+                    onCancel={this.onClose.bind(this)} 
+                    width={850}
+                    maskClosable={false}
+                    footer={status =="showdetail"? detailButton : modalButton}
+                >
+                    {status !== "showdetail"?
+                    <div>
+                        <div >
+                            <WrapCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+                        </div>
+                        <div >
+                            <Row>
+                                <Col span={2}>
+                                    <Button onClick = {this.addRow.bind(this)}>新增</Button>
+                                </Col>
+                                <Col span={2}>
+                                    <Button onClick = {this.onSuDelete.bind(this)}>删除</Button>
+                                </Col>
+                            </Row >
+                            <div style ={{margin:15}}>
+                                <SaleUnitTable />
+                            </div>
+                        </div>
+                    </div>:
+                    <div>
+                        <div className='model-height'>
+                            <WrapCardDetail dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
+                        </div>
+                        <div>
+                            <p>销售单位:</p>
+                            <SaleUnitDeTable/>
                         </div>
                     </div>
-                </div>:<div>
-                    <div className='model-height'>
-                        <WrapCardDetail dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst}/>
-                    </div>
-                    <div>
-                        <p>销售单位:</p>
-                        <SaleUnitDeTable/>
-                    </div>
-                </div>
-                }
+                    }
+                </Modal>
+                <Modal title="分配" 
+                visible={assignVisible}
+                onCancel={this.onAssignClose.bind(this)}
+                onOk={this.onAssignOk.bind(this)}
+                width={450} >
+                    <Tree 
+                        checkStrictly={true}
+                        onCheck={this.onTreeCheck.bind(this)}              
+                        checkedKeys={selectedTreeKeys}                
+                        className="reference-tree"
+                        checkable = {true}
+                        defaultExpandAll = {true}
+                    >
+                      {loop(orgRefTree)}  
+                    </Tree>      
                 </Modal>
             </div>)
     }

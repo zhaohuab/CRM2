@@ -320,8 +320,6 @@ export default class CuperiorCustomer extends React.Component {
                                 this.props.value ? this.props.value.name : ""
                             }
                             suffix={suffix}
-                            //onKeyUp={this.keyDownUp.bind(this)}
-                            //onChange={this.inputChange.bind(this)}
                             addonAfter={
                                 <Icon
                                     type="search"

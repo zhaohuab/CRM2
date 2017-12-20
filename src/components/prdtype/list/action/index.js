@@ -5,10 +5,10 @@ import { debug } from 'util';
 
 
 const fetchData = (type, payload) => {
-        return {
-            type,
-            payload
-        }
+    return {
+        type,
+        payload
+    }
 }
 
 //获取所有数据
@@ -31,7 +31,6 @@ export function getlist(params) {
                 }
             }          
         },(data) => {
-            debugger
             dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESS', { data: data }));
         })
     }
@@ -48,7 +47,7 @@ export function getlistByClickSearch(searchMap) {
                 param: searchMap
             }
         },(data) => {
-            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESSBYCLICKSEARCH', { data: data.data, searchFilter: searchMap.searchKey }));
+            dispatch(fetchData('PRDTYPE_LIST_GETLISTSUCCESSBYCLICKSEARCH', { data: data.voList, searchFilter: searchMap.searchKey }));
         })
     }
 }
@@ -60,14 +59,9 @@ export function showForm(flag, editData ) {
 	}
 }
 
-const transData = (data) => {
-    let fatherTypeId = data.fatherTypeId.key;
-    let fatherTypeName = data.fatherTypeId.title;
+const transData = (data) => { 
     let path = data.fatherTypeId.path;
-    data.fatherTypeId = fatherTypeId;
-    data.fatherTypeName = fatherTypeName;
     data.path = path;
-    data.attrGroupId = 0;
 	return data;
 }
 
@@ -96,30 +90,16 @@ export function listadd(list) {
 }
 
 
-//改变一条数据
+//编辑数据
 export function listchange(value,id) {
     return (dispatch, getState) => {
-        //let id = value.id
-       // value.fatherTypeId = value.fatherTypeId.key;
         request({
             url: url.prdtype+'/'+id,
             method: 'put',
             data: { param: transData(value) }
         },(dataResult) => {    
-            let listData = dataResult;
-            let arr = []; 
-            arr.push(listData);  
-            request({
-                url: url.prdtype, 
-                method: 'get',
-                data: {
-                    param: {
-                        condMap: typeof(params) == "undefined" ? {} : params
-                    }           
-                }
-            },(data) => {            
-                dispatch(fetchData('PRDTYPE_EDIT_GETLISTSUCCESS', { tableListCheckbox: arr, data: data.data })) ;
-            });
+           
+            dispatch(fetchData('PRDTYPE_EDIT_GETLISTSUCCESS', {data: dataResult})) ;
            
             request({
                 url: url.prdtypeTree,
@@ -135,9 +115,8 @@ export function listchange(value,id) {
 }
 
 
-//删除数据
+//批量删除数据
 export function listdel(record, treeId, searchFilter,pagination) {
-    debugger
     var ids = [];
     let searchMap = {};
     if (treeId!=null && treeId!=undefined && treeId!="") {
@@ -224,15 +203,14 @@ export function getTreeList() {
             url: url.prdtypeTree,
             method: 'get',
             data: {}
-        },(data) => {        
+        },(data) => {      
             dispatch({ type: 'PRDTYPE_LIST_GETTREELISTSUCCESS', data: data.data })
         })
         
     }
 }
 
-
-//获取一个产品分类信息，变换表格数据
+//获取一个产品分类信息，变换右侧列表数据
 export function listTreeChange(pagination,id) {
     return (dispatch, getState) => {
         request({
@@ -251,8 +229,7 @@ export function listTreeChange(pagination,id) {
     } 
 }
 
-
-//点击操作按钮方法
+//点击操作按钮：编辑
 export function buttonEdit(rows) {
     return {
         type: 'PRDTYPE_LIST_SHOWBUTTONSTART',
@@ -261,8 +238,7 @@ export function buttonEdit(rows) {
 }
 
 //获取属性组参照
-export function getAttrsGrpRef  (param)  {
-    
+export function getAttrsGrpRef  (param)  {    
     let url =  prdattrgroup.prdattrgroup + '/ref';
 	return (dispatch) => {
 		request({
@@ -286,16 +262,59 @@ export function setSelTreeNode(sel) {
     }
 }
 
-export function setFieldsChangeData(fields)  {	
-	return {
-			 type:'PRDCLASS_FORM_FIELDSCHANGE',
-			 content:fields
-	}    
-}
+// export function setFieldsChangeData(fields)  {	
+// 	return {
+// 		type:'PRDCLASS_FORM_FIELDSCHANGE',
+// 		content:fields
+// 	}    
+// }
 
 export function setFormData  (fields)  {	
 	return {
-			 type:'PRDCLASS_FORM_SETFORM',
-			 content:fields
+		type:'PRDCLASS_FORM_SETFORM',
+		content:fields
+	}    
+}
+
+export function setSelectedData  (fields)  {	
+	return {
+		type:'PRDCLASS_FORM_SETSELECTNODE',
+		content:fields
+	}    
+}
+
+export function setAttrGrpValue  (value)  {
+	return {
+		type:"PRDCLASS_ATTRGRP_VALUE",
+		content:value
+	}
+}
+
+//获取详情
+export function getDetail(id,flag) {
+    return (dispatch) => {
+        request({
+            url: url.prdtype + "/" +id,
+            method: 'GET',
+            data: {}
+        },(data) => {     
+            dispatch({ type: 'PRDTYPE_LIST_GETTDETAIL', data:{detail:data, visible:flag} })
+        })
+        
+    }
+}
+
+export function setFormVisible  (flag)  {
+	return {
+		type:"PRDCLASS_FORM_SETVISIBLE",
+		content:flag
+	}
+}
+
+//查询form赋值
+export function setLessFormData  (fields)  {	
+	return {
+		type:'PRDTYPE_FORM_SETLESSFORM',
+		content:fields
 	}    
 }

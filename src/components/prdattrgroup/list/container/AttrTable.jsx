@@ -52,54 +52,58 @@ class AttrTable extends React.Component {
 
   onRowClick = (record) => {
     //保存上一个属性选择的属性值
+    //debugger
+    this.props.action.setRecord(record);
     let selectedRowKeys = this.props.$$state.get("selectedAttrVas").toJS();
     let attrId = this.props.$$state.get("attrId");
     let attrGrpId = this.props.$$state.get("attrGrpId");
     let status = this.props.$$state.get("status");
     //如果有选中的属性，保存上一次的值
     if(attrId !== undefined && attrId !== null &&  attrId !== ""){
+      //放到savedData里
       this.props.action.addSelectedData(selectedRowKeys,attrId);
-      //this.props.action.addSelectedDataMap(selectedRowKeys,attrId);
       //清空选择状态
       this.props.action.selecAttrVa([],"");
     }       
     //获取当前点击的属性上一次选择的属性值  遍历savedData 选择状态
+    //debugger
     let savedData =this.props.$$state.get('savedData').toJS();
     let flag = false;
     let id = record.id;
-    let selectedAttrs = this.props.$$state.get("selectedAttrs").toJS();
-  //  let selectedRowKeys = this.props.$$state.get("selectedAttrVas").toJS();
-    for (let clickId of selectedAttrs){
-      debugger
-      if(id == clickId){
-        this.props.action.attrIsSelected(true);
-        break;
+  //   let selectedAttrs = this.props.$$state.get("selectedAttrs").toJS();
+  // //  let selectedRowKeys = this.props.$$state.get("selectedAttrVas").toJS();
+  //   for (let clickId of selectedAttrs){
+  //    // debugger
+  //     if(id == clickId){
+  //       this.props.action.attrIsSelected(true);
+  //       break;
+  //     }
+  //   }
+    //本地是否存储该数据  但是没有选择状态
+    let localAttrs = this.props.$$state.get("localAttrs").toJS();
+    if(localAttrs.length>0){
+      for( let attr of localAttrs){
+        if(attr.id==id){
+          //设置当前属性值列表及选中值
+          flag = true;
+          this.props.action.setLocalAttrVaList(attr);
+          debugger
+          for(let sele of savedData){
+            if(sele.id == attr.id){
+              this.props.action.setSelAttrVas(sele);
+              break;
+            }
+          }         
+          break;
+        } 
       }
     }
-    //本地是否存储该数据  但是没有选择状态
-    // let localAttrs = this.props.$$state.get("localAttrs").toJS();
-    // if(localAttrs.length>0){
-    //   for( let attr of localAttrs){
-    //     if(attr.id==id ){
-    //       this.props.action.getLocalAttrList(attr);
-    //       for(let sele of savedData){
-    //         if(sele.id == attrId){
-    //           this.props.action.setSelAttrVas(sele);
-    //           break;
-    //         }
-    //       }
-    //       flag = true;
-    //       break;
-    //     } 
-    //   }
-    // }
     if(!flag){
       if(status == "add"){
         this.props.action.getAttrVaList(id);
       }else if(status == 'edit'){
         this.props.action.getAttrVaEditList(attrGrpId ,id);
-      }
-      
+      }      
     }    
   }
 
@@ -111,6 +115,20 @@ class AttrTable extends React.Component {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
+    let selectedAttrs = this.props.$$state.get("selectedAttrs").toJS();
+    let record = this.props.$$state.get("record").toJS();
+    let flag = true;
+  
+    for (let clickId of selectedAttrs){
+      if(record.id == clickId){
+        this.props.action.attrIsSelected(true);
+        flag = false;
+        break;
+      }
+    }
+    if(flag){
+      this.props.action.attrIsSelected(false);
+    }
 
     return (
       <Table 

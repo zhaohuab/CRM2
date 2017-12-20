@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button, Icon,Input, Radio, Popconfirm, Form ,Row, Col, message} from 'antd';
+import { Table, Modal, Button, Icon, Input,  Form ,Row, Col, message, Select} from 'antd';
 import WrappedCard from './CardForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import AttrVaTable from './AttrVaTable.jsx'
@@ -11,8 +11,9 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 const Search = Input.Search;
 const FormItem = Form.Item;
+const Option = Select.Option;
 import 'assets/stylesheet/all/iconfont.css'
-
+import LessForm from "./lessForm.jsx";
 //导入action方法
 import * as Actions from "../action"
 
@@ -50,7 +51,7 @@ class List extends React.Component {
         page:1,
       },
       searchMap : {
-        //enableState:1,
+       
       }         
     }
   }
@@ -69,27 +70,27 @@ class List extends React.Component {
     this.props.action.showAddForm(true, {});
   }
 
-    //属性值删除
-    onAttrVaDelete(){
-      let flag = false;
-      let changedData = this.props.$$state.get('changeData').toJS();
-      let selectedRowKeys =this.props.$$state.get('AttrVaSelectedKeys').toJS();
-      let attrValue =this.props.$$state.get('attrValue').toJS();       
-       //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
-      for(let rowKey of selectedRowKeys){
-          changedData = changedData.filter(change => { return change.id !== rowKey});
-          attrValue = attrValue.filter(data => {
-              if(data.id !== rowKey){
-                  data.editState = "delete";
-                  changedData.push(data);
-              }
-              return data.id !== rowKey
-          });
-      }
-      let sel = [];
-      this.props.action.setSecRowKeys([]);
-      this.props.action.onChangeAttrVa(changedData);
-      this.props.action.onEditAttrVa(attrValue);
+  //属性值删除
+  onAttrVaDelete(){
+    let flag = false;
+    let changedData = this.props.$$state.get('changeData').toJS();
+    let selectedRowKeys =this.props.$$state.get('AttrVaSelectedKeys').toJS();
+    let attrValue =this.props.$$state.get('attrValue').toJS();       
+    //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
+    for(let rowKey of selectedRowKeys){
+      changedData = changedData.filter(change => { return change.id !== rowKey});
+      attrValue = attrValue.filter(data => {
+        if(data.id !== rowKey){
+          data.editState = "delete";
+          changedData.push(data);
+        }
+        return data.id !== rowKey
+      });
+    }
+    let sel = [];
+    this.props.action.setSecRowKeys([]);
+    this.props.action.onChangeAttrVa(changedData);
+    this.props.action.onEditAttrVa(attrValue);
   }
 
   showDetail (record) {
@@ -135,10 +136,6 @@ class List extends React.Component {
 
   onClose() {     
     this.props.action.showAddForm(false);   
-    // this.props.action.resetAddNum();   
-    // this.props.action.setAttrData([]);
-    // this.props.action.setFormData({});
-    // this.props.action.onChangeAttrVa([]);    
   }
 
   onEableRadioChange = (enableState) => {
@@ -155,10 +152,7 @@ class List extends React.Component {
     let erpCode = "";
     let name = "";
     let id = "";
-  //  debugger
-    // if(changeData.length == 0 && attrValue.length ==0){
-    //   return message.error('属性值不能为空');
-    // }
+
     if(status == "edit"){
       erpCode = formData.erpCode;
       id = formData.id;    
@@ -171,9 +165,7 @@ class List extends React.Component {
       name = formData.name;  
       let addAttr = {erpCode:erpCode, name:name,id:id, valueList: changeData};
       this.props.action.onSave4Add(addAttr);
-    }
-    
-
+    }   
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -197,22 +189,28 @@ class List extends React.Component {
     this.props.action.addAttrVaRow({id:'add_'+k.toString(),enableState:1,editState:'add'});
   }
 
+  //查询
+  onSearch(searchMap){
+    let { pagination } = this.state;
+    this.props.action.getListData( pagination,searchMap );
+  }
+
   onPageChange(page,pageSize) {
     let { pagination,searchMap } = this.state;
     pagination = {page:page,pageSize:pageSize};
     this.setState({pagination})
     this.props.action.getListData( pagination,searchMap );
-}
+  }
 
   onPageSizeChange(current,pageSize) {
     let { pagination,searchMap } = this.state;
     this.setState({pagination})
     this.props.action.getListData( pagination,searchMap );
     console.info(`pageSize:${pageSize}`)
-}
+  }
  
-
   render() {
+    let lessFormData = this.props.$$state.get("lessFormData").toJS();
     let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
     let { headLabel, selectedRowKeys,status } = this.state;
@@ -246,7 +244,7 @@ class List extends React.Component {
       },
     };
     return (
-      <div className='user-warpper'>
+      <div className='prdattr-warpper'>
         {
           headLabel ?
             <div className='head_edit'>
@@ -259,19 +257,56 @@ class List extends React.Component {
                 <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
                 <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
               </HeadLabel>
-            </div> :
-            <div className='head_panel'>
-              <div className='head_panel-left'>
-                <Search placeholder = "属性值名称"></Search>
-              </div>
-              <div className='head_panel-right'>               
-                <ButtonGroup className='add-more'>
-                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                </ButtonGroup>
-                <Button type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
-              </div>
-            </div>
+            </div> :        
+            <div>
+              <Row 
+                type="flex"
+                align="middle"
+                justify="space-between"
+                className="header-top">
+                  <Col span={18}>
+                    <Row type="flex" align="middle">
+                      <Col className="select-recover">
+                        <Select defaultValue="0">
+                          <Option value="0">全部</Option>                                       
+                          <Option value="1">最近查看</Option>                                       
+                        </Select>
+                      </Col>
+                      <Col
+                      span={18}
+                      className={"less-show-height"}
+                      >
+                        <LessForm
+                        dataSource={lessFormData}
+                        handleSearch={this.onSearch.bind(this)} //点击查询方法
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col span={6}>
+                    <Row type="flex" gutter={15} justify="end">
+                      <Col>
+                        <ButtonGroup>
+                          <Button>
+                            <i className="iconfont icon-daoru" />导入
+                          </Button>
+                          <Button>
+                            <i className="iconfont icon-daochu" />导出
+                          </Button>
+                        </ButtonGroup>
+                      </Col>
+                      <Col>
+                        <Button
+                        type="primary"
+                        onClick={this.onAdd.bind(this)}
+                        >
+                          <i className="iconfont icon-xinjian" />新建
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </div>            
         }
         <div className="list-box">
           <Table
@@ -296,32 +331,27 @@ class List extends React.Component {
           className="detail_box"
           maskClosable={false}
         >
-         {status =="showdetail"?
-         <div>
+        {status =="showdetail"?
+        <div>
           <div>        
-          <Form layout="inline">
-          <Row>
-            <Col span={9} offset={2}>
-            <FormItem   label="属性名称"
-              {...formItemLayout}>
-              
-                <span>{formData.name}</span>
-              
-            </FormItem>
-            </Col>
-            <Col span={9}>
-            <FormItem   label="属性对应ERP"
-              {...formItemLayout}>
-              
-                <span>{formData.name}</span>
-              
-            </FormItem>
-            </Col>
-            </Row>
-          </Form>
-          
-        </div>
-          </div>:
+            <Form layout="inline">
+              <Row>
+                <Col span={9} offset={2}>
+                  <FormItem   label="属性名称"
+                    {...formItemLayout}>             
+                      <span>{formData.name}</span>             
+                  </FormItem>
+                </Col>
+                <Col span={9}>
+                  <FormItem   label="属性对应ERP"
+                    {...formItemLayout}> 
+                      <span>{formData.name}</span>              
+                  </FormItem>
+                </Col>
+              </Row>
+            </Form>         
+          </div>
+        </div>:
           <div className='model-height'>
             <WrappedCard dataSource={formData} wrappedComponentRef={(inst) => this.formRef = inst} />
           </div>}

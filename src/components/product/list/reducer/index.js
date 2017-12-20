@@ -1,25 +1,26 @@
 import Immutable from 'immutable'
 
 let initialState = {   
-  data:{data:[{code:"code"}]},
+  data:{}, //table数据
   loading: false,
-	editData:{},
-	visible:false,
-	classRefTree:[],
-	meaunitRefList:[],
-	brandRefList:[],
+	editData:{},//编辑表单数据
+	visible:false,//新增|编辑表单是否可见
+	classRefTree:{},//产品分类参照树
+	meaunitRefList:[],//计量单位参照列表
+	brandRefList:[],//品牌参照列表
+	attrgrpRefList:[],//属性组参照列表
+	orgRefTree:[],//组织参照列表
 	salesunitTable:[],//销售单位table数据
-	salesUnitVisible:false,
-	addNum:0,
+	salesUnitVisible:false,//销售单位table是否可见
+	addNum:0,//销售单位新增行数
 	changedData:[],//销售单位变更数据
-	suSelectedRowKeys:[],
-	formData:{},
-	fieldsChangeData:{},
-	attrgrpRefList:[],
-	brandValue:"",
-	prdClassValue:"",
-	attrGrpValue:"",
-	meaUnitValue:""
+	suSelectedRowKeys:[],//销售单位选中行
+	fieldsChangeData:{},	//销售单位变更数据
+	lessFormData:{},//查询form数据
+	moreFormData:{},//展开查询form数据
+	//assignData:[],//分配
+	orgTree:[],//组织树
+	//isDelete:false,
 };
 
 function pageAdd(page,item) {
@@ -29,12 +30,11 @@ function pageAdd(page,item) {
 	return page;
 }
 
-function pageEdit(page,item) {
-	
+function pageEdit(page,item) {	
 	let {data} = page;
 	for(let i=0,len=data.length;i<len;i++) {
 		if(data[i].id == item.id) {
-			data[i] = item;
+			Object.assign(data[i] , item);
 			break;
 		}
 	}
@@ -58,30 +58,29 @@ function getFormData(target, source){
 }
 
 function reducer ($$state = Immutable.fromJS(initialState), action){
-    switch(action.type){
-        case 'PRODUCT_LIST_GETLISTSUCCESS': 
-	        return $$state.merge({
-	        	loading: false,
+  switch(action.type){
+    case 'PRODUCT_LIST_GETLISTSUCCESS': 
+	    return $$state.merge({
+	      loading: false,
 				data: action.content,
 				visible : action.content.visible,
-				})
-        case 'PRODUCT_LIST_SHOWFORM':
-            return $$state.merge({
+			})
+    case 'PRODUCT_LIST_SHOWFORM':
+      return $$state.merge({
 				visible : action.content.visible,
 				editData : action.content.editData,
-            })
-        case 'PRODUCT_CARD_SAVEADD':
-            return $$state.merge({
+      })
+    case 'PRODUCT_CARD_SAVEADD':
+      return $$state.merge({
 				visible : action.content.visible,
 				data : pageAdd($$state.get("data").toJS(),action.content),
-            })
-        case 'PRODUCT_CARD_SAVEEDIT' : 
+      })
+    case 'PRODUCT_CARD_SAVEEDIT' : 
 			return $$state.merge({
 				visible : action.content.visible,
 				data : pageEdit($$state.get("data").toJS(),action.content),
 			})
 		case 'PRODUCT_CLASS_GETREFTREE' :
-		debugger 
 			return $$state.merge({
 				classRefTree : action.content,
 			}) 
@@ -97,11 +96,15 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 			return $$state.merge({
 				attrgrpRefList : action.content,
 			})
-		case 'ADDROW' : 
+		case 'PRODUCT_ORG_GETREFLISTDATA' : 
 			return $$state.merge({
-				salesunitTable : addRow($$state.get("salesunitTable").toJS(),action.content),
-				salesUnitVisible:true
-			})   
+				orgRefTree : action.content,
+			})
+		// case 'ADDROW' : 
+		// 	return $$state.merge({
+		// 		salesunitTable : addRow($$state.get("salesunitTable").toJS(),action.content),
+		// 		salesUnitVisible:true
+		// 	})   
 		case 'PRODUCT_SALESUNIT_VISIBLE' : 
 			return $$state.merge({
 				salesUnitVisible:action.content
@@ -131,10 +134,10 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 			return $$state.merge({
 				fieldsChangeData:getFormData($$state.get('fieldsChangeData').toJS(),action.content),
 			})  
-		case 'PRODUCT_FORM_RESETFIELDSCHANGE' : 
-			return $$state.merge({
-				fieldsChangeData:action.content,
-			})  
+		// case 'PRODUCT_FORM_RESETFIELDSCHANGE' : 
+		// 	return $$state.merge({
+		// 		fieldsChangeData:action.content,
+		// 	})  
 		case 'PRODUCT_FORM_SETADDNUM' : 
 			return $$state.merge({
 				addNum:action.content
@@ -145,23 +148,27 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 				editData : action.content.formdata,
 				salesunitTable:action.content.formdata.saleUnits
 			})  
-		case 'PRODUCT_BRAND_VALUE' : 
+		case 'PRODUCT_FORM_SETLESSFORM' : 
 			return $$state.merge({
-				brandValue:action.content
+				lessFormData:action.content
 			}) 
-		case 'PRODUCT_PRDCLASS_VALUE' : 
+		case 'PRODUCT_FORM_SETMOREFORM' : 
 			return $$state.merge({
-				prdClassValue:action.content
-			}) 
-		case 'PRODUCT_ATTRGRP_VALUE' : 
+				moreFormData:action.content
+			})
+		// case 'PRODUCT_LIST_DISTRIBUTION' : 
+		// 	return $$state.merge({
+		// 		assignData:action.content
+		// 	})  
+		case 'PRODUCT_LIST_GETORGTREE' : 
 			return $$state.merge({
-				attrGrpValue:action.content
-			}) 
-		case 'PRODUCT_MEAUNIT_VALUE' : 
+				orgTree:action.content
+			})	
+		case 'PRODUCT_LIST_ASSIGN' : 
 			return $$state.merge({
-				meaUnitValue:action.content
-			}) 
-				 
+				data : pageEdit($$state.get("data").toJS(),action.content),
+			})	
+												
 		default: 
       return $$state;
     }    

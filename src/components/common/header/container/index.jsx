@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
-import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row, Modal } from "antd";
+import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row, Modal} from "antd";
 import cookie from "utils/cookie";
 import { bindActionCreators } from "redux";
-import PhoneBooks from 'components/refs/phonebooks/index.jsx'
+import { phonebooks as url } from "api";
+import PhoneBooks from './phonebooks/index.jsx';
+import Approved from './approved/index.jsx';
 import * as Actions from "../action/index.js";
 
 const Search = Input.Search;
@@ -35,13 +37,13 @@ class Header extends React.Component {
         this.menuMore = (
             <Menu>
                 <Menu.Item key="1">
-                    <p className="menu-more">
+                    <p className="menu-more" onClick={this.getApprovalData}>
                         <span>审批</span>
                     </p>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <p className="menu-more" style={{cursor:'pointer'}}>
-                        <PhoneBooks/>
+                    <p className="menu-more" onClick={this.getData} style={{cursor:'pointer'}}>
+                        通讯录
                     </p>
                 </Menu.Item>
             </Menu>
@@ -49,14 +51,27 @@ class Header extends React.Component {
     }
 
     loginOut() {
-        this.props.loginAction.loginOut();
+        this.props.action.loginOut();
     }
 
+    getData = () => {//获取通讯录
+        this.props.action.phoneBookChange()
+        this.props.action.getData(url.mydept,url.organizations)
+    }
+
+    getApprovalData = () => {//获取审批流列表
+        this.props.action.approvedShow();
+        //this.props.action.getApprovalData();
+    }
 
     render() {
         //debugger;
         const userName = cookie("name");
-        let title = this.props.$$state.get("title");      
+        let { $$state, action } = this.props;
+        let title = $$state.get("title");    
+        let phoneBook = $$state.get("phoneBook");  
+        let approval = $$state.get("approval");   
+                  
         return (
             <div className="app-header">
                 <Row
@@ -77,13 +92,6 @@ class Header extends React.Component {
                             justify="end"
                             gutter={15}
                         >
-                            <Col span={7}>
-                                <Search
-                                    placeholder="客户名称、地址、联系人"
-                                    onSearch={value => console.log(value)}
-                                />
-                            </Col>
-
                             <Col span={4}>
                                 <Row
                                     type="flex"
@@ -121,16 +129,18 @@ class Header extends React.Component {
                                     </Badge>
                                 </Row>
                             </Col>
-                            <Col span={1} style={{position:'relative'}}>
+                            <Col span={1} >
                                 <Dropdown
                                     overlay={this.menuMore}
                                     trigger={["click"]}
+                                    style={{position:'relative'}}
                                 >
                                     <a className="more-icon-warpper">
                                         <i className="iconfont icon-gengduo1 more-icon" />
-                                    </a>
+                                    </a>                                   
                                 </Dropdown>
-                              
+                                 { phoneBook ? <PhoneBooks /> : '' }
+                                 { approval ?  <Approved /> : ''}
                             </Col>
                         </Row>
                     </Col>
@@ -148,9 +158,7 @@ function mapStateToProps(state, ownProps) {
 
 module.exports = connect(mapStateToProps, dispatch => {
     return {
-        loginAction: bindActionCreators(Actions, dispatch)
+        action: bindActionCreators(Actions, dispatch)
     };
 })(Header);
 
-
-/*   { phoneBooks ? <div style={{width:'300px',height:'300px',position:'absolute',top:'10px',right:'10px',zIndex:'99999999999999999999999999999999999999999'}}><PhoneBooks/></div> : '' } */

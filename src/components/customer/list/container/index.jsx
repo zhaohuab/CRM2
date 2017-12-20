@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import * as Actions from "../action";
 import {
     Select,
     Input,
@@ -10,20 +11,24 @@ import {
     Button,
     Icon,
     Row,
-    Col
+    Col,
+    Tabs
 } from "antd";
-import ToolForm from "./ButtonTool.jsx";
+
 let Search = Input.Search;
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
-import Card from "./card";
-//导入action方法
-import * as Actions from "../action";
+const TabPane = Tabs.TabPane;
 
+import Card from "./card";
 import ViewPanel from "./ViewPanel";
+import ToolForm from "./ButtonTool.jsx";
+import SlidePanel from "../../../common/slidePanel/index.jsx";
+import PanelMap from "./panelMap";
+import PanelState from "./panelState";
+
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
-import SlidePanel from "../../../common/slidePanel/index.jsx";
 
 class List extends React.Component {
     constructor(props) {
@@ -126,6 +131,12 @@ class List extends React.Component {
             data["latlng"] = value.latlng;
         }
 
+        if(data.ownerUserId){
+            let ownerUserId = data.ownerUserId.id;
+            delete data.ownerUserId
+            data.salesVOs = [{ownerUserId}]
+        }
+        debugger
         return data;
     }
 
@@ -156,6 +167,7 @@ class List extends React.Component {
         this.props.action.editCardFn(changeData);
     }
 
+    //分页方法
     showTotal(total) {
         return `共 ${total} 条`;
     }
@@ -171,6 +183,30 @@ class List extends React.Component {
         this.props.action.getListData(
             pagination,
             this.props.$$state.get("searchMap").toJS()
+        );
+    }
+
+    //切换面板时触发的方法
+    tabChange() {
+        let { viewState } = this.props.$$state.toJS();
+        if (viewState) {
+            debugger;
+            this.props.action.hideViewForm(false);
+        }
+    }
+
+    //切换面板中tab标题替换
+    tabTitle(index) {
+        let str = ["icon-liebiao", "icon-ditu1", "icon-zhuangtai1"];
+        let className = [
+            "tab-change-item grey",
+            "tab-change-item green",
+            "tab-change-item tab-blue"
+        ];
+        return (
+            <div className={className[index]}>
+                <i className={"iconfont " + str[index]} />
+            </div>
         );
     }
 
@@ -203,24 +239,49 @@ class List extends React.Component {
         return (
             <div className="custom-warpper ">
                 <ToolForm />
-                <div className="table-bg tabel-recoverd">
-                    <Table
-                        columns={this.columns}
-                        dataSource={page.data}
-                        rowKey="id"
-                        rowSelection={rowSelection}
-                        size="middle"
-                        pagination={{
-                            size: "large",
-                            showSizeChanger: true,
-                            showQuickJumper: true,
-                            total: page.total,
-                            showTotal: this.showTotal,
-                            onChange: this.onPageChange.bind(this),
-                            onShowSizeChange: this.onPageSizeChange.bind(this)
-                        }}
-                    />
-                </div>
+                <Tabs
+                    defaultActiveKey="1"
+                    tabPosition="right"
+                    onChange={this.tabChange.bind(this)}
+                >
+                    <TabPane tab={this.tabTitle(0)} key="1">
+                        <div className="table-bg tabel-recoverd">
+                            <Table
+                                columns={this.columns}
+                                dataSource={page.data}
+                                rowKey="id"
+                                rowSelection={rowSelection}
+                                size="middle"
+                                pagination={{
+                                    size: "large",
+                                    showSizeChanger: true,
+                                    showQuickJumper: true,
+                                    total: page.total,
+                                    showTotal: this.showTotal,
+                                    onChange: this.onPageChange.bind(this),
+                                    onShowSizeChange: this.onPageSizeChange.bind(
+                                        this
+                                    )
+                                }}
+                            />
+                        </div>
+                    </TabPane>
+                    <TabPane
+                        tab={this.tabTitle(1)}
+                        key="2"
+                        className="customer-panelMap"
+                    >
+                        <PanelMap />
+                    </TabPane>
+                    <TabPane
+                        tab={this.tabTitle(2)}
+                        key="3"
+                        className="customer-panelMap"
+                    >
+                        <PanelState />
+                    </TabPane>
+                </Tabs>
+
                 <Modal
                     title={viewData.id ? "编辑客户" : "新增客户"}
                     visible={formVisitable}

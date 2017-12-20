@@ -1,0 +1,74 @@
+.business-obj-def-warpper {
+  position: relative;
+  padding: 10px;
+  background: #ffffff;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+.business-obj-def-warpper .ifram {
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 1px solid #d9d9d9;
+  z-index: 2;
+}
+.business-obj-def-warpper .ifram html,
+.business-obj-def-warpper .ifram body {
+  overflow-x: hidden;
+  background-color: red;
+}
+.business-obj-def-warpper .closed {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 20px;
+  z-index: 3;
+  cursor: pointer;
+}
+.business-obj-def-warpper .business-obj-warpper .head-panel {
+  padding: 10px 0;
+}
+.business-obj-def-warpper .business-obj-warpper .card-con {
+  display: flex;
+  flex-wrap: wrap;
+}
+.business-obj-def-warpper .field-setting-warpper {
+  min-height: 100%;
+}
+.business-obj-def-warpper .field-setting-warpper .field-setting-title {
+  margin: 10px 0;
+}
+.business-obj-def-warpper .field-setting-warpper .field-setting-title .title {
+  font-size: 14px;
+}
+.business-obj-def-warpper .field-setting-warpper .card-con {
+  display: flex;
+  flex-wrap: wrap;
+}
+.business-obj-def-warpper .tpl-setting-warpper .tpl-setting-title {
+  margin: 10px 0;
+}
+.business-obj-def-warpper .tpl-setting-warpper .tpl-setting-title .title {
+  font-size: 14px;
+}
+.business-obj-def-warpper .tpl-setting-warpper .card-con {
+  min-height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.business-obj-def-warpper .list-config-warpper .list-config-title {
+  margin: 10px 0;
+}
+.business-obj-def-warpper .list-config-warpper .list-config-title .title {
+  font-size: 14px;
+}
+.business-obj-def-warpper .list-config-warpper .card-con {
+  min-height: 100px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.business-obj-def-warpper .text-align-right {
+  text-align: right;
+}

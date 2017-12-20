@@ -56,7 +56,7 @@ export default class Card extends React.Component {
                             <FormItem
                                 label="姓名"
                                 {...formItemLayout}
-                                hasFeedback={true}
+                                //hasFeedback={true}
                             >
                                 {getFieldDecorator("name", {
                                     rules: [
