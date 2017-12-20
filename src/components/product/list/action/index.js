@@ -114,14 +114,13 @@ const getProdClassRef = () => {
 }
 
 //获取计量单位参照
-const getMeaUnitRef = (param) => {
+const getMeaUnitRef = () => {
 	return (dispatch) => {
 		reqwest({
 			url: measure.measure+'/ref',
 			method: "GET",
 			data: {
-				param: {page: param.page,
-								pageSize: param.pageSize}
+				param: {}
 			}
 		}, result => {
 			dispatch(fetchData('PRODUCT_MEAUNIT_GETREFLIST', { ...result}));
@@ -130,14 +129,15 @@ const getMeaUnitRef = (param) => {
 }
 
 //获取品牌参照
-const getBrandRef = (param) => {
+const getBrandRef = () => {
 	return (dispatch) => {
 		reqwest({
 			url: brand.brand+'/ref',
 			method: "GET",
 			data: {
-				param: {page: param.page,
-								pageSize: param.pageSize}
+				// param: {page: param.page,
+				// 				pageSize: param.pageSize}
+				param:{}
 			}
 		}, result => {		
 			dispatch(fetchData('PRODUCT_BRAND_GETREFLIST', { ...result}));
@@ -146,14 +146,13 @@ const getBrandRef = (param) => {
 }
 
 //获取属性组参照
-const getAttrsGrpRef = (param) => {
+const getAttrsGrpRef = () => {
 	return (dispatch) => {
 		reqwest({
 			url: prdattrgroup.prdattrgroup + '/ref',
 			method: "GET",
 			data: {
-				param: {page: param.page,
-								pageSize: param.pageSize}
+				param: {}
 			}
 		}, result => {
 			dispatch(fetchData('PRODUCT_ATTRGROUP_GETREFLISTDATA', { ...result}));

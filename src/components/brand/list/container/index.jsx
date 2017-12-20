@@ -117,18 +117,13 @@ class List extends React.Component {
         }
     }
     onEableRadioChange = (enableState) => {
-        // let enable = enableState;
         const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
-         let { pagination,searchMap} = this.state;
-        // searchMap.enableState = enableState;
-         let ids = selectedRowKeys.join();
-         
-         this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
-        // this.setState({searchMap});
-       }
+        let { pagination,searchMap} = this.state;
+        let ids = selectedRowKeys.join();        
+        this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
+    }
 
     onSearch() {
-        //let searchMap = this.searchformRef.props.form.getFieldsValue();
         this.setState({ searchMap });
         let { pagination } = this.state;
         this.props.action.getListData({ pagination, searchMap });
