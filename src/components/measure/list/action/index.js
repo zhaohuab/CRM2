@@ -19,7 +19,7 @@ const getListData = (params) => {
 		 	data: {
 		 		param: {
 		 			...params.pagination,
-		 			//searchMap: params.searchMap,
+		 			searchMap: params.searchMap,
 		 		}
 		 	},
 		 },result => {
@@ -94,6 +94,14 @@ const onDelete = (rowKeys, params) => {
 	}
 }
 
+//查询form赋值
+const setLessFormData = (fields) => {	
+	return {
+		type:'MEASURE_FORM_SETLESSFORM',
+		content:fields
+	}    
+}
+
 //输出 type 与 方法
 export {
 	getListData,
@@ -101,5 +109,6 @@ export {
 	showForm,
 	onSave4Add,
 	onSave4Edit,
-	changeEnableState
+	changeEnableState,
+	setLessFormData,
 }

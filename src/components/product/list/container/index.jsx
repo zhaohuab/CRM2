@@ -20,7 +20,6 @@ const ButtonGroup = Button.Group;
 const Option = Select.Option;
 const TreeNode = Tree.TreeNode;
 
-
 class List extends React.Component{
     constructor(props){
         super(props)
@@ -39,7 +38,8 @@ class List extends React.Component{
             assignVisible:false, 
             selectedTreeKeys:[],//分配时选中组织id
             selectedOrgnames:[],//分配时选中组织名称
-            rootFlag:true, //分配选中组织是否是根节点 
+            rootFlag:false, //分配选中组织是否是根节点 
+            editRow:{},
         },      
         
 
@@ -111,7 +111,8 @@ class List extends React.Component{
             this.props.action.showEditForm(rowKey ,true);
             break;
           }          
-        }      
+        }   
+        this.setState({editRow:record});   
     }
 
     //点击新增编辑界面销售单位的新增按钮，增加一行
@@ -167,8 +168,7 @@ class List extends React.Component{
         this.props.action.showForm(false,{});
         this.props.action.onChangeSuVa([]);
         this.props.action.setAddNum(0);
-      //  this.props.action.setSuTableData([]);
-       // this.props.action.setFormData({});
+        this.set({editRow:{}});
     }
 
     //批量删除
@@ -187,7 +187,7 @@ class List extends React.Component{
             onCancel() {
               console.log('Cancel');
             },
-          });  
+        });  
     }
 
     //编辑
@@ -205,14 +205,6 @@ class List extends React.Component{
           }          
         }      
     }
-
-    // onEnable(enable) {
-    //     return (enable) => {
-    //       let { pagination,searchMap } = this.state;
-    //       this.setState({headLabel:false});
-    //       this.props.action.onEnable(this.state.selectedRowKeys,enable,{ pagination,searchMap });
-    //     }
-    // }
 
     //更改停启用状态
     onEableRadioChange = (enableState) => {
@@ -257,6 +249,7 @@ class List extends React.Component{
           this.props.action.onSave4Add(addData);
         }
         this.props.action.setAddNum(0);
+        this.set({editRow:{}});
     }
 
     onSelectChange(selectedRowKeys){
@@ -285,21 +278,30 @@ class List extends React.Component{
     onAssign() {
         this.setState({assignVisible: true});
         this.props.action.getOrgTree();
-        let {selectedTreeKeys, selectedRowKeys} = this.state;
+        let {selectedTreeKeys, selectedRowKeys, editRow} = this.state;
         let rowData = {};
         let orgIds = [];
         let orgNames = [];
         let page = this.props.$$state.get("data").toJS();
         for(let i=0,len=page.data.length;i<len;i++) {
-          if(selectedRowKeys[0] == page.data[i].id) {
-            rowData = page.data[i];
-            orgIds = rowData.orgId.split(",");
-            orgNames = rowData.orgName.split(",");
-            break;
-          }          
+            if(editRow !== {}){
+                if(editRow.id == page.data[i].id) {
+                    rowData = page.data[i];
+                    orgIds = rowData.orgId.split(",");
+                    orgNames = rowData.orgName.split(",");
+                    break;
+                }       
+            }else if(selectedRowKeys.length>0){
+                if(selectedRowKeys[0] == page.data[i].id) {
+                    rowData = page.data[i];
+                    orgIds = rowData.orgId.split(",");
+                    orgNames = rowData.orgName.split(",");
+                    break;
+                }       
+            }        
         }       
         this.setState({selectedTreeKeys:orgIds});
-        this.setState({selectedOrgnames:orgNames});            
+        this.setState({selectedOrgnames:orgNames});           
     }
     //取消分配
     onAssignClose() {
@@ -317,9 +319,6 @@ class List extends React.Component{
     //分配时选择组织树节点  最顶层为集团，选中则其他节点全选，其他树节点选中与否互不相关
     onTreeCheck(checkedKeys,e){
         let {selectedTreeKeys, selectedOrgnames, rootFlag} = this.state;
-        //let classRefTree = [{title:"集团", key:"0", fatherorg_id:0,children:[{title:"公司A", key:"0-1",fatherorg_id:1,
-        // children:[{title:"公司A-a", key:"0-1-1",fatherorg_id:2,children:[{title:"公司A-a-1", key:"0-1-1-1",fatherorg_id:3}]},
-        //         {title:"公司A-b", key:"0-1-2",fatherorg_id:2}]},{title:"公司B", key:"0-2",fatherorg_id:1}]}];
         let classRefTree = this.props.$$state.get("orgTree").toJS().data;
         let node = e.node;
         let pos = node.props.pos;
@@ -328,20 +327,20 @@ class List extends React.Component{
         let names = [];
         loop = (data) => {
             if(data !== undefined && data.length>0){
-            data.map((item) => {
-                if(item.children && item.children.length>0){
-                    loop(item.children);
-                    keys.push(item.id.toString());
-                    if(pos !== "0-0"){
-                        names.push(item.name);
-                    }                   
-                }else{
-                    keys.push(item.id.toString());
-                    if(pos !== "0-0"){
-                        names.push(item.name);
-                    }  
-                }
-            });
+                data.map((item) => {
+                    if(item.children && item.children.length>0){
+                        loop(item.children);                   
+                        if(pos !== "0-0"){
+                            keys.push(item.id.toString());
+                            names.push(item.name);
+                        }                   
+                    }else{                    
+                        if(pos !== "0-0"){
+                            keys.push(item.id.toString());
+                            names.push(item.name);
+                        }  
+                    }
+                });
             }
             return keys;
         };
@@ -382,10 +381,10 @@ class List extends React.Component{
         //     children:[{title:"公司A-a", key:"0-1-1",fatherorg_id:2,
         // children:[{title:"公司A-a-1", key:"0-1-1-1",fatherorg_id:3}]},
         //{title:"公司A-b", key:"0-1-2",fatherorg_id:2}]},{title:"公司B", key:"0-2",fatherorg_id:1}]}];
-       let classRefTree = this.props.$$state.get("orgTree").toJS().data;
+        let orgRefTree = this.props.$$state.get("orgTree").toJS().data;
         let title = "";
         let loop = () =>{};
-        if(classRefTree!== undefined && classRefTree.length>0){
+        if(orgRefTree!== undefined && orgRefTree.length>0){
             loop = data => data.map((item) => {
                 if (item.children && item.children.length>0) {
                     return (
@@ -563,10 +562,10 @@ class List extends React.Component{
                     onShowSizeChange:this.onPageSizeChange.bind(this)}}/>
                 </div>
                 <Modal title={title} visible={visible} 
-                   // cancelText = {status == "showdetail"?"关闭":"取消"}
-                   // okText = {status == "showdetail"?"编辑":"确认"}
-                  //  onOk={status == "showdetail"?this.onEdit.bind(this):this.onSave.bind(this)} 
-                  //  onCancel={this.onClose.bind(this)} 
+                    cancelText = {status == "showdetail"?"关闭":"取消"}
+                    okText = {status == "showdetail"?"编辑":"确认"}
+                    onOk={status == "showdetail"?this.onEdit.bind(this):this.onSave.bind(this)} 
+                    onCancel={this.onClose.bind(this)} 
                     width={850}
                     maskClosable={false}
                     footer={status =="showdetail"? detailButton : modalButton}
@@ -614,7 +613,7 @@ class List extends React.Component{
                         checkable = {true}
                         defaultExpandAll = {true}
                     >
-                      {loop(classRefTree)}  
+                      {loop(orgRefTree)}  
                     </Tree>      
                 </Modal>
             </div>)

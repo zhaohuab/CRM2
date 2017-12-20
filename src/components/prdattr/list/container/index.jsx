@@ -70,13 +70,13 @@ class List extends React.Component {
     this.props.action.showAddForm(true, {});
   }
 
-    //属性值删除
+  //属性值删除
   onAttrVaDelete(){
     let flag = false;
     let changedData = this.props.$$state.get('changeData').toJS();
     let selectedRowKeys =this.props.$$state.get('AttrVaSelectedKeys').toJS();
     let attrValue =this.props.$$state.get('attrValue').toJS();       
-       //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
+    //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
     for(let rowKey of selectedRowKeys){
       changedData = changedData.filter(change => { return change.id !== rowKey});
       attrValue = attrValue.filter(data => {
@@ -136,10 +136,6 @@ class List extends React.Component {
 
   onClose() {     
     this.props.action.showAddForm(false);   
-    // this.props.action.resetAddNum();   
-    // this.props.action.setAttrData([]);
-    // this.props.action.setFormData({});
-    // this.props.action.onChangeAttrVa([]);    
   }
 
   onEableRadioChange = (enableState) => {
@@ -193,10 +189,10 @@ class List extends React.Component {
     this.props.action.addAttrVaRow({id:'add_'+k.toString(),enableState:1,editState:'add'});
   }
 
-   //查询
+  //查询
   onSearch(searchMap){
     let { pagination } = this.state;
-    //this.props.action.getListData({ pagination,searchMap });
+    this.props.action.getListData( pagination,searchMap );
   }
 
   onPageChange(page,pageSize) {
@@ -213,9 +209,8 @@ class List extends React.Component {
     console.info(`pageSize:${pageSize}`)
   }
  
-
   render() {
-    let lessFormData = {};
+    let lessFormData = this.props.$$state.get("lessFormData").toJS();
     let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
     let { headLabel, selectedRowKeys,status } = this.state;

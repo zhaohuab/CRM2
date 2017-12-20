@@ -2,32 +2,26 @@ import Immutable from 'immutable'
 
 let $$initialState = {
 	loading: false,
-	data:{},
-	visible:false,
-	attrData:[],
-	attrValueData:{},
-	formData:{},
-	valueList:[],
-	addNum:0,
-	changeData:[],
-	detailVisible:false,
-	detailList:[],
-	name:{},
-	selectedAttrs:[],
-	selectedAttrVas:[],
-	attrVaSelec:[],
-	localAttrs:[],
-	attrId:"",
-	savedData:[],
-	selectedMap:new Map(),
-	isSelected:false,
-	attrGrpId:0,
-	status:"",
-	record:{}
+	data:{},//列表数据
+	visible:false,//新增|编辑界面是否可见
+	attrData:[],//属性列表数据
+	attrValueData:{},//属性值列表数据
+	formData:{},//新增|编辑表单数据
+	detailList:[],//详情数据
+	name:{},//属性组名称，form里使用
+	selectedAttrs:[],//已选属性id
+	selectedAttrVas:[],//已选属性值id
+	localAttrs:[],//已请求的属性及对应属性值列表
+	attrId:"",//本次点击的属性id
+	savedData:[],//已选的所有属性和对应的属性值
+	isSelected:false,//属性值是否被选中
+	attrGrpId:0,//属性组id
+	status:"",//状态：新增 编辑  删除
+	record:{},//当前编辑的属性数据
+	lessFormData:{},//查询form
 };
 
 function listAdd(page,item) {	
-	//debugger
 	page.total+=1;
 	page.data.unshift(item)
 	page.page = Math.ceil(page.total / page.pageSize);
@@ -44,41 +38,16 @@ function listEdit(data,item) {
 	return data;
 }
 
-function getFormData(target, source){
-	Object.assign(target,source);
-	return target;
-}
-
-function addRow (attrValue, item) {
-	attrValue.push(item);
-	return attrValue;
-}
-
-function addNum(addNum){
-	addNum++;
-	return addNum;
-}
-
 function addLocalAttrs(item, localValues){
-//	debugger
 	localValues.push(item);
 	return localValues;
 }
 
 function addSelectedData(savedData, selectedRow){
-	debugger
 	savedData.push(selectedRow);
 	return savedData;
 }
 
-function addSelectedDataMap(savedData, selectedRow){
-	savedData.push(selectedRow);
-	return savedData;
-}
-
-function save (){
-
-}
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {
 		//获取列表 ok
@@ -101,7 +70,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		//编辑
 		case 'PRDATTRGROUP_CARD_SAVEEDIT' : 
-	//	debugger
 			return $$state.merge({
 				visible : action.content.visible,
 				data : listEdit($$state.get('data').toJS(),action.content),
@@ -136,41 +104,33 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				visible:action.content.visible
 			})
 		//已选属性列表 ok
-		case 'PRDATTR_LIST_ATTRSELEC' : 
+		case 'PRDATTRGRP_LIST_ATTRSELEC' : 
 			return $$state.merge({
 				selectedAttrs:action.content,
 			})
 		//已选属性值列表 包含属性id ok	
-		case 'PRDATTR_LIST_ATTRVASELEC' : 
+		case 'PRDATTRGRP_LIST_ATTRVASELEC' : 
 			return $$state.merge({
 				selectedAttrVas:action.content.selectedRowKeys,
 				attrId:action.content.id
 			})	
-		//已选属性值列表 包含属性id ok	
-		case 'PRDATTR_LIST_ATTRVASELECMAP' : 
-			return $$state.merge({
-				selectedMap:addSelectedDataMap($$state.get('selectedMap').toJS(),action.content)
-			})	
 		//获取其他属性值时 保存上一次的选择 ok
-		case 'PRDATTR_LIST_ADDATTRVASELEC' :
+		case 'PRDATTRGRP_LIST_ADDATTRVASELEC' :
 			return $$state.merge({
 				savedData:addSelectedData($$state.get('savedData').toJS(),action.content)
 			})
 		//属性值是否被选中 ok
-		case 'PRDATTR_LIST_ATTRISSELEC' : 
+		case 'PRDATTRGRP_LIST_ATTRISSELEC' : 
 			return $$state.merge({
 				isSelected:action.content
 			})	
 		//设置当前选中属性值 ok
-		case 'PRDATTR_LIST_SETSELATTRVAS' : 
+		case 'PRDATTRGRP_LIST_SETSELATTRVAS' : 
 			return $$state.merge({
-				selectedAttrVas:action.content
+				selectedAttrVas:action.content.selectedRowKeys,
+				attrId:action.content.id
 			})
-		//设置当前选中属性值 ok
-		case 'PRDATTR_LIST_ADDSAVE' : 
-			return $$state.merge({
-				selectedAttrVas:action.content
-			})
+
 		// 编辑数据
 		case 'PRDATTRGROUP_CARD_SHOWEDIT' : 
 			return $$state.merge({
@@ -183,19 +143,21 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		//编辑界面获取属性值列表 本地有	ok
 		case 'PRDATTRGROUP_ATTRVA_GETEDITLIST' : 
-		//	debugger
 			return $$state.merge({
 				attrValueData:action.content.allList,	
 				localAttrs:addLocalAttrs(action.content.allList,$$state.get('localAttrs').toJS()),
 				selectedAttrVas:action.content.checkedList,
 				attrId:	action.content.attrid
 			})
-				//保存当前选中属性 ok
-		case 'PRDATTR_LIST_SAVERECORD' : 
+		//保存当前选中属性 ok
+		case 'PRDATTRGRP_LIST_SAVERECORD' : 
 			return $$state.merge({
 				record:action.content
 			})
-															
+		case 'PRDATTRGRP_FORM_SETLESSFORM' : 
+			return $$state.merge({
+				lessFormData:action.content
+			})															
 	  default: 
 	    return $$state;
 	}

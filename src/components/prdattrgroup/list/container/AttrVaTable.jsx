@@ -37,6 +37,7 @@ class AttrValueTable extends React.Component {
        let data =this.props.$$state.get('attrValueData').toJS();
        attrId = data.id;
        dataSource = data.voList;
+       debugger
     }else if(status == "edit"){
       let  data =this.props.$$state.get('attrValueData').toJS();
       if(data !== undefined && data !== null && JSON.stringify(data) !== "{}"){

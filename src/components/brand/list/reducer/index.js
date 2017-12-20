@@ -6,7 +6,8 @@ let $$initialState = {
 	visible: false,
 	viewVisible:false,
 	selectedRows:[],
-	selectedRowKeys:[]
+	selectedRowKeys:[],
+	lessFormData:{},
 };
 
 function pageAdd(page, item) {
@@ -68,6 +69,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRows: action.content.selectedRows,
 				selectedRowKeys: action.content.selectedRowKeys,
 			})
+		case 'BRAND_FORM_SETLESSFORM' : 
+			return $$state.merge({
+				lessFormData:action.content
+			}) 
 		default:
 			return $$state;
 	}

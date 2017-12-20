@@ -47,9 +47,9 @@ class BrandRef extends React.Component {
     }
 
     handleBrandVisibleChange = (flag) => {
-        let {pagination} = this.state; 
+        // let {pagination} = this.state; 
         this.setState({ visible: flag });
-        this.props.action.getBrandRef(pagination);//获取品牌参照列表
+        this.props.action.getBrandRef();//获取品牌参照列表
     }
 
     render() {

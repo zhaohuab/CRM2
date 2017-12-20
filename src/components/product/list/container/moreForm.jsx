@@ -22,6 +22,7 @@ import PrdClassRef from './PrdClassRef'
 import BrandRef from './BrandRef'
 import MeaUnitRef from './MeaUnitRef'
 import AttrsGrpRef from './AttrsGrpRef'
+import OrgRef from './OrgRef'
 
 class MoreForm extends React.Component {
     constructor(props) {
@@ -79,14 +80,14 @@ class MoreForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("orgId")(
-                                    <Input type="text" placeholder="适用组织" />
+                                    <OrgRef />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("prdtypeId")(
-                                    <PrdClassRef  placeholder="产品分类" />
+                                    <PrdClassRef />
                                 )}
                             </FormItem>
                         </Col>
@@ -180,6 +181,13 @@ const WarpMoreForm = Form.create({
                 }else{
                     fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
                 } 
+            }else if(item == "orgId"){
+                if("isDelete" in fields[item].value){
+                    delete props.dataSource.orgId;
+                    delete props.dataSource.orgName;
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.orgId[0]),orgName:fields[item].value.orgName};
+                }                                   
             }else if(item == "brandId"){
                 if("isDelete" in fields[item].value){
                     delete props.dataSource.brandId;
@@ -218,6 +226,10 @@ const WarpMoreForm = Form.create({
     mapPropsToFields(props){
         let data = props.dataSource;
         return{
+            orgId:{
+                ...data.orgId,
+                value:data.orgName
+            },
             code:{
                 ...data.code,
                 value:data.code
@@ -237,10 +249,6 @@ const WarpMoreForm = Form.create({
             price:{
                 ...data.price,
                 value:data.price
-            },  
-            orgId:{
-                ...data.orgId,
-                value:data.orgId
             },  
             description:{
                 ...data.description,
