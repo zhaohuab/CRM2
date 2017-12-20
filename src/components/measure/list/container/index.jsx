@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button ,Radio,Icon ,Form, Popconfirm} from 'antd';
+import { Table, Modal, Button ,Radio,Icon ,Form, Popconfirm,Select,Row, Col} from 'antd';
 
 import HeadLabel from './HeadLabel.jsx';
 import Card from './Card.jsx'
@@ -9,10 +9,12 @@ import './index.less'
 import {Input} from 'antd';
 //导入action方法
 import * as Actions from "../action"
-
+import LessForm from "./lessForm.jsx";
+const Option = Select.Option;
 let Search = Input.Search;
 let RadioGroup = Radio.Group;
 let ButtonGroup = Button.Group;
+const confirm = Modal.confirm;
 class List extends React.Component {
   constructor(props) {
     super(props)
@@ -53,7 +55,7 @@ class List extends React.Component {
     }
   }
   componentDidMount() {
-    let { pagination } = this.state;
+    let { pagination ,searchMap } = this.state;
     this.props.action.getListData({pagination});
   }
   onSelectChange = (selectedRowKeys) => {
@@ -83,8 +85,22 @@ class List extends React.Component {
   }
   onDelete=()=>{
     let { pagination,searchMap } = this.state;
-    this.props.action.onDelete(this.state.selectedRowKeys,{ pagination });
-    this.setState({headLabel:false,selectedRowKeys:[]});
+    let that = this;
+    confirm({
+      title: '确定要删除吗?',
+      content: '此操作不可逆',
+      okText: '是',
+      okType: 'danger',
+      cancelText: '否',
+      onOk() {
+        that.props.action.onDelete(that.state.selectedRowKeys,{ pagination });
+        that.setState({headLabel:false,selectedRowKeys:[]});
+      },
+      onCancel() {
+          console.log('Cancel');
+      },
+    });
+    
   }
   onClose() {
     this.props.action.showForm(false,{});
@@ -103,7 +119,7 @@ class List extends React.Component {
     let { pagination } = this.state;
     pagination = {page:pagination.page,pageSize:pageSize};
     this.setState({pagination})
-    this.props.action.getListData({ pagination });
+    this.props.action.getListData({ pagination, });
   }
   onBack = ()=>{
     this.setState({headLabel:false});
@@ -118,14 +134,17 @@ class List extends React.Component {
   }
 
   onEableRadioChange = (enableState) => {
-    // let enable = enableState;
      let { pagination,searchMap,selectedRowKeys} = this.state;
-    // searchMap.enableState = enableState;
-     let ids = selectedRowKeys.join();
-     
+     let ids = selectedRowKeys.join();    
      this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
-    // this.setState({searchMap});
    }
+
+  onSearch(searchMap) {
+    //this.setState({ searchMap });
+    let { pagination } = this.state;
+    this.props.action.getListData({ pagination, searchMap });
+    //this.props.action.getListData({pagination});
+  }
 
   onSave() {
     let form = this.formRef.props.form;
@@ -152,9 +171,10 @@ class List extends React.Component {
     let visible = this.props.$$state.get("visible");
     let page = this.props.$$state.get("data").toJS();
     let editData = this.props.$$state.get("editData").toJS();
+    let lessFormData = this.props.$$state.get("lessFormData").toJS();
     const WrapCard = Form.create()(Card);
     return (
-      <div className='user-warpper'>
+      <div className='measure-warpper'>
         {
           headLabel?
           <div className='head_edit'>
@@ -169,25 +189,53 @@ class List extends React.Component {
               </HeadLabel>
             
           </div>:
-          <div className='head_panel'>
-              <div className='head_panel-left'>
-                <div>
-                  <span className='deep-title-color'>所属部门：</span>
-                  <Input
-                    placeholder="请选择..."
-                    className="search"
-                    onSearch={value => console.log(value)}
-                  />
-                </div>
-              </div>
-              <div className='head_panel-right'>
-                <ButtonGroup className='add-more'>
-                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                </ButtonGroup>
-                <Button  type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
-              </div>
-          </div>
+         <Row 
+           type="flex"
+           align="middle"
+            justify="space-between"
+            className="header-top">
+            <Col span={18}>
+              <Row type="flex" align="middle">
+                <Col className="select-recover">
+                   <Select defaultValue="0">
+                     <Option value="0">全部</Option>                                       
+                      <Option value="1">最近查看</Option>                                       
+                    </Select>
+                  </Col>
+                 <Col
+                  span={18}
+                   className={"less-show-height"}
+                  >
+                    <LessForm
+                      dataSource={lessFormData}
+                      handleSearch={this.onSearch.bind(this)} //点击查询方法
+                     />
+                  </Col>
+              </Row>
+             </Col>
+             <Col span={6}>
+                <Row type="flex" gutter={15} justify="end">
+                   <Col>
+                    <ButtonGroup>
+                       <Button>
+                         <i className="iconfont icon-daoru" />导入
+                        </Button>
+                        <Button>
+                          <i className="iconfont icon-daochu" />导出
+                        </Button>
+                    </ButtonGroup>
+                  </Col>
+                   <Col>
+                    <Button
+                      type="primary"
+                      onClick={this.onAdd.bind(this)}
+                    >
+                      <i className="iconfont icon-xinjian" />新建
+                    </Button>
+                  </Col>
+                </Row>
+              </Col>
+           </Row>                           
         }
         <div className="list-box">
           <Table

@@ -6,7 +6,7 @@ import ToolForm from "./ButtonTool.jsx";
 let Search = Input.Search;
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
-import Card from "./card";
+import Card from "./Card";
 //导入action方法
 import * as Actions from "../action";
 import * as enumData from "./enumdata";
