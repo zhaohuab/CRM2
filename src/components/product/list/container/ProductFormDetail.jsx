@@ -1,4 +1,4 @@
-import { Form, Row, Col} from 'antd';
+import { Form, Row, Col,Table,Button,Dropdown} from 'antd';
 
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -12,9 +12,76 @@ class ProductCardDetail extends React.Component {
         super(props)
     }
 
+    columns = [{
+        title: '名称',
+        dataIndex: 'name',
+        key: 'name'                      
+    }];
+
     render() {
         const { getFieldDecorator } = this.props.form;
-       
+        let orgName = this.props.dataSource.orgName;
+        let names = [];
+        //debugger
+        if(orgName !== undefined && orgName !== null && orgName !== ""){
+            names = orgName.split(",");
+        }
+        //let 
+        let dataSource = [];
+        for(let name of names){
+            name = {name: name};
+            dataSource.push(name);
+        }
+        //debugger
+        //let name = names[0];
+       //debugger
+        let moreOrg = (
+            <div className = "reference">
+            <div  className = "reference-main"> 
+                <Row
+                type="flex"
+                justify="space-between"
+                className="reference-main-header"
+                >
+                    <div className="title">全部组织</div>
+                </Row>
+                <Row className="reference-main-choice" type="flex">
+                    <Table columns = {this.columns} 
+                    dataSource = {dataSource} 
+                    style = {{background:"white"}}
+                    showHeader={false}
+                   // onRowClick={this.onBrandRowClick}
+                    pagination={false}                 
+                    className="inner"
+                    />
+                </Row>
+                <Row
+                type="flex"
+                justify="end"
+                align="middle"
+                className="reference-main-footer"
+                >
+                    <Row type="flex" justify="end" align="middle" gutter={15}>
+                        <div>
+                            <Button 
+                           // onClick={this.onBrandCancel.bind(this)}
+                            >
+                                取消
+                            </Button>
+                        </div>
+                        <div>
+                            <Button
+                            type="primary"
+                            //onClick={this.onBrandOk.bind(this)}
+                            >
+                                确定
+                            </Button>
+                        </div>
+                    </Row>
+                </Row>
+            </div>
+        </div>
+        );
         return (
             <div>                          
                 <Form >
@@ -131,7 +198,13 @@ class ProductCardDetail extends React.Component {
                             >
                                 {getFieldDecorator('orgId', {
 
-                                })(  <span> {this.props.dataSource.orgName}</span>
+                                })(  <Dropdown overlay={moreOrg} 
+                                        trigger="click"
+                                       // onVisibleChange={this.handleBrandVisibleChange}
+                                       // visible={this.state.visible}                   
+                                    >                                       
+                                       <a>{names[0]}</a>
+                                    </Dropdown>
                                 )}
                             </FormItem>
                         </Col>       

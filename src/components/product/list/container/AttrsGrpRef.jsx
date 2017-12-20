@@ -58,6 +58,8 @@ class AttrsGrpRef extends React.Component {
 
     render() {      
         const attrgrpRefList = this.props.$$state.get("attrgrpRefList").toJS().data;
+        let isRefered = this.props.$$state.get("isRefered");
+        let visible =  this.props.$$state.get("visible");
         const attrgrpRefData = (
             <div className = "reference">
                 <div  className = "reference-main"> 
@@ -104,15 +106,32 @@ class AttrsGrpRef extends React.Component {
         );
 
         return (
+            visible == true?
+            <div>{
+                isRefered !== 1?
+                    <Dropdown overlay={attrgrpRefData} 
+                    trigger="click"
+                    onVisibleChange={this.handleVisibleChange}
+                    visible={this.state.visible}
+                    > 
+                        { (this.props.value) ?                      
+                        <Input placeholder = "属性组" value = { this.props.value }
+                        suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
+                        <Search placeholder = "属性组" value = { this.props.value }/>
+                        }
+                    </Dropdown>:
+                     <Input placeholder = "属性组" value = { this.props.value } disabled/>
+                    }
+            </div>:
             <Dropdown overlay={attrgrpRefData} 
             trigger="click"
             onVisibleChange={this.handleVisibleChange}
             visible={this.state.visible}
             > 
                 { (this.props.value) ?                      
-                    <Input placeholder = "属性组" value = { this.props.value }
-                        suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
-                    <Search placeholder = "属性组" value = { this.props.value }/>
+                <Input placeholder = "属性组" value = { this.props.value }
+                suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
+                <Search placeholder = "属性组" value = { this.props.value }/>
                 }
             </Dropdown>
         );

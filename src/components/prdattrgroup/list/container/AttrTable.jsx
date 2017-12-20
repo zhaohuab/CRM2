@@ -45,8 +45,7 @@ class AttrTable extends React.Component {
     //let selectedAttrs = this.props.$$state.get("selectedAttrs").toJS();
     //let isSelected = this.props.$$state.get("isSelected");
     //  let selectedRowKeys = this.props.$$state.get("selectedAttrVas").toJS();
-   // let attrId = this.props.$$state.get("attrId");
-     
+   // let attrId = this.props.$$state.get("attrId");     
     this.props.action.selecAttr(selectedRowKeys);
   }
 
@@ -70,15 +69,6 @@ class AttrTable extends React.Component {
     let savedData =this.props.$$state.get('savedData').toJS();
     let flag = false;
     let id = record.id;
-  //   let selectedAttrs = this.props.$$state.get("selectedAttrs").toJS();
-  // //  let selectedRowKeys = this.props.$$state.get("selectedAttrVas").toJS();
-  //   for (let clickId of selectedAttrs){
-  //    // debugger
-  //     if(id == clickId){
-  //       this.props.action.attrIsSelected(true);
-  //       break;
-  //     }
-  //   }
     //本地是否存储该数据  但是没有选择状态
     let localAttrs = this.props.$$state.get("localAttrs").toJS();
     if(localAttrs.length>0){
@@ -87,7 +77,6 @@ class AttrTable extends React.Component {
           //设置当前属性值列表及选中值
           flag = true;
           this.props.action.setLocalAttrVaList(attr);
-          debugger
           for(let sele of savedData){
             if(sele.id == attr.id){
               this.props.action.setSelAttrVas(sele);
@@ -114,6 +103,9 @@ class AttrTable extends React.Component {
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
+      getCheckboxProps:record =>({
+        disabled: record.isRefered == true,
+      }),
     };
     let selectedAttrs = this.props.$$state.get("selectedAttrs").toJS();
     let record = this.props.$$state.get("record").toJS();

@@ -12,6 +12,7 @@ let $$initialState = {
 	detailVisible:false,//是否显示详情界面
 	AttrVaSelectedKeys:[],//新增|编辑 选中的属性值
 	lessFormData:{},//查询form
+	isRefered:false,//属性是否被引用
 };
 
 function listAdd(page,item) {	
@@ -46,6 +47,21 @@ function addNum(addNum){
 	return addNum;
 }
 
+function setCiteFlag(checkedids,data){
+	if(checkedids !== undefined && checkedids !== null &&
+		 checkedids.ids !== undefined && checkedids.ids.length>0){	
+		for(let item of data){
+			for(let checked of checkedids.ids){
+				if(checked == item.id){
+					Object.assign(item, {isRefered:true});
+					break;
+				}
+			}		
+		}
+	}
+	return data;
+}
+
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {
 		case 'PRDATTR_LIST_GETLISTSUCCESS':
@@ -57,7 +73,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				visible : action.content.visible,
 				formData : action.content.data,
-				attrValue:action.content.data.valueList
+				attrValue:setCiteFlag(action.content.checkedids, action.content.data.valueList)
 			})
 		case 'PRDATTR_LIST_SHOWFORMDETAIL':
 			return $$state.merge({

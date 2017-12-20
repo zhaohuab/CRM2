@@ -274,7 +274,7 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){ 
+        onFieldsChange(props, fields){
             let fieldsChangeData = {};
             let dataSource = props.dataSource;
             for(let item in fields){
@@ -283,7 +283,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                         delete props.dataSource.prdtypeId;
                         delete props.dataSource.prdtypeName;
                     }else{
-                        fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
+                        if(dataSource.attrGroupId !== undefined && dataSource.attrGroupId !== null
+                            &&JSON.stringify(dataSource.attrGroupId) !== "{}" &&dataSource.attrGroupId !== ""){
+                                fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
+                        }else{
+                            fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName,
+                                attrGroupId:fields[item].value.attrGroupId,attrGroupName:fields[item].value.attrGroupName};                           
+                        }                       
                     } 
                 }else if(item == "brandId"){
                     if("isDelete" in fields[item].value){

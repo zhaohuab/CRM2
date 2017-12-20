@@ -167,13 +167,21 @@ const setAttrData = (attrData) => {
 const getAttrDetail = (id) => {
 	return (dispatch) => {
 		reqwest({
-			url: prdattr.prdattr + "/" + id.toString(),
+			url: prdattr.prdattr + "/" + id.toString() + "/cited",
 			method: "GET",
 			data: {
 				param:{}
 			}
-		}, result => {
-			dispatch(fetchData('PRDATTR_LIST_SHOWFORM', { visible:true, data:result }));
+		}, citeresult => {
+			reqwest({
+				url: prdattr.prdattr + "/" + id.toString(),
+				method: "GET",
+				data: {
+					param:{}
+				}
+			}, result => {
+				dispatch(fetchData('PRDATTR_LIST_SHOWFORM', { visible:true, data:result ,checkedids:citeresult}));
+			})
 		})
 	}
 } 

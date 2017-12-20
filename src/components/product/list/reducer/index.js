@@ -21,6 +21,7 @@ let initialState = {
 	//assignData:[],//分配
 	orgTree:[],//组织树
 	//isDelete:false,
+	isRefered:2,//产品是否被引用 1被引用 2未被引用
 };
 
 function pageAdd(page,item) {
@@ -146,7 +147,8 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 			return $$state.merge({
 				visible : action.content.visible,
 				editData : action.content.formdata,
-				salesunitTable:action.content.formdata.saleUnits
+				salesunitTable:action.content.formdata.saleUnits,
+				isRefered : action.content.isRefered
 			})  
 		case 'PRODUCT_FORM_SETLESSFORM' : 
 			return $$state.merge({
@@ -167,7 +169,11 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 		case 'PRODUCT_LIST_ASSIGN' : 
 			return $$state.merge({
 				data : pageEdit($$state.get("data").toJS(),action.content),
-			})	
+			})
+		case 'PRODUCT_FORM_SETISREFERED' : 
+			return $$state.merge({
+				isRefered : action.content,
+			})		
 												
 		default: 
       return $$state;

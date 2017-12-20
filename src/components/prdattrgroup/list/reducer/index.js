@@ -19,6 +19,7 @@ let $$initialState = {
 	status:"",//状态：新增 编辑  删除
 	record:{},//当前编辑的属性数据
 	lessFormData:{},//查询form
+	isRefered:false,//属性组是否被引用
 };
 
 function listAdd(page,item) {	
@@ -46,6 +47,21 @@ function addLocalAttrs(item, localValues){
 function addSelectedData(savedData, selectedRow){
 	savedData.push(selectedRow);
 	return savedData;
+}
+
+function setCiteFlag(flag,data,selectedAttrs){
+	if(flag){
+		for(let item of data){
+			for(let sel of selectedAttrs){
+				if (sel == item.id){
+					Object.assign(item, {isRefered:true});
+					break;
+				}
+			}
+			//Object.assign(item, {isRefered:true});
+		}
+	}
+	return data;
 }
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
@@ -134,18 +150,19 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		// 编辑数据
 		case 'PRDATTRGROUP_CARD_SHOWEDIT' : 
 			return $$state.merge({
-				attrData:action.content.data.allList,
+				attrData:setCiteFlag(action.content.isRefered,action.content.data.allList,action.content.data.checkedList),
 				selectedAttrs:action.content.data.checkedList,
 				visible:action.content.visible,
 				attrGrpId:action.content.id,
 				status:"edit",
-				formData:{name:action.content.name}
+				formData:{name:action.content.name},
+				isRefered:action.content.isRefered,
 			})
 		//编辑界面获取属性值列表 本地有	ok
 		case 'PRDATTRGROUP_ATTRVA_GETEDITLIST' : 
 			return $$state.merge({
-				attrValueData:action.content.allList,	
-				localAttrs:addLocalAttrs(action.content.allList,$$state.get('localAttrs').toJS()),
+				attrValueData:setCiteFlag($$state.get("isRefered"),action.content.allList,action.content.checkedList),	
+				localAttrs:addLocalAttrs($$state.get("attrValueData").toJS(),$$state.get('localAttrs').toJS()),
 				selectedAttrVas:action.content.checkedList,
 				attrId:	action.content.attrid
 			})
@@ -157,6 +174,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'PRDATTRGRP_FORM_SETLESSFORM' : 
 			return $$state.merge({
 				lessFormData:action.content
+			})
+		case 'PRDATTRGRP_FORM_ISREFERED' : 
+			return $$state.merge({
+				isRefered:action.content
 			})															
 	  default: 
 	    return $$state;
