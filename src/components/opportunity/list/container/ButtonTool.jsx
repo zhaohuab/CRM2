@@ -1,14 +1,4 @@
-import {
-    Modal,
-    Cascader,
-    Select,
-    Form,
-    Row,
-    Col,
-    Input,
-    Button,
-    Icon
-} from "antd";
+import {Modal,Cascader,Select,Form,Row,Col,Input,Button,Icon,Menu,Dropdown} from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
@@ -78,8 +68,9 @@ class ToolForm extends React.Component {
         });
     }
     //点击新建按钮
-    btnNew() {
-        this.props.action.showForm({}, true);
+    btnNew(e) {
+        this.props.action.showFormNew(true,{type:e.key});
+        this.props.action.saveOppBList([]);
     }
     //上下表单控制显隐
     changeVisible() {
@@ -99,13 +90,21 @@ class ToolForm extends React.Component {
     }
 
     //点击编辑按钮打开编辑页面
-    btnEdit(data) {
-      
-        this.props.action.showForm(data,true);
+    btnEdit(id) {
+        this.props.action.showFormEdit(true,id);
     }
 
     render() {
-        let { enumData, moreShow, selectedRows } = this.props.$$state.toJS();
+        let { enumData, moreShow, selectedRows,selectedRowKeys,biztypeList } = this.props.$$state.toJS();
+
+        const loop = data => data.map((item) => {
+            return <Menu.Item key={item.key}>{item.title}</Menu.Item>
+        });
+        const menu = (
+            <Menu onClick={this.btnNew.bind(this)}>
+              {loop(biztypeList)}
+            </Menu>
+          );
         return (
             <Row className="header-warpper">
                 {selectedRows && selectedRows.length >= 1 ? (
@@ -114,7 +113,7 @@ class ToolForm extends React.Component {
                         length={selectedRows.length}
                     >
 
-                    {selectedRows.length == 1 ? <Button className="default_button" onClick={this.btnEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
+                    {selectedRows.length == 1 ? <Button className="default_button" onClick={this.btnEdit.bind(this, selectedRowKeys[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
                                 : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
 
                         <Button
@@ -187,12 +186,20 @@ class ToolForm extends React.Component {
                                         </ButtonGroup>
                                     </Col>
                                     <Col>
-                                        <Button
+                                        {/* <Button
                                             type="primary"
                                             onClick={this.btnNew.bind(this)}
                                         >
                                             <i className="iconfont icon-xinjian" />新建
-                                        </Button>
+                                        </Button> */}
+
+
+
+                                        <Dropdown overlay={menu}>
+                                    <Button type="primary">
+                                    <i className="iconfont icon-xinjian" />新建
+                                    </Button>
+                                    </Dropdown>
                                     </Col>
                                 </Row>
                             </Col>

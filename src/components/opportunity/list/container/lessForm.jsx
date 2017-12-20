@@ -1,14 +1,4 @@
-import {
-    Modal,
-    Cascader,
-    Select,
-    Form,
-    Row,
-    Col,
-    Input,
-    Button,
-    Icon
-} from "antd";
+import {Modal, Cascader,Select,Form,Row,Col,Input,Button,Icon} from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
