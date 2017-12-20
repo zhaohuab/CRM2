@@ -161,6 +161,7 @@ const getEnumData = () => {
 
 //修改客户保存
 const listEditSave = data => {
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -206,7 +207,6 @@ const listAddSave = data => {
 
 //展示面板，把点击某个客户的所有值，放在redux中
 const showViewForm = (visible, id) => {
-    debugger;
     return dispatch => {
         reqwest(
             {
@@ -221,7 +221,6 @@ const showViewForm = (visible, id) => {
                         method: "GET"
                     },
                     state => {
-                        debugger;
                         dispatch({
                             type: "CUSTOMER_LIST_SHOWVIEWFORM",
                             visible,
@@ -238,6 +237,7 @@ const showViewForm = (visible, id) => {
 const hideViewForm = visiable => {
     return fetchData("CUSTOMER_LIST_HIDEVIEWFORM", { visiable });
 };
+
 
 //存放工商信息详细数据 viewData, visible, stateIcbc, isClose
 const customerListInfo = (data, visible, viewData) => {
@@ -417,6 +417,15 @@ const editCardFn = changeData => {
     };
 };
 
+//点击分配改变负责人信息
+const assignChangeViewData = viewData =>{
+    debugger
+    return{
+        type: "CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL",
+        viewData
+    }
+}
+
 //输出 type 与 方法
 export {
     getListData,
@@ -443,7 +452,8 @@ export {
     checkedCancelFn,
     modalDetalVisiableFalse,
     closeIcbcVisible1,
-    attentionFn
+    attentionFn,
+    assignChangeViewData
 };
 
 //

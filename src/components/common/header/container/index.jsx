@@ -83,13 +83,6 @@ class Header extends React.Component {
                             justify="end"
                             gutter={15}
                         >
-                            <Col span={7}>
-                                <Search
-                                    placeholder="客户名称、地址、联系人"
-                                    onSearch={value => console.log(value)}
-                                />
-                            </Col>
-
                             <Col span={4}>
                                 <Row
                                     type="flex"
