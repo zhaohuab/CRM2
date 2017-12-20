@@ -54,7 +54,6 @@ const changeEnableState = (enableState,selectedRowKeys,pagination,searchMap) => 
 }
 
 const onSave4Add = (data) => {
-	debugger
 	return (dispatch) => {
 		reqwest({
 			url: prdattr.prdattr,
@@ -63,7 +62,6 @@ const onSave4Add = (data) => {
 				param: data
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('PRDATTR_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
@@ -180,19 +178,6 @@ const getAttrDetail = (id) => {
 	}
 } 
 
-const getAttrDetails = (id) => {
-	return (dispatch) => {
-		reqwest({
-			url: prdattr.prdattr + "/" + id.toString(),
-			method: "GET",
-			data: {
-				param:{}
-			}
-		}, result => {
-			dispatch(fetchData('PRDATTR_LIST_SHOWFORM', { detailVisible:true, data:result }));
-		})
-	}
-} 
 
 const setFormData = (formData) => {
 	return {
@@ -208,6 +193,13 @@ const setSecRowKeys = (secRowKeys) => {
 	}
 }
 
+//查询form赋值
+const setLessFormData = (fields) => {	
+	return {
+			 type:'PRDATTR_FORM_SETLESSFORM',
+			 content:fields
+	}    
+}
 //输出 type 与 方法
 export {
 	getListData,
@@ -225,5 +217,6 @@ export {
 	getAttrDetail,
 	showAddForm,
 	setFormData,
-	setSecRowKeys
+	setSecRowKeys,
+	setLessFormData,
 }

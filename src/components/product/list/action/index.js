@@ -161,6 +161,19 @@ const getAttrsGrpRef = (param) => {
 	}
 } 
 
+//获取组织参照
+const getOrgRefTree = () => {
+	return (dispatch) => {
+		reqwest({
+			url: org.orgTree,
+			method: "GET",
+			data: {param:{orgType: 1}}
+		}, result => {
+			dispatch(fetchData('PRODUCT_ORG_GETREFLISTDATA', { ...result}));
+		})
+	}
+}
+
 const setBrandValue = (value) => {
 	return {
 		type:"PRODUCT_BRAND_VALUE",
@@ -275,13 +288,6 @@ const setFieldsChangeData = (fields) => {
 	}    
 }
 
-// const resetFieldsChangeData = (fields) => {	
-// 	return {
-// 			 type:'PRODUCT_FORM_RESETFIELDSCHANGE',
-// 			 content:fields
-// 	}    
-// }
-
 const setAddNum = (addNum) => {	
 	return {
 			 type:'PRODUCT_FORM_SETADDNUM',
@@ -310,7 +316,7 @@ const prdAssign = ( prdId,ids,names) => {
 			method: "PUT",
 			data: {param:{orgIds: ids}}
 		}, result => {
-			dispatch(fetchData('PRODUCT_LIST_ASSIGN', { names }));
+			dispatch(fetchData('PRODUCT_LIST_ASSIGN', { orgName:names, id: prdId }));
 		})
 	}
 }
@@ -322,18 +328,12 @@ const getOrgTree = () => {
 			url: org.orgTree ,
 			method: "GET",
 			data: {param:{orgType: 1}}
+		//	data: {orgType: 1}
 		}, result => {
 			dispatch(fetchData('PRODUCT_LIST_GETORGTREE', { ...result }));
 		})
 	}
 }
-//删除参照
-// const deleteRef = (flag) => {	
-// 	return {
-// 		type:'PRODUCT_FORM_DELETEREF',
-// 		content:flag
-// 	}    
-// }
 
 export {
 	showForm, 
@@ -344,8 +344,7 @@ export {
 	getProdClassRef, 
 	getMeaUnitRef, 
 	getBrandRef, 
-//	addRow,
-//	showSalesUnit,
+	getOrgRefTree,
 	addSaleUnitRow,
 	onChangeSuVa,
 	setSecRowKeys,
@@ -354,7 +353,6 @@ export {
 	setFieldsChangeData,
 	getAttrsGrpRef,
 	setAddNum,
-//	resetFieldsChangeData,
 	showEditForm,
 	changeEnableState,
 	setLessFormData,
@@ -365,5 +363,4 @@ export {
 	setPrdClassValue,
 	setAttrGrpValue,
 	setMeaUnitValue,
-//	deleteRef,
 }

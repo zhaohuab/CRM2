@@ -9,6 +9,7 @@ let initialState = {
 	meaunitRefList:[],//计量单位参照列表
 	brandRefList:[],//品牌参照列表
 	attrgrpRefList:[],//属性组参照列表
+	orgRefTree:[],//组织参照列表
 	salesunitTable:[],//销售单位table数据
 	salesUnitVisible:false,//销售单位table是否可见
 	addNum:0,//销售单位新增行数
@@ -33,7 +34,7 @@ function pageEdit(page,item) {
 	let {data} = page;
 	for(let i=0,len=data.length;i<len;i++) {
 		if(data[i].id == item.id) {
-			data[i] = item;
+			Object.assign(data[i] , item);
 			break;
 		}
 	}
@@ -94,6 +95,10 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 		case 'PRODUCT_ATTRGROUP_GETREFLISTDATA' : 
 			return $$state.merge({
 				attrgrpRefList : action.content,
+			})
+		case 'PRODUCT_ORG_GETREFLISTDATA' : 
+			return $$state.merge({
+				orgRefTree : action.content,
 			})
 		// case 'ADDROW' : 
 		// 	return $$state.merge({
@@ -163,10 +168,6 @@ function reducer ($$state = Immutable.fromJS(initialState), action){
 			return $$state.merge({
 				data : pageEdit($$state.get("data").toJS(),action.content),
 			})	
-		// case 'PRODUCT_FORM_DELETEREF' : 
-		// 	return $$state.merge({
-		// 		isDelete :action.content,
-		// 	})	
 												
 		default: 
       return $$state;
