@@ -146,15 +146,16 @@ const getBrandRef = () => {
 }
 
 //获取属性组参照
-const getAttrsGrpRef = () => {
+const getAttrsGrpRef = (param) => {
 	return (dispatch) => {
 		reqwest({
 			url: prdattrgroup.prdattrgroup + '/ref',
 			method: "GET",
 			data: {
-				param: {}
+				param: {searchMap:param.searchMap}
 			}
 		}, result => {
+			//debugger
 			dispatch(fetchData('PRODUCT_ATTRGROUP_GETREFLISTDATA', { ...result}));
 		})
 	}

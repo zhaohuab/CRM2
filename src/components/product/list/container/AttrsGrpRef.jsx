@@ -52,7 +52,8 @@ class AttrsGrpRef extends React.Component {
     handleVisibleChange = (flag) => {
         // let {pagination} = this.state; 
         this.setState({ visible: flag });
-        this.props.action.getAttrsGrpRef();//获取属性组参照列表
+        let searchMap = {enableState:1};
+        this.props.action.getAttrsGrpRef({searchMap:searchMap});//获取属性组参照列表
     }
 
     render() {      
