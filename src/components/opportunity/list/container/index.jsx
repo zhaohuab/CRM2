@@ -6,11 +6,12 @@ import ToolForm from "./ButtonTool.jsx";
 let Search = Input.Search;
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
-import Card from "./card";
+import Card from "./Card";
 //导入action方法
 import * as Actions from "../action";
 import * as enumData from "./enumdata";
 import ViewPanel from "./ViewPanel";
+import DetailTable from "./DetailTable";
 import Funnel from "./Funnel.jsx"
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
@@ -75,25 +76,27 @@ class List extends React.Component {
 
     componentDidMount() {
         this.props.action.getListData(this.props.$$state.get("pagination").toJS());
+        this.props.action.getbiztype();
     }
 
     //保存按钮事件
-    formHandleOk(data, isEdit) {
-
+    formHandleOk() {
+        const isEdit = this.props.$$state.get("isEdit");
+        const editData = this.props.$$state.get("editData").toJS();
+        const oppBList = this.props.$$state.get("oppBList").toJS();
+        editData.childList = oppBList;
         if (isEdit) {
             this.props.action.listEditSave(data);
         } else {
-            this.props.action.listAddSave(data);
+            this.props.action.listAddSave(editData);
         }
 
     }
 
     //编辑页面关闭事件
     formHandleCancel() {
-        this.props.action.showForm({}, false);
+        this.props.action.showFormNew(false,{});
     }
-
-
 
     //点击查看按钮打开查看页面
     btnView(record) {
@@ -115,6 +118,7 @@ class List extends React.Component {
     showTotal(total) {
         return `共 ${total} 条`;
     }
+
     onPageChange(page, pageSize) {
         let searchMap = this.props.$$state.get("searchMap").toJS()
         let pagination = this.props.$$state.get("pagination").toJS()
@@ -131,15 +135,14 @@ class List extends React.Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
+        const editData = $$state.get("editData").toJS();
         const selectedRows = $$state.get("selectedRows").toJS();
         const selectedRowKeys = $$state.get("selectedRowKeys").toJS();
         const searchMap = $$state.get("searchMap").toJS();
         const formVisible = $$state.get("formVisitable");
-        const CardForm = Form.create()(Card);
-        const editData = $$state.get("editData").toJS();
         const viewFormVisible = $$state.get("viewFormVisible");
         const h = this.props.$$stateCommon.toJS().height - 90;
-        const isEdit = true;
+        const isEdit = this.props.$$state.get('isEdit');
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
@@ -176,13 +179,13 @@ class List extends React.Component {
                     maskClosable={false}
                 >
                     <div className="model-height">
-                        <CardForm
+                        <Card
                             wrappedComponentRef={inst => (this.formRef = inst)}
                             enumData={enumData}
                         />
+                        <DetailTable />
                     </div>
                 </Modal>
-
 
                 <div
                     className={

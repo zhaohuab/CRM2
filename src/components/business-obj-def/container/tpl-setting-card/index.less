@@ -1,0 +1,80 @@
+.busi-obj-def-card {
+    width: 322px;
+    height: 185px;
+    display: flex;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    border-radius: 2px;
+    flex-direction: column;
+    position: relative;
+    .ant-checkbox-wrapper {
+        position: absolute;
+        top: -1px;
+        right: -1px;
+        .ant-checkbox {
+            vertical-align: top;
+        }
+    }
+    .card-header {
+        height: 68px;
+        line-height: 68px;
+        display: flex;
+        .card-header-name {
+            font-weight: bold;
+            font-size: 14px;
+            padding-left: 10px;
+            color: #333;
+            flex-grow: 1;
+        }
+        .card-header-btn {
+            width: 100px;
+            text-align: center;
+        }
+    }
+    .card-body {
+        display: flex;
+        border-top: 1px solid #eee;
+        flex-grow: 1;
+        .card-body-con {
+            flex-grow: 1;
+            .card-body-con-item {
+                padding: 10px;
+                display: flex;
+                .card-body-con-name {
+                    width: 62px;
+                    font-weight: bold;
+                    text-align: right;
+                }
+                .card-body-con-text {
+                    color: #999999;
+                    padding-left: 4px;
+                    span {
+                        display: inline-block;
+                        margin-right: 4px;
+                    }
+                }
+            }
+        }
+        .card-body-btn {
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            &>div {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-grow: 1;
+                background: #f2f2f2;
+                i {
+                    display: inline-block;
+                }
+            }
+            .card-body-btn-edit {
+                border-top: 1px solid #ffffff;
+            }
+        }
+    }
+}

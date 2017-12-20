@@ -136,13 +136,13 @@ class List extends React.Component {
   showTotal = (total) => {
    return `共 ${total} 条`;
   }
-  onPageChange = (page, pageSize) => { 
+  onPageChange = (page, pageSize) => { //页码改变回调
     let { pagination, searchMap } = this.state;
     pagination = { page: page, pageSize: pageSize };
     this.setState({ pagination })
     this.props.action.getListData({ pagination, searchMap });
   }
-  onPageSizeChange = (current, pageSize) => {
+  onPageSizeChange = (current, pageSize) => {//每页显示条数改变回调
     let { pagination, searchMap } = this.state;
     pagination = { page: pagination.page, pageSize: pageSize };
     this.setState({ pagination })
@@ -200,7 +200,6 @@ class List extends React.Component {
 
   render() {
     let page = this.props.$$state.get("data").toJS();
-    /* 后台返回来的数据中有一个total：73的键值对；这个导致'共73条'一直不会变化，后台只要动态返回数据库中的真实条数在这里，应该就ok */
     let editData = this.props.$$state.get("editData").toJS();
     let detailContent = this.props.$$state.get("detailContent").toJS();
     let detailSource = this.props.$$state.get("detailSource").toJS();

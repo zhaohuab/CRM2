@@ -51,7 +51,16 @@ export function showForm(flag, editData = {}){
 
 
 const transData = (data) => {
-    data.fatherorgId = data.fatherorgId.key
+    if(data.fatherorgId&&data.fatherorgId.key){
+        if(data.fatherorgId.path&&data.fatherorgId.path!=""){
+            data.path = data.fatherorgId.path+","+data.fatherorgId.key;
+        }else{
+            data.path = data.fatherorgId.key
+        }
+        data.fatherorgId = data.fatherorgId.key;
+    }else{
+        data.fatherorgId = undefined
+    }
 	return data;
 }
 
@@ -74,7 +83,6 @@ export function listadd(list){
                 data:{}
             }
             ,(data) => {
-            debugger;
                 dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData,treeData:data.data}));
             })
         })
@@ -193,7 +201,6 @@ export function getTreeList(){
             method:'get',
             data:{}
         },(data) => {
-        
             dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
         })
         
@@ -224,6 +231,13 @@ export function listTreeChange(id){
 export function selectData(data){
     return (dispatch)=>{
         dispatch(fetchData('ORG_LIST_SELECTDATA',data))
+    }
+}
+
+export function setFormData(data)
+{
+    return (dispatch)=>{
+        dispatch(fetchData('ORG_LIST_SETFORMDATA',data))
     }
 }
 

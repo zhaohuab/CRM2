@@ -50,9 +50,11 @@ import oppdimensionlist from 'components/oppdimension/list/reducer';
 //商机流程
 import oppflowList from 'components/oppflow/list/reducer';
 //产品属性
-import prdattr from 'components/prdattr/list/reducer'
+import prdattr from 'components/prdattr/list/reducer';
 //产品属性组
-import prdattrgroup from 'components/prdattrgroup/list/reducer'
+import prdattrgroup from 'components/prdattrgroup/list/reducer';
+//表单管理
+import businessObjDef from 'components/business-obj-def/reducer';
 
 let rootReducer = combineReducers({ 
     login, 
@@ -82,7 +84,8 @@ let rootReducer = combineReducers({
     oppdimensionlist,
     oppflowList,
     prdattr,
-    prdattrgroup
+    prdattrgroup,
+    businessObjDef
 });
 
 export { rootReducer };
