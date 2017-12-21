@@ -102,7 +102,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                 if(item == "fatherTypeId"){
                     fieldsChangeData = {[item]:parseInt(fields[item].value)};
                 }else if(item == "attrGroupId"){
-                    fieldsChangeData = {[item]:parseInt(fields[item].value.attrGroupId[0]),attrGroupName:fields[item].value.attrGroupName};
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.attrGroupId),attrGroupName:fields[item].value.attrGroupName};
                 }else{           
                     fieldsChangeData = {[item]:fields[item].value};
                 }

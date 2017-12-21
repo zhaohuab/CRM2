@@ -162,10 +162,11 @@ class List extends React.Component {
 
   onPageSizeChange(current,pageSize) {
     let { pagination,searchMap } = this.state;
+    pagination = {page:current,pageSize:pageSize};
     this.setState({pagination})
-    this.props.action.getListData( pagination,searchMap );
+    this.props.action.getListData({ pagination,searchMap });
     console.info(`pageSize:${pageSize}`)
-  }
+}
 
   onBack = () => {
     this.setState({ headLabel: false });

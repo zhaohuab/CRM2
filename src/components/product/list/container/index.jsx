@@ -19,6 +19,7 @@ const Search = Input.Search;
 const ButtonGroup = Button.Group;
 const Option = Select.Option;
 const TreeNode = Tree.TreeNode;
+const confirm = Modal.confirm;
 
 class List extends React.Component{
     constructor(props){
@@ -174,7 +175,8 @@ class List extends React.Component{
 
     //批量删除
     onDelete = () => {
-        let { pagination,searchMap } = this.state;     
+        let { pagination,searchMap } = this.state;
+        let that = this;     
         confirm({
             title: '确定要删除吗?',
             content: '此操作不可逆',
@@ -182,7 +184,7 @@ class List extends React.Component{
             okType: 'danger',
             cancelText: '否',
             onOk() {
-                this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
+                that.props.action.onDelete(that.state.selectedRowKeys,{ pagination,searchMap });
                 that.setState({ headLabel: false, selectedRowKeys: [] });
             },
             onCancel() {
@@ -193,6 +195,7 @@ class List extends React.Component{
 
     //编辑
     onEdit = () => {
+        this.setState({isEdit:true});
         this.setState({status:"edit"});
         let { pagination,searchMap } = this.state;
         console.info(this.state.selectedRowKeys);
@@ -209,7 +212,7 @@ class List extends React.Component{
 
     //更改停启用状态
     onEableRadioChange = (enableState) => {
-        let { pagination,searchMap,selectedRowKeys} = this.state;      
+        let { pagination,searchMap,selectedRowKeys} = this.state;     
         let ids = selectedRowKeys.join();        
         this.props.action.changeEnableState( enableState,ids,pagination,searchMap );      
     }
@@ -222,9 +225,8 @@ class List extends React.Component{
     }
 
     onPageSizeChange(current,pageSize) {
-        debugger
         let { pagination,searchMap } = this.state;
-        pagination = {page:pagination.page,pageSize:pageSize};
+        pagination = {page:current,pageSize:pageSize};
         this.setState({pagination})
         this.props.action.getListData({ pagination,searchMap });
         console.info(`pageSize:${pageSize}`)
@@ -234,6 +236,7 @@ class List extends React.Component{
     onSearch(searchMap){
         let { pagination } = this.state;
         this.props.action.getListData({ pagination,searchMap });
+        this.setState({searchMap:searchMap});
     }
 
     //新增|编辑保存
@@ -338,6 +341,7 @@ class List extends React.Component{
 
     //分配时选择组织树节点  最顶层为集团，选中则其他节点全选，其他树节点选中与否互不相关
     onTreeCheck(checkedKeys,e){
+        debugger
         let {selectedTreeKeys, selectedOrgnames, rootFlag} = this.state;
         let classRefTree = this.props.$$state.get("orgTree").toJS().data;
         let node = e.node;

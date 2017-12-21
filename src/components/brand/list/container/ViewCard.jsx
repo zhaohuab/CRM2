@@ -55,12 +55,12 @@ class Card extends React.Component {
                     {this.props.dataSource.enName}
                 </FormItem>
 
-                <FormItem
+                {/* <FormItem
                     label="启用状态"
                     {...formItemLayout}
                 >
                         {this.props.dataSource.enableStateName}
-                </FormItem>
+                </FormItem> */}
 
                 <FormItem
                     label="备注"
