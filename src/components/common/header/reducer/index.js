@@ -23,7 +23,7 @@ let $$initialState = {
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {
-	        case 'HEADER_CHANGE':
+	    case 'HEADER_CHANGE':
 			return $$state.merge({
 				title: action.content.title
 			})
@@ -49,7 +49,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		case 'HEADER_SEARCH_CHANGE':
 			return $$state.merge({
-				myState: action.content.myState
+				searchState: action.content.searchState
 			})
 		case 'HEADER_APPROVED_SHOW':
 			return $$state.merge({
@@ -75,6 +75,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'HEADER_DONE_SUCCESS':
 			return $$state.merge({
 				doneData: action.content.doneData
+			})
+		case 'HEADER_SETPAGINATION_SUCCESS':
+			return $$state.merge({
+				pagination: action.content.pagination
+			})
+		case 'HEADER_TABLESTATECHANGE_SUCCESS':
+			return $$state.merge({
+				tableState: action.content.tableState
 			})
 
 			

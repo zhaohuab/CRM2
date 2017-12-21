@@ -28,9 +28,9 @@ class BusinessObjDefine extends React.Component {
 
   render() {
     let { $$state, action } = this.props;
-    let url = $$state.get("url");
-    let add = $$state.get("add");
-    let { onClosed } = action;
+    let url = $$state.get("url");//--自定义
+    let add = $$state.get("add");//--自定义
+    let { onClosed } = action;//--自定义
     return (
       <div className='business-obj-def-warpper'>
         <Tabs size="small" defaultActiveKey="1" animated={false}>

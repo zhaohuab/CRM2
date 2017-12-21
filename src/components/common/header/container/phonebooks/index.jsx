@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Input, Modal, Tree, Icon, Tabs, Avatar, Row, Col } from "antd";
-import { phonebooks as url } from "api";
+import { phonebooks as url } from "api/zhb";
 import reqwest from "utils/reqwest";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -40,6 +40,7 @@ class Department extends React.Component {
     };
 
     onSearch = (e) => {//查询
+    //debugger;
         let str=e.target.value;
         if (str){
             let data = {};

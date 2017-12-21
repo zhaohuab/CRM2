@@ -7,8 +7,6 @@ import { phonebooks as url } from "api";
 import "./index.less";
 import * as Actions from "../../action/approved.js";
 
-
-
 class Department extends React.Component {
     constructor(props) {
         super(props);
@@ -18,56 +16,119 @@ class Department extends React.Component {
         return `共 ${total} 条`;
     }
     onPageChange(page, pageSize) {
-        let { pagination } = this.props.$$state.get('pagination');
-        //可能有问题
-        /* pagination = { page: page, pageSize: pageSize };
-        this.setState({ pagination }); */
-        this.props.action.getListData({ pagination });
+        let { $$state, action } = this.props;
+        let pagination = $$state.get('pagination').toJS();
+        pagination = { page: page, pageSize: pageSize };
+        let tableState = $$state.get('tableState');
+        action.setPagination(pagination);
+        switch(tableState) {
+            case 1 :
+            action.getUnfinished(pagination);
+            break;
+            case 2 :
+            action.getFinished(pagination);
+            break;
+            case 3 :
+            action.getTodo(pagination);
+            break;
+            case 4 :
+            action.getDone(pagination);
+            break;
+            default:
+            action.getUnfinished(pagination);            
+        }
     }
     onPageSizeChange(current, pageSize) {
-        let { pagination, searchMap } = this.state;
+        let { $$state, action } = this.props;
+        let pagination = $$state.get('pagination').toJS();
         pagination = { page: pagination.page, pageSize: pageSize };
-        this.setState({ pagination });
-        this.props.action.getListData({ pagination, searchMap });
+        let tableState = $$state.get('tableState');
+        action.setPagination(pagination);
+        switch(tableState) {
+            case 1 :
+            action.getUnfinished(pagination);
+            break;
+            case 2 :
+            action.getFinished(pagination);
+            break;
+            case 3 :
+            action.getTodo(pagination);
+            break;
+            case 4 :
+            action.getDone(pagination);
+            break;
+            default:
+            action.getUnfinished(pagination);            
+        }
+    }
+
+    getUnfinishedData = () => {//未完成列表
+    debugger;
+        let unfinishedData = this.props.$$state.get('unfinishedData').toJS();
+        let operate = {
+            title:'操作',
+            dataIndex:'operate',
+            render:(text,record,index)=>{ <span style={{cursor:'pointer'}}>提醒</span> }
+        }  
+        if (unfinishedData&&unfinishedData.length) {
+            unfinishedData.titlelist.unshift(operate);
+            return  unfinishedData;
+        }  
+    }
+
+    getFinishedData = () => {//完成列表
+         return this.props.$$state.get('finishedData').toJS();        
     }
     
-    getData = (key) => {//变换页码时获取对应列表
-        let { action } = this.props;
-        switch(key){
-            case 1:
-            action.getUnfinished()
+    getTodoData = () => {//待办列表
+    debugger;
+        let todoData = this.props.$$state.get('todoData').toJS();
+          let operate = {
+            title:'操作',
+            dataIndex:'operate',
+            render:(text,record,index)=>{ <span style={{cursor:'pointer'}}>同意</span> }
         }
+        if (todoData&&todoData.length){
+            todoData.titlelist.unshift(operate);
+            return todoData;
+        }  
+        
+    }
+
+    getDoneData = () => {//已办列表
+         return this.props.$$state.get('doneData').toJS();        
     }
 
     getTable = () => {//获取对应列表
-        debugger;
-        let { $$state } = this.props;
-        let { unfinishedData, finishedData, todoData, doneData, tableState } = $$state;
+    debugger;
+        let tableState = this.props.$$state.get('tableState');
         switch(tableState){
             case 1:
-                return unfinishedData;
+                return this.getUnfinishedData();
             case 2:
-                return finishedData;
+                return this.getFinishedData();
             case 3:
-                return finishedData;
+                return this.getTodoData();
             case 4:
-                return finishedData;
+                return this.getDoneData();
             default:
-                return unfinishedData; 
+                return this.getUnfinishedData(); 
         }
-    }
+    } 
 
     render() {
+        //debugger;
         let { $$state, action } = this.props;
         let searchState = $$state.get('searchState');
         let dataSource = $$state.get('dataSource').toJS();
         let myState = $$state.get("myState"); 
+        
         return (
             <div>
                 <Table
                   size="middle"
-                  columns={this.getTable.call(this).titlelist}
-                  dataSource={this.getTable.call(this).datalist}
+                  columns={this.getTable.call(this)?this.getTable.call(this).titlelist:[]}
+                  dataSource={this.getTable.call(this)?this.getTable.call(this).datalist:[]}
                   rowKey="id"
                   pagination={{
                     size: "large",

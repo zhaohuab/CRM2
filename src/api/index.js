@@ -53,18 +53,6 @@ const visitRouter = {
     visit: baseDir + "sact/visitroutes"
 };
 
-const taskcard = {
-    taskcard: baseDir + 'sact/taskcards',
-    taskcardBatch: baseDir + 'sact/taskcards/batch',
-    enable: baseDir + 'sact/taskcards/state',
-    biztype:baseDir + 'sact/taskcards/biztypes'
-}
-const doc = {
-    doc: baseDir + 'base/docs',
-    docBatch: baseDir + 'base/docs/batch',
-    enable: baseDir + 'base/docs/state' 
-}
-
 const sysinit = {
     mainEditTpl : baseDir + "sys/sysinit/template/edit",
     info : baseDir + "sys/sysinit/info",
@@ -78,11 +66,6 @@ const opportunity = {
 const oppaction = {
     oppaction: baseDir + 'sprc/oppactions',
     doc:baseDir + "sprc/oppactions/docs",
-}
-
-const visitrules = {
-    visitrules: baseDir + 'sact/visitrules',
-    enable: baseDir + '/sact/visitrules/state',
 }
 
 const oppstage = {
@@ -108,13 +91,6 @@ const prdattrgroup = {
     prdattrgroup: baseDir + 'base/attrgroups',
 }
 
-const phonebooks = {
-    mydept: baseDir + 'csns/phonebooks/mydept',
-    organizations: baseDir + 'csns/phonebooks/organizations',
-    search: baseDir + 'csns/phonebooks/search',
-    sub: baseDir + 'csns/phonebooks/sub',
-}
-
 export {
     login,
     menu,
@@ -128,18 +104,14 @@ export {
     product,
     baseDir,
     contacts,
-    taskcard,
     sysinit,
-    doc,
     opportunity,
     oppaction,
     visitRouter,
-    visitrules,
     oppstage,
     oppdimension,
     oppflow,
     prdattr,
     prdattrgroup,
-    phonebooks,
 }
  
