@@ -102,25 +102,28 @@ class List extends React.Component {
     });
     
   }
+  
   onClose() {
     this.props.action.showForm(false,{});
   }
+
   showTotal(total) {
     return `共 ${total} 条`;
   }
   onPageChange(page,pageSize) {
     let { pagination } = this.state;
-    //可能有问题
     pagination = {page:page,pageSize:pageSize};
     this.setState({pagination})
     this.props.action.getListData({ pagination });
   }
+
   onPageSizeChange(current,pageSize) {
     let { pagination } = this.state;
-    pagination = {page:pagination.page,pageSize:pageSize};
+    pagination = {page:current,pageSize:pageSize};
     this.setState({pagination})
     this.props.action.getListData({ pagination, });
   }
+
   onBack = ()=>{
     this.setState({headLabel:false});
   }

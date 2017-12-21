@@ -13,7 +13,7 @@ let $$initialState = {
 	searchFilter:undefined,
 	attrgrpRef:[],
 	selectedKeys:[],
-	//fieldsChangeData:{},
+	fieldsChangeData:{},
 	selectedTreeData:{},
 	classattrGrpValue:"",//
 	list:[],

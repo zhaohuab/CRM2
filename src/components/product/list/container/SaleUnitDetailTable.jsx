@@ -34,7 +34,7 @@ class SaleUnitDeTable extends React.Component {
     },
     {
       title:'固定换算',
-      dataIndex:'fixedConvert',
+      dataIndex:'fixedConvertName',
     }]
   }  
 
