@@ -18,6 +18,7 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 import "assets/stylesheet/all/iconfont.css";
 import PrdClassRef from './PrdClassRef'
+import OrgRef from './OrgRef'
 import * as Actions from "../action";
 
 class LessForm extends React.Component {
@@ -55,22 +56,14 @@ class LessForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("orgId")(
-                                    this.props.dataSource.orgId?
-                                    <div>
-                                        <Input type="text" placeholder="适用组织" 
-                                        suffix={<Icon type="close" onClick={this.onOrgDelete.bind(this)}/>}/>                                       
-                                    </div>:
-                                     <div>
-                                        <Input type="text" placeholder="适用组织" 
-                                        />                                       
-                                    </div>
+                                   <OrgRef />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("prdtypeId")(
-                                     <PrdClassRef  placeholder="产品分类" />
+                                    <PrdClassRef />
                                 )}
                             </FormItem>
                         </Col>
@@ -104,6 +97,13 @@ const WarpMilForm = Form.create({
                     delete props.dataSource.prdtypeName;
                 }else{
                     fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
+                }                                   
+            }else if(item == "orgId"){
+                if("isDelete" in fields[item].value){
+                    delete props.dataSource.orgId;
+                    delete props.dataSource.orgName;
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.orgId[0]),orgName:fields[item].value.orgName};
                 }                                   
             }else{           
                 fieldsChangeData = {[item]:fields[item].value};

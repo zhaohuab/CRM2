@@ -67,9 +67,9 @@ import * as Actions from "../action"
     }
 
     handleMeaVisibleChange = (flag) => {
-        let {pagination} = this.state; 
-      this.setState({ visible: flag });
-      this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
+    //     let {pagination} = this.state; 
+        this.setState({ visible: flag });
+        this.props.action.getMeaUnitRef();//获取计量单位参照列表
     }
 
   render() {

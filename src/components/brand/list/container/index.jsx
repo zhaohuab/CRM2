@@ -8,10 +8,10 @@ import Card from './Card'
 import ViewCard from './ViewCard'
 import SearchForm from './SearchForm'
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
+import LessForm from "./lessForm.jsx";
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
-
 
 class List extends React.Component {
     constructor(props) {
@@ -117,18 +117,13 @@ class List extends React.Component {
         }
     }
     onEableRadioChange = (enableState) => {
-        // let enable = enableState;
         const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
-         let { pagination,searchMap} = this.state;
-        // searchMap.enableState = enableState;
-         let ids = selectedRowKeys.join();
-         
-         this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
-        // this.setState({searchMap});
-       }
+        let { pagination,searchMap} = this.state;
+        let ids = selectedRowKeys.join();        
+        this.props.action.changeEnableState( enableState,ids,pagination,searchMap );
+    }
 
     onSearch() {
-        let searchMap = this.searchformRef.props.form.getFieldsValue();
         this.setState({ searchMap });
         let { pagination } = this.state;
         this.props.action.getListData({ pagination, searchMap });
@@ -176,8 +171,7 @@ class List extends React.Component {
         const WrapCard = Form.create()(Card);
         const WrapViewCard = Form.create()(ViewCard);
         const WrapSearchForm = Form.create()(SearchForm);
-        // const selectedRows = this.state.selectedRows;
-
+        let lessFormData = this.props.$$state.get("lessFormData").toJS();
         const selectedRows = this.props.$$state.get("selectedRows").toJS();
         const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
         let rowSelection = {
@@ -185,9 +179,10 @@ class List extends React.Component {
             onChange: this.onSelectChange
         };
         return (
-            <div className='user-warpper'>
+            <div className='brand-warpper'>
                 {
                     selectedRows.length > 0 ?
+                    <div className = "head_edit">
                         <HeaderButton
                             length={selectedRows.length}
                             goBack={this.onBack.bind(this)}>
@@ -199,39 +194,56 @@ class List extends React.Component {
                                 <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
                                 <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 2)}><i className='iconfont icon-tingyong'></i>停用</Button>
                             </ButtonGroup>
-                        </HeaderButton> :
-                        <div className='crm-container-header'>
-                            <Row>
-                                <div>
-                                    <Select defaultValue="全部">
-                                        <Option value="1">最近创建</Option>
-                                        <Option value="2">最近查看</Option>
-                                    </Select>
-                                </div>
-                                <Col span={18}><WrapSearchForm dataSource={searchMap} onSearch={this.onSearch.bind(this)} wrappedComponentRef={(inst) => this.searchformRef = inst} /></Col>
-                                <Col span={6}>
-                                    <Row
-                                        align="middle"
-                                        type="flex"
-                                        justify="end"
-                                        gutter={15}
-                                    >
-                                        <div>
-                                            <Button><i className='iconfont icon-daoru'></i>导入</Button>
-                                            <Button><i className='iconfont icon-daochu'></i>导出</Button>
-                                        </div>
-                                        <div>
-                                            <Button type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
-
-                                        </div>
-                                    </Row>
-                                </Col>
-                            </Row>
-
-                        </div>
-
-                }
-
+                        </HeaderButton>
+                        </div> :
+                       <Row 
+                         type="flex"
+                         align="middle"
+                         justify="space-between"
+                         className="header-top">
+                           <Col span={18}>
+                             <Row type="flex" align="middle">
+                               <Col className="select-recover">
+                                 <Select defaultValue="0">
+                                   <Option value="0">全部</Option>                                       
+                                   <Option value="1">最近查看</Option>                                       
+                                 </Select>
+                               </Col>
+                               <Col
+                               span={18}
+                               className={"less-show-height"}
+                               >
+                                 <LessForm
+                                 dataSource={lessFormData}
+                                 handleSearch={this.onSearch.bind(this)} //点击查询方法
+                                 />
+                               </Col>
+                             </Row>
+                           </Col>
+                           <Col span={6}>
+                             <Row type="flex" gutter={15} justify="end">
+                               <Col>
+                                 <ButtonGroup>
+                                   <Button>
+                                     <i className="iconfont icon-daoru" />导入
+                                   </Button>
+                                   <Button>
+                                     <i className="iconfont icon-daochu" />导出
+                                   </Button>
+                                 </ButtonGroup>
+                               </Col>
+                               <Col>
+                                 <Button
+                                 type="primary"
+                                 onClick={this.onAdd.bind(this)}
+                                 >
+                                   <i className="iconfont icon-xinjian" />新建
+                                 </Button>
+                               </Col>
+                             </Row>
+                           </Col>
+                         </Row>                                
+                    }
                 <div className="list-box">
                     <Table
                         size="middle"

@@ -152,9 +152,11 @@ class List extends Component {
         this.setState({isEdit:false});
         let path ="";
         let rowData = {};
+        //debugger
         if(item !== undefined && item !== null && JSON.stringify(item) !== "{}"){
             rowData = {fatherTypeId:item.id,fatherTypeName: item.name,
-            path:(item.path !== undefined && item.path !== "")?item.path+","+item.id.toString():item.id.toString() };
+            path:(item.path !== undefined && item.path !== "")?item.path+","+item.id.toString():item.id.toString(),
+            attrGroupId:item.attrGroupId, attrGroupName:item.attrGroupName};
             }
         this.props.prdAction.showForm(true,rowData);
         //this.props.prdAction.getAttrsGrpRef(pagination);

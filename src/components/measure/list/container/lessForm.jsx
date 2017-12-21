@@ -111,7 +111,7 @@ const WarpMilForm = Form.create({
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.prdattr
+        $$state: state.measureList
     };
 }
 //绑定action到组件props

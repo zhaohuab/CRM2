@@ -50,7 +50,6 @@ class Funnel extends React.Component {
     
     render() {
         const funnelData = this.props.$$state.get("funnelData").toJS();
-        debugger
         if(this.funnelEchar){
             this.funnelOption.series[0].data = funnelData;
             this.funnelEchar.setOption(this.funnelOption);

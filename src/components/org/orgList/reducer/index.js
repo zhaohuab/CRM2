@@ -9,7 +9,7 @@ let $$initialState = {
 	selectedRows: [],
 	selectedRowKeys:[],
 	treeSelect: undefined,
-	editData: [],
+	editData: {},
 	searchFilter: undefined,
 };
 function pageAdd(page, item) {
@@ -81,6 +81,10 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				selectedRows: action.payload.selectedRows,
 				selectedRowKeys: action.payload.selectedRowKeys,
 			})
+		case 'ORG_LIST_SETFORM' : 
+				return $$state.merge({
+					editData:action.content
+				})  
 		default:
 			return $$state;
 	}

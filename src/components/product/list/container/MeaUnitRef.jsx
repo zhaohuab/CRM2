@@ -48,13 +48,15 @@ class MeaUnitRef extends React.Component {
     }
 
     handleMeaVisibleChange = (flag) => {
-        let {pagination} = this.state; 
+        // let {pagination} = this.state; 
         this.setState({ visible: flag });
-        this.props.action.getMeaUnitRef(pagination);//获取计量单位参照列表
+        this.props.action.getMeaUnitRef();//获取计量单位参照列表
     }
 
     render() {
         const meaRefData = this.props.$$state.get("meaunitRefList").toJS().data;
+        let isRefered = this.props.$$state.get("isRefered");
+        let visible =  this.props.$$state.get("visible");
         const meaRefList = (
             <div className = "reference">
                 <div  className = "reference-main"> 
@@ -101,17 +103,34 @@ class MeaUnitRef extends React.Component {
         );
 
         return (
+            visible == true?
+            <div>{
+                isRefered !== 1?
+                    <Dropdown overlay={meaRefList} 
+                    trigger="click"
+                    onVisibleChange={this.handleMeaVisibleChange}
+                    visible={this.state.visible}
+                    >                        
+                        { (this.props.value) ?                      
+                            <Input placeholder = "计量单位" value = { this.props.value }
+                                suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
+                            <Search placeholder = "计量单位" value = { this.props.value }/>
+                        }
+                    </Dropdown>:
+                    <Input placeholder = "计量单位" value = { this.props.value } disabled/>
+                }
+            </div>:
             <Dropdown overlay={meaRefList} 
             trigger="click"
-            onVisibleChange={this.handleMeaVisibleChange}
-            visible={this.state.visible}
-            >                        
-                { (this.props.value) ?                      
-                    <Input placeholder = "计量单位" value = { this.props.value }
-                        suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
-                    <Search placeholder = "计量单位" value = { this.props.value }/>
-                }
-            </Dropdown>
+             onVisibleChange={this.handleMeaVisibleChange}
+             visible={this.state.visible}
+             >                        
+                 { (this.props.value) ?                      
+                     <Input placeholder = "计量单位" value = { this.props.value }
+                         suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
+                     <Search placeholder = "计量单位" value = { this.props.value }/>
+                 }
+             </Dropdown>
         );
     }
 }

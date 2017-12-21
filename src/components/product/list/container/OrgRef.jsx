@@ -7,13 +7,13 @@ const Option = Select.Option;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import * as Actions from "../action"
- class PrdClassRef extends React.Component {
+class OrgRef extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             selectedKeys:[0],         
-            selectedValue:{}, 
+            selectedValue:"", 
             info:[],
             visible:false,
             refData:""
@@ -22,24 +22,21 @@ import * as Actions from "../action"
 
     handleVisibleChange = (flag) => {
         this.setState({ visible: flag });
-        this.props.action.getProdClassRef();//获取产品分类参照列表
+        this.props.action.getOrgRefTree();
     }
 
     onSelect = (selectedKeys, info)=> {
-        if(info.node.props.children == undefined){
-            this.setState({selectedKeys:selectedKeys});
-            this.setState({selectedValue:info.node.props.title});
-        }        
+        this.setState({selectedKeys:selectedKeys});
+        this.setState({selectedValue:info.node.props.title});        
     }
 
-    onPrdClassOk() {    
+    onOrgOk() {    
         let {selectedValue, selectedKeys} = this.state; 
-        this.props.onChange({prdtypeId:selectedValue.prdtypeId,prdtypeName:selectedValue.prdtypeName,
-            attrGroupId:selectedValue.attrGroupId,attrGroupName:selectedValue.attrGroupName });
+        this.props.onChange({orgId:selectedKeys,orgName:selectedValue});
         this.handleVisibleChange(false);
     }
 
-    onPrdClassCancel() {
+    onOrgCancel() {
         this.handleVisibleChange(false);
     }
 
@@ -47,29 +44,21 @@ import * as Actions from "../action"
         this.props.onChange({isDelete:true});
     }
 
-    handleTreeClick  (item) {
-        this.setState({selectedValue:{prdtypeId:item.id,prdtypeName:item.name,
-            attrGroupId:item.attrGroupId,attrGroupName:item.attrGroupName}});
-    }
-
     render() {
-        const classRefTree = this.props.$$state.get("classRefTree").toJS().voList;
-        let isRefered = this.props.$$state.get("isRefered");
-        let visible =  this.props.$$state.get("visible");
+        const orgRefTree = this.props.$$state.get("orgRefTree").toJS().data;
         let loop = () =>{};
-        if(classRefTree!== undefined && classRefTree.length>0){
+        if(orgRefTree!== undefined && orgRefTree.length>0){
             loop = data => data.map((item) => {
                 if (item.children && item.children.length>0) {
                     return (
                         <TreeNode  key={item.id } 
-                            title={<span onClick = {this.handleTreeClick.bind(this)}>{item.name}</span> } 
-                            disableCheckbox >
+                            title={item.name } 
+                        >
                             {loop(item.children)}
                         </TreeNode>
                     );
                 }
-                return <TreeNode key={item.id }  
-                    title={<span onClick = {this.handleTreeClick.bind(this,item)}>{item.name}</span> } />;                         
+                return <TreeNode key={item.id } title={item.name }/>;                         
             });
         }else{        
             loop = data => {return <div/>};
@@ -83,17 +72,17 @@ import * as Actions from "../action"
                     justify="space-between"
                     className="reference-main-header"
                     >
-                        <div className="title">产品分类</div>
+                        <div className="title">组织</div>
                     </Row>
                     <Row className="reference-main-choice" type="flex">
                         <Tree 
                         onClick = {this.handleTreeClick}
                         checkStrictly={true}
-                        //onSelect={this.onSelect}               
+                        onSelect={this.onSelect}               
                         selectedKeys={this.state.selectedKeys}                
                         className="reference-tree"
                         >
-                            {loop(classRefTree)}
+                            {loop(orgRefTree)}
                         </Tree>                     
                     </Row>
                     <Row
@@ -104,14 +93,14 @@ import * as Actions from "../action"
                     >
                         <Row type="flex" justify="end" align="middle" gutter={15}>
                             <div>
-                                <Button onClick={this.onPrdClassCancel.bind(this)}>
+                                <Button onClick={this.onOrgCancel.bind(this)}>
                                     取消
                                 </Button>
                             </div>
                             <div>
                                 <Button
                                 type="primary"
-                                onClick={this.onPrdClassOk.bind(this)}
+                                onClick={this.onOrgOk.bind(this)}
                                 >
                                     确定
                                 </Button>
@@ -123,38 +112,18 @@ import * as Actions from "../action"
         );
 
         return (
-            visible == true?
-            <div>{
-                isRefered !== 1?
-                <Dropdown overlay={refTree} 
-                trigger="click"
-                onVisibleChange={this.handleVisibleChange}
-                visible={this.state.visible}
-                > 
-                    {
-                        (this.props.value) ?
-                        <Input placeholder = "产品分类" value = {this.props.value}                    
-                        suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
-                        <Search placeholder = "产品分类" value = {this.props.value} 
-                        />
-                    }                           
-                </Dropdown>:
-                    <Input placeholder = "产品分类" value = {this.props.value} disabled
-                 />}
-            </div>:
             <Dropdown overlay={refTree} 
             trigger="click"
             onVisibleChange={this.handleVisibleChange}
             visible={this.state.visible}
             > 
-                {
-                    (this.props.value) ?
-                    <Input placeholder = "产品分类" value = {this.props.value}                    
+            {
+                (this.props.value) ?
+                    <Input value = {this.props.value} 
                     suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
-                    <Search placeholder = "产品分类" value = {this.props.value} 
-                    />
+                    <Search placeholder = "组织"value = {this.props.value}/>
             }                           
-             </Dropdown>
+                </Dropdown>
         );
     }
 }
@@ -171,4 +140,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
   
-export default  connect( mapStateToProps, mapDispatchToProps)(PrdClassRef);
+export default  connect( mapStateToProps, mapDispatchToProps)(OrgRef);
