@@ -222,6 +222,7 @@ class List extends React.Component{
     }
 
     onPageSizeChange(current,pageSize) {
+        debugger
         let { pagination,searchMap } = this.state;
         pagination = {page:pagination.page,pageSize:pageSize};
         this.setState({pagination})
@@ -236,12 +237,14 @@ class List extends React.Component{
     }
 
     //新增|编辑保存
-    onSave(){       
+    onSave(){    
+        //debugger   
         let editData = this.props.$$state.get("editData").toJS();
-        let formData = this.props.$$state.get("formData").toJS();
+        //let formData = this.props.$$state.get("formData").toJS();
         let id = editData.id;
         let fieldsChangeData = this.props.$$state.get("fieldsChangeData").toJS();
         Object.assign(editData,fieldsChangeData);
+        //debugger
         let saleUnits =this.props.$$state.get('changedData').toJS();
         let addData = {...editData,saleUnits:saleUnits}; 
         if(this.state.isEdit) {         
@@ -250,7 +253,7 @@ class List extends React.Component{
           this.props.action.onSave4Add(addData);
         }
         this.props.action.setAddNum(0);
-        this.set({editRow:{}});
+        this.setState({editRow:{}});
         this.props.action.setIsRefered(2);
     }
 

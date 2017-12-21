@@ -43,7 +43,7 @@ class ProductCardDetail extends React.Component {
                 justify="space-between"
                 className="reference-main-header"
                 >
-                    <div className="title">全部组织</div>
+                    <div className="title">组织</div>
                 </Row>
                 <Row className="reference-main-choice" type="flex">
                     <Table columns = {this.columns} 
@@ -55,7 +55,7 @@ class ProductCardDetail extends React.Component {
                     className="inner"
                     />
                 </Row>
-                <Row
+                {/* <Row
                 type="flex"
                 justify="end"
                 align="middle"
@@ -78,7 +78,7 @@ class ProductCardDetail extends React.Component {
                             </Button>
                         </div>
                     </Row>
-                </Row>
+                </Row> */}
             </div>
         </div>
         );

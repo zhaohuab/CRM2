@@ -37,7 +37,6 @@ class MoreForm extends React.Component {
     handleSearch(e) {
         e.preventDefault();
         let  fo = this.props.$$state.get("moreFormData").toJS();
-        debugger
         this.props.handleSearch(this.props.$$state.get("moreFormData").toJS());
     }
 
@@ -179,7 +178,7 @@ const WarpMoreForm = Form.create({
                     delete props.dataSource.prdtypeId;
                     delete props.dataSource.prdtypeName;
                 }else{
-                    fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId),prdtypeName:fields[item].value.prdtypeName};
                 } 
             }else if(item == "orgId"){
                 if("isDelete" in fields[item].value){
@@ -200,7 +199,7 @@ const WarpMoreForm = Form.create({
                     delete props.dataSource.measureId;
                     delete props.dataSource.measureName;
                 }else{
-                    fieldsChangeData = {[item]:parseInt(fields[item].value.measureId[0]),measureName:fields[item].value.measureName};
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.measureId),measureName:fields[item].value.measureName};
                 }                 
             }else if(item == "attrGroupId"){
                 if("isDelete" in fields[item].value){

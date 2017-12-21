@@ -17,40 +17,40 @@ class ProductCard extends React.Component {
         super(props)
     }
 
-    onPrdCodeDelete() {
-        let code = {code:""};
-        let data = this.props.dataSource
-        Object.assign(data, code);
-        this.props.action.setFormData(data);
-    }
+    // onPrdCodeDelete() {
+    //     let code = {code:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, code);
+    //     this.props.action.setFormData(data);
+    // }
 
-    onPrdNameDelete() {
-        let name = {name:""};
-        let data = this.props.dataSource
-        Object.assign(data, name);
-        this.props.action.setFormData(data);
-    }
+    // onPrdNameDelete() {
+    //     let name = {name:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, name);
+    //     this.props.action.setFormData(data);
+    // }
 
-    onPrdMemDelete() {
-        let memCode = {memCode:""};
-        let data = this.props.dataSource
-        Object.assign(data, memCode);
-        this.props.action.setFormData(data);
-    }
+    // onPrdMemDelete() {
+    //     let memCode = {memCode:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, memCode);
+    //     this.props.action.setFormData(data);
+    // }
 
-    onSpecDelete() {
-        let spec = {spec:""};
-        let data = this.props.dataSource
-        Object.assign(data, spec);
-        this.props.action.setFormData(data);
-    }
+    // onSpecDelete() {
+    //     let spec = {spec:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, spec);
+    //     this.props.action.setFormData(data);
+    // }
 
-    onPriceDelete() {
-        let price = {price:""};
-        let data = this.props.dataSource
-        Object.assign(data, price);
-        this.props.action.setFormData(data);
-    }
+    // onPriceDelete() {
+    //     let price = {price:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, price);
+    //     this.props.action.setFormData(data);
+    // }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -70,10 +70,11 @@ class ProductCard extends React.Component {
                                         required: true, message: '请输出编码',
                                     }],
                                 })(
-                                    this.props.dataSource.code?
-                                    <Input type="text"  
-                                        suffix={<Icon type="close" onClick={this.onPrdCodeDelete.bind(this)}/>}/>:
-                                    <Input type="text" />
+                                    // this.props.dataSource.code?
+                                    // <Input type="text"  
+                                    //     suffix={<Icon type="close" onClick={this.onPrdCodeDelete.bind(this)}/>}/>:
+                                    // <Input type="text" />
+                                    <Input/>
                                 )}
                             </FormItem>
                         </Col>
@@ -88,10 +89,11 @@ class ProductCard extends React.Component {
                                         required: true, message: '请输出名称',
                                     }],
                                 })(
-                                    this.props.dataSource.name?
-                                    <Input type="text" 
-                                        suffix={<Icon type="close" onClick={this.onPrdNameDelete.bind(this)}/>}/>:
-                                    <Input type="text" />
+                                    // this.props.dataSource.name?
+                                    // <Input type="text" 
+                                    //     suffix={<Icon type="close" onClick={this.onPrdNameDelete.bind(this)}/>}/>:
+                                    // <Input type="text" />
+                                    <Input/>
                                 )}
                             </FormItem>
                         </Col>         
@@ -106,10 +108,11 @@ class ProductCard extends React.Component {
                                         required: false, message: '请输入助记码',
                                     }],
                                 })(
-                                    this.props.dataSource.memCode?
-                                    <Input type="text"
-                                        suffix={<Icon type="close" onClick={this.onPrdMemDelete.bind(this)}/>}/>
-                                    :<Input type="text" />
+                                    // this.props.dataSource.memCode?
+                                    // <Input type="text"
+                                    //     suffix={<Icon type="close" onClick={this.onPrdMemDelete.bind(this)}/>}/>
+                                    // :<Input type="text" />
+                                    <Input/>
                                 )}
                             </FormItem>
                         </Col>
@@ -124,10 +127,11 @@ class ProductCard extends React.Component {
                                         required: false, message: '',
                                     }],
                                 })(
-                                    this.props.dataSource.spec?
-                                    <Input type="text"
-                                        suffix={<Icon type="close" onClick={this.onSpecDelete.bind(this)}/>}/>
-                                    :<Input type="text" />
+                                    // this.props.dataSource.spec?
+                                    // <Input type="text"
+                                    //     suffix={<Icon type="close" onClick={this.onSpecDelete.bind(this)}/>}/>
+                                    // :<Input type="text" />
+                                    <Input/>
                                 )}
                             </FormItem>
                         </Col>          
@@ -184,10 +188,11 @@ class ProductCard extends React.Component {
                                         required: true
                                     }],
                                 })(
-                                    this.props.dataSource.price?
-                                    <Input type="text"
-                                        suffix={<Icon type="close" onClick={this.onPriceDelete.bind(this)}/>}/>
-                                    :<Input type="text" />
+                                    // this.props.dataSource.price?
+                                    // <Input type="text"
+                                    //     suffix={<Icon type="close" onClick={this.onPriceDelete.bind(this)}/>}/>
+                                    // :<Input type="text" />
+                                    <Input/>
                                 )}
                             </FormItem>
                         </Col>
@@ -285,9 +290,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                     }else{
                         if(dataSource.attrGroupId !== undefined && dataSource.attrGroupId !== null
                             &&JSON.stringify(dataSource.attrGroupId) !== "{}" &&dataSource.attrGroupId !== ""){
-                                fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
+                                fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId),prdtypeName:fields[item].value.prdtypeName};
                         }else{
-                            fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName,
+                            fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId),prdtypeName:fields[item].value.prdtypeName,
                                 attrGroupId:fields[item].value.attrGroupId,attrGroupName:fields[item].value.attrGroupName};                           
                         }                       
                     } 
@@ -303,7 +308,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                         delete props.dataSource.measureId;
                         delete props.dataSource.measureName;
                     }else{
-                        fieldsChangeData = {[item]:parseInt(fields[item].value.measureId[0]),measureName:fields[item].value.measureName};
+                        fieldsChangeData = {[item]:parseInt(fields[item].value.measureId),measureName:fields[item].value.measureName};
                     }                 
                 }else if(item == "attrGroupId"){
                     if("isDelete" in fields[item].value){

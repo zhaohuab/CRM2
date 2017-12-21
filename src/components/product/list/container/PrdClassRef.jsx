@@ -26,7 +26,6 @@ import * as Actions from "../action"
     }
 
     onSelect = (selectedKeys, info)=> {
-        debugger
         if(info.node.props.children == undefined){
             this.setState({selectedKeys:selectedKeys});
             this.setState({selectedValue:info.node.props.title});
@@ -35,7 +34,6 @@ import * as Actions from "../action"
 
     onPrdClassOk() {    
         let {selectedValue, selectedKeys} = this.state; 
-       // debugger
         this.props.onChange({prdtypeId:selectedValue.prdtypeId,prdtypeName:selectedValue.prdtypeName,
             attrGroupId:selectedValue.attrGroupId,attrGroupName:selectedValue.attrGroupName });
         this.handleVisibleChange(false);
@@ -50,10 +48,8 @@ import * as Actions from "../action"
     }
 
     handleTreeClick  (item) {
-        debugger
         this.setState({selectedValue:{prdtypeId:item.id,prdtypeName:item.name,
             attrGroupId:item.attrGroupId,attrGroupName:item.attrGroupName}});
-//debugger
     }
 
     render() {
