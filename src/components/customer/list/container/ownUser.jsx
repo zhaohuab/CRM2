@@ -39,7 +39,7 @@ export default class OwnUser extends React.Component {
 
     //table选中方法
     selectedTableList(selectedRowKeys,selectedRows){
-        debugger
+        
         this.setState({
             result:{id:selectedRowKeys[0],name:selectedRows[0].name},
             selectedTableRowKeys:selectedRowKeys
@@ -48,7 +48,7 @@ export default class OwnUser extends React.Component {
 
     //树选中方法
     treeSelect(page,pageSize,selectedKeys){
-        debugger
+        
         let deptId = selectedKeys[0]//部门id
         let searchMap = {deptId}
         reqwest(
@@ -62,7 +62,7 @@ export default class OwnUser extends React.Component {
                 }
             },
             result => {
-                debugger;
+                ;
                 this.setState({
                     personList:result,
                     selectedTreeKeys:selectedKeys
@@ -71,12 +71,14 @@ export default class OwnUser extends React.Component {
         );
     }
     onOk(){
+        
+        
         this.setState({
             visible:false,
             treeList:[],
             personList:[],
             selectedTableRowKeys:[],
-            selectedTreeKeys:[]
+            selectedTreeKeys:[],
         },()=>{
             this.props.onChange(this.state.result)
         })
@@ -88,15 +90,15 @@ export default class OwnUser extends React.Component {
             treeList:[],
             personList:[],
             selectedTableRowKeys:[],
-            selectedTreeKeys:[]
+            selectedTreeKeys:[],
         })
     }
 
     creatPanel(){
-        console.log()
+        
         return(
             <div className='reference'>
-               <div className='reference-main' style={{width:'650px'}}>
+               <div className='reference-main' style={{width:this.props.width?this.props.width:'650px'}}>
                   <div className='reference-main-header'>
                     <p className='title'>
                         负责人
@@ -128,6 +130,10 @@ export default class OwnUser extends React.Component {
     }
 
     getList(flag){
+        
+        if(this.props.disabled && this.props.viewData.id){
+            return
+        }
         if(flag){
             reqwest(
                 {
@@ -135,7 +141,7 @@ export default class OwnUser extends React.Component {
                     method: "GET",
                 },
                 result => {
-                    debugger;
+                    ;
                     this.setState({
                         visible:true,
                         treeList:result.data
@@ -162,25 +168,36 @@ export default class OwnUser extends React.Component {
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
             ) : null;
+
+        debugger
         return(
+            <div>
+            {
+                this.props.disabled && this.props.viewData.id?
+                <Input placeholder="负责人" value={this.props.value ? this.props.value.name : ""} disabled />:
                 <Dropdown
-                    overlay={this.creatPanel()} //生成下拉结构样式
-                    trigger={["click"]}
-                    onVisibleChange={this.getList.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
-                    visible={this.state.visible} //受控面板显示
-                >
-                    <Input
-                        placeholder="负责人"
-                        value={this.props.value ? this.props.value.name : ""}
-                        suffix={suffix}
-                        addonAfter={
-                            <Icon
-                                type="search"
-                                onClick={this.getList.bind(this, true)}
-                            />
-                        }
-                    />
-                </Dropdown>
+                overlay={this.creatPanel()} //生成下拉结构样式
+                trigger={["click"]}
+                onVisibleChange={this.getList.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
+                visible={this.state.visible} //受控面板显示
+            >   
+                       <Input
+                       placeholder="负责人"
+                       value={this.props.value ? this.props.value.name : ""}
+                       suffix={suffix}
+                       addonAfter={
+                           <Icon
+                               type="search"
+                               onClick={this.getList.bind(this, true)}
+                           />
+                       }
+                       />
+
+            </Dropdown>
+            }
+             
+            </div>
+                
         )
     }
 }

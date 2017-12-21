@@ -25,6 +25,7 @@ import * as Actions from "../action";
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import LessForm from "./lessForm.jsx";
 import MoreForm from "./moreForm.jsx";
+import cookie from "utils/cookie";
 
 class ToolForm extends React.Component {
     constructor(props) {

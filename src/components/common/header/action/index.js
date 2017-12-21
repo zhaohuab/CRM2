@@ -5,10 +5,12 @@ import { browserHistory } from 'react-router'
 
  const loginOut = () => {
    return (dispatch)=>{
+       debugger
         reqwest({
             url: `${baseDir}logout`,
             method: "POST",
-        }).then(result => {
+        },()=>{
+            console.log()
             location.href = location.href
         })
    }

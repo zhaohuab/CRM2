@@ -52,11 +52,14 @@ export default function orgReducers(
 ) {
     switch (action.type) {
         case "CUSTOMER_LIST_GETDATA": //查询各种table数据
+        debugger
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination
             });
         case "CUSTOMER_LIST_SHOWFORM": //新增、修改编辑菜单显示
+            debugger
+            $$state.get('viewData')
             return $$state.merge({
                 formVisitable: action.payload.visible,
             });
@@ -150,6 +153,7 @@ export default function orgReducers(
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
+                viewData:action.data
             });
         case "CUSTOMER_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
         debugger
@@ -168,6 +172,8 @@ export default function orgReducers(
                 actionData.city.toString(),
                 actionData.district.toString()
             ];
+            
+            actionData.ownerUserId = {id:actionData.salesVOs[0].ownerUserId,name:actionData.salesVOs[0].ownerUserName}
             return $$state.merge({
                 viewState: action.visible,
                 viewData: actionData
@@ -198,8 +204,9 @@ export default function orgReducers(
         case "CUSTOMER_LIST_GETENUMDATA": //获取查询条件基础显示内容
             return $$state.merge({ enumData: action.payload.enumData });
         case 'CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
-            debugger
-            return $$state.merge({ viewData: action.viewData });
+            return $$state.merge({
+                 viewData: action.viewData 
+            });
         default:
             return $$state;
     }
