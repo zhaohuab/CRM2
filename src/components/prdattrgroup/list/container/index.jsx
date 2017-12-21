@@ -15,7 +15,6 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 import 'assets/stylesheet/all/iconfont.css'
 import LessForm from "./lessForm.jsx";
-//导入action方法
 import * as Actions from "../action"
 
 class List extends React.Component {
@@ -58,6 +57,8 @@ class List extends React.Component {
   }
 
   onAdd() {
+    this.props.action.selecAttr([]);
+    this.props.action.changeFormData({});
     this.setState({ status: "add" });
     this.props.action.showAddForm(true);
     this.props.action.getAttrList();
@@ -104,7 +105,6 @@ class List extends React.Component {
     this.props.action.eidtAttrGroup(id, name);
   }
 
-
   onClose() {    
     this.props.action.showAddForm(false);    
   }
@@ -142,8 +142,7 @@ class List extends React.Component {
     }else if(status == "edit"){
       let attrGrpId = this.props.$$state.get("attrGrpId");
       this.props.action.onSave4Edit(save,attrGrpId);
-    }
-    
+    }    
   }
 
   onSelectChange = (selectedRowKeys) => {

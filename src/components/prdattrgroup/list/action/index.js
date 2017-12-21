@@ -117,15 +117,15 @@ const onSave4Add = (data) => {
 //编辑保存
 const onSave4Edit = (data,id) => {
 	return (dispatch) => {
-		reqwest({
-			url: prdattrgroup.prdattrgroup + "/" +id,
-			method: "PUT",
-			data: {
-				param: data
-			}
-		}, result => {
-			dispatch(fetchData('PRDATTRGROUP_CARD_SAVEEDIT', { ...result, visible: false }));
-		})
+			reqwest({
+				url: prdattrgroup.prdattrgroup + "/" +id,
+				method: "PUT",
+				data: {
+					param: data
+				}
+			}, result => {
+				dispatch(fetchData('PRDATTRGROUP_CARD_SAVEEDIT', { ...result, visible: false }));
+			})
 	}
 }
 
@@ -174,15 +174,24 @@ const getAttrGroupDetail = (id) => {
 //属性组编辑 ok
 const eidtAttrGroup = (id, name) => {
 	let url = prdattrgroup.prdattrgroup + "/" + id.toString() +"/attrs/checked";
+	let citeurl = prdattrgroup.prdattrgroup + "/" + id.toString() +"/cited";
 	return (dispatch) => {
 		reqwest({
-			url: url,
+			url: citeurl,
 			method: "GET",
 			data: {
 				param:{}
 			}
-		}, result => {
-			dispatch(fetchData('PRDATTRGROUP_CARD_SHOWEDIT', { visible:true, data:result, id: id, name:name}));
+		}, citeresult => {
+			reqwest({
+				url: url,
+				method: "GET",
+				data: {
+					param:{}
+				}
+			}, result => {
+				dispatch(fetchData('PRDATTRGROUP_CARD_SHOWEDIT', { visible:true, data:result, id: id, name:name , isRefered:citeresult.flag}));
+			})
 		})
 	}
 } 
@@ -210,7 +219,6 @@ const addSelectedData = (selectedRowKeys,attrId) => {
 		content:{id:attrId,selectedRowKeys:selectedRowKeys}
 	}
 }
-
 
 //根据当前选中行属性是否被选中设置状态isSelected ok
 const attrIsSelected = (flag) => {
@@ -244,6 +252,22 @@ const setLessFormData = (fields) => {
 	}    
 }
 
+//查询form赋值
+const getRefStat = (id) => {	
+	let url = prdattrgroup.prdattrgroup + "/" + id.toString() +"/cited";
+	return (dispatch) => {
+		reqwest({
+			url: url,
+			method: "GET",
+			data: {
+				param:{}
+			}
+		}, result => {
+			dispatch(fetchData('PRDATTRGRP_FORM_ISREFERED', {isRefered: true}));
+		})
+	}	    
+}
+
 //输出 type 与 方法
 export {
 	getListData,
@@ -266,4 +290,5 @@ export {
 	changeEnableState,
 	setRecord,
 	setLessFormData,
+	getRefStat,
 }

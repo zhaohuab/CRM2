@@ -298,12 +298,19 @@ const setAddNum = (addNum) => {
 const showEditForm = (id,flag) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.product + "/" +id,
+			url: url.product + "/" +id + "/cited",
 			method: "GET",
 			data: {				
 			}
-		}, result => {
-			dispatch(fetchData('PRODUCT_LIST_SHOWEDITFORM', { formdata:result, visible: flag }));
+		}, citeresult => {
+			reqwest({
+				url: url.product + "/" +id,
+				method: "GET",
+				data: {				
+				}
+			}, result => {
+				dispatch(fetchData('PRODUCT_LIST_SHOWEDITFORM', { formdata:result, visible: flag ,isRefered:citeresult.flag}));
+			})
 		})
 	}
 }
@@ -316,7 +323,7 @@ const prdAssign = ( prdId,ids,names) => {
 			method: "PUT",
 			data: {param:{orgIds: ids}}
 		}, result => {
-			dispatch(fetchData('PRODUCT_LIST_ASSIGN', { orgName:names, id: prdId }));
+			dispatch(fetchData('PRODUCT_LIST_ASSIGN', { orgName:names, orgId: ids, id: prdId }));
 		})
 	}
 }
@@ -333,6 +340,13 @@ const getOrgTree = () => {
 			dispatch(fetchData('PRODUCT_LIST_GETORGTREE', { ...result }));
 		})
 	}
+}
+
+const setIsRefered = (flag) => {	
+	return {
+			 type:'PRODUCT_FORM_SETISREFERED',
+			 content:flag
+	}    
 }
 
 export {
@@ -363,4 +377,5 @@ export {
 	setPrdClassValue,
 	setAttrGrpValue,
 	setMeaUnitValue,
+	setIsRefered,
 }

@@ -168,7 +168,8 @@ class List extends React.Component{
         this.props.action.showForm(false,{});
         this.props.action.onChangeSuVa([]);
         this.props.action.setAddNum(0);
-        this.set({editRow:{}});
+        this.setState({editRow:{}});
+        this.props.action.setIsRefered(2);
     }
 
     //批量删除
@@ -221,6 +222,7 @@ class List extends React.Component{
     }
 
     onPageSizeChange(current,pageSize) {
+        debugger
         let { pagination,searchMap } = this.state;
         pagination = {page:pagination.page,pageSize:pageSize};
         this.setState({pagination})
@@ -235,12 +237,14 @@ class List extends React.Component{
     }
 
     //新增|编辑保存
-    onSave(){       
+    onSave(){    
+        //debugger   
         let editData = this.props.$$state.get("editData").toJS();
-        let formData = this.props.$$state.get("formData").toJS();
+        //let formData = this.props.$$state.get("formData").toJS();
         let id = editData.id;
         let fieldsChangeData = this.props.$$state.get("fieldsChangeData").toJS();
         Object.assign(editData,fieldsChangeData);
+        //debugger
         let saleUnits =this.props.$$state.get('changedData').toJS();
         let addData = {...editData,saleUnits:saleUnits}; 
         if(this.state.isEdit) {         
@@ -249,7 +253,8 @@ class List extends React.Component{
           this.props.action.onSave4Add(addData);
         }
         this.props.action.setAddNum(0);
-        this.set({editRow:{}});
+        this.setState({editRow:{}});
+        this.props.action.setIsRefered(2);
     }
 
     onSelectChange(selectedRowKeys){
@@ -279,14 +284,15 @@ class List extends React.Component{
         this.setState({assignVisible: true});
         this.props.action.getOrgTree();
         let {selectedTreeKeys, selectedRowKeys, editRow} = this.state;
+        let editData = this.props.$$state.get("editData").toJS();
         let rowData = {};
         let orgIds = [];
         let orgNames = [];
         let page = this.props.$$state.get("data").toJS();
         for(let i=0,len=page.data.length;i<len;i++) {
-            if(editRow !== {}){
-                if(editRow.id == page.data[i].id) {
-                    rowData = page.data[i];
+            if(JSON.stringify(editData) !== "{}" && JSON.stringify(editRow) !== "{}"){
+                if(editData.id == page.data[i].id) {
+                    rowData = editData;
                     orgIds = rowData.orgId.split(",");
                     orgNames = rowData.orgName.split(",");
                     break;
@@ -299,7 +305,7 @@ class List extends React.Component{
                     break;
                 }       
             }        
-        }       
+        }     
         this.setState({selectedTreeKeys:orgIds});
         this.setState({selectedOrgnames:orgNames});           
     }
@@ -307,13 +313,27 @@ class List extends React.Component{
     onAssignClose() {
         this.setState({assignVisible: false});      
     }
+
     //保存分配
     onAssignOk(){
-        let {selectedTreeKeys, selectedRowKeys, selectedOrgnames} = this.state;
+        let {selectedTreeKeys, selectedRowKeys, selectedOrgnames, editRow} = this.state;
+        let id = 0;
+        if(JSON.stringify(editRow) !== "{}"){
+            id = editRow.id;
+        }else{
+            id = selectedRowKeys[0];
+        }
         let ids = selectedTreeKeys.join();  
         let names = selectedOrgnames.join();
-        this.props.action.prdAssign(selectedRowKeys[0] ,ids, names);  
-        this.setState({assignVisible:false});   
+        this.props.action.prdAssign(id ,ids, names);  
+        this.setState({assignVisible:false});
+        //Object.assign(editRow,{orgId:ids,orgName:names});
+        //this.setState({editRow:editRow});
+        if(JSON.stringify(editRow) !== "{}"){
+            let editData = this.props.$$state.get("editData").toJS();
+            Object.assign(editData,{orgName:names,orgId:ids}); 
+            this.props.action.setFormData(editData);
+        }        
     }
 
     //分配时选择组织树节点  最顶层为集团，选中则其他节点全选，其他树节点选中与否互不相关

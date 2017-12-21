@@ -147,6 +147,9 @@ class AttrValueTable extends React.Component {
       onChange: (selectedRowKeys,selectedRows) =>{
         this.props.action.setSecRowKeys(selectedRowKeys);
       },
+      getCheckboxProps: record => ({
+        disabled:  record.isRefered == true,    
+      }),
     };
     return (
       <Table 
