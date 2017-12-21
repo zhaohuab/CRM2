@@ -1,5 +1,5 @@
 import  React, { Component } from 'react';
-import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,Modal,Spin} from 'antd';
+import { Table, Icon, Button, Form, Input, Checkbox, Row, Col, Modal, Spin, Select} from 'antd';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
 import * as Actions from '../action/index.js'
@@ -10,9 +10,11 @@ import ListTree from './ListTree.jsx'
 import EditButton from './EditButtons.jsx'
 const ButtonGroup = Button.Group;
 const Search = Input.Search;
+const Option = Select.Option;
 import './index.less'
 import 'assets/stylesheet/all/iconfont.css'
 import DateTime from '../../../../utils/components/datetime'
+import LessForm from "./lessForm.jsx";
 
 class List extends Component {
     constructor(){
@@ -42,14 +44,14 @@ class List extends Component {
             title: '停用时间',
             dataIndex: 'disableTime',
             render:(text,record,index) => (
-               text == null ? text :new Date(text.time).toLocaleDateString())
-                    
+               text == null ? text :new Date(text.time).toLocaleDateString())                    
           },
           {
             title: '对应ERP',
             dataIndex: 'erpCode'
           }  
         ]; 
+
         this.state={
             minH:'',
             isEdit : false,
@@ -57,10 +59,11 @@ class List extends Component {
               pageSize:10,
               page:1,
             },
-            searchMap : {
-              //enableState:1,
+            searchMap : {              
             },
-            selectedKey:[]
+            selectedKey:[],
+            showTree:true,//是否显示左侧分类树
+          //  selectedData:{}
         }
         //点击每行table触发的onchange方法
         let that = this
@@ -77,13 +80,13 @@ class List extends Component {
          }      
     }
 
-    //修改一条数据方法
+    //编辑
     changeForm(record){ 
         this.setState({isEdit:true});
         this.props.prdAction.showForm(true,record);
     }
 
-    //删除一条数据方法
+    //删除
     btnDelete(treeSelect,searchFilter,record,){
         let {pagination} = this.state;
         this.props.prdAction.listdel(record,treeSelect,searchFilter,pagination)
@@ -95,10 +98,9 @@ class List extends Component {
         this.props.prdAction.setEnablestate(treeSelect,searchFilter,data,state,pagination);
     }
 
-    //修改页面取消按钮 
+    //新增|编辑取消 
     handleCancel(){
-        //debugger
-        let item =  this.props.prdState.get("editData").toJS();
+        //let item =  this.props.prdState.get("editData").toJS();
         this.props.prdAction.showForm(false,{});
     }
 
@@ -112,16 +114,8 @@ class List extends Component {
             this.props.prdAction.listchange(editData,id);
         }else{
             this.props.prdAction.listadd(editData);                    
-        }                
+        }                     
     }      
-    
-    //点击增加组织
-    addFormBtn(){
-        this.setState({isEdit:false});
-        let item =  this.props.prdState.get("editData").toJS();
-        this.treeSelectAddFn(item);
-       // this.props.prdAction.showForm(true,item);
-    }
 
     //显示每行数据后的返回按钮
     btnBack(){
@@ -130,51 +124,42 @@ class List extends Component {
 
     //点击树节点触发的方法
     treeSelectFn(selectedKeys,obj){
-        let rowData = {};
-        let data = this.props.prdState.get("listData").toJS().data;
-        for(let i=0,len=data.length;i<len;i++) {
-            if(selectedKeys[0] == data[i].id) {
-                rowData = data[i];
-                break;
-            }
-        }
-        let {pagination} = this.state;
-        this.props.prdAction.setSelTreeNode(selectedKeys);
-        this.props.prdAction.setFormData(rowData);
+        let rowData = {};      
+        let {pagination} = this.state;      
         if(selectedKeys.length){
             this.props.prdAction.listTreeChange(pagination,selectedKeys[0])
         }
+       // this.setState({selectedData:rowData});
+        this.props.prdAction.getDetail(selectedKeys,false);
     }
    
     //点击一个节点树的编辑操作
     treeSelectEditFn(rowKey){
+        let item = this.props.prdState.get("selectedTreeData").toJS(); 
         let {pagination, searchMap} = this.state;
         this.setState({isEdit:true});
-        let rowData = {};
-        let data = this.props.prdState.get("listData").toJS().data;
-        for(let i=0,len=data.length;i<len;i++) {
-            if(rowKey == data[i].id) {
-                rowData = data[i];
-                break;
-            }
-        }
-        this.props.prdAction.showForm(true,rowData);
-        this.props.prdAction.getAttrsGrpRef(pagination);
+        //this.props.prdAction.setFormData(item);
+        //this.props.prdAction.setFormVisible(true);
+        this.props.prdAction.showForm(true,item);
+        //this.props.prdAction.getAttrsGrpRef(pagination);
     }
 
     //点击一个节点树的增加操作
-    treeSelectAddFn(item){
-        // debugger
+    treeSelectAddFn(){
+        //this.props.prdAction.setAttrGrpValue("");
+        let item = this.props.prdState.get("selectedTreeData").toJS();   
         let {pagination, searchMap} = this.state;
         this.setState({isEdit:false});
         let path ="";
         let rowData = {};
+        //debugger
         if(item !== undefined && item !== null && JSON.stringify(item) !== "{}"){
             rowData = {fatherTypeId:item.id,fatherTypeName: item.name,
-            path:(item.path !== undefined && item.path !== "")?item.path+","+item.id.toString():item.id.toString() };
+            path:(item.path !== undefined && item.path !== "")?item.path+","+item.id.toString():item.id.toString(),
+            attrGroupId:item.attrGroupId, attrGroupName:item.attrGroupName};
             }
         this.props.prdAction.showForm(true,rowData);
-        this.props.prdAction.getAttrsGrpRef(pagination);
+        //this.props.prdAction.getAttrsGrpRef(pagination);
     }
 
     //点击一个节点树的删除操作
@@ -193,7 +178,7 @@ class List extends Component {
     reSizeFn(){
         let h=document.documentElement.clientHeight
         this.setState({
-                minH : h - 70
+            minH : h - 70
         })
     }
 
@@ -201,13 +186,14 @@ class List extends Component {
     showTotal(total) {
         return `共 ${total} 条`;
     }
+
     onPageChange(page,pageSize) {
         let { pagination,searchMap } = this.state;
-    //可能有问题
         pagination = {page:page,pageSize:pageSize};
         this.setState({pagination})
         this.props.prdAction.getlist({ pagination,searchMap });
     }
+
     onPageSizeChange(current,pageSize) {
         let { pagination,searchMap } = this.state;
         pagination = {page:pagination.page,pageSize:pageSize};
@@ -215,6 +201,18 @@ class List extends Component {
         this.props.prdAction.getlist({ pagination,searchMap });
     }
 
+    //是否显示左侧分类树
+    showClassTree(flag){
+        this.setState({showTree:flag});
+    }
+
+    //查询
+    onSearch(searchMap){
+        let { pagination } = this.state;
+        let params = {pagination:pagination,searchMap:searchMap};
+        this.props.prdAction.getlist(params);
+        //this.props.prdAction.getlistByClickSearch({searchKey:searchMap});
+    }
     //组件渲染完毕获取数据
     componentDidMount(){
         let { pagination,searchMap } = this.state;
@@ -242,19 +240,16 @@ class List extends Component {
         let tableListCheckbox = prdState.get('tableListCheckbox').toJS();
         let selectedTreeData = prdState.get("selectedTreeData").toJS();
         let editData = prdState.get("editData").toJS();
-        // if(selectedTreeData == null || selectedTreeData == {} || selectedTreeData == ""){
-        //     if(page !== undefined && page !== null && JSON.stringify(page) !== "{}"){
-        //         let selectedTreeData = page.data[0];
-        //         this.props.prdAction.setFormData(selectedTreeData);
-        //     }
-        // }
+        let lessFormData = {};
+
         return (
-            <div className='list-warpper'>
-                <div className='list-main'>
-                    <div className='list-table-tree' style={{minHeight:this.state.minH?this.state.minH+'px':'auto'}}>
-                        <div className='org-tree-top'>
+            <div className='prdclass-list-warpper'>
+                <div className='list-main'>            
+                    <div className={this.state.showTree?'list-table-trees':'list-table-trees list-table-trees-width'} 
+                        style={{minHeight:this.state.minH?this.state.minH+'px':'auto'}}>
+                        {/* <div className='org-tree-top'>
                             <Search placeholder="请输入关键字段" onSearch={this.searchList.bind(this)}/>
-                        </div>
+                        </div> */}
                         <Spin spinning={treeLoading} tip='正在加载'/>
                         <ListTree 
                             data={treeData} 
@@ -263,24 +258,77 @@ class List extends Component {
                             add={this.treeSelectAddFn.bind(this)}
                             delete={this.treeSelectDeleteFn.bind(this)}
                         />
-                    </div>
-                    <div className='list-table' ref="listTablePanel">
+                    </div>                   
+                    <div className='list-tables' ref="listTablePanel">
+                        {this.state.showTree?
+                            <span className='list-left-arrow'>
+                                <Icon type="caret-left" onClick={this.showClassTree.bind(this,false)}/>                                
+                            </span>:
+                            <span className='list-right-arrow'>
+                                <Icon type="caret-right" onClick={this.showClassTree.bind(this,true)}/>                                
+                            </span>
+                        }                        
                         <div className='table-header'>
-                            { tableListCheckbox.length? <EditButton data={tableListCheckbox}
+                            {tableListCheckbox.length? <EditButton data={tableListCheckbox}
                                 setEnablestate={this.btnSetEnablestate.bind(this,treeSelect,searchFilter)} 
                                 enablestate={this.state.searchMap.enableState} 
                                 deleteList={this.btnDelete.bind(this,treeSelect,searchFilter)} 
                                 returnFn={this.btnBack.bind(this)} 
-                                changeForm={this.changeForm.bind(this)}/>:'' }
-                            <div className='list-add'>
-                                <ButtonGroup className='list-add-group'>
-                                    <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                                    <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                                </ButtonGroup>
-                                <Button type='primary' onClick={this.addFormBtn.bind(this)}><Icon type="plus" />新建</Button>
-                            </div>
+                                changeForm={this.changeForm.bind(this)}/>:
+                                <div>
+                                    <Row 
+                                    type="flex"
+                                    align="middle"
+                                    justify="space-between"
+                                    className="header-top">
+                                        <Col span={18}>
+                                            <Row type="flex" align="middle">
+                                                <Col className="select-recover">
+                                                    <Select defaultValue="0">
+                                                        <Option value="0">全部</Option>                                       
+                                                        <Option value="1">最近查看</Option>                                       
+                                                    </Select>
+                                                </Col>
+                                                <Col
+                                                span={18}
+                                                className={"less-show-height"}
+                                                >
+                                                    <LessForm
+                                                    dataSource={lessFormData}
+                                                    handleSearch={this.onSearch.bind(
+                                                    this
+                                                    )} //点击查询方法
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={6}>
+                                            <Row type="flex" gutter={15} justify="end">
+                                                <Col>
+                                                    <ButtonGroup>
+                                                        <Button>
+                                                            <i className="iconfont icon-daoru" />导入
+                                                        </Button>
+                                                        <Button>
+                                                            <i className="iconfont icon-daochu" />导出
+                                                        </Button>
+                                                    </ButtonGroup>
+                                                </Col>
+                                                <Col>
+                                                    <Button
+                                                    type="primary"
+                                                    onClick={this.treeSelectAddFn.bind(this)}
+                                                    >
+                                                        <i className="iconfont icon-xinjian" />新建
+                                                    </Button>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Row>
+                                </div>                             
+                            }                          
                         </div>
-                        <div className='org-tabel' id = 'prdtype'>
+                        <div className='org-tabel' id = 'prdtype'>                         
                             <Table columns={this.columns} rowKey ='id' dataSource={page.data} loading={tabelLoading}  rowSelection={this.rowSelectionFn} size='middle' 
                              pagination={{size:"large",showSizeChanger:true,showQuickJumper:true,total:page.total,showTotal:this.showTotal,onChange:this.onPageChange.bind(this),onShowSizeChange:this.onPageSizeChange.bind(this)}}
                             />
@@ -296,7 +344,7 @@ class List extends Component {
                                 <ClassCard wrappedComponentRef={(inst) => this.formRef = inst} dataSource={editData} /> 
                             </div>
                         </Modal>   
-                    </div>
+                    </div>                 
                 </div>
             </div>
         );

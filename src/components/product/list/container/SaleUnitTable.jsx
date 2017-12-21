@@ -1,15 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Button,Icon, Select, Switch } from 'antd';
-import {Input,Radio,Popconfirm,Form} from 'antd';
+import { Table, Button,Icon, Select, Switch, Input } from 'antd';
 
 import SalesUnitRef from './SalesUnitRef'
 import './index.less'
-const Option = Select.Option;
-let Search = Input.Search;
-let RadioGroup = Radio.Group;
-const ButtonGroup = Button.Group;
 import 'assets/stylesheet/all/iconfont.css'
 import * as Actions from "../action"
 import { debug } from 'util';
@@ -18,7 +13,7 @@ class SaleUnitTable extends React.Component {
   constructor(props) {
     super(props)
     this.state ={
-      fchecked:false
+      checked:false
     }
     this.columns = [
       {
@@ -28,31 +23,33 @@ class SaleUnitTable extends React.Component {
          index +1
         )
       },
-    {
-      title: '销售单位',
-      dataIndex: 'measureId',
-      render: (text,record,index) =>(
-        <SalesUnitRef record = {record}/>
-      )
-    },
-    {
-      title:'换算率',
-      dataIndex:'convertRate',
-      render:(text,record,index) => (
-        <Input  
-        title = "convertRate"
-        defaultValue={record.convertRate}
-        onBlur={this.onBlur.bind(this,record)}/>)
-    },
-    {
-      title:'固定换算',
-      dataIndex:'fixedConvert',
-      render:(i,record,index)=> (  
-        <Switch defaultChecked={record.fixedConvert == 1? true: false} 
+      {
+        title: '销售单位',
+        dataIndex: 'measureId',
+        render: (text,record,index) =>(
+          <SalesUnitRef record = {record}/>
+        )
+      },
+      {
+        title:'换算率',
+        dataIndex:'convertRate',
+        render:(text,record,index) => (
+          <Input  
+          title = "convertRate"
+          defaultValue={record.convertRate}
+          onBlur={this.onBlur.bind(this,record)}/>)
+      },
+      {
+        title:'固定换算',
+        dataIndex:'fixedConvert',
+        render:(i,record,index)=> (  
+          <Switch defaultChecked={record.fixedConvert == 1? true: false} 
           onChange = {this.changeFCheck.bind(this,record)} />)
-    }]
+      }
+    ]
   }
 
+  //固定换算变化
   changeFCheck(record,checked) {
     let flag = true;
     let fixedConvert = {};
@@ -75,7 +72,7 @@ class SaleUnitTable extends React.Component {
         break;
       }
     }
-    this.setState({fchecked:checked});
+    this.setState({checked:checked});
     if (flag){ changedData.push(record) };   
     this.props.action.onChangeSuVa(changedData); 
 
@@ -103,21 +100,6 @@ class SaleUnitTable extends React.Component {
     }
   }
 
-  onChange(record,value){
-    if(record.editState!='add' ){
-      record.editState='update';
-    }
-    record.enableState=value 
-    let dataSource = this.props.$$state.get('dataSource').toJS(); 
-    let data = dataSource.map(item=>{
-      if(item.key==record.key){
-        return record
-      }
-      return item 
-    })
-   this.props.action.changeEnabe(data)  
-  }
-
   render(){ 
     let dataSource =this.props.$$state.get('salesunitTable').toJS();
     let columns=this.columns;
@@ -134,7 +116,7 @@ class SaleUnitTable extends React.Component {
         columns = { columns } 
         pagination = { false } 
         showHeader = { true } 
-        rowKey = "id"s
+        rowKey = "id"
         rowSelection={rowSelection}
       />)
   }

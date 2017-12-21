@@ -69,6 +69,7 @@ const rootRoutes = {
                                 require('./routes/oppflow').default,
                                 require('./routes/prdattr').default,
                                 require('./routes/prdattrgroup').default,
+                                require('./routes/business-obj-def').default,
                                 {
                                     //未开发页面
                                     path: "developing",

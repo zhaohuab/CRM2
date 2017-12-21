@@ -5,6 +5,7 @@ let $$initialState = {
 	editData:{},
 	data:[],
 	visible:false,
+	lessFormData:{},
 };
 function pageAdd(page,item) {
 	page.total+=1;
@@ -52,6 +53,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				visible : action.content.visible,
 				data : pageEdit($$state.get("data").toJS(),action.content),
 			})
+		case 'MEASURE_FORM_SETLESSFORM' : 
+			return $$state.merge({
+				lessFormData:action.content
+			}) 
 	    default: 
 	        return $$state;
 	}

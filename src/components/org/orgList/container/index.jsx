@@ -1,21 +1,11 @@
 import React, { Component } from "react";
-import {
-    Table,
-    Icon,
-    Button,
-    Form,
-    Input,
-    Checkbox,
-    Col,
-    Modal,
-    Spin
-} from "antd";
+import {Table, Icon,Button,Form,Input,Checkbox,Col,Modal,Spin} from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action/index.js";
 
 import Immutable from "immutable";
-import card from "./ListForm.jsx";
+import WrapCard from "./ListForm.jsx";
 import ListTree from "./ListTree.jsx";
 import EditButton from "./EditButtons.jsx";
 const ButtonGroup = Button.Group;
@@ -189,7 +179,7 @@ class List extends Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-        const WrapCard = Form.create()(card);
+       // const WrapCard = Form.create()(card);
         let editData = $$state.get("editData").toJS();
         return (
             <div className="list-warpper">

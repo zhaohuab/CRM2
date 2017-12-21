@@ -4,7 +4,8 @@ import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row, Modal} from "antd
 import cookie from "utils/cookie";
 import { bindActionCreators } from "redux";
 import { phonebooks as url } from "api";
-import PhoneBooks from './phonebooks/index.jsx'
+import PhoneBooks from './phonebooks/index.jsx';
+import Approved from './approved/index.jsx';
 import * as Actions from "../action/index.js";
 
 const Search = Input.Search;
@@ -36,7 +37,7 @@ class Header extends React.Component {
         this.menuMore = (
             <Menu>
                 <Menu.Item key="1">
-                    <p className="menu-more">
+                    <p className="menu-more" onClick={this.getApprovalData}>
                         <span>审批</span>
                     </p>
                 </Menu.Item>
@@ -53,16 +54,24 @@ class Header extends React.Component {
         this.props.action.loginOut();
     }
 
-    getData = () => {
+    getData = () => {//获取通讯录
         this.props.action.phoneBookChange()
         this.props.action.getData(url.mydept,url.organizations)
+    }
+
+    getApprovalData = () => {//获取审批流列表
+        this.props.action.approvedShow();
+        //this.props.action.getApprovalData();
     }
 
     render() {
         //debugger;
         const userName = cookie("name");
-        let title = this.props.$$state.get("title");    
-        let phoneBook = this.props.$$state.get("phoneBook");                
+        let { $$state, action } = this.props;
+        let title = $$state.get("title");    
+        let phoneBook = $$state.get("phoneBook");  
+        let approval = $$state.get("approval");   
+                  
         return (
             <div className="app-header">
                 <Row
@@ -130,8 +139,8 @@ class Header extends React.Component {
                                         <i className="iconfont icon-gengduo1 more-icon" />
                                     </a>                                   
                                 </Dropdown>
-                                 { phoneBook ? <PhoneBooks/> : '' }
-                              
+                                 { phoneBook ? <PhoneBooks /> : '' }
+                                 { approval ?  <Approved /> : ''}
                             </Col>
                         </Row>
                     </Col>
@@ -153,5 +162,3 @@ module.exports = connect(mapStateToProps, dispatch => {
     };
 })(Header);
 
-
-/*   { phoneBooks ? <div style={{width:'300px',height:'300px',position:'absolute',top:'10px',right:'10px',zIndex:'99999999999999999999999999999999999999999'}}><PhoneBooks/></div> : '' } */

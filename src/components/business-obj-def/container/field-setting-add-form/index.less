@@ -1,0 +1,47 @@
+.feild-setting-add-form {
+    display: flex;
+    height: 400px;
+    .feild-setting-form-source {
+        width: 300px;
+        border-right: 1px dashed #ddd;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        .form-control-item {
+            border: 1px solid #ddd;
+            width: 120px;
+            margin: 10px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .form-control-item-checked {
+            border: 1px solid #66a6ff;
+            background: #66a6ff;
+            color: #ffffff;
+        }
+    }
+    .feild-setting-form-props {
+        flex-grow: 1;
+        &>.gutter-row {
+            margin-bottom: 20px;
+        }
+        .form-lable {
+            text-align: right;
+            line-height: 28px;
+        }
+    }
+    .feild-setting-form-opt-list {
+        max-height: 200px;
+        width: auto;
+        overflow: auto;
+        overflow-x: hidden;
+        .ant-row {
+            cursor: move;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+    }
+}

@@ -18,50 +18,59 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 import "assets/stylesheet/all/iconfont.css";
 import PrdClassRef from './PrdClassRef'
-//导入action方法
+import OrgRef from './OrgRef'
 import * as Actions from "../action";
 
 class LessForm extends React.Component {
     constructor(props) {
         super(props);
     }
+
     handleSearch(e) {
         e.preventDefault();
-        debugger;
-        //this.props.handleSearch(this.props.$$state.toJS().searchMap);
+        this.props.handleSearch(this.props.$$state.get("lessFormData").toJS());
     }
+
     moreForm() {
         this.props.formMore();
     }
+
+    onOrgDelete() {
+        let org = {orgName:""};
+        let data = this.props.dataSource
+        Object.assign(data, org);
+        this.props.action.setLessFormData(data);
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        let { enumData } = this.props.$$state.toJS();
+        //let { enumData } = this.props.$$state.toJS();
         return (
             <div className="less-form">
-                <Form layout="inline" onSubmit={this.handleSearch}>
+                <Form layout="inline" >
                     <Row type="flex" align="middle" style={{ height: "54px" }}>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("name")(
-                                    <Input type="text" placeholder="适用组织" />
+                                {getFieldDecorator("orgId")(
+                                   <OrgRef />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("type")(
-                                     <PrdClassRef  placeholder="产品分类" />
+                                {getFieldDecorator("prdtypeId")(
+                                    <PrdClassRef />
                                 )}
                             </FormItem>
                         </Col>
 
                         <Col span={6}>
                             <div className="more-btn">
-                                <Button htmlType="submit">查询</Button>
+                                <Button htmlType="submit" onClick={this.handleSearch.bind(this)} >查询</Button>
                                 <span
                                     onClick={this.moreForm.bind(this)}
                                     className="more-up"
@@ -78,35 +87,51 @@ class LessForm extends React.Component {
 }
 
 const WarpMilForm = Form.create({
-    mapPropsToFields: props => {
-        //把redux中的值取出来赋给表单
-        let searchMap = props.$$state.toJS().searchMap;
-        let value = {};
-        for (let key in searchMap) {
-            value[key] = { value: searchMap[key] };
-        }
-        return {
-            ...value
-        };
-    },
-    onFieldsChange: (props, onChangeFild) => {
-        //往redux中写值//把值进行更新改变
-        let searchMap = props.$$state.toJS().searchMap;
-        for (let key in onChangeFild) {
-            if (onChangeFild[key].value.key) {
-                searchMap[key] = onChangeFild[key].value.key;
-            } else {
-                searchMap[key] = onChangeFild[key].value;
+    onFieldsChange(props, fields){ 
+        let fieldsChangeData = {};
+        let dataSource = props.dataSource;
+        for(let item in fields){
+            if(item == "prdtypeId"){
+                if("isDelete" in fields[item].value){
+                    delete props.dataSource.prdtypeId;
+                    delete props.dataSource.prdtypeName;
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId[0]),prdtypeName:fields[item].value.prdtypeName};
+                }                                   
+            }else if(item == "orgId"){
+                if("isDelete" in fields[item].value){
+                    delete props.dataSource.orgId;
+                    delete props.dataSource.orgName;
+                }else{
+                    fieldsChangeData = {[item]:parseInt(fields[item].value.orgId[0]),orgName:fields[item].value.orgName};
+                }                                   
+            }else{           
+                fieldsChangeData = {[item]:fields[item].value};
             }
         }
-        props.searchMapFn(searchMap);
+        Object.assign(props.dataSource, fieldsChangeData);
+        props.action.setLessFormData(props.dataSource);
+    },
+    mapPropsToFields(props){
+        let data = props.dataSource;
+        return{
+            orgId:{
+                ...data.orgId,
+                value:data.orgName
+            },           
+            prdtypeId:{
+                ...data.prdtypeName,
+                value:data.prdtypeName
+            },  
+          
+        };
     }
 })(LessForm);
 
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList
+        $$state: state.product
     };
 }
 //绑定action到组件props

@@ -1,0 +1,68 @@
+.list-config-pc-form {
+    h3 {
+        margin-bottom: 10px;
+        padding: 10px 0;
+    }
+    &>.gutter-row {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    .drag-fields-box {
+        height: 400px;
+        margin-bottom: 10px;
+        .drag-fields-block {
+            padding: 0 10px;
+            .sourceBlock {
+                border: 1px dashed #ccc;
+                background-color: white;
+                padding: 0.5rem 1rem;
+                margin-right: 1.5rem;
+                margin-bottom: 1.5rem;
+                cursor: move;
+                float: left;
+                opacity: 1;
+            }
+            .disDrag {
+                background-color: #eee;
+                cursor: auto;
+            }
+        }
+    }
+    .drap-fields-target-box {
+        border: 1px dashed #ddd;
+        overflow: auto;
+        height: 62px;
+        .drag-fields-list-box {
+            padding: 10px 0px;
+            display: flex;
+            .drag-fields-list-item {
+                position: relative;
+                box-sizing: border-box;
+                margin: 0 5px 0;
+                text-align: center;
+                height: 40px;
+                line-height: 40px;
+                width: 100px;
+                border: 1px solid #ddd;
+                background-color: white;
+                cursor: move;
+                .btn-con {
+                    position: absolute;
+                    display: none;
+                    right: 0;
+                    top: 0;
+                }
+                &:hover {
+                    .btn-con {
+                        display: block;
+                    }
+                }
+                .btn-delete {
+                    margin: 10px;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

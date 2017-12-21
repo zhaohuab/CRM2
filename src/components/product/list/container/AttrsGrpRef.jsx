@@ -1,134 +1,153 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Form, Input, Select, Button, Dropdown ,Row, Table, Tree} from 'antd';
+import { Form, Input, Select, Button, Dropdown ,Row, Table, Tree, Icon} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import * as Actions from "../action"
 
- class AttrsGrpRef extends React.Component {
+class AttrsGrpRef extends React.Component {
     constructor(props) {
-    super(props);
-
+        super(props);
     
-    this.state = {
-        selectedValue:"",
-        selectedId:0,
-        visible:false,
-        selected:"",
-        pagination : {
-            pageSize:10,
-            page:1,
-          },
-          searchMap : {
-            enableState:1,
-          },
-    };
-  }
+        this.state = {
+            selectedValue:"",
+            selectedId:0,
+            visible:false,
+            pagination : {
+                pageSize:10,
+                page:1,
+            },
+            searchMap : {},
+        };
+    }
 
-  columns = [ {
-    title: '名称',
-    dataIndex: 'name',
-    key: 'name'                      
-    }            
-];
-onOk() {
-    let {selectedValue,selectedId} = this.state; 
-    this.props.onChange(selectedId);
-    this.setState({selected:selectedValue});
-    this.handleVisibleChange(false);
-    this.props.action.setAttrGrpValue(selectedValue);
-}
+    columns = [{
+        title: '名称',
+        dataIndex: 'name',
+        key: 'name'                      
+    }];
 
-onCancel() {
-    this.handleVisibleChange(false);
-}
+    onOk() {
+        let {selectedValue,selectedId} = this.state; 
+        this.props.onChange({attrGroupId:selectedId,attrGroupName:selectedValue});
+        this.handleVisibleChange(false);
+    }
 
-onClick = (record, index) => {
-    this.setState({selectedValue:record.name});
-    this.setState({selectedId:record.id});
-}
+    onCancel() {
+        this.handleVisibleChange(false);
+    }
 
-handleVisibleChange = (flag) => {
-    let {pagination} = this.state; 
-    this.setState({ visible: flag });
-    this.props.action.getAttrsGrpRef(pagination);//获取属性组参照列表
-}
+    onClick = (record, index) => {
+        this.setState({selectedValue:record.name});
+        this.setState({selectedId:record.id});
+    }
 
-  render() {
-      
+    onDelete(){
+        this.props.onChange({isDelete:true});
+    }
+
+    handleVisibleChange = (flag) => {
+        // let {pagination} = this.state; 
+        this.setState({ visible: flag });
+        let searchMap = {enableState:1};
+        this.props.action.getAttrsGrpRef({searchMap:searchMap});//获取属性组参照列表
+    }
+
+    render() {      
         const attrgrpRefList = this.props.$$state.get("attrgrpRefList").toJS().data;
+        let isRefered = this.props.$$state.get("isRefered");
+        let visible =  this.props.$$state.get("visible");
         const attrgrpRefData = (
             <div className = "reference">
-            <div  className = "reference-main"> 
-                <Row
-                    type="flex"
-                    justify="space-between"
-                    className="reference-main-header"
-                >
-                    <div className="title">属性组</div>
-                </Row>
-                <Row className="reference-main-choice" type="flex">
-       
-                    <Table columns = {this.columns} 
-                    dataSource = {attrgrpRefList} 
-                    showHeader={false}
-                    onRowClick={this.onClick}
-                    pagination={false}
-                    className="inner"
-                    />
-           
-        </Row>
-        <Row
-            type="flex"
-            justify="end"
-            align="middle"
-            className="reference-main-footer"
-        >
-            <Row type="flex" justify="end" align="middle" gutter={15}>
-                <div>
-                    <Button onClick={this.onCancel.bind(this)}>
-                        取消
-                    </Button>
-                </div>
-                <div>
-                    <Button
-                        type="primary"
-                        onClick={this.onOk.bind(this)}
+                <div  className = "reference-main"> 
+                    <Row
+                        type="flex"
+                        justify="space-between"
+                        className="reference-main-header"
                     >
-                        确定
-                    </Button>
+                        <div className="title">属性组</div>
+                    </Row>
+                    <Row className="reference-main-choice" type="flex">       
+                        <Table columns = {this.columns} 
+                        dataSource = {attrgrpRefList} 
+                        showHeader={false}
+                        onRowClick={this.onClick}
+                        pagination={false}
+                        className="inner"
+                        />           
+                    </Row>
+                    <Row
+                        type="flex"
+                        justify="end"
+                        align="middle"
+                        className="reference-main-footer"
+                    >
+                        <Row type="flex" justify="end" align="middle" gutter={15}>
+                            <div>
+                                <Button onClick={this.onCancel.bind(this)}>
+                                    取消
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    type="primary"
+                                    onClick={this.onOk.bind(this)}
+                                >
+                                    确定
+                                </Button>
+                            </div>
+                        </Row>
+                    </Row>
                 </div>
-            </Row>
-        </Row>
-    </div>
-    </div>
-);
+            </div>
+        );
 
-    return (
-        <Dropdown overlay={attrgrpRefData} 
-        trigger="click"
-        onVisibleChange={this.handleVisibleChange}
-        visible={this.state.visible}
-    >                        
-        <Search placeholder = "属性组" value = { this.props.value || this.props.$$state.get("attrGrpValue")}/>
-    </Dropdown>
-    );
-  }
+        return (
+            visible == true?
+            <div>{
+                isRefered !== 1?
+                    <Dropdown overlay={attrgrpRefData} 
+                    trigger="click"
+                    onVisibleChange={this.handleVisibleChange}
+                    visible={this.state.visible}
+                    > 
+                        { (this.props.value) ?                      
+                        <Input placeholder = "属性组" value = { this.props.value }
+                        suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
+                        <Search placeholder = "属性组" value = { this.props.value }/>
+                        }
+                    </Dropdown>:
+                     <Input placeholder = "属性组" value = { this.props.value } disabled/>
+                    }
+            </div>:
+            <Dropdown overlay={attrgrpRefData} 
+            trigger="click"
+            onVisibleChange={this.handleVisibleChange}
+            visible={this.state.visible}
+            > 
+                { (this.props.value) ?                      
+                <Input placeholder = "属性组" value = { this.props.value }
+                suffix={<Icon type="close"  onClick={this.onDelete.bind(this)}/>}/>:
+                <Search placeholder = "属性组" value = { this.props.value }/>
+                }
+            </Dropdown>
+        );
+    }
 }
 
 function mapStateToProps(state, ownProps) {
     return {
-      $$state: state.product
+        $$state: state.product
     }
-  }
+}
   
-  function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
     return {
         action: bindActionCreators(Actions, dispatch)
     }
-  }
+}
   
-  export default  connect( mapStateToProps, mapDispatchToProps)(AttrsGrpRef);
+export default  connect( mapStateToProps, mapDispatchToProps)(AttrsGrpRef);

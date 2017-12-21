@@ -1,7 +1,8 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from "utils/reqwest";
-import {baseDir} from 'api'
-import { browserHistory } from 'react-router'
+import {baseDir} from 'api';
+import { browserHistory } from 'react-router';
+import { approved as url } from 'api/zhb'
 
  const loginOut = () => {
    return (dispatch)=>{
@@ -15,7 +16,7 @@ import { browserHistory } from 'react-router'
         })
    }
 }
-
+//通讯录中的方法
 const getData = (path1,path2) => {//获取人员组织信息
     return dispatch => {
         reqwest(
@@ -93,6 +94,64 @@ const getDeparment = (path,id) => {
     }
 }
 
+//审批流中的方法
+const approvedShow = () => {//审批流显示
+    return dispatch => {
+		dispatch(fetchData('HEADER_APPROVED_SHOW',{ approval: true }))
+    }
+}
+
+const getApprovalData = () => {//获取审批流数据
+    let aa = url;
+    debugger;
+    return dispatch => {
+        reqwest(
+            {
+                url: url.notfinished,
+                method: "GET",
+                data: {}
+            },
+            dataResult => {//我提交--未完成
+                debugger;
+                dispatch(fetchData('HEADER_NOTFINISHED_SUCCESS',{ unfinishedData: dataResult.data }))
+            }
+        );
+        reqwest(
+            { 
+                url: url.finished,
+                method: "GET",
+                data: {}
+            },
+            dataResult => {//我提交--已完成
+                debugger;
+                dispatch(fetchData('HEADER_FINISHED_SUCCESS',{ finishedData: dataResult.data }))
+            }
+        );
+        reqwest(
+            {
+                url: url.todo,
+                method: "GET",
+                data: {}
+            },
+            dataResult => {//我审批--待办
+                debugger;
+                dispatch(fetchData('HEADER_TODO_SUCCESS',{ todoData: dataResult.data }))
+            }
+        );
+        reqwest(
+            { 
+                url: url.done,
+                method: "GET",
+                data: {}
+            },
+            dataResult => {//我审批--已办
+                debugger;
+                dispatch(fetchData('HEADER_DONE_SUCCESS',{ doneData: dataResult.data }))
+            }
+        );
+    }
+}
+
 export {
     loginOut,
     getData,
@@ -100,4 +159,6 @@ export {
     phoneBookChange,
     phoneBookClosed,
     searchStateChange,
+    approvedShow,
+    getApprovalData,
 }

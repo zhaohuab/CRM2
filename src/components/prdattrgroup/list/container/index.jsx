@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Table, Modal, Button, Icon,Input, Radio, Popconfirm, Form,Row,Col } from 'antd';
+import { Table, Modal, Button, Icon,Input, Radio, Popconfirm, Form,Row,Col,Select } from 'antd';
 import WrappedCard from './CardForm.jsx';
 import HeadLabel from './HeadLabel.jsx';
 import AttrTable from './AttrTable.jsx'
@@ -12,9 +12,9 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 const Search = Input.Search;
 const FormItem = Form.Item;
+const Option = Select.Option;
 import 'assets/stylesheet/all/iconfont.css'
-
-//导入action方法
+import LessForm from "./lessForm.jsx";
 import * as Actions from "../action"
 
 class List extends React.Component {
@@ -46,8 +46,7 @@ class List extends React.Component {
         pageSize:10,
         page:1,
       },
-      searchMap : {
-        //enableState:1,
+      searchMap : {        
       }         
     }
   }
@@ -58,6 +57,8 @@ class List extends React.Component {
   }
 
   onAdd() {
+    this.props.action.selecAttr([]);
+    this.props.action.changeFormData({});
     this.setState({ status: "add" });
     this.props.action.showAddForm(true);
     this.props.action.getAttrList();
@@ -104,14 +105,8 @@ class List extends React.Component {
     this.props.action.eidtAttrGroup(id, name);
   }
 
-  onDetailEdit () {
-
-  }
-
-  onClose() {  
-   
-    this.props.action.showAddForm(false);
-    
+  onClose() {    
+    this.props.action.showAddForm(false);    
   }
 
   onEableRadioChange = (enableState) => {
@@ -147,8 +142,7 @@ class List extends React.Component {
     }else if(status == "edit"){
       let attrGrpId = this.props.$$state.get("attrGrpId");
       this.props.action.onSave4Edit(save,attrGrpId);
-    }
-    
+    }    
   }
 
   onSelectChange = (selectedRowKeys) => {
@@ -164,15 +158,15 @@ class List extends React.Component {
     pagination = {page:page,pageSize:pageSize};
     this.setState({pagination})
     this.props.action.getListData( pagination,searchMap );
-}
+  }
 
   onPageSizeChange(current,pageSize) {
     let { pagination,searchMap } = this.state;
-   // pagination = {page:pagination.page,pageSize:pageSize};
     this.setState({pagination})
     this.props.action.getListData( pagination,searchMap );
     console.info(`pageSize:${pageSize}`)
-}
+  }
+
   onBack = () => {
     this.setState({ headLabel: false });
   }
@@ -181,32 +175,31 @@ class List extends React.Component {
     return `共 ${total} 条`;
   }
   
-  addRow= ()=> {
-    let k = this.props.$$state.get("addNum");
-    this.props.action.addAttrVaRow({id:'add_'+k.toString(),enableState:1,editState:'ADD'});
+  //查询
+  onSearch(searchMap){
+    let { pagination } = this.state;
+    this.props.action.getListData( pagination,searchMap );
   }
 
   render() {
     let page = this.props.$$state.get("data").toJS();
     let visible = this.props.$$state.get("visible");
     let attrGrpName = this.props.$$state.get("name");
+    let lessFormData = this.props.$$state.get("lessFormData").toJS();
     let { headLabel, selectedRowKeys,status } = this.state;
     let rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
     let formData = this.props.$$state.get("formData").toJS();
-   // debugger
     let title = "";
     let table = undefined;
     if(status =="edit"){
       title = "编辑";
-      //table =  <AttrVaTable/>;
     }else if(status == "add"){
       title = "新增";
     }else if(status =="showdetail"){
       title = "详情";
-     // table = <AttrVaDeTable/>;
     }
     const formItemLayout = {
       labelCol: {
@@ -217,9 +210,9 @@ class List extends React.Component {
           xs: { span: 24 },
           sm: { span: 14 },
       },
-   };
+    };
     return (
-      <div className='user-warpper'>
+      <div className='prdattrgrp-warpper'>
         {
           headLabel ?
             <div className='head_edit'>
@@ -233,18 +226,55 @@ class List extends React.Component {
                 <Button className="default_button" onClick={this.onEableRadioChange.bind(this, 1)}><i className='iconfont icon-qiyong'></i>启用</Button>
               </HeadLabel>
             </div> :
-            <div className='head_panel'>
-              <div className='head_panel-left'>
-                <Search placeholder = "属性值名称"></Search>
-              </div>
-              <div className='head_panel-right'>               
-                <ButtonGroup className='add-more'>
-                  <Button><i className='iconfont icon-daochu'></i>导入</Button>
-                  <Button><i className='iconfont icon-daoru'></i>导出</Button>
-                </ButtonGroup>
-                <Button type="primary" className="button_add" onClick={this.onAdd.bind(this)}><Icon type="plus" />新增</Button>
-              </div>
-            </div>
+            <div>
+            <Row 
+              type="flex"
+              align="middle"
+              justify="space-between"
+              className="header-top">
+                <Col span={18}>
+                  <Row type="flex" align="middle">
+                    <Col className="select-recover">
+                      <Select defaultValue="0">
+                        <Option value="0">全部</Option>                                       
+                        <Option value="1">最近查看</Option>                                       
+                      </Select>
+                    </Col>
+                    <Col
+                    span={18}
+                    className={"less-show-height"}
+                    >
+                      <LessForm
+                      dataSource={lessFormData}
+                      handleSearch={this.onSearch.bind(this)} //点击查询方法
+                      />
+                    </Col>
+                  </Row>
+                </Col>
+                <Col span={6}>
+                  <Row type="flex" gutter={15} justify="end">
+                    <Col>
+                      <ButtonGroup>
+                        <Button>
+                          <i className="iconfont icon-daoru" />导入
+                        </Button>
+                        <Button>
+                          <i className="iconfont icon-daochu" />导出
+                        </Button>
+                      </ButtonGroup>
+                    </Col>
+                    <Col>
+                      <Button
+                      type="primary"
+                      onClick={this.onAdd.bind(this)}
+                      >
+                        <i className="iconfont icon-xinjian" />新建
+                      </Button>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </div>            
         }
         <div className="list-box">
           <Table
@@ -265,16 +295,14 @@ class List extends React.Component {
           onCancel={this.onClose.bind(this)}
           width={600}
           okText = {status == "showdetail"?"编辑":"确认"}
-          onOk={status == "showdetail"?this.onDetailEdit.bind(this):this.onSave.bind(this)} 
+          onOk={status == "showdetail"?this.onEdit.bind(this):this.onSave.bind(this)} 
           maskClosable={false}
         >{status == "showdetail"?<div>
             <div>
               <Form>
                 <FormItem   label="属性组名称"
-                  {...formItemLayout}>
-                  
-                    <span>{attrGrpName}</span>
-                  
+                  {...formItemLayout}>                  
+                    <span>{attrGrpName}</span>                 
                 </FormItem>
               </Form>
             </div>

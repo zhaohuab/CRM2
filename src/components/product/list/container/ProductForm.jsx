@@ -1,5 +1,4 @@
-import { Form, Input, Select, Row, Col, Button, Popover,AutoComplete,Card,
-        Table,Tree,Dropdown ,Checkbox, Upload,Icon,Radio} from 'antd';
+import { Form, Input, Row, Col, Upload, Icon} from 'antd';
 
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -11,324 +10,256 @@ import BrandRef from './BrandRef'
 import MeaUnitRef from './MeaUnitRef'
 import AttrsGrpRef from './AttrsGrpRef'
 
-const TreeNode = Tree.TreeNode;
 const FormItem = Form.Item;
-const Option = Select.Option;
-const Search = Input.Search;
-const AutoOption = AutoComplete.Option;
-const OptGroup = AutoComplete.OptGroup;
-const RadioGroup = Radio.Group;
 
 class ProductCard extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {
-            pagination : {
-                pageSize:10,
-                page:1,
-            },
-            visible:false,
-            title:{},
-            data:[],
-            column:[],
-            selectedKeys:0,
-            info:[],           
-            selectedValue:"",           
-            meaVisible:false,
-            selectedMeaValue:"", 
-            brandVisible:false,
-            selectedBrandValue:"",
-            suVisible:false,
-            selectedSuValue:"", 
-            brandRefData:"",
-            prdClassRefData:""
-        }
     }
 
+    // onPrdCodeDelete() {
+    //     let code = {code:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, code);
+    //     this.props.action.setFormData(data);
+    // }
 
-    columns = [ {
-        title: '名称',
-        dataIndex: 'name',
-        key: 'name'                      
-        }            
-    ];
+    // onPrdNameDelete() {
+    //     let name = {name:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, name);
+    //     this.props.action.setFormData(data);
+    // }
 
+    // onPrdMemDelete() {
+    //     let memCode = {memCode:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, memCode);
+    //     this.props.action.setFormData(data);
+    // }
 
-    componentWillMount() {
-        
-    }
+    // onSpecDelete() {
+    //     let spec = {spec:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, spec);
+    //     this.props.action.setFormData(data);
+    // }
 
-    componentDidMount() {        
-       
-    }
-
-    handleSuVisibleChange = (flag) => {
-        this.setState({ suVisible: flag });
-    }
-
-    handleSalesUnitVisibleChange = (flag) => {
-        this.props.action.showSalesUnit(flag);
-    }
-  
-
-    onSuRowClick = (record, index) => {
-       
-        this.setState({selectedSuValue:record.name});
-        this.handleSuVisibleChange(false);
-        this.handleSalesUnitVisibleChange(true);
-    }
-   
-
-    onAdd = () => {
-        const item = {convertRate:"r",fixedConvert:true};
-        this.props.action.addRow(item);
-    }
+    // onPriceDelete() {
+    //     let price = {price:""};
+    //     let data = this.props.dataSource
+    //     Object.assign(data, price);
+    //     this.props.action.setFormData(data);
+    // }
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const salesunitTable = this.props.$$state.get("salesunitTable").toJS();
-
-        const salesUnitVisible = this.props.$$state.get("salesUnitVisible");
-        let {visible, title, selectedRowkeys,checkedKeys} = this.state;
-
-        const rowSelection = {
-            selectedRowkeys,
-            onChange: this.onSelectChange,
-        };
-
-        const salesUnitRefTable = (
-            <div  className = "industry-main"> 
-                <Button onClick={this.onAdd}>新增</Button>
-                <Table columns = {this.salesunitcolumns} 
-                    dataSource = {salesunitTable} 
-                    bordered="true" 
-                    style = {{background:"white",width:450}}
-                    //onRowClick={this.onSalesUnitRowClick}
-                    pagination={false}
-                    rowSelection={rowSelection}
-                   />
-            </div>
-        );
-
+    
         return (
             <div>                          
-        <Form >
-             <Row gutter={0}>
-        <Col span={12} >
-            <FormItem
-                label="编码"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-               // {...formItemLayout}
-            >
-                {getFieldDecorator('code', {
-                    rules: [{
-                        required: true, message: '请输出编码',
-                    }],
-                })(
-                    <Input placeholder='请输入...'/>
-                    )}
-            </FormItem>
-        </Col>
-        <Col span={12}>
-            <FormItem
-                label="名称"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-               // {...formItemLayout}
-            >
-                {getFieldDecorator('name', {
-                    rules: [{
-                        required: true, message: '请输出名称',
-                    }],
-                })(
-                    <Input placeholder='请输入...'/>
-                    )}
-            </FormItem>
-            </Col>
-          
-            <Col span={12}>
-            <FormItem
-                label="助记码"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-              //  {...formItemLayout}
-            >
-                {getFieldDecorator('memCode', {
-                    rules: [{
-                        required: false, message: '请输入助记码',
-                    }],
-                })(
-                    <Input placeholder='请输入...'/>
-                    )}
-            </FormItem>
-            </Col>
-            <Col span={12}>
-            <FormItem
-                label="规格"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-               // {...formItemLayout}
-            >
-                {getFieldDecorator('spec', {
-                    rules: [{
-                        required: false, message: '',
-                    }],
-                })(
-                    <Input placeholder='请输入...'/>
-                    )}
-            </FormItem>
-            </Col>
-          
-            <Col span={12}>
-            <FormItem
-                label="产品分类"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-            >
-                {getFieldDecorator('prdtypeId', {
-                    rules: [{
-                        required: true
-                    }],
-                })(
-                    <PrdClassRef/>
-                    )}
-            </FormItem>
-            </Col>
-            <Col span={12}>
-            <FormItem
-                label="主单位"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-            >
-                {getFieldDecorator('measureId', {
-                    rules: [{
-                        required: true
-                    }],
+                <Form >
+                    <Row gutter={0}>
+                        <Col span={12} >
+                            <FormItem
+                            label="编码"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}                        
+                            >
+                                {getFieldDecorator('code', {
+                                    rules: [{
+                                        required: true, message: '请输出编码',
+                                    }],
+                                })(
+                                    // this.props.dataSource.code?
+                                    // <Input type="text"  
+                                    //     suffix={<Icon type="close" onClick={this.onPrdCodeDelete.bind(this)}/>}/>:
+                                    // <Input type="text" />
+                                    <Input/>
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={12}>
+                            <FormItem
+                            label="名称"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}                       
+                            >
+                                {getFieldDecorator('name', {
+                                    rules: [{
+                                        required: true, message: '请输出名称',
+                                    }],
+                                })(
+                                    // this.props.dataSource.name?
+                                    // <Input type="text" 
+                                    //     suffix={<Icon type="close" onClick={this.onPrdNameDelete.bind(this)}/>}/>:
+                                    // <Input type="text" />
+                                    <Input/>
+                                )}
+                            </FormItem>
+                        </Col>         
+                        <Col span={12}>
+                            <FormItem
+                            label="助记码"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}                    
+                            >
+                                {getFieldDecorator('memCode', {
+                                    rules: [{
+                                        required: false, message: '请输入助记码',
+                                    }],
+                                })(
+                                    // this.props.dataSource.memCode?
+                                    // <Input type="text"
+                                    //     suffix={<Icon type="close" onClick={this.onPrdMemDelete.bind(this)}/>}/>
+                                    // :<Input type="text" />
+                                    <Input/>
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={12}>
+                            <FormItem
+                            label="规格"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}                           
+                            >
+                                {getFieldDecorator('spec', {
+                                    rules: [{
+                                        required: false, message: '',
+                                    }],
+                                })(
+                                    // this.props.dataSource.spec?
+                                    // <Input type="text"
+                                    //     suffix={<Icon type="close" onClick={this.onSpecDelete.bind(this)}/>}/>
+                                    // :<Input type="text" />
+                                    <Input/>
+                                )}
+                            </FormItem>
+                        </Col>          
+                        <Col span={12}>
+                            <FormItem
+                            label="产品分类"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}
+                            >
+                                {getFieldDecorator('prdtypeId', {
+                                    rules: [{
+                                        required: true
+                                    }],
+                                })(
+                                    <PrdClassRef/>
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={12}>
+                            <FormItem
+                            label="主单位"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}
+                            >
+                                {getFieldDecorator('measureId', {
+                                    rules: [{
+                                        required: true
+                                    }],
+                                })(
+                                    <MeaUnitRef/>
+                                )}
+                            </FormItem>
+                        </Col>           
+                        <Col span={12}>
+                            <FormItem
+                            label="品牌"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}               
+                            >
+                                {getFieldDecorator('brandId', {        
+                                })(
+                                    <BrandRef />
+                                )}
+                            </FormItem>
+                        </Col>        
+                        <Col span={12}>
+                            <FormItem
+                            label="参考售价"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}
+                            >
+                                {getFieldDecorator('price', {
+                                    rules: [{
+                                        required: true
+                                    }],
+                                })(
+                                    // this.props.dataSource.price?
+                                    // <Input type="text"
+                                    //     suffix={<Icon type="close" onClick={this.onPriceDelete.bind(this)}/>}/>
+                                    // :<Input type="text" />
+                                    <Input/>
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={12}>
+                            <FormItem
+                            label="适用组织"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}
+                            >
+                                {getFieldDecorator('orgId', {
 
-                })(<MeaUnitRef/>
-                    )}
-            </FormItem>
-            </Col>
-            
-            <Col span={12}>
-            <FormItem
-                label="品牌"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}               
-            >
-                {getFieldDecorator('brandId', {
-        
-                })(
-                   <BrandRef />
-                    )}
-            </FormItem>
-            </Col>
-         
-            <Col span={12}>
-            <FormItem
-                label="参考售价"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-            >
-                {getFieldDecorator('price', {
-                    rules: [{
-                        required: true
-                    }],
-                })(
-                    <Input placeholder='请输入...'/>
-                    )}
-            </FormItem>
-            </Col>
-            <Col span={12}>
-            <FormItem
-                label="适用组织"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-            >
-                {getFieldDecorator('orgId', {
+                                })(
+                                    <Input  disabled = {true}/>
+                                )}
+                            </FormItem>
+                        </Col>       
+                        <Col span={12}>
+                            <FormItem
+                            label="属性组"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}
+                            >
+                                {getFieldDecorator('attrGroupId', {
+                                    rules: [{
+                                        required: true
+                                    }],
+                                })(
+                                    <AttrsGrpRef/>
+                                )}
+                            </FormItem>
+                         </Col>          
+                        <Col span={12}>
+                            <FormItem
+                            label="产品图片"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}
+                            >
+                                {getFieldDecorator('photo', {
 
-                })(
-                    <Input  disabled = {true}/>
-                    )}
-            </FormItem>
-            </Col>
-        
-            <Col span={12}>
-            <FormItem
-                label="属性组"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-            >
-                {getFieldDecorator('attrGroupId', {
-                     rules: [{
-                        required: true
-                    }],
-                })(
-                    <AttrsGrpRef/>
-                    )}
-            </FormItem>
-            </Col>
-           
-            {/* <Col span={12}>
-            <FormItem
-                label="启用状态"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-             //   {...formItemLayout}
-            >
-                {getFieldDecorator('enableState', {
+                                })(
+                                    <Upload
+                                    className="avatar-uploader"
+                                    name="avatar"
+                                    showUploadList={false}
+                                    >                                     
+                                        <Icon type="plus" className="avatar-uploader-trigger" />                                       
+                                    </Upload>
+                                )}
+                            </FormItem>
+                        </Col>       
+                        <Col span={12}>
+                            <FormItem
+                            label="产品描述"
+                            labelCol={{ span: 6 }}
+                            wrapperCol={{ span:13 }}                    
+                            >
+                                {getFieldDecorator('description', {
 
-                })(
-                    <RadioGroup>
-                        <Radio value={1}>启用</Radio>
-                        <Radio value={2}>停用</Radio>
-                    </RadioGroup>
-                    )}
-            </FormItem>
-            </Col> */}
-            <Col span={12}>
-            <FormItem
-                label="产品图片"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-            //    {...formItemLayout}
-            >
-                {getFieldDecorator('photo', {
-
-                })(
-                    <Upload
-                    className="avatar-uploader"
-                    name="avatar"
-                    showUploadList={false}
-                  >
-                    {
-                        <Icon type="plus" className="avatar-uploader-trigger" />
-                    }
-                  </Upload>
-                    )}
-            </FormItem>
-            </Col>
-        
-            <Col span={12}>
-            <FormItem
-                label="产品描述"
-                labelCol={{ span: 6 }}
-                wrapperCol={{ span:13 }}
-             //   {...formItemLayout}
-            >
-                {getFieldDecorator('description', {
-
-                })(
-                    <Input  type="textarea" placeholder='请输入...'/>
-                    )}
-            </FormItem>
-            </Col>           
-          
-            </Row>  
-        </Form>
-     </div>)
-  
+                                })(
+                                    <Input  type="textarea" placeholder='请输入...'/>
+                                )}
+                            </FormItem>
+                        </Col>                    
+                    </Row>  
+                </Form>
+            </div>
+        )  
     }
 }
 
@@ -337,7 +268,7 @@ function mapStateToProps(state, ownProps) {
     return {
       $$state: state.product
     }
-  }
+}
   
   //绑定action到组件props
 function mapDispatchToProps(dispatch) {
@@ -348,24 +279,49 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){ 
+        onFieldsChange(props, fields){
             let fieldsChangeData = {};
             let dataSource = props.dataSource;
             for(let item in fields){
                 if(item == "prdtypeId"){                   
-                    fieldsChangeData = {[item]:parseInt(fields[item].value[0])};
+                    if("isDelete" in fields[item].value){
+                        delete props.dataSource.prdtypeId;
+                        delete props.dataSource.prdtypeName;
+                    }else{
+                        if(dataSource.attrGroupId !== undefined && dataSource.attrGroupId !== null
+                            &&JSON.stringify(dataSource.attrGroupId) !== "{}" &&dataSource.attrGroupId !== ""){
+                                fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId),prdtypeName:fields[item].value.prdtypeName};
+                        }else{
+                            fieldsChangeData = {[item]:parseInt(fields[item].value.prdtypeId),prdtypeName:fields[item].value.prdtypeName,
+                                attrGroupId:fields[item].value.attrGroupId,attrGroupName:fields[item].value.attrGroupName};                           
+                        }                       
+                    } 
                 }else if(item == "brandId"){
-                    fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                    if("isDelete" in fields[item].value){
+                        delete props.dataSource.brandId;
+                        delete props.dataSource.brandName;
+                    }else{
+                        fieldsChangeData = {[item]:parseInt(fields[item].value.brandId),brandName:fields[item].value.brandName};
+                    }                
                 }else if(item == "measureId"){
-                    fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                    if("isDelete" in fields[item].value){
+                        delete props.dataSource.measureId;
+                        delete props.dataSource.measureName;
+                    }else{
+                        fieldsChangeData = {[item]:parseInt(fields[item].value.measureId),measureName:fields[item].value.measureName};
+                    }                 
                 }else if(item == "attrGroupId"){
-                    fieldsChangeData = {[item]:parseInt(fields[item].value)};
+                    if("isDelete" in fields[item].value){
+                        delete props.dataSource.attrGroupId;
+                        delete props.dataSource.attrGroupName;
+                    }else{
+                        fieldsChangeData = {[item]:parseInt(fields[item].value.attrGroupId),attrGroupName:fields[item].value.attrGroupName};
+                    }              
                 }else{           
                     fieldsChangeData = {[item]:fields[item].value};
                 }
             }
             Object.assign(props.dataSource, fieldsChangeData);
-            props.action.setFieldsChangeData(fieldsChangeData);
             props.action.setFormData(props.dataSource);
         },
         mapPropsToFields(props){

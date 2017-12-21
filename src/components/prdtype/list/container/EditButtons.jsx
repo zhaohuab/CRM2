@@ -9,6 +9,7 @@ export default class EditButtons extends Component {
      this.props.returnFn()
    }
    changeForm(id){
+      // debugger
        this.props.changeForm(id)
    }
    deleteList(data){
@@ -29,7 +30,6 @@ export default class EditButtons extends Component {
    }
  
    setEnablestate(data,state){
-       debugger
         this.props.setEnablestate(data,state);
    }
     render(){

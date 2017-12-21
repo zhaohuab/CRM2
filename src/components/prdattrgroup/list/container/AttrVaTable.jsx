@@ -37,6 +37,7 @@ class AttrValueTable extends React.Component {
        let data =this.props.$$state.get('attrValueData').toJS();
        attrId = data.id;
        dataSource = data.voList;
+      // debugger
     }else if(status == "edit"){
       let  data =this.props.$$state.get('attrValueData').toJS();
       if(data !== undefined && data !== null && JSON.stringify(data) !== "{}"){
@@ -60,7 +61,7 @@ class AttrValueTable extends React.Component {
         this.props.action.selecAttrVa(selectedRowKeys,attrId);
       },
       getCheckboxProps: record => ({
-        disabled: isSelected == false,    
+        disabled: !isSelected || record.isRefered == true,    
       }),
     };
     let columns=this.columns;
