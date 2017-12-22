@@ -15,6 +15,7 @@ import './index.less'
 import 'assets/stylesheet/all/iconfont.css'
 import DateTime from '../../../../utils/components/datetime'
 import LessForm from "./lessForm.jsx";
+const confirm = Modal.confirm;
 
 class List extends Component {
     constructor(){
@@ -106,10 +107,11 @@ class List extends Component {
 
     //表单页面确定方法
     formHandelOk(){
+       // debugger
         let editData = this.props.prdState.get("editData").toJS();
         let id = editData.id;
-        let fieldsChangeData = this.props.prdState.get("fieldsChangeData").toJS();
-        Object.assign(editData,fieldsChangeData);
+       // let fieldsChangeData = this.props.prdState.get("fieldsChangeData").toJS();
+       // Object.assign(editData,fieldsChangeData);
         if(this.state.isEdit){
             this.props.prdAction.listchange(editData,id);
         }else{
@@ -196,7 +198,7 @@ class List extends Component {
 
     onPageSizeChange(current,pageSize) {
         let { pagination,searchMap } = this.state;
-        pagination = {page:pagination.page,pageSize:pageSize};
+        pagination = {page:pagination.current,pageSize:pageSize};
         this.setState({pagination})
         this.props.prdAction.getlist({ pagination,searchMap });
     }
