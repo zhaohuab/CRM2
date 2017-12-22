@@ -243,6 +243,7 @@ class List extends React.Component {
                     defaultActiveKey="1"
                     tabPosition="right"
                     onChange={this.tabChange.bind(this)}
+                    className='tab-panel-recoverd'
                 >
                     <TabPane tab={this.tabTitle(0)} key="1">
                         <div className="table-bg tabel-recoverd">
@@ -301,6 +302,7 @@ class List extends React.Component {
                 <SlidePanel
                     viewState={viewState}
                     onClose={this.slideHide.bind(this)}
+                    className='tab-viewPanel-recoverd'
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
