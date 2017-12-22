@@ -24,7 +24,7 @@ class SaleUnitDeTable extends React.Component {
       },
     {
       title: '销售单位',
-      dataIndex: 'measureId',
+      dataIndex: 'measureName',
       
     },
     {
