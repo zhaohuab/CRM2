@@ -26,6 +26,20 @@
     }
 }
 
+#relevant-wapper-item{
+    .ant-collapse-item{
+        border:none;
+        border-bottom: 1px dashed #f2f2f2;
+        margin-bottom:0;
+        
+    }
+    .ant-collapse-content{
+        padding:0 8px;
+        background: #EBF5FF ;
+        border-bottom:1px dashed #3CA4FB
+    }
+}
+
 .custom-warpper {
     background: white;
     position: relative;
@@ -169,14 +183,6 @@
                 width: 90%;
                 margin: 20px auto;
             }
-            .related-object {
-                padding: 25px;
-                box-sizing: border-box;
-                border-bottom: 1px dashed #ccc;
-            }
-            .related-object-outer {
-                margin-top: -10px;
-            }
             .warrper-main-left {
                 border-right: 10px solid rgba(242, 242, 242, 1);
                 padding: 15px;
@@ -208,6 +214,45 @@
                 .custom-info-content {
                     color: #999;
                 }
+                .relevant-wapper{
+                    .ant-collapse > .ant-collapse-item > .ant-collapse-header{
+                        padding:8px 0;
+                        background: unset;
+                        .arrow{
+                            display: none;
+                        }
+                    }
+                    .relevant-title{
+                        height:46px;
+                        display: flex;
+                        align-content: center;
+                        .left{
+                            color:#333;
+                            .iconfont{
+                                color:#666;
+                            }
+                        }
+                        .icon-tianjia{
+                            color:#3CA4FB
+                        }
+                    }
+                    .join-warpper{
+                        display: flex;
+                        flex-wrap: wrap;
+                        .join-warpper-item{
+                            width:20%;
+                            height:50px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            .join-image{
+                                width:30px;
+                                height:30px;
+                            }
+                        }
+                    }
+                }
+              
             }
             .warrper-main-right {
                 background: white;
@@ -402,9 +447,12 @@
         width: 800px;
         height: 500px;
     }
-    .ant-tabs-bar{
-        margin-top:70px
+    .tab-panel-recoverd{
+        .ant-tabs-bar{
+            margin-top:70px
+        }
     }
+    
     /*地图面板样式*/
     .customer-panelMap {
         height: 100%;
@@ -712,7 +760,7 @@
 .person-chioce-wapper{
     position: relative;
     width:100%;
-    height:350px;
+    min-height:250px;
     display: flex;
     .main{
         width:100%;
@@ -741,6 +789,12 @@
         font-size:13px;
         color:#999;
         z-index: 1;
+    } 
+}
+
+/*变更销售员*/
+.change-person{
+    .change-person-item{
+        height:40px;
     }
-    
 }

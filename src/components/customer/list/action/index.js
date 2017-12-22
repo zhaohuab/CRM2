@@ -41,6 +41,7 @@ const selectRow = (selectedRows, selectedRowKeys) => {
 
 //控制新增修改表单显隐
 const showForm = visible => {
+    debugger
     return fetchData("CUSTOMER_LIST_SHOWFORM", { visible });
 };
 
@@ -125,8 +126,7 @@ const getListData = (pagination, searchMap) => {
                 }
             },
             data => {
-               
-                console.log(data);
+               debugger
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {
                         data: data,
@@ -418,7 +418,7 @@ const editCardFn = changeData => {
 };
 
 //点击分配改变负责人信息
-const assignChangeViewData = viewData =>{
+const assignChangeViewData = (viewData) =>{
     debugger
     return{
         type: "CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL",

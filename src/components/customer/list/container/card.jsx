@@ -125,6 +125,7 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
+        debugger
         return (
             <div>
                 <Row className="form-input-recover">
@@ -277,7 +278,7 @@ class EditForm extends React.Component {
                                                             {getFieldDecorator(
                                                                 "ownerUserId"
                                                             )(
-                                                                <OwnUser/>
+                                                                <OwnUser viewData={viewData} disabled={true} width={650} height={300}/>
                                                             )}
                                                         </FormItem>
                                                     </Col>
