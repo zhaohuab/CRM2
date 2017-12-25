@@ -56,10 +56,10 @@ export default class PersonChioce extends React.Component {
             type: "radio",
             selectedRowKeys:this.props.selectedRowKeys
         };
-
+debugger
         return(
             <div>
-                <div className='person-chioce-wapper'>
+                <div className='person-chioce-wapper' style={{height:this.props.height?this.props.height:''}}>
                    <p className='title'>待选</p>
                    <Row type='flex'  className='main tabel-recoverd'>
                         <Col span={8} className='tree-wapper'>

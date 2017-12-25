@@ -62,7 +62,7 @@ class Card extends React.Component {
                         )}
                 </FormItem>
                
-                <FormItem
+                {/* <FormItem
                     label="启用状态"
                     {...formItemLayout}
                 >
@@ -74,7 +74,7 @@ class Card extends React.Component {
                             <Radio value={2}>停用</Radio>
                         </RadioGroup>
                         )}
-                </FormItem>
+                </FormItem> */}
               
                 <FormItem
                     label="备注"

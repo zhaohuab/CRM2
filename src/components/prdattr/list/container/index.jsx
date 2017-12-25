@@ -72,20 +72,43 @@ class List extends React.Component {
 
   //属性值删除
   onAttrVaDelete(){
-    let flag = false;
+    debugger
+    //let flag = false;
     let changedData = this.props.$$state.get('changeData').toJS();
     let selectedRowKeys =this.props.$$state.get('AttrVaSelectedKeys').toJS();
-    let attrValue =this.props.$$state.get('attrValue').toJS();       
+    let attrValue =this.props.$$state.get('attrValue').toJS();   
+    let flag = true;    
+    let selected = [];
     //先校验此条数据是否是本次新增或编辑的，如果是，从change数组里删掉
     for(let rowKey of selectedRowKeys){
-      changedData = changedData.filter(change => { return change.id !== rowKey});
-      attrValue = attrValue.filter(data => {
-        if(data.id !== rowKey){
-          data.editState = "delete";
-          changedData.push(data);
+      selected  = attrValue.filter(change => { return change.id == rowKey});
+      // changedData = changedData.filter(change => { return change.id !== rowKey});
+      // attrValue = attrValue.filter(data => {
+      //   if(data.id !== rowKey){
+      //     data.editState = "delete";
+      //     changedData.push(data);
+      //   }
+      //   return data.id !== rowKey
+      // });
+      attrValue = attrValue.filter(change => { return change.id !== rowKey});
+      if(changedData.length>0){
+        for (let data of changedData){
+          if(data.id == rowKey){
+            if(data.editState !== "add"){
+              data.editState = "delete";            
+            }else{
+              debugger
+              changedData = changedData.filter(change => { return change.id !== rowKey});    
+            } 
+            flag = false;
+            break;
+          } 
         }
-        return data.id !== rowKey
-      });
+      }    
+      if(flag == true){
+        selected[0].editState = "delete";
+        changedData.push(selected[0]); 
+      }             
     }
     let sel = [];
     this.props.action.setSecRowKeys([]);
@@ -120,6 +143,7 @@ class List extends React.Component {
   }
 
   onEdit = () => {
+    this.props.action.onChangeAttrVa([]);
     this.setState({ status: "edit" });
     let rowKey = this.state.selectedRowKeys[0];
     let rowData = {};
@@ -145,6 +169,7 @@ class List extends React.Component {
   }
 
   onSave() {
+    debugger
     let { status } = this.state;
     let formData = this.props.$$state.get("formData").toJS();
     let changeData = this.props.$$state.get("changeData").toJS();
@@ -204,6 +229,7 @@ class List extends React.Component {
 
   onPageSizeChange(current,pageSize) {
     let { pagination,searchMap } = this.state;
+    pagination = {page:current,pageSize:pageSize}
     this.setState({pagination})
     this.props.action.getListData( pagination,searchMap );
     console.info(`pageSize:${pageSize}`)

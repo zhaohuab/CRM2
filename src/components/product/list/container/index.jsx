@@ -19,6 +19,7 @@ const Search = Input.Search;
 const ButtonGroup = Button.Group;
 const Option = Select.Option;
 const TreeNode = Tree.TreeNode;
+const confirm = Modal.confirm;
 
 class List extends React.Component{
     constructor(props){
@@ -174,7 +175,8 @@ class List extends React.Component{
 
     //批量删除
     onDelete = () => {
-        let { pagination,searchMap } = this.state;     
+        let { pagination,searchMap } = this.state;
+        let that = this;     
         confirm({
             title: '确定要删除吗?',
             content: '此操作不可逆',
@@ -182,7 +184,7 @@ class List extends React.Component{
             okType: 'danger',
             cancelText: '否',
             onOk() {
-                this.props.action.onDelete(this.state.selectedRowKeys,{ pagination,searchMap });
+                that.props.action.onDelete(that.state.selectedRowKeys,{ pagination,searchMap });
                 that.setState({ headLabel: false, selectedRowKeys: [] });
             },
             onCancel() {
@@ -193,6 +195,7 @@ class List extends React.Component{
 
     //编辑
     onEdit = () => {
+        this.setState({isEdit:true});
         this.setState({status:"edit"});
         let { pagination,searchMap } = this.state;
         console.info(this.state.selectedRowKeys);
@@ -209,7 +212,7 @@ class List extends React.Component{
 
     //更改停启用状态
     onEableRadioChange = (enableState) => {
-        let { pagination,searchMap,selectedRowKeys} = this.state;      
+        let { pagination,searchMap,selectedRowKeys} = this.state;     
         let ids = selectedRowKeys.join();        
         this.props.action.changeEnableState( enableState,ids,pagination,searchMap );      
     }
@@ -222,9 +225,8 @@ class List extends React.Component{
     }
 
     onPageSizeChange(current,pageSize) {
-        debugger
         let { pagination,searchMap } = this.state;
-        pagination = {page:pagination.page,pageSize:pageSize};
+        pagination = {page:current,pageSize:pageSize};
         this.setState({pagination})
         this.props.action.getListData({ pagination,searchMap });
         console.info(`pageSize:${pageSize}`)
@@ -234,6 +236,7 @@ class List extends React.Component{
     onSearch(searchMap){
         let { pagination } = this.state;
         this.props.action.getListData({ pagination,searchMap });
+        this.setState({searchMap:searchMap});
     }
 
     //新增|编辑保存
@@ -281,6 +284,7 @@ class List extends React.Component{
 
     //分配
     onAssign() {
+       // debugger
         this.setState({assignVisible: true});
         this.props.action.getOrgTree();
         let {selectedTreeKeys, selectedRowKeys, editRow} = this.state;
@@ -293,15 +297,19 @@ class List extends React.Component{
             if(JSON.stringify(editData) !== "{}" && JSON.stringify(editRow) !== "{}"){
                 if(editData.id == page.data[i].id) {
                     rowData = editData;
-                    orgIds = rowData.orgId.split(",");
-                    orgNames = rowData.orgName.split(",");
+                    if(rowData.orgId !== undefined && rowData.orgId !== null && rowData.orgId !== ""){
+                        orgIds = rowData.orgId.split(",");
+                        orgNames = rowData.orgName.split(",");
+                    }    
                     break;
                 }       
             }else if(selectedRowKeys.length>0){
                 if(selectedRowKeys[0] == page.data[i].id) {
                     rowData = page.data[i];
-                    orgIds = rowData.orgId.split(",");
-                    orgNames = rowData.orgName.split(",");
+                    if(rowData.orgId !== undefined && rowData.orgId !== null && rowData.orgId !== ""){
+                        orgIds = rowData.orgId.split(",");
+                        orgNames = rowData.orgName.split(",");
+                    }                   
                     break;
                 }       
             }        
@@ -323,6 +331,7 @@ class List extends React.Component{
         }else{
             id = selectedRowKeys[0];
         }
+        debugger
         let ids = selectedTreeKeys.join();  
         let names = selectedOrgnames.join();
         this.props.action.prdAssign(id ,ids, names);  

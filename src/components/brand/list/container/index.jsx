@@ -116,6 +116,7 @@ class List extends React.Component {
             this.props.action.onSave4Add(form.getFieldsValue());
         }
     }
+    
     onEableRadioChange = (enableState) => {
         const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
         let { pagination,searchMap} = this.state;
@@ -150,14 +151,13 @@ class List extends React.Component {
     }
     onPageChange(page, pageSize) {
         let { pagination, searchMap } = this.state;
-        //可能有问题
         pagination = { page: page, pageSize: pageSize };
         this.setState({ pagination });
         this.props.action.getListData({ pagination, searchMap });
     }
     onPageSizeChange(current, pageSize) {
         let { pagination, searchMap } = this.state;
-        pagination = { page: pagination.page, pageSize: pageSize };
+        pagination = { page: current, pageSize: pageSize };
         this.setState({ pagination });
         this.props.action.getListData({ pagination, searchMap });
     }

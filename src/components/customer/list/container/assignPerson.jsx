@@ -111,22 +111,25 @@ export default class AssignPerson extends React.Component {
                 }
             },
             data => {
+                if(data){
+                    debugger
+                    let nv = viewData.salesVOs[0]
+                    if(this.state.result){
+                        nv.ownerUserName = this.state.result.value
+                        nv.ownerUserId = this.state.result.id
+                        viewData.ownerUserId = {id:nv.ownerUserId,name:nv.ownerUserName}    
+                        //{id: 60, name: "李天赐"}
+                        this.props.changeViewData(viewData)
+                    }
+                }
                 debugger
                 this.setState({
                     visible:false,
                     treeList:[],
                     personList:[],
                     selectedTableRowKeys:[],
-                    selectedTreeKeys:[]
-                },()=>{
-                    if(data){
-                        debugger
-                        let nv = viewData.salesVOs[0]
-                        nv.ownerUserName = this.state.result.value
-                        nv.ownerUserId = this.state.result.id
-                        this.props.changeViewData(viewData)
-                    }
-                    
+                    selectedTreeKeys:[],
+                    result:''
                 })
             }
         );
@@ -139,7 +142,8 @@ export default class AssignPerson extends React.Component {
             treeList:[],
             personList:[],
             selectedTableRowKeys:[],
-            selectedTreeKeys:[]
+            selectedTreeKeys:[],
+            result:''
         })
     }
 
@@ -172,6 +176,7 @@ export default class AssignPerson extends React.Component {
                         selectedRowKeys = {this.state.selectedTableRowKeys}
                         selectedKeys = {this.state.selectedTreeKeys}
                         columns = {columns}
+                        height= {400}
                     />
                 </Modal>
             </div>

@@ -36,7 +36,7 @@ class Main extends React.Component {
             ? "app-container full-height boxed-layout"
             : "app-container full-height";
         return (
-            <div className="full-height">
+            // <div className="full-height">
                 <div className={viewBoxstyle} ref="wapper">
                     <Menu
                         collapsed={collapsed}
@@ -47,12 +47,11 @@ class Main extends React.Component {
                         <div className="app-content">{this.props.children}</div>
                     </div>
                 </div>
-                {/* <ViewStyle toggleViewBox={this.toggleViewBox} /> */}
-            </div>
+            //</div>
         );
     }
 }
-
+// <ViewStyle toggleViewBox={this.toggleViewBox} />
 export default connect(
     state => {
         return {
