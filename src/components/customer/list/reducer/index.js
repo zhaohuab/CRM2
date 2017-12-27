@@ -26,6 +26,11 @@ let $$initialState = {
     icbcVisible: false, //工商信息查询新增编辑时面板显隐控制
     icbcVisible2: false, //工商信息查询详情面板显隐
     isClose: false,
+    viewDataRelevant:[],//获取详情相关list面板
+    viewDataJoinList:{},//存放参与人列表数据
+    leftJoinPanelKeys:'1',//保存详情面板右侧面板选项卡选中值
+    RightJoinPanelKeys:'1',//保存详情面板左侧面板选项卡选中值,
+    contactsCardData:{},//保存联系人相关对象输入值
 };
 
 function pageAdd(page, item) {
@@ -176,7 +181,9 @@ export default function orgReducers(
             actionData.ownerUserId = {id:actionData.salesVOs[0].ownerUserId,name:actionData.salesVOs[0].ownerUserName}
             return $$state.merge({
                 viewState: action.visible,
-                viewData: actionData
+                viewData: actionData,
+                leftJoinPanelKeys:'1',
+                RightJoinPanelKeys:'1'
             });
         case "CUSTOMER_LIST_FOLLOWSTATECHANGE": //更改关注未关注
             return $$state.setIn(
@@ -206,6 +213,45 @@ export default function orgReducers(
         case 'CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
             return $$state.merge({
                  viewData: action.viewData 
+            });
+        case 'CUSTOMER_VIEWPANEL_PANELRIGHT_LIST'://点击详情面板中右侧详情部分列表数据
+            debugger
+            return $$state.merge({
+                viewDataJoinList: action.data,
+                RightJoinPanelKeys:action.index
+            });
+        case 'CUSTOMER_VIEWPANEL_PANELLEFT_LIST'://点击详情面板中左侧详情部分列表数据
+            return $$state.merge({
+                leftJoinPanelKeys:action.index,
+                viewDataRelevant:action.data
+            });
+        case 'CUSTOMER_VIEWPANEL_PANELLEFT_SETLIST'://只能加参与人
+            let joinList = $$state.getIn(['viewDataJoinList','data']) 
+            return $$state.setIn(['viewDataJoinList','data'],joinList.push(Immutable.fromJS(action.data))) 
+        case 'CUSTOMER_VIEWPANEL_PANELLEFT_DELLIST'://删除一条联系人
+            let delList = $$state.getIn(['viewDataJoinList','data']).toJS();
+            debugger
+            delList = delList.filter((item)=>{
+                return item.id !=action.id
+            })
+            return $$state.setIn(['viewDataJoinList','data'],Immutable.fromJS(delList)) 
+        case 'CUSTOMER_VIEWPANEL_CHANGEPANELLEFT'://触发详情左侧tab
+            return $$state.merge({
+                leftJoinPanelKeys:action.index
+            });
+        case "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORM"://获取相关对象联系人表单数据
+            return $$state.merge({
+                contactsCardData:action.data
+            });
+        case "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD"://增加联系人对象    
+           let addContacts = $$state.get('viewDataRelevant').toJS()
+           addContacts[0].contactList.data.push(action.data)
+           return $$state.merge({
+                viewDataRelevant:addContacts
+           });
+        case "CUSTOMER_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM":
+            return $$state.merge({
+                contactsCardData:{}
             });
         default:
             return $$state;

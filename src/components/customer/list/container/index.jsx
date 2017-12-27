@@ -218,6 +218,7 @@ class List extends React.Component {
     }
 
     render() {
+        debugger
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -236,6 +237,7 @@ class List extends React.Component {
             onChange: this.onSelectChange
         };
         return (
+            
             <div className="custom-warpper ">
                 <ToolForm />
                 <Tabs
@@ -296,7 +298,7 @@ class List extends React.Component {
                             editCardFn={this.editCardFn.bind(this)}
                             changeState={this.changeState.bind(this)}
                         />
-                    </div>
+                    </div> 
                 </Modal>
                 <SlidePanel
                     viewState={viewState}
@@ -306,7 +308,7 @@ class List extends React.Component {
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
             </div>
-        );
+         );
     }
 }
 //绑定状态到组件props

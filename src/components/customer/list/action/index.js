@@ -137,6 +137,7 @@ const getListData = (pagination, searchMap) => {
         );
     };
 };
+
 //获取查询条件初始值
 const getEnumData = () => {
     return dispatch => {
@@ -149,6 +150,7 @@ const getEnumData = () => {
                 }
             },
             data => {
+                debugger
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETENUMDATA", {
                         enumData: data.enumData
@@ -426,6 +428,111 @@ const assignChangeViewData = (viewData) =>{
     }
 }
 
+//点击获取右侧面板相关list
+const getRightPaneltList = (id,JoinPagination,index) =>{
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: baseDir + 'cum/customer/relusers',
+                method: "GET",
+                data: {
+                    param: {
+                        ...JoinPagination,
+                        searchMap:{
+                            cumId:id
+                        } 
+                    }
+                }
+            },
+            result => {
+                debugger;
+                dispatch({
+                    type: "CUSTOMER_VIEWPANEL_PANELRIGHT_LIST",
+                    data: result,
+                    index
+                });
+            }
+        );
+    };
+}
+//改变详情面板点击左侧tab时切换index
+const changeLeftPanel = (index)=>{
+    return{
+        type:'CUSTOMER_VIEWPANEL_CHANGEPANELLEFT',
+        index
+    }
+}
+
+//点击获取左侧面板相关list
+const getLeftPaneltList = (id,JoinPagination,index)=>{
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: baseDir + 'cum/customers/rel',
+                method: "GET",
+                data: {
+                    param: {
+                        ...JoinPagination,
+                        searchMap:{
+                            cumId:id
+                        } 
+                    }
+                }
+            },
+            result => {
+                debugger;
+                dispatch({
+                    type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
+                    index,
+                    data:result.data
+                });
+            }
+        );
+    };
+}
+
+//添加参与人
+const setRightPaneltList = (data)=>{
+    return{
+        type:'CUSTOMER_VIEWPANEL_PANELLEFT_SETLIST',
+        data
+    }
+}
+
+//删除参与人
+const delRightPaneltList = (id)=>{
+    debugger
+    return{
+        type:'CUSTOMER_VIEWPANEL_PANELLEFT_DELLIST',
+        id
+    }
+}
+
+//保存联系人相关对象表单值
+const refContactForm = (changeData)=>{
+    return {
+        type: "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORM",
+        data: changeData
+    };
+}
+
+const refContactFormAdd = (data)=>{
+    return {
+        type: "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD",
+        data
+    };
+}
+
+//新增联系人相关对象
+const clearRefContactsForm = ()=>{
+    return {
+        type: "CUSTOMER_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM",
+    };
+}
+
+
 //输出 type 与 方法
 export {
     getListData,
@@ -453,7 +560,15 @@ export {
     modalDetalVisiableFalse,
     closeIcbcVisible1,
     attentionFn,
-    assignChangeViewData
+    assignChangeViewData,
+    getRightPaneltList,
+    getLeftPaneltList,
+    setRightPaneltList,
+    delRightPaneltList,
+    changeLeftPanel,
+    refContactForm,
+    refContactFormAdd,
+    clearRefContactsForm
 };
 
 //

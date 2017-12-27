@@ -50,6 +50,13 @@ export default class ChangePerson extends React.Component {
 
     //分配modal确定
     handleOk(){
+        if(!this.state.value){
+            that.setState({
+                visible:false,
+                value:{}
+            })
+            return
+        }
         let { viewData } = this.props
         let id = viewData.salesVOs[0].id
         let salesVOs = {ownerUserId:this.state.value.id}
@@ -113,7 +120,7 @@ export default class ChangePerson extends React.Component {
                     className='change-person'
                 >
                    <Row type='flex' align='middle' className='change-person-item'>
-                       <Col span={4} offset={2}>现销售员:</Col><Col span={10}>{viewData.salesVOs[0].ownerUserName}</Col>
+                       <Col span={4} offset={2}>现销售员:</Col><Col span={10}>{viewData.salesVOs?viewData.salesVOs[0].ownerUserName:''}</Col>
                       
                    </Row>
                    <Row type='flex' align='middle' className='change-person-item'>
