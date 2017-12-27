@@ -284,6 +284,7 @@ class List extends React.Component{
 
     //分配
     onAssign() {
+       // debugger
         this.setState({assignVisible: true});
         this.props.action.getOrgTree();
         let {selectedTreeKeys, selectedRowKeys, editRow} = this.state;
@@ -296,15 +297,19 @@ class List extends React.Component{
             if(JSON.stringify(editData) !== "{}" && JSON.stringify(editRow) !== "{}"){
                 if(editData.id == page.data[i].id) {
                     rowData = editData;
-                    orgIds = rowData.orgId.split(",");
-                    orgNames = rowData.orgName.split(",");
+                    if(rowData.orgId !== undefined && rowData.orgId !== null && rowData.orgId !== ""){
+                        orgIds = rowData.orgId.split(",");
+                        orgNames = rowData.orgName.split(",");
+                    }    
                     break;
                 }       
             }else if(selectedRowKeys.length>0){
                 if(selectedRowKeys[0] == page.data[i].id) {
                     rowData = page.data[i];
-                    orgIds = rowData.orgId.split(",");
-                    orgNames = rowData.orgName.split(",");
+                    if(rowData.orgId !== undefined && rowData.orgId !== null && rowData.orgId !== ""){
+                        orgIds = rowData.orgId.split(",");
+                        orgNames = rowData.orgName.split(",");
+                    }                   
                     break;
                 }       
             }        
@@ -326,6 +331,7 @@ class List extends React.Component{
         }else{
             id = selectedRowKeys[0];
         }
+        debugger
         let ids = selectedTreeKeys.join();  
         let names = selectedOrgnames.join();
         this.props.action.prdAssign(id ,ids, names);  
@@ -341,7 +347,6 @@ class List extends React.Component{
 
     //分配时选择组织树节点  最顶层为集团，选中则其他节点全选，其他树节点选中与否互不相关
     onTreeCheck(checkedKeys,e){
-        debugger
         let {selectedTreeKeys, selectedOrgnames, rootFlag} = this.state;
         let classRefTree = this.props.$$state.get("orgTree").toJS().data;
         let node = e.node;

@@ -19,7 +19,7 @@ const reqwest = (options, success, fail) => {
 
     let mResult = handleMehtod(method, url, data);
 
-    request({
+    return request({
         type: "application/x-www-form-urlencoded",
         ...mResult,
         ...others
