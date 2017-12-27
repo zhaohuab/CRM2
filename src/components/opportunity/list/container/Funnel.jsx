@@ -51,7 +51,8 @@ class Funnel extends React.Component {
 
     render() {
         let { enumData } = this.props.$$state.toJS();
-        const funnelData = this.props.$$state.get("funnelData").toJS();
+        const funnelData = this.props.$$state.get("funnelData").toJS().data;
+        const moneyData = this.props.$$state.get("funnelData").toJS().money;
         const legend = []
         for (let i = 0; i < funnelData.length; i++) {
             legend.push(funnelData[i].name);
@@ -93,6 +94,15 @@ class Funnel extends React.Component {
                     <div>
                         <div ref='funnel' className='funnel-chrats'></div>
                     </div>
+                    <Row gutter={5}>
+                        <Col className="funnel-bottom-line-left" span={12}>预计成交金额：</Col><Col span={12}>¥{moneyData.goon}</Col>
+                    </Row>
+                    <Row gutter={5}>
+                        <Col className="funnel-bottom-line-left" span={12}>赢单金额：</Col><Col span={12}>¥{moneyData.win}</Col>
+                    </Row>
+                    <Row gutter={5}>
+                        <Col className="funnel-bottom-line-left" span={12}>丢单金额：</Col><Col span={12}>¥{moneyData.fail}</Col>
+                    </Row>
                 </AntdCard>
             </div>
         )

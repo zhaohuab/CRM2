@@ -3,7 +3,10 @@ import Immutable from 'immutable'
 let $$initialState = {
 
 	data: [],
-	funnelData: [],
+	funnelData: {
+		data:[],
+		money:{}
+	},
 	selectedRows: [],
 	selectedRowKeys: [],
 	formVisitable: false,
@@ -133,7 +136,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 
 		case 'OPPORTUNITY_LIST_GETFUNNELDATA':
-			return $$state.merge({ funnelData: action.payload.data })
+			return $$state.merge({ funnelData: action.payload })
 
 		case 'OPPORTUNITY_LIST_SHOWPRODUCTCARD':
 			return $$state.merge({

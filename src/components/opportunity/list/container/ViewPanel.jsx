@@ -77,6 +77,7 @@ class ViewPanel extends React.Component {
         let form = this.winRef.props.form;
         form.validateFieldsAndScroll((err, values) => {
             if (!err) {
+                values.state = 1
                 this.props.action.winOpp(editData.id, values);
             }
         });
@@ -91,6 +92,7 @@ class ViewPanel extends React.Component {
         let form = this.lostRef.props.form;
         form.validateFieldsAndScroll((err, values) => {
             if (!err) {
+                values.state = 2
                 this.props.action.lostOpp(editData.id, values);
             }
         });
@@ -108,7 +110,6 @@ class ViewPanel extends React.Component {
 
         const editData = this.props.$$state.get("editData").toJS();
         const childList = editData.childList;
-        debugger
         const WrapWinCard = Form.create()(WinCard);
         const WrapLostCard = Form.create()(LostCard);
         const winCardVisible = this.props.$$state.get("winCardVisible");

@@ -223,7 +223,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                 }
                 fieldsChangeData = { [item]: fields[item].value };
             }
-            debugger
             Object.assign(data, fieldsChangeData);
             props.action.setFormData(data);
         },

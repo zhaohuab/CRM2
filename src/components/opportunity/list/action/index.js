@@ -25,12 +25,11 @@ function transData(data) {
     if (data == null) {
         return data
     }
-  
-    if (data.actualSignTime) {
+    if (data.actualSignTime&&typeof(data.actualSignTime) == 'object') {
         data.actualSignTime = data.actualSignTime.format('YYYY-MM-DD HH:mm:ss');
     }
     if (data.customerId) {
-        data.customerId = data.customerId.name;
+        data.customerId = data.customerId.id;
     }
     if (data.saleStage) {
         data.saleStage = data.saleStage.key;
@@ -73,6 +72,9 @@ const transReceiveData = (data) => {
         if (data.data[i].expectSignTime) {
             data.data[i].expectSignTime = transDate(new Date(data.data[i].expectSignTime.time))
         }
+        if (data.data[i].actualSignTime) {
+            data.data[i].actualSignTime = transDate(new Date(data.data[i].actualSignTime.time))
+        }
     }
     return data;
 }
@@ -83,6 +85,12 @@ const transReceiveDataOne = (data) => {
     }
     if (data.expectSignTime) {
         data.expectSignTime = transDate(new Date(data.expectSignTime.time))
+    }
+    if (data.actualSignTime) {
+        data.actualSignTime = transDate(new Date(data.actualSignTime.time))
+    }
+    if (data.customerName&&data.customerId) {
+        data.customerId = {id:data.customerId,name:data.customerName}
     }
     return data;
 }
@@ -186,9 +194,6 @@ const showFormEdit = (visible, id) => {
         reqwest({
             url: url.opportunity + "/" + id,
             method: 'get',
-            data: {
-
-            }
         }, (data) => {
             dispatch(fetchData('OPPORTUNITY_LIST_SHOWFORMEDIT', { visible, editData: transReceiveDataOne(data) }));
         })
@@ -201,9 +206,6 @@ const showViewForm = (visible, record) => {
         reqwest({
             url: url.opportunity + "/" + record.id,
             method: 'get',
-            data: {
-
-            }
         }, (data) => {
             dispatch(fetchData('OPPORTUNITY_LIST_SHOWVIEWFORM', { visible, record: transReceiveDataOne(data) }));
         })
@@ -211,8 +213,6 @@ const showViewForm = (visible, record) => {
         reqwest({
             url: url.opportunity + "/result/" + record.id,
             method: 'get',
-            data: {
-            }
         }, (data) => {
             dispatch(fetchData('OPPORTUNITY_LIST_GETSTAGERESULT', data));
         })
@@ -245,7 +245,6 @@ const selectRow = (selectedRows, selectedRowKeys) => {
         payload: { selectedRows, selectedRowKeys }
     };
 };
-
 
 //定义方法 action
 const getFunnelData = (pagination, searchMap) => {
@@ -288,13 +287,11 @@ const selectProduct = (selectedProduct) => {
     }
 }
 
-
 const saveOppBList = (oppBList) => {
     return (dispatch) => {
         dispatch(fetchData('OPPORTUNITY_LIST_SAVEOPPBLIST', { oppBList }));
     }
 }
-
 
 const selectOppB = (selectedOppB) => {
     return (dispatch) => {
@@ -308,7 +305,6 @@ const setFormData = (data) => {
     }
 }
 
-
 const getbiztype = () => {
     return (dispatch) => {
         reqwest({
@@ -320,8 +316,6 @@ const getbiztype = () => {
 
     }
 }
-
-
 
 const finishAction = (opportunity_id, oppstage_id, oppaction_id, is_finish, resultData) => {
     return (dispatch) => {
@@ -341,10 +335,8 @@ const finishAction = (opportunity_id, oppstage_id, oppaction_id, is_finish, resu
         }, () => {
             dispatch(fetchData('OPPORTUNITY_LIST_FINISHACTION', { data: resultData }));
         })
-
     }
 }
-
 
 //保存table已选择行数据
 const selectStage = (oppstage_id) => {
@@ -354,7 +346,6 @@ const selectStage = (oppstage_id) => {
     };
 };
 
-
 const getEnumData = () => {
     return (dispatch) => {
         reqwest({
@@ -363,10 +354,8 @@ const getEnumData = () => {
         }, (data) => {
             dispatch(fetchData('OPPORTUNITY_LIST_GETENUMDATA', data));
         })
-
     }
 }
-
 
 const saveEnum = (enumData) => {
     return (dispatch) => {
@@ -393,7 +382,6 @@ const setCurrentStage = (oppId, stageId) => {
     }
 }
 
-
 const showWinCard = (visible) => {
     return (dispatch) => {
         dispatch(fetchData('OPPORTUNITY_LIST_SHOWWINCARD', { visible }));
@@ -405,12 +393,12 @@ const showLostCard = (visible) => {
         dispatch(fetchData('OPPORTUNITY_LIST_SHOWLOSTCARD', { visible }));
     }
 }
+
 const showRadarCard = (visible) => {
     return (dispatch) => {
         dispatch(fetchData('OPPORTUNITY_LIST_SHOWRADARCARD', { visible }));
     }
 }
-
 
 const winOpp = (id, data) => {
     return (dispatch) => {
@@ -426,7 +414,6 @@ const winOpp = (id, data) => {
     }
 }
 
-
 const lostOpp = (id, data) => {
     return (dispatch) => {
         reqwest({
@@ -440,8 +427,6 @@ const lostOpp = (id, data) => {
         })
     }
 }
-
-
 
 //输出 type 与 方法
 export {
@@ -472,5 +457,6 @@ export {
     showLostCard,
     showRadarCard,
     winOpp,
+    lostOpp,
     closeForm
 }
