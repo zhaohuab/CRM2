@@ -6,7 +6,7 @@ import moment from 'moment';
 import PrdClass from 'components/refs/prdtype'
 import AttrsGrpRef from './AttrsGrpRef'
 import FatherClassInput from './FatherClass'
-
+import CuperiorCustomer from "components/customer/list/container/superiorCustomer";
 const FormItem = Form.Item;
 
 class PrdClassForm extends React.Component {
@@ -46,7 +46,7 @@ class PrdClassForm extends React.Component {
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: '' }],
                         })(
-                            <Input type='text' placeholder="" />
+                            <CuperiorCustomer width={500} />
                         )}
                     </FormItem>
                     <FormItem

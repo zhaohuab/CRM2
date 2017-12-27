@@ -1,4 +1,4 @@
-import {Modal,Cascader,Select,Form,Row,Col,Input,Button,Icon} from "antd";
+import { Modal, Cascader, Select, Form, Row, Col, Input, Button, Icon, DatePicker } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
@@ -9,6 +9,7 @@ const confirm = Modal.confirm;
 import "assets/stylesheet/all/iconfont.css";
 import * as Actions from "../action";
 import * as enumDataFake from "./enumdata";
+const { RangePicker } = DatePicker;
 
 class MoreForm extends React.Component {
     constructor(props) {
@@ -44,113 +45,83 @@ class MoreForm extends React.Component {
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
                     <Row>
                         <Col span={6}>
+
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("searchKey", {})(
-                                    <Input type="text" placeholder="商机名称" />
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("type22", {})(
+                                {getFieldDecorator("type", {})(
                                     <Enum
-                                        addOptionAll={"客户类型"}
-                                        dataSource={enumDataFake.levelEnum}
+                                        addOptionAll={"商机类型"}
+                                        dataSource={enumData.biztypeList ? enumData.biztypeList : []}
                                     />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("level", {})(
+                                {getFieldDecorator("saleStage", {})(
                                     <Enum
-                                        addOptionAll={"客户等级"}
-                                        dataSource={enumDataFake.levelEnum}
+                                        addOptionAll={"商机阶段"}
+                                        dataSource={enumData.stageList ? enumData.stageList : []}
                                     />
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
+                            <FormItem {...formItemLayout}>
+                                {getFieldDecorator("signTime", {})(
+                                    <RangePicker />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator(
-                                    "province_city_district",
+                                    "source",
                                     {}
                                 )(
                                     <Enum
-                                    addOptionAll={"客户等级"}
-                                    dataSource={enumDataFake.levelEnum}
-                                />
-                                )}
+                                        addOptionAll={"商机来源"}
+                                        dataSource={enumData.oppSourceList ? enumData.oppSourceList : []}
+                                    />
+                                    )}
                             </FormItem>
                         </Col>
                     </Row>
+
                     <Row>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("isGroup", {})(
-                                    <Enum
-                                        addOptionAll={"集团客户"}
-                                        dataSource={enumDataFake.levelEnum}
-                                    />
-                                )}
+                                {getFieldDecorator(
+                                    "deptId",
+                                    {}
+                                )(
+                                    <Input placeholder="部门" />
+                                    )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("industry", {})(
-                                    <Enum
-                                        addOptionAll={"集团客户"}
-                                        dataSource={enumDataFake.levelEnum}
-                                    />
-                                )}
+                                {getFieldDecorator(
+                                    "ownerUserId",
+                                    {}
+                                )(
+                                    <Input placeholder="负责人" />
+                                    )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("cannelType", {})(
-                                    <Enum
-                                        addOptionAll={"渠道类型"}
-                                        dataSource={enumDataFake.levelEnum}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("state", {})(
-                                    <Enum
-                                        addOptionAll={"客户状态"}
-                                        dataSource={enumDataFake.levelEnum}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("enableState", {})(
-                                    <Enum
-                                        addOptionAll={"启用状态"}
-                                        dataSource={
-                                            enumDataFake.levelEnum
-                                        }
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
+
+                        <Col span={8}>
                             <div className="more-btn">
                                 <Button htmlType="submit">查询</Button>
                                 <span
-                                    className="more-up"
                                     onClick={this.moreFn.bind(this)}
+                                    className="more-up"
                                 >
                                     收起 <Icon type="up" />
                                 </span>
                             </div>
                         </Col>
                     </Row>
+
                 </Form>
             </div>
         );
@@ -158,29 +129,22 @@ class MoreForm extends React.Component {
 }
 
 const WarpMilForm = Form.create({
-    // mapPropsToFields: (props, onChangeFild) => {
-    //     //从redux中读值
-    //     let searchMap = props.$$state.toJS().searchMap;
-    //     let value = {};
-    //     for (let key in searchMap) {
-    //         value[key] = { value: searchMap[key] };
-    //     }
-    //     return {
-    //         ...value
-    //     };
-    // },
-    // onFieldsChange: (props, onChangeFild) => {
-    //     //往redux中写值//把值进行更新改变
-    //     let searchMap = props.$$state.toJS().searchMap;
-    //     for (let key in onChangeFild) {
-    //         if (onChangeFild[key].value.key) {
-    //             searchMap[key] = onChangeFild[key].value.key;
-    //         } else {
-    //             searchMap[key] = onChangeFild[key].value;
-    //         }
-    //     }
-    //     props.searchMapFn(searchMap);
-    // }
+
+    onFieldsChange: (props, onChangeFild) => {
+        //往redux中写值//把值进行更新改变
+        let { enumData } = props.$$state.toJS();
+        for (let key in onChangeFild) {
+            if (key == 'type') {
+                for (let i = 0; i < enumData.biztypeList.length; i++) {
+                    if (onChangeFild[key].value.key == enumData.biztypeList[i].key) {
+                        enumData.stageList = enumData.biztypeList[i].stageList;
+                    }
+
+                }
+            }
+        }
+        props.action.saveEnum(enumData);
+    }
 })(MoreForm);
 
 //绑定状态到组件props

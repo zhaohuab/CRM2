@@ -168,7 +168,6 @@ class DetailTable extends React.Component {
     }
 
     handleDel = () => {
-        debugger
         const oppBList = this.props.$$state.get("oppBList").toJS()
         const selectedRows = this.props.$$state.get("selectedOppB").toJS();
         
