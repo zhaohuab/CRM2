@@ -278,31 +278,36 @@ export default class CuperiorCustomer extends React.Component {
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
             ) : null;
-
+            
         return (
             <div>
                 <div className="reference-warpper">
-                    <Dropdown
-                        overlay={this.choiceIndustry()} //生成下拉结构样式
-                        trigger={["click"]}
-                        onVisibleChange={this.getIndustry.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
-                        visible={this.state.visible} //受控面板显示
-                        placement={this.props.placement}
-                    >
-                        <Input
-                            placeholder="上级客户"
-                            value={
-                                this.props.value ? this.props.value.name : ""
-                            }
-                            suffix={suffix}
-                            addonAfter={
-                                <Icon
-                                    type="search"
-                                    onClick={this.getIndustry.bind(this, true)}
-                                />
-                            }
-                        />
-                    </Dropdown>
+                    {
+                        this.props.show?
+                        <Input disabled value={this.props.viewData.name}/>:
+                        <Dropdown
+                            overlay={this.choiceIndustry()} //生成下拉结构样式
+                            trigger={["click"]}
+                            onVisibleChange={this.getIndustry.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
+                            visible={this.state.visible} //受控面板显示
+                            placement={this.props.placement}
+                        >
+                            <Input
+                                placeholder="上级客户"
+                                value={
+                                    this.props.value ? this.props.value.name : ""
+                                }
+                                suffix={suffix}
+                                addonAfter={
+                                    <Icon
+                                        type="search"
+                                        onClick={this.getIndustry.bind(this, true)}
+                                    />
+                                }
+                            />
+                        </Dropdown>
+                    }
+                    
                 </div>
             </div>
         );

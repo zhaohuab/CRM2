@@ -90,7 +90,7 @@ class ContactsCard extends React.Component {
             wrapperCol: { span: 19 }
         };
         const { getFieldDecorator } = this.props.form;
-   
+        let {contactsCardData,viewData} = this.props.$$state.toJS();
         return (
             <div>
                 <i className={'iconfont icon-tianjia'} onClick={this.cardShow.bind(this)}/>
@@ -137,7 +137,7 @@ class ContactsCard extends React.Component {
                                                     message: "请输入客户"
                                                 }
                                             ]
-                                        })(<CuperiorCustomer width={500} placement='bottomRight'/>)}
+                                        })(<CuperiorCustomer width={500} placement='bottomRight' show = {true} viewData={viewData}/>)}
                                     </FormItem>
                                 </Col>
                             </Row>
