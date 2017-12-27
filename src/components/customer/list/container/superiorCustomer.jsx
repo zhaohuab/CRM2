@@ -18,28 +18,6 @@ import reqwest from "utils/reqwest";
 
 const Search = Input.Search;
 
-const searchList = [
-    {
-        id: "0-1",
-        name:
-            "广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠广式腊肠"
-    },
-    { id: "0-2", name: "广式腊肠" },
-    { id: "0-3", name: "广式腊肠" },
-    { id: "0-4", name: "广式腊肠" },
-    { id: "0-5", name: "广式腊肠" },
-    { id: "0-6", name: "广式腊肠" },
-    { id: "0-7", name: "广式腊肠" },
-    { id: "0-8", name: "广式腊肠" },
-    { id: "0-9", name: "广式腊肠" },
-    { id: "0-10", name: "广式腊肠" },
-    { id: "0-11", name: "广式腊肠" },
-    { id: "0-12", name: "广式腊肠" },
-    { id: "0-13", name: "广式腊肠" },
-    { id: "0-14", name: "广式腊肠" },
-    { id: "0-15", name: "广式腊肠" }
-];
-
 export default class CuperiorCustomer extends React.Component {
     constructor(props) {
         super(props);
@@ -74,11 +52,6 @@ export default class CuperiorCustomer extends React.Component {
                 dataIndex: "saleArea",
                 key: "saleArea"
             }
-            // {
-            //     title: "负责人",
-            //     dataIndex: "ownerUseId",
-            //     key: "ownerUseId"
-            // }
         ];
     }
 
@@ -171,6 +144,7 @@ export default class CuperiorCustomer extends React.Component {
 
     //点击确定
     onOk() {
+        debugger
         if (this.props.onChange) {
             this.setState(
                 {
@@ -313,6 +287,7 @@ export default class CuperiorCustomer extends React.Component {
                         trigger={["click"]}
                         onVisibleChange={this.getIndustry.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
                         visible={this.state.visible} //受控面板显示
+                        placement={this.props.placement}
                     >
                         <Input
                             placeholder="上级客户"

@@ -33,10 +33,13 @@
         margin-bottom:0;
         
     }
+    .ant-collapse-item.ant-collapse-item-active{
+        border-bottom:1px dashed #3CA4FB
+    }
     .ant-collapse-content{
         padding:0 8px;
         background: #EBF5FF ;
-        border-bottom:1px dashed #3CA4FB
+       
     }
 }
 
@@ -186,6 +189,7 @@
             .warrper-main-left {
                 border-right: 10px solid rgba(242, 242, 242, 1);
                 padding: 15px;
+                padding-top:10px;
                 box-sizing: border-box;
                 min-height: 600px;
                 .main-left-inner {
@@ -215,6 +219,7 @@
                     color: #999;
                 }
                 .relevant-wapper{
+                    margin-top:-16px;
                     .ant-collapse > .ant-collapse-item > .ant-collapse-header{
                         padding:8px 0;
                         background: unset;
@@ -231,40 +236,88 @@
                             .iconfont{
                                 color:#666;
                             }
+                            
                         }
                         .icon-tianjia{
                             color:#3CA4FB
                         }
-                    }
-                    .join-warpper{
-                        display: flex;
-                        flex-wrap: wrap;
-                        .join-warpper-item{
-                            width:20%;
-                            height:50px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            .join-image{
-                                width:30px;
-                                height:30px;
+                        .right{
+                            .right-combine{
+                                display: flex;
                             }
                         }
                     }
+                    .contacts-warpper{
+                        width:100%;
+                        display: flex;
+                        flex-wrap: wrap;
+                        padding:10px 0;
+                        box-sizing: border-box;
+                        margin-bottom: -10px;
+                        margin-left: .5%;
+                        .contacts-warpper-item{
+                            width:24%;
+                            height:100px;
+                            display: flex;
+                            margin-right:1%;
+                            margin-bottom:10px;
+                            .left{
+                                background:url("../images/contacts-bg.png") 0 0 no-repeat #3CA4FB;
+                                border-top-left-radius: 5px;
+                                border-bottom-left-radius: 5px;
+                                color:white;
+                                .iconfont{
+                                    font-size:21px;
+                                    margin-top: -5px;
+                                }
+                                .name{
+                                    height:30px;
+                                    text-align: center;
+                                    font-size:14px;
+                                }
+                                .position{
+                                    transform: scale(.8,.8);
+                                    text-align: center;
+                                }
+                            }
+                            .right{
+                                background: white;
+                                border-top-right-radius: 5px;
+                                border-bottom-right-radius: 5px;
+                                
+                                .content1{
+                                    height:50px;
+                                    padding-bottom:10px;
+                                    box-sizing: border-box;
+                                }
+                                .content2{
+                                    height:50px;
+                                    padding-top:10px;
+                                    box-sizing: border-box;
+                                }
+                                .key{
+                                    color:#333;
+                                }
+                                .value{
+                                    color:#999;
+                                    overflow: hidden;
+                                    text-overflow:ellipsis;
+                                    white-space: nowrap;
+                                    width:65%;
+                                }
+                            }
+                        }
+                        .contacts-warpper-item:nth-of-type(5n-1){
+                            margin-right:0
+                        }
+                    }
+                   
                 }
-              
             }
             .warrper-main-right {
                 background: white;
-                .main-right-state {
-                    height: 50px;
-                    line-height: 70px;
-                    border-bottom: 1px solid #ccc;
-                    padding: 0 15px;
-                    color: rgba(51, 51, 51, 1);
-                    position: relative;
-                    font-size: 13px;
-                }
+                padding-top:10px;
+                box-sizing: border-box;
                 .main-right-timeline {
                     padding: 15px;
                     .timeline-import {
@@ -273,6 +326,75 @@
                     .timeline-time {
                         color: rgba(153, 153, 153, 1);
                     }
+                }
+                .join-warpper{
+                    display: flex;
+                    flex-wrap: wrap;
+                    padding-left:10px;
+                    box-sizing: border-box;
+                    .join-warpper-item{
+                        position: relative;
+                        width:33.333333%;
+                        display: flex;
+                        align-items: center;
+                        padding:10px 0;
+                        box-sizing: border-box;
+                        color:#333;
+                        cursor: pointer;
+                        .join-image{
+                            width:30px;
+                            border-radius: 30px;
+                            margin-right:10px;
+                        }
+                        .join-round-color{
+                            width:30px;
+                            height:30px;
+                            border:1px solid #ccc;
+                            border-radius: 30px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin-right:10px;
+                            span{
+                                display: block;
+                                transform: scale(.8,.8);
+                            }
+                        }
+                        
+                        .username{
+                            position: relative;
+                            .del{
+                                display: none;
+                                position: absolute;
+                                right: -25px;
+                                top: -7px;
+                                
+                                color:#ff6157
+                            }
+                        }
+                       
+                    }
+                    .join-warpper-item:hover{
+                        .del{
+                            display: block;
+                            position: absolute;
+                            right: -25px;
+                            top: -7px;
+                            color:#ff6157
+                        }
+                    }
+                }
+                .add-contacts-btn{
+                    width:30px;
+                    height:30px;
+                    border-radius: 30px;
+                    border:1px dashed #DDDDDD;
+                    font-size:18px;
+                    color:#CCCCCC;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer
                 }
             }
         }
@@ -396,7 +518,7 @@
         z-index: 300;
         top: 0;
         width: 50px;
-        height: 300px;
+        height: 150px;
         border-left: none;
     }
     .ant-tabs-vertical.ant-tabs-right>.ant-tabs-content {
@@ -763,6 +885,7 @@
     min-height:250px;
     display: flex;
     .main{
+        height:300px;
         width:100%;
         .tree-wapper{
             padding-top:10px;
@@ -797,4 +920,10 @@
     .change-person-item{
         height:40px;
     }
+}
+
+/*客户中联系人card样式*/
+.refs-panel-contacts-card{
+    height:400px;
+   
 }

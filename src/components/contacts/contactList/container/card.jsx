@@ -16,8 +16,8 @@ import {
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 import Email from "utils/components/emails";
-import Tags from "./tags.jsx";
-import CustomTags from "./custom-tags.jsx";
+import Tags from "../../../common/tags/tags.jsx";
+import CustomTags from "../../../common/tags/custom-tags.jsx";
 
 export default class Card extends React.Component {
     componentDidMount() {
@@ -30,8 +30,8 @@ export default class Card extends React.Component {
             wrapperCol: { span: 14 }
         };
         let formItemLayout1 = {
-            labelCol: { span: 3 },
-            wrapperCol: { span: 21 }
+            labelCol: { span:4 },
+            wrapperCol: { span: 19 }
         };
         const { getFieldDecorator } = this.props.form;
         let ccc = (rule, value, callback) => {
@@ -183,7 +183,7 @@ export default class Card extends React.Component {
                     </div>
                     <Row>
                         <Col>
-                            <FormItem label="角色" {...formItemLayout}>
+                            <FormItem label="角色" {...formItemLayout1}>
                                 {getFieldDecorator("role")(
                                     <Tags
                                         dataSource={[
@@ -205,7 +205,7 @@ export default class Card extends React.Component {
                     </Row>
                     <Row>
                         <Col>
-                            <FormItem label="态度" {...formItemLayout}>
+                            <FormItem label="态度" {...formItemLayout1}>
                                 {getFieldDecorator("attitude")(
                                     <Tags
                                         dataSource={[
@@ -222,7 +222,7 @@ export default class Card extends React.Component {
                     </Row>
                     <Row>
                         <Col>
-                            <FormItem label="兴趣爱好" {...formItemLayout}>
+                            <FormItem label="兴趣爱好" {...formItemLayout1}>
                                 {getFieldDecorator("hobby")(
                                     <CustomTags dataSource={["踢球", "跑步"]} />
                                 )}
