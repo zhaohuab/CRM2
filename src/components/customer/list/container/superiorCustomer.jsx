@@ -62,7 +62,7 @@ export default class CuperiorCustomer extends React.Component {
                 title: "客户名称",
                 dataIndex: "name",
                 key: "name",
-                filterMultiple: false
+
             },
             {
                 title: "等级",
@@ -172,13 +172,11 @@ export default class CuperiorCustomer extends React.Component {
     //点击确定
     onOk() {
         if (this.props.onChange) {
+            this.props.onChange(this.state.select);
             this.setState(
                 {
                     visible: false,
                     selectedRowKeys: []
-                },
-                () => {
-                    this.props.onChange(this.state.select);
                 }
             );
         }
@@ -224,6 +222,7 @@ export default class CuperiorCustomer extends React.Component {
 
     //下拉时显示的面板布局
     choiceIndustry() {
+        debugger
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
             type: "radio",
@@ -300,11 +299,12 @@ export default class CuperiorCustomer extends React.Component {
     }
 
     render() {
-        const suffix =
-            this.props.value && this.props.value.name ? (
-                <Icon type="close" onClick={this.emitEmpty.bind(this)} />
-            ) : null;
+        // const suffix =
+        //     this.props.value && this.props.value.name ? (
+        //         <Icon type="close" onClick={this.emitEmpty.bind(this)} />
+        //     ) : null;
 
+            debugger
         return (
             <div>
                 <div className="reference-warpper">
@@ -319,7 +319,7 @@ export default class CuperiorCustomer extends React.Component {
                             value={
                                 this.props.value ? this.props.value.name : ""
                             }
-                            suffix={suffix}
+                            //suffix={suffix}
                             addonAfter={
                                 <Icon
                                     type="search"

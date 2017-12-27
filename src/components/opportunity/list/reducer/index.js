@@ -26,7 +26,16 @@ let $$initialState = {
 	biztypeList: [],
 	stageData: [],
 	resultData: [],
-	selectedStage: ""
+	selectedStage: "",
+	//查询条件用
+	enumData: {
+		biztypeList: []
+	},
+
+	stageEnum: [],
+	winCardVisible: false,
+	lostCardVisible: false,
+	radarCardVisible: false
 };
 
 function pageAdd(page, item) {
@@ -58,13 +67,15 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				editData: action.payload.editData,
 				oppBList: [],
 				formVisitable: action.payload.visible,
-				isEdit: false
+				isEdit: false,
+				stageEnum: action.payload.stageEnum,
 			})
 		case 'OPPORTUNITY_LIST_SHOWFORMEDIT':
 			return $$state.merge({
 				editData: action.payload.editData,
 				oppBList: action.payload.editData.childList,
 				formVisitable: action.payload.visible,
+				// viewFormVisible:false,
 				isEdit: true
 			})
 
@@ -81,7 +92,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 		case 'OPPORTUNITY_LIST_CLOSEFORM':
 			return $$state.merge({
 				formVisitable: false,
-				viewFormVisible: false,
 			})
 		case 'OPPORTUNITY_LIST_CHANGEVISIBLE':
 			return $$state.merge({ toolVisible: action.payload.toolVisible })
@@ -174,6 +184,37 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 		case 'OPPORTUNITY_LIST_FINISHACTION':
 			return $$state.merge({
 				resultData: action.payload.data
+			})
+
+		case 'OPPORTUNITY_LIST_GETENUMDATA':
+			return $$state.merge({
+				enumData: action.payload
+			})
+
+
+		case 'OPPORTUNITY_LIST_SAVEENUMDATA':
+			return $$state.merge({
+				enumData: action.payload.enumData
+			})
+		case 'OPPORTUNITY_LIST_SETCURRENTSTAGE':
+			const editData = $$state.get("editData").toJS();
+			editData.saleStage = action.payload.stageId;
+			return $$state.merge({
+				editData
+			})
+
+		case 'OPPORTUNITY_LIST_SHOWWINCARD':
+			return $$state.merge({
+				winCardVisible: action.payload.visible
+			})
+
+		case 'OPPORTUNITY_LIST_SHOWLOSTCARD':
+			return $$state.merge({
+				lostCardVisible: action.payload.visible
+			})
+			case 'OPPORTUNITY_LIST_SHOWRADARCARD':
+			return $$state.merge({
+				radarCardVisible: action.payload.visible
 			})
 		default:
 			return $$state;

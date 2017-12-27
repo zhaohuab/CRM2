@@ -77,6 +77,7 @@ class List extends React.Component {
     componentDidMount() {
         this.props.action.getListData(this.props.$$state.get("pagination").toJS());
         this.props.action.getbiztype();
+        this.props.action.getEnumData();
     }
 
     //保存按钮事件
@@ -95,7 +96,8 @@ class List extends React.Component {
 
     //编辑页面关闭事件
     formHandleCancel() {
-        this.props.action.showFormNew(false,{});
+        this.props.action.closeForm();
+        // this.props.action.saveOppBList([]);
     }
 
     //点击查看按钮打开查看页面

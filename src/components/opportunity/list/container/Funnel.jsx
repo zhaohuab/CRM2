@@ -1,8 +1,9 @@
-import { DatePicker, Form, Input, Select, InputNumber, Row, Col ,Card as AntdCard} from 'antd';
+import { DatePicker, Form, Input, Select, InputNumber, Row, Col, Card as AntdCard } from 'antd';
 import Department from 'components/refs/departments'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
+import Enum from "utils/components/enums";
 import * as Actions from "../action";
 var echarts = require('../../../../../node_modules/echarts/lib/echarts');
 require('../../../../../node_modules/echarts/lib/chart/funnel');
@@ -10,23 +11,23 @@ import funnelEcharts from './funnelEcharts.js'
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-const funnelChange=[{data:[60,40,20,80,90,100],data2:[30,10,5,50,70,80]},{data:[80,40,60,30,15,10],data2:[60,30,55,25,13,5]},{data:[100,20,80,10,45,60],data2:[90,10,65,5,33,40]},{data:[10,20,40,60,90,75],data2:[7,10,21,25,63,40]}] 
+const funnelChange = [{ data: [60, 40, 20, 80, 90, 100], data2: [30, 10, 5, 50, 70, 80] }, { data: [80, 40, 60, 30, 15, 10], data2: [60, 30, 55, 25, 13, 5] }, { data: [100, 20, 80, 10, 45, 60], data2: [90, 10, 65, 5, 33, 40] }, { data: [10, 20, 40, 60, 90, 75], data2: [7, 10, 21, 25, 63, 40] }]
 
 class Funnel extends React.Component {
     constructor(props) {
         super(props)
-        this.funnelOption=funnelEcharts;
+        this.funnelOption = funnelEcharts;
 
-        
-    this.changeFunnelData=(key)=>{
-        this.funnelOption.series[0].data.forEach((item,index)=>{
-            item.value=funnelChange[key].data[index]
-        })
 
-        this.funnelOption.series[1].data.forEach((item,index)=>{
-            item.value=funnelChange[key].data2[index]
-        })
-        this.funnelEchar.setOption(this.funnelOption);
+        this.changeFunnelData = (key) => {
+            this.funnelOption.series[0].data.forEach((item, index) => {
+                item.value = funnelChange[key].data[index]
+            })
+
+            this.funnelOption.series[1].data.forEach((item, index) => {
+                item.value = funnelChange[key].data2[index]
+            })
+            this.funnelEchar.setOption(this.funnelOption);
         }
     }
 
@@ -36,44 +37,62 @@ class Funnel extends React.Component {
         this.props.action.getFunnelData()
     }
 
-    onWindowResize(){
-        setTimeout(()=>{
-            if(this.refs.target){
-                let resizeSize=this.refs.target.offsetWidth
-        
+    onWindowResize() {
+        setTimeout(() => {
+            if (this.refs.target) {
+                let resizeSize = this.refs.target.offsetWidth
+
                 this.funnelEchar.resize({
-                    width:resizeSize+'px'
+                    width: resizeSize + 'px'
                 })
             }
-        },500)
+        }, 500)
     }
-    
+
     render() {
+        let { enumData } = this.props.$$state.toJS();
         const funnelData = this.props.$$state.get("funnelData").toJS();
-        if(this.funnelEchar){
+        const legend = []
+        for (let i = 0; i < funnelData.length; i++) {
+            legend.push(funnelData[i].name);
+        }
+        if (this.funnelEchar) {
+            this.funnelOption.legend.data = legend;
             this.funnelOption.series[0].data = funnelData;
             this.funnelEchar.setOption(this.funnelOption);
             window.addEventListener('resize', this.onWindowResize.bind(this))
         }
-   
+
         this.onWindowResize()
+
+        const showSelectOption = data => {
+            return data.map(item => {
+                return <Option value={item.key}>{item.title}</Option>
+            })
+        };
         return (
             <div className='main-middle-bottom'>
-                <AntdCard title="销售漏斗">
-                <h3 className='chart-title'>
-                   
+                <AntdCard title={
+                    <Row className="funnel-title">
+                        <Col span={16}>
+                            销售漏斗
+                        </Col>
+                        <Col span={8}>
+                            <Row>
+                                {
+                                    enumData.biztypeList && enumData.biztypeList.length > 0 ?
+                                        <Select className="funnel-title-select" defaultValue={enumData.biztypeList[0].key} onChange={this.changeFunnelData}>
+                                            {showSelectOption(enumData.biztypeList)}
+                                        </Select> : ""
+                                }
+
+                            </Row>
+                        </Col>
+                    </Row>
+                }>
                     <div>
-                        <Select defaultValue="本年" onChange={this.changeFunnelData}>
-                            <Option value="0">本年</Option>
-                            <Option value="1">本季</Option>
-                            <Option value="2">本月</Option>
-                            <Option value="3">本周</Option>
-                        </Select>
+                        <div ref='funnel' className='funnel-chrats'></div>
                     </div>
-                </h3>
-                <div>
-                    <div ref='funnel' className='funnel-chrats'></div>
-                </div>
                 </AntdCard>
             </div>
         )
