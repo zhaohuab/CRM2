@@ -25,8 +25,17 @@ function transData(data) {
     if (data == null) {
         return data
     }
-    if (data.actualSignTime&&typeof(data.actualSignTime) == 'object') {
+    if (data.actualSignTime && typeof (data.actualSignTime) == 'object') {
         data.actualSignTime = data.actualSignTime.format('YYYY-MM-DD HH:mm:ss');
+    }
+    if(data.winReason && typeof (data.winReason) == 'object'){
+        data.winReasonName = data.winReason.title;
+        data.winReason = data.winReason.key;
+       
+    }
+    if(data.lostReason && typeof (data.lostReason) == 'object'){
+        data.lostReasonName = data.lostReason.title;
+        data.lostReason = data.lostReason.key;
     }
     if (data.customerId) {
         data.customerId = data.customerId.id;
@@ -41,10 +50,10 @@ function transSearchMap(data) {
         return data
     }
     if (data.type) {
-        data.type = data.type.key==0?undefined:data.type.key;
+        data.type = data.type.key == 0 ? undefined : data.type.key;
     }
     if (data.saleStage) {
-        data.saleStage = data.saleStage.key==0?undefined:data.saleStage.key;
+        data.saleStage = data.saleStage.key == 0 ? undefined : data.saleStage.key;
     }
     if (data.signTime) {
         data.expectSignTimeStart = data.signTime[0].format('YYYY-MM-DD HH:mm:ss');
@@ -52,13 +61,13 @@ function transSearchMap(data) {
         data.signTime = undefined;
     }
     if (data.source) {
-        data.source = data.source.key==0?undefined:data.source.key;
+        data.source = data.source.key == 0 ? undefined : data.source.key;
     }
     if (data.deptId) {
-        data.deptId = data.deptId.key==0?undefined:data.deptId.key;
+        data.deptId = data.deptId.key == 0 ? undefined : data.deptId.key;
     }
     if (data.ownerUserId) {
-        data.ownerUserId = data.ownerUserId.key==0?undefined:data.ownerUserId.key;
+        data.ownerUserId = data.ownerUserId.key == 0 ? undefined : data.ownerUserId.key;
     }
     return data
 }
@@ -89,8 +98,8 @@ const transReceiveDataOne = (data) => {
     if (data.actualSignTime) {
         data.actualSignTime = transDate(new Date(data.actualSignTime.time))
     }
-    if (data.customerName&&data.customerId) {
-        data.customerId = {id:data.customerId,name:data.customerName}
+    if (data.customerName && data.customerId) {
+        data.customerId = { id: data.customerId, name: data.customerName }
     }
     return data;
 }
@@ -384,13 +393,31 @@ const setCurrentStage = (oppId, stageId) => {
 
 const showWinCard = (visible) => {
     return (dispatch) => {
-        dispatch(fetchData('OPPORTUNITY_LIST_SHOWWINCARD', { visible }));
+        if (visible) {
+            reqwest({
+                url: url.opportunity + '/winReason',
+                method: 'get',
+            }, (data) => {
+                dispatch(fetchData('OPPORTUNITY_LIST_SHOWWINCARD', { visible,winReason:data.data.winReason }));
+            })
+        }else{
+            dispatch(fetchData('OPPORTUNITY_LIST_SHOWWINCARD', { visible,winReason:[] }));
+        }
     }
 }
 
 const showLostCard = (visible) => {
-    return (dispatch) => {
-        dispatch(fetchData('OPPORTUNITY_LIST_SHOWLOSTCARD', { visible }));
+       return (dispatch) => {
+        if (visible) {
+            reqwest({
+                url: url.opportunity + '/lostReason',
+                method: 'get',
+            }, (data) => {
+                dispatch(fetchData('OPPORTUNITY_LIST_SHOWLOSTCARD', { visible,lostReason:data.data.lostReason }));
+            })
+        }else{
+            dispatch(fetchData('OPPORTUNITY_LIST_SHOWLOSTCARD', { visible,lostReason:[] }));
+        }
     }
 }
 
@@ -408,8 +435,8 @@ const winOpp = (id, data) => {
             data: {
                 param: transData(data)
             }
-        }, (data) => {
-            dispatch(fetchData('OPPORTUNITY_LIST_SHOWWINCARD', { visible: false }));
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_WINOPP', { visible: false,data:transReceiveDataOne(result) }));
         })
     }
 }
@@ -422,8 +449,8 @@ const lostOpp = (id, data) => {
             data: {
                 param: transData(data)
             }
-        }, (data) => {
-            dispatch(fetchData('OPPORTUNITY_LIST_SHOWLOSTCARD', { visible: false }));
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_LOSTOPP', { visible: false,data:transReceiveDataOne(result) }));
         })
     }
 }

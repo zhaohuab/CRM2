@@ -177,10 +177,10 @@ class ViewPanel extends React.Component {
                         <Col className="view-main-cell" span={6}>预计签单金额</Col>
                         <Col className="view-main-cell" span={6}>预计签单时间</Col>
                         <Col className="view-main-cell" span={6}>负责人</Col>
-                        <Col className="view-main-cell" span={6}>{editData.state}</Col>
+                        <Col className="view-main-cell" span={6}>{editData.stateName}</Col>
                         <Col className="view-main-cell" span={6}>{editData.expectSignMoney}</Col>
                         <Col className="view-main-cell" span={6}>{editData.expectSignTime}</Col>
-                        <Col className="view-main-cell" span={6}>{editData.ownerUserId}</Col>
+                        <Col className="view-main-cell" span={6}>{editData.ownerUserName}</Col>
                     </Row>
                 </Row>
 
@@ -203,21 +203,21 @@ class ViewPanel extends React.Component {
                                                             <Col className="detail-msg-line-left" span={12}>商机名称：</Col><Col span={12}>{editData.name}</Col>
                                                         </Row>
                                                         <Row className="detail-msg-line">
-                                                            <Col className="detail-msg-line-left" span={12}>商机类型：</Col><Col span={12}>{editData.type}</Col>
+                                                            <Col className="detail-msg-line-left" span={12}>商机类型：</Col><Col span={12}>{editData.typeName}</Col>
                                                         </Row>
                                                         <Row className="detail-msg-line">
                                                             <Col className="detail-msg-line-left" span={12}>预计签单金额：</Col><Col span={12}>{editData.expectSignMoney}</Col>
                                                         </Row>
                                                         <Row className="detail-msg-line">
-                                                            <Col className="detail-msg-line-left" span={12}>商机阶段：</Col><Col span={12}>{editData.saleStage ? editData.saleStage.title : ""}</Col>
+                                                            <Col className="detail-msg-line-left" span={12}>商机阶段：</Col><Col span={12}>{editData.saleStage ? editData.saleStageName : ""}</Col>
                                                         </Row>
                                                     </Col>
                                                     <Col span={12}>
                                                         <Row className="detail-msg-line">
-                                                            <Col className="detail-msg-line-left" span={12}>客户名称：</Col><Col span={12}>{editData.customerId ? editData.customerId.name : ''}</Col>
+                                                            <Col className="detail-msg-line-left" span={12}>客户名称：</Col><Col span={12}>{editData.customerId ? editData.customerName : ''}</Col>
                                                         </Row>
                                                         <Row className="detail-msg-line">
-                                                            <Col className="detail-msg-line-left" span={12}>商机状态：</Col><Col span={12}>{editData.state}</Col>
+                                                            <Col className="detail-msg-line-left" span={12}>商机状态：</Col><Col span={12}>{editData.stateName}</Col>
                                                         </Row>
                                                         <Row className="detail-msg-line">
                                                             <Col className="detail-msg-line-left" span={12}>预计签单时间：</Col><Col span={12}>{editData.expectSignTime}</Col>

@@ -27,9 +27,14 @@ class EditableCell extends React.Component {
     }
     render() {
         const { value, editable } = this.state;
-        const {type} = this.props;
+        const {type,colName} = this.props;
         if(type=="first"){
-            return (<Search onClick={this.props.showProductCard.bind(this)}/>)
+            if(colName =="no" ){
+                return (<Search onClick={this.props.showProductCard.bind(this)}/>)
+            }else{
+                return <div></div>;
+            }
+            
         }else {
             return (
                 <div className="editable-cell">
@@ -42,7 +47,6 @@ class EditableCell extends React.Component {
                                     onPressEnter={this.check}
                                     onBlur={this.check}
                                 />
-    
                             </div>
                             :
                             <div onClick={this.edit} style={{ width: "100%", height: "100%" }} className="editable-cell-text-wrapper">
@@ -74,6 +78,7 @@ class DetailTable extends React.Component {
                     <EditableCell
                         data={text}
                         type={record.type}
+                        colName="no"
                         showProductCard={this.showProductCard.bind(this)}
                         onChange={this.onCellChange.bind(this, index, "no")}
                     />
@@ -85,6 +90,7 @@ class DetailTable extends React.Component {
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "productTypeId")}
                     />
                 )
@@ -95,6 +101,7 @@ class DetailTable extends React.Component {
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "brandId")}
                     />
                 )
@@ -105,6 +112,7 @@ class DetailTable extends React.Component {
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "measureId")}
                     />
                 )
@@ -115,6 +123,7 @@ class DetailTable extends React.Component {
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "price")}
                     />
                 )
@@ -125,6 +134,7 @@ class DetailTable extends React.Component {
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "number")}
                     />
                 )
@@ -135,6 +145,7 @@ class DetailTable extends React.Component {
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "sumMoney")}
                     />
                 )
