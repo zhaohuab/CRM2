@@ -7,7 +7,7 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-
+import Enum from 'utils/components/enums'
 class WinCard extends React.Component {
     constructor(props) {
         super(props)
@@ -19,6 +19,7 @@ class WinCard extends React.Component {
    
     render() {
         const { getFieldDecorator } = this.props.form;
+        const winReason = this.props.$$state.toJS().winReason;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -68,7 +69,8 @@ class WinCard extends React.Component {
                 >
                     {getFieldDecorator('winReason', {
                     })(
-                        <Input placeholder='请输入...' />
+                        <Enum dataSource={winReason} placeholder='请输入...' />
+
                         )}
                 </FormItem>
               

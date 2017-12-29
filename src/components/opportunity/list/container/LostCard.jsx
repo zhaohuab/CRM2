@@ -7,7 +7,7 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
-
+import Enum from 'utils/components/enums'
 class LostCard extends React.Component {
     constructor(props) {
         super(props)
@@ -19,6 +19,7 @@ class LostCard extends React.Component {
    
     render() {
         const { getFieldDecorator } = this.props.form;
+        const lostReason = this.props.$$state.toJS().lostReason;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -45,7 +46,7 @@ class LostCard extends React.Component {
                 >
                     {getFieldDecorator('failReason', {
                     })(
-                        <Input placeholder='请输入...' />
+                        <Enum dataSource={lostReason} placeholder='请输入...' />
                         )}
                 </FormItem>
               

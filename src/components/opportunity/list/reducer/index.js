@@ -3,7 +3,10 @@ import Immutable from 'immutable'
 let $$initialState = {
 
 	data: [],
-	funnelData: [],
+	funnelData: {
+		data: [],
+		money: {}
+	},
 	selectedRows: [],
 	selectedRowKeys: [],
 	formVisitable: false,
@@ -35,7 +38,9 @@ let $$initialState = {
 	stageEnum: [],
 	winCardVisible: false,
 	lostCardVisible: false,
-	radarCardVisible: false
+	radarCardVisible: false,
+	winReason: [],
+	lostReason: []
 };
 
 function pageAdd(page, item) {
@@ -133,7 +138,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 
 		case 'OPPORTUNITY_LIST_GETFUNNELDATA':
-			return $$state.merge({ funnelData: action.payload.data })
+			return $$state.merge({ funnelData: action.payload })
 
 		case 'OPPORTUNITY_LIST_SHOWPRODUCTCARD':
 			return $$state.merge({
@@ -205,16 +210,33 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
 		case 'OPPORTUNITY_LIST_SHOWWINCARD':
 			return $$state.merge({
-				winCardVisible: action.payload.visible
+				winCardVisible: action.payload.visible,
+				winReason: action.payload.winReason,
 			})
 
 		case 'OPPORTUNITY_LIST_SHOWLOSTCARD':
+		debugger
 			return $$state.merge({
-				lostCardVisible: action.payload.visible
+				lostCardVisible: action.payload.visible,
+				lostReason: action.payload.lostReason,
 			})
-			case 'OPPORTUNITY_LIST_SHOWRADARCARD':
+		case 'OPPORTUNITY_LIST_SHOWRADARCARD':
 			return $$state.merge({
 				radarCardVisible: action.payload.visible
+			})
+
+
+		case 'OPPORTUNITY_LIST_WINOPP':
+			return $$state.merge({
+				winCardVisible: action.payload.visible,
+				winReason: [],
+				editData:action.payload.data
+			})
+		case 'OPPORTUNITY_LIST_LOSTOPP':
+			return $$state.merge({
+				lostCardVisible: action.payload.visible,
+				lostReason: [],
+				editData:action.payload.data
 			})
 		default:
 			return $$state;

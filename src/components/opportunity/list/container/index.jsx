@@ -36,15 +36,15 @@ class List extends React.Component {
             },
             {
                 title: "客户名称",
-                dataIndex: "customerId"
+                dataIndex: "customerName"
             },
             {
                 title: "商机类型",
-                dataIndex: "type"
+                dataIndex: "typeName"
             },
             {
                 title: "销售阶段",
-                dataIndex: "saleStage"
+                dataIndex: "saleStageName"
             },
             {
                 title: "停留时间",
@@ -87,7 +87,7 @@ class List extends React.Component {
         const oppBList = this.props.$$state.get("oppBList").toJS();
         editData.childList = oppBList;
         if (isEdit) {
-            this.props.action.listEditSave(data);
+            this.props.action.listEditSave(editData);
         } else {
             this.props.action.listAddSave(editData);
         }
