@@ -39,7 +39,6 @@ export default class OwnUser extends React.Component {
 
     //table选中方法
     selectedTableList(selectedRowKeys,selectedRows){
-        
         this.setState({
             result:{id:selectedRowKeys[0],name:selectedRows[0].name},
             selectedTableRowKeys:selectedRowKeys
@@ -71,8 +70,6 @@ export default class OwnUser extends React.Component {
         );
     }
     onOk(){
-        
-        
         this.setState({
             visible:false,
             treeList:[],

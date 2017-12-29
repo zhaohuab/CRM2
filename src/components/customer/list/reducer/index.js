@@ -245,7 +245,7 @@ export default function orgReducers(
             });
         case "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD"://增加联系人对象    
            let addContacts = $$state.get('viewDataRelevant').toJS()
-           addContacts[0].contactList.data.push(action.data)
+           addContacts[0].contactList.data.unshift(action.data)
            return $$state.merge({
                 viewDataRelevant:addContacts
            });
