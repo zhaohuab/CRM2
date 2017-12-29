@@ -40,7 +40,7 @@ export default class CuperiorCustomer extends React.Component {
                 title: "客户名称",
                 dataIndex: "name",
                 key: "name",
-                filterMultiple: false
+
             },
             {
                 title: "等级",
@@ -146,13 +146,11 @@ export default class CuperiorCustomer extends React.Component {
     onOk() {
         debugger
         if (this.props.onChange) {
+            this.props.onChange(this.state.select);
             this.setState(
                 {
                     visible: false,
                     selectedRowKeys: []
-                },
-                () => {
-                    this.props.onChange(this.state.select);
                 }
             );
         }
@@ -198,6 +196,7 @@ export default class CuperiorCustomer extends React.Component {
 
     //下拉时显示的面板布局
     choiceIndustry() {
+        debugger
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
             type: "radio",

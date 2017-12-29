@@ -236,7 +236,6 @@ class List extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-
         return (
             
             <div className="custom-warpper ">

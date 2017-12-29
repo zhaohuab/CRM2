@@ -36,15 +36,15 @@ class List extends React.Component {
             },
             {
                 title: "客户名称",
-                dataIndex: "customerId"
+                dataIndex: "customerName"
             },
             {
                 title: "商机类型",
-                dataIndex: "type"
+                dataIndex: "typeName"
             },
             {
                 title: "销售阶段",
-                dataIndex: "saleStage"
+                dataIndex: "saleStageName"
             },
             {
                 title: "停留时间",
@@ -77,6 +77,7 @@ class List extends React.Component {
     componentDidMount() {
         this.props.action.getListData(this.props.$$state.get("pagination").toJS());
         this.props.action.getbiztype();
+        this.props.action.getEnumData();
     }
 
     //保存按钮事件
@@ -86,7 +87,7 @@ class List extends React.Component {
         const oppBList = this.props.$$state.get("oppBList").toJS();
         editData.childList = oppBList;
         if (isEdit) {
-            this.props.action.listEditSave(data);
+            this.props.action.listEditSave(editData);
         } else {
             this.props.action.listAddSave(editData);
         }
@@ -95,7 +96,8 @@ class List extends React.Component {
 
     //编辑页面关闭事件
     formHandleCancel() {
-        this.props.action.showFormNew(false,{});
+        this.props.action.closeForm();
+        // this.props.action.saveOppBList([]);
     }
 
     //点击查看按钮打开查看页面

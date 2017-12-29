@@ -804,6 +804,7 @@ const cardForm = Form.create({
         //把redux中的值取出来赋给表单
         let viewData = props.$$state.toJS().viewData;
         let value = {};
+        debugger
         for (let key in viewData) {
             if (key == "address") {
                 value[key] = {
@@ -824,6 +825,7 @@ const cardForm = Form.create({
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
         let viewData = props.$$state.toJS().viewData;
+        debugger
         for (let key in onChangeFild) {
             if (onChangeFild[key].value && onChangeFild[key].value.key) {
                 viewData[key] = onChangeFild[key].value.key;

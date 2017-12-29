@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
 import * as Actions from "../action";
+import CuperiorCustomer from "components/customer/list/container/superiorCustomer";
+import Enum from 'utils/components/enums'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -13,17 +15,12 @@ class Card extends React.Component {
     }
 
     componentDidMount() {
-        // let data = this.props.$$state.get("editData").toJS();
-        // data.createdTime=moment(data.createdTime);
-        // data.expectSignTime=moment(data.expectSignTime);
-        // this.props.form.setFieldsValue(data);
-    }
-    componentWillMount() {
 
     }
+  
     render() {
         const { getFieldDecorator } = this.props.form;
-
+        const stageEnum = this.props.$$state.get("stageEnum").toJS()
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -47,10 +44,18 @@ class Card extends React.Component {
                 )
         }
         return (
+            
             <Form >
+
+                {getFieldDecorator('type', {
+                    rules: [],
+                })(
+                    <Input style={{ display: 'none' }} type='text' />
+                    )}
+
                 <Row type="flex"  >
 
-                <Col span={12}>
+                    <Col span={12}>
                         <FormItem
                             label="商机名称"
                             {...formItemLayout}
@@ -74,20 +79,23 @@ class Card extends React.Component {
                                     required: true, message: '请选择客户',
                                 }],
                             })(
-                                <Input  />
+                                <CuperiorCustomer
+                                    width={500}
+                                />
                                 )}
                         </FormItem>
                     </Col>
-                   
-                    
+
+
                 </Row>
+
                 <Row type="flex"  >
                 <Col span={12}>
                         <FormItem
                             label="商机类型"
                             {...formItemLayout}
                         >
-                            {getFieldDecorator('type', {
+                            {getFieldDecorator('typeName', {
                                 rules: [{
                                     required: true, message: '请选择商机类型',
                                 }],
@@ -106,7 +114,7 @@ class Card extends React.Component {
                                     required: true, message: '请选择商机阶段',
                                 }],
                             })(
-                                <Input />
+                                <Enum dataSource={stageEnum}/>
                                 )}
                         </FormItem>
                     </Col>
@@ -184,7 +192,6 @@ class Card extends React.Component {
                         </FormItem>
                     </Col>
                 </Row>
-
             </Form>)
     }
 }
@@ -205,59 +212,41 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
-        onFieldsChange(props, fields){ 
+        onFieldsChange(props, fields) {
             let fieldsChangeData = {};
+            
             let data = props.$$state.get("editData").toJS();
-            for(let item in fields){              
-                fieldsChangeData = {[item]:fields[item].value};
+            for (let item in fields) {
+                if(item=="createdTime"||item=="expectSignTime"){
+                    fieldsChangeData = { [item]: fields[item].value.format('YYYY-MM-DD HH:mm:ss') };
+                    continue;
+                }
+                fieldsChangeData = { [item]: fields[item].value };
             }
             Object.assign(data, fieldsChangeData);
             props.action.setFormData(data);
         },
-        mapPropsToFields(props){
+        mapPropsToFields(props) {
             let data = props.$$state.get("editData").toJS();
-            if(data.createdTime == null){
+            if (data.createdTime == null) {
                 data.createdTime = undefined;
             }
-            if(data.expectSignTime == null){
+            if (data.expectSignTime == null) {
                 data.expectSignTime = undefined;
             }
-            return{
-                id:{
-                    value:data.id
-                },  
-                enableState:{
-                    value:data.enableState
-                },  
-                name:{
-                    value:data.name
-                }, 
-                type:{
-                    value:data.type
-                }, 
-                customerId:{
-                    value:data.customerId
-                }, 
-               
-                saleStage:{
-                    value:data.saleStage
-                }, 
-                winProbability:{
-                    value:data.winProbability
-                }, 
-                createdTime:{
-                    value:moment(data.createdTime)
-                },
 
-                expectSignTime:{
-                    value:moment(data.expectSignTime)
-                },
-                expectSignMoney:{
-                    value:data.expectSignMoney
-                },
-                description:{
-                    value:data.description
-                },
+            let value = {};
+            for (let key in data) {
+               if(key=="createdTime"||key=="expectSignTime"){
+                value[key] = { value: moment(data[key]) };
+                continue;
+               }
+                value[key] = { value: data[key] };
+                
+            }
+            //address  把字段合成对象
+            return {
+                ...value
             };
         }
     })(Card));
