@@ -56,6 +56,11 @@ import prdattrgroup from 'components/prdattrgroup/list/reducer';
 //表单管理
 import businessObjDef from 'components/business-obj-def/reducer';
 
+
+
+//我自己写的线索
+import clue from 'components/clue/list/reducer'
+
 let rootReducer = combineReducers({ 
     login, 
     doc,
@@ -85,7 +90,8 @@ let rootReducer = combineReducers({
     oppflowList,
     prdattr,
     prdattrgroup,
-    businessObjDef
+    businessObjDef,
+    clue
 });
 
 export { rootReducer };

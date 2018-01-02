@@ -12,8 +12,8 @@ const org = {
 };
 
 const user = {
-    listTpl : baseDir + "sys/users/template/list",
-    addTpl : baseDir + "sys/users/template/add",
+    listTpl: baseDir + "sys/users/template/list",
+    addTpl: baseDir + "sys/users/template/add",
     user: baseDir + "sys/users",
     userBatch: baseDir + "sys/users/batch",
     enable: baseDir + "sys/users/state" // {id}/state
@@ -25,8 +25,16 @@ const measure = {
 };
 const cum = {
     customer: baseDir + "cum/customers",
-    doc:baseDir + "cum/customers/docs",
+    doc: baseDir + "cum/customers/docs",
 };
+
+
+//线索
+const lead = {
+    lead: baseDir + "sprc/leads",
+    doc: baseDir + "sprc/leads/docs"
+}
+
 
 const role = {
     role: baseDir + "sys/roles"
@@ -57,19 +65,19 @@ const taskcard = {
     taskcard: baseDir + 'sact/taskcards',
     taskcardBatch: baseDir + 'sact/taskcards/batch',
     enable: baseDir + 'sact/taskcards/state',
-    biztype:baseDir + 'sact/taskcards/biztypes'
+    biztype: baseDir + 'sact/taskcards/biztypes'
 }
 const doc = {
     doc: baseDir + 'base/docs',
     docBatch: baseDir + 'base/docs/batch',
-    enable: baseDir + 'base/docs/state' 
+    enable: baseDir + 'base/docs/state'
 }
 
 const sysinit = {
-    mainEditTpl : baseDir + "sys/sysinit/template/edit",
-    info : baseDir + "sys/sysinit/info",
-    org : baseDir + 'sys/sysinit/org',
-    adminList : baseDir + 'sys/sysinit/adminlist',
+    mainEditTpl: baseDir + "sys/sysinit/template/edit",
+    info: baseDir + "sys/sysinit/info",
+    org: baseDir + 'sys/sysinit/org',
+    adminList: baseDir + 'sys/sysinit/adminlist',
 }
 const opportunity = {
     opportunity: baseDir + 'sprc/opportunities',
@@ -77,7 +85,7 @@ const opportunity = {
 
 const oppaction = {
     oppaction: baseDir + 'sprc/oppactions',
-    doc:baseDir + "sprc/oppactions/docs",
+    doc: baseDir + "sprc/oppactions/docs",
 }
 
 const visitrules = {
@@ -87,18 +95,18 @@ const visitrules = {
 
 const oppstage = {
     oppstage: baseDir + 'sprc/oppstages',
-    all:baseDir + 'sprc/oppstages/all',
+    all: baseDir + 'sprc/oppstages/all',
 }
 
 const oppdimension = {
     oppdimension: baseDir + 'sprc/oppdimensions',
-    doc:baseDir + "sprc/oppdimensions/docs",
-    all:baseDir + 'sprc/oppdimensions/all',
+    doc: baseDir + "sprc/oppdimensions/docs",
+    all: baseDir + 'sprc/oppdimensions/all',
 }
 
 const oppflow = {
     oppflow: baseDir + 'sprc/oppflows',
-    doc:baseDir + "sprc/oppflows/docs",
+    doc: baseDir + "sprc/oppflows/docs",
 }
 const prdattr = {
     prdattr: baseDir + 'base/attrs',
@@ -115,6 +123,9 @@ const phonebooks = {
     sub: baseDir + 'csns/phonebooks/sub',
 }
 
+
+
+
 export {
     login,
     menu,
@@ -122,6 +133,7 @@ export {
     user,
     measure,
     cum,
+    lead,
     role,
     brand,
     prdtype,
@@ -142,4 +154,3 @@ export {
     prdattrgroup,
     phonebooks,
 }
- 

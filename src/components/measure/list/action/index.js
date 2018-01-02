@@ -23,6 +23,7 @@ const getListData = (params) => {
 		 		}
 		 	},
 		 },result => {
+			 debugger
 			dispatch(fetchData('MEASURE_LIST_GETLISTSUCCESS', { ...result }/*mockData*/));
 		})
 	}

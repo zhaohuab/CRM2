@@ -208,6 +208,7 @@ const listAddSave = data => {
 //展示面板，把点击某个客户的所有值，放在redux中
 const showViewForm = (visible, id) => {
     return dispatch => {
+        debugger
         reqwest(
             {
                 url: url.customer + "/" + id,

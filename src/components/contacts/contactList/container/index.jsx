@@ -118,8 +118,9 @@ class Contacts extends React.Component {
     //modal点击确定按钮
     handleOk() {
         let { pagination, searchMap } = this.state; //获取分页信息
-
+       debugger;
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {
+            debugger;
             if (!err) {
                 if (values.id) {
                     debugger;
@@ -272,6 +273,9 @@ class Contacts extends React.Component {
                             <Button onClick={this.onDelete.bind(this)}>
                                 <i className="iconfont icon-shanchu" />删除
                             </Button>
+                            <Button>
+                                <i className="iconfont "></i>
+                                线索分配</Button>
                             {selectedRowKeys.length == 1 ? (
                                 <Button onClick={this.onEdit.bind(this)}>
                                     <i className="iconfont icon-bianji" />编辑

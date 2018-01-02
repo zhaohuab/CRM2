@@ -1,0 +1,355 @@
+//联系人详情样式
+.label-title {
+    display: flex;
+    margin-right: 10px;
+    color: #333;
+    min-width: 65px;
+}
+
+.card-header-title {
+    width: 100px;
+    height: 40px;
+    text-align: right;
+    line-height: 40px;
+    margin-bottom: 15px;
+    padding-left: 20px;
+    box-sizing: border-box;
+    font-size: 13px;
+    .iconfont {
+        color: #3ca4fb;
+        font-size: 12px;
+    }
+}
+
+
+/*最外层边框样式*/
+
+.clue-warpper {
+    .iconfont {
+        font-size: 12px;
+    }
+    /*页面单独覆盖ant样式*/
+    .ant-select-focused .ant-select-selection,
+    .ant-select-selection:focus,
+    .ant-select-selection:active {
+        box-shadow: 0 0 0 2px rgba(102, 166, 255, 0);
+    }
+    .tabel-bg {
+        background: white;
+    }
+    .ant-select-selection {
+        border: none;
+    }
+    .more-card {
+        border-top: 1px solid rgb(243, 243, 243);
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        .ant-form {
+            width: 85%;
+        }
+    }
+    .formitem-width {
+        .ant-form-item {
+            width: 100%;
+            .ant-form-item-control-wrapper {
+                width: 100%;
+            }
+        }
+    }
+    .more-btn {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+    #btnClue-recover {
+        .ant-btn,
+        .ant-btn:active,
+        .ant-btn:focus {
+            border: none;
+            color: #333;
+        }
+        .ant-btn {
+            line-height: 0;
+            height: auto;
+            font-weight: unset;
+            border: none;
+            border-right: 1px solid #ccc;
+            height: 20px;
+            border-radius: 0;
+            margin-right: 15px;
+        }
+    }
+    .less-show-height {
+        max-height: 54px;
+        opacity: 1;
+        transition: all 0.3s linear;
+    }
+    .less-hide-height {
+        max-height: 0;
+        opacity: 0;
+        transition: all 0.3s linear;
+    }
+    .more-show-height {
+        max-height: 300px;
+        opacity: 1;
+        transition: all 0.3s linear;
+    }
+    .panel-header {
+        height: 152px;
+        background: white;
+        padding: 0 15px;
+        box-sizing: border-box;
+        .panel-header-top {
+            height: 75px;
+            border-bottom: 1px solid #3ca4fb;
+            .contacts-name {
+                font-size: 14px;
+                color: #333;
+            }
+            .icon-blue {
+                color: #3ca4fb;
+            }
+        }
+        .panel-header-bottom {
+            display: flex;
+            height: 75px;
+            .contact-single-title {
+                height: 30px;
+                color: #666;
+            }
+            .contact-single-info {
+                color: #333;
+                img {
+                    width: 30px;
+                    height: 30px;
+                    margin-right: 10px;
+                }
+            }
+        }
+        .panel-header-bottom>div {
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    .panel-main {
+        border-top: 10px solid #f2f2f3;
+        width: 100%;
+        height: 80%;
+        .panel-main-left {
+            border-right: 10px solid #f2f2f3;
+            .inner {
+                background: white;
+                width: 100%;
+                padding: 10px 15px;
+                box-sizing: border-box;
+                height: 100%;
+            }
+            .contacts-info-ul {
+                flex-wrap: wrap;
+                display: flex;
+                li {
+                    width: 50%;
+                    height: 40px;
+                    line-height: 40px;
+                    text-align: center;
+                    span:nth-of-type(1) {
+                        color: #333;
+                        margin-right: 5px;
+                    }
+                    span:nth-of-type(2) {
+                        color: #999;
+                    }
+                }
+            }
+            .tab-warpper {
+                width: 65%;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+            }
+            .tab-warpper>div {
+                display: flex;
+                height: 40px;
+                align-items: center;
+                span {
+                    color: #333;
+                    margin-right: 5px;
+                }
+                p {
+                    margin-right: 15px;
+                    color: #999;
+                }
+                p:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+        .panel-main-right {
+            background: white;
+            .contacts-timeline-title {
+                height: 45px;
+                line-height: 60px;
+                padding-left: 15px;
+                box-sizing: border-box;
+                font-size: 13px;
+                color: #333;
+                border-bottom: 1px solid #ddd;
+            }
+            .contacts-timeline {
+                padding: 15px;
+                box-sizing: border-box;
+                .contacts-timeline>p {
+                    height: 30px;
+                    line-height: 30px;
+                }
+                .timeline-item-import {
+                    color: #3ca4fb;
+                }
+                .timeline-item-normal {
+                    color: #151515;
+                }
+                .timeline-time {
+                    color: #999999;
+                    height: 30px;
+                    line-height: 30px;
+                    span {
+                        margin-right: 5px;
+                    }
+                    span:last-child {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//标签组样式
+.contact-tag-warrper {
+    display: flex;
+    .contact-tag-group {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .tag-notChoose {
+        position: relative;
+        width: 75px;
+        height: 28px;
+        line-height: 28px;
+        border-radius: 5px;
+        text-align: center;
+        border: 1px solid #dddddd;
+        margin-right: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        color: #666666;
+        user-select: none;
+        i {
+            display: none;
+        }
+    }
+    .tag-choose {
+        width: 75px;
+        height: 28px;
+        line-height: 28px;
+        border-radius: 5px;
+        text-align: center;
+        margin-right: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        color: #666666;
+        border: 1px solid #3ca4fb;
+        position: relative;
+        user-select: none;
+        i {
+            display: block;
+            position: absolute;
+            top: 4px;
+            right: -1px;
+            z-index: 5;
+            margin-right: 0;
+            color: #3ca4fb;
+        }
+    }
+    .custom-choose {
+        position: relative;
+        width: 75px;
+        height: 28px;
+        line-height: 28px;
+        border-radius: 5px;
+        text-align: center;
+        border: 1px solid #d84848;
+        margin-right: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        color: #666666;
+        user-select: none;
+        .icon-guanbi-xiao {
+            display: block;
+            position: absolute;
+            top: -7px;
+            right: 2px;
+            z-index: 5;
+            margin-right: 0;
+            color: #d84848;
+            transform: scale(0.7);
+            font-size: 12px;
+        }
+        .icon-xuanzhong {
+            display: block;
+            position: absolute;
+            top: 6px;
+            right: -3px;
+            z-index: 5;
+            margin-right: 0;
+            color: #d84848;
+            transform: scale(0.7, 0.8);
+        }
+    }
+    .custom-notChoose {
+        position: relative;
+        width: 75px;
+        height: 28px;
+        line-height: 28px;
+        border-radius: 5px;
+        text-align: center;
+        border: 1px solid #dddddd;
+        margin-right: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        color: #666666;
+        user-select: none;
+        i {
+            display: none;
+        }
+    }
+    .custom-input {
+        position: relative;
+        width: 75px;
+        height: 28px;
+        line-height: 28px;
+        border-radius: 5px;
+        text-align: center;
+        border: 1px solid #dddddd;
+        margin-right: 8px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        color: #666666;
+        user-select: none;
+        i {
+            font-size: 12px;
+            margin-right: 0;
+        }
+    }
+}
+
+.contact-tag-label {
+    display: block;
+    width: 80px;
+    text-align: right;
+    font-size: 13px;
+}

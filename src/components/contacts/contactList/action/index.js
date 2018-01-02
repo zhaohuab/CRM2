@@ -50,7 +50,10 @@ export function cardSaved(data, pagination, searchMap) {
                     }
                 }
             },
+            
             result => {
+                debugger;
+                console.log(2,result);
                 dispatch({ type: "CONTACTS_CARD_SAVEADD", data: result });
             }
         );

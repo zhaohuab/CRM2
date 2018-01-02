@@ -47,10 +47,12 @@ class List extends React.Component {
                         className="crm-pointer"
                     >
                         {record.name}
+
                     </div>
                 )
             },
             {
+                title: "客户类型",
                 title: "客户类型",
                 dataIndex: "typeName"
             },
@@ -95,6 +97,7 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
+        //console.log(44,record)
         this.props.action.showViewForm(true, record.id);
     }
     //隐藏面版
@@ -125,7 +128,7 @@ class List extends React.Component {
         }
         //详细地址
         if (data.address) {
-            debugger;
+           // debugger;
             let value = data.address;
             data["address"] = value.address;
             data["latlng"] = value.latlng;
@@ -136,18 +139,18 @@ class List extends React.Component {
             delete data.ownerUserId
             data.salesVOs = [{ownerUserId}]
         }
-        debugger
+        //debugger
         return data;
     }
 
     //form新增、或者修改
     formHandleOk() {
-        debugger;
+       // debugger;
 
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
                 values = this.trancFn(values);
-                debugger;
+                //debugger;
                 if (values.id) {
                     this.props.action.listEditSave(values);
                 } else {
@@ -190,7 +193,7 @@ class List extends React.Component {
     tabChange() {
         let { viewState } = this.props.$$state.toJS();
         if (viewState) {
-            debugger;
+          //  debugger;
             this.props.action.hideViewForm(false);
         }
     }
@@ -219,6 +222,7 @@ class List extends React.Component {
 
     render() {
         const { $$state } = this.props;
+        debugger;
         const page = $$state.get("data").toJS();
         let {
             selectedRows,

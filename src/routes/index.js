@@ -70,6 +70,7 @@ const rootRoutes = {
                                 require('./routes/prdattr').default,
                                 require('./routes/prdattrgroup').default,
                                 require('./routes/business-obj-def').default,
+                                require('./routes/clue/routes/list/index').default,
                                 {
                                     //未开发页面
                                     path: "developing",
