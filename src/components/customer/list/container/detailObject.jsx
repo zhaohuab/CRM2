@@ -14,11 +14,16 @@ import {
 
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
+
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Actions from "../action";
+
 import UploadImg from "./uploadImg";
 
-export default class DetailObject extends React.Component {
+class DetailObject extends React.Component {
     render(){
-        let {viewData} = this.props
+        let {viewData} = this.props.$$state.toJS();
         return(
                 <Collapse
                     defaultActiveKey={["1", "2", "3"]}
@@ -479,5 +484,19 @@ export default class DetailObject extends React.Component {
         )
     }
 }
+
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.customerList,
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(DetailObject);
 
 

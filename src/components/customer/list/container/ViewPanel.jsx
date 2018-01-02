@@ -30,6 +30,8 @@ import ChangePerson from './changePerson'
 import DetailObject from './detailObject'
 import RelevantObject from './relevantObject'
 import DealObject from './dealObject'
+import DynamicState from './dynamicState'
+import JoinList from './joinList'
 
 //分配table头部
 const columns = [{
@@ -47,7 +49,10 @@ class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
         this.state={
-           
+            JoinPagination: {
+                pageSize: 50,
+                page: 1,
+            }
         }
     }
 
@@ -125,8 +130,29 @@ class ViewPanel extends React.Component {
         this.props.action.assignChangeViewData(viewData)
     }
 
+    //详情面板左侧rab列表数据
+    panelTabLeftFn(index){
+        let { viewData } = this.props.$$state.toJS();
+        let id = viewData.id
+        if(index == 2){
+            this.props.action.getLeftPaneltList(id,this.state.JoinPagination,index);
+            return
+        }
+        this.props.action.changeLeftPanel(index)
+    }
+
+    //详情面板右侧tab列表获取数据
+    panelTabRightFn(index){
+        debugger
+        let { viewData } = this.props.$$state.toJS();
+        //if(index == 2){
+            let id = viewData.id
+            this.props.action.getRightPaneltList(id,this.state.JoinPagination,index)
+       // }
+    }
+
     render() {
-        let {viewData,icbcSelect2,icbcVisible2,icbcInfo1,assignList,assignVisiable,assignPersonList} = this.props.$$state.toJS();
+        let {viewData,icbcSelect2,icbcVisible2,icbcInfo1,viewDataRelevant,leftJoinPanelKeys,RightJoinPanelKeys} = this.props.$$state.toJS();
         let defaultList = [
             {
                 uid: -1,
@@ -136,7 +162,7 @@ class ViewPanel extends React.Component {
                     "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
             }
         ];
-       
+        debugger
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">
@@ -355,7 +381,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {viewData.salesVOs[0].ownerUserName}
+                                    {viewData.salesVOs?viewData.salesVOs[0].ownerUserName:'无'}
                                 </Row>
                             </Col>
                         </Row>
@@ -366,9 +392,9 @@ class ViewPanel extends React.Component {
                     <div>
                         <Col span={18} className="warrper-main-left">
                             <div className="main-left-inner collapse-recover tab-recoverd">
-                                <Tabs defaultActiveKey="1">
+                                <Tabs defaultActiveKey="1" activeKey = {leftJoinPanelKeys}onTabClick={this.panelTabLeftFn.bind(this)}>
                                     <TabPane tab="详情" key="1">
-                                        <DetailObject viewData={viewData}/>
+                                        <DetailObject/>
                                     </TabPane>
                                     <TabPane tab="相关" key="2">
                                         <RelevantObject/>
@@ -379,60 +405,15 @@ class ViewPanel extends React.Component {
                                 </Tabs>
                             </div>
                         </Col>
-                        <Col span={6} className="warrper-main-right">
-                            <div className="main-right-state">动态</div>
-                            <div className="main-right-timeline timeline-recoverd">
-                                <Timeline>
-                                    <Timeline.Item>
-                                        <p>
-                                            <span className="timeline-import">
-                                                winni
-                                            </span>创建了任务<span className="timeline-import">
-                                                AAA
-                                            </span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            2017-08-18 14:30
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item>
-                                        <p>
-                                            <span className="timeline-import">
-                                                winni
-                                            </span>创建了任务<span className="timeline-import">
-                                                AAA
-                                            </span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            2017-08-18 14:30
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item>
-                                        <p>
-                                            <span className="timeline-import">
-                                                winni
-                                            </span>创建了任务<span className="timeline-import">
-                                                AAA
-                                            </span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            2017-08-18 14:30
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item>
-                                        <p>
-                                            <span className="timeline-import">
-                                                winni
-                                            </span>创建了任务<span className="timeline-import">
-                                                AAA
-                                            </span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            2017-08-18 14:30
-                                        </p>
-                                    </Timeline.Item>
-                                </Timeline>
-                            </div>
+                        <Col span={6} className="warrper-main-right tab-recoverd">
+                            <Tabs defaultActiveKey="1" activeKey = {RightJoinPanelKeys} onTabClick={this.panelTabRightFn.bind(this)}>
+                                <TabPane tab="动态" key="1">
+                                    <DynamicState/>
+                                </TabPane>
+                                <TabPane tab="参与人" key="2">
+                                    <JoinList/>
+                                </TabPane>
+                            </Tabs>
                         </Col>
                     </div>
                 </Row>
@@ -468,7 +449,6 @@ class ViewPanel extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         $$state: state.customerList,
-        $$stateCommon: state.componentReducer
     };
 }
 //绑定action到组件props

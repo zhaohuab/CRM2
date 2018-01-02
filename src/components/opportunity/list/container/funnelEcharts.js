@@ -1,15 +1,15 @@
 
 let option = {
-    title: {
-        text: '漏斗图',
-        subtext: '纯属虚构'
-    },
+    // title: {
+    //     text: '漏斗图',
+    //     subtext: '纯属虚构'
+    // },
     tooltip: {
         trigger: 'item',
-        formatter: "{b}: {c}%"
+        formatter: "{b}: {c}"
     },
     legend: {
-        data: ['走着呢','结束了','ok了','开始','快完事了','还没开始来']
+        data: []
     },
     series: [
         {
@@ -34,7 +34,7 @@ let option = {
                 },
                 emphasis: {
                     position:'inside',
-                    formatter: '{b}: {c}%'
+                    formatter: '{b}: {c}'
                 }
             },
             labelLine: {

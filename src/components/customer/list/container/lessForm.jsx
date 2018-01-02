@@ -38,7 +38,9 @@ class LessForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
+        debugger
         let { enumData } = this.props.$$state.toJS();
+        
         return (
             <div className="less-form">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>

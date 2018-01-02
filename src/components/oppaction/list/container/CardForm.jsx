@@ -1,4 +1,4 @@
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select,InputNumber } from 'antd';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as Actions from "../action"
@@ -8,6 +8,7 @@ import Enum from 'utils/components/enums'
 import RadioGroup from 'utils/components/radios'
 const FormItem = Form.Item;
 const Option = Select.Option;
+
 class Card extends React.Component {
     constructor(props) {
         super(props)
@@ -77,7 +78,7 @@ class Card extends React.Component {
                         required: true, message: '请输入关键动作分值',
                     }],
                 })(
-                    <Input placeholder='请输入关键动作分值'/>
+                    <InputNumber class="InputNumber" max={10} placeholder='请输入关键动作分值'/>
                     )}
             </FormItem>
             <FormItem
