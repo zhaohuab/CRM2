@@ -21,14 +21,14 @@ const RadioGroup = Radio.Group;
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as Actions from "../action";
+import * as Actions from "../../action";
 
 import Email from "utils/components/emails";
-import Tags from "../../../common/tags/tags.jsx";
-import CustomTags from "../../../common/tags/custom-tags.jsx";
-import CuperiorCustomer from './superiorCustomer'
+import Tags from "../../../../common/tags/tags.jsx";
+import CustomTags from "../../../../common/tags/custom-tags.jsx";
+import CuperiorCustomer from '../list/SuperiorCustomer'
 import ContactsDepart from './ContactsDepart'
-import OwnUser from './ownUser'
+import OwnUser from '../list/OwnUser'
 
 class ContactsCard extends React.Component {
     constructor(props){

@@ -15,10 +15,10 @@ import {
 } from "antd";
 
 import "assets/stylesheet/all/iconfont.css";
-import PersonChioce from './personChioce'
+import PersonChioce from './PersonChioce'
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
-import OwnUser from './ownUser'
+import OwnUser from '../list/OwnUser'
 
 const columns = [{
     title: '姓名',
@@ -109,7 +109,7 @@ export default class ChangePerson extends React.Component {
         let {viewData} = this.props
         return(
             <div>
-                <Button onClick={this.assignFn.bind(this)}><i className="iconfont icon-bianji" />变更</Button>
+                <Button onClick={this.assignFn.bind(this)}><i className="iconfont icon-biangeng" />变更</Button>
                 <Modal
                     title="变更"
                     visible={this.state.visible}

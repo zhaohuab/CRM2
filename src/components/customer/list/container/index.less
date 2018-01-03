@@ -310,6 +310,21 @@
                                     width:65%;
                                 }
                             }
+                            .del{
+                                display: none;
+                                justify-content: center;
+                                width:20px;
+                                height:20px;
+                                text-align: center;
+                                position: absolute;
+                                top:-3px;
+                                right:-5px;
+                                z-index: 5;
+                                color:#FF6258;
+                                .iconfont{
+                                    margin-left:4px;
+                                }
+                            }
                         }
                         .contacts-warpper-item:nth-of-type(4n){
                             margin-right:0;
@@ -323,8 +338,10 @@
                                 margin-right:5px;
                             }
                         }
+                        
                     }
-                    .clue-warpper{
+                    
+                    .business-chance{
                         width:100%;
                         display: flex;
                         flex-wrap: wrap;
@@ -332,15 +349,37 @@
                         padding-bottom:0;
                         box-sizing: border-box;
                         margin-left:.45%;
-                        .clue-warpper-item{
-                            width:24%;
-                            height:126px;
+                        
+                        .business-chance-item{
+                            width:32.3%;
+                            height:150px;
                             margin-right:1%;
                             background: white;
                             border-radius:10px;
                             box-shadow: 2px 2px 6px #d4d7dc;
                             margin-bottom:10px;
+                            position: relative;
                             cursor: pointer;
+                            .del{
+                                display: none;
+                                justify-content: center;
+                                width:20px;
+                                height:20px;
+                                text-align: center;
+                                position: absolute;
+                                top:-3px;
+                                right:-5px;
+                                z-index: 5;
+                                color:#FF6258;
+                                .iconfont{
+                                    margin-left:4px;
+                                }
+                            }
+                            .text-right{
+                                text-align: right;
+                                display: flex;
+                                justify-content: flex-end;
+                            }
                             .left{
                                 display: flex;
                                 justify-content: center;
@@ -352,7 +391,7 @@
                                 border-bottom-left-radius: 10px;
                                 color:#ccc ; 
                                 .iconfont{
-                                    transform: scale(2.5,2.5);
+                                    transform: scale(2.3,2.3);
                                     margin-left:10px;
                                 }                         
                             }
@@ -369,7 +408,7 @@
                                         flex-direction: column;
                                         .decoret-warpper{
                                             height: 100%;
-                                            width:20px;
+                                            width:10px;
                                             display: flex;
                                             flex-direction: column;
                                             .circle{
@@ -419,90 +458,83 @@
                                     }
                                 }
                             }
-                        }
-
-                        .clue-warpper-item:nth-of-type(4n+1){
-                            .left{
-                                border-left:6px solid #3CA4FB;
-                                color:#3CA4FB
+                        } 
+                        .item-more{
+                            display: flex;
+                            background: unset;
+                            justify-content: center;
+                            align-items: center;
+                            cursor: pointer;
+                            box-shadow:unset;
+                            .more{
+                                margin-right:5px;
                             }
-                            .right{
-                                .main-top{
-                                    .decoret-warpper{
-                                        .circle{
-                                            border:1px solid #3CA4FB;
-                                        }
-                                        .smail-circle{
-                                            background: #3CA4FB;
-                                        }
+                        }
+                    }
+                    .contacts-warpper-item:hover,.business-chance-item:hover{
+                        .del{
+                            display: block
+                        }
+                    }
+                    .business-chance-item:nth-of-type(4n){
+                        margin-right:1%;
+                    }
+                    .business-chance-item:nth-of-type(3n+1){
+                        .left{
+                            border-left:6px solid #3CA4FB;
+                            color:#3CA4FB
+                        }
+                        .right{
+                            .main-top{
+                                .decoret-warpper{
+                                    .circle{
+                                        border:1px solid #3CA4FB;
                                     }
-                                }
-                            }
-                        }
-                        .clue-warpper-item:nth-of-type(4n+2){
-                            .left{
-                                border-left:6px solid #52A439;
-                                color:#52A439
-                            }
-                            .right{
-                                .main-top{
-                                    .decoret-warpper{
-                                        .circle{
-                                            border:1px solid #52A439;
-                                        }
-                                        .smail-circle{
-                                            background: #52A439;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        .clue-warpper-item:nth-of-type(4n+3){
-                            .left{
-                                border-left:6px solid #F7A508;
-                                color:#F7A508
-                            }
-                            .right{
-                                .main-top{
-                                    .decoret-warpper{
-                                        .circle{
-                                            border:1px solid #F7A508;
-                                        }
-                                        .smail-circle{
-                                            background: #F7A508;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        .clue-warpper-item:nth-of-type(4n){
-                            margin-right:0;
-                            .left{
-                                border-left:6px solid #FF6258;
-                                color:#FF6258
-                            }
-                            .right{
-                                .main-top{
-                                    .decoret-warpper{
-                                        .circle{
-                                            border:1px solid #FF6258;
-                                        }
-                                        .smail-circle{
-                                            background: #FF6258;
-                                        }
+                                    .smail-circle{
+                                        background: #3CA4FB;
                                     }
                                 }
                             }
                         }
                     }
-                    .clue-warpper-item.business-chance-item{
-                        width:32.3%;
-                        height:150px;
-                       .text-right{
-                           text-align: right
-                       }
+                    .business-chance-item:nth-of-type(3n+2){
+                        .left{
+                            border-left:6px solid #52A439;
+                            color:#52A439
+                        }
+                        .right{
+                            .main-top{
+                                .decoret-warpper{
+                                    .circle{
+                                        border:1px solid #52A439;
+                                    }
+                                    .smail-circle{
+                                        background: #52A439;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .business-chance-item:nth-of-type(3n+3){
+                        .left{
+                            border-left:6px solid #F7A508;
+                            color:#F7A508
+                        }
+                        .right{
+                            .main-top{
+                                .decoret-warpper{
+                                    .circle{
+                                        border:1px solid #F7A508;
+                                    }
+                                    .smail-circle{
+                                        background: #F7A508;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                
             }
             .warrper-main-right {
                 background: white;
@@ -1118,3 +1150,5 @@
     overflow-y:auto;
     margin: -15px; 
 }
+
+/*客户对象商机modal中样式*/

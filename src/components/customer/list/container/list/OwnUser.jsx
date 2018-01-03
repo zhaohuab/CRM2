@@ -9,7 +9,7 @@ import {
 
 
 import "assets/stylesheet/all/iconfont.css";
-import PersonChioce from './personChioce'
+import PersonChioce from '../panel/PersonChioce'
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 

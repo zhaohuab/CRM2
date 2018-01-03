@@ -18,7 +18,7 @@ import {
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 //导入action方法
-import * as Actions from "../action";
+import * as Actions from "../../action";
 import moment from "moment";
 import reqwest from "utils/reqwest";
 import { baseDir } from "api";
@@ -26,15 +26,15 @@ import { baseDir } from "api";
 import Department from "components/refs/departments";
 import Enum from "utils/components/enums";
 
-import * as enumDataFake from "./enumdata";
-import cityData from "./citydata";
-import Industry from "./industry";
-import CuperiorCustomer from "./superiorCustomer";
-import IcbcInfo from "./icbcInfo";
-import FormMap from "./formMap";
-import UploadImg from "./uploadImg";
-import CityChioce from "./cityChioce";
-import OwnUser from './ownUser'
+import * as enumDataFake from "../data/enumdata";
+import cityData from "../data/citydata";
+import Industry from "./Industry";
+import CuperiorCustomer from "./SuperiorCustomer";
+import IcbcInfo from "./IcbcInfo";
+import FormMap from "./FormMap";
+import UploadImg from "./UploadImg";
+import CityChioce from "./CityChioce";
+import OwnUser from './OwnUser'
 
 const FormItem = Form.Item;
 const { TextArea } = Input;

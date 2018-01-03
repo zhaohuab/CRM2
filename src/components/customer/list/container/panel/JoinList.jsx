@@ -16,7 +16,7 @@ import {
 import { browserHistory } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as Actions from "../action";
+import * as Actions from "../../action";
 
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
@@ -25,7 +25,7 @@ const confirm = Modal.confirm;
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 
-import AddContacts from './addContacts'
+import AddContacts from './AddContacts'
 
 
 class JoinList extends React.Component {

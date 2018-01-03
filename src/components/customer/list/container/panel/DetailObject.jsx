@@ -17,9 +17,9 @@ const Panel = Collapse.Panel;
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as Actions from "../action";
+import * as Actions from "../../action";
 
-import UploadImg from "./uploadImg";
+import UploadImg from "../list/UploadImg";
 
 class DetailObject extends React.Component {
     render(){

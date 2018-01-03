@@ -1,6 +1,6 @@
 import reqwest from "utils/reqwest";
 import { message } from "antd";
-import { cum as url, doc, baseDir } from "api";
+import { cum as url, doc, baseDir,oppstage ,opportunity,contacts} from "api";
 
 //包装发给redux的对象
 const fetchData = (type, payload) => {
@@ -533,6 +533,87 @@ const clearRefContactsForm = ()=>{
 }
 
 
+//获取最新商机列表
+const getOppList = (JoinPagination,id,index)=>{
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: baseDir + 'cum/customers/rel',
+                method: "GET",
+                data: {
+                    param: {
+                        ...JoinPagination,
+                        searchMap:{
+                            cumId:id
+                        } 
+                    }
+                }
+            },
+            result => {
+                debugger;
+                dispatch({
+                    type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
+                    data:result.data,
+                    index
+                });
+            }
+        );
+    };
+}
+
+//删除一条商机
+const delOpp = (ids,pagination)=>{
+    debugger
+    return (dispatch) => {
+        reqwest({
+            url: opportunity.opportunity + '/batch',
+            method: "DELETE",
+            data: {
+                param: {
+                    ids,
+                    ...pagination,
+                    searchMap: {}
+                },
+            }
+        }, (data) => {
+            debugger
+            dispatch({
+                type:'CUSTOMER_VIEWPANEL_DELOPP',
+                ids
+            });
+        })
+    }
+}
+
+//删除一条联系人
+const delContacts = (id,pagination)=>{
+    debugger
+    return (dispatch) => {
+        reqwest(
+            {
+                url: `${contacts.contacts}/batch`,
+                method: "DELETE",
+                data: {
+                    param: {
+                        ...pagination,
+                        searchMap: {},
+                        ids: id
+                    }
+                }
+            },
+            result => {
+                debugger
+                dispatch({
+                    type: "CUSTOMER_VIEWPANEL_DELCONTACTS",
+                    id
+                });
+            }
+        );
+    }
+}
+
+
 //输出 type 与 方法
 export {
     getListData,
@@ -548,7 +629,6 @@ export {
     saveSearchMap,
     editCardFn,
     addCustomer,
-    // icbcInfo,
     customerListInfo,
     customerModal1Show,
     changeStateFn,
@@ -568,7 +648,8 @@ export {
     changeLeftPanel,
     refContactForm,
     refContactFormAdd,
-    clearRefContactsForm
+    clearRefContactsForm,
+    getOppList,
+    delOpp,
+    delContacts
 };
-
-//

@@ -17,9 +17,10 @@ const Panel = Collapse.Panel;
 import { browserHistory } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as Actions from "../action";
+import * as Actions from "../../action";
 
-import ContactsCard from './contactsCard'
+import ContactsCard from './ContactsCard'
+import Opportunity from './Opportunity'
 
 class RelevantObject extends React.Component {
     headerFn(obj){
@@ -35,7 +36,7 @@ class RelevantObject extends React.Component {
         console.log(temp)
       
         let  icon = ['icon-canyuren','icon-lianxirenguanxi','icon-xiansuofenpei','icon-shangji','icon-wenjian']
-    let fn = [[<ContactsCard/>,<i className={'iconfont icon-lianxiren'}/>],'',<i className={'iconfont icon-tianjia'}/>,<i className={'iconfont icon-tianjia'}/>]
+    let fn = [[<ContactsCard/>,<i className={'iconfont icon-lianxiren'}/>],'',<Opportunity CusId={viewData} otherRef={this.otherRef.bind(this)}/>,<i className={'iconfont icon-tianjia'}/>]
     debugger    
     return(
             <Row className='relevant-title' type='flex' justify='space-between' align='middle'>
@@ -58,6 +59,45 @@ class RelevantObject extends React.Component {
         )
     }
 
+    //更改时间
+    changeTime(time,choose){
+        time = new Date(time)
+        let second = time.toLocaleTimeString()
+        let  day= time.toLocaleDateString();
+        let reg = /^(上午|下午)/g;
+
+        second = second.replace(reg,'')
+        day = day.split('/').join('-')
+        if(choose == 'day'){
+            return day
+        }else{
+            return day + ' ' + second
+        }
+    }
+
+    otherRef(){
+        debugger
+        let {viewData} = this.props.$$state.toJS();
+        this.props.action.getOppList(this.props.JoinPagination,viewData.id,2)
+    }
+
+    //删除商机
+    oppDel(id){
+        this.props.action.delOpp(
+            id,
+            this.props.JoinPagination
+        );
+    }
+
+    //删除联系人
+    delContacts(id){
+        debugger
+        this.props.action.delContacts(
+            id,
+            this.props.JoinPagination
+        )
+    }
+
     render(){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
         let tempContacts,tempClue
@@ -67,8 +107,8 @@ class RelevantObject extends React.Component {
                 tempContacts = tempContacts.slice(0,7)
             }
             tempClue = viewDataRelevant[2].list.data
-            if(tempClue.length>=8){
-                tempClue = tempClue.slice(0,7)
+            if(tempClue.length>=6){
+                tempClue = tempClue.slice(0,5)
             }
         }
         
@@ -92,6 +132,7 @@ class RelevantObject extends React.Component {
                                                 <Row  type='flex' justify='center' align='bottom' className='content1'><span className='key'>角色：</span><span className='value' title={item.role}>{item.role}</span></Row>
                                                 <Row  type='flex' justify='center' align='top' className='content2'><span className='key'>态度：</span><span className='value'>{item.attitude}</span></Row>
                                         </Col>
+                                        <span className='del' onClick={this.delContacts.bind(this,item.id)}><i className='iconfont icon-canyuren-shanchu'/></span>
                                     </Row>
                                 )
                             }):'暂无数据'
@@ -102,52 +143,16 @@ class RelevantObject extends React.Component {
                         }
                         </div>
                     </Panel>
-                    <Panel header={this.headerFn({title:'线索',index:2,newBtn:'false'})} key="2" >
-                        <div className='clue-warpper'>
-                            {
-                                viewDataRelevant && viewDataRelevant.length?
-                                viewDataRelevant[1].list.data.map((item)=>{
-                                    return(
-                                        <Row className='clue-warpper-item' type='flex' justify='space-between'>
-                                            <Col span={5} className='left'>
-                                                <i className='iconfont icon-shengji'/>
-                                            </Col>
-                                            <Col span={19} className='right'>
-                                                <Row type='flex' className='main-top'>
-                                                    <Col className='decoret-warpper'>
-                                                        <span className='circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='circle'></span>
-                                                    </Col>
-                                                    <Col className='main' span={20}>
-                                                    <p className='name'>{item.name}</p>
-                                                    <p className='minor'>线索来源：{item.source}</p>
-                                                    <p className='minor'>线索等级：{item.level}</p>
-                                                    <p className='minor'>线索状态：{item.state}</p>
-                                                    </Col>
-                                                </Row>
-                                                <Row className='time' type='flex' align='middle'><span>最后跟进时间：{item.followTime?this.changeTime(item.followTime):'无'}</span></Row>
-                                            </Col>
-                                        </Row>
-                                    )
-                                }):'暂无数据'
-                            }
-                        </div>
-                    </Panel>
-                    <Panel header={this.headerFn({title:'商机',index:3,newBtn:'add'})} key="3" >
-                    <div className='clue-warpper'>
+                    
+                    <Panel header={this.headerFn({title:'商机',index:3,newBtn:'add'})} key="2" >
+                    <div className='business-chance'>
                             {
                                 tempClue && tempClue.length?
                                 tempClue.map((item)=>{
                                     return(
-                                        <Row className='clue-warpper-item  business-chance-item' type='flex' justify='space-between'>
+                                        <Row className='business-chance-item' type='flex' justify='space-between'>
                                             <Col span={5} className='left'>
-                                                <i className='iconfont icon-shengji'/>
+                                                <i className='iconfont icon-shangji'/>
                                             </Col>
                                             <Col span={19} className='right'>
                                                 <Row type='flex' className='main-top' style={{height:'80%'}}>
@@ -163,24 +168,29 @@ class RelevantObject extends React.Component {
                                                         <span className='smail-circle'></span>
                                                         <span className='circle'></span>
                                                     </Col>
-                                                    <Col className='main' span={20}>
+                                                    <Col className='main' span={22}>
                                                     <p className='name'>{item.name}</p>
-                                                    <Row className='minor' type='flex'><Col span={12} className='text-right'>销售阶段：</Col><Col span={12}>{item.saleStageName}</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={12} className='text-right'>阶段停留时间：</Col><Col span={12}>{item.stageResidenceTime}</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={12} className='text-right'>赢单概率：</Col><Col span={12}>{item.winProbability}</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={12} className='text-right'>预计签单金额：</Col><Col span={12}>{item.expectSignMoney}</Col></Row>
+                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>销售阶段：</Col><Col span={11}>{item.saleStageName}</Col></Row>
+                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>阶段停留时间：</Col><Col span={11}>{item.stageResidenceTime}</Col></Row>
+                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>赢单概率：</Col><Col span={11}>{item.winProbability}%</Col></Row>
+                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>预计签单金额：</Col><Col span={11}>￥{item.expectSignMoney}.00</Col></Row>
                                                    
                                                     </Col>
                                                 </Row>
-                                                <Row className='time' type='flex' align='middle' style={{height:'20%'}}><span>预计签单时间：1</span></Row>
+                                                <Row className='time' type='flex' align='middle' style={{height:'20%'}}><span>预计签单时间：{item.expectSignTime?this.changeTime.call(this,item.expectSignTime.time,'day'):'无'}</span></Row>
                                             </Col>
+                                            <span className='del' onClick={this.oppDel.bind(this,item.id)}><i className='iconfont icon-canyuren-shanchu'/></span>
                                         </Row>
                                     )
                                 }):'暂无数据'
                             }
+                            {
+                                viewDataRelevant && viewDataRelevant.length && viewDataRelevant[2].list.data.length>6?
+                                <div className='business-chance-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
+                            }
                         </div>
                     </Panel>
-                    <Panel header={this.headerFn({title:'文件',index:4,newBtn:'add',type:'file'})}  key="4" >
+                    <Panel header={this.headerFn({title:'文件',index:4,newBtn:'add',type:'file'})}  key="3" >
                     3
                     </Panel>
             </Collapse>
@@ -193,7 +203,7 @@ class RelevantObject extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         $$state: state.customerList,
-        $$stateCommon: state.componentReducer
+        $$stateOpp: state.opportunityList,
     };
 }
 //绑定action到组件props

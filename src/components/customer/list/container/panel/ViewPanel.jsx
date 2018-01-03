@@ -16,22 +16,21 @@ import {
 import { browserHistory } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-//导入action方法
-import * as Actions from "../action";
+import * as Actions from "../../action";
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
 
-import IcbcSimpleinfo from "./icbcSimpleinfo";
-import UploadImg from "./uploadImg";
+import IcbcSimpleinfo from "./IcbcSimpleinfo";
+import UploadImg from "../list/UploadImg";
 
-import AssignPerson from './assignPerson'
-import ChangePerson from './changePerson'
-import DetailObject from './detailObject'
-import RelevantObject from './relevantObject'
-import DealObject from './dealObject'
-import DynamicState from './dynamicState'
-import JoinList from './joinList'
+import AssignPerson from './AssignPerson'
+import ChangePerson from './ChangePerson'
+import DetailObject from './DetailObject'
+import RelevantObject from './RelevantObject'
+import DealObject from './DealObject'
+import DynamicState from './DynamicState'
+import JoinList from './JoinList'
 
 //分配table头部
 const columns = [{
@@ -167,7 +166,7 @@ class ViewPanel extends React.Component {
             <div className="view-warrper">
                 <Row className="view-warrper-header">
                     <Row className="header-customer">
-                        <Col span={13}>
+                        <Col span={9}>
                             <Row type="flex" align="middle" gutter={15}>
                                 <Row type="flex" align="middle">
                                     <img
@@ -175,7 +174,7 @@ class ViewPanel extends React.Component {
                                         className="customer-image"
                                     />
                                 </Row>
-                                <Col span={21}>
+                                <Col span={19}>
                                     <Row>
                                         <Row
                                             type="flex"
@@ -267,7 +266,7 @@ class ViewPanel extends React.Component {
                                 </Col>
                             </Row>
                         </Col>
-                        <Col span={11}>
+                        <Col span={15}>
                             <Row
                                 type="flex"
                                 align="middle"
@@ -288,7 +287,11 @@ class ViewPanel extends React.Component {
                                         />
                                     )}
                                 </div>
-
+                                <div>
+                                    <Button>
+                                        <i className="iconfont icon-fuzebumen1" />客户结构图
+                                    </Button>
+                                </div>
                                 <div>
                                     <AssignPerson viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
                                 </div>
@@ -297,7 +300,7 @@ class ViewPanel extends React.Component {
                                 </div>
                                 <div>
                                     <Button>
-                                        <i className="iconfont icon-bianji" />升级
+                                        <i className="iconfont icon-shengji" />升级
                                     </Button>
                                 </div>
                                 <div>
@@ -392,12 +395,12 @@ class ViewPanel extends React.Component {
                     <div>
                         <Col span={18} className="warrper-main-left">
                             <div className="main-left-inner collapse-recover tab-recoverd">
-                                <Tabs defaultActiveKey="1" activeKey = {leftJoinPanelKeys}onTabClick={this.panelTabLeftFn.bind(this)}>
+                                <Tabs defaultActiveKey="1" activeKey = {leftJoinPanelKeys} onTabClick={this.panelTabLeftFn.bind(this)} >
                                     <TabPane tab="详情" key="1">
                                         <DetailObject/>
                                     </TabPane>
                                     <TabPane tab="相关" key="2">
-                                        <RelevantObject/>
+                                        <RelevantObject JoinPagination={this.state.JoinPagination}/>
                                     </TabPane>
                                     <TabPane tab="交易" key="3">
                                         <DealObject/>

@@ -1,7 +1,7 @@
 import { Cascader } from "antd";
 
 import "assets/stylesheet/all/iconfont.css";
-import cityData from "./citydata";
+import cityData from "../data/citydata";
 
 export default class CityChioce extends React.Component {
     onChange(value, selectedOptions) {
