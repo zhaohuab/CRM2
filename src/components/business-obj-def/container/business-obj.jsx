@@ -2,7 +2,7 @@
  * @Author: yangtmm 
  * @Date: 2017-11-06 14:01:09 
  * @Last Modified by: yangtmm
- * @Last Modified time: 2017-12-13 12:57:27
+ * @Last Modified time: 2017-12-14 14:53:54
  */
 
 import React from 'react'
@@ -29,28 +29,27 @@ class BusinessObj extends React.Component {
 
   componentDidMount() {
     //初始请求数据
-    let { $$state, action } = this.props;
-    console.log(this.props.newObj)
-    //action.getBusinessObjList();
+    let { action } = this.props;
+    //获取业务对象列表
+    action.getBusinessObjList();
+    //获取角色
+    action.getRolesList();
   }
 
-  handleCreate = () => {//--保存按钮
+  addData = () => {
+    //debugger;
     let { $$state, action } = this.props;
-    let saveData = $$state.get("editData").toJS();
-    let roleList = $$state.get("roleList").toJS();
-    let editIndex = $$state.get("editIndex");
-    let isEdit = $$state.get("isEdit");
-    //判断是否为编辑
-    let viewRole = roleList.filter((item)=>{
-      return saveData.roles.includes(item.value);//--这个es7的语法，在标准模式下ie11都不支持，我们应该封装抽取出来？？？？
-    })
+    let data = $$state.get("editData").toJS();
+    let editId = $$state.get("editId");
 
-    saveData.roles = viewRole;
-    if(isEdit){
-      action.saveEditBusinessObj(saveData, editIndex);//--这个地方如果是编辑的话我们把redux中获取到的editIndex原封不动的再返回去，有什么作用？？？？
+    let editIndex = $$state.get("editIndex");
+
+    let isEdit = $$state.get("isEdit");
+    if (isEdit) {
+      action.saveEditBusinessObj(data, editId, editIndex);
       return;
     }
-    action.saveAddBusinessObj(saveData);
+    action.saveAddBusinessObj(data);
   }
 
   render() {
@@ -58,13 +57,19 @@ class BusinessObj extends React.Component {
     let { $$state, action } = this.props;
     let editData = $$state.get("editData").toJS();
     //批量渲染card
-    let nodeCard = $$state.get("data").toJS().map((item, index) => {
+    let data = $$state.get("data").toJS()
+
+    //非空验证
+    let nameFlag = $$state.get("nameFlag");
+    let roleFlag = $$state.get("roleFlag");
+
+    let nodeCard = data.map((item, index) => {
       return <Card
-        data={item}
+        data={item.data}
         operations={item.operations}
-        edit={action.editBusinessObjData.bind(this, item, index)}
-        delete={action.delBusinessObjData.bind(this, item, index)}
-        />
+        edit={action.showModalEdit.bind(this, item, index)}
+        delete={action.delBusinessObj.bind(this, item, index)}
+      />
     });
 
     return (
@@ -72,38 +77,28 @@ class BusinessObj extends React.Component {
         <div className='head-panel'>
           <Row gutter={16}>
             <Col className="gutter-row" span={22}>
-              <Operation disabled={0}>
-                <Search
-                  placeholder="搜索业务类型..."
-                  onSearch={action.getBusinessObjList} 
-                  style={{ width: "200px", marginRight: 10 }}
-                />
-              </Operation>
-              <Operation disabled={0}>
-                <Select defaultValue="1" style={{ width: "100px" }}>
-                  <Option value="0">全部</Option>
-                  <Option value="1">启用</Option>
-                  <Option value="2">停用</Option>
-                </Select>
-              </Operation>
             </Col>
             <Col className="gutter-row" span={2} className="text-align-right">
               <Operation disabled={0}>
-                <Button type="primary" icon="plus" onClick={action.addBusinessObjData}>新建</Button>
+                <Button type="primary" icon="plus" onClick={action.showModalAdd}>新建</Button>
               </Operation>
             </Col>
           </Row>
         </div>
         <div className="card-con">{nodeCard}</div>
-        <CreateForm
-          title = {$$state.get("isEdit") ? "编辑业务类型" : "新建业务类型"}
-          ref={ Createform => this.Createform = Createform }
-          visible = {$$state.get('addModelVisible')}
-          editData = {editData}
-          onChange = {action.changeBusinessObjEditData}
-          onCancel = {action.handleCancel}
-          onCreate = {this.handleCreate}
+        <Modal
+          visible={$$state.get('addModelVisible')}
+          title={$$state.get("isEdit") ? "编辑业务类型" : "新建业务类型"}
+          onCancel={action.handleCancel}
+          onOk={this.addData}
+        >
+          <CreateForm
+            data={editData}
+            onChange={action.editBusinessObj}
+            nameFlag={nameFlag}
+            roleFlag={roleFlag}
           />
+        </Modal>
       </div>
     )
   }

@@ -2,7 +2,7 @@
  * @Author: yangtmm 
  * @Date: 2017-11-10 16:30:00 
  * @Last Modified by: yangtmm
- * @Last Modified time: 2017-12-11 13:59:35
+ * @Last Modified time: 2017-12-20 15:00:46
  */
 
 import React from 'react'
@@ -103,14 +103,14 @@ export default class DragFields extends React.Component {
   }
 
   render() {
-    let { sourceList, targetList } = this.props;
+    let { sourceList, targetList, nameFlag, listFlag } = this.props;
 
     //待拖拽块
     let nodeSourceList = sourceList.map((item, index) => {
       let filterBoolean = targetList.filter((listItem) => {
         return item.apiName == listItem.apiName
       })
-      return (filterBoolean.length == 0 || item.apiName == "group") ? <SourceBox {...item} addlist={this.addlist.bind(this)} /> : <div className="sourceBlock disDrag">{item.name}</div>;
+      return (filterBoolean.length == 0 || item.isBlank == 1) ? <SourceBox {...item} addlist={this.addlist.bind(this)} /> : <div className="sourceBlock disDrag">{item.name}</div>;
     });
 
     //已拖拽块-排序
@@ -131,12 +131,16 @@ export default class DragFields extends React.Component {
     return (
       <div className="list-config-mobile-form">
         <Row gutter={16} className="gutter-row">
-          <Col className="gutter-row form-lable" span={2}>
-            *模板名称
-            </Col>
+          <Col className="gutter-row form-lable" span={2}>*模板名称</Col>
           <Col className="gutter-row" span={6}>
             <Input onChange={this.changeName.bind(this)} placeholder="输入名称。。。" value={this.props.name} />
           </Col>
+           {
+            nameFlag?
+            <Col span={4}>
+              <p className='prompt'>*名称不能为空</p>
+            </Col>:''
+          }
         </Row>
         <div className="drag-fields-box">
           <div className="drag-fields-block">
@@ -144,7 +148,13 @@ export default class DragFields extends React.Component {
             {nodeSourceList}
           </div>
           <div className="drag-fields-list-box">
-            <h3>布局：</h3>
+            <div className='error-prompt'>
+              <h3>布局：</h3>
+              {
+                listFlag?
+                <p className='prompt'>*布局列表不能为空</p>:''
+              }
+            </div>
             {nodeTargetList}
             <Dustbin />
           </div>

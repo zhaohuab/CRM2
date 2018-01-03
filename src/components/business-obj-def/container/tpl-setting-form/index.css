@@ -1,0 +1,108 @@
+.tpl-setting-form {
+  height: 510px;
+}
+.tpl-setting-form > .gutter-row {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+.tpl-setting-form .drag-fields-box {
+  height: 400px;
+  display: flex;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-block {
+  width: 370px;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-block .sourceBlock {
+  border: 1px dashed #ccc;
+  background-color: white;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  margin: 10px;
+  width: 80px;
+  cursor: move;
+  float: left;
+  opacity: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-block .disDrag {
+  background-color: #eee;
+  cursor: auto;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box {
+  border: 1px dashed #ddd;
+  padding: 10px;
+  width: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: auto;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box .drag-fields-list-item {
+  position: relative;
+  box-sizing: border-box;
+  margin: 0 0 10px 10px;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  width: 200px;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: move;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box .drag-fields-list-item.list-group {
+  width: 410px;
+  background: #eee;
+  text-align: left;
+  padding-left: 10px;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box .drag-fields-list-item.list-whole-line {
+  width: 410px;
+  text-align: left;
+  padding-left: 10px;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box .drag-fields-list-item .btn-con {
+  position: absolute;
+  display: none;
+  right: 0;
+  top: 0;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box .drag-fields-list-item:hover .btn-con {
+  display: block;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box .drag-fields-list-item .btn-edit {
+  margin: 10px;
+  cursor: pointer;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box .drag-fields-list-item .btn-delete {
+  margin: 10px;
+  cursor: pointer;
+}
+.tpl-setting-form .drag-fields-box .drag-fields-list-box .drag-fields-add {
+  width: 410px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border: 1px dashed #bfbfbf;
+  margin: 10px;
+  box-sizing: border-box;
+}
+.tpl-setting-form .isRequired {
+  margin-right: 4px;
+  color: red;
+}
+.tpl-setting-form .relative-obj {
+  padding: 10px 20px;
+}
+.tpl-setting-edit-model .form-lable {
+  line-height: 28px;
+}
+.tpl-setting-edit-model .text-align-right {
+  text-align: right;
+}
+.tpl-setting-edit-model .gutter-row {
+  margin-bottom: 20px;
+}

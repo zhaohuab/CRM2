@@ -39,12 +39,12 @@ export default class Card extends React.Component {
           <div className="card-header-name">
             {this.props.data.name}
           </div>
-          <div className="card-header-btn">{this.props.data.isDefault == 1 ? "预设" : null}</div>
+          <div className="card-header-btn">{this.props.data.isDefault == 1 ? "预设" : "非预设"}</div>
         </div>
         <div className="card-body">
           <div className="card-body-con">
             <div className="card-body-con-item">
-              <div className="card-body-con-name">描述：</div>
+              <div className="card-body-con-name">适用角色：</div>
               <div className="card-body-con-text">{this.props.data.description}</div>
             </div>
           </div>

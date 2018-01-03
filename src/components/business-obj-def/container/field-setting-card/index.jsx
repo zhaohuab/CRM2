@@ -2,7 +2,7 @@
  * @Author: yangtmm 
  * @Date: 2017-11-10 16:30:00 
  * @Last Modified by: yangtmm
- * @Last Modified time: 2017-12-06 13:41:32
+ * @Last Modified time: 2017-12-14 13:45:05
  */
 
 import React from 'react'
@@ -34,25 +34,47 @@ export default class Card extends React.Component {
 
   constructor(props) {
     super(props);
-    this.typeReferences = ["单行文本", "多行文本", "下拉菜单"]
   }
 
   render() {
-    let typeReferencesComponents = {
+  /*   let typeReferencesComponents = {
       1: <Input style={{ width: 120 }} placeholder="" />,
-      2: <TextArea style={{ width: 120 }} rows={2} />,
-      3: <Select style={{ width: 120 }} defaultValue={"无"}><Option value="lucy">Lucy</Option></Select>
+      3: <TextArea style={{ width: 120 }} rows={2} />,
+      16: <Select style={{ width: 120 }} defaultValue={"无"}><Option value="lucy">Lucy</Option></Select>
+    } */
+
+     let typeReferencesComponents = {
+      1: '单行文本',
+      2: '平铺单选',
+      3: '多行文本',
+      4: '布尔型',
+      5: '整型',
+      6: '浮点型',
+      7: '多选',
+      8:	'图像',
+      9:	'货币',
+      10:	'日期',
+      11:	'日期时间',
+      12:	'电话',
+      13:	'邮箱',
+      14:	'网址',
+      15:	'位置',
+      16:	'参照'
     }
 
     return (
       <div className="field-setting-card">
-        <Row gutter={8}>
-          <Col span={6} ><label title={this.props.data.name}>{this.props.data.name}</label></Col>
-          <Col span={12} >
-            <div className="mask-layer"></div>
-            {typeReferencesComponents[this.props.data.type]}
+        <Row gutter={8} type='flex' align='middle'>
+          <Col span={20}>
+          <Row type="flex" align="middle">
+              <Col span={24} style={{width:'100%',height:'50%'}}>名称：{this.props.data.name}</Col>
+              <Col span={24} style={{width:'100%',height:'50%'}}>
+                <div className="mask-layer"></div>
+                类型：{typeReferencesComponents[this.props.data.type]}
+              </Col>
+            </Row>
           </Col>
-          <Col span={6} >
+          <Col span={4} >
             {
               this.props.operations.edit ?
                 <span className="field-setting-card-btn" title={"编辑"} onClick={this.props.edit}>

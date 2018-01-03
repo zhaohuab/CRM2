@@ -2,7 +2,7 @@
  * @Author: yangtmm 
  * @Date: 2017-11-06 14:01:34 
  * @Last Modified by: yangtmm
- * @Last Modified time: 2017-11-30 10:49:25
+ * @Last Modified time: 2017-12-21 14:41:35
  */
 
 import fetchData from 'utils/fetchdata';
@@ -16,138 +16,132 @@ const confirm = Modal.confirm;
 
 //请求初始业务对象列表
 const getBusinessObjList = (val) => {
-	debugger;
 	return (dispatch, getState) => {
+		message.destroy()
 		message.loading('搜索中..', 0);
 		reqwest({
-			url: baseDir + "sys/modules/3/biztypes",
-			method: 'get',
-			data: JSON.stringify({
-				value: val
-			})
+			url: baseDir + "sys/modules/5/biztypes",
+			method: 'get'
 		}, (data) => {
 			message.destroy()
 			dispatch(fetchData('business_obj_data', {
-				data: []
+				data: data.data
 			}));
 		})
 	}
 }
 
-//搜索输入框筛选业务类型
-const searchBusinessObj = (val, cardData) => {
-	return (dispatch) => {
+//请求初始业务对象列表
+const getRolesList = () => {
+	return (dispatch, getState) => {
+		message.destroy()
 		message.loading('搜索中..', 0);
-		setTimeout(() => {
+		reqwest({
+			url: baseDir + "sys/roles",
+			method: 'get'
+		}, (data) => {
 			message.destroy()
-		}, 1000);
+			dispatch(fetchData('business_obj_get_roles', {
+				data: data.data
+			}));
+		})
 	}
 }
 
-//点击下拉框筛选业务类型
-const selectChangeSearchBusinessObj = (val, cardData) => {
-	return (dispatch) => {
-		message.loading('搜索中..', 0);
-		setTimeout(() => {
-			message.destroy()
-		}, 1000);
-	}
-}
 
 //保存新建业务对象
-const saveAddBusinessObj = (addData) => {
-	return {
-		type:"business_obj_save_add_data",
-		content: {
-			addData
+const saveAddBusinessObj = (data) => {
+	let nameFlag , roleFlag;
+	if(!data.name||!data.roleIds.length){//非空验证
+		nameFlag = data.name ? false : true;
+		roleFlag = data.roleIds.length ? false : true;
+		return {
+			type: "business_obj_error_show",
+			content: {
+				nameFlag,
+				roleFlag
+			}
 		}
 	}
-	
-	// return (dispatch, getState) => {
-	// 	message.loading('搜索中..', 0);
-	// 	reqwest({
-	// 		url: baseDir + "sys/modules/3/biztypes",
-	// 		method: 'get',
-	// 		data: JSON.stringify({
-	// 			value: val
-	// 		})
-	// 	}, (data) => {
-	// 		debugger
-	// 		message.destroy()
-	// 		dispatch(fetchData('business_obj_data', {
-	// 			data: []
-	// 		}));
-	// 	})
-	// }
+	return (dispatch, getState) => {
+		message.destroy()
+		message.loading('搜索中..', 0);
+		reqwest({
+			url: baseDir + "sys/modules/5/biztypes",
+			method: 'post',
+			data: {
+				param: data
+			}
+		}, (data) => {
+			message.destroy()
+			dispatch(fetchData('business_obj_save_add_data', {
+				data: data.data
+			}));
+		})
+	}
 }
 
 //保存编辑业务对象
-const saveEditBusinessObj = (editData, editIndex) => {
-	return {
-		type:"business_obj_save_edit_data",
-		content: {
-			editData,
-			editIndex
+const saveEditBusinessObj = (data, editId, index) => {
+	let nameFlag , roleFlag;
+	if(!data.name||!data.roleIds.length){//非空验证
+		nameFlag = data.name ? false :true;
+		roleFlag = data.roleIds.length ? false : true;
+		return {
+			type: "business_obj_error_show",
+			content: {
+				nameFlag,
+				roleFlag
+			}
 		}
 	}
-	// return (dispatch, getState) => {
-	// 	message.loading('搜索中..', 0);
-	// 	reqwest({
-	// 		url: baseDir + "sys/modules/3/biztypes",
-	// 		method: 'get',
-	// 		data: JSON.stringify({
-	// 			value: val
-	// 		})
-	// 	}, (data) => {
-	// 		debugger
-	// 		message.destroy()
-	// 		dispatch(fetchData('business_obj_data', {
-	// 			data: []
-	// 		}));
-	// 	})
-	// }
+	return (dispatch, getState) => {
+		message.destroy()
+		message.loading('搜索中..', 0);
+		reqwest({
+			url: `${baseDir}sys/biztypes/${editId}`,
+			method: 'put',
+			data: {
+				param: data
+			}
+		}, (data) => {
+			message.destroy()
+			dispatch(fetchData('business_obj_save_edit_data', {
+				data: data.data,
+				index
+			}));
+		})
+	}
 }
 
 
 //删除业务类型
-const delBusinessObjData = (item, index) => {
-	return {
-		type: "business_obj_del_data",
-		content: {item, index}
+const delBusinessObj = (item, index) => {
+	return (dispatch, getState) => {
+		message.destroy()
+		message.loading('搜索中..', 0);
+		reqwest({
+			url: `${baseDir}sys/biztypes/${item.data.id}`,
+			method: 'delete',
+		}, (data) => {
+			message.destroy()
+			dispatch(fetchData('business_obj_del_data', {
+				index
+			}));
+		})
 	}
-	
-	// return (dispatch, getState) => {
-	// 	message.loading('搜索中..', 0);
-	// 	reqwest({
-	// 		url: baseDir + "sys/modules/3/biztypes",
-	// 		method: 'get',
-	// 		data: JSON.stringify({
-	// 			ids: [id]
-	// 		})
-	// 	}, (data) => {
-	// 		debugger
-	// 		message.destroy()
-	// 		dispatch(fetchData('business_obj_data', {
-	// 			data: []
-	// 		}));
-	// 	})
-	// }
 }
 
-//添加业务类型-弹出框
-const addBusinessObjData = () => {
+//弹出框-添加业务类型
+const showModalAdd = () => {
 	return {
 		type: "business_obj_add_showModal",
 		val: "",
 	}
 }
 
-//编辑业务类型-弹出框
-const editBusinessObjData = (item, index) => {
-	item.roles = item.roles.map((item)=>{
-		return item.value
-	})
-
+//弹出框-编辑业务类型
+const showModalEdit = (item, index) => {
 	return {
 		type: "business_obj_edit_showModal",
 		content: {
@@ -157,10 +151,10 @@ const editBusinessObjData = (item, index) => {
 	}
 }
 
-//改变编辑业务类型数据-弹出框
-const changeBusinessObjEditData = (keyName, val) => {
+//弹出框-改变编辑业务类型数据
+const editBusinessObj = (keyName, val) => {
 	return {
-		type: "business_obj_change_edit_data",
+		type: "business_obj_change_data",
 		content: {
 			keyName,
 			val
@@ -179,23 +173,16 @@ const handleCancel = () => {
 
 //输出方法
 export {
+	//列表增删改
 	getBusinessObjList,
-	searchBusinessObj,
-	selectChangeSearchBusinessObj,
-
-	addBusinessObjData,
+	getRolesList,
 	saveAddBusinessObj,
-
-	editBusinessObjData,
-	changeBusinessObjEditData,
 	saveEditBusinessObj,
-
-	delBusinessObjData,
-
+	delBusinessObj,
+	
+	//添加编辑框本地操作
+	showModalAdd,
+	showModalEdit,
+	editBusinessObj,
 	handleCancel,
 }
-
-/* 
-  这个返回一个无名函数的形式和直接返回一个对象的形式的区别是什么？？怎么实现的一致效果？？？？
-
-*/

@@ -2,7 +2,7 @@
  * @Author: yangtmm 
  * @Date: 2017-11-06 14:00:33 
  * @Last Modified by: yangtmm
- * @Last Modified time: 2017-12-06 13:44:53
+ * @Last Modified time: 2017-12-22 18:47:07
  */
 
 import React from 'react'
@@ -23,28 +23,31 @@ class FieldSet extends React.Component {
   }
 
   componentDidMount() {
-    //action.getFieldSettingList();
+    let { $$state, action } = this.props;
+    action.getFieldSettingList();
+    action.getFieldtTypeList();
   }
 
   render() {
 
     let { $$state, action } = this.props;
-
-    let nodeMainModuleCard = $$state.get("data").get("mainModule").get("fields").toJS().map((item, index) => {
+    let nameFlag =  $$state.get("nameFlag");
+    let objId = $$state.get($$state.get("moduleType") + "Id");
+    let nodeMainModuleCard = $$state.get("mainModuleData").toJS().map((item, index) => {
       return <Card
         data={item.data}
         operations={item.operations}
-        edit={action.editFieldSettingShow.bind(this, item.data, index, "mainModule")}
-        delete={action.delFieldSetting.bind(this, item.data, index, "mainModule")}
+        edit={action.editFieldSettingShow.bind(null, item.data, index, "mainModule")}
+        delete={action.delFieldSetting.bind(null, item.data, index, "mainModule")}
       />
     });
-    
-    let nodeItemModuleCard = $$state.get("data").get("itemModule").get("fields").toJS().map((item, index) => {
+
+    let nodeItemModuleCard = $$state.get("itemModuleData").toJS().map((item, index) => {
       return <Card
         data={item.data}
         operations={item.operations}
-        edit={action.editFieldSettingShow.bind(this, item.data, index, "itemModule")}
-        delete={action.delFieldSetting.bind(this, item.data, index, "itemModule")}
+        edit={action.editFieldSettingShow.bind(null, item.data, index, "itemModule")}
+        delete={action.delFieldSetting.bind(null, item.data, index, "itemModule")}
       />
     });
 
@@ -52,36 +55,50 @@ class FieldSet extends React.Component {
       <div className="field-setting-warpper">
         <Row className="field-setting-title">
           <Col span={22} className="title">主体字段</Col>
-          <Col span={2} className="text-align-right" ><Button type="primary" icon="plus" onClick={action.addFieldSettingShow}>新建</Button></Col>
+          <Col span={2} className="text-align-right" ><Button type="primary" icon="plus" onClick={action.addFieldSettingShow.bind(null, "mainModule")}>新建</Button></Col>
         </Row>
         <div className="card-con">
           {nodeMainModuleCard}
         </div>
         <Row className="field-setting-title">
           <Col span={22} className="title">产品明细字段</Col>
-          <Col span={2} className="text-align-right" ><Button type="primary" icon="plus" onClick={action.addFieldSettingShow}>新建</Button></Col>
+          <Col span={2} className="text-align-right" ><Button type="primary" icon="plus" onClick={action.addFieldSettingShow.bind(null, "itemModule")}>新建</Button></Col>
         </Row>
         <div className="card-con">
           {nodeItemModuleCard}
         </div>
-        <AddForm
+        <Modal
           title={"创建字段"}
+          width={800}
           visible={$$state.get('addModelVisible')}
-          formControls={$$state.get("formControls").toJS()}
-          addData={$$state.get("addData").toJS()}
-          onChange = {action.changeAddData}
           onCancel={action.addFieldSettingHide}
-          onAdd={action.onAdd.bind(null, $$state.get("addData").toJS())}
-          checkFormControls = {action.checkFormControls}
-        />
-        <EditForm
+          onOk={action.saveAddField.bind(null, $$state.get("addData").toJS(), objId)}
+          style={{ top: 10 }}
+        >
+          <AddForm
+            formTypeList = {$$state.get("formTypeList").toJS()}
+            data={$$state.get("addData").toJS()}
+            menuData = {$$state.get("menuData").toJS()}
+            onChange={action.changeAddData}
+            checkFormControls={action.checkFormControls}
+            refChoice={action.refChoice}
+            nameFlag = {nameFlag}
+          />
+        </Modal>
+        <Modal
           title={"编辑字段"}
+          width={500}
           visible={$$state.get('editModelVisible')}
-          editData={$$state.get("editData").toJS()}
-          onChange = {action.changeEditData}
+          onOk={action.saveEditField.bind(null, $$state.get("editData").toJS())}
           onCancel={action.eidtFieldSettingHide}
-          onSave={action.onSave.bind(null, $$state.get("editData").toJS())}
-        />
+          style={{ top: 10 }}
+        >
+          <EditForm
+            data={$$state.get("editData").toJS()}          
+            onChange={action.changeEditData}
+            nameFlag={nameFlag}
+          />
+        </Modal>
       </div>
     )
   }
@@ -103,3 +120,4 @@ function mapDispatchToProps(dispatch) {
 
 //输出绑定state和action后组件
 export default connect(mapStateToProps, mapDispatchToProps)(FieldSet);
+ 

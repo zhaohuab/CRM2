@@ -102,7 +102,7 @@ export default class DragFields extends React.Component {
   }
 
   render() {
-    let { sourceList, sourceListDetail, targetList } = this.props;
+    let { sourceList, sourceListDetail, targetList, nameFlag, listFlag } = this.props;
 
     //待拖主体字段
     let nodeSourceList = sourceList.map((item, index) => {
@@ -121,6 +121,12 @@ export default class DragFields extends React.Component {
           <Col className="gutter-row" span={6}>
             <Input onChange={this.changeName.bind(this)} placeholder="输入名称。。。" value={this.props.name} />
           </Col>
+          {
+            nameFlag?
+            <Col span={4}>
+              <p className='prompt'>*名称不能为空</p>
+            </Col>:''
+          }
         </Row>
         <div className="drag-fields-box">
           <div className="drag-fields-block" style = {{ borderRight: "1px solid #eee" }}>
@@ -128,7 +134,14 @@ export default class DragFields extends React.Component {
             {nodeSourceList}
           </div>
         </div>
-        <h3>列表布局：</h3>
+        <div className='error-prompt'>
+          <h3>列表布局：</h3>
+          {
+            listFlag?
+            <p className='prompt'>*列表布局不能为空</p>:''
+          }
+        </div>
+        
         <Dustbin 
           targetList = {targetList} 
           moveCard={this.moveCard}

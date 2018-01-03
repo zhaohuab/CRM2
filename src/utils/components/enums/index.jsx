@@ -25,6 +25,15 @@ class Enum extends React.Component {
     };
 
     render() {
+        let addOptionAll = null,
+            dataSource = null;
+        if(this.props.attr){
+            addOptionAll = this.props.attr.addOptionAll;
+            dataSource = this.props.attr.dataSource;
+        }else{
+            addOptionAll = this.props.addOptionAll;
+            dataSource = this.props.dataSource;
+        }
         let key = "";
         if (this.props.value) {
             if (this.props.value.key) {
@@ -40,20 +49,20 @@ class Enum extends React.Component {
             <div>
                 <Select
                     value={
-                        this.props.addOptionAll != undefined && key == ""
+                        addOptionAll != undefined && key == ""
                             ? "0"
                             : key
                     }
                     onSelect={this.onSelect}
                 >
-                    {this.props.addOptionAll != undefined ? (
+                    {addOptionAll != undefined ? (
                         <Option key={"0"}>
-                            {"全部" + this.props.addOptionAll}
+                            {"全部" + addOptionAll}
                         </Option>
                     ) : (
                         ""
                     )}
-                    {this.trans(this.props.dataSource)}
+                    {this.trans(dataSource)}
                 </Select>
             </div>
         );

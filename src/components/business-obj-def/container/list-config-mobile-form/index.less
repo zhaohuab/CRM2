@@ -16,12 +16,16 @@
             .sourceBlock {
                 border: 1px dashed #ccc;
                 background-color: white;
-                padding: 0.5rem 1rem;
-                margin-right: 1.5rem;
-                margin-bottom: 1.5rem;
+                height: 30px;
+                line-height: 30px;
+                margin: 10px;
+                width: 80px;
                 cursor: move;
                 float: left;
                 opacity: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
             .disDrag {
                 background-color: #eee;
@@ -36,10 +40,20 @@
             flex-wrap: wrap;
             align-content: flex-start;
             overflow: auto;
-            h3 {
+            .error-prompt{
                 width: 100%;
-                margin-bottom: 10px;
+                position:relative;
+                h3 {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+                .prompt{
+                    position:absolute;
+                    left: 70px;
+                    top:0;
+                }
             }
+           
             .drag-fields-list-item {
                 position: relative;
                 box-sizing: border-box;

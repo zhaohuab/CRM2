@@ -3,53 +3,41 @@ import Immutable from 'immutable'
 let $$initialState = {
     loading: false, //请求加载动画
     addModelVisible: false,
-    data: [{
-        name: "业务类型1",
-        des: "描述业务类型1",
-        isDefault: 1,
-        roles: [{
-            label: '管理员',
-            value: "admin"
-        }, {
-            label: '经理',
-            value: "manager"
-        }, {
-            label: '普通用户',
-            value: "normal"
-        }]
-    }, {
-        name: "业务类型2",
-        des: "描述业务类型2",
-        isDefault: 0,
-        roles: [{
-            label: '经理',
-            value: "admin"
-        }, {
-            label: '普通用户',
-            value: "manager"
-        }]
-    }],
+    nameFlag: false,//名称非空验证控制
+    roleFlag: false,//角色非空验证控制
+    data: [
+        //   {
+        //     id: 1,
+        //     name: "业务类型1",
+        //     description: "描述业务类型1",
+        //     isDefault: 1,
+        //     roles: [],
+        //     isCustom: 1,
+        //     isEnabled: 1
+        // }
+    ],
     isEdit: false,
+    editId: 0,
     editIndex: 0,
     editData: {
         name: "",
-        des: "",
-        isDefault: 0,
-        roles: []
+        description: "",
+        roleIds: []
     },
     roleList: [{
-            label: '管理员',
-            value: 'admin'
-        },
-        {
-            label: '经理',
-            value: 'manager'
-        },
-        {
-            label: '普通用户',
-            value: 'normal'
-        }
-    ]
+        code: "ZJL",
+        deletedTime: null,
+        deletedUserId: 0,
+        description: "",
+        id: 10,
+        industryId: 0,
+        isDeleted: 0,
+        isPreseted: 2,
+        isPresetedName: "否",
+        name: "总经理",
+        orgId: 1249,
+        orgName: "公司C"
+    }]
 };
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
@@ -61,32 +49,42 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 isEdit: false,
                 editData: {
                     name: "",
-                    des: "",
-                    isDefault: 0,
-                    roles: []
+                    description: "",
+                    roleIds: []
                 }
             })
 
         case 'business_obj_edit_showModal':
             return $$state.merge({
                 addModelVisible: true,
-                editData: action.content.item,
+                editData: {
+                    name: action.content.item.data.name,
+                    description: action.content.item.data.description,
+                    roleIds: action.content.item.data.roles.map((item)=>item.id)
+                },
                 editIndex: action.content.index,
+                editId: action.content.item.data.id,
                 isEdit: true
             })
 
         case 'business_obj_hideModal':
             return $$state.merge({
-                addModelVisible: false
+                addModelVisible: false,
+                nameFlag: false,
+                roleFlag: false,
             })
 
         case 'business_obj_data':
             return $$state.merge({
                 data: action.content.data
             })
+        case 'business_obj_get_roles':
+            return $$state.merge({
+                roleList: action.content.data
+            })
         case 'business_obj_del_data':
             return $$state.deleteIn(["data", action.content.index])
-        case 'business_obj_change_edit_data':
+        case 'business_obj_change_data':
             return $$state.merge({
                 editData: {
                     ...$$state.get("editData").toJS(),
@@ -96,15 +94,24 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
         case 'business_obj_save_add_data':
             return $$state.merge({
                 addModelVisible: false,
-                data: $$state.get("data").toJS().concat(action.content.addData)
+                nameFlag: false,
+                roleFlag: false,
+                data: [action.content.data].concat($$state.get("data").toJS()),
             });
         case 'business_obj_save_edit_data':
             let data = $$state.get("data").toJS()
-            data.splice(action.content.editIndex, 1, action.content.editData)
+            data.splice(action.content.index, 1, action.content.data)
             return $$state.merge({
                 addModelVisible: false,
+                nameFlag: false,
+                roleFlag: false,
                 data
             })
+        case 'business_obj_error_show':
+            return $$state.merge({
+                nameFlag: action.content.nameFlag,
+                roleFlag: action.content.roleFlag,
+            });
         default:
             return $$state;
     }
