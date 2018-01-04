@@ -18,6 +18,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 //导入action方法
 import * as Actions from "../action";
+
+import DetailObject from './DetailObject'
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
@@ -31,8 +33,15 @@ class ViewPanel extends React.Component {
         this.state={
            
         }
+        this.menu = (
+            <Menu>
+                <Menu.Item key="1">关闭</Menu.Item>
+                <Menu.Item key="2">激活</Menu.Item>
+            </Menu>
+        );
     }
 
+    
     // //打开编辑按钮
     // btnEdit() {
     //     debugger
@@ -111,16 +120,8 @@ class ViewPanel extends React.Component {
         debugger;
         let {editData} = this.props.$$state.toJS();
         let viewData=editData;
-
-        let defaultList = [
-            {
-                uid: -1,
-                name: "xxx.png",
-                status: "done",
-                url:
-                    "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            }
-        ];
+        
+        debugger
        
         return (
             <div className="view-warrper">
@@ -142,7 +143,7 @@ class ViewPanel extends React.Component {
                                             gutter={25}
                                         >
                                             <div className="customer-name">
-                                                {/* {viewData.name} */}
+                                                {viewData.ownerUserInfo.name}
                                             </div>
 
                                             <Row
@@ -152,7 +153,7 @@ class ViewPanel extends React.Component {
                                                 className="pointer"
                                             >
                                             
-                                                {/* <div>
+                                                <div>
                                                     {viewData.followFlag ==
                                                     0 ? (
                                                         <span
@@ -175,7 +176,7 @@ class ViewPanel extends React.Component {
                                                             <i className="iconfont icon-yiguanzhu" />已关注
                                                         </span>
                                                     )}
-                                                </div> */}
+                                                </div>
                                                 <div className="checked-iconfont">
                                                   <span>
                                                       <i className="iconfont icon-taolun">讨论</i>
@@ -185,8 +186,23 @@ class ViewPanel extends React.Component {
                                         </Row>
         
                                         <Row className="tags">
-                                         
-                                        </Row>
+                                        <div className="tag-group">
+                                            {viewData.sourceName ? (
+                                                <span>
+                                                    {viewData.sourceName}
+                                                </span>
+                                            ) : (
+                                                <div />
+                                            )}
+                                            {viewData.stateName ? (
+                                                <span>
+                                                    {viewData.stateName}
+                                                </span>
+                                            ) : (
+                                                <div />
+                                            )}
+                                        </div>
+                                    </Row>
                                     </Row>
                                 </Col>
                             </Row>
@@ -209,9 +225,15 @@ class ViewPanel extends React.Component {
                                     </Button>
                                 </div>
                                 <div>
-                                    <Button>
-                                        <i className="iconfont icon-bianji" />更多
-                                    </Button>
+                                <Dropdown
+                                overlay={this.menu}
+                                trigger={["click"]}
+                            >
+                                <Button>
+                                    更多
+                                    <Icon type="down" />
+                                </Button>
+                            </Dropdown>
                                 </div>
                             </Row>
                         </Col>
@@ -262,7 +284,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {/* {viewData.companyName} */}
+                                    {viewData.companyName}
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -280,7 +302,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {/* {viewData.stateName} */}
+                                    {viewData.stateName}
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -289,7 +311,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                   老王
+                                  {viewData.ownerUserInfo.name}
                                 </Row>
                             </Col>
                         </Row>
@@ -302,7 +324,7 @@ class ViewPanel extends React.Component {
                             <div className="main-left-inner collapse-recover tab-recoverd">
                                 <Tabs defaultActiveKey="1">
                                     <TabPane tab="资料" key="1">
-                                        {/* <DetailObject viewData={viewData}/> */}
+                                        <DetailObject viewData={viewData}/>
                                     </TabPane>
                                     <TabPane tab="相关" key="2">
                                         {/* <RelevantObject/> */}
@@ -377,8 +399,7 @@ class ViewPanel extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList,
-        $$stateCommon: state.componentReducer
+        $$state: state.clue
     };
 }
 //绑定action到组件props

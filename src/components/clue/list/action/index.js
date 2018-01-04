@@ -9,11 +9,32 @@ const fetchData = (type, payload) => {
     };
 };
 
+function transData(searchMap) {
+    if (searchMap == null) {
+        return searchMap;
+    }
+    let change = searchMap.province_city_district;
+    if (change) {
+        searchMap.province = change[0];
+        searchMap.city = change[1];
+        searchMap.district = change[2];
+        delete searchMap.province_city_district;
+    }
+    if (searchMap.signTime) {
+        searchMap.followTimeStart = searchMap.signTime[0].format('YYYY-MM-DD HH:mm:ss');
+        searchMap.followTimeEnd = searchMap.signTime[1].format('YYYY-MM-DD HH:mm:ss');
+        searchMap.signTime = undefined;
+    }
+    return searchMap;
+}
+
+
 
 //获取数据、基础查询数据、扩展查询数据
 export function getListData(pagination, searchMap){
     return dispatch => {
         dispatch(fetchData("CLUE_LIST_SAVESEARCHMAP", searchMap));
+        debugger
         reqwest(
             {
                 url: url.lead,
@@ -21,12 +42,12 @@ export function getListData(pagination, searchMap){
                 data: {
                     param: {
                         ...pagination,
-                        searchMap
+                        searchMap:transData(searchMap)
                     }
                 }
             },
             data => {
-              // debugger
+               debugger
                 dispatch(
                     fetchData("CLUE_LIST_GETDATA", {
                         data: data,
@@ -38,7 +59,39 @@ export function getListData(pagination, searchMap){
     };
 };
 
+//获取查询条件初始值
+export function getEnumData() {
+    return dispatch => {
+        reqwest(
+            {
+                url: url.doc,
+                method: "get",
+                data: {
 
+                }
+            },
+            data => { //level source
+                debugger
+                dispatch(
+                    fetchData("CLUE_LIST_GETENUMDATA", {
+                        enumData: data.enumData
+                    })
+                );
+            }
+        );
+    };
+};
+
+
+
+
+//往redux中存基础、扩展查询条件
+export function saveSearchMap(data){
+    return {
+        type: "CLUE_LIST_SEARCHMAP",
+        data
+    };
+};
 
 //保存已选择的数据
 export function selectClue(selectedRows, selectedRowKeys) {
@@ -61,7 +114,7 @@ export function  deleteData(ids, searchMap, pagination) {
                     param: {
                         ids: ids.join(","),
                         ...pagination,
-                        searchMap
+                        searchMap: transData(searchMap)
                     }
                 }
             },
@@ -78,6 +131,12 @@ export function  deleteData(ids, searchMap, pagination) {
     };
 };
 
+//控制查询显隐
+export function changeVisible(){
+    return {
+        type: "CLUE_LIST_CHANGEVISIBLE"
+    };
+};
 
 //显示modal
 export function showForm(data) {
@@ -187,14 +246,14 @@ export function editCardFn(changeData) {
 //展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id){
     return dispatch => {
-         //debugger
+         debugger
         reqwest(
             {
                 url: url.lead + "/" + id,
                 method: "GET"
             },
             data => {
-                //debugger
+                debugger
                         dispatch({
                             type: "CLUE_LIST_SHOWVIEWFORM",
                             visible,

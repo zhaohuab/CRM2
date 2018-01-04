@@ -5,7 +5,6 @@ import cityData from "./citydata";
 
 export default class CityChioce extends React.Component {
     onChange(value, selectedOptions) {
-
         debugger;
         let city = [];
         selectedOptions.forEach(item => {

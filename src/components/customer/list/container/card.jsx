@@ -802,7 +802,7 @@ class EditForm extends React.Component {
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-       // debugger
+        debugger
         let viewData = props.$$state.toJS().viewData;
         let value = {};
         debugger

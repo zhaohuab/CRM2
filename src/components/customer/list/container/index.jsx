@@ -145,7 +145,7 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-       // debugger;
+       debugger;
 
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {

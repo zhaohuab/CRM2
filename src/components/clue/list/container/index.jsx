@@ -16,10 +16,11 @@ import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import Card from "./Card.jsx";
 
 //查询头部简单列表
-import LessCard from "./LessCard.jsx";
-//点击更多的列表
-import MoreCard from "./MoreCard.jsx";
 
+//点击更多的列表
+
+import LessForm from "./LessForm.jsx";
+import MoreForm from "./MoreForm.jsx";
 //点击滑出详情信息
 import SlidePanel from "../../../common/slidePanel/index.jsx";
 import ViewPanel from "./ViewPanel";
@@ -112,7 +113,6 @@ class Clue extends React.Component {
                 enableState: 1
             },
             //上方条件选择保存更多状态
-            more: false,
             viewState: false,
 
 
@@ -123,6 +123,7 @@ class Clue extends React.Component {
 
     //显示面板
     slideShow(record) {
+        debugger
         //console.log(44,record)
         this.props.action.showViewForm(true, record.id);
     }
@@ -132,13 +133,7 @@ class Clue extends React.Component {
         this.props.action.hideViewForm(false);
     }
 
-   
-    //展开收起搜索条件
-    showFn() {
-        this.setState({
-            more: !this.state.more
-        });
-    }
+
 
     //分页方法
     showTotal(total) {
@@ -160,6 +155,27 @@ class Clue extends React.Component {
     }
 
 
+    //上下表单控制显隐
+    changeVisible() {
+        this.props.action.changeVisible();
+    }
+    //扩展条件、基础条件查询
+    handleSearch(searchMap) {
+        debugger;
+        if (searchMap.industry) {
+            searchMap.industry = searchMap.industry.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+        }
+
+        this.props.action.getListData(
+            this.props.$$state.get("pagination").toJS(),
+            searchMap
+        );
+    }
+
+    //存储建议查询条件
+    searchMapFn(searchMap) {
+        this.props.action.saveSearchMap(searchMap);
+    }
 
 
     // 删除按钮
@@ -212,7 +228,7 @@ class Clue extends React.Component {
             data.province = change[0];
             data.city = change[1];
             data.district = change[2];
-           data.province_city_district='';
+            data.province_city_district = '';
         }
         //详细地址
         // if (data.address) {
@@ -281,7 +297,7 @@ class Clue extends React.Component {
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
-        //this.props.action.getEnumData();
+        this.props.action.getEnumData();
     }
 
 
@@ -291,7 +307,8 @@ class Clue extends React.Component {
         let {
             editData,
             visible,
-            viewState
+            viewState,
+            moreShow
         } = this.props.$$state.toJS();
 
         //debugger;
@@ -308,115 +325,129 @@ class Clue extends React.Component {
         //新建表单
         //const ClueForm = Form.create({})(Card);
         //查询列表头部简单搜索表单
-        const ClueLessForm = Form.create({})(LessCard);
+        // const ClueLessForm = Form.create({})(LessCard);
         //查询列表头部负载搜索表单
-        const ClueMoreFrom = Form.create({})(MoreCard);
+        // const ClueMoreFrom = Form.create({})(MoreCard);
 
         return (
             <div className="clue-warpper">
 
-                {selectedRowKeys && selectedRowKeys.length ? (
-                    <HeaderButton
-                        length={selectedRowKeys.length}
-                        goBack={this.headerBack.bind(this)}
-                    >
+                <Row className="header-warpper">
+                    {selectedRowKeys && selectedRowKeys.length ? (
+                        <HeaderButton
+                            length={selectedRowKeys.length}
+                            goBack={this.headerBack.bind(this)}
+                        >
 
-                        {selectedRowKeys.length == 1 ? (
-                            <Button onClick={this.onEdit.bind(this)}>
-                                <i className="iconfont icon-bianji" />编辑
+                            {selectedRowKeys.length == 1 ? (
+                                <Button onClick={this.onEdit.bind(this)}>
+                                    <i className="iconfont icon-bianji" />编辑
                                 </Button>
-                        ) : (
-                                ""
-                            )}
+                            ) : (
+                                    ""
+                                )}
 
-                        <Button>
-                            <i className="iconfont icon-xiansuofenpei" />线索分配
+                            <Button>
+                                <i className="iconfont icon-xiansuofenpei" />线索分配
                         </Button>
-                        <Button onClick={this.onDelete.bind(this)}>
-                            <i className="iconfont icon-shanchu" />删除
+                            <Button onClick={this.onDelete.bind(this)}>
+                                <i className="iconfont icon-shanchu" />删除
                         </Button>
-                    </HeaderButton>
-                ) : (
-                        <div className="crm-container-header">
+                        </HeaderButton>
+                    ) : (
                             <Row>
-                                <Col span={18}>
-                                    <Row type="flex" gutter={15} align="middle">
-                                        <div>
-                                            <Select defaultValue="我负责">
-                                                <Option value="1">全部</Option>
-                                                <Option value="2">我负责</Option>
-                                                <Option value="3">我参与</Option>
-                                                <Option value="4">我关注</Option>
-                                                <Option value="5">成功转化</Option>
-                                                <Option value="6">失败关闭</Option>
-                                            </Select>
-                                        </div>
-                                        <Col span="21">
-                                            <div
-                                                className={
-                                                    this.state.more
-                                                        ? "less-hide-height"
-                                                        : "less-show-height"
-                                                }
-                                            >
-                                                <ClueLessForm
-                                                    showFn={this.showFn.bind(
-                                                        this
-                                                    )}
-                                                />
-                                            </div>
-                                        </Col>
-                                    </Row>
-                                </Col>
-
-                                <Col span={6}>
-                                    <Row type="flex" justify="end">
-                                        <Col span={24}>
-                                            <Row
-                                                type="flex"
-                                                justify="end"
-                                                gutter={15}
-                                            >
-                                                <div>
-                                                    <Button
-                                                        type="primary"
-                                                        onClick={this.btnNew.bind(
+                                <Row
+                                    type="flex"
+                                    align="middle"
+                                    justify="space-between"
+                                    className="header-top"
+                                >
+                                    <Col span={18}>
+                                        <Row type="flex" align="middle">
+                                            <Col className="select-recover">
+                                                <Select defaultValue="我负责" >
+                                                    <Option value="1">全部</Option>
+                                                    <Option value="2">我负责</Option>
+                                                    <Option value="3">我参与</Option>
+                                                    <Option value="4">我关注</Option>
+                                                    <Option value="5">成功转化</Option>
+                                                    <Option value="6">失败关闭</Option>
+                                                </Select>
+                                            </Col>
+                                            <Col span="21">
+                                                <div
+                                                    className={
+                                                        moreShow
+                                                            ? "less-hide-height"
+                                                            : "less-show-height"
+                                                    }
+                                                >
+                                                    <LessForm
+                                                        handleSearch={this.handleSearch.bind(
                                                             this
-                                                        )}
-                                                    >
-                                                        <i className="iconfont icon-xinjian" />新建
-                                                    </Button>
-                                                </div>
-                                                <div>
-                                                    <Dropdown
-                                                        overlay={this.menu}
-                                                        trigger={["click"]}
-                                                    >
-                                                        <Button>
-                                                            更多
-                                                            <Icon type="down" />
-                                                        </Button>
-                                                    </Dropdown>
-                                                </div>
-                                            </Row>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
-                            <Row
-                                className={
-                                    this.state.more
-                                        ? "more-show-height"
-                                        : "less-hide-height"
-                                }
-                            >
-                                <ClueMoreFrom
-                                    showFn={this.showFn.bind(this)}
-                                />
-                            </Row>
-                        </div>
-                    )}
+                                                        )} //点击查询方法
+                                                        searchMapFn={this.searchMapFn.bind(
+                                                            this
+                                                        )} //动态赋值查询条件到redux中
+                                                        formMore={this.changeVisible.bind(
+                                                            this
+                                                        )} //控制查询显隐
+                                                    />
 
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+
+                                    <Col span={6}>
+                                        <Row type="flex" justify="end">
+                                            <Col span={24}>
+                                                <Row
+                                                    type="flex"
+                                                    justify="end"
+                    
+                                                >
+                                                    <div>
+                                                        <Button
+                                                            type="primary"
+                                                            onClick={this.btnNew.bind(
+                                                                this
+                                                            )}
+                                                        >
+                                                            <i className="iconfont icon-xinjian" />新建
+                                                    </Button>
+                                                    </div>
+                                                    <div>
+                                                        <Dropdown.Button
+                                                            overlay={this.menu}
+                                                            trigger={["click"]}
+                                                        >                  
+                                                                更多
+                                                        </Dropdown.Button>
+                                                    </div>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                                <div className="header-bottom">
+                                    <Row
+                                        className={
+                                            moreShow
+                                                ? "more-show-height"
+                                                : "less-hide-height"
+                                        }
+                                    >
+                                        <MoreForm
+                                            handleSearch={this.handleSearch.bind(this)} //点击查询方法
+                                            searchMapFn={this.searchMapFn.bind(this)} //动态赋值查询条件到redux中
+                                            formMore={this.changeVisible.bind(this)} //控制查询显隐
+                                        />
+                                    </Row>
+                                </div>
+                            </Row>
+                        )}
+                </Row>
                 <div className="tabel-bg tabel-recoverd">
                     <Table
                         size="middle"

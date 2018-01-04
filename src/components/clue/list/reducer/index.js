@@ -14,7 +14,12 @@ let $$initialState = {
     editData: {},
     viewState: false,
     data: {}, //table展示的数据 
-
+    moreShow:false,
+    enumData: {//查询条件数据
+        level: [],
+        source: [],
+        state: []
+    },
     //data: [
     // {
     //     id: 1,
@@ -135,7 +140,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 searchMap: action.payload == undefined ? {} : action.payload
             });
 
-
         case "CLUE_LIST_SELECTCLUE": //保存已选择的数据
             return $$state.merge({
                 selectedRows: Immutable.fromJS(action.payload.selectedRows),
@@ -192,6 +196,18 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 visible: action.data
             });
 
+            case "CLUE_LIST_CHANGEVISIBLE": //查询功能显示
+            let visit = $$state.get("moreShow");
+            return $$state.merge({ moreShow: !visit });
+
+            case "CLUE_LIST_SEARCHMAP": //存放扩展、基础查询条件
+            debugger
+            return $$state.merge({
+                searchMap: action.data
+            });
+            case "CLUE_LIST_GETENUMDATA": //获取查询条件基础显示内容
+            return $$state.merge({ enumData: action.payload.enumData });
+
         //点击编辑获取数据
         case "CLUE_LIST_EDIT":
             //debugger
@@ -230,7 +246,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         case "CLUE_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
-            //debugger
+            debugger
             let actionData = action.data;
             // actionData.industry = {
             //     id: actionData.industry,
@@ -240,19 +256,19 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             //     id: actionData.parentId,
             //     name: actionData.parentName
             // };
-            // actionData.followState = action.state.followState;
-            // actionData.province_city_district = [
-            //     actionData.province.toString(),
-            //     actionData.city.toString(),
-            //     actionData.district.toString()
-            // ];
+            //actionData.followState = action.state.followState;
+            actionData.province_city_district = [
+                actionData.province.toString(),
+                actionData.city.toString(),
+                actionData.district.toString()
+            ];
 
             // actionData.ownerUserId = { id: actionData.salesVOs[0].ownerUserId, name: actionData.salesVOs[0].ownerUserName }
             return $$state.merge({
                 viewState: action.visible,
                 editData: actionData
             });
-            case "CLUE_LIST_HIDEVIEWFORM":
+        case "CLUE_LIST_HIDEVIEWFORM":
             return $$state.merge({
                 viewState: action.payload.visible,
             });

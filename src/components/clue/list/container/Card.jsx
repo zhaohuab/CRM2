@@ -41,6 +41,8 @@ class EditForm extends React.Component {
 
         return (
             <div>
+                 <Row className="form-input-recover">
+                    <Row>
                 <Form>
                     {/* <div className="card-header-title">
                         基本信息{" "}
@@ -132,7 +134,7 @@ class EditForm extends React.Component {
                         </Col>
                         <Col span={11}>
                             <FormItem label="电子邮件" {...formItemLayout}>
-                                {getFieldDecorator("mail", {
+                                {getFieldDecorator("email", {
 
                                 })(<Input placeholder="请输入..." />)}
                             </FormItem>
@@ -158,7 +160,7 @@ class EditForm extends React.Component {
                         <Col span={2}>
                             <Row
                                 type="flex"
-                                justify="end"
+                                justify="start"
                             >
                                 <div>省/市/区：</div>
                             </Row>
@@ -190,6 +192,8 @@ class EditForm extends React.Component {
                         </Col>
                     </Row>
                 </Form>
+                </Row>
+                </Row>
             </div>
         );
     }
@@ -197,6 +201,7 @@ class EditForm extends React.Component {
 
 const cardForm = Form.create({
     mapPropsToFields: (props) => {
+        
         //把redux中的值取出来赋给表单
         //debugger
         let viewData = props.$$state.toJS().editData;
@@ -214,6 +219,7 @@ const cardForm = Form.create({
 
             value[key] = { value: viewData[key] };
             }
+           
             //address  把字段合成对象
             return {
                 ...value
@@ -265,7 +271,7 @@ const cardForm = Form.create({
 
     },
     onFieldsChange: (props, onChangeFild) => {
-        debugger
+        
         //往redux中写值
         let viewData = props.$$state.toJS().editData;
    
