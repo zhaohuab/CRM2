@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import moment from "moment";
 import * as Actions from "../action";
-import CuperiorCustomer from "components/customer/list/container/superiorCustomer";
+import CuperiorCustomer from "components/customer/list/container/list/SuperiorCustomer";
 import Enum from 'utils/components/enums'
 
 const FormItem = Form.Item;
@@ -80,6 +80,7 @@ class Card extends React.Component {
                                 }],
                             })(
                                 <CuperiorCustomer
+                                    cusId={this.props.cusId}
                                     width={500}
                                 />
                                 )}
@@ -214,7 +215,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
         onFieldsChange(props, fields) {
             let fieldsChangeData = {};
-            
             let data = props.$$state.get("editData").toJS();
             for (let item in fields) {
                 if(item=="createdTime"||item=="expectSignTime"){

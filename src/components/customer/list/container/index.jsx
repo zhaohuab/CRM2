@@ -20,12 +20,12 @@ const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
 const TabPane = Tabs.TabPane;
 
-import Card from "./card";
-import ViewPanel from "./ViewPanel";
-import ToolForm from "./ButtonTool.jsx";
+import Card from "./list/Card";
+import ViewPanel from "./panel/ViewPanel";
+import ToolForm from "./list/ButtonTool.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
-import PanelMap from "./panelMap";
-import PanelState from "./panelState";
+import PanelMap from "./map/PanelMap";
+import PanelState from "./state/PanelState";
 
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";

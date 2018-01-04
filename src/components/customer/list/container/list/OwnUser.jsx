@@ -9,7 +9,7 @@ import {
 
 
 import "assets/stylesheet/all/iconfont.css";
-import PersonChioce from './personChioce'
+import PersonChioce from '../panel/PersonChioce'
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 
@@ -39,7 +39,6 @@ export default class OwnUser extends React.Component {
 
     //table选中方法
     selectedTableList(selectedRowKeys,selectedRows){
-        
         this.setState({
             result:{id:selectedRowKeys[0],name:selectedRows[0].name},
             selectedTableRowKeys:selectedRowKeys
@@ -71,8 +70,6 @@ export default class OwnUser extends React.Component {
         );
     }
     onOk(){
-        
-        
         this.setState({
             visible:false,
             treeList:[],

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as Actions from "../action";
+import * as Actions from "../../action";
 var moment = require("moment");
 import {
     Select,
@@ -29,7 +29,7 @@ import "echarts/lib/chart/scatter";
 import "echarts/lib/chart/effectScatter";
 import "echarts/lib/chart/custom";
 import "echarts/extension/bmap/bmap.js";
-import customerEcharts from "./customerEchart";
+import customerEcharts from "../data/customerEchart";
 
 class PanelMap extends React.Component {
     constructor(props) {

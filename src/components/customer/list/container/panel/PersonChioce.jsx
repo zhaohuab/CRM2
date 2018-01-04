@@ -17,8 +17,6 @@ const TreeNode = Tree.TreeNode;
 
 import "assets/stylesheet/all/iconfont.css";
 
-
-
 export default class PersonChioce extends React.Component {
     constructor(props){
         super(props)

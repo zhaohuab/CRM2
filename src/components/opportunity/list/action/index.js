@@ -127,7 +127,6 @@ const getListData = (pagination, searchMap) => {
 }
 
 const listAddSave = (data) => {
-
     return (dispatch) => {
         reqwest({
             url: url.opportunity,
@@ -136,6 +135,7 @@ const listAddSave = (data) => {
                 param: transData(data)
             }
         }, (data) => {
+            debugger
             dispatch(fetchData('OPPORTUNITY_LIST_ADDSAVE', transReceiveDataOne(data)));
         })
     }

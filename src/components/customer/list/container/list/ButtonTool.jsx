@@ -20,11 +20,11 @@ const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 import "assets/stylesheet/all/iconfont.css";
 //导入action方法
-import * as Actions from "../action";
+import * as Actions from "../../action";
 
-import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
-import LessForm from "./lessForm.jsx";
-import MoreForm from "./moreForm.jsx";
+import HeaderButton from "../../../../common/headerButtons/headerButtons.jsx";
+import LessForm from "./LessForm.jsx";
+import MoreForm from "./MoreForm.jsx";
 import cookie from "utils/cookie";
 
 class ToolForm extends React.Component {

@@ -31,6 +31,8 @@ let $$initialState = {
     leftJoinPanelKeys:'1',//保存详情面板右侧面板选项卡选中值
     RightJoinPanelKeys:'1',//保存详情面板左侧面板选项卡选中值,
     contactsCardData:{},//保存联系人相关对象输入值
+    clueCardList:{},//保存商机新增表单数据
+    clueTableList:{},//保存商机新增表单table数据
 };
 
 function pageAdd(page, item) {
@@ -221,8 +223,9 @@ export default function orgReducers(
                 RightJoinPanelKeys:action.index
             });
         case 'CUSTOMER_VIEWPANEL_PANELLEFT_LIST'://点击详情面板中左侧详情部分列表数据
+        debugger
             return $$state.merge({
-                leftJoinPanelKeys:action.index,
+                leftJoinPanelKeys:action.index+'',
                 viewDataRelevant:action.data
             });
         case 'CUSTOMER_VIEWPANEL_PANELLEFT_SETLIST'://只能加参与人
@@ -245,13 +248,31 @@ export default function orgReducers(
             });
         case "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD"://增加联系人对象    
            let addContacts = $$state.get('viewDataRelevant').toJS()
-           addContacts[0].contactList.data.push(action.data)
+           debugger
+           addContacts[0].contactList.data.unshift(action.data)
            return $$state.merge({
                 viewDataRelevant:addContacts
            });
         case "CUSTOMER_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM":
             return $$state.merge({
                 contactsCardData:{}
+            });
+        case 'CUSTOMER_VIEWPANEL_DELOPP':
+            let delOpp = $$state.get('viewDataRelevant').toJS();
+            delOpp[2].list.data = delOpp[2].list.data.filter((item)=>{
+                return item.id != action.ids
+            })
+            debugger
+            return $$state.merge({
+                viewDataRelevant:Immutable.fromJS(delOpp)
+            });
+        case 'CUSTOMER_VIEWPANEL_DELCONTACTS':
+            let delContacts = $$state.get('viewDataRelevant').toJS();
+            delContacts[0].list.data = delContacts[0].list.data.filter((item)=>{
+                return item.id != action.id
+            })
+            return $$state.merge({
+                viewDataRelevant:Immutable.fromJS(delContacts)
             });
         default:
             return $$state;

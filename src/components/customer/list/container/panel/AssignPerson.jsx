@@ -15,7 +15,7 @@ import {
 } from "antd";
 
 import "assets/stylesheet/all/iconfont.css";
-import PersonChioce from './personChioce'
+import PersonChioce from './PersonChioce'
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 
@@ -30,7 +30,7 @@ const columns = [{
     key: 'deptName',
 }];
 
-export default class AddContacts extends React.Component {
+export default class AssignPerson extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -44,8 +44,7 @@ export default class AddContacts extends React.Component {
     }
 
     //点击分配方法
-     assignFn(e){
-        e.stopPropagation()
+     assignFn(){
         debugger
         let { viewData } = this.props
         let orgId = viewData.orgId
@@ -77,7 +76,6 @@ export default class AddContacts extends React.Component {
         let orgId = viewData.orgId;//组织id
         let deptId = selectedKeys[0];//部门id
         let searchMap = {orgId,deptId}
-        debugger
         reqwest(
             {
                 url: baseDir+'sys/users/ref',
@@ -101,33 +99,40 @@ export default class AddContacts extends React.Component {
 
     //分配modal确定
     handleOk(){
+        if(!this.state.result){
+            this.setState({
+                visible:false,
+                treeList:[],
+                personList:[],
+                selectedTableRowKeys:[],
+                selectedTreeKeys:[],
+                result:''
+            })
+            return
+        }
         let { viewData } = this.props
-        let cumId = viewData.id
-        debugger
-        let userId = this.state.result.id
+        let id = viewData.salesVOs[0].id
+        let salesVOs = {ownerUserId:this.state.result.id}
+
         reqwest(
             {
-                url: baseDir + 'cum/customer/relusers',
-                method: "POST",
+                url: baseDir + "/cum/customersales/" +id,
+                method: "PUT",
                 data: {
-                    param: {
-                        cumId,
-                        userId
-                    }
+                    param: salesVOs
                 }
             },
             data => {
                 if(data){
                     debugger
-                    this.props.changeViewData(data)
-                    // let nv = viewData.salesVOs[0]
-                    // if(this.state.result){
-                    //     nv.ownerUserName = this.state.result.value
-                    //     nv.ownerUserId = this.state.result.id
-                    //     viewData.ownerUserId = {id:nv.ownerUserId,name:nv.ownerUserName}    
-                    //     //{id: 60, name: "李天赐"}
-                    //     this.props.changeViewData(viewData)
-                    // }
+                    let nv = viewData.salesVOs[0]
+                    if(this.state.result){
+                        nv.ownerUserName = this.state.result.value
+                        nv.ownerUserId = this.state.result.id
+                        viewData.ownerUserId = {id:nv.ownerUserId,name:nv.ownerUserName}    
+                        //{id: 60, name: "李天赐"}
+                        this.props.changeViewData(viewData)
+                    }
                 }
                 debugger
                 this.setState({
@@ -166,15 +171,16 @@ export default class AddContacts extends React.Component {
     render(){
         return(
             <div>
-                <div className='add-contacts-btn' onClick={this.assignFn.bind(this)}>
-                    <Icon type="plus" />
-                </div>
+                {
+                    this.props.title?this.props.title:<Button onClick={this.assignFn.bind(this)}><i className="iconfont icon-fenpeijiaose" />分配</Button>
+                }
+                
                 <Modal
-                    title="增加参与人"
+                    title="分配"
                     visible={this.state.visible}
                     onOk={this.handleOk.bind(this)}
                     onCancel={this.handleCancel.bind(this)}
-                    width={700}
+                    width={500}
                     maskClosable={false}
                 >
                     <PersonChioce 
@@ -185,6 +191,7 @@ export default class AddContacts extends React.Component {
                         selectedRowKeys = {this.state.selectedTableRowKeys}
                         selectedKeys = {this.state.selectedTreeKeys}
                         columns = {columns}
+                        height= {300}
                     />
                 </Modal>
             </div>

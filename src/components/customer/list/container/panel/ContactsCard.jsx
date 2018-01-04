@@ -21,12 +21,14 @@ const RadioGroup = Radio.Group;
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as Actions from "../action";
+import * as Actions from "../../action";
 
 import Email from "utils/components/emails";
-import Tags from "../../../common/tags/tags.jsx";
-import CustomTags from "../../../common/tags/custom-tags.jsx";
-import CuperiorCustomer from './superiorCustomer'
+import Tags from "../../../../common/tags/tags.jsx";
+import CustomTags from "../../../../common/tags/custom-tags.jsx";
+import CuperiorCustomer from '../list/SuperiorCustomer'
+import ContactsDepart from './ContactsDepart'
+import OwnUser from '../list/OwnUser'
 
 class ContactsCard extends React.Component {
     constructor(props){
@@ -38,7 +40,7 @@ class ContactsCard extends React.Component {
 
     cardShow(e){
         e.stopPropagation()
-        //this.props.action.clearRefContactsForm()
+        this.props.action.clearRefContactsForm()
         this.setState({
             visit:true
         })
@@ -56,6 +58,9 @@ class ContactsCard extends React.Component {
         this.props.form.validateFields((err, values) => {
             debugger
             if(!err){
+                this.setState({
+                    visit:false
+                })
                 reqwest(
                     {
                         url: baseDir +'cum/contacts',
@@ -68,11 +73,7 @@ class ContactsCard extends React.Component {
                     },
                     data => {
                         debugger
-                        this.setState({
-                            visit:false
-                        },()=>{
-                            this.props.action.refContactFormAdd(data)
-                        })
+                        this.props.action.refContactFormAdd(data)
                     }
                 );
             }
@@ -145,7 +146,7 @@ class ContactsCard extends React.Component {
                                 <Col span={11}>
                                     <FormItem label="负责人" {...formItemLayout}>
                                         {getFieldDecorator("ownerUserId")(
-                                            <Input placeholder="请输入..." />
+                                             <Input placeholder="请输入..." />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -172,7 +173,7 @@ class ContactsCard extends React.Component {
                                 <Col span={11}>
                                     <FormItem label="部门" {...formItemLayout}>
                                         {getFieldDecorator("deptId")(
-                                            <Input placeholder="请输入..." />
+                                           <ContactsDepart viewData={viewData}/>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -291,7 +292,10 @@ const cardForm = Form.create({
         //把redux中的值取出来赋给表单
         let {contactsCardData,viewData} = props.$$state.toJS()
         let value = {};
+        //把客户id保存
         value.customer = {value:viewData.id}
+        //保存部门id
+        value.deptId = {value:viewData.salesVOs[0].ownerDeptId}
         for (let key in contactsCardData) {
             value[key] = { value: contactsCardData[key] };
         }
@@ -307,8 +311,10 @@ const cardForm = Form.create({
         for (let key in onChangeFild) {
             contactsCardData[key] = onChangeFild[key].value;
         }
-        
+        //把客户id保存
         contactsCardData.customer = viewData.id
+        //保存部门id
+        contactsCardData.deptId = viewData.salesVOs[0].ownerDeptId
         props.action.refContactForm(contactsCardData);
     }
 })(ContactsCard);

@@ -146,7 +146,11 @@ export default class CuperiorCustomer extends React.Component {
     onOk() {
         debugger
         if (this.props.onChange) {
-            this.props.onChange(this.state.select);
+            if(this.props.cusId){
+                this.props.onChange({id:this.props.cusId.id,name:this.props.cusId.name});
+            }else{
+                this.props.onChange(this.state.select);
+            }
             this.setState(
                 {
                     visible: false,
@@ -282,8 +286,8 @@ export default class CuperiorCustomer extends React.Component {
             <div>
                 <div className="reference-warpper">
                     {
-                        this.props.show?
-                        <Input disabled value={this.props.viewData.name}/>:
+                        this.props.cusId?
+                        <Input disabled value={this.props.cusId.name}/>:
                         <Dropdown
                             overlay={this.choiceIndustry()} //生成下拉结构样式
                             trigger={["click"]}

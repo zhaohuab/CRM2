@@ -6,7 +6,7 @@ import moment from 'moment';
 import PrdClass from 'components/refs/prdtype'
 import AttrsGrpRef from './AttrsGrpRef'
 import FatherClassInput from './FatherClass'
-import CuperiorCustomer from "components/customer/list/container/superiorCustomer";
+import CuperiorCustomer from "components/customer/list/container/list/SuperiorCustomer";
 const FormItem = Form.Item;
 
 class PrdClassForm extends React.Component {

@@ -9,18 +9,20 @@ import {
     Button,
     Icon
 } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import Enum from "utils/components/enums";
 const FormItem = Form.Item;
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
+
+import * as Actions from "../../action";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Enum from "utils/components/enums";
+
 import "assets/stylesheet/all/iconfont.css";
-import * as Actions from "../action";
-import cityData from "./citydata";
-import * as enumDataFake from "./enumdata";
-import Industry from "./industry";
+import cityData from "../data/citydata";
+import * as enumDataFake from "../data/enumdata";
+import Industry from "./Industry";
 
 class MoreForm extends React.Component {
     constructor(props) {

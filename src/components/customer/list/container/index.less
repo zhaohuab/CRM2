@@ -255,16 +255,20 @@
                         box-sizing: border-box;
                         margin-bottom: -10px;
                         margin-left: .5%;
+                        border-radius:10px;
                         .contacts-warpper-item{
                             width:24%;
                             height:100px;
                             display: flex;
                             margin-right:1%;
                             margin-bottom:10px;
+                            cursor: pointer;
+                            border-radius:10px;
+                            box-shadow: 2px 2px 6px #d4d7dc;
                             .left{
                                 background:url("../images/contacts-bg.png") 0 0 no-repeat #3CA4FB;
-                                border-top-left-radius: 5px;
-                                border-bottom-left-radius: 5px;
+                                border-top-left-radius: 10px;
+                                border-bottom-left-radius: 10px;
                                 color:white;
                                 .iconfont{
                                     font-size:21px;
@@ -282,8 +286,8 @@
                             }
                             .right{
                                 background: white;
-                                border-top-right-radius: 5px;
-                                border-bottom-right-radius: 5px;
+                                border-top-right-radius: 10px;
+                                border-bottom-right-radius: 10px;
                                 
                                 .content1{
                                     height:50px;
@@ -306,13 +310,231 @@
                                     width:65%;
                                 }
                             }
+                            .del{
+                                display: none;
+                                justify-content: center;
+                                width:20px;
+                                height:20px;
+                                text-align: center;
+                                position: absolute;
+                                top:-3px;
+                                right:-5px;
+                                z-index: 5;
+                                color:#FF6258;
+                                .iconfont{
+                                    margin-left:4px;
+                                }
+                            }
                         }
-                        .contacts-warpper-item:nth-of-type(5n-1){
-                            margin-right:0
+                        .contacts-warpper-item:nth-of-type(4n){
+                            margin-right:0;
+                        }
+                        .item-more{
+                            justify-content: center;
+                            align-items: center;
+                            cursor: pointer;
+                            box-shadow:unset;
+                            .more{
+                                margin-right:5px;
+                            }
+                        }
+                        
+                    }
+                    
+                    .business-chance{
+                        width:100%;
+                        display: flex;
+                        flex-wrap: wrap;
+                        padding:10px 0;
+                        padding-bottom:0;
+                        box-sizing: border-box;
+                        margin-left:.45%;
+                        
+                        .business-chance-item{
+                            width:32.3%;
+                            height:150px;
+                            margin-right:1%;
+                            background: white;
+                            border-radius:10px;
+                            box-shadow: 2px 2px 6px #d4d7dc;
+                            margin-bottom:10px;
+                            position: relative;
+                            cursor: pointer;
+                            .del{
+                                display: none;
+                                justify-content: center;
+                                width:20px;
+                                height:20px;
+                                text-align: center;
+                                position: absolute;
+                                top:-3px;
+                                right:-5px;
+                                z-index: 5;
+                                color:#FF6258;
+                                .iconfont{
+                                    margin-left:4px;
+                                }
+                            }
+                            .text-right{
+                                text-align: right;
+                                display: flex;
+                                justify-content: flex-end;
+                            }
+                            .left{
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-left:6px solid #ccc;
+                                font-size:30px;
+                                border-right:1px solid #eaeaea;
+                                border-top-left-radius: 10px;
+                                border-bottom-left-radius: 10px;
+                                color:#ccc ; 
+                                .iconfont{
+                                    transform: scale(2.3,2.3);
+                                    margin-left:10px;
+                                }                         
+                            }
+                            .right{
+                                padding:10px;
+                                box-sizing: border-box;
+                                height: 100%;
+                                border-top-right-radius: 10px;
+                                border-bottom-right-radius: 10px;
+                               
+                                    .main-top{
+                                        height:70%;
+                                        display: flex;
+                                        flex-direction: column;
+                                        .decoret-warpper{
+                                            height: 100%;
+                                            width:10px;
+                                            display: flex;
+                                            flex-direction: column;
+                                            .circle{
+                                                width: 6px;
+                                                height:6px;
+                                                border:1px solid #ccc;
+                                                border-radius: 6px;
+                                                display: block;
+                                            }
+                                            .circle:nth-of-type(1){
+                                                margin-bottom:6px;
+                                            }
+                                            .smail-circle{
+                                                width: 3px;
+                                                height: 3px;
+                                                display: block;
+                                                margin-bottom: 7px;
+                                                border-radius: 100%;
+                                                margin-left: 1.9px;
+                                                background: rgb(228, 228, 228);
+                                            }
+                                        }
+                                        .main{
+                                            height:100%;
+                                            .name{
+                                                height:25px;
+                                                color:#333;
+                                                overflow: hidden;
+                                                text-overflow:ellipsis;
+                                                white-space: nowrap;
+                                            }
+                                            .minor{
+                                                color:#999;
+                                                overflow: hidden;
+                                                text-overflow:ellipsis;
+                                                white-space: nowrap;
+                                            }
+                                        }
+                                }
+                                .time{
+                                    height:30%;
+                                    align-items: flex-end;
+                                    span{
+                                        color:#CCCCCC;
+                                        transform: scale(.8,.8);
+                                        transform-origin: 0;
+                                    }
+                                }
+                            }
+                        } 
+                        .item-more{
+                            display: flex;
+                            background: unset;
+                            justify-content: center;
+                            align-items: center;
+                            cursor: pointer;
+                            box-shadow:unset;
+                            .more{
+                                margin-right:5px;
+                            }
                         }
                     }
-                   
+                    .contacts-warpper-item:hover,.business-chance-item:hover{
+                        .del{
+                            display: block
+                        }
+                    }
+                    .business-chance-item:nth-of-type(4n){
+                        margin-right:1%;
+                    }
+                    .business-chance-item:nth-of-type(3n+1){
+                        .left{
+                            border-left:6px solid #3CA4FB;
+                            color:#3CA4FB
+                        }
+                        .right{
+                            .main-top{
+                                .decoret-warpper{
+                                    .circle{
+                                        border:1px solid #3CA4FB;
+                                    }
+                                    .smail-circle{
+                                        background: #3CA4FB;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .business-chance-item:nth-of-type(3n+2){
+                        .left{
+                            border-left:6px solid #52A439;
+                            color:#52A439
+                        }
+                        .right{
+                            .main-top{
+                                .decoret-warpper{
+                                    .circle{
+                                        border:1px solid #52A439;
+                                    }
+                                    .smail-circle{
+                                        background: #52A439;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .business-chance-item:nth-of-type(3n+3){
+                        .left{
+                            border-left:6px solid #F7A508;
+                            color:#F7A508
+                        }
+                        .right{
+                            .main-top{
+                                .decoret-warpper{
+                                    .circle{
+                                        border:1px solid #F7A508;
+                                    }
+                                    .smail-circle{
+                                        background: #F7A508;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+                
             }
             .warrper-main-right {
                 background: white;
@@ -925,5 +1147,8 @@
 /*客户中联系人card样式*/
 .refs-panel-contacts-card{
     height:400px;
-   
+    overflow-y:auto;
+    margin: -15px; 
 }
+
+/*客户对象商机modal中样式*/
