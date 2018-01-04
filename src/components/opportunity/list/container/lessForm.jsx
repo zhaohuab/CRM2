@@ -17,6 +17,7 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
+        let that = this;
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.action.getListData(this.props.$$state.get("pagination").toJS(), values);
@@ -38,23 +39,28 @@ class LessForm extends React.Component {
             wrapperCol: { span: 22 }
         };
         let { enumData } = this.props.$$state.toJS();
+       
         return (
             <div className="less-form">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
                     <Row type="flex" align="middle" style={{ height: "54px" }}>
                         <Col span={8}>
+
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("searchKey", {})(
-                                    <Input type="text" placeholder="商机名称" />
+                                {getFieldDecorator("type", {})(
+                                    <Enum
+                                        addOptionAll={"商机类型"}
+                                        dataSource={enumData.biztypeList}
+                                    />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={8}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("type22", {})(
+                                {getFieldDecorator("saleStage", {})(
                                     <Enum
                                         addOptionAll={"商机阶段"}
-                                        dataSource={enumDataFake.levelEnum}
+                                        dataSource={enumData.stageList?enumData.stageList:[]}
                                     />
                                 )}
                             </FormItem>
@@ -79,29 +85,22 @@ class LessForm extends React.Component {
 }
 
 const WarpMilForm = Form.create({
-    // mapPropsToFields: props => {
-    //     //把redux中的值取出来赋给表单
-    //     let searchMap = props.$$state.toJS().searchMap;
-    //     let value = {};
-    //     for (let key in searchMap) {
-    //         value[key] = { value: searchMap[key] };
-    //     }
-    //     return {
-    //         ...value
-    //     };
-    // },
-    // onFieldsChange: (props, onChangeFild) => {
-    //     //往redux中写值//把值进行更新改变
-    //     let searchMap = props.$$state.toJS().searchMap;
-    //     for (let key in onChangeFild) {
-    //         if (onChangeFild[key].value.key) {
-    //             searchMap[key] = onChangeFild[key].value.key;
-    //         } else {
-    //             searchMap[key] = onChangeFild[key].value;
-    //         }
-    //     }
-    //     props.searchMapFn(searchMap);
-    // }
+
+    onFieldsChange: (props, onChangeFild) => {
+        //往redux中写值//把值进行更新改变
+        let { enumData } = props.$$state.toJS();
+        for (let key in onChangeFild) {
+            if (key == 'type' ) {
+                for(let i=0;i<enumData.biztypeList.length;i++){
+                    if(onChangeFild[key].value.key == enumData.biztypeList[i].key){
+                        enumData.stageList = enumData.biztypeList[i].stageList;
+                    }
+                    
+                }
+            }
+        }
+        props.action.saveEnum(enumData);
+    }
 })(LessForm);
 
 //绑定状态到组件props

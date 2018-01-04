@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Icon, Input, Row, Col } from "antd";
-import Immutable from "immutable";
+
+import './index.less'
 
 export default class CustomTags extends React.Component {
     constructor(props) {
@@ -124,8 +125,8 @@ export default class CustomTags extends React.Component {
         let { dataSource, value } = this.props;
         let result = this.combine(dataSource, this.toArray(value));
         return (
-            <div className="contact-tag-warrper">
-                <div className="contact-tag-group">
+            <div className="tag-ref-warrper">
+                <div className="tag-ref-group">
                     {result && result.length
                         ? result.map((item, index) => {
                               return (
