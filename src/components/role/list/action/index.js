@@ -57,6 +57,30 @@ const getFuncTreeData = () => {
 	}
 
 }
+const selectRow = (selectedRows, selectedRowKeys) => {
+    return (dispatch)=>{
+		dispatch(fetchData("ROLE_LIST_SELECTROW",{selectedRows,selectedRowKeys}))
+	}
+};
+const selectRowTab = (rowId,tabIndex) => {
+	debugger
+    return (dispatch) => {
+		reqwest({
+			url: `${url.role}/${rowId}`,
+			method: "GET",
+			data: {
+				tabIndex:tabIndex,
+			},
+		},result => {
+			dispatch(fetchData('ROLE_LIST_SELECTROWTAB', { ...result }));
+		})
+	}
+};
+const onTabClick = (tabIndex) => {
+    return (dispatch)=>{
+		dispatch(fetchData("ROLE_LIST_TABSELECT",{tabIndex}))
+	}
+};
 
 const onSaveRole4Add = (data, index) => {
 	return (dispatch) => {
@@ -114,5 +138,8 @@ export {
 	onSaveRole4Add,
 	onSaveRole4Edit,
 	onDelete,
-	getFuncTreeData
+	getFuncTreeData,
+	selectRow,
+	onTabClick,
+	selectRowTab,
 }
