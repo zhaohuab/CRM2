@@ -215,7 +215,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 
 		case 'OPPORTUNITY_LIST_SHOWLOSTCARD':
-		debugger
 			return $$state.merge({
 				lostCardVisible: action.payload.visible,
 				lostReason: action.payload.lostReason,

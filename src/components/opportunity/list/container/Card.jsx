@@ -17,10 +17,11 @@ class Card extends React.Component {
     componentDidMount() {
 
     }
-  
+
     render() {
         const { getFieldDecorator } = this.props.form;
-        const stageEnum = this.props.$$state.get("stageEnum").toJS()
+        const stageEnum = this.props.$$state.get("stageEnum").toJS();
+        const isEdit = this.props.$$state.get("isEdit");
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -44,7 +45,7 @@ class Card extends React.Component {
                 )
         }
         return (
-            
+
             <Form >
 
                 {getFieldDecorator('type', {
@@ -88,9 +89,8 @@ class Card extends React.Component {
 
 
                 </Row>
-
-                <Row type="flex"  >
-                <Col span={12}>
+                {isEdit ? "" : <Row type="flex"  >
+                    <Col span={12}>
                         <FormItem
                             label="商机类型"
                             {...formItemLayout}
@@ -100,7 +100,7 @@ class Card extends React.Component {
                                     required: true, message: '请选择商机类型',
                                 }],
                             })(
-                                <Input disabled={true}/>
+                                <Input disabled={true} />
                                 )}
                         </FormItem>
                     </Col>
@@ -114,11 +114,12 @@ class Card extends React.Component {
                                     required: true, message: '请选择商机阶段',
                                 }],
                             })(
-                                <Enum dataSource={stageEnum}/>
+                                <Enum dataSource={stageEnum} />
                                 )}
                         </FormItem>
                     </Col>
-                </Row>
+                </Row>}
+
                 <Row type="flex"  >
                     <Col span={12}>
                         <FormItem
@@ -148,7 +149,7 @@ class Card extends React.Component {
                     </Col>
                 </Row>
                 <Row type="flex"  >
-                    
+
                     <Col span={12}>
                         <FormItem
                             label="预计签单金额"
@@ -214,10 +215,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     Form.create({
         onFieldsChange(props, fields) {
             let fieldsChangeData = {};
-            
+
             let data = props.$$state.get("editData").toJS();
             for (let item in fields) {
-                if(item=="createdTime"||item=="expectSignTime"){
+                if (item == "createdTime" || item == "expectSignTime") {
                     fieldsChangeData = { [item]: fields[item].value.format('YYYY-MM-DD HH:mm:ss') };
                     continue;
                 }
@@ -237,12 +238,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
             let value = {};
             for (let key in data) {
-               if(key=="createdTime"||key=="expectSignTime"){
-                value[key] = { value: moment(data[key]) };
-                continue;
-               }
+                if (key == "createdTime" || key == "expectSignTime") {
+                    value[key] = { value: moment(data[key]) };
+                    continue;
+                }
                 value[key] = { value: data[key] };
-                
+
             }
             //address  把字段合成对象
             return {

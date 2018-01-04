@@ -21,6 +21,7 @@ class LessForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.action.getListData(this.props.$$state.get("pagination").toJS(), values);
+                this.props.action.getFunnelData(values)
             }
         });
     }
