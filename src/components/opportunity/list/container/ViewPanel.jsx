@@ -66,10 +66,10 @@ class ViewPanel extends React.Component {
             </div>
         );
     }
-   
+
     //点击编辑按钮打开编辑页面
     btnEdit(id) {
-        this.props.action.showFormEdit(true,id);
+        this.props.action.showFormEdit(true, id);
     }
 
     winOk() {
@@ -145,31 +145,47 @@ class ViewPanel extends React.Component {
                             </div>
                         </Col>
                         <Col span={10} className="customer-btn">
-                            <Button
-                                onClick={this.btnEdit.bind(this,editData.id)}
-                            >
-                                <i className="iconfont icon-bianji" />编辑
+                            {editData.state != 3 ? "" :
+
+                                <div>
+                                    <Row type="flex"
+                                        gutter={5}>
+                                        <Col>
+                                            <Button
+                                                onClick={this.btnEdit.bind(this, editData.id)}
+                                            >
+                                                <i className="iconfont icon-bianji" />编辑
                             </Button>
-                            <Button
-                                onClick={this.btnEdit.bind(this)}
-                            >
-                                <i className="iconfont icon-bianji" />变更负责人
+                                        </Col>
+                                        <Col>
+                                            <Button
+                                                onClick={this.btnEdit.bind(this)}
+                                            >
+                                                <i className="iconfont icon-bianji" />变更负责人
                             </Button>
-                            <Button
-                                onClick={this.props.action.showLostCard.bind(true)}
-                            >
-                                <i className="iconfont icon-bianji" />丢单
+                                        </Col><Col>
+                                            <Button
+                                                onClick={this.props.action.showLostCard.bind(true)}
+                                            >
+                                                <i className="iconfont icon-bianji" />丢单
                             </Button>
-                            <Button
-                                onClick={this.props.action.showWinCard.bind(true)}
-                            >
-                                <i className="iconfont icon-bianji" />赢单
+                                        </Col><Col>
+                                            <Button
+                                                onClick={this.props.action.showWinCard.bind(true)}
+                                            >
+                                                <i className="iconfont icon-bianji" />赢单
                             </Button>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            }
+
                             <Button
                                 onClick={this.props.btnClosePanel.bind(this)}
                             >
                                 X
                             </Button>
+
                         </Col>
                     </Row>
                     <Row className="cumtomer-detail">
@@ -196,7 +212,6 @@ class ViewPanel extends React.Component {
                                     <Tabs defaultActiveKey="1">
                                         <TabPane tab="资料" key="1">
                                             <Card title="基本信息">
-
                                                 <Row>
                                                     <Col span={12}>
                                                         <Row className="detail-msg-line">
@@ -225,6 +240,53 @@ class ViewPanel extends React.Component {
                                                         <Row className="detail-msg-line">
                                                             <Col className="detail-msg-line-left" span={12}>赢单概率：</Col><Col span={12}>{editData.winProbability}</Col>
                                                         </Row>
+                                                    </Col>
+                                                </Row>
+                                            </Card>
+
+                                            <Card title="详细信息">
+                                                <Row>
+                                                    <Col span={12}>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>客户预算：</Col><Col span={12}>{editData.customerBudget}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>实际签单时间：</Col><Col span={12}>{editData.actualSignTime}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>商机日期：</Col><Col span={12}>{editData.sysCreatedTime}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>负责人：</Col><Col span={12}>{editData.ownerUserName}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>客户需求：</Col><Col span={12}>{}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>赢单原因：</Col><Col span={12}>{editData.winReasonName}</Col>
+                                                        </Row>
+                                                        
+                                                    </Col>
+                                                    <Col span={12}>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>阶段停留时间：</Col><Col span={12}>{editData.stageStayTime}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>实际签单金额：</Col><Col span={12}>{editData.actualSignMoney}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>商机来源：</Col><Col span={12}>{editData.sourceName}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>部门：</Col><Col span={12}>{editData.deptName}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>备注：</Col><Col span={12}>{editData.description}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>丢单原因：</Col><Col span={12}>{editData.failReasonName}</Col>
+                                                        </Row>
+                                                       
                                                     </Col>
                                                 </Row>
                                             </Card>

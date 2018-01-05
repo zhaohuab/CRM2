@@ -73,6 +73,7 @@ class DetailTable extends React.Component {
      
             {
                 title: "产品名称",
+                width:'20%',
                 dataIndex: "productId",
                 render: (text, record, index) => (
                     <EditableCell
@@ -86,6 +87,7 @@ class DetailTable extends React.Component {
             },
             {
                 title: "产品分类",
+                width:'20%',
                 dataIndex: "productTypeId",
                 render: (text, record, index) => (
                     <EditableCell
@@ -97,6 +99,7 @@ class DetailTable extends React.Component {
             },
             {
                 title: "品牌",
+                width:'12%',
                 dataIndex: "brandId",
                 render: (text, record, index) => (
                     <EditableCell
@@ -108,6 +111,7 @@ class DetailTable extends React.Component {
             },
             {
                 title: "销售单位",
+                width:'12%',
                 dataIndex: "measureId",
                 render: (text, record, index) => (
                     <EditableCell
@@ -119,6 +123,7 @@ class DetailTable extends React.Component {
             },
             {
                 title: "销售单价",
+                width:'12%',
                 dataIndex: "price",
                 render: (text, record, index) => (
                     <EditableCell
@@ -130,6 +135,7 @@ class DetailTable extends React.Component {
             },
             {
                 title: "产品数量",
+                width:'12%',
                 dataIndex: "number",
                 render: (text, record, index) => (
                     <EditableCell
@@ -141,6 +147,7 @@ class DetailTable extends React.Component {
             },
             {
                 title: "合计金额",
+                width:'12%',
                 dataIndex: "sumMoney",
                 render: (text, record, index) => (
                     <EditableCell
@@ -167,6 +174,16 @@ class DetailTable extends React.Component {
         if(oppBList[index-1].editState!="add"){
             oppBList[index-1].editState="update"
         }
+        if(key == 'number' || key == 'price' ){
+            for(let i=0;i<oppBList.length;i++){
+                if(!isNaN(oppBList[i].number)&&!isNaN(oppBList[i].price)){
+                    oppBList[i].sumMoney = oppBList[i].number * oppBList[i].price;
+                }
+            }
+        }
+       
+
+
         this.props.action.saveOppBList(oppBList);
     }
 
