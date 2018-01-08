@@ -7,23 +7,7 @@ class Card extends React.Component {
     constructor(props) {
         super(props)
     }
-    jobEnum = [{
-        key: 1,
-        title: "员工"
-    }, {
-        key: 2,
-        title: "负责人"
-    }, {
-        key: 3,
-        title: "其他负责人"
-    }]
-    genderEnum = [{
-        key: 1,
-        title: "男",
-    }, {
-        key: 2,
-        title: "女",
-    }]
+    
     componentDidMount() {
         //装箱过程
         let { orgId,orgName } = this.props.dataSource; 
@@ -55,19 +39,6 @@ class Card extends React.Component {
         return (
             <Form >
                 <FormItem
-                    label="角色编码"
-                    {...formItemLayout}
-                >
-                    {getFieldDecorator('code', {
-                        rules: [{
-                            required: true, message: '请输出角色编码',
-                        }],
-                    })(
-                        <Input placeholder='请输入...' />
-                        )}
-                </FormItem>
-
-                <FormItem
                     label="角色名称"
                     {...formItemLayout}
                 >
@@ -81,13 +52,13 @@ class Card extends React.Component {
                 </FormItem>
 
                 <FormItem
-                    label="所属组织"
+                    label="角色描述"
                     {...formItemLayout}
                 >
-                    {getFieldDecorator('orgId', {
+                    {getFieldDecorator('description', {
 
                     })(
-                        <Department />
+                        <Input placeholder='请输入...' />
                         )}
                 </FormItem>
               

@@ -3,6 +3,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Tabs, Table, Icon, Button, Form, Input, Checkbox, Col, Modal, Spin } from 'antd';
+import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import * as roleActions from "../action"
 import RoleCard from "./RoleCard"
 import FuncTree from "./FuncTree"
@@ -15,16 +16,21 @@ class List extends React.Component {
         super(props)
 
         this.columns = [{
-            title: '姓名',
+            title: '角色名称',
             dataIndex: 'name',
+            width: 100,
             render: (text, row, index) => {
-                return <span>
+                return <a onClick={this.onNameClick.bind(this,row)}>
                     {text}
-                    <span><Icon type="minus-circle-o" onClick={this.onDelete.bind(this, row)} /></span>
-                    <span><Icon type="edit" onClick={this.onEdit.bind(this, row)} /></span>
-                </span>
+                </a>
 
             },
+        },{
+            title: '角色描述',
+            dataIndex: 'description',
+        },{
+            title: '所属组织',
+            dataIndex: 'orgId',
         }]
 
         this.state = {
@@ -37,6 +43,9 @@ class List extends React.Component {
         //this.props.action.getFuncTreeData();
     }
 
+    onNameClick = (row) => {
+        this.props.action.selectRowTab(row.id,1);
+    }
     //点击新增按钮事件
     onAdd() {
         this.setState({ isEdit: false });
@@ -84,39 +93,66 @@ class List extends React.Component {
         this.props.action.showRoleForm(false, {});
     }
 
+    onSelectChange = (selectedRowKeys, selectedRows) => {
+        this.props.action.selectRow(selectedRows, selectedRowKeys);
+    }
+    btnBack = () => {
+        this.props.action.selectRow([], []);
+    }
+    onTabClick = (tabIndex) => {
+        this.props.action.onTabClick(tabIndex);
+    }
+    onDispatch = () => {
+        let tabIndex = this.props.$$state.get("tabIndex");
+        console.info(tabIndex);
+    }
     render() {
-        const { $$state } = this.props;
-        const roleCardVisible = $$state.get("roleCardVisible");
-        const WarpRoleCard = Form.create()(RoleCard)
-        const page = $$state.get("data").toJS();
-        const funcData = $$state.get("funcData").toJS();
-        const editData = $$state.get("editData").toJS();
+        let { $$state } = this.props;
+        let roleCardVisible = $$state.get("roleCardVisible");
+        let WarpRoleCard = Form.create()(RoleCard)
+        let page = $$state.get("data").toJS();
+        let funcData = $$state.get("funcData").toJS();
+        let editData = $$state.get("editData").toJS();
+        let selectedRowKeys = $$state.get("selectedRowKeys").toJS();
+        let rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
+        let operations = <Button onClick={this.onDispatch.bind(this)}>分配</Button>
         return (
             <div className='list-warpper'>
+                {selectedRowKeys && selectedRowKeys.length >= 1 ?
+                    <HeaderButton
+                        goBack={this.btnBack.bind(this)}
+                        length={selectedRowKeys.length}
+                    >
+                    </HeaderButton> : <div className='org-tree-top'>
+                        <Button onClick={this.onAdd.bind(this)}>新增角色</Button>
+                    </div>
+                }
                 <div className='list-main'>
                     <div className='list-table-tree' style={{ minHeight: 'auto' }}>
-                        <div className='org-tree-top'>
-                            <Button onClick={this.onAdd.bind(this)}>新增角色</Button>
-                        </div>
+
                         <Table
-                            showHeader={false}
                             size="middle"
                             columns={this.columns}
                             rowKey="id"
                             pagination={false}
                             dataSource={page.data}
+                            rowSelection={rowSelection}
                         />
                     </div>
                     <div className='list-table' ref="listTablePanel">
 
                         <div className='org-tabel'>
-                            <Tabs tabPosition={this.state.tabPosition}>
+                            <Tabs tabPosition={this.state.tabPosition} tabBarExtraContent={operations} onTabClick={this.onTabClick}>
                                 <TabPane tab="功能" key="1">
                                     <FuncTree data={funcData} />
                                 </TabPane>
                                 <TabPane tab="数据" key="2">Content of Tab 2</TabPane>
-                                <TabPane tab="分配用户" key="3">Content of Tab 3</TabPane>
+                                <TabPane tab="用户" key="3">Content of Tab 3</TabPane>
                             </Tabs>
+                            
                         </div>
                         <Modal
                             title={this.state.isEdit ? "编辑角色" : "新增角色"}

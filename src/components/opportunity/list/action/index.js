@@ -33,9 +33,9 @@ function transData(data) {
         data.winReason = data.winReason.key;
        
     }
-    if(data.lostReason && typeof (data.lostReason) == 'object'){
-        data.lostReasonName = data.lostReason.title;
-        data.lostReason = data.lostReason.key;
+    if(data.failReason && typeof (data.failReason) == 'object'){
+        data.failReasonName = data.failReason.title;
+        data.failReason = data.failReason.key;
     }
     if (data.customerId) {
         data.customerId = data.customerId.id;
@@ -98,6 +98,10 @@ const transReceiveDataOne = (data) => {
     if (data.actualSignTime) {
         data.actualSignTime = transDate(new Date(data.actualSignTime.time))
     }
+    if (data.sysCreatedTime) {
+        data.sysCreatedTime = transDate(new Date(data.sysCreatedTime.time))
+    }
+
     if (data.customerName && data.customerId) {
         data.customerId = { id: data.customerId, name: data.customerName }
     }
@@ -258,7 +262,7 @@ const selectRow = (selectedRows, selectedRowKeys) => {
 };
 
 //定义方法 action
-const getFunnelData = (pagination, searchMap) => {
+const getFunnelData = (searchMap) => {
     return (dispatch) => {
         reqwest({
             url: url.opportunity + '/funnel',
