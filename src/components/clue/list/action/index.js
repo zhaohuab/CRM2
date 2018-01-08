@@ -28,7 +28,15 @@ function transData(searchMap) {
     return searchMap;
 }
 
-
+//拼接一堆地址
+const appendAddress = data => {
+    debugger
+    let province=data.provinceName;
+    let city=data.cityName;
+    let distric=data.districtName;
+   data.addCity =province+city+distric  
+    return data;
+};
 
 //获取数据、基础查询数据、扩展查询数据
 export function getListData(pagination, searchMap){
@@ -119,7 +127,7 @@ export function  deleteData(ids, searchMap, pagination) {
                 }
             },
             data => {   //返回的是没有删除的data
-                console.log(1111)
+             
                // debugger
                 dispatch(
                     fetchData("CLUE_LIST_GETLISTUPDATE", {
@@ -147,7 +155,7 @@ export function showForm(data) {
 
 //点击编辑获取数据
 export function edit(edit,show){
-    //debugger
+    debugger
     return {
        type: "CLUE_LIST_EDIT",
        edit,
@@ -156,8 +164,8 @@ export function edit(edit,show){
 }
 
 
-//编辑已选择
-export function onEdit(values, pagination, searchMa) {
+//编辑已选择（确定按钮）
+export function onEdit(values) {
 
    debugger
     return dispatch => {
@@ -166,9 +174,7 @@ export function onEdit(values, pagination, searchMa) {
                 url:url.lead + "/" + values.id,
                 method: "PUT",
                 data: {
-                    param: {
-                        ...values
-                    }
+                  param: transData(values)
                 }
             },
             result => {
@@ -181,18 +187,6 @@ export function onEdit(values, pagination, searchMa) {
         );
     };
 }
-// //编辑已选择
-// export function onEdit(values) {
-//     return dispatch => {
-//         dispatch({
-//             type: "CLUE_LIST_UPDATELIST",
-//             data: values
-//         });
-//     }
-// }
-
-
-
 
 //点击新建按钮清空数据
 export function addClue(data){
@@ -205,16 +199,9 @@ export function addClue(data){
     };
 };
 
-
-
 //保存新增联系人????有问题
 export function cardSaved(oneData) {
     debugger;
-    // return {
-    //     type: "CLUE_CARD_SAVEADD",
-    //     oneData
-    // }
-    //console.log('aaaaa'+url.lead)
     return dispatch => {
         reqwest(
             {
@@ -257,7 +244,7 @@ export function showViewForm(visible, id){
                         dispatch({
                             type: "CLUE_LIST_SHOWVIEWFORM",
                             visible,
-                            data,
+                            data:appendAddress(data)
                         });
        
             }

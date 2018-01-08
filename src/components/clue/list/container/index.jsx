@@ -61,10 +61,6 @@ class Clue extends React.Component {
                 title: "电话",
                 dataIndex: "tel"
             },
-            // {
-            //     title: "手机",
-            //     dataIndex: "mobile"
-            // }
             {
                 title: "电子邮件",
                 dataIndex: "mail"
@@ -162,9 +158,9 @@ class Clue extends React.Component {
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
         debugger;
-        if (searchMap.industry) {
-            searchMap.industry = searchMap.industry.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
-        }
+        // if (searchMap.industry) {
+        //     searchMap.industry = searchMap.industry.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+        // }
 
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS(),
@@ -230,12 +226,6 @@ class Clue extends React.Component {
             data.district = change[2];
             data.province_city_district = '';
         }
-        //详细地址
-        // if (data.address) {
-        //    // debugger;
-        //     let value = data.address;
-        //     data["address"] = value.address;
-        // }
         return data;
     }
 
@@ -245,7 +235,6 @@ class Clue extends React.Component {
     //modal点击确定按钮
     handleOk() {
         debugger;
-        let { pagination, searchMap } = this.state;
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {//取值
             debugger;
             if (!err) {

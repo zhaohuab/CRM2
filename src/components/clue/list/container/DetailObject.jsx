@@ -248,7 +248,7 @@ class DetailObject extends React.Component {
                                 </Row>
                             </Col>
                         </Row>
-                        {/* <Row className="custom-info">
+                        <Row className="custom-info">
                             <Col span={12}>
                                 <Row
                                     type="flex"
@@ -260,7 +260,7 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            营业额(万元):
+                                            网址:
                                         </span>
                                     </Col>
                                     <Col
@@ -269,7 +269,7 @@ class DetailObject extends React.Component {
                                     >
                                         <span>
                                             {
-                                                viewData.turnover
+                                                viewData.website
                                             }
                                         </span>
                                     </Col>
@@ -286,7 +286,7 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            员工数:
+                                            职务:
                                         </span>
                                     </Col>
                                     <Col
@@ -295,7 +295,7 @@ class DetailObject extends React.Component {
                                     >
                                         <span>
                                             {
-                                                viewData.employeeNum
+                                                viewData.postName
                                             }
                                         </span>
                                     </Col>
@@ -314,7 +314,7 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            备注:
+                                            省市县:
                                         </span>
                                     </Col>
                                     <Col
@@ -323,13 +323,230 @@ class DetailObject extends React.Component {
                                     >
                                         <span>
                                             {
-                                                viewData.remark
+                                                viewData.addCity
                                             }
                                         </span>
                                     </Col>
                                 </Row>
                             </Col>
-                        </Row> */}
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                            地址:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                                viewData.address
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row className="custom-info">
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                            线索状态:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                                viewData.stateName
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                            关闭原因:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                                viewData.closeReasonName
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row className="custom-info">
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                           最后跟进时间:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                                viewData.followTime
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                            备注（关闭）:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                                viewData.remarks
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row className="custom-info">
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                         负责人:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                                viewData.ownerUserInfo.name
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                            部门:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                              viewData.ownerUserInfo.deptName
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row className="custom-info">
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                         描述:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                                viewData.remarks
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                          
+                        </Row>
                     </Panel>
                    
             </Collapse>

@@ -1,8 +1,6 @@
 import Immutable from "immutable";
 
 let $$initialState = {
-    // totalPageNum: 1,//总页数
-    // curPageNum: 1,//当前页码
     pagination: {//分页信息
         pageSize: 20,
         page: 1
@@ -211,12 +209,16 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
         //点击编辑获取数据
         case "CLUE_LIST_EDIT":
             //debugger
+            let getData = action.edit;
+            getData.province_city_district = [
+                getData.province.toString(),
+                getData.city.toString(),
+                getData.district.toString()
+        ];
             return $$state.merge({
-                editData: action.edit,
+                editData:getData,
                 visible: true
             });
-
-
         //点击新建，清空数据
         case "CLUE_LIST_EMPTY":
             //debugger
@@ -233,11 +235,17 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         case "CLUE_LIST_UPDATELIST": //更改一条数据
-            //debugger
+
+        let newData = action.data;
+        newData.province_city_district = [
+            newData.province.toString(),
+            newData.city.toString(),
+            newData.district.toString()
+        ];
             return $$state.merge({
                 visible: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
-                editData: action.data
+                editData:newData 
             });
 
         case "CLUE_LIST_CARDEDITCHANGE": //存放新增修改表单数据

@@ -26,12 +26,6 @@ import * as Actions from "../action";
 import Enum from "utils/components/enums";
 import * as enumDataFake from "./enumdata.jsx";
  class MoreForm extends React.Component {
-    // showFn() {
-    //     this.props.showFn();
-    // }
-    // handleSubmit=()=>{s
-        
-    // }
     handleSearch(e) {
         e.preventDefault();
         debugger
@@ -55,8 +49,6 @@ import * as enumDataFake from "./enumdata.jsx";
                     <Row
                         type="flex"
                         align="middle"
-                       
-                        gutter={15}
                         className="formitem-width"
                     >
                         <Col span={6}>
@@ -73,7 +65,7 @@ import * as enumDataFake from "./enumdata.jsx";
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("source")(
                                     <Enum
-                                    addOptionAll={"线索等级"}
+                                    addOptionAll={"线索来源"}
                                     dataSource={enumData.source}
                                 />
                                 )}
@@ -104,7 +96,6 @@ import * as enumDataFake from "./enumdata.jsx";
                     <Row
                         type="flex"
                         align="middle"
-                        gutter={15}
                         className="formitem-width"
                     >
                       <Col span={6}>
@@ -142,7 +133,8 @@ import * as enumDataFake from "./enumdata.jsx";
                             <FormItem>
                                 <div className="more-btn">
                                     <Button htmlType="submit">查询</Button>
-                                    <span onClick={this.moreFn.bind(this)}>
+                                    <span  className="more-up"
+                                     onClick={this.moreFn.bind(this)}>
                                         收起<Icon type="up" />
                                     </span>
                                 </div>

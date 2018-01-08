@@ -143,7 +143,7 @@ class ViewPanel extends React.Component {
                                             gutter={25}
                                         >
                                             <div className="customer-name">
-                                                {viewData.ownerUserInfo.name}
+                                                {viewData.name}
                                             </div>
 
                                             <Row
@@ -178,8 +178,8 @@ class ViewPanel extends React.Component {
                                                     )}
                                                 </div>
                                                 <div className="checked-iconfont">
-                                                  <span>
-                                                      <i className="iconfont icon-taolun">讨论</i>
+                                                  <span className="blue">
+                                                      <i className="iconfont icon-taolun1">讨论</i>
                                                   </span>
                                                 </div>
                                             </Row>
@@ -225,15 +225,12 @@ class ViewPanel extends React.Component {
                                     </Button>
                                 </div>
                                 <div>
-                                <Dropdown
+                                <Dropdown.Button
                                 overlay={this.menu}
                                 trigger={["click"]}
-                            >
-                                <Button>
+                            >                
                                     更多
-                                    <Icon type="down" />
-                                </Button>
-                            </Dropdown>
+                            </Dropdown.Button>
                                 </div>
                             </Row>
                         </Col>

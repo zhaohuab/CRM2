@@ -40,7 +40,7 @@ class LessForm extends React.Component {
         return (
             <div className="less-form">
                 <Form layout="inline" onSubmit={this. handleSearch.bind(this)}>
-                    <Row className="formitem-width" type="flex" gutter={15}>
+                    <Row className="formitem-width" type="flex" align="middle" style={{ height: "54px" }}>
                         <Col span={6}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("level")(
@@ -66,7 +66,8 @@ class LessForm extends React.Component {
                             <FormItem >
                                 <div className="more-btn">
                                     <Button htmlType="submit">搜索</Button>
-                                    <span onClick={this.moreFn.bind(this)}>
+                                    <span  className="more-up"
+                                    onClick={this.moreFn.bind(this)}>
                                         展开<Icon type="down" />
                                     </span>
                                 </div>

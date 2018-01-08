@@ -16,13 +16,13 @@ import {
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 import Email from "utils/components/emails";
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-//导入action方法
 import * as Actions from "../action";
-
-import CityChioce from "./cityChioce";
+import Enum from "utils/components/enums";
+import * as enumDataFake from "./enumdata.jsx";
+//省市县
+import CityChioce from "./CityChioce";
 class EditForm extends React.Component {
     componentDidMount() {
         // this.props.form.setFieldsValue(this.props.dataSource);
@@ -38,161 +38,169 @@ class EditForm extends React.Component {
             wrapperCol: { span: 21 }
         };
         const { getFieldDecorator } = this.props.form;
-
+        let {
+            enumData,
+        } = this.props.$$state.toJS();
         return (
             <div>
-                 <Row className="form-input-recover">
+                <Row className="form-input-recover">
                     <Row>
-                <Form>
-                    {/* <div className="card-header-title">
+                        <Form>
+                            {/* <div className="card-header-title">
                         基本信息{" "}
                         <i className="iconfont icon-xiajiantou-lanse" />
                     </div> */}
-                    <Row type="flex" justify="center">
-                        <Col span={11}>
-                            <FormItem style={{ display: "none" }}>
-                                {getFieldDecorator("id", {})(<Input />)}
-                            </FormItem>
-                            <FormItem
-                                label="姓名"
-                                {...formItemLayout}
-                            //hasFeedback={true}
-                            >
-                                {getFieldDecorator("name", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: "请输出姓名"
-                                        }
-                                    ]
-                                })(<Input placeholder="请输入" />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={11}>
-                            {" "}
-                            <FormItem label="电话" {...formItemLayout}>
-                                {getFieldDecorator("tel", {
+                            <Row type="flex" justify="center">
+                                <Col span={11}>
+                                    <FormItem style={{ display: "none" }}>
+                                        {getFieldDecorator("id", {})(<Input />)}
+                                    </FormItem>
+                                    <FormItem
+                                        label="姓名"
+                                        {...formItemLayout}
+                                    //hasFeedback={true}
+                                    >
+                                        {getFieldDecorator("name", {
+                                            rules: [
+                                                {
+                                                    required: true,
+                                                    message: "请输入姓名"
+                                                }
+                                            ]
+                                        })(<Input placeholder="请输入" />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={11}>
+                                    {" "}
+                                    <FormItem label="电话" {...formItemLayout}>
+                                        {getFieldDecorator("tel", {
 
-                                })(<Input placeholder="请输入" />)}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                        <Col span={11}>
-                            <FormItem label="公司名称" {...formItemLayout}>
-                                {getFieldDecorator("companyName", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: "请输入公司名称"
-                                        }
-                                    ]
-                                })(<Input placeholder="请输入..." />)}
-                            </FormItem>
-                        </Col>
-                        <Col span={11}>
-                            <FormItem label="线索来源" {...formItemLayout}>
-                                {getFieldDecorator("source", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: "请输入..."
-                                        }
-                                    ]
-                                })(<Input placeholder="请输入..." />)}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                        <Col span={11}>
-                            <FormItem label="行业" {...formItemLayout}>
-                                {getFieldDecorator("industryName")(
-                                    <Input placeholder="请输入..." />
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={11}>
-                            <FormItem label="线索等级" {...formItemLayout}>
-                                {getFieldDecorator("levelName", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: "请输入..."
-                                        }
-                                    ]
-                                })(<Input placeholder="请输入..." />)}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                        <Col span={11}>
-                            <FormItem label="性别" {...formItemLayout}>
-                                {getFieldDecorator("genderName")(
-                                    <Input placeholder="请输入..." />
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={11}>
-                            <FormItem label="电子邮件" {...formItemLayout}>
-                                {getFieldDecorator("email", {
-
-                                })(<Input placeholder="请输入..." />)}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                        <Col span={11}>
-                            <FormItem label="职务" {...formItemLayout}>
-                                {getFieldDecorator("postName")(
-                                    <Input placeholder="请输入..." />
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={11}>
-                            <FormItem label="网址" {...formItemLayout}>
-                                {getFieldDecorator("website", {
-
-                                })(<Input placeholder="请输入..." />)}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                        <Col span={2}>
-                            <Row
-                                type="flex"
-                                justify="start"
-                            >
-                                <div>省/市/区：</div>
+                                        })(<Input placeholder="请输入" />)}
+                                    </FormItem>
+                                </Col>
                             </Row>
-                        </Col>
-                        <Col span={11}>
-                            <FormItem
-                                {...formItemLayout}
-                            >
-                                {getFieldDecorator(
-                                    "province_city_district"
-                                )(<CityChioce/>)}
-                            </FormItem>
-                        </Col>
-                        <Col span={11}>
-                            <FormItem label="地址" {...formItemLayout}>
-                                {getFieldDecorator("address", {
+                            <Row type="flex" justify="center">
+                                <Col span={11}>
+                                    <FormItem label="公司名称" {...formItemLayout}>
+                                        {getFieldDecorator("companyName", {
+                                            rules: [
+                                                {
+                                                    required: true,
+                                                    message: "请输入公司名称"
+                                                }
+                                            ]
+                                        })(<Input placeholder="请输入..." />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={11}>
+                                    <FormItem label="线索来源" {...formItemLayout}>
+                                        {getFieldDecorator("source", {
+                                            rules: [
+                                                {
+                                                    required: true,
+                                                    message: "请输入..."
+                                                }
+                                            ]
+                                        })(<Enum
+                                            addOptionAll={"线索来源"}
+                                            dataSource={enumDataFake.source}
+                                        />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row type="flex" justify="center">
+                                <Col span={11}>
+                                    <FormItem label="行业" {...formItemLayout}>
+                                        {getFieldDecorator("industryName")(
+                                            <Input placeholder="请输入..." />
+                                        )}
+                                    </FormItem>
+                                </Col>
+                                <Col span={11}>
+                                    <FormItem label="线索等级" {...formItemLayout}>
+                                        {getFieldDecorator("level", {
+                                        })(<Enum
+                                            addOptionAll={"线索等级"}
+                                            dataSource={enumData.level}
+                                        />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row type="flex" justify="center">
+                                <Col span={11}>
+                                    <FormItem label="性别" {...formItemLayout}>
+                                        {getFieldDecorator("genderName")(
+                                            <Enum
+                                                addOptionAll={"性别"}
+                                                dataSource={enumDataFake.genderName}
+                                            />
+                                        )}
+                                    </FormItem>
+                                </Col>
+                                <Col span={11}>
+                                    <FormItem label="电子邮件" {...formItemLayout}>
+                                        {getFieldDecorator("email", {
 
-                                })(<Input placeholder="请输入..." />)}
-                            </FormItem>
-                        </Col>
+                                        })(<Input placeholder="请输入..." />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row type="flex" justify="center">
+                                <Col span={11}>
+                                    <FormItem label="职务" {...formItemLayout}>
+                                        {getFieldDecorator("postName")(
+                                            <Enum
+                                                addOptionAll={"职务"}
+                                                dataSource={enumDataFake.postName}
+                                            />
+                                        )}
+                                    </FormItem>
+                                </Col>
+                                <Col span={11}>
+                                    <FormItem label="网址" {...formItemLayout}>
+                                        {getFieldDecorator("website", {
+
+                                        })(<Input placeholder="请输入..." />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row type="flex" justify="center">
+                                <Col span={2}>
+                                    <Row
+                                        type="flex"
+                                        justify="start"
+                                    >
+                                        <div>省/市/区：</div>
+                                    </Row>
+                                </Col>
+                                <Col span={11}>
+                                    <FormItem
+                                        {...formItemLayout}
+                                    >
+                                        {getFieldDecorator(
+                                            "province_city_district"
+                                        )(<CityChioce />)}
+                                    </FormItem>
+                                </Col>
+                                <Col span={11}>
+                                    <FormItem label="地址" {...formItemLayout}>
+                                        {getFieldDecorator("address", {
+
+                                        })(<Input placeholder="请输入..." />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row type="flex">
+                                <Col span={24}>
+                                    <FormItem label="备注" {...formItemLayout}>
+                                        {getFieldDecorator("remarks")(
+                                            <Input placeholder="请输入..." type="textarea" />
+                                        )}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                        </Form>
                     </Row>
-                    <Row type="flex">
-                        <Col span={24}>
-                            <FormItem label="备注" {...formItemLayout}>
-                                {getFieldDecorator("remarks")(
-                                    <Input placeholder="请输入..." type="textarea" />
-                                )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                </Form>
-                </Row>
                 </Row>
             </div>
         );
@@ -201,29 +209,29 @@ class EditForm extends React.Component {
 
 const cardForm = Form.create({
     mapPropsToFields: (props) => {
-        
-        //把redux中的值取出来赋给表单
-        //debugger
-        let viewData = props.$$state.toJS().editData;
-            let value = {};
-            for (let key in viewData) {
-            //     if (key == "address") {
-            //         value[key] = {
-            //             value: {
-            //                 address: viewData[key],
-            //             }
-            //         };
-            //     } else {
-            //         value[key] = { value: viewData[key] };
-            //     }
 
-            value[key] = { value: viewData[key] };
-            }
-           
-            //address  把字段合成对象
-            return {
-                ...value
-            };
+        //把redux中的值取出来赋给表单
+        // debugger
+        let data = props.$$state.toJS().editData;
+        //     let value = {};
+        //     for (let key in viewData) {
+        //     //     if (key == "address") {
+        //     //         value[key] = {
+        //     //             value: {
+        //     //                 address: viewData[key],
+        //     //             }
+        //     //         };
+        //     //     } else {
+        //     //         value[key] = { value: viewData[key] };
+        //     //     }
+
+        //     value[key] = { value: viewData[key] };
+        //     }
+        //     debugger
+        //     //address  把字段合成对象
+        //     return {
+        //         ...value
+        //     };
 
 
         //     if(data.name == null){
@@ -242,57 +250,72 @@ const cardForm = Form.create({
         //         data.source = undefined;
         //     }
         //     return{
-        //         id:{
-        //             value:data.id
-        //         }, 
-        //        name:{
-        //             value:data.name
-        //         },  
-        //        tel:{
-        //             value:data.tel
-        //         },  
-        //         companyName:{
-        //             value:data.companyName
-        //         }, 
-        //         source:{
-        //             value:data.source
-        //         }
-        // }
-        // //debugger
-        // let value = {};
-        // for (let key in viewData) {
-        //     // value[key] = { value: undefined/*viewData[key]*/ };
-        //     value[key] = { value: viewData[key] };
-        // }
-        // return {
-        //     ...value
-        // };
-
-
+        return {
+            name: {
+                value: data.name
+            },
+            tel: {
+                value: data.tel
+            },
+            companyName: {
+                value: data.companyName
+            },
+            source: {
+                value: data.source
+            },
+            industryName: {
+                value: data.industryName
+            },
+            level: {
+                value: data.level
+            },
+            email:{
+                value:data.email
+            },
+            postName: {
+                value: data.postName
+            },
+            genderName: {
+                value: data.genderName
+            },
+            province_city_district: {
+                value: data.province_city_district
+            },
+            address: {
+                value: data.address
+            },
+            website: {
+                value: data.website
+            },
+            remarks:{
+                value:data.remarks
+            }
+        }
     },
+
     onFieldsChange: (props, onChangeFild) => {
-        
+
         //往redux中写值
         let viewData = props.$$state.toJS().editData;
-   
-    //往redux中写值//把值进行更新改变
-    for (let key in onChangeFild) {
-        if (onChangeFild[key].value && onChangeFild[key].value.key) {
-            viewData[key] = onChangeFild[key].value.key;
-        } else {
-            if (key == "address") {
-                viewData[key] = onChangeFild[key].value;
-                // let value = onChangeFild[key].value;
-                // viewData["address"] = value.address;
-            } else if (key == "province_city_district") {
-                viewData[key] = onChangeFild[key].value.result;
-                viewData["cityMyself"] = onChangeFild[key].value.custom;
+
+        //往redux中写值//把值进行更新改变
+        for (let key in onChangeFild) {
+            if (onChangeFild[key].value && onChangeFild[key].value.key) {
+                viewData[key] = onChangeFild[key].value.key;
             } else {
-                viewData[key] = onChangeFild[key].value;
-            } //把对像拆成字段  latlng
+                if (key == "address") {
+                    viewData[key] = onChangeFild[key].value;
+                    // let value = onChangeFild[key].value;
+                    // viewData["address"] = value.address;
+                } else if (key == "province_city_district") {
+                    viewData[key] = onChangeFild[key].value.result;
+                    viewData["cityMyself"] = onChangeFild[key].value.custom;
+                } else {
+                    viewData[key] = onChangeFild[key].value;
+                } //把对像拆成字段  
+            }
         }
-    }
-    props.action.editCardFn(viewData);
+        props.action.editCardFn(viewData);
     }
 })(EditForm);
 

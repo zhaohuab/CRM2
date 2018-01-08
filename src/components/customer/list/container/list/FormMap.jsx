@@ -114,7 +114,7 @@ export default class FormMap extends React.Component {
     //最外城input动态赋予value值
     changeRsult(e) {
         let value = e.target.value;
-        this.props.onChange({ latlng: null, adress: value });
+        this.props.onChange({ latlng: null, address: value });
     }
 
     //搜索input改变值方法

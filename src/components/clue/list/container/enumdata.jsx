@@ -35,8 +35,26 @@ const state = [{
     "key": "3"
 }];
 
+//性别
+const genderName=[{
+    "title": "男",
+    "key": "4"
+}, {
+    "title": "女",
+    "key": "5"
+}];
+
+const postName=[{
+    "title": "大区经理",
+    "key": "22"
+}, {
+    "title": "销售经理",
+    "key": "23"
+}]
 export {
     level,
     source,
-    state
+    state,
+    genderName,
+    postName
 };
