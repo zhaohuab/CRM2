@@ -20,21 +20,32 @@ class Funnel extends React.Component {
 
 
         this.changeFunnelData = (key) => {
-            this.funnelOption.series[0].data.forEach((item, index) => {
-                item.value = funnelChange[key].data[index]
-            })
 
-            this.funnelOption.series[1].data.forEach((item, index) => {
-                item.value = funnelChange[key].data2[index]
-            })
-            this.funnelEchar.setOption(this.funnelOption);
+            // this.funnelOption.series[0].data.forEach((item, index) => {
+            //     item.value = funnelChange[key].data[index]
+            // })
+
+            // this.funnelOption.series[1].data.forEach((item, index) => {
+            //     item.value = funnelChange[key].data2[index]
+            // })
+            // this.funnelEchar.setOption(this.funnelOption);
+
+            this.props.action.getListData(this.props.$$state.get("pagination").toJS(), { type: key });
+            this.props.action.getFunnelData({ type: key });
         }
     }
+
+    
 
     componentDidMount() {
 
         this.funnelEchar = echarts.init(this.refs.funnel);
         this.props.action.getFunnelData()
+    }
+
+    moneyOnclick(state){
+        this.props.action.getListData(this.props.$$state.get("pagination").toJS(), { state});
+        this.props.action.getFunnelData({ state });
     }
 
     onWindowResize() {
@@ -95,13 +106,19 @@ class Funnel extends React.Component {
                         <div ref='funnel' className='funnel-chrats'></div>
                     </div>
                     <Row gutter={5}>
-                        <Col className="funnel-bottom-line-left" span={12}>预计成交金额：</Col><Col span={12}>¥{moneyData.goon}</Col>
+                        <div onClick={this.moneyOnclick.bind(this,3)}>
+                            <Col className="funnel-bottom-line-left" span={12}>预计成交金额：</Col><Col span={12}>¥{moneyData.goon}</Col>
+                        </div>
                     </Row>
                     <Row gutter={5}>
-                        <Col className="funnel-bottom-line-left" span={12}>赢单金额：</Col><Col span={12}>¥{moneyData.win}</Col>
+                        <div onClick={this.moneyOnclick.bind(this,1)}>
+                            <Col className="funnel-bottom-line-left" span={12}>赢单金额：</Col><Col span={12}>¥{moneyData.win}</Col>
+                        </div>
                     </Row>
                     <Row gutter={5}>
-                        <Col className="funnel-bottom-line-left" span={12}>丢单金额：</Col><Col span={12}>¥{moneyData.fail}</Col>
+                        <div onClick={this.moneyOnclick.bind(this,2)}>
+                            <Col className="funnel-bottom-line-left" span={12}>丢单金额：</Col><Col span={12}>¥{moneyData.fail}</Col>
+                        </div>
                     </Row>
                 </AntdCard>
             </div>

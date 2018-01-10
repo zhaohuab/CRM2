@@ -4,7 +4,9 @@ let $$initialState = {
     data: [],
     editData: {},
 	roleCardVisible: false,
-	funcData:[]
+	funcData:[],
+	selectedRowKeys:[],
+	tabIndex:1,
 };
 
 function pageAdd(page,item) {
@@ -49,7 +51,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 roleCardVisible : action.content.visible,
 				editData : action.content.editData,
             }) 
-            
+		case 'ROLE_LIST_SELECTROW' : 
+			return $$state.merge({
+				selectedRowKeys: action.content.selectedRowKeys
+			})
+		case 'ROLE_LIST_TABSELECT' : 
+			return $$state.merge({
+				tabIndex: action.content.tabIndex
+			})
         case 'ROLE_CARD_SAVEADD' : 
 			return $$state.merge({
 				roleCardVisible : false,
