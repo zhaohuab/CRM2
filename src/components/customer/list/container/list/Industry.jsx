@@ -64,7 +64,6 @@ export default class Industry extends React.Component {
                     method: "GET"
                 },
                 data => {
-                    
                     this.setState({
                         visible: flag,
                         industryData: data.data,
@@ -180,7 +179,7 @@ export default class Industry extends React.Component {
     }
 
     //每隔500毫秒执行一次查找请求
-    lodashSearch(value) {
+    lodashSearch(value) {    
         reqwest(
             {
                 url: baseDir + "/base/industrys/list",

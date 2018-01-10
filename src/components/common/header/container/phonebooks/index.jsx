@@ -115,7 +115,7 @@ class Department extends React.Component {
                             <Tabs defaultActiveKey="1" onChange={()=>console.log('Tabs')} animated={ false }>
                                 <TabPane tab="部门" key="1"> 
                                     <div className="demo-infinite-container">
-                                        <Tree onSelect={this.onSelect} showLine={true}>
+                                        <Tree onSelect={this.onSelect}  checkable>
                                             {this.renderTreeNodes(department)}
                                         </Tree>
                                     </div>

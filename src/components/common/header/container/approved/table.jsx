@@ -63,7 +63,7 @@ class Department extends React.Component {
     }
 
     getUnfinishedData = () => {//未完成列表
-    debugger;
+    //debugger;
         let unfinishedData = this.props.$$state.get('unfinishedData').toJS();
         let operate = {
             title:'操作',
@@ -81,7 +81,7 @@ class Department extends React.Component {
     }
     
     getTodoData = () => {//待办列表
-    debugger;
+    //debugger;
         let todoData = this.props.$$state.get('todoData').toJS();
           let operate = {
             title:'操作',
@@ -100,7 +100,7 @@ class Department extends React.Component {
     }
 
     getTable = () => {//获取对应列表
-    debugger;
+    //debugger;
         let tableState = this.props.$$state.get('tableState');
         switch(tableState){
             case 1:
