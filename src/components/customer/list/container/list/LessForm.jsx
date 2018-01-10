@@ -27,7 +27,7 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
-        debugger;
+        //debugger;
         this.props.handleSearch(this.props.$$state.toJS().searchMap);
     }
     moreFn() {
@@ -39,7 +39,7 @@ class LessForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        debugger
+        //debugger
         let { enumData } = this.props.$$state.toJS();
         
         return (

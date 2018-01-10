@@ -57,7 +57,7 @@ export default class CuperiorCustomer extends React.Component {
 
     //点击分页时触发的方法
     onPageChange(page, pageSize) {
-        debugger;
+        //debugger;
         //let { page, pageSize } = this.state.pagination;
         let pagination = {
             page,
@@ -87,7 +87,7 @@ export default class CuperiorCustomer extends React.Component {
                 }
             },
             result => {
-                debugger;
+                //debugger;
                 this.setState({
                     visible: flag,
                     industryData: result
@@ -144,7 +144,7 @@ export default class CuperiorCustomer extends React.Component {
 
     //点击确定
     onOk() {
-        debugger
+        //debugger
         if (this.props.onChange) {
             if(this.props.cusId){
                 this.props.onChange({id:this.props.cusId.id,name:this.props.cusId.name});
@@ -175,7 +175,7 @@ export default class CuperiorCustomer extends React.Component {
     //搜索框输入方法
     onSearch(value) {
         console.log(value);
-        debugger;
+        //debugger;
         reqwest(
             {
                 url: baseDir + "cum/customers",
@@ -190,7 +190,7 @@ export default class CuperiorCustomer extends React.Component {
                 }
             },
             result => {
-                debugger;
+                //debugger;
                 this.setState({
                     industryData: result
                 });
@@ -200,7 +200,7 @@ export default class CuperiorCustomer extends React.Component {
 
     //下拉时显示的面板布局
     choiceIndustry() {
-        debugger
+        //debugger
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
             type: "radio",
@@ -211,7 +211,7 @@ export default class CuperiorCustomer extends React.Component {
             <div className="reference">
                 <div
                     className="reference-main"
-                    style={{ width: this.props.width + "px" }}
+                    style={{ width: this.props.attr.width + "px" }}
                 >
                     <Row
                         type="flex"

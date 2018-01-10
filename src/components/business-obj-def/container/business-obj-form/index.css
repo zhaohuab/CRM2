@@ -7,10 +7,10 @@
 .business-obj-form > .gutter-row {
   margin-bottom: 30px;
 }
-.prompt {
-  animation: translate 0.5s;
+.business-obj-form .prompt {
+  animation: translate1 0.5s;
 }
-@keyframes translate {
+@keyframes translate1 {
   from {
     transform: translateY(20px);
     opacity: 0;

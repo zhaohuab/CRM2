@@ -34,11 +34,29 @@ import IcbcInfo from "./IcbcInfo";
 import FormMap from "./FormMap";
 import UploadImg from "./UploadImg";
 import CityChioce from "./CityChioce";
-import OwnUser from './OwnUser'
+import OwnUser from './OwnUser';
+import CustomerName from './customerName'
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
+
+const eleType = {//组件显示对应表
+    'name': CustomerName,
+    'level': Enum,
+    'ownerUserId': OwnUser,
+    'industry': Industry,
+    'parentId': CuperiorCustomer,
+    'cannelType': Enum,
+    'remark': TextArea,
+    'employeeNum': Input,
+    'province_city_district': CityChioce,
+    'address': FormMap,
+    'email':Input,
+    'tel':Input,
+    'regCapital':Input,
+    'legalRepresent':Input,
+}
 
 class EditForm extends React.Component {
     constructor(props) {
@@ -123,9 +141,74 @@ class EditForm extends React.Component {
             icbcInfo,
             icbcSelect,
             isClose,
-            upLoadList
+            upLoadList,
+            layoutFilds,//新增模板
         } = this.props.$$state.toJS();
-        debugger
+        let customerListInfo = this.customerListInfo.bind(this)//-----------企业核实中方法传递-------------
+        let cardData = (data)=> {//----------------个性化数据挂载在自定义属性上-----------------   
+            data.attr={};      
+            switch(data.fieldApiName){ 
+                case 'name':
+                    data.attr.viewData=viewData;
+                    data.attr.icbcSelect=icbcSelect;
+                    data.attr.customerListInfo=customerListInfo;
+                    data.attr.isClose=isClose;
+                    data.attr.width=450;
+                    break;             
+                case 'level':               
+                    data.attr.addOptionAll="客户等级";
+                    data.attr.dataSource=enumData.level;
+                    break;
+                case 'ownerUserId':
+                    data.attr.viewData=viewData;
+                    data.attr.disabled=true ;
+                    data.attr.width=650 ;
+                    data.attr.height=300;
+                    break;
+                case 'cannelType':
+                    data.attr.addOptionAll="渠道类型" ;
+                    data.attr.dataSource=enumData.cannelType;
+                    break;
+                case 'parentId':
+                    data.attr.width=500;
+                    break;
+                case 'address':
+                    data.attr.cityCode=viewData.province_city_district;
+                    data.attr.viewData=viewData;
+                    break;
+                default :
+                    data.attr = '';
+            }
+            return  data            
+        }
+        //--------------客户名称字段转换-------------------
+        let  attr1={};
+        attr1.viewData=viewData;
+        attr1.icbcSelect=icbcSelect;
+        attr1.customerListInfo=customerListInfo;
+        attr1.isClose=isClose;
+        //--------------客户等级字段转换-------------------
+        let attr2 = {};
+        attr2.addOptionAll='客户等级';
+        attr2.dataSource=enumData.level;
+        //--------------负责人字段转换-------------------
+        let attr3 = {};
+        attr3.viewData=viewData;
+        attr3.disabled=true;
+        attr3.width=650;
+        attr3.height=300;
+        //--------------上级客户字段转换-------------------
+        let attr4 = {};
+        attr4.viewData=500;
+        //--------------渠道类型字段转换-------------------
+        let attr5 = {};
+        attr5.addOptionAll="渠道类型";
+        attr5.dataSource=enumData.cannelType;
+        //--------------详细地址字段转换-------------------
+        let attr6 = {};
+        attr6.cityCode=viewData.province_city_district;
+        attr6.viewData=viewData;
+        
         return (
             <div>
                 <Row className="form-input-recover">
@@ -153,6 +236,238 @@ class EditForm extends React.Component {
                                     <Input type="text" placeholder="请输入" />
                                 )}
                             </FormItem>
+                          {/* ===================上分界线===================== */}
+
+
+
+                             {
+                                layoutFilds.map(item => {
+                                  
+                                    let { fieldList } = item;                                 
+                                    return (
+                                        <Row className="form-bottom">
+                                            <Row>
+                                                <Col span={2} className="form-label">
+                                                    {item.blockName}：
+                                                </Col>
+                                            </Row> 
+                                            <Row className="row-bottom"> 
+                                            {
+                                                fieldList.map(data => {                                               
+                                                    let item = cardData(data)
+                                                    let span = item.width*24;
+                                                    let Content = eleType[item.fieldApiName]||Input;
+                                                    let message = item.isRequired ? `${item.fieldName}内容不能为空`:'';
+                                                    return (                                                       
+                                                        <Col span={span}>
+                                                            <Row type="flex" align="middle">
+                                                                <Col span={6}>
+                                                                    <Row
+                                                                        type="flex"
+                                                                        justify="end"
+                                                                    >
+                                                                        <div>{item.fieldName}：</div>
+                                                                    </Row>
+                                                                </Col>
+                                                                <Col span={16}>
+                                                                    <FormItem
+                                                                        {...formItemLayout}
+                                                                    >
+                                                                        {getFieldDecorator(item.fieldApiName,{
+                                                                            rules:[{
+                                                                                    required:item.isRequired,
+                                                                                    message:message
+                                                                                }]
+                                                                            })(
+                                                                            <Content attr={item.attr} />
+                                                                        )}
+                                                                    </FormItem>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col>                                                  
+                                                    )
+                                               }) 
+                                            } 
+                                            </Row>                                          
+                                        </Row>                                       
+                                    )
+                                })
+                            }
+
+
+                        {/* ==========================下分界线============================== */}
+                        </Form>
+                    </Row>
+                </Row>
+                <Modal
+                    title="工商核实"
+                    visible={icbcVisible}
+                    onCancel={this.onCancel.bind(this)}
+                    footer={this.footerContent.call(this)}
+                    width={500}
+                    maskClosable={false}
+                >
+                    <div className="modal-height">
+                        {icbcInfo && icbcInfo.length
+                            ? icbcInfo.map(item => {
+                                  return (
+                                      <div className="icbc-detail-item">
+                                          <span>{item.name}</span>:<span>
+                                              {item.value}
+                                          </span>
+                                      </div>
+                                  );
+                              })
+                            : ""}
+                    </div>
+                </Modal>
+            </div>
+        );
+    }
+}
+
+const cardForm = Form.create({
+    mapPropsToFields: props => {
+        //把redux中的值取出来赋给表单
+        //debugger;
+        let viewData = props.$$state.toJS().viewData;
+        let value = {};
+        for (let key in viewData) {
+            if (key == "address") {
+                value[key] = {
+                    value: {
+                        address: viewData[key],
+                        latlng: viewData["latlng"]
+                    }
+                };
+            } else {
+                value[key] = { value: viewData[key] };
+            }
+        }
+        //address  把字段合成对象
+
+        return {
+            ...value
+            /*    
+            name: { value: props.editData.name },
+            description: { value: props.editData.description }
+                   
+            employeeNum:{value: "5"}
+            level:{value: "17"}
+            name:{value: "a"}
+            remark:{value: "6"} */
+        };
+    },
+    onFieldsChange: (props, onChangeFild) => {
+        //往redux中写值//把值进行更新改变
+        debugger;
+        let viewData = props.$$state.toJS().viewData;      
+        for (let key in onChangeFild) {
+            if (onChangeFild[key].value && onChangeFild[key].value.key) {
+                viewData[key] = onChangeFild[key].value.key;
+            } else {
+                if (key == "address") {
+                    let value = onChangeFild[key].value;
+                    viewData["address"] = value.address;
+                    if (typeof value.latlng == "string") {
+                        viewData["latlng"] = value.latlng;
+                    } else {
+                        viewData["latlng"] =
+                            value.latlng.lng + "," + value.latlng.lat;
+                    }
+                } else if (key == "province_city_district") {
+                    viewData[key] = onChangeFild[key].value.result;
+                    viewData["cityMyself"] = onChangeFild[key].value.custom;
+                } else {
+                    viewData[key] = onChangeFild[key].value;
+                } //把对像拆成字段  latlng
+            }
+        }
+        props.editCardFn(viewData);
+    }
+})(EditForm);
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.customerList
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
+
+
+
+
+/* //循环结构
+{
+                                layoutFilds.map(item => {
+                                    debugger; 
+                                    let { fieldList } = item;                                 
+                                    return (
+                                        <Row className="form-bottom">
+                                            <Row>
+                                                <Col span={2} className="form-label">
+                                                    {item.blockName}：
+                                                </Col>
+                                            </Row> 
+                                            <Row className="row-bottom"> 
+                                            {
+                                                fieldList.map(data => {   
+                                                    //debugger;                                 
+                                                    let item = cardData(data)
+                                                    let span = item.width*24;
+                                                    let Content = eleType[item.type]||eleType[1];
+                                                    let message = item.isRequired ? `${item.fieldName}内容不能为空`:'';
+
+                                                    return (
+                                                        
+                                                        <Col span={span}>
+                                                            <Row type="flex" align="middle">
+                                                                <Col span={6}>
+                                                                    <Row
+                                                                        type="flex"
+                                                                        justify="end"
+                                                                    >
+                                                                        <div>{item.fieldName}：</div>
+                                                                    </Row>
+                                                                </Col>
+                                                                <Col span={16}>
+                                                                    <FormItem
+                                                                        {...formItemLayout}
+                                                                    >
+                                                                        {getFieldDecorator("item.fieldApiName",{
+                                                                            rules:[
+                                                                                {
+                                                                                    required:item.isRequired,
+                                                                                    message:message
+                                                                                }
+                                                                                ]
+                                                                            })(
+                                                                            <Content attr={item.attr} />
+                                                                        )}
+                                                                    </FormItem>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col>                                                  
+                                                    )
+                                               }) 
+                                            } 
+                                            </Row>                                          
+                                        </Row>                                       
+                                    )
+                                })
+                            }
+ */
+
+/* //原始结构
+                           
                             <Row className="form-bottom">
                                 <Row>
                                     <Col span={2} className="form-label">
@@ -162,7 +477,7 @@ class EditForm extends React.Component {
                                 <Row>
                                     <Col offset={1}>
                                         <Row className="row-bottom">
-                                            <Col span={12}>
+                                          <Col span={12}>
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -194,13 +509,13 @@ class EditForm extends React.Component {
                                                                 }
                                                             )(
                                                                 <Input
-                                                                    type="text"
-                                                                    placeholder="请输入"
+                                                                    type='text'
+                                                                    placeholder='请输入。。。'
                                                                 />
                                                             )}
                                                         </FormItem>
                                                     </Col>
-                                                    <Col span={5}>
+                                               <Col span={5}>
                                                         <Row
                                                             type="flex"
                                                             justify="end"
@@ -224,7 +539,7 @@ class EditForm extends React.Component {
                                                                 width={450}
                                                             />
                                                         </Row>
-                                                    </Col>
+                                                    </Col> 
                                                 </Row>
                                             </Col>
                                             <Col span={12}>
@@ -769,99 +1084,4 @@ class EditForm extends React.Component {
                                     </Col>
                                 </Row>
                             </Row>
-                        </Form>
-                    </Row>
-                </Row>
-                <Modal
-                    title="工商核实"
-                    visible={icbcVisible}
-                    onCancel={this.onCancel.bind(this)}
-                    footer={this.footerContent.call(this)}
-                    width={500}
-                    maskClosable={false}
-                >
-                    <div className="modal-height">
-                        {icbcInfo && icbcInfo.length
-                            ? icbcInfo.map(item => {
-                                  return (
-                                      <div className="icbc-detail-item">
-                                          <span>{item.name}</span>:<span>
-                                              {item.value}
-                                          </span>
-                                      </div>
-                                  );
-                              })
-                            : ""}
-                    </div>
-                </Modal>
-            </div>
-        );
-    }
-}
-
-const cardForm = Form.create({
-    mapPropsToFields: props => {
-        //把redux中的值取出来赋给表单
-        let viewData = props.$$state.toJS().viewData;
-        let value = {};
-        debugger
-        for (let key in viewData) {
-            if (key == "address") {
-                value[key] = {
-                    value: {
-                        address: viewData[key],
-                        latlng: viewData["latlng"]
-                    }
-                };
-            } else {
-                value[key] = { value: viewData[key] };
-            }
-        }
-        //address  把字段合成对象
-        return {
-            ...value
-        };
-    },
-    onFieldsChange: (props, onChangeFild) => {
-        //往redux中写值//把值进行更新改变
-        let viewData = props.$$state.toJS().viewData;
-        debugger
-        for (let key in onChangeFild) {
-            if (onChangeFild[key].value && onChangeFild[key].value.key) {
-                viewData[key] = onChangeFild[key].value.key;
-            } else {
-                if (key == "address") {
-                    let value = onChangeFild[key].value;
-                    viewData["address"] = value.address;
-                    if (typeof value.latlng == "string") {
-                        viewData["latlng"] = value.latlng;
-                    } else {
-                        viewData["latlng"] =
-                            value.latlng.lng + "," + value.latlng.lat;
-                    }
-                } else if (key == "province_city_district") {
-                    viewData[key] = onChangeFild[key].value.result;
-                    viewData["cityMyself"] = onChangeFild[key].value.custom;
-                } else {
-                    viewData[key] = onChangeFild[key].value;
-                } //把对像拆成字段  latlng
-            }
-        }
-        props.editCardFn(viewData);
-    }
-})(EditForm);
-
-//绑定状态到组件props
-function mapStateToProps(state, ownProps) {
-    return {
-        $$state: state.customerList
-    };
-}
-//绑定action到组件props
-function mapDispatchToProps(dispatch) {
-    return {
-        action: bindActionCreators(Actions, dispatch)
-    };
-}
-//输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
+ */

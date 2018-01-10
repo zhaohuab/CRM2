@@ -10,6 +10,7 @@
         display: flex;
         .drag-fields-block {
             width: 370px;
+            overflow-y: auto;
             .sourceBlock {
                 border: 1px dashed #ccc;
                 background-color: white;
@@ -98,6 +99,23 @@
     }
     .relative-obj {
         padding: 10px 20px;
+    }
+
+    .prompt{
+        color:red;
+        white-space: nowrap;
+        animation: translate3 0.5s; 
+    }
+    
+    @keyframes translate3{
+        from{
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to{
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 }
 

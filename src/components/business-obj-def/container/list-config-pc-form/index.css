@@ -9,11 +9,17 @@
   position: absolute;
   left: 100px;
   top: 10px;
+  color: red;
+  animation: translate4 0.5s;
 }
 .list-config-pc-form > .gutter-row {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ddd;
+}
+.list-config-pc-form > .gutter-row .prompt {
+  color: red;
+  animation: translate4 0.5s;
 }
 .list-config-pc-form .drag-fields-box {
   height: 400px;
@@ -79,4 +85,14 @@
 .list-config-pc-form .drap-fields-target-box .drag-fields-list-box .drag-fields-list-item .btn-delete {
   margin: 10px;
   cursor: pointer;
+}
+@keyframes translate4 {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

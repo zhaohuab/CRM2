@@ -25,7 +25,7 @@ import Opportunity from './Opportunity'
 class RelevantObject extends React.Component {
     headerFn(obj){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
-        debugger
+        //debugger
         let temp
         if(viewDataRelevant[obj.index-1].list){
             temp = viewDataRelevant[obj.index-1].list.data.length
@@ -37,7 +37,7 @@ class RelevantObject extends React.Component {
       
         let  icon = ['icon-canyuren','icon-lianxirenguanxi','icon-xiansuofenpei','icon-shangji','icon-wenjian']
     let fn = [[<ContactsCard/>,<i className={'iconfont icon-lianxiren'}/>],'',<Opportunity CusId={viewData} otherRef={this.otherRef.bind(this)}/>,<i className={'iconfont icon-tianjia'}/>]
-    debugger    
+    //debugger    
     return(
             <Row className='relevant-title' type='flex' justify='space-between' align='middle'>
                 <Col className='left'>
@@ -76,7 +76,7 @@ class RelevantObject extends React.Component {
     }
 
     otherRef(){
-        debugger
+        //debugger
         let {viewData} = this.props.$$state.toJS();
         this.props.action.getOppList(this.props.JoinPagination,viewData.id,2)
     }
@@ -91,7 +91,7 @@ class RelevantObject extends React.Component {
 
     //删除联系人
     delContacts(id){
-        debugger
+        //debugger
         this.props.action.delContacts(
             id,
             this.props.JoinPagination
@@ -112,7 +112,7 @@ class RelevantObject extends React.Component {
             }
         }
         
-        debugger
+        //debugger
         return(
             <div className='relevant-wapper' id='relevant-wapper-item'>
                 <Collapse defaultActiveKey={['1','2','3','4']}>

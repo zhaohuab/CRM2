@@ -3,12 +3,17 @@
   padding-bottom: 10px;
   border-bottom: 1px solid #ddd;
 }
+.list-config-mobile-form > .gutter-row .prompt {
+  color: red;
+  animation: translate5 0.5s;
+}
 .list-config-mobile-form .drag-fields-box {
   height: 400px;
   display: flex;
 }
 .list-config-mobile-form .drag-fields-box .drag-fields-block {
   width: 370px;
+  overflow-y: auto;
 }
 .list-config-mobile-form .drag-fields-box .drag-fields-block h3 {
   width: 100%;
@@ -53,6 +58,8 @@
   position: absolute;
   left: 70px;
   top: 0;
+  color: red;
+  animation: translate5 0.5s;
 }
 .list-config-mobile-form .drag-fields-box .drag-fields-list-box .drag-fields-list-item {
   position: relative;
@@ -100,4 +107,14 @@
 .list-config-mobile-form .isRequired {
   margin-right: 4px;
   color: red;
+}
+@keyframes translate5 {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

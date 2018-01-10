@@ -95,7 +95,7 @@ export default class OwnUser extends React.Component {
         
         return(
             <div className='reference'>
-               <div className='reference-main' style={{width:this.props.width?this.props.width:'650px'}}>
+               <div className='reference-main' style={{width:this.props.attr.width?this.props.attr.width:'650px'}}>
                   <div className='reference-main-header'>
                     <p className='title'>
                         负责人
@@ -128,7 +128,7 @@ export default class OwnUser extends React.Component {
 
     getList(flag){
         
-        if(this.props.disabled && this.props.viewData.id){
+        if(this.props.attr.disabled && this.props.attr.viewData.id){
             return
         }
         if(flag){
@@ -166,11 +166,11 @@ export default class OwnUser extends React.Component {
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
             ) : null;
 
-        debugger
+        //debugger
         return(
             <div>
             {
-                this.props.disabled && this.props.viewData.id?
+                this.props.attr.disabled && this.props.attr.viewData.id?
                 <Input placeholder="负责人" value={this.props.value ? this.props.value.name : ""} disabled />:
                 <Dropdown
                 overlay={this.creatPanel()} //生成下拉结构样式

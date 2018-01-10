@@ -33,20 +33,20 @@ export default class IcbcInfo extends React.Component {
     }
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
-        debugger;
+        debugger
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/",
                 method: "GET",
                 data: {
                     param: {
-                        name: this.props.attr.viewData.name,
+                        name: this.props.viewData.name,
                         size: 30
                     }
                 }
             },
             result => {
-               // debugger;
+                debugger
                 callback(result);
             }
         );
@@ -54,27 +54,28 @@ export default class IcbcInfo extends React.Component {
 
     //根据客户id获取详细客户工商信息 id为公司id
     getIcbcDetal(id, visiable) {
-        debugger;
+        debugger
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/" + id,
                 method: "GET"
             },
             result => {
-                //debugger;
+                debugger;
                 //把获取到的工商信息放在redux中
                 //或获取到的id客户详细信息，id号保存在redux中
-                this.props.attr.customerListInfo(result.data, visiable, id);
+                this.props.customerListInfo(result.data, visiable, id);
             }
         );
     }
 
     //点击核实按钮，判断有工商id与否
     getIcbc(flag) {
-        let icbcName = this.props.attr.viewData.name;
-        let verifyId = this.props.attr.viewData.verifyId;
-        let icbcSelect = this.props.attr.icbcSelect;
-        let isClose = this.props.attr.isClose;
+        debugger;
+        let icbcName = this.props.viewData.name;
+        let verifyId = this.props.viewData.verifyId;
+        let icbcSelect = this.props.icbcSelect;
+        let isClose = this.props.isClose;
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
@@ -126,6 +127,7 @@ export default class IcbcInfo extends React.Component {
                 index: -1
             },
             () => {
+                //debugger;
                 let visiable = true;
                 this.getIcbcDetal(this.state.select, visiable);
             }
@@ -141,14 +143,14 @@ export default class IcbcInfo extends React.Component {
 
     choiceIndustry() {
         let index = this.state.index;
-        console.log(this.props.attr.viewData.name);
+        console.log(this.props.viewData.name);
         return (
             <div className="reference">
                 <div
                     className="reference-main"
                     style={{
-                        width: this.props.attr.width
-                            ? this.props.attr.width + "px"
+                        width: this.props.width
+                            ? this.props.width + "px"
                             : "300px"
                     }}
                 >
@@ -164,8 +166,8 @@ export default class IcbcInfo extends React.Component {
                                 style={{ width: 200 }}
                                 onSearch={value => console.log(value)}
                                 value={
-                                    this.props.attr.viewData.name
-                                        ? this.props.attr.viewData.name
+                                    this.props.viewData.name
+                                        ? this.props.viewData.name
                                         : ""
                                 }
                             />
@@ -231,7 +233,7 @@ export default class IcbcInfo extends React.Component {
     }
 
     render() {
-        let attr = this.props.attr;
+
         return (
             <div className="">
                 <Dropdown

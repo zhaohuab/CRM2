@@ -45,7 +45,7 @@ class JoinList extends React.Component {
         )
     }
     joinDel(id){
-        debugger
+        //debugger
         reqwest(
             {
                 url: baseDir+`cum/customer/relusers/${id}`,
@@ -62,7 +62,7 @@ class JoinList extends React.Component {
         );
     }
     render(){
-        debugger
+        //debugger
         let {viewData,viewDataJoinList} = this.props.$$state.toJS();
         return(
             <div className='join-warpper'>

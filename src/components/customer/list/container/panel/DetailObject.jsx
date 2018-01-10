@@ -23,9 +23,80 @@ import UploadImg from "../list/UploadImg";
 
 class DetailObject extends React.Component {
     render(){
-        let {viewData} = this.props.$$state.toJS();
-        return(
+        let {viewData, detailFilds } = this.props.$$state.toJS();
+        return(           
                 <Collapse
+                    defaultActiveKey={["1", "2", "3"]}
+                >
+                    {
+                        detailFilds.map((item,index) => {
+                            let { fieldList } = item;
+                            let key = index+1; 
+                            return (
+                                <Panel key={key} header={item.blockName}>
+                                    <Row className="custom-info">
+                                        {
+                                            fieldList.map(item=>{
+                                                
+                                                return (
+                                                    <Col span={12}>
+                                                        <Row
+                                                            type="flex"
+                                                            gutter={10}
+                                                            align="middle"
+                                                        >
+                                                            <Col
+                                                                span={8}
+                                                                className="custom-info-title"
+                                                            >
+                                                                <span>
+                                                                    {item.fieldName}:
+                                                                </span>
+                                                            </Col>
+                                                            <Col
+                                                                span={16}
+                                                                className="custom-info-content"
+                                                            >
+                                                                <span>
+                                                                    {
+                                                                        viewData[item.displayName]||'无'
+                                                                    }
+                                                                </span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                )
+                                            })
+                                        }
+                                        
+                                    </Row>
+                                </Panel>
+                            )
+                        })
+                    }
+               
+            </Collapse>             
+        )
+    }
+}
+
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.customerList,
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(DetailObject);
+
+
+/* 
+ <Collapse
                     defaultActiveKey={["1", "2", "3"]}
                 >
                     <Panel key="1" header="&nbsp;">
@@ -481,22 +552,4 @@ class DetailObject extends React.Component {
                         </Row>
                     </Panel>
             </Collapse>
-        )
-    }
-}
-
-function mapStateToProps(state, ownProps) {
-    return {
-        $$state: state.customerList,
-    };
-}
-//绑定action到组件props
-function mapDispatchToProps(dispatch) {
-    return {
-        action: bindActionCreators(Actions, dispatch)
-    };
-}
-//输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(DetailObject);
-
-
+ */

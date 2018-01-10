@@ -56,7 +56,7 @@ class ContactsCard extends React.Component {
         let {contactsCardData} = this.props.$$state.toJS();
    
         this.props.form.validateFields((err, values) => {
-            debugger
+            //debugger
             if(!err){
                 this.setState({
                     visit:false
@@ -72,7 +72,7 @@ class ContactsCard extends React.Component {
                         }
                     },
                     data => {
-                        debugger
+                        //debugger
                         this.props.action.refContactFormAdd(data)
                     }
                 );
@@ -288,7 +288,7 @@ class ContactsCard extends React.Component {
 
 const cardForm = Form.create({
     mapPropsToFields: props => {
-        debugger
+        //debugger
         //把redux中的值取出来赋给表单
         let {contactsCardData,viewData} = props.$$state.toJS()
         let value = {};
@@ -299,14 +299,14 @@ const cardForm = Form.create({
         for (let key in contactsCardData) {
             value[key] = { value: contactsCardData[key] };
         }
-        debugger
+        //debugger
         return {
             ...value
         };
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-        debugger
+        //debugger
         let {contactsCardData,viewData} = props.$$state.toJS();
         for (let key in onChangeFild) {
             contactsCardData[key] = onChangeFild[key].value;

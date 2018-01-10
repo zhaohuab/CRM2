@@ -44,7 +44,7 @@ export default class Industry extends React.Component {
     getIndustry(flag) {
         //这里需要Request请求
         if (!flag) {
-            debugger;
+            //debugger;
             this.setState(
                 {
                     visible: false,
@@ -64,6 +64,7 @@ export default class Industry extends React.Component {
                     method: "GET"
                 },
                 data => {
+                    
                     this.setState({
                         visible: flag,
                         industryData: data.data,

@@ -114,7 +114,7 @@ export default class DragFields extends React.Component {
 
     return (
       <div className="list-config-pc-form">
-        <Row gutter={16} className="gutter-row">
+        <Row gutter={16} className="gutter-row" type='flex' align='middle'>
           <Col className="gutter-row form-lable" span={2}>
             *模板名称
             </Col>

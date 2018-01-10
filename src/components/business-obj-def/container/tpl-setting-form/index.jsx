@@ -154,7 +154,7 @@ export default class DragFields extends React.Component {
 
     return (
       <div className="tpl-setting-form">
-        <Row gutter={16} className="gutter-row">
+        <Row gutter={16} className="gutter-row" type='flex' align='middle'>
           <Col className="gutter-row form-lable" span={2}>*模板名称</Col>
           <Col className="gutter-row" span={6}>
             <Input onChange={this.changeName.bind(this)} placeholder="输入名称。。。" value={this.props.name} />

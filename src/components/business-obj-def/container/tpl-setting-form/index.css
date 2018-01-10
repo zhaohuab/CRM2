@@ -12,6 +12,7 @@
 }
 .tpl-setting-form .drag-fields-box .drag-fields-block {
   width: 370px;
+  overflow-y: auto;
 }
 .tpl-setting-form .drag-fields-box .drag-fields-block .sourceBlock {
   border: 1px dashed #ccc;
@@ -96,6 +97,21 @@
 }
 .tpl-setting-form .relative-obj {
   padding: 10px 20px;
+}
+.tpl-setting-form .prompt {
+  color: red;
+  white-space: nowrap;
+  animation: translate3 0.5s;
+}
+@keyframes translate3 {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 .tpl-setting-edit-model .form-lable {
   line-height: 28px;

@@ -32,7 +32,7 @@ export default class FormMap extends React.Component {
 
         this.placeSearch.search(this.state.inputValue, (status, result) => {
             if (status === "complete" && result.info === "OK") {
-                debugger;
+                //debugger;
                 //this.map.setCenter(result.geocodes[0].location);
                 this.setState({
                     markList: result.poiList.pois,
@@ -114,7 +114,7 @@ export default class FormMap extends React.Component {
     //最外城input动态赋予value值
     changeRsult(e) {
         let value = e.target.value;
-        this.props.onChange({ latlng: null, adress: value });
+        this.props.onChange({ latlng: null, address: value });
     }
 
     //搜索input改变值方法

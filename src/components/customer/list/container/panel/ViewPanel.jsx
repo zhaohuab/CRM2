@@ -57,13 +57,13 @@ class ViewPanel extends React.Component {
 
     //打开编辑按钮
     btnEdit() {
-        debugger
+        //debugger
         this.props.action.showForm(true);
     }
 
     //选择列表获取工商信息详情
     customerListInfo(data, id, visiable) {
-        debugger;
+        //debugger;
         this.props.action.icbcDetailInfo(data, id, visiable);
     }
 
@@ -74,7 +74,7 @@ class ViewPanel extends React.Component {
         //modal点击认证的时候，把icbcSelect2清空，往viewData中存储verifyId的值
         let visiable = false;
         let id = viewData.id;
-        debugger;
+        //debugger;
         this.props.action.checkedFn(id, visiable, icbcSelect2);
     }
 
@@ -108,7 +108,7 @@ class ViewPanel extends React.Component {
     checked() {
         let { viewData } = this.props.$$state.toJS();
         let verifyId = viewData.verifyId;
-        debugger;
+        //debugger;
         this.props.action.modalDetalVisiable(true, verifyId);
     }
 
@@ -142,7 +142,7 @@ class ViewPanel extends React.Component {
 
     //详情面板右侧tab列表获取数据
     panelTabRightFn(index){
-        debugger
+        //debugger
         let { viewData } = this.props.$$state.toJS();
         //if(index == 2){
             let id = viewData.id
@@ -161,7 +161,7 @@ class ViewPanel extends React.Component {
                     "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
             }
         ];
-        debugger
+        //debugger
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">

@@ -3,12 +3,17 @@
         margin-bottom: 10px;
         padding-bottom: 10px;
         border-bottom: 1px solid #ddd;
+        .prompt{
+            color:red;
+            animation: translate5 0.5s; 
+        }
     }
     .drag-fields-box {
         height: 400px;
         display: flex;
         .drag-fields-block {
             width: 370px;
+            overflow-y: auto;
             h3 {
                 width: 100%;
                 margin-bottom: 10px;
@@ -51,6 +56,8 @@
                     position:absolute;
                     left: 70px;
                     top:0;
+                    color:red;
+                    animation: translate5 0.5s; 
                 }
             }
            
@@ -104,5 +111,16 @@
     .isRequired {
         margin-right: 4px;
         color: red;
+    }
+
+    @keyframes translate5{
+        from{
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to{
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 }
