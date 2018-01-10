@@ -32,7 +32,11 @@ export default class FormMap extends React.Component {
 
         this.placeSearch.search(this.state.inputValue, (status, result) => {
             if (status === "complete" && result.info === "OK") {
+<<<<<<< HEAD
                 //debugger;
+=======
+                ;
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 //this.map.setCenter(result.geocodes[0].location);
                 this.setState({
                     markList: result.poiList.pois,
@@ -98,7 +102,7 @@ export default class FormMap extends React.Component {
             },
             () => {
                 //this.props.cityCode;
-                //debugger;
+                //;
                 //this.map.clearInfoWindow();
             }
         );

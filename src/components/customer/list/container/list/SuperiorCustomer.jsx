@@ -57,7 +57,11 @@ export default class CuperiorCustomer extends React.Component {
 
     //点击分页时触发的方法
     onPageChange(page, pageSize) {
+<<<<<<< HEAD
         //debugger;
+=======
+        ;
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         //let { page, pageSize } = this.state.pagination;
         let pagination = {
             page,
@@ -87,7 +91,11 @@ export default class CuperiorCustomer extends React.Component {
                 }
             },
             result => {
+<<<<<<< HEAD
                 //debugger;
+=======
+                ;
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.setState({
                     visible: flag,
                     industryData: result
@@ -144,8 +152,13 @@ export default class CuperiorCustomer extends React.Component {
 
     //点击确定
     onOk() {
+<<<<<<< HEAD
         //debugger
+=======
+        
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         if (this.props.onChange) {
+            debugger
             if(this.props.cusId){
                 this.props.onChange({id:this.props.cusId.id,name:this.props.cusId.name});
             }else{
@@ -175,7 +188,11 @@ export default class CuperiorCustomer extends React.Component {
     //搜索框输入方法
     onSearch(value) {
         console.log(value);
+<<<<<<< HEAD
         //debugger;
+=======
+        ;
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         reqwest(
             {
                 url: baseDir + "cum/customers",
@@ -190,7 +207,11 @@ export default class CuperiorCustomer extends React.Component {
                 }
             },
             result => {
+<<<<<<< HEAD
                 //debugger;
+=======
+                ;
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.setState({
                     industryData: result
                 });
@@ -200,7 +221,11 @@ export default class CuperiorCustomer extends React.Component {
 
     //下拉时显示的面板布局
     choiceIndustry() {
+<<<<<<< HEAD
         //debugger
+=======
+        
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
             type: "radio",
@@ -281,13 +306,12 @@ export default class CuperiorCustomer extends React.Component {
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
             ) : null;
-            
         return (
             <div>
                 <div className="reference-warpper">
                     {
-                        this.props.cusId?
-                        <Input disabled value={this.props.cusId.name}/>:
+                        this.props.viewData?
+                        <Input disabled value={this.props.viewData.name}/>:
                         <Dropdown
                             overlay={this.choiceIndustry()} //生成下拉结构样式
                             trigger={["click"]}

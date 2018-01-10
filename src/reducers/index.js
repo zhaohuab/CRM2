@@ -56,6 +56,9 @@ import prdattrgroup from 'components/prdattrgroup/list/reducer';
 //表单管理
 import businessObjDef from 'components/business-obj-def/reducer';
 
+//分配菜单
+import cusAssignReducers from 'components/customer/assign/reducer'
+
 let rootReducer = combineReducers({ 
     login, 
     doc,
@@ -85,7 +88,8 @@ let rootReducer = combineReducers({
     oppflowList,
     prdattr,
     prdattrgroup,
-    businessObjDef
+    businessObjDef,
+    cusAssignReducers
 });
 
 export { rootReducer };

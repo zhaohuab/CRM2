@@ -61,7 +61,11 @@ export default class IcbcInfo extends React.Component {
                 method: "GET"
             },
             result => {
+<<<<<<< HEAD
                 //debugger;
+=======
+                ;
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 //把获取到的工商信息放在redux中
                 //或获取到的id客户详细信息，id号保存在redux中
                 this.props.attr.customerListInfo(result.data, visiable, id);
@@ -126,6 +130,10 @@ export default class IcbcInfo extends React.Component {
                 index: -1
             },
             () => {
+<<<<<<< HEAD
+=======
+                ;
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 let visiable = true;
                 this.getIcbcDetal(this.state.select, visiable);
             }
@@ -231,7 +239,10 @@ export default class IcbcInfo extends React.Component {
     }
 
     render() {
+<<<<<<< HEAD
         let attr = this.props.attr;
+=======
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         return (
             <div className="">
                 <Dropdown

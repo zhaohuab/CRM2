@@ -81,7 +81,8 @@ class Card extends React.Component {
                                 }],
                             })(
                                 <CuperiorCustomer
-                                    cusId={this.props.cusId}
+                                    viewData={this.props.viewData}
+                                    disabled = {true}
                                     width={500}
                                 />
                                 )}

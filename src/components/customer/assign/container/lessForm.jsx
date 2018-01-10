@@ -1,6 +1,4 @@
 import {
-    Modal,
-    Cascader,
     Select,
     Form,
     Row,
@@ -12,9 +10,8 @@ import {
 const FormItem = Form.Item;
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
-const confirm = Modal.confirm;
 
-import * as Actions from "../../action";
+import * as Actions from "../action";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
@@ -25,35 +22,17 @@ class LessForm extends React.Component {
     constructor(props) {
         super(props);
     }
-    handleSearch(e) {
-        e.preventDefault();
-<<<<<<< HEAD
-        //debugger;
-=======
-        ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
-        this.props.handleSearch(this.props.$$state.toJS().searchMap);
-    }
-    moreFn() {
-        this.props.formMore();
-    }
+    
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-<<<<<<< HEAD
-        //debugger
-=======
-        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
-        let { enumData } = this.props.$$state.toJS();
         
         return (
-            <div className="less-form">
-                <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
-                    <Row type="flex" align="middle" style={{ height: "54px" }}>
+                <Form layout="inline">
+                    <Row type="flex" align="middle">
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("name")(
@@ -66,7 +45,7 @@ class LessForm extends React.Component {
                                 {getFieldDecorator("type")(
                                     <Enum
                                         addOptionAll={"客户类型"}
-                                        dataSource={enumData.type}
+                                        dataSource={[]}
                                     />
                                 )}
                             </FormItem>
@@ -76,37 +55,33 @@ class LessForm extends React.Component {
                                 {getFieldDecorator("level")(
                                     <Enum
                                         addOptionAll={"客户等级"}
-                                        dataSource={enumData.level}
+                                        dataSource={[]}
                                     />
                                 )}
                             </FormItem>
                         </Col>
 
                         <Col span={6}>
-                            <div className="more-btn">
-                                <Button htmlType="submit">查询</Button>
-                                <span
-                                    onClick={this.moreFn.bind(this)}
-                                    className="more-up"
-                                >
+                            <div className="">
+                                <span htmlType="submit">查询</span>
+                                <span className="">
                                     更多 <Icon type="down" />
                                 </span>
                             </div>
                         </Col>
                     </Row>
                 </Form>
-            </div>
         );
     }
 }
 
-const WarpMilForm = Form.create({
+const FormRedux = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-        let searchMap = props.$$state.toJS().searchMap;
+        let lessForm = props.$$state.toJS().lessForm;
         let value = {};
-        for (let key in searchMap) {
-            value[key] = { value: searchMap[key] };
+        for (let key in lessForm) {
+            value[key] = { value: lessForm[key] };
         }
         return {
             ...value
@@ -114,22 +89,18 @@ const WarpMilForm = Form.create({
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-        let searchMap = props.$$state.toJS().searchMap;
+        let lessForm = props.$$state.toJS().lessForm;
         for (let key in onChangeFild) {
-            if (onChangeFild[key].value.key) {
-                searchMap[key] = onChangeFild[key].value.key;
-            } else {
-                searchMap[key] = onChangeFild[key].value;
-            }
+            lessForm[key] = onChangeFild[key].value;
         }
-        props.searchMapFn(searchMap);
+        props.formRedux(lessForm);
     }
 })(LessForm);
 
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList
+        $$state: state.cusAssignReducers
     };
 }
 //绑定action到组件props
@@ -139,4 +110,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WarpMilForm);
+export default connect(mapStateToProps, mapDispatchToProps)(FormRedux);

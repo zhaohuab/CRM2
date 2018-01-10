@@ -59,7 +59,11 @@ class Enum extends React.Component {
                 >
                     {addOptionAll != undefined ? (
                         <Option key={"0"}>
+<<<<<<< HEAD
                             {"全部" + addOptionAll}
+=======
+                            <span style={{color:'#CCCCCC'}}>{"全部" + this.props.addOptionAll}</span>
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                         </Option>
                     ) : (
                         ""

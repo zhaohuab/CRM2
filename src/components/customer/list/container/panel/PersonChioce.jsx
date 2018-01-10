@@ -54,7 +54,11 @@ export default class PersonChioce extends React.Component {
             type: "radio",
             selectedRowKeys:this.props.selectedRowKeys
         };
+<<<<<<< HEAD
 //debugger
+=======
+
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         return(
             <div>
                 <div className='person-chioce-wapper' style={{height:this.props.height?this.props.height:''}}>

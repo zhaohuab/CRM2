@@ -44,7 +44,10 @@ export default class Industry extends React.Component {
     getIndustry(flag) {
         //这里需要Request请求
         if (!flag) {
+<<<<<<< HEAD
             //debugger;
+=======
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
             this.setState(
                 {
                     visible: false,
@@ -179,7 +182,12 @@ export default class Industry extends React.Component {
     }
 
     //每隔500毫秒执行一次查找请求
+<<<<<<< HEAD
     lodashSearch(value) {    
+=======
+    lodashSearch(value) {
+        debugger
+>>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         reqwest(
             {
                 url: baseDir + "/base/industrys/list",
@@ -218,6 +226,7 @@ export default class Industry extends React.Component {
 
     //触发键盘事件时，选择框消失，出现搜索面板
     keyDownUp(e) {
+        debugger
         let value = e.target.value;
         if (value) {
             this.lodashSearch(value);
@@ -326,7 +335,7 @@ export default class Industry extends React.Component {
     render() {
         const suffix =
             this.props.value && this.props.value.name ? (
-                <Icon type="close" onClick={this.emitEmpty.bind(this)} />
+                <Icon type="close" onClick={this.emitEmpty.bind(this)}/>
             ) : null;
 
         return (
