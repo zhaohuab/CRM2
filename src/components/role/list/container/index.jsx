@@ -2,11 +2,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Tabs, Table, Icon, Button, Form, Input, Checkbox, Col, Modal, Spin } from 'antd';
+import { Tabs, Table, Icon, Button, Form, Input, Checkbox,Row, Col, Modal, Spin } from 'antd';
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import * as roleActions from "../action"
 import RoleCard from "./RoleCard"
 import FuncTree from "./FuncTree"
+import "./index.less";
+import "assets/stylesheet/all/iconfont.css";
+
 
 const confirm = Modal.confirm;
 const TabPane = Tabs.TabPane;
@@ -30,7 +33,10 @@ class List extends React.Component {
             dataIndex: 'description',
         },{
             title: '所属组织',
-            dataIndex: 'orgId',
+            dataIndex: 'orgName',
+        },{
+            title: '角色类型',
+            dataIndex: 'type',
         }]
 
         this.state = {
@@ -40,11 +46,12 @@ class List extends React.Component {
 
     componentDidMount() {
         this.props.action.getRoleListData();
-        //this.props.action.getFuncTreeData();
+        // this.props.action.getFuncTreeData(1);
     }
 
     onNameClick = (row) => {
-        this.props.action.selectRowTab(row.id,1);
+        this.props.action.getFuncTreeData(row.id);
+        // this.props.action.selectRowTab(row.id,1);
     }
     //点击新增按钮事件
     onAdd() {
@@ -126,13 +133,24 @@ class List extends React.Component {
                         goBack={this.btnBack.bind(this)}
                         length={selectedRowKeys.length}
                     >
-                    </HeaderButton> : <div className='org-tree-top'>
+
+                        {selectedRowKeys.length == 1 ? <Button className="default_button" onClick={this.onEdit.bind(this, selectedRowKeys[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
+                                : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
+                        <Button
+                            className="returnbtn-class"
+                            onClick={this.onDelete.bind(this)}
+                        >
+                            <i className="iconfont icon-shanchu" />删除
+                        </Button>
+                    </HeaderButton> 
+                    :<div className='org-tree-top'>
                         <Button onClick={this.onAdd.bind(this)}>新增角色</Button>
                     </div>
                 }
-                <div className='list-main'>
-                    <div className='list-table-tree' style={{ minHeight: 'auto' }}>
-
+              
+                    <Row>
+                   <Col span={12}>
+                   <div className="tabel-recoverd">
                         <Table
                             size="middle"
                             columns={this.columns}
@@ -141,8 +159,9 @@ class List extends React.Component {
                             dataSource={page.data}
                             rowSelection={rowSelection}
                         />
-                    </div>
-                    <div className='list-table' ref="listTablePanel">
+                        </div>
+                    </Col>
+                    <Col span={12}>
 
                         <div className='org-tabel'>
                             <Tabs tabPosition={this.state.tabPosition} tabBarExtraContent={operations} onTabClick={this.onTabClick}>
@@ -150,9 +169,19 @@ class List extends React.Component {
                                     <FuncTree data={funcData} />
                                 </TabPane>
                                 <TabPane tab="数据" key="2">Content of Tab 2</TabPane>
-                                <TabPane tab="用户" key="3">Content of Tab 3</TabPane>
+                                <TabPane tab="用户" key="3">
+                                <div className="tabel-recoverd">
+                                <Table
+                                    size="middle"
+                                    columns={this.columns}
+                                    rowKey="id"
+                                    pagination={false}
+                                    dataSource={page.data}
+                                    rowSelection={rowSelection}
+                                />
+                                </div>
+                                </TabPane>
                             </Tabs>
-                            
                         </div>
                         <Modal
                             title={this.state.isEdit ? "编辑角色" : "新增角色"}
@@ -163,8 +192,10 @@ class List extends React.Component {
                         >
                             <WarpRoleCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
                         </Modal>
-                    </div>
-                </div>
+                   
+                    </Col>
+                    </Row>
+                
             </div>
         );
     }

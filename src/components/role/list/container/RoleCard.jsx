@@ -1,6 +1,6 @@
 import { Form, Input, Select } from 'antd';
 import Department from 'components/refs/departments'
-
+import Enum from 'utils/components/enums'
 const FormItem = Form.Item;
 const Option = Select.Option;
 class Card extends React.Component {
@@ -51,6 +51,30 @@ class Card extends React.Component {
                         )}
                 </FormItem>
 
+                <FormItem
+                    label="上级组织"
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator('orgId', {
+                        rules: [],
+                    })(
+                        <Department />
+                        )}
+                </FormItem>
+                <FormItem
+                    label="角色类型"
+                    {...formItemLayout}
+                >
+                    {getFieldDecorator('userType', {
+                        rules: [],
+                    })(
+                       // <Enum
+                       // dataSource={enumData.dimension}
+                       // />
+                       <Input />
+                        )}
+                </FormItem>
+                
                 <FormItem
                     label="角色描述"
                     {...formItemLayout}
