@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Select, Input, Form, Table, Modal, Button, Icon, Row, Col } from "antd";
+import { Select, Input, Form, Table, Modal, Button, Icon, Row, Col,message } from "antd";
 import ToolForm from "./ButtonTool.jsx";
 let Search = Input.Search;
 const FormItem = Form.Item;
@@ -48,7 +48,7 @@ class List extends React.Component {
             },
             {
                 title: "停留时间",
-                dataIndex: "stageResidenceTime"
+                dataIndex: "stageStayTime"
             },
             {
                 title: "赢单概率",
@@ -86,11 +86,15 @@ class List extends React.Component {
         const editData = this.props.$$state.get("editData").toJS();
         const oppBList = this.props.$$state.get("oppBList").toJS();
         editData.childList = oppBList;
-        if (isEdit) {
-            this.props.action.listEditSave(editData);
-        } else {
-            this.props.action.listAddSave(editData);
-        }
+        this.formRef.props.form.validateFields((err, values) => {
+            if (!err) {
+                if (isEdit) {
+                    this.props.action.listEditSave(editData);
+                } else {
+                    this.props.action.listAddSave(editData);
+                }
+            }
+        });
 
     }
 
