@@ -31,6 +31,7 @@ class Opportunity extends React.Component {
     clueShow(e){
         e.stopPropagation()
         this.props.action.getbiztype();
+        return false
     }
     btnNew(e){
         this.setState({
@@ -40,11 +41,12 @@ class Opportunity extends React.Component {
         this.props.action.saveOppBList([]);
     }
     onOk(){
+
         const isEdit = this.props.$$state.get("isEdit");
         const editData = this.props.$$state.get("editData").toJS();
         const oppBList = this.props.$$state.get("oppBList").toJS();
         editData.childList = oppBList;
-        editData.customerId = {id:this.props.CusId.id,name:this.props.CusId.name}
+        editData.customerId = {id:this.props.viewData.id,name:this.props.viewData.name}
         this.props.action.listAddSave(editData);
         this.setState({
             visible:false
@@ -64,7 +66,7 @@ class Opportunity extends React.Component {
             return <Menu.Item key={item.key} >{item.title}</Menu.Item>
         });
         const menu = (
-            <Menu  style={{width:"100px"}} onClick={this.btnNew.bind(this)}>
+            <Menu  style={{minWidth:'200px'}} onClick={this.btnNew.bind(this)}>
                 {loop(biztypeList)}
             </Menu>
           );
@@ -84,7 +86,7 @@ class Opportunity extends React.Component {
                 >
                     <div className="model-height">
                         <ClueCard
-                            cusId={this.props.CusId}
+                            viewData={this.props.viewData}
                             wrappedComponentRef={inst => (this.formRef = inst)}
                         />
                         <ClueTable/>

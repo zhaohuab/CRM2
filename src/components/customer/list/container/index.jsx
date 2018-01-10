@@ -41,14 +41,30 @@ class List extends React.Component {
             {
                 title: "客户名称",
                 dataIndex: "name",
-                render: (text, record) => (
-                    <div
-                        onClick={this.slideShow.bind(this, record)}
-                        className="crm-pointer"
-                    >
-                        {record.name}
-                    </div>
-                )
+                render: (text, record) => {//isGroup
+                    return(
+                        <div
+                            onClick={this.slideShow.bind(this, record)}
+                            className="crm-pointer"
+                        >
+                            <div className='cum-color'>
+                                <span>{record.name}</span>
+                                {
+                                    record.isGroup =='1'?
+                                    <img
+                                        src={require("../images/company.png")}
+                                        className="img"
+                                    />
+                                    :
+                                    <img
+                                        src={require("../images/grope.png")}
+                                        className="img"
+                                    />
+                                }
+                            </div>
+                        </div>
+                    )
+                }  
             },
             {
                 title: "客户类型",
@@ -63,7 +79,6 @@ class List extends React.Component {
                 title: "客户状态",
                 dataIndex: "stateName"
             },
-
             {
                 title: "行业",
                 dataIndex: "industryName"
@@ -125,7 +140,7 @@ class List extends React.Component {
         }
         //详细地址
         if (data.address) {
-            debugger;
+            ;
             let value = data.address;
             data["address"] = value.address;
             data["latlng"] = value.latlng;
@@ -136,18 +151,16 @@ class List extends React.Component {
             delete data.ownerUserId
             data.salesVOs = [{ownerUserId}]
         }
-        debugger
+        
         return data;
     }
 
     //form新增、或者修改
     formHandleOk() {
-        debugger;
-
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
                 values = this.trancFn(values);
-                debugger;
+                ;
                 if (values.id) {
                     this.props.action.listEditSave(values);
                 } else {
@@ -190,7 +203,7 @@ class List extends React.Component {
     tabChange() {
         let { viewState } = this.props.$$state.toJS();
         if (viewState) {
-            debugger;
+            ;
             this.props.action.hideViewForm(false);
         }
     }
@@ -218,7 +231,7 @@ class List extends React.Component {
     }
 
     render() {
-        debugger
+        
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -228,7 +241,6 @@ class List extends React.Component {
             viewState,
             viewData,
             icbcVisible,
-
             icbcSelect
         } = this.props.$$state.toJS();
 

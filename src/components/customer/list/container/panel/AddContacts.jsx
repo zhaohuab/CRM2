@@ -46,7 +46,7 @@ export default class AddContacts extends React.Component {
     //点击分配方法
      assignFn(e){
         e.stopPropagation()
-        debugger
+        
         let { viewData } = this.props
         let orgId = viewData.orgId
 
@@ -62,7 +62,7 @@ export default class AddContacts extends React.Component {
                 }
             },
             result => {
-                debugger;
+                ;
                 this.setState({
                     visible:true,
                     treeList:result.data
@@ -77,7 +77,7 @@ export default class AddContacts extends React.Component {
         let orgId = viewData.orgId;//组织id
         let deptId = selectedKeys[0];//部门id
         let searchMap = {orgId,deptId}
-        debugger
+        
         reqwest(
             {
                 url: baseDir+'sys/users/ref',
@@ -89,7 +89,7 @@ export default class AddContacts extends React.Component {
                 }
             },
             result => {
-                debugger;
+                ;
                 this.setState({
                     visible:true,
                     personList:result,
@@ -103,7 +103,7 @@ export default class AddContacts extends React.Component {
     handleOk(){
         let { viewData } = this.props
         let cumId = viewData.id
-        debugger
+        
         let userId = this.state.result.id
         reqwest(
             {
@@ -118,7 +118,7 @@ export default class AddContacts extends React.Component {
             },
             data => {
                 if(data){
-                    debugger
+                    
                     this.props.changeViewData(data)
                     // let nv = viewData.salesVOs[0]
                     // if(this.state.result){
@@ -129,7 +129,7 @@ export default class AddContacts extends React.Component {
                     //     this.props.changeViewData(viewData)
                     // }
                 }
-                debugger
+                
                 this.setState({
                     visible:false,
                     treeList:[],
@@ -156,7 +156,7 @@ export default class AddContacts extends React.Component {
 
     //选择table某一项方法
     selectedTableList(selectedRowKeys,selectedRows){
-        debugger
+        
         this.setState({
             result:{id:selectedRowKeys[0],value:selectedRows[0].name},
             selectedTableRowKeys:selectedRowKeys

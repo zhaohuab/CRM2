@@ -18,14 +18,52 @@ import { browserHistory } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../action";
+import reqwest from "utils/reqwest";
+import { cum as url, doc, baseDir,oppstage ,opportunity,contacts} from "api";
 
 import ContactsCard from './ContactsCard'
 import Opportunity from './Opportunity'
 
+import ContactsModal from './ContactsDetailModal'
+import OppModal from './OppDetailModal'
+import Upload from './Upload'
+
 class RelevantObject extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            visiable:false,
+            contactsData:{},
+            oppvisiable:false,
+            oppData:[],
+        }
+    }
+    //上传图片之前的操作
+    beforeUpload(file,index,items){
+        
+        let type = ['.bmp', '.gif','.jpeg' ,'.html','.txt' ,'.vsd' ,'.ppt' ,'.doc' ,'.xml','.jpg' ,'.png' ,'.xlsx']
+        let pos = file.name.lastIndexOf('.')
+        let end = file.name.slice(pos)
+        if(type.indexOf(end)){
+            return true
+        }else{
+            //保存信息写不符合上传类型
+            return false
+        }
+    }
+
+    //上传图片成功
+    fileSuccess(){
+        //把拿到的数据放在已有图片数据中
+        //点击某一个文件能下载，是图片类型才能预览
+        //IE iframe chorm/firefox a downlond下载文件
+        //safiri // window.open('http://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=http%3A%2F%2Fwww.th7.cn%2Fd%2Ffile%2Fp%2F2014%2F07%2F04%2Feb26cd61a6c822839b70e7784fe90685.jpg&thumburl=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D925173830%2C3059306923%26fm%3D27%26gp%3D0.jpg', '_self');
+    }
+
+    //遍历折叠表头
     headerFn(obj){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
-        debugger
+
         let temp
         if(viewDataRelevant[obj.index-1].list){
             temp = viewDataRelevant[obj.index-1].list.data.length
@@ -33,12 +71,23 @@ class RelevantObject extends React.Component {
         }else{
             temp=0
         }
-        console.log(temp)
       
         let  icon = ['icon-canyuren','icon-lianxirenguanxi','icon-xiansuofenpei','icon-shangji','icon-wenjian']
-    let fn = [[<ContactsCard/>,<i className={'iconfont icon-lianxiren'}/>],'',<Opportunity CusId={viewData} otherRef={this.otherRef.bind(this)}/>,<i className={'iconfont icon-tianjia'}/>]
-    debugger    
-    return(
+        let fn = [
+            [<i className={'iconfont icon-lianxiren'}/>,<ContactsCard/>],
+            '',
+            <Opportunity viewData={viewData} otherRef={this.otherRef.bind(this)}/>,
+            <Upload 
+                disabled = {false} 
+                multiple={true}
+                beforeUpload = {this.beforeUpload.bind(this)}
+                success = {this.fileSuccess.bind(this)}
+            >
+                <i className='iconfont icon-shangchuan'/>
+            </Upload>
+        ]
+        
+        return(
             <Row className='relevant-title' type='flex' justify='space-between' align='middle'>
                 <Col className='left'>
                     <i className={'iconfont '+icon[obj.index]} />
@@ -47,12 +96,12 @@ class RelevantObject extends React.Component {
                 </Col>
                 <Col className='right'>
                     {
-                       obj.index==1?
-                       <div className='right-combine'>
-                           {fn[0][0]}
-                           {fn[0][1]}
-                       </div>
-                       :fn[obj.index-1]
+                        obj.index==1?
+                        <div className='right-combine'>
+                            {fn[0][0]}
+                            {fn[0][1]}
+                        </div>
+                        :fn[obj.index-1]
                     }
                 </Col>
             </Row>
@@ -76,13 +125,14 @@ class RelevantObject extends React.Component {
     }
 
     otherRef(){
-        debugger
+        
         let {viewData} = this.props.$$state.toJS();
         this.props.action.getOppList(this.props.JoinPagination,viewData.id,2)
     }
 
     //删除商机
-    oppDel(id){
+    oppDel(id,e){
+        e.stopPropagation()
         this.props.action.delOpp(
             id,
             this.props.JoinPagination
@@ -90,12 +140,61 @@ class RelevantObject extends React.Component {
     }
 
     //删除联系人
-    delContacts(id){
-        debugger
+    delContacts(id,e){
+        e.stopPropagation()
         this.props.action.delContacts(
             id,
             this.props.JoinPagination
         )
+    }
+
+    //展示联系人详情
+    contactsDetailModal(item,e){
+        debugger
+        e.stopPropagation();
+        reqwest(
+            {
+                url: baseDir+`/cum/contacts/${item.id}`,
+                method: "GET",
+            },
+            result => {
+                
+                this.setState({
+                    visiable:true,
+                    contactsData:result
+                })
+            }
+        );
+    }
+    //关闭联系人详情
+    cancelContacts(){
+        this.setState({
+            visiable:false,
+        })
+    }
+
+    //展示商机详情
+    oppDetailModal(item,e){
+        debugger
+        e.stopPropagation();
+        reqwest({
+            url: opportunity.opportunity + "/" + item.id,
+            method: 'GET',
+        }, (data) => {
+            
+            this.setState({
+                oppvisiable:true,
+                oppData:data,
+            })
+        })
+        return false
+    }
+
+    //关闭商机详情
+    cancelOpp(){
+        this.setState({
+            oppvisiable:false,
+        })
     }
 
     render(){
@@ -111,8 +210,8 @@ class RelevantObject extends React.Component {
                 tempClue = tempClue.slice(0,5)
             }
         }
-        
-        debugger
+        let type = ['icon-xsl','icon-word','icon-ppt']
+       
         return(
             <div className='relevant-wapper' id='relevant-wapper-item'>
                 <Collapse defaultActiveKey={['1','2','3','4']}>
@@ -122,7 +221,7 @@ class RelevantObject extends React.Component {
                             tempContacts && tempContacts.length?
                             tempContacts.map((item,index)=>{
                                 return(
-                                    <Row className='contacts-warpper-item'>
+                                    <Row className='contacts-warpper-item' onClick={this.contactsDetailModal.bind(this,item)}>
                                         <Col span={8} className='left'>
                                                 <Row className='parmary' type='flex' align='top'><i className='iconfont icon-zhuyaolianxiren' /></Row>
                                                 <Row className='name' type='flex' justify='center'><span>{item.name}</span></Row>
@@ -138,62 +237,130 @@ class RelevantObject extends React.Component {
                             }):'暂无数据'
                         }
                         {
-                            viewDataRelevant && viewDataRelevant.length && viewDataRelevant[0].list.data.length>8?
+                            viewDataRelevant && viewDataRelevant.length && viewDataRelevant[0].list.data.length>7?
                             <div className='contacts-warpper-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
                         }
                         </div>
                     </Panel>
                     
                     <Panel header={this.headerFn({title:'商机',index:3,newBtn:'add'})} key="2" >
-                    <div className='business-chance'>
-                            {
-                                tempClue && tempClue.length?
-                                tempClue.map((item)=>{
-                                    return(
-                                        <Row className='business-chance-item' type='flex' justify='space-between'>
-                                            <Col span={5} className='left'>
-                                                <i className='iconfont icon-shangji'/>
-                                            </Col>
-                                            <Col span={19} className='right'>
-                                                <Row type='flex' className='main-top' style={{height:'80%'}}>
-                                                    <Col className='decoret-warpper'>
-                                                        <span className='circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='smail-circle'></span>
-                                                        <span className='circle'></span>
-                                                    </Col>
-                                                    <Col className='main' span={22}>
-                                                    <p className='name'>{item.name}</p>
-                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>销售阶段：</Col><Col span={11}>{item.saleStageName}</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>阶段停留时间：</Col><Col span={11}>{item.stageResidenceTime}</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>赢单概率：</Col><Col span={11}>{item.winProbability}%</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>预计签单金额：</Col><Col span={11}>￥{item.expectSignMoney}.00</Col></Row>
-                                                   
-                                                    </Col>
-                                                </Row>
-                                                <Row className='time' type='flex' align='middle' style={{height:'20%'}}><span>预计签单时间：{item.expectSignTime?this.changeTime.call(this,item.expectSignTime.time,'day'):'无'}</span></Row>
-                                            </Col>
-                                            <span className='del' onClick={this.oppDel.bind(this,item.id)}><i className='iconfont icon-canyuren-shanchu'/></span>
-                                        </Row>
-                                    )
-                                }):'暂无数据'
-                            }
-                            {
-                                viewDataRelevant && viewDataRelevant.length && viewDataRelevant[2].list.data.length>6?
-                                <div className='business-chance-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
-                            }
+                        <div className='business-chance'>
+                                {
+                                    tempClue && tempClue.length?
+                                    tempClue.map((item)=>{
+                                        return(
+                                            <Row className='business-chance-item' type='flex' justify='space-between' onClick={this.oppDetailModal.bind(this,item)}>
+                                                <Col span={5} className='left'>
+                                                    <i className='iconfont icon-shangji'/>
+                                                </Col>
+                                                <Col span={19} className='right'>
+                                                    <Row type='flex' className='main-top' style={{height:'80%'}}>
+                                                        <Col className='decoret-warpper'>
+                                                            <span className='circle'></span>
+                                                            <span className='smail-circle'></span>
+                                                            <span className='smail-circle'></span>
+                                                            <span className='smail-circle'></span>
+                                                            <span className='smail-circle'></span>
+                                                            <span className='smail-circle'></span>
+                                                            <span className='smail-circle'></span>
+                                                            <span className='smail-circle'></span>
+                                                            <span className='smail-circle'></span>
+                                                            <span className='circle'></span>
+                                                        </Col>
+                                                        <Col className='main' span={22}>
+                                                        <p className='name'>{item.name}</p>
+                                                        <Row className='minor' type='flex'><Col span={13} className='text-right'>销售阶段：</Col><Col span={11}>{item.saleStageName}</Col></Row>
+                                                        <Row className='minor' type='flex'><Col span={13} className='text-right'>阶段停留时间：</Col><Col span={11}>{item.stageResidenceTime}</Col></Row>
+                                                        <Row className='minor' type='flex'><Col span={13} className='text-right'>赢单概率：</Col><Col span={11}>{item.winProbability}%</Col></Row>
+                                                        <Row className='minor' type='flex'><Col span={13} className='text-right'>预计签单金额：</Col><Col span={11}>￥{item.expectSignMoney}.00</Col></Row>
+                                                    
+                                                        </Col>
+                                                    </Row>
+                                                    <Row className='time' type='flex' align='middle' style={{height:'20%'}}><span>预计签单时间：{item.expectSignTime?this.changeTime.call(this,item.expectSignTime.time,'day'):'无'}</span></Row>
+                                                </Col>
+                                                <span className='del' onClick={this.oppDel.bind(this,item.id)}><i className='iconfont icon-canyuren-shanchu'/></span>
+                                            </Row>
+                                        )
+                                    }):'暂无数据'
+                                }
+                                {
+                                    viewDataRelevant && viewDataRelevant.length && viewDataRelevant[2].list.data.length>5?
+                                    <div className='business-chance-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
+                                }
                         </div>
                     </Panel>
                     <Panel header={this.headerFn({title:'文件',index:4,newBtn:'add',type:'file'})}  key="3" >
-                    3
+                        <div className='file-warpper'>
+                            <Row className='file-warpper-item' type='flex' align='middle'>
+                                <div className='img-mark'>
+                                    {/* <img
+                                        src={require("../../images/bg.png")}
+                                        className="top-img"
+                                    /> */}
+                                    <i className='iconfont icon-xsl'/>
+                                    <span className='cover'><Icon type="loading" /></span>
+                                    
+                                </div>
+                                <div className='detail'>
+                                    <p className='detail-name'>发发发水电费</p>
+                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
+                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
+                                </div>
+                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
+                            </Row>
+                            <Row className='file-warpper-item' type='flex' align='middle'>
+                                <div className='img-mark'>
+                                    {/* <img
+                                        src={require("../../images/bg.png")}
+                                        className="top-img"
+                                    /> */}
+                                    <i className='iconfont icon-word'/>
+                                   
+                                </div>
+                                <div className='detail'>
+                                    <p className='detail-name wrong'>发发发水电费</p>
+                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
+                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
+                                </div>
+                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
+                            </Row>
+                            <Row className='file-warpper-item' type='flex' align='middle'>
+                                <div className='img-mark'>
+                                    {/* <img
+                                        src={require("../../images/bg.png")}
+                                        className="top-img"
+                                    /> */}
+                                    <i className='iconfont icon-ppt'/>
+                                </div>
+                                <div className='detail'>
+                                    <p className='detail-name'>发发发水电费</p>
+                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
+                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
+                                </div>
+                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
+                            </Row>
+                            <Row className='file-warpper-item' type='flex' align='middle'>
+                                <div className='img-mark'>
+                                    <img
+                                        src={require("../../images/bg.png")}
+                                        className="top-img"
+                                    />
+                                    {/* <i className='iconfont icon-ppt'/> */}
+                                    <span className='show-img'><Icon type="eye-o" /></span>
+                                </div>
+                                <div className='detail'>
+                                    <p className='detail-name'>发发发水电费</p>
+                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
+                                    <p className='detail-remark'><span>上传时间:</span><span>2010-12-12</span></p>
+                                </div>
+                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
+                            </Row>
+                            
+                        </div>
                     </Panel>
             </Collapse>
+            <ContactsModal visiable={this.state.visiable} data={this.state.contactsData} cancel={this.cancelContacts.bind(this)}/>
+            <OppModal visiable={this.state.oppvisiable} data={this.state.oppData} cancel={this.cancelOpp.bind(this)}/>
           </div>
         )
     }

@@ -5,7 +5,7 @@ import cityData from "../data/citydata";
 
 export default class CityChioce extends React.Component {
     onChange(value, selectedOptions) {
-        debugger;
+        ;
         let city = [];
         selectedOptions.forEach(item => {
             city.push({ name: item.label, code: item.code });
@@ -15,7 +15,7 @@ export default class CityChioce extends React.Component {
     }
     render() {
         this.props.value;
-        //debugger;
+        //;
         return (
             <div>
                 <Cascader
