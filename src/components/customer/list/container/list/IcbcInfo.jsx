@@ -58,7 +58,7 @@ export default class IcbcInfo extends React.Component {
                 method: "GET"
             },
             result => {
-                debugger;
+                ;
                 //把获取到的工商信息放在redux中
                 //或获取到的id客户详细信息，id号保存在redux中
                 this.props.customerListInfo(result.data, visiable, id);
@@ -123,7 +123,7 @@ export default class IcbcInfo extends React.Component {
                 index: -1
             },
             () => {
-                debugger;
+                ;
                 let visiable = true;
                 this.getIcbcDetal(this.state.select, visiable);
             }
@@ -229,11 +229,6 @@ export default class IcbcInfo extends React.Component {
     }
 
     render() {
-        const suffix =
-            this.props.value && this.props.value.name ? (
-                <Icon type="close" onClick={this.emitEmpty.bind(this)} />
-            ) : null;
-
         return (
             <div className="">
                 <Dropdown

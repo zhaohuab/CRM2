@@ -51,6 +51,7 @@ const rootRoutes = {
                                 require('./routes/project').default,
                                 require('./routes/user').default,
                                 require('./routes/customer/routes/list').default,
+                                require('./routes/customer/routes/assign').default,
                                 require('./routes/contacts').default,
                                 require('./routes/prdtype').default,
                                 require('./routes/measure').default,

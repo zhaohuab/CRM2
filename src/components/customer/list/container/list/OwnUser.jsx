@@ -166,7 +166,7 @@ export default class OwnUser extends React.Component {
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
             ) : null;
 
-        debugger
+        
         return(
             <div>
             {

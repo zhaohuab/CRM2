@@ -54,10 +54,9 @@ class ContactsCard extends React.Component {
 
     onOk(){
         let {contactsCardData} = this.props.$$state.toJS();
-   
         this.props.form.validateFields((err, values) => {
-            debugger
             if(!err){
+                
                 this.setState({
                     visit:false
                 })
@@ -72,13 +71,12 @@ class ContactsCard extends React.Component {
                         }
                     },
                     data => {
-                        debugger
+                        
                         this.props.action.refContactFormAdd(data)
                     }
                 );
             }
         })
-        
     }
 
     render() {
@@ -92,6 +90,7 @@ class ContactsCard extends React.Component {
         };
         const { getFieldDecorator } = this.props.form;
         let {contactsCardData,viewData} = this.props.$$state.toJS();
+        debugger
         return (
             <div>
                 <i className={'iconfont icon-tianjia'} onClick={this.cardShow.bind(this)}/>
@@ -129,7 +128,6 @@ class ContactsCard extends React.Component {
                                     </FormItem>
                                 </Col>
                                 <Col span={11}>
-                                    {" "}
                                     <FormItem label="客户" {...formItemLayout}>
                                         {getFieldDecorator("customer", {
                                             rules: [
@@ -138,7 +136,7 @@ class ContactsCard extends React.Component {
                                                     message: "请输入客户"
                                                 }
                                             ]
-                                        })(<CuperiorCustomer width={500} placement='bottomRight' show = {true} viewData={viewData}/>)}
+                                        })(<CuperiorCustomer width={500} disabled = {true} viewData = {viewData}/>)}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -151,7 +149,6 @@ class ContactsCard extends React.Component {
                                     </FormItem>
                                 </Col>
                                 <Col span={11}>
-                                    {" "}
                                     <FormItem label="主联系人" {...formItemLayout}>
                                         {getFieldDecorator("mainContact", {
                                             rules: [
@@ -293,28 +290,38 @@ const cardForm = Form.create({
         let {contactsCardData,viewData} = props.$$state.toJS()
         let value = {};
         //把客户id保存
-        value.customer = {value:viewData.id}
+        if(viewData.id){
+            value.customer = {value:viewData.id}
+        }
         //保存部门id
-        value.deptId = {value:viewData.salesVOs[0].ownerDeptId}
+        if(viewData.salesVOs[0]){
+            value.deptId = {value:viewData.salesVOs[0].ownerDeptId}
+        }
         for (let key in contactsCardData) {
             value[key] = { value: contactsCardData[key] };
         }
-        debugger
+        
         return {
             ...value
         };
     },
     onFieldsChange: (props, onChangeFild) => {
-        //往redux中写值//把值进行更新改变
         debugger
+        //往redux中写值//把值进行更新改变
+        
         let {contactsCardData,viewData} = props.$$state.toJS();
         for (let key in onChangeFild) {
             contactsCardData[key] = onChangeFild[key].value;
         }
         //把客户id保存
-        contactsCardData.customer = viewData.id
+        if(viewData.id){
+            contactsCardData.customer = viewData.id
+        }
+        if(viewData.salesVOs[0]){
+            contactsCardData.deptId = viewData.salesVOs[0].ownerDeptId
+        }
         //保存部门id
-        contactsCardData.deptId = viewData.salesVOs[0].ownerDeptId
+        
         props.action.refContactForm(contactsCardData);
     }
 })(ContactsCard);

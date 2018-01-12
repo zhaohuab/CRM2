@@ -28,7 +28,7 @@ class DetailObject extends React.Component {
                 <Collapse
                     defaultActiveKey={["1", "2", "3"]}
                 >
-                    <Panel key="1" header="&nbsp;">
+                    <Panel key="1" header ='客户信息' >
                         <Row className="custom-info">
                             <Col span={12}>
                                 <Row
@@ -166,7 +166,7 @@ class DetailObject extends React.Component {
                             </Col>
                         </Row>
                     </Panel>
-                    <Panel key="2" header="&nbsp;">
+                    <Panel key="2" header="&nbsp;" header='联系方式'>
                         <Row className="custom-info">
                             <Col span={12}>
                                 <Row
@@ -304,7 +304,7 @@ class DetailObject extends React.Component {
                             </Col>
                         </Row>
                     </Panel>
-                    <Panel key="3" header="&nbsp;">
+                    <Panel key="3" header="&nbsp;" header='客户身份'>
                         <Row className="custom-info">
                             <Col span={12}>
                                 <Row
