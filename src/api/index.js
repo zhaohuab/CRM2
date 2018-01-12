@@ -34,6 +34,11 @@ const lead = {
     lead: baseDir + "sprc/leads",
     doc: baseDir + "sprc/leads/docs"
 }
+//任务调度
+const quartz={
+    quartz: baseDir +"quartz/tasks",
+    taskgroup:baseDir +"quartz/taskgroups"
+}
 
 
 const role = {
@@ -153,4 +158,5 @@ export {
     prdattr,
     prdattrgroup,
     phonebooks,
+    quartz
 }

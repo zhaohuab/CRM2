@@ -112,6 +112,7 @@ const appendAddress = data => {
 
 //获取数据、基础查询数据、扩展查询数据
 const getListData = (pagination, searchMap) => {
+    debugger
     return dispatch => {
         dispatch(fetchData("CUSTOMER_LIST_SAVESEARCHMAP", searchMap));
         reqwest(

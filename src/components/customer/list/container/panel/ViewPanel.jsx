@@ -119,6 +119,7 @@ class ViewPanel extends React.Component {
 
     //点击关注触发的方法
     attentionFn(state) {
+        debugger
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
         this.props.action.attentionFn(id, state);

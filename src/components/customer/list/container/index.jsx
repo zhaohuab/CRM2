@@ -30,6 +30,8 @@ import PanelState from "./state/PanelState";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
+import LeadIn from './list/LeadIn.jsx'
+
 class List extends React.Component {
     constructor(props) {
         super(props);
@@ -128,16 +130,16 @@ class List extends React.Component {
         }
         //详细地址
         if (data.address) {
-           // debugger;
+            // debugger;
             let value = data.address;
             data["address"] = value.address;
             data["latlng"] = value.latlng;
         }
 
-        if(data.ownerUserId){
+        if (data.ownerUserId) {
             let ownerUserId = data.ownerUserId.id;
             delete data.ownerUserId
-            data.salesVOs = [{ownerUserId}]
+            data.salesVOs = [{ ownerUserId }]
         }
         //debugger
         return data;
@@ -145,7 +147,7 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-       debugger;
+        debugger;
 
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
@@ -193,7 +195,7 @@ class List extends React.Component {
     tabChange() {
         let { viewState } = this.props.$$state.toJS();
         if (viewState) {
-          //  debugger;
+            //  debugger;
             this.props.action.hideViewForm(false);
         }
     }
@@ -220,6 +222,14 @@ class List extends React.Component {
         this.props.action.getEnumData();
     }
 
+
+    handleOkLead(){
+
+    }
+    handleCancelLead(){
+
+    }
+
     render() {
         debugger
         const { $$state } = this.props;
@@ -232,7 +242,7 @@ class List extends React.Component {
             viewState,
             viewData,
             icbcVisible,
-
+            leadVisible,
             icbcSelect
         } = this.props.$$state.toJS();
 
@@ -241,7 +251,7 @@ class List extends React.Component {
             onChange: this.onSelectChange
         };
         return (
-            
+
             <div className="custom-warpper ">
                 <ToolForm />
                 <Tabs
@@ -302,7 +312,7 @@ class List extends React.Component {
                             editCardFn={this.editCardFn.bind(this)}
                             changeState={this.changeState.bind(this)}
                         />
-                    </div> 
+                    </div>
                 </Modal>
                 <SlidePanel
                     viewState={viewState}
@@ -311,8 +321,20 @@ class List extends React.Component {
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
+
+                <Modal title="导入"
+                    visible={leadVisible}
+                    onOk={this.handleOkLead.bind(this)}
+                    onCancel={this.handleCancelLead.bind(this)}
+                > 
+                 <div className="cur-lead">
+                        <LeadIn> 
+                        </LeadIn>
+                    </div>
+
+                </Modal>
             </div>
-         );
+        );
     }
 }
 //绑定状态到组件props

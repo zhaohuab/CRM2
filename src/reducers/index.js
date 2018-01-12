@@ -57,9 +57,12 @@ import prdattrgroup from 'components/prdattrgroup/list/reducer';
 import businessObjDef from 'components/business-obj-def/reducer';
 
 
+//线索
+import lead from 'components/lead/list/reducer';
+//任务调度
+import quartz from 'components/quartz/list/reducer'
 
-//我自己写的线索
-import clue from 'components/clue/list/reducer'
+
 
 let rootReducer = combineReducers({ 
     login, 
@@ -91,7 +94,8 @@ let rootReducer = combineReducers({
     prdattr,
     prdattrgroup,
     businessObjDef,
-    clue
+    lead,
+    quartz
 });
 
 export { rootReducer };
