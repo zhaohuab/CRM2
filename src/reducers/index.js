@@ -56,7 +56,6 @@ import prdattrgroup from 'components/prdattrgroup/list/reducer';
 //表单管理
 import businessObjDef from 'components/business-obj-def/reducer';
 
-<<<<<<< HEAD
 
 //线索
 import lead from 'components/lead/list/reducer';
@@ -64,10 +63,8 @@ import lead from 'components/lead/list/reducer';
 import quartz from 'components/quartz/list/reducer'
 
 
-=======
 //分配菜单
 import cusAssignReducers from 'components/customer/assign/reducer'
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
 
 let rootReducer = combineReducers({ 
     login, 
@@ -99,12 +96,9 @@ let rootReducer = combineReducers({
     prdattr,
     prdattrgroup,
     businessObjDef,
-<<<<<<< HEAD
     lead,
-    quartz
-=======
-    cusAssignReducers
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+    quartz,
+    cusAssignReducers,
 });
 
 export { rootReducer };

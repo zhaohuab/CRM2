@@ -44,10 +44,6 @@ export default class Industry extends React.Component {
     getIndustry(flag) {
         //这里需要Request请求
         if (!flag) {
-<<<<<<< HEAD
-            //debugger;
-=======
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
             this.setState(
                 {
                     visible: false,

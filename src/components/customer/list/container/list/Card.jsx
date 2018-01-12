@@ -130,11 +130,7 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-<<<<<<< HEAD
-       // debugger
-=======
         
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         return (
             <div>
                 <Row className="customform-input-recover">
