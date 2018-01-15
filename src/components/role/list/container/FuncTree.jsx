@@ -201,9 +201,9 @@ class FuncTree extends Component {
         let funcData = this.props.$$state.get('funcData').toJS();
         return (
             <div>
-                <div>
+                {/* <div>
                     <Button onClick={this.hideOnClick.bind(this)} className={'class1 class2'}>lalalala</Button>
-                </div>
+                </div> */}
                 <div className="collapse-recover">
                     <Collapse bordered={false} defaultActiveKey={['0', '1', '2', '3']}>
                         {showGroup(funcData)}

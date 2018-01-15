@@ -238,6 +238,7 @@ class List extends React.Component {
                             onOk={this.onSave.bind(this)}
                             onCancel={this.onClose.bind(this)}
                             width={500}
+                            maskClosable={false}
                         >
                             <WarpRoleCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
                         </Modal>
