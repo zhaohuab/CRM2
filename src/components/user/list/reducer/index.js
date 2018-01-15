@@ -12,7 +12,9 @@ let $$initialState = {
 		edit:undefined,
 		list:undefined,
 		view:undefined,
-	}
+	},
+	roleList:[],
+	assignVisible:false
 };
 
 function pageAdd(page,item) {

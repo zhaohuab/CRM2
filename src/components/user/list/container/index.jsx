@@ -134,6 +134,7 @@ class List extends React.Component {
     render() {
         let page = this.props.$$state.get("data").toJS();
         let visible = this.props.$$state.get("visible");
+        let assignVisible = this.props.$$state.get("assignVisible");
         let { headLabel, selectedRowKeys } = this.state;
 
         let rowSelection = {
@@ -264,6 +265,23 @@ class List extends React.Component {
                     visible={visible}
                     onOk={this.onSave.bind(this)}
                     onCancel={this.onClose.bind(this)}
+                    width={500}
+                >
+                    <div className="modal-height">
+                        <Card
+                            dataSource={formFields}
+                            tpl={tpl}
+                            onChange = {this.props.action.onUserChange}
+                            wrappedComponentRef={inst => (this.formRef = inst)}
+                        />
+                    </div>
+                </Modal>
+
+                <Modal
+                    title="分配角色和职能"
+                    visible={assignVisible}
+                    //onOk={this.onSave.bind(this)}
+                    //onCancel={this.onClose.bind(this)}
                     width={500}
                 >
                     <div className="modal-height">
