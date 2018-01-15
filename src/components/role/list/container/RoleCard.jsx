@@ -1,5 +1,9 @@
 import { Form, Input, Select } from 'antd';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Department from 'components/refs/departments'
+import Enum from 'utils/components/enums'
+import * as roleActions from "../action"
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -7,27 +11,17 @@ class Card extends React.Component {
     constructor(props) {
         super(props)
     }
-    jobEnum = [{
-        key: 1,
-        title: "员工"
-    }, {
-        key: 2,
-        title: "负责人"
-    }, {
-        key: 3,
-        title: "其他负责人"
-    }]
-    genderEnum = [{
-        key: 1,
-        title: "男",
-    }, {
-        key: 2,
-        title: "女",
-    }]
+
     componentDidMount() {
         //装箱过程
-        let { orgId,orgName } = this.props.dataSource; 
-        this.props.dataSource.orgId = {key:orgId,title:orgName};
+        let { orgId, orgName, type } = this.props.dataSource;
+
+        // const isEdit = this.props.$$state.get("isEdit");
+        // if(isEdit)
+        // this.props.dataSource.orgId = { key: orgId, title: orgName };
+        // if (type) {
+        //     this.props.dataSource.type = { key: type, title: "" };
+        // }
         this.props.form.setFieldsValue(this.props.dataSource);
     }
     componentWillMount() {
@@ -35,7 +29,8 @@ class Card extends React.Component {
     }
     render() {
         const { getFieldDecorator } = this.props.form;
-
+        const isEdit = this.props.$$state.get("isEdit");
+        const enumData = this.props.$$state.get("enumData").toJS();
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -55,19 +50,6 @@ class Card extends React.Component {
         return (
             <Form >
                 <FormItem
-                    label="角色编码"
-                    {...formItemLayout}
-                >
-                    {getFieldDecorator('code', {
-                        rules: [{
-                            required: true, message: '请输出角色编码',
-                        }],
-                    })(
-                        <Input placeholder='请输入...' />
-                        )}
-                </FormItem>
-
-                <FormItem
                     label="角色名称"
                     {...formItemLayout}
                 >
@@ -79,20 +61,93 @@ class Card extends React.Component {
                         <Input placeholder='请输入...' />
                         )}
                 </FormItem>
+                {isEdit ?
+                    <div><FormItem
+                        label="上级组织"
+                        {...formItemLayout}
+                    >
+                        {getFieldDecorator('orgName', {
+                            rules: [],
+                        })(
+                            <Input disabled />
+                            )}
+                    </FormItem>
+                        <FormItem
+                            label="角色类型"
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('typeName', {
+                                required: true, message: '请选择角色名称',
+                            })(
+                                <Input disabled />
+                                )}
+                        </FormItem>
+                        {getFieldDecorator('type', {
+                            rules: [],
+                        })(
+                            <Input style={{ display: 'none' }} type='text' />
+                            )}
+                        {getFieldDecorator('orgId', {
+                            rules: [],
+                        })(
+                            <Input style={{ display: 'none' }} type='text' />
+                            )}
+                    </div>
+                    : <div><FormItem
+                        label="上级组织"
+                        {...formItemLayout}
+                    >
+                        {getFieldDecorator('orgId', {
+                            rules: [],
+                        })(
+                            <Department />
+                            )}
+                    </FormItem>
+                        <FormItem
+                            label="角色类型"
+                            {...formItemLayout}
+                        >
+                            {getFieldDecorator('type', {
+                                required: true, message: '请选择角色名称',
+                            })(
+                                <Enum
+                                    dataSource={enumData.data}
+                                />
+                                )}
+                        </FormItem>
+                    </div>
+                }
+
 
                 <FormItem
-                    label="所属组织"
+                    label="角色描述"
                     {...formItemLayout}
                 >
-                    {getFieldDecorator('orgId', {
+                    {getFieldDecorator('description', {
 
                     })(
-                        <Department />
+                        <Input placeholder='请输入...' />
                         )}
                 </FormItem>
-              
+
             </Form>)
     }
 }
 
-export default Card;
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.roleList
+    }
+}
+
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(roleActions, dispatch)
+    }
+}
+
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

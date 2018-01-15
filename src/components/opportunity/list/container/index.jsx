@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Select, Input, Form, Table, Modal, Button, Icon, Row, Col } from "antd";
+import { Select, Input, Form, Table, Modal, Button, Icon, Row, Col,message } from "antd";
 import ToolForm from "./ButtonTool.jsx";
 let Search = Input.Search;
 const FormItem = Form.Item;
@@ -36,19 +36,19 @@ class List extends React.Component {
             },
             {
                 title: "客户名称",
-                dataIndex: "customerId"
+                dataIndex: "customerName"
             },
             {
                 title: "商机类型",
-                dataIndex: "type"
+                dataIndex: "typeName"
             },
             {
                 title: "销售阶段",
-                dataIndex: "saleStage"
+                dataIndex: "saleStageName"
             },
             {
                 title: "停留时间",
-                dataIndex: "stageResidenceTime"
+                dataIndex: "stageStayTime"
             },
             {
                 title: "赢单概率",
@@ -77,6 +77,7 @@ class List extends React.Component {
     componentDidMount() {
         this.props.action.getListData(this.props.$$state.get("pagination").toJS());
         this.props.action.getbiztype();
+        this.props.action.getEnumData();
     }
 
     //保存按钮事件
@@ -85,17 +86,22 @@ class List extends React.Component {
         const editData = this.props.$$state.get("editData").toJS();
         const oppBList = this.props.$$state.get("oppBList").toJS();
         editData.childList = oppBList;
-        if (isEdit) {
-            this.props.action.listEditSave(data);
-        } else {
-            this.props.action.listAddSave(editData);
-        }
+        this.formRef.props.form.validateFields((err, values) => {
+            if (!err) {
+                if (isEdit) {
+                    this.props.action.listEditSave(editData);
+                } else {
+                    this.props.action.listAddSave(editData);
+                }
+            }
+        });
 
     }
 
     //编辑页面关闭事件
     formHandleCancel() {
-        this.props.action.showFormNew(false,{});
+        this.props.action.closeForm();
+        // this.props.action.saveOppBList([]);
     }
 
     //点击查看按钮打开查看页面

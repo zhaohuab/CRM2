@@ -26,15 +26,22 @@ let $$initialState = {
     icbcVisible: false, //工商信息查询新增编辑时面板显隐控制
     icbcVisible2: false, //工商信息查询详情面板显隐
     isClose: false,
+    viewDataRelevant:[],//获取详情相关list面板
+    viewDataJoinList:{},//存放参与人列表数据
+    leftJoinPanelKeys:'1',//保存详情面板右侧面板选项卡选中值
+    RightJoinPanelKeys:'1',//保存详情面板左侧面板选项卡选中值,
+    contactsCardData:{},//保存联系人相关对象输入值
+    clueCardList:{},//保存商机新增表单数据
+    clueTableList:{},//保存商机新增表单table数据
 };
 
 function pageAdd(page, item) {
-    debugger;
     page.total += 1;
     page.data.unshift(item);
     page.page = Math.ceil(page.total / page.pageSize);
     return page;
 }
+
 function pageEdit(page, item) {
     let { data } = page;
     for (let i = 0, len = data.length; i < len; i++) {
@@ -46,19 +53,25 @@ function pageEdit(page, item) {
     page.data = data;
     return page;
 }
-export default function orgReducers(
-    $$state = Immutable.fromJS($$initialState),
-    action
-) {
+
+function clearObject(obj){
+    for(let key in obj){
+        debugger
+        obj[key] = undefined
+    }
+    return obj
+}
+
+export default function orgReducers($$state = Immutable.fromJS($$initialState),action) {
     switch (action.type) {
         case "CUSTOMER_LIST_GETDATA": //查询各种table数据
-        debugger
+        
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination
             });
         case "CUSTOMER_LIST_SHOWFORM": //新增、修改编辑菜单显示
-            debugger
+            
             $$state.get('viewData')
             return $$state.merge({
                 formVisitable: action.payload.visible,
@@ -80,14 +93,14 @@ export default function orgReducers(
                 formVisitable: action.data,
             });
         case "CUSTOMER_LIST_ICBCDETAILINFO": //保存客户工商id
-            debugger;
+            ;
             return $$state.merge({
                 icbcInfo: action.data,
                 icbcVisible: action.visible,
                 viewData: action.viewData
             });
         case "CUSTOMER_LIST_ICBCINFODETAIL":
-            debugger;
+            ;
             return $$state.merge({
                 icbcInfo1: action.data,
                 icbcVisible2: action.visiable,
@@ -100,7 +113,7 @@ export default function orgReducers(
             });
 
         case "CUSTOMER_LIST_CLEANSELECT":
-            debugger;
+            ;
             let v = $$state.get("viewData").merge({
                 verifyId: action.verifyId
             });
@@ -142,21 +155,21 @@ export default function orgReducers(
             });
 
         case "CUSTOMER_LIST_ADDSAVE": //增加客户
-            debugger;
+            ;
             return $$state.merge({
                 formVisitable: false,
                 data: pageAdd($$state.get("data").toJS(), action.data),
                 icbcSelect: false,
             });
         case "CUSTOMER_LIST_EDITSAVE": //修改客户
-            debugger;
+            ;
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
                 viewData:action.data
             });
         case "CUSTOMER_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
-        debugger
+        
             let actionData = action.data;
             actionData.industry = {
                 id: actionData.industry,
@@ -176,7 +189,9 @@ export default function orgReducers(
             actionData.ownerUserId = {id:actionData.salesVOs[0].ownerUserId,name:actionData.salesVOs[0].ownerUserName}
             return $$state.merge({
                 viewState: action.visible,
-                viewData: actionData
+                viewData: actionData,
+                leftJoinPanelKeys:'1',
+                RightJoinPanelKeys:'1'
             });
         case "CUSTOMER_LIST_FOLLOWSTATECHANGE": //更改关注未关注
             return $$state.setIn(
@@ -206,6 +221,65 @@ export default function orgReducers(
         case 'CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
             return $$state.merge({
                  viewData: action.viewData 
+            });
+        case 'CUSTOMER_VIEWPANEL_PANELRIGHT_LIST'://点击详情面板中右侧详情部分列表数据
+            
+            return $$state.merge({
+                viewDataJoinList: action.data,
+                RightJoinPanelKeys:action.index
+            });
+        case 'CUSTOMER_VIEWPANEL_PANELLEFT_LIST'://点击详情面板中左侧详情部分列表数据
+        
+            return $$state.merge({
+                leftJoinPanelKeys:action.index+'',
+                viewDataRelevant:action.data
+            });
+        case 'CUSTOMER_VIEWPANEL_PANELLEFT_SETLIST'://只能加参与人
+            let joinList = $$state.getIn(['viewDataJoinList','data']) 
+            return $$state.setIn(['viewDataJoinList','data'],joinList.push(Immutable.fromJS(action.data))) 
+        case 'CUSTOMER_VIEWPANEL_PANELLEFT_DELLIST'://删除一条联系人
+            let delList = $$state.getIn(['viewDataJoinList','data']).toJS();
+            
+            delList = delList.filter((item)=>{
+                return item.id !=action.id
+            })
+            return $$state.setIn(['viewDataJoinList','data'],Immutable.fromJS(delList)) 
+        case 'CUSTOMER_VIEWPANEL_CHANGEPANELLEFT'://触发详情左侧tab
+            return $$state.merge({
+                leftJoinPanelKeys:action.index
+            });
+        case "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORM"://获取相关对象联系人表单数据
+            return $$state.merge({
+                contactsCardData:action.data
+            });
+        case "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD"://增加联系人对象    
+           let addContacts = $$state.get('viewDataRelevant').toJS()
+           debugger
+           addContacts[0].list.data.unshift(action.data)
+           return $$state.merge({
+                viewDataRelevant:addContacts
+           });
+        case "CUSTOMER_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM":
+        
+            return $$state.merge({
+                contactsCardData:clearObject($$state.get('contactsCardData').toJS())
+            });
+        case 'CUSTOMER_VIEWPANEL_DELOPP':
+            let delOpp = $$state.get('viewDataRelevant').toJS();
+            delOpp[2].list.data = delOpp[2].list.data.filter((item)=>{
+                return item.id != action.ids
+            })
+            
+            return $$state.merge({
+                viewDataRelevant:Immutable.fromJS(delOpp)
+            });
+        case 'CUSTOMER_VIEWPANEL_DELCONTACTS':
+            let delContacts = $$state.get('viewDataRelevant').toJS();
+            delContacts[0].list.data = delContacts[0].list.data.filter((item)=>{
+                return item.id != action.id
+            })
+            return $$state.merge({
+                viewDataRelevant:Immutable.fromJS(delContacts)
             });
         default:
             return $$state;

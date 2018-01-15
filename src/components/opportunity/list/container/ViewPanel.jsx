@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action";
 import SaleStage from './SaleStage';
+import WinCard from './WinCard';
+import LostCard from './LostCard';
 
 class ViewPanel extends React.Component {
     constructor(props) {
@@ -64,8 +66,40 @@ class ViewPanel extends React.Component {
             </div>
         );
     }
-    btnEdit() {
-        this.props.btnEdit(this.props.data);
+
+    //点击编辑按钮打开编辑页面
+    btnEdit(id) {
+        this.props.action.showFormEdit(true, id);
+    }
+
+    winOk() {
+        const editData = this.props.$$state.get("editData").toJS();
+        let form = this.winRef.props.form;
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                values.state = 1
+                this.props.action.winOpp(editData.id, values);
+            }
+        });
+    }
+
+    winCancel() {
+        this.props.action.showWinCard(false)
+    }
+
+    lostOk() {
+        const editData = this.props.$$state.get("editData").toJS();
+        let form = this.lostRef.props.form;
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                values.state = 2
+                this.props.action.lostOpp(editData.id, values);
+            }
+        });
+    }
+
+    lostCancel() {
+        this.props.action.showLostCard(false)
     }
 
     render() {
@@ -75,8 +109,13 @@ class ViewPanel extends React.Component {
         }
 
         const editData = this.props.$$state.get("editData").toJS();
-        debugger
         const childList = editData.childList;
+        const WrapWinCard = Form.create()(WinCard);
+        const WrapLostCard = Form.create()(LostCard);
+        const winCardVisible = this.props.$$state.get("winCardVisible");
+        const lostCardVisible = this.props.$$state.get("lostCardVisible");
+        const viewFormVisible = this.props.$$state.get("viewFormVisible");
+
         return (
             <div className="view-warrper">
                 <Row className="view-warrper-header">
@@ -106,42 +145,58 @@ class ViewPanel extends React.Component {
                             </div>
                         </Col>
                         <Col span={10} className="customer-btn">
-                            <Button
-                                onClick={this.btnEdit.bind(this)}
-                            >
-                                <i className="iconfont icon-bianji" />编辑
+                            {editData.state != 3 ? "" :
+
+                                <div>
+                                    <Row type="flex"
+                                        gutter={5}>
+                                        <Col>
+                                            <Button
+                                                onClick={this.btnEdit.bind(this, editData.id)}
+                                            >
+                                                <i className="iconfont icon-bianji" />编辑
                             </Button>
-                            <Button
-                                onClick={this.btnEdit.bind(this)}
-                            >
-                                <i className="iconfont icon-bianji" />变更负责人
+                                        </Col>
+                                        <Col>
+                                            <Button
+                                                onClick={this.btnEdit.bind(this)}
+                                            >
+                                                <i className="iconfont icon-bianji" />变更负责人
                             </Button>
-                            <Button
-                                onClick={this.btnEdit.bind(this)}
-                            >
-                                <i className="iconfont icon-bianji" />丢单
+                                        </Col><Col>
+                                            <Button
+                                                onClick={this.props.action.showLostCard.bind(true)}
+                                            >
+                                                <i className="iconfont icon-bianji" />丢单
                             </Button>
-                            <Button
-                                onClick={this.btnEdit.bind(this)}
-                            >
-                                <i className="iconfont icon-bianji" />赢单
+                                        </Col><Col>
+                                            <Button
+                                                onClick={this.props.action.showWinCard.bind(true)}
+                                            >
+                                                <i className="iconfont icon-bianji" />赢单
                             </Button>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            }
+
                             <Button
                                 onClick={this.props.btnClosePanel.bind(this)}
                             >
                                 X
                             </Button>
+
                         </Col>
                     </Row>
                     <Row className="cumtomer-detail">
-                        <Col span={6}>商机状态</Col>
-                        <Col span={6}>预计签单金额</Col>
-                        <Col span={6}>预计签单时间</Col>
-                        <Col span={6}>负责人</Col>
-                        <Col span={6}>{editData.state}</Col>
-                        <Col span={6}>{editData.expectSignMoney}</Col>
-                        <Col span={6}>{editData.expectSignTime}</Col>
-                        <Col span={6}>{editData.ownerUserId}</Col>
+                        <Col className="view-main-cell" span={6}>商机状态</Col>
+                        <Col className="view-main-cell" span={6}>预计签单金额</Col>
+                        <Col className="view-main-cell" span={6}>预计签单时间</Col>
+                        <Col className="view-main-cell" span={6}>负责人</Col>
+                        <Col className="view-main-cell" span={6}>{editData.stateName}</Col>
+                        <Col className="view-main-cell" span={6}>{editData.expectSignMoney}</Col>
+                        <Col className="view-main-cell" span={6}>{editData.expectSignTime}</Col>
+                        <Col className="view-main-cell" span={6}>{editData.ownerUserName}</Col>
                     </Row>
                 </Row>
 
@@ -153,43 +208,88 @@ class ViewPanel extends React.Component {
                                 id="collapse-recover"
                             >
                                 <Row><SaleStage /></Row>
-                                <Row>
+                                <Row className="view-tab">
                                     <Tabs defaultActiveKey="1">
                                         <TabPane tab="资料" key="1">
                                             <Card title="基本信息">
-
                                                 <Row>
                                                     <Col span={12}>
-                                                        <Row>
-                                                            <Col span={12}>商机名称：</Col><Col span={12}>{editData.name}</Col>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>商机名称：</Col><Col span={12}>{editData.name}</Col>
                                                         </Row>
-                                                        <Row>
-                                                            <Col span={12}>商机类型：</Col><Col span={12}>{editData.type}</Col>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>商机类型：</Col><Col span={12}>{editData.typeName}</Col>
                                                         </Row>
-                                                        <Row>
-                                                            <Col span={12}>预计签单金额：</Col><Col span={12}>{editData.expectSignMoney}</Col>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>预计签单金额：</Col><Col span={12}>{editData.expectSignMoney}</Col>
                                                         </Row>
-                                                        <Row>
-                                                            <Col span={12}>商机阶段：</Col><Col span={12}>{editData.saleStage}</Col>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>商机阶段：</Col><Col span={12}>{editData.saleStage ? editData.saleStageName : ""}</Col>
                                                         </Row>
                                                     </Col>
                                                     <Col span={12}>
-                                                        <Row>
-                                                            <Col span={12}>客户名称：</Col><Col span={12}>{editData.customerId}</Col>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>客户名称：</Col><Col span={12}>{editData.customerId ? editData.customerName : ''}</Col>
                                                         </Row>
-                                                        <Row>
-                                                            <Col span={12}>商机状态：</Col><Col span={12}>{editData.state}</Col>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>商机状态：</Col><Col span={12}>{editData.stateName}</Col>
                                                         </Row>
-                                                        <Row>
-                                                            <Col span={12}>预计签单时间：</Col><Col span={12}>{editData.expectSignTime}</Col>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>预计签单时间：</Col><Col span={12}>{editData.expectSignTime}</Col>
                                                         </Row>
-                                                        <Row>
-                                                            <Col span={12}>赢单概率：</Col><Col span={12}>{editData.winProbability}</Col>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>赢单概率：</Col><Col span={12}>{editData.winProbability}</Col>
                                                         </Row>
                                                     </Col>
-                                                </Row>                                        </Card>
+                                                </Row>
+                                            </Card>
 
-
+                                            <Card title="详细信息">
+                                                <Row>
+                                                    <Col span={12}>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>客户预算：</Col><Col span={12}>{editData.customerBudget}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>实际签单时间：</Col><Col span={12}>{editData.actualSignTime}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>商机日期：</Col><Col span={12}>{editData.sysCreatedTime}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>负责人：</Col><Col span={12}>{editData.ownerUserName}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>客户需求：</Col><Col span={12}>{}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>赢单原因：</Col><Col span={12}>{editData.winReasonName}</Col>
+                                                        </Row>
+                                                        
+                                                    </Col>
+                                                    <Col span={12}>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>阶段停留时间：</Col><Col span={12}>{editData.stageStayTime}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>实际签单金额：</Col><Col span={12}>{editData.actualSignMoney}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>商机来源：</Col><Col span={12}>{editData.sourceName}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>部门：</Col><Col span={12}>{editData.deptName}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>备注：</Col><Col span={12}>{editData.description}</Col>
+                                                        </Row>
+                                                        <Row className="detail-msg-line">
+                                                            <Col className="detail-msg-line-left" span={12}>丢单原因：</Col><Col span={12}>{editData.failReasonName}</Col>
+                                                        </Row>
+                                                       
+                                                    </Col>
+                                                </Row>
+                                            </Card>
                                         </TabPane>
                                         <TabPane tab="相关" key="2">Content of Tab Pane 2</TabPane>
                                         <TabPane tab="产品" key="3">
@@ -200,7 +300,6 @@ class ViewPanel extends React.Component {
                                                 rowSelection={false}
                                                 pagination={false}
                                             />
-
 
                                         </TabPane>
                                         <TabPane tab="新闻" key="4">Content of Tab Pane 3</TabPane>
@@ -257,6 +356,25 @@ class ViewPanel extends React.Component {
                         </Col>
                     </div>
                 </Row>
+                <Modal
+                    title="商机赢单"
+                    visible={winCardVisible && viewFormVisible}
+                    onOk={this.winOk.bind(this)}
+                    onCancel={this.winCancel.bind(this)}
+                    width="30%"
+                    maskClosable={false}>
+                    <WrapWinCard wrappedComponentRef={(inst) => this.winRef = inst} />
+                </Modal>
+                <Modal
+                    title="商机丢单"
+                    visible={lostCardVisible && viewFormVisible}
+                    onOk={this.lostOk.bind(this)}
+                    onCancel={this.lostCancel.bind(this)}
+                    width="30%"
+                    maskClosable={false}>
+                    <WrapLostCard wrappedComponentRef={(inst) => this.lostRef = inst} />
+                </Modal>
+
             </div>
         );
     }

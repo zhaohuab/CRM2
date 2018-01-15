@@ -69,7 +69,7 @@ class ToolForm extends React.Component {
     }
     //点击新建按钮
     btnNew(e) {
-        this.props.action.showFormNew(true,{type:e.key});
+        this.props.action.showFormNew(true,{type:e.key,typeName:e.item.props.children});
         this.props.action.saveOppBList([]);
     }
     //上下表单控制显隐

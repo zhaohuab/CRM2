@@ -1,10 +1,43 @@
 
-.list-warpper{
+.list-warpper{ 
+    height:100%;
+    padding: 10px;
+    padding-top:0;
     width: 100%;
     position: relative;
     background: white;
     .iconfont{
         font-size:12px;
+    }
+    .org-tree-top{
+        display: flex;
+        align-items: center;
+        height:54px;
+        border-bottom:1px solid #EEEEEE;
+        padding:10px;
+        box-sizing: border-box;
+        background: #FAFAFA;
+        input[placeholder]{
+            color:#ccc
+        }
+        .ant-input-affix-wrapper{
+            input{
+                border:1px solid #ddd;
+            }
+            .ant-input-suffix{
+                width:26px;
+                height:26px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                right:1px;
+                background: #F2F2F2;
+                border-left:1px solid #d9d9d9;
+                border-top-right-radius: 5px;
+                color:#afafaf
+            }
+            
+        }
     }
     h2{
         width:100%;
@@ -27,40 +60,11 @@
         height:100%;
   
         .list-table-tree{
-            width:300px;
+            width:530px;
             background: white;
             border-right: 10px solid #f2f2f2;
             overflow-x: scroll;
-            .org-tree-top{
-                display: flex;
-                align-items: center;
-                height:54px;
-                border-bottom:1px solid #EEEEEE;
-                padding:10px;
-                box-sizing: border-box;
-                background: #FAFAFA;
-                input[placeholder]{
-                    color:#ccc
-                }
-                .ant-input-affix-wrapper{
-                    input{
-                        border:1px solid #ddd;
-                    }
-                    .ant-input-suffix{
-                        width:26px;
-                        height:26px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        right:1px;
-                        background: #F2F2F2;
-                        border-left:1px solid #d9d9d9;
-                        border-top-right-radius: 5px;
-                        color:#afafaf
-                    }
-                    
-                }
-            }
+            
             
             .org-tree-main{
                 padding:10px;
@@ -278,5 +282,16 @@
 
 }
 
+.class1{background-color: #ddd}
 
 
+.func-panel-row{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.func-cell{
+    padding-top:15px;
+    padding-bottom: 15px;
+    height: 100px
+}

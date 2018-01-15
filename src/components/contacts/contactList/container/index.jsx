@@ -41,7 +41,7 @@ class Contacts extends React.Component {
             {
                 title: "姓名",
                 dataIndex: "name",
-                render: text => {
+                render: text=> {
                     return (
                         <div
                             onClick={this.slideShow.bind(this)}

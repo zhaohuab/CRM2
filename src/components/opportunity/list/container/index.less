@@ -219,7 +219,7 @@
     background: white;
     .view-warrper-header {
         position: relative;
-        min-height: 161px;
+        min-height: 120px;
         padding: 0 15px;
         box-sizing: border-box;
     }
@@ -268,6 +268,7 @@
         }
         .customer-btn {
             display: flex;
+            justify-content: flex-end;
         }
         .customer-btn > button {
             margin-right: 10px;
@@ -408,4 +409,96 @@
 
 .topWindow{
     z-index: 10;
+}
+
+.background-green{
+    background-color: #2AE239;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column
+}
+
+.dimension-line{
+    min-height: 40px;
+}
+
+.dimension-line-title{
+    min-height: 40px;
+    font-weight: bold;
+}
+
+.view-main-cell{
+    min-height: 40px;
+}
+
+.view-tab{
+    min-height: 400px;
+}
+
+.ant-card-head-title{
+    width: 100%;
+}
+.funnel-title-select{
+    width: 100%
+}
+
+.ant-calendar-picker-input{
+    display: flex;
+    align-items: center
+}
+
+.detail-msg-line{
+    height: 40px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center
+}
+
+.detail-msg-line-left{
+    height: 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center
+}
+
+.funnel-bottom-line-left{
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+.SaleStage-box{
+    width: 80px;
+    height: 48px;
+    border:1px solid #ddd; 
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+   
+}
+
+.SaleStage-box-selected{
+    width: 80px;
+    height: 48px;
+    border:1px solid #3ca4fb; 
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    
+}
+
+
+.SaleStage-action-topdiv{
+    width: 100%;
+    height:100%;
+    position: absolute;
+    z-index: 5
 }

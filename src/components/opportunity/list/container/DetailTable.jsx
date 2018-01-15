@@ -27,9 +27,14 @@ class EditableCell extends React.Component {
     }
     render() {
         const { value, editable } = this.state;
-        const {type} = this.props;
+        const {type,colName} = this.props;
         if(type=="first"){
-            return (<Search onClick={this.props.showProductCard.bind(this)}/>)
+            if(colName =="no" ){
+                return (<Search onClick={this.props.showProductCard.bind(this)}/>)
+            }else{
+                return <div></div>;
+            }
+            
         }else {
             return (
                 <div className="editable-cell">
@@ -42,7 +47,6 @@ class EditableCell extends React.Component {
                                     onPressEnter={this.check}
                                     onBlur={this.check}
                                 />
-    
                             </div>
                             :
                             <div onClick={this.edit} style={{ width: "100%", height: "100%" }} className="editable-cell-text-wrapper">
@@ -69,11 +73,13 @@ class DetailTable extends React.Component {
      
             {
                 title: "产品名称",
+                width:'20%',
                 dataIndex: "productId",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
                         type={record.type}
+                        colName="no"
                         showProductCard={this.showProductCard.bind(this)}
                         onChange={this.onCellChange.bind(this, index, "no")}
                     />
@@ -81,60 +87,72 @@ class DetailTable extends React.Component {
             },
             {
                 title: "产品分类",
+                width:'20%',
                 dataIndex: "productTypeId",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "productTypeId")}
                     />
                 )
             },
             {
                 title: "品牌",
+                width:'12%',
                 dataIndex: "brandId",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "brandId")}
                     />
                 )
             },
             {
                 title: "销售单位",
+                width:'12%',
                 dataIndex: "measureId",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "measureId")}
                     />
                 )
             },
             {
                 title: "销售单价",
+                width:'12%',
                 dataIndex: "price",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "price")}
                     />
                 )
             },
             {
                 title: "产品数量",
+                width:'12%',
                 dataIndex: "number",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "number")}
                     />
                 )
             },
             {
                 title: "合计金额",
+                width:'12%',
                 dataIndex: "sumMoney",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        type={record.type}
                         onChange={this.onCellChange.bind(this, index, "sumMoney")}
                     />
                 )
@@ -156,6 +174,16 @@ class DetailTable extends React.Component {
         if(oppBList[index-1].editState!="add"){
             oppBList[index-1].editState="update"
         }
+        if(key == 'number' || key == 'price' ){
+            for(let i=0;i<oppBList.length;i++){
+                if(!isNaN(oppBList[i].number)&&!isNaN(oppBList[i].price)){
+                    oppBList[i].sumMoney = oppBList[i].number * oppBList[i].price;
+                }
+            }
+        }
+       
+
+
         this.props.action.saveOppBList(oppBList);
     }
 
@@ -168,7 +196,6 @@ class DetailTable extends React.Component {
     }
 
     handleDel = () => {
-        debugger
         const oppBList = this.props.$$state.get("oppBList").toJS()
         const selectedRows = this.props.$$state.get("selectedOppB").toJS();
         
