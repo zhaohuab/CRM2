@@ -115,6 +115,10 @@ const phonebooks = {
     sub: baseDir + 'csns/phonebooks/sub',
 }
 
+const func = {
+    func: baseDir + "sys/functions"
+};
+
 export {
     login,
     menu,
@@ -141,5 +145,6 @@ export {
     prdattr,
     prdattrgroup,
     phonebooks,
+    func
 }
  
