@@ -1,38 +1,38 @@
 import Immutable from 'immutable'
 
-let funcData = [{
-	id: '111',
-	name: '客户',
-	child: [{
-		id: '1111',
-		name: '客户新增'
-	},
-	{
-		id: '1112',
-		name: '客户编辑'
-	}]
-}, {
-	id: '112',
-	name: '商机',
-	child: [{
-		id: '1121',
-		name: '商机新增'
-	},
-	{
-		id: '1122',
-		name: '商机编辑'
-	}]
-}]
+let funcData = []
 
 
 let $$initialState = {
 	data: [],
 	editData: {},
+	isEdit:false,
 	roleCardVisible: false,
+	//主列表
 	selectedRowKeys: [],
+	selectedRows: [],
+	//右侧人员列表
+	selectedUserRowKeys: [],
+	selectedUserRows: [],
+	//右侧人员弹出框列表
+	selectedUserCardRowKeys: [],
+	selectedUserCardRows: [],
 	tabIndex: 1,
 	funcData,
-	selectedRoleId: ""
+	selectedRoleId: "",
+	selectedRoleIsPreseted:false,
+	userPagination: {
+		pageSize: 20,
+		page: 1
+	},
+	userCardPagination: {
+		pageSize: 20,
+		page: 1
+	},
+	userCardVisible: false,
+	userList: [],
+	userCardList: [],
+	enumData:{data:[]}
 };
 
 function pageAdd(page, item) {
@@ -76,11 +76,24 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				roleCardVisible: action.content.visible,
 				editData: action.content.editData,
+				isEdit:action.content.isEdit,
 			})
 		case 'ROLE_LIST_SELECTROW':
 			return $$state.merge({
-				selectedRowKeys: action.content.selectedRowKeys
+				selectedRowKeys: action.content.selectedRowKeys,
+				selectedRows: action.content.selectedRows
 			})
+		case 'ROLE_LIST_SELECTUSERROW':
+			return $$state.merge({
+				selectedUserRowKeys: action.content.selectedRowKeys,
+				selectedUserRows: action.content.selectedRows
+			})
+			case 'ROLE_LIST_SELECTUSERCARDROW':
+			return $$state.merge({
+				selectedUserCardRowKeys: action.content.selectedRowKeys,
+				selectedUserCardRows: action.content.selectedRows
+			})
+			
 		case 'ROLE_LIST_TABSELECT':
 			return $$state.merge({
 				tabIndex: action.content.tabIndex
@@ -89,6 +102,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				roleCardVisible: false,
 				data: pageAdd($$state.get("data").toJS(), action.content),
+				selectedRoleId:action.content.id
 			})
 		case 'ROLE_CARD_SAVEEDIT':
 			return $$state.merge({
@@ -99,18 +113,41 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'ROLE_LIST_DELETESUCCESS':
 			return $$state.merge({
 				data: pageDelete($$state.get("data").toJS(), action.content),
+				selectedRowKeys: [],
+				selectedRows: [],
 			})
 
 		case 'ROLE_LIST_GETFUNCTREESUCCESS':
 			return $$state.merge({
 				funcData: action.content.funcData.data,
-				selectedRoleId: action.content.roleId
+				selectedRoleId: action.content.roleId,
+				selectedRoleIsPreseted: action.content.isPreseted,
 			})
 		case 'ROLE_LIST_SELECTFUNC':
 			return $$state.merge({
 				funcData: action.content,
 			})
+		case 'ROLE_LIST_GETUSERLISTSUCCESS':
+			return $$state.merge({
+				userList: action.content,
+			})
+		case 'ROLE_LIST_GETUSERCARDLISTSUCCESS':
+			return $$state.merge({
+				userCardList: action.content,
+				userCardVisible: true,
+			})
 
+			case 'ROLE_LIST_CLOSEUSERCARD':
+			return $$state.merge({
+				userCardVisible: false,
+				selectedUserCardRowKeys: [],
+	selectedUserCardRows: [],
+			})
+			case 'ROLE_LIST_GETENUMDATA':
+			return $$state.merge({
+				enumData: action.content
+			})
+			
 		default:
 			return $$state;
 	}

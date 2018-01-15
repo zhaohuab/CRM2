@@ -3,15 +3,18 @@ import reqwest from 'utils/reqwest';
 import { role as url, func } from 'api';
 import funcTreeData from '../container/data'
 
-const showRoleForm = (flag, editData = {}, index) => {
+const showRoleForm = (flag, editData = {}, isEdit) => {
 	return (dispatch) => {
-		dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData }));
+		dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData,isEdit }));
 	}
 }
 
 const transData = (data) => {
 	if (data.orgId) {
 		data.orgId = data.orgId.key
+	}
+	if (data.type) {
+		data.type = data.type.key
 	}
 	return data;
 }
@@ -30,7 +33,7 @@ const getRoleListData = () => {
 	}
 }
 
-const getFuncTreeData = (roleId) => {
+const getFuncTreeData = (roleId,isPreseted) => {
 	
 	return (dispatch) => {
 	
@@ -44,7 +47,7 @@ const getFuncTreeData = (roleId) => {
 				}
 			},
 		}, funcData => {
-			dispatch(fetchData("ROLE_LIST_GETFUNCTREESUCCESS", { funcData, roleId }))
+			dispatch(fetchData("ROLE_LIST_GETFUNCTREESUCCESS", { funcData, roleId,isPreseted }))
 		})
 
 	}
@@ -55,6 +58,20 @@ const selectRow = (selectedRows, selectedRowKeys) => {
 		dispatch(fetchData("ROLE_LIST_SELECTROW", { selectedRows, selectedRowKeys }))
 	}
 };
+
+const selectUserRow = (selectedRows, selectedRowKeys) => {
+	return (dispatch) => {
+		dispatch(fetchData("ROLE_LIST_SELECTUSERROW", { selectedRows, selectedRowKeys }))
+	}
+};
+
+const selectUserCardRow = (selectedRows, selectedRowKeys) => {
+	return (dispatch) => {
+		dispatch(fetchData("ROLE_LIST_SELECTUSERCARDROW", { selectedRows, selectedRowKeys }))
+	}
+};
+
+
 const selectRowTab = (rowId, tabIndex) => {
 	return (dispatch) => {
 		reqwest({
@@ -95,7 +112,7 @@ const onSaveRole4Edit = (data, index) => {
 			url: `${url.role}/${data.id}`,
 			method: "PUT",
 			data: {
-				param: transData(data)
+				param: data
 			}
 		}, result => {
 			dispatch(fetchData('ROLE_CARD_SAVEEDIT', { ...result }));
@@ -109,9 +126,6 @@ const onDelete = (id) => {
 			url: url.role + "/" + id,
 			method: "DELETE",
 			data: {
-				// param: {
-				// 	ids: ids.join(","),
-				// },
 			}
 		}, result => {
 			if (result.flag) {
@@ -133,7 +147,7 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 			data: {
 				param: {
 					roleId,
-					funcperIds:funcIds,
+					funcperIds:funcIds.join(","),
 					checked
 				},
 			}
@@ -142,6 +156,107 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 		})
 	}
 }
+
+
+const getUserListData = (roleId,pagination) => {
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/getPersonals",
+			method: "GET",
+			data: {
+				param:{
+					roleId,
+					...pagination
+				}
+			},
+		}, result => {
+			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { ...result }));
+		})
+	}
+}
+
+
+const showUserCard = (roleId,pagination) => {
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/getPersonalsAddList",
+			method: "GET",
+			data: {
+				param:{
+					roleId,
+					...pagination
+				}
+			},
+		}, result => {
+			dispatch(fetchData('ROLE_LIST_GETUSERCARDLISTSUCCESS', { ...result }));
+		})
+	}
+}
+
+
+
+const getEnumData = () => {
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/roletypes",
+			method: "GET",
+			data: {
+			},
+		}, result => {
+			dispatch(fetchData('ROLE_LIST_GETENUMDATA', { ...result }));
+		})
+	}
+}
+
+
+const saveUser = (roleId,userIds,pagination) =>{
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/assign",
+			method: "POST",
+			data: {
+				param:{
+					roleId,
+					userIds:userIds.join(","),
+				...pagination
+				}
+				
+			},
+		}, result => {
+			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
+			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { ...result }));
+		})
+	}
+}
+
+
+const deleteUser = (roleId,userIds,pagination) =>{
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/unassign",
+			method: "DELETE",
+			data: {
+				param:{
+					roleId,
+					userIds:userIds.join(","),
+				...pagination
+				}
+				
+			},
+		}, result => {
+			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
+			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { ...result }));
+		})
+	}
+}
+
+
+
+const closeUserCard = () => {
+	return (dispatch) => {
+		dispatch(fetchData("ROLE_LIST_CLOSEUSERCARD", ))
+	}
+};
 
 
 //输出 type 与 方法
@@ -155,5 +270,13 @@ export {
 	selectRow,
 	onTabClick,
 	selectRowTab,
-	selectFunc
+	selectFunc,
+	getUserListData,
+	showUserCard,
+	getEnumData,
+	saveUser,
+	closeUserCard,
+	selectUserRow,
+	selectUserCardRow,
+	deleteUser
 }

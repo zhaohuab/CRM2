@@ -76,10 +76,11 @@ class FuncTree extends Component {
     }
 
     selectFunc(funcId, checked) {
+
         if (checked == "T") {
             checked = "F"
-        }else{
-            checked="T"
+        } else {
+            checked = "T"
         }
         const roleId = this.props.$$state.get("selectedRoleId");
         const funcData = this.props.$$state.get("funcData").toJS();
@@ -102,56 +103,98 @@ class FuncTree extends Component {
         this.props.action.selectFunc(roleId, funcIds, checked, funcData)
     }
 
-    selectAllFunc(groupId,e) {
-        debugger
+    selectAllFunc(groupId, checked, e) {
         e.stopPropagation();
         const roleId = this.props.$$state.get("selectedRoleId");
         const funcData = this.props.$$state.get("funcData").toJS();
-        let flag = false;
         const funcIds = [];
-        for (let i = 0; i < funcData.length; i++) {
-           
-            if(funcData[i].id == groupId){
-                let child = funcData[i].child;
-                for (let j = 0; j < child.length; j++) {
-                   funcData[i].child[j].checked = "T";
-                   funcIds.push(funcData[i].child[j].id);
+        //当前不全选时点击全选
+        if (!checked) {
+            for (let i = 0; i < funcData.length; i++) {
+                if (funcData[i].id == groupId) {
+                    let child = funcData[i].child;
+                    for (let j = 0; j < child.length; j++) {
+                        if (funcData[i].child[j].checked == 'F') {
+                            funcIds.push(funcData[i].child[j].id);
+                        }
+                        funcData[i].child[j].checked = "T";
+                    }
+                    break;
                 }
-                break;
+
             }
-            
+            this.props.action.selectFunc(roleId, funcIds, "T", funcData)
+        } else {
+            for (let i = 0; i < funcData.length; i++) {
+                if (funcData[i].id == groupId) {
+                    let child = funcData[i].child;
+                    for (let j = 0; j < child.length; j++) {
+                        funcIds.push(funcData[i].child[j].id);
+                        funcData[i].child[j].checked = "F";
+                    }
+                    break;
+                }
+            }
+            this.props.action.selectFunc(roleId, funcIds, "F", funcData)
         }
-        this.props.action.selectFunc(roleId, funcIds, "T", funcData)
+
     }
 
     render() {
+        let selectedRoleIsPreseted = this.props.$$state.get("selectedRoleIsPreseted");
         const showGroup = data => data.map((item, index) => {
+            let flag = true;
+            if (item.child) {
+                for (let i = 0; i < item.child.length; i++) {
+                    if (item.child[i].checked == 'F') {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+
             const header = (
                 <div>
                     <Row>
-
                         <Col span={20}>{item.name}</Col>
-                        <div  onClick={this.selectAllFunc.bind(this, item.id)}>
-                        <Col span={4}><Checkbox checked={item.checked == 'T' ? true : false} />全选</Col>
-                        </div>
+                        {selectedRoleIsPreseted == 1 ?
+                            <div>
+                                <Col span={4}><Checkbox disabled checked={flag} />全选</Col>
+                            </div>
+                            :
+                            <div onClick={this.selectAllFunc.bind(this, item.id, flag)}>
+                                <Col span={4}><Checkbox checked={flag} />全选</Col>
+                            </div>
+                        }
                     </Row>
                 </div>
             );
             return (
                 <Panel header={header} key={index} >
-                    <Row 
-                    className="func-panel-row" 
+                    <Row
+                        className="func-panel-row"
                     >{showChild(item.child)}</Row>
                 </Panel>
             );
         });
         const showChild = data => data.map((item) => {
             return (
-                <div class="func-cell" onClick={this.selectFunc.bind(this, item.id, item.checked)}>
-                    <Col span={6}>
-                        <Checkbox checked={item.checked == 'T' ? true : false} />
-                        {item.name}
-                    </Col>
+                <div>
+                    {selectedRoleIsPreseted == 1 ?
+                        <div class="func-cell" >
+                            <Col span={6}>
+                                <Col span={4}><Checkbox disabled checked={item.checked == 'T' ? true : false} /></Col>
+                                {item.name}
+                            </Col>
+                        </div>
+                        :
+                        <div class="func-cell" onClick={this.selectFunc.bind(this, item.id, item.checked)}>
+                            <Col span={6}>
+                                <Col span={4}><Checkbox checked={item.checked == 'T' ? true : false} /></Col>
+                                {item.name}
+                            </Col>
+                        </div>
+                    }
                 </div>
             );
         })
@@ -162,9 +205,9 @@ class FuncTree extends Component {
                     <Button onClick={this.hideOnClick.bind(this)} className={'class1 class2'}>lalalala</Button>
                 </div>
                 <div className="collapse-recover">
-                <Collapse bordered={false} defaultActiveKey={['0', '1', '2', '3']}>
-                    {showGroup(funcData)}
-                </Collapse>
+                    <Collapse bordered={false} defaultActiveKey={['0', '1', '2', '3']}>
+                        {showGroup(funcData)}
+                    </Collapse>
                 </div>
             </div>
         )
