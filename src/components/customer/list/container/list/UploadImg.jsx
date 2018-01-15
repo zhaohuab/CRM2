@@ -25,14 +25,14 @@ export default class UploadImg extends React.Component {
     }
 
     getBase64(img, callback) {
-        debugger
+        
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result));
         reader.readAsDataURL(img);
     }
 
     upFn(imageUrl,id){
-       debugger
+       
        let c=this.props.onChange
           reqwest(
             {
@@ -45,7 +45,7 @@ export default class UploadImg extends React.Component {
                 }
             },
             data => {
-                debugger
+                
                 let obj=[{
                         uid: id,
                         name: data.data[1],
@@ -55,7 +55,7 @@ export default class UploadImg extends React.Component {
                 this.setState({
                     loading:false
                 },()=>{
-                    debugger
+                    
                     if(this.props.onChange){
                         this.props.onChange(JSON.stringify(obj))
                     }
@@ -65,7 +65,7 @@ export default class UploadImg extends React.Component {
     }
 
     delFn(name,callback){
-        debugger
+        
         reqwest(
             {
                 url: baseDir + " /cum/customers/deletefile",
@@ -83,7 +83,7 @@ export default class UploadImg extends React.Component {
     }
 
     handleChange = (info) => {
-        debugger
+        
           this.setState({ loading: true });
           if(info.file.originFileObj){
                 let id = info.file.originFileObj.uid
@@ -107,10 +107,10 @@ export default class UploadImg extends React.Component {
     render() {
         const { previewVisible, previewImage, fileList ,imageUrl} = this.state;
         const uploadButton = (
-            <div className='upload-warpper'>
-                  <Icon type={this.state.loading ? 'loading' : 'plus'} />
-                <div className="ant-upload-text">{this.state.loading ? 'loading' : '上传图片'}</div>
-            </div>
+                <div className='upload-warpper'>
+                    <Icon type={this.state.loading ? 'loading' : 'plus'}/>
+                    {/* <span className="loading-text">{this.state.loading ? 'loading' : this.props.title}</span> */}
+                </div>
         );
       
        let list =this.props.value?JSON.parse(this.props.value):[]

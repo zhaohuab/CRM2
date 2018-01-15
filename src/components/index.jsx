@@ -44,7 +44,11 @@ class Main extends React.Component {
                     />
                     <div className="app-body">
                         <Header collapsed={collapsed} />
-                        <div className="app-content">{this.props.children}</div>
+                        <div className="app-content">
+                          <div className='app-content-inner'>
+                            {this.props.children}
+                          </div>
+                        </div>
                     </div>
                 </div>
             //</div>
