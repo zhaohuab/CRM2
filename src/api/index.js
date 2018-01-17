@@ -14,6 +14,7 @@ const org = {
 const user = {
     listTpl : baseDir + "sys/users/template/list",
     addTpl : baseDir + "sys/users/template/add",
+    editTpl : baseDir + "sys/users/template/edit",
     user: baseDir + "sys/users",
     userBatch: baseDir + "sys/users/batch",
     enable: baseDir + "sys/users/state" // {id}/state
