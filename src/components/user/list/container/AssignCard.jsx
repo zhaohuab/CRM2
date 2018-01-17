@@ -1,4 +1,4 @@
-import { Form, Input,Row,Col,Checkbox } from 'antd';
+import { Form, Input,Row,Col,Checkbox,Radio } from 'antd';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import getFormItem from 'utils/template/form'
@@ -11,26 +11,44 @@ class AssignCard extends React.Component {
         super(props)
     }
 
+    selectRole(id){
+        this.props.action.selectRole(id)
+    }
 
     render() {
-        const { getFieldDecorator } = this.props.form;
         const roleList = this.props.$$state.get("roleList").toJS();
-
+        const selectedRows = this.props.$$state.get("selectedRows").toJS();
+        const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
+        const selectedRole = this.props.$$state.get("selectedRole");
+        let userStr = "";
+        for(let i=0;i<selectedRows.length;i++){
+            userStr += selectedRows[i].name;
+            userStr += "、";
+        }
+        userStr = userStr.substring(0,userStr.length-1);
         const showRole = (data) => data.map((item)=>{
-            return <Col span={4}><Checkbox checked={item.checked} />{item.name}</Col>
+            return <div onClick={this.selectRole.bind(this,item.id)}><Col span={8}><Radio checked={item.id == selectedRole?true:false} />{item.name}</Col></div>
         })
         let { tpl } = this.props;
         return (
             <div>
-                <Row>
+                <Row 
+                    className="Assgin-row"
+                    type="flex"
+                    align="center"
+                >
                     <Col span={6}>
                         已选择对象：
                     </Col>
                     <Col span={18}>
-                        李达、李大大
+                        {userStr}
                     </Col>
                 </Row>
-                <Row>
+                <Row 
+                    className="Assgin-row"
+                    type="flex"
+                    align="center"
+                >
                     <Col span={6}>
                         角色：
                     </Col>

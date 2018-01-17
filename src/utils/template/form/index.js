@@ -19,7 +19,9 @@ const getFormItem = (getFieldDecorator,field, layout) => {
             {...layout}
         >
             {getFieldDecorator(field.code, {
-
+                rules: [{
+                    required: !field.nullAble,
+                }],
             })(
                 comp
                 )}

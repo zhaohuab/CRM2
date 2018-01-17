@@ -5,6 +5,7 @@ import getFormItem from 'utils/template/form'
 import fieldHandler from 'utils/template/form/FieldHandler.js'
 //导入action方法
 import * as Actions from "../action";
+import Enum from 'utils/components/enums'
 const FormItem = Form.Item;
 class Card extends React.Component {
     constructor(props) {
@@ -57,10 +58,11 @@ function mapDispatchToProps(dispatch) {
 const WrapCard = Form.create({
     onFieldsChange(props, changedFields) {
         fieldHandler(changedFields);
+        debugger
         props.onChange(changedFields);
     },
     mapPropsToFields(props) {
-        
+        debugger
         let data  = props.dataSource;
         
         return {
