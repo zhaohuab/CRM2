@@ -5,7 +5,7 @@ import reqwest from "utils/reqwest";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import "./index.less";
-class Department extends React.Component {
+class yy extends React.Component {
     state = {
         visible: false,
         select: {
@@ -47,14 +47,13 @@ class Department extends React.Component {
 
     getData = () => {
         let that = this;
-        debugger
         reqwest(
             {
                 url: url.orgTree,
                 method: "get",
                 data: {
                     param:{
-                        orgType:2,
+                        orgType:1,
                         fatherorgId:this.props.fatherorgId
                     }
                 }
@@ -126,4 +125,4 @@ class Department extends React.Component {
     }
 }
 
-export default Department;
+export default yy;

@@ -1,4 +1,4 @@
-import { Form,Input } from 'antd';
+import { Form, Input } from 'antd';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import getFormItem from 'utils/template/form'
@@ -12,7 +12,7 @@ class Card extends React.Component {
         super(props)
     }
 
-    trans(getFieldDecorator,tpl) {
+    trans(getFieldDecorator, tpl) {
         let formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -23,20 +23,29 @@ class Card extends React.Component {
                 sm: { span: 14 },
             },
         };
-        
+
         return tpl.map((field) => {
-            return getFormItem(getFieldDecorator,field,formItemLayout);
+            return getFormItem(getFieldDecorator, field, formItemLayout);
         })
     }
     render() {
         const { getFieldDecorator } = this.props.form;
 
         let { tpl } = this.props;
+        let formData = this.props.$$state.get("formData").toJS()
+        if(tpl){
+            for(let i=0;i<tpl.length;i++){
+                if(tpl[i].relation&&formData[tpl[i].relation]&&formData[tpl[i].relation].value){
+                   tpl[i].relationId = formData[tpl[i].relation].value;
+                }
+            }
+        }
+       
         return (
-        <Form >
-            {tpl ? this.trans(getFieldDecorator,tpl) : ''}
+            <Form >
+                {tpl ? this.trans(getFieldDecorator, tpl) : ''}
 
-        </Form>)
+            </Form>)
     }
 }
 
@@ -57,14 +66,54 @@ function mapDispatchToProps(dispatch) {
 
 const WrapCard = Form.create({
     onFieldsChange(props, changedFields) {
-        fieldHandler(changedFields);
-        debugger
+        if (changedFields.orgName && changedFields.orgName.value.value.id == undefined) {
+            fieldHandler(changedFields);
+            let template = props.$$state.get("template").toJS();
+            let isEdit = props.$$state.get("isEdit");
+            let tpl;
+            if (isEdit) {
+                tpl = template.edit;
+            }
+            else {
+                tpl = template.add
+            }
+            for (let i = 0; i < tpl.length; i++) {
+                if (tpl[i].code == "deptId") {
+                    tpl[i].disabled = true;
+                }
+                if (tpl[i].code == "deptName") {
+                    tpl[i].disabled = true;
+                }
+            }
+            props.action.saveTpl(template)
+        }else{
+            fieldHandler(changedFields);
+            if (changedFields.orgId) {
+                let template = props.$$state.get("template").toJS();
+                let isEdit = props.$$state.get("isEdit");
+                let tpl;
+                if (isEdit) {
+                    tpl = template.edit;
+                }
+                else {
+                    tpl = template.add
+                }
+                for (let i = 0; i < tpl.length; i++) {
+                    if (tpl[i].code == "deptId") {
+                        tpl[i].disabled = false;
+                    }
+                    if (tpl[i].code == "deptName") {
+                        tpl[i].disabled = false;
+                    }
+                }
+                props.action.saveTpl(template)
+            }
+        }
         props.onChange(changedFields);
     },
     mapPropsToFields(props) {
-        debugger
-        let data  = props.dataSource;
-        
+        let data = props.dataSource;
+
         return {
             ...data,
         }
