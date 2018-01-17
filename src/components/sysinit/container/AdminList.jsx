@@ -53,8 +53,8 @@ class List extends React.Component {
       // },
       {
         title: '角色',
-        dataIndex: 'roleName',
-        render: (text, record, index) => this.renderColumn('roleName', text, record, index),
+        dataIndex: 'typeName',
+        render: (text, record, index) => this.renderColumn('typeName', text, record, index),
       },
       {
         title: '启用状态',
