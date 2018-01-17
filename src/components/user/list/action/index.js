@@ -47,6 +47,7 @@ const showForm = (flag, editData = {}, isEdit) => {
 const getListData = (params) => {
 	
 	return (dispatch) => {
+		debugger
 		reqwest({
 			url: url.user,
 			method: "GET",
@@ -57,7 +58,7 @@ const getListData = (params) => {
 				}
 			},
 		},result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result,searchMap:params.searchMap }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result,searchMap:params.searchMap,pagination:params.pagination }));
 		})
 	}
 }
@@ -214,6 +215,13 @@ const getEnumData = () => {
 	}
 }
 
+//重新保存模板tpl
+const saveTpl = (tpl) => {
+	return (dispatch) => {
+		dispatch(fetchData("USER_LIST_SAVETEMPLATE", tpl))
+	}
+};
+
 //输出 type 与 方法
 export {
 	getListTpl,
@@ -231,5 +239,6 @@ export {
 	AssignRole,
 	closeAssign,
 	selectRole,
-	getEnumData
+	getEnumData,
+	saveTpl
 }

@@ -146,7 +146,7 @@ class List extends React.Component {
             tpl = template.edit;
         }
         else {
-            tpl = template.add
+            tpl = template.add;
         }
         return (
             <div className="user-warpper">

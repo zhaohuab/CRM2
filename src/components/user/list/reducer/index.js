@@ -73,7 +73,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				loading: false,
 				data: action.content,
 				visible: action.content.visible,
-				searchMap:action.content.searchMap,
+				searchMap: action.content.searchMap,
+				pagination:action.content.pagination,
 				selectedRowKeys: [],
 				selectedRows: [],
 			})
@@ -124,13 +125,17 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRole: action.content.selectedRole,
 			})
 
-			case 'USER_LIST_GETENUMDATA':
+		case 'USER_LIST_GETENUMDATA':
 
 			return $$state.merge({
 				enumData: action.content,
 			})
 
-			
+		case 'USER_LIST_SAVETEMPLATE':
+			return $$state.merge({
+				template: action.content,
+			})
+
 		default:
 			return $$state;
 	}

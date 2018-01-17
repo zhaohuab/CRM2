@@ -2,6 +2,7 @@
 import { Form,Input  } from 'antd';
 import Email from 'utils/comp4tpl/emails'
 import Department from 'utils/comp4tpl/department'
+import Company from 'utils/comp4tpl/company'
 import Enum from 'utils/comp4tpl/enums'
 import RadioGroup from 'utils/comp4tpl/radios'
 import DateTime from 'utils/comp4tpl/datetime'
@@ -19,6 +20,7 @@ const getFormItem = (getFieldDecorator,field, layout) => {
             {...layout}
         >
             {getFieldDecorator(field.code, {
+                initialValue:field.defaultValue,
                 rules: [{
                     required: !field.nullAble,
                 }],
@@ -52,8 +54,11 @@ const getComponent = (field) => {
     else if (field.render == "Email") {
         return <Email />
     }
-    else if (field.render == "Departments") {
-        return <Department mapper={field.readWriteFields} />
+    else if (field.render == "Company") {
+        return <Company disabled={field.disabled==true?true:false} mapper={field.readWriteFields} />
+    }
+    else if (field.render == "Department") {
+        return <Department fatherorgId={field.relationId} disabled={field.disabled==true?true:false} mapper={field.readWriteFields} />
     }
     else if (field.render == "Date") {
         return <DateTime />
