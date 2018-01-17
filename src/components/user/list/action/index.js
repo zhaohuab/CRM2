@@ -4,11 +4,16 @@ import { user as url,role } from 'api';
 
 
 
-const getListTpl = () => {
+const getListTpl = (enableState) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.listTpl,
 			method: "GET",
+			data:{
+				param:{
+					enableState
+				}
+			}
 		},result => {
 			dispatch(fetchData('USER_LIST_TEMPLATE', { ...result }));
 		})
@@ -47,7 +52,6 @@ const showForm = (flag, editData = {}, isEdit) => {
 const getListData = (params) => {
 	
 	return (dispatch) => {
-		debugger
 		reqwest({
 			url: url.user,
 			method: "GET",
