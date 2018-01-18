@@ -29,8 +29,9 @@ class List extends React.Component {
     componentDidMount() {
         let pagination = this.props.$$state.get("pagination").toJS();
         let searchMap = this.props.$$state.get("searchMap").toJS();
-        this.props.action.getListTpl(searchMap.enableState);
-        this.props.action.getListData({ pagination, searchMap });
+        // this.props.action.getListTpl(searchMap.enableState);
+        // this.props.action.getListData({ pagination, searchMap });
+        this.props.action.getListTpl({ pagination, searchMap },searchMap.enableState);
         this.props.action.getEnumData();
     }
 
@@ -101,7 +102,9 @@ class List extends React.Component {
     onAssignOk = () => {
         const selectedRole = this.props.$$state.get("selectedRole");
         const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
-        this.props.action.AssignRole(selectedRole, selectedRowKeys)
+        let pagination = this.props.$$state.get("pagination").toJS();
+        let searchMap = this.props.$$state.get("searchMap").toJS();
+        this.props.action.AssignRole(selectedRole, selectedRowKeys,pagination,searchMap)
     }
     onAssignClose = () => {
         this.props.action.closeAssign()
