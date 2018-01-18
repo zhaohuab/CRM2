@@ -53,7 +53,7 @@ class yy extends React.Component {
                 method: "get",
                 data: {
                     param:{
-                        orgType:1,
+                        orgType:2,
                         fatherorgId:this.props.fatherorgId
                     }
                 }

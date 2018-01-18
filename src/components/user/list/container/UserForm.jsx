@@ -112,7 +112,14 @@ const WrapCard = Form.create({
     mapPropsToFields(props) {
         // let data = props.$$state.get("formData").toJS()
         let formFields = props.$$state.get("formFields").toJS()
-        debugger
+        if(formFields!=undefined){
+            if(formFields.deptId!=undefined&&formFields.deptId.value==0){
+                formFields.deptId = undefined;
+            }
+            if(formFields.roleId!=undefined&&formFields.roleId.value==0){
+                formFields.roleId = undefined;
+            }
+        }
         return {
             ...formFields,
         }
