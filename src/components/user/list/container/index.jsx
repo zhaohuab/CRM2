@@ -5,7 +5,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Table, Modal, Button, Icon, Row, Col } from "antd";
+import { Table, Modal, Button, Icon, Row, Col,message } from "antd";
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import SearchForm from "./SearchForm.jsx";
 import { Input, Radio, Popconfirm, Form } from "antd";
@@ -31,7 +31,7 @@ class List extends React.Component {
         let searchMap = this.props.$$state.get("searchMap").toJS();
         // this.props.action.getListTpl(searchMap.enableState);
         // this.props.action.getListData({ pagination, searchMap });
-        this.props.action.getListTpl({ pagination, searchMap },searchMap.enableState);
+        this.props.action.getListTpl({ pagination, searchMap });
         this.props.action.getEnumData();
     }
 
@@ -76,7 +76,7 @@ class List extends React.Component {
     onSave(e) {
         let form = this.formRef.props.form;
         e.preventDefault();
-        form.validateFieldsAndScroll((err, values) => {
+        form.validateFields((err, values) => {
             // if (!err) {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {
@@ -104,7 +104,12 @@ class List extends React.Component {
         const selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
         let pagination = this.props.$$state.get("pagination").toJS();
         let searchMap = this.props.$$state.get("searchMap").toJS();
-        this.props.action.AssignRole(selectedRole, selectedRowKeys,pagination,searchMap)
+        if(selectedRole){
+            this.props.action.AssignRole(selectedRole, selectedRowKeys,pagination,searchMap)
+        }else{
+            message.error("请选择一个角色")
+        }
+        
     }
     onAssignClose = () => {
         this.props.action.closeAssign()

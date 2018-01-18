@@ -11,7 +11,7 @@ const getListTpl = (params, enableState) => {
 			method: "GET",
 			data: {
 				param: {
-					enableState
+					enableState:params.searchMap.enableState
 				}
 			}
 		}, result => {
@@ -134,7 +134,7 @@ const onDelete = (rowKeys, params) => {
 				},
 			}
 		}, result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result, searchMap: params.searchMap, }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result,searchMap: params.searchMap, pagination: params.pagination  }));
 		})
 	}
 }
@@ -154,7 +154,7 @@ const onEnable = (rowKeys, enable, params) => {
 			}
 		}, result => {
 
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result, searchMap: params.searchMap, }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result, searchMap: params.searchMap, pagination: params.pagination  }));
 		})
 	}
 }
@@ -197,7 +197,7 @@ const AssignRole = (roleId, userIds, pagination, searchMap) => {
 				}
 			}
 		}, result => {
-			dispatch(fetchData('USER_LIST_CLOSEASSIGN', result));
+			dispatch(fetchData('USER_LIST_ASSIGNROLE', result));
 		})
 	}
 }
@@ -205,7 +205,7 @@ const AssignRole = (roleId, userIds, pagination, searchMap) => {
 
 const closeAssign = () => {
 	return (dispatch) => {
-		dispatch(fetchData('USER_LIST_CLOSEASSIGN', ));
+		dispatch(fetchData('USER_LIST_CLOSEASSIGN' ));
 	}
 }
 const selectRole = (selectedRole) => {

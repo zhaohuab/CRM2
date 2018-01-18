@@ -39,7 +39,7 @@ const getFuncTreeData = (roleId,isPreseted) => {
 	
 		reqwest({
 			// `${url.user}/${data.id}`
-			url: func.func,
+			url: url.role+"/"+roleId+"/funcs",
 			method: "GET",
 			data: {
 				param: {
@@ -142,7 +142,7 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 	return (dispatch) => {
 		// dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
 		reqwest({
-			url: func.func,
+			url: url.role+"/"+roleId+"/assign",
 			method: "POST",
 			data: {
 				param: {
@@ -161,7 +161,7 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 const getUserListData = (roleId,pagination) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/getPersonals",
+			url: url.role+"/"+roleId+"/users",
 			method: "GET",
 			data: {
 				param:{
@@ -179,7 +179,7 @@ const getUserListData = (roleId,pagination) => {
 const showUserCard = (roleId,pagination) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/getPersonalsAddList",
+			url: url.role+"/"+roleId+"/add/users",
 			method: "GET",
 			data: {
 				param:{
@@ -212,7 +212,7 @@ const getEnumData = () => {
 const saveUser = (roleId,userIds,pagination) =>{
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/assign",
+			url: url.role+"/"+roleId+"users/assign",
 			method: "POST",
 			data: {
 				param:{

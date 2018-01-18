@@ -58,7 +58,8 @@ const getComponent = (field) => {
         return !field.disabled ? <Company mapper={field.readWriteFields} />:<Input disabled  />
     }
     else if (field.render == "Department") {
-        return  !field.disabled ? <Department fatherorgId={field.relationId}  mapper={field.readWriteFields} />:<Input disabled  />
+        return  <Department fatherorgId={field.relationId}  mapper={field.readWriteFields} disabled={field.disabled}/>
+        //return  !field.disabled ? <Department fatherorgId={field.relationId}  mapper={field.readWriteFields} />:<Input disabled  />
     }
     else if (field.render == "Date") {
         return <DateTime />
