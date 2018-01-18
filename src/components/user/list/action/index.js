@@ -1,22 +1,35 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { user as url,role } from 'api';
+import { user as url, role } from 'api';
 
 
 
-const getListTpl = (enableState) => {
+const getListTpl = (params, enableState) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.listTpl,
 			method: "GET",
-			data:{
-				param:{
+			data: {
+				param: {
 					enableState
 				}
 			}
-		},result => {
+		}, result => {
 			dispatch(fetchData('USER_LIST_TEMPLATE', { ...result }));
+			reqwest({
+				url: url.user,
+				method: "GET",
+				data: {
+					param: {
+						...params.pagination,
+						searchMap: params.searchMap,
+					}
+				},
+			}, result1 => {
+				dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result1, searchMap: params.searchMap, pagination: params.pagination }));
+			})
 		})
+
 	}
 }
 const getAddTpl = () => {
@@ -24,7 +37,7 @@ const getAddTpl = () => {
 		reqwest({
 			url: url.addTpl,
 			method: "GET",
-		},result => {
+		}, result => {
 			dispatch(fetchData('USER_ADD_TEMPLATE', { ...result }));
 		})
 	}
@@ -35,7 +48,7 @@ const getEditTpl = () => {
 		reqwest({
 			url: url.editTpl,
 			method: "GET",
-		},result => {
+		}, result => {
 			dispatch(fetchData('USER_EDIT_TEMPLATE', { ...result }));
 		})
 	}
@@ -44,13 +57,13 @@ const getEditTpl = () => {
 
 const showForm = (flag, editData = {}, isEdit) => {
 	return (dispatch) => {
-		
-		dispatch(fetchData('USER_LIST_SHOWFORM', { visible: flag, editData ,isEdit}));
+
+		dispatch(fetchData('USER_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
 	}
 }
 
 const getListData = (params) => {
-	
+
 	return (dispatch) => {
 		reqwest({
 			url: url.user,
@@ -61,16 +74,17 @@ const getListData = (params) => {
 					searchMap: params.searchMap,
 				}
 			},
-		},result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result,searchMap:params.searchMap,pagination:params.pagination }));
+		}, result => {
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result, searchMap: params.searchMap, pagination: params.pagination }));
 		})
 	}
 }
 
+
 const onUserChange = (data) => {
-	return (dispatch) => { 
-		
-		dispatch(fetchData('USER_PAGE_USERCHANGE', { formFields:data }));
+	return (dispatch) => {
+
+		dispatch(fetchData('USER_PAGE_USERCHANGE', { formFields: data }));
 	}
 }
 const transData = (data) => {
@@ -120,7 +134,7 @@ const onDelete = (rowKeys, params) => {
 				},
 			}
 		}, result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result,searchMap: params.searchMap, }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result, searchMap: params.searchMap, }));
 		})
 	}
 }
@@ -139,8 +153,8 @@ const onEnable = (rowKeys, enable, params) => {
 				},
 			}
 		}, result => {
-		
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result,searchMap: params.searchMap, }));
+
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result, searchMap: params.searchMap, }));
 		})
 	}
 }
@@ -149,9 +163,9 @@ const onEnable = (rowKeys, enable, params) => {
 const showAssign = () => {
 	return (dispatch) => {
 		// dispatch(fetchData('USER_LIST_SHOWASSIGN', ));
-		console.log(role.role+"/ref")
+		console.log(role.role + "/ref")
 		reqwest({
-			url: role.role+"/ref",
+			url: role.role + "/ref",
 			method: "GET",
 			data: {
 			}
@@ -169,19 +183,21 @@ const selectRow = (selectedRows, selectedRowKeys) => {
 };
 
 
-const AssignRole = (roleId,userIds) => {
+const AssignRole = (roleId, userIds, pagination, searchMap) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.user+"/allocation",
+			url: url.user + "/allocation",
 			method: "PUT",
 			data: {
-				param:{
+				param: {
 					roleId,
-					userIds:userIds.join(",")
+					userIds: userIds.join(","),
+					...pagination,
+					searchMap
 				}
 			}
 		}, result => {
-			dispatch(fetchData('USER_LIST_CLOSEASSIGN', ));
+			dispatch(fetchData('USER_LIST_CLOSEASSIGN', result));
 		})
 	}
 }
@@ -202,13 +218,13 @@ const selectRole = (selectedRole) => {
 const getEnumData = () => {
 	return (dispatch) => {
 		reqwest({
-			url: role.role+"/ref",
+			url: role.role + "/ref",
 			method: "GET",
 			data: {
 			}
 		}, result => {
 			let roleEnum = []
-			for(let i=0;i<result.data.length;i++){
+			for (let i = 0; i < result.data.length; i++) {
 				let role = {}
 				role.key = result.data[i].id;
 				role.title = result.data[i].name;
@@ -244,5 +260,5 @@ export {
 	closeAssign,
 	selectRole,
 	getEnumData,
-	saveTpl
+	saveTpl,
 }

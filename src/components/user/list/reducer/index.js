@@ -79,7 +79,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRows: [],
 			})
 		case 'USER_LIST_SHOWFORM':
-
 			return $$state.merge({
 				visible: action.content.visible,
 				formFields: transToFields(action.content.editData),
@@ -112,6 +111,9 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'USER_LIST_CLOSEASSIGN':
 			return $$state.merge({
 				assignVisible: false,
+				data: action.content,
+				selectedRowKeys: [],
+				selectedRows: [],
 			})
 
 		case 'USER_LIST_SELECTROW':

@@ -30,7 +30,6 @@ class Card extends React.Component {
     }
     render() {
         const { getFieldDecorator } = this.props.form;
-
         let { tpl } = this.props;
         let formData = this.props.$$state.get("formData").toJS()
         if(tpl){
@@ -111,10 +110,11 @@ const WrapCard = Form.create({
         props.onChange(changedFields);
     },
     mapPropsToFields(props) {
-        let data = props.$$state.get("formData").toJS()
-
+        // let data = props.$$state.get("formData").toJS()
+        debugger
+        let formFields = props.$$state.get("formFields").toJS()
         return {
-            ...data,
+            ...formFields,
         }
     }
 })(Card);

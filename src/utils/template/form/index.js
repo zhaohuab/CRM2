@@ -55,7 +55,6 @@ const getComponent = (field) => {
         return <Email />
     }
     else if (field.render == "Company") {
-        debugger
         return !field.disabled ? <Company mapper={field.readWriteFields} />:<Input disabled  />
     }
     else if (field.render == "Department") {
