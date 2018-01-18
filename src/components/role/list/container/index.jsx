@@ -96,11 +96,11 @@ class List extends React.Component {
     //保存事件
     onSave() {
         let form = this.formRef.props.form;
-        form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
+        // form.validateFieldsAndScroll((err, values) => {
+        //     if (!err) {
+        //         console.log('Received values of form: ', values);
+        //     }
+        // });
         if (this.state.isEdit) {
             this.props.action.onSaveRole4Edit(form.getFieldsValue());
         }

@@ -34,6 +34,7 @@ class SearchForm extends React.Component {
     onEableRadioChange = e => {
         let enable = e.target.value;
         let pagination = this.props.$$state.get("pagination").toJS();
+        pagination.page = 1;
         let searchMap = this.props.$$state.get("searchMap").toJS();
         //可能有问题
         searchMap.enableState = enable;
@@ -47,6 +48,7 @@ class SearchForm extends React.Component {
     }
     btnSearchOnClick(){
         let pagination = this.props.$$state.get("pagination").toJS();
+        
         const enableState = this.props.$$state.get("searchMap").toJS().enableState;
         const data = this.props.form.getFieldsValue();
         data.enableState = enableState;

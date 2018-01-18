@@ -111,8 +111,8 @@ const WrapCard = Form.create({
     },
     mapPropsToFields(props) {
         // let data = props.$$state.get("formData").toJS()
-        debugger
         let formFields = props.$$state.get("formFields").toJS()
+        debugger
         return {
             ...formFields,
         }

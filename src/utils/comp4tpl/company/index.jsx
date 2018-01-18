@@ -79,7 +79,7 @@ class yy extends React.Component {
     getTitle() {
         return (
             <div className="pepole-refer">
-                <div>组织</div>
+                <div>公司</div>
                 <div className="pepole-refer-search">
                     <Search
                         placeholder="请输入关键字"
@@ -108,7 +108,7 @@ class yy extends React.Component {
                 <Modal
                     title={this.getTitle()}
                     visible={this.state.visible}
-                    onOk={this.onOk}
+                    onOk={this.onOk.bind(this)}
                     onCancel={this.onClose}
                     width={400}
                     closable={false}

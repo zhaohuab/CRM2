@@ -24,7 +24,7 @@ let $$initialState = {
 	selectedRows: [],
 	roleList: [],
 	assignVisible: false,
-	selectedRole: ""
+	selectedRole:undefined
 };
 
 function pageAdd(page, item) {
@@ -86,7 +86,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				isEdit: action.content.isEdit,
 			})
 		case 'USER_PAGE_USERCHANGE':
-
 			return $$state.mergeDeep({
 				formData: transToValues(action.content.formFields),
 				formFields: action.content.formFields,
@@ -95,11 +94,15 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				visible: action.content.visible,
 				data: pageAdd($$state.get("data").toJS(), action.content),
+				formData: {},
+				formFields: {},	
 			})
 		case 'USER_CARD_SAVEEDIT':
 			return $$state.merge({
 				visible: action.content.visible,
 				data: pageEdit($$state.get("data").toJS(), action.content),
+				formData: {},
+				formFields: {},
 			})
 
 		case 'USER_LIST_SHOWASSIGN':
@@ -108,12 +111,20 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				roleList: action.content.data,
 			})
 
-		case 'USER_LIST_CLOSEASSIGN':
+		case 'USER_LIST_ASSIGNROLE':
 			return $$state.merge({
 				assignVisible: false,
 				data: action.content,
 				selectedRowKeys: [],
 				selectedRows: [],
+				selectedRole:undefined
+			})
+			case 'USER_LIST_CLOSEASSIGN':
+			return $$state.merge({
+				assignVisible: false,
+				selectedRowKeys: [],
+				selectedRows: [],
+				selectedRole:undefined
 			})
 
 		case 'USER_LIST_SELECTROW':
