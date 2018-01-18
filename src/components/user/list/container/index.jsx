@@ -29,12 +29,12 @@ class List extends React.Component {
     componentDidMount() {
         let pagination = this.props.$$state.get("pagination").toJS();
         let searchMap = this.props.$$state.get("searchMap").toJS();
-        this.props.action.getListTpl();
+        this.props.action.getListTpl(searchMap.enableState);
         this.props.action.getListData({ pagination, searchMap });
         this.props.action.getEnumData();
     }
 
-  
+
     onDelete = () => {
         let selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
         let pagination = this.props.$$state.get("pagination").toJS();
@@ -72,10 +72,11 @@ class List extends React.Component {
             });
         };
     }
-    onSave() {
+    onSave(e) {
         let form = this.formRef.props.form;
+        e.preventDefault();
         form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
+            // if (!err) {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {
                     this.props.action.onSave4Edit(form.getFieldsValue());
@@ -83,7 +84,7 @@ class List extends React.Component {
                 else {
                     this.props.action.onSave4Add(form.getFieldsValue());
                 }
-            }
+            // }
         });
     }
 
@@ -93,7 +94,7 @@ class List extends React.Component {
     onBack = () => {
         this.props.action.selectRow([], []);
     };
-    
+
     onAssign = () => {
         this.props.action.showAssign()
     }
@@ -156,12 +157,21 @@ class List extends React.Component {
                         goBack={this.onBack.bind(this)}
                         length={selectedRowKeys.length}
                     >
-                        <Button
+                     
+
+                        {selectedRowKeys.length == 1&&enableState ==1 ? <Button
                             className="default_button"
                             onClick={this.onEdit}
                         >
                             <i className="iconfont icon-bianji" />编辑
-                </Button>
+                </Button> : ""}
+
+                {selectedRowKeys.length > 1&&enableState ==1 ? <Button
+                           disabled
+                        >
+                            <i className="iconfont icon-bianji" />编辑
+                </Button> : ""}
+
                         <Popconfirm
                             placement="bottom"
                             title="确认删除吗"
@@ -186,18 +196,19 @@ class List extends React.Component {
                                     className="default_button"
                                     onClick={this.onEnable(1).bind(this, 1)}
                                 >
-                                    <i className="iconfont icon-qiyong-lanse" />启用
+                                    <i className="iconfont icon-qiyong" />启用
                     </Button>
                             )}
-                        <Button className="default_button"
+                            {enableState ==1  ?<Button className="default_button"
                             onClick={this.onAssign.bind(this)}
                         >
                             <i className="iconfont icon-fenpeijiaose" />分配角色
-                </Button>
+                </Button>:""}
+                        
                     </HeaderButton>
                     :
                     <div>
-<SearchForm />
+                        <SearchForm />
                     </div>
                 }
                 <div className="list-box tabel-recoverd">
@@ -224,6 +235,7 @@ class List extends React.Component {
                     onOk={this.onSave.bind(this)}
                     onCancel={this.onClose.bind(this)}
                     width={500}
+                    maskClosable={false}
                 >
                     <div className="modal-height">
                         <Card

@@ -47,7 +47,6 @@ class Department extends React.Component {
 
     getData = () => {
         let that = this;
-        debugger
         reqwest(
             {
                 url: url.orgTree,

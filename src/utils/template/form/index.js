@@ -31,7 +31,7 @@ const getFormItem = (getFieldDecorator,field, layout) => {
     }
     else {
         getFieldDecorator(field.code, {
-
+            initialValue:field.defaultValue,
         })(
             comp
             )
@@ -55,10 +55,11 @@ const getComponent = (field) => {
         return <Email />
     }
     else if (field.render == "Company") {
-        return <Company disabled={field.disabled==true?true:false} mapper={field.readWriteFields} />
+        debugger
+        return !field.disabled ? <Company mapper={field.readWriteFields} />:<Input disabled  />
     }
     else if (field.render == "Department") {
-        return <Department fatherorgId={field.relationId} disabled={field.disabled==true?true:false} mapper={field.readWriteFields} />
+        return  !field.disabled ? <Department fatherorgId={field.relationId}  mapper={field.readWriteFields} />:<Input disabled  />
     }
     else if (field.render == "Date") {
         return <DateTime />

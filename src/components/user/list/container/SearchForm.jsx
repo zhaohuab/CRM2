@@ -38,7 +38,7 @@ class SearchForm extends React.Component {
         //可能有问题
         searchMap.enableState = enable;
         this.props.action.getListData({ pagination, searchMap });
-        this.setState({ enable, selectedRowKeys: [], searchMap });
+        // this.props.action.getListTpl(searchMap.enableState);
     };
 
     onAdd() {
@@ -75,7 +75,7 @@ class SearchForm extends React.Component {
                         </Col>
                        
                         <Col span={2}>
-                            <div className="searchButton" onClick={this.btnSearchOnClick.bind(this)}>搜索</div>
+                            <div className="searchButton" onClick={this.btnSearchOnClick.bind(this)}><Button >搜索</Button></div>
                         </Col>
                         
                         <Col span={14}>

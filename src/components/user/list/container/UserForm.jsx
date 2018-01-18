@@ -63,10 +63,9 @@ function mapDispatchToProps(dispatch) {
     };
 }
 //输出绑定state和action后组件
-
 const WrapCard = Form.create({
     onFieldsChange(props, changedFields) {
-        if (changedFields.orgName && changedFields.orgName.value.value.id == undefined) {
+        if (changedFields.orgName && changedFields.orgName.value.value&&changedFields.orgName.value.value.id == undefined) {
             fieldHandler(changedFields);
             let template = props.$$state.get("template").toJS();
             let isEdit = props.$$state.get("isEdit");
@@ -112,7 +111,7 @@ const WrapCard = Form.create({
         props.onChange(changedFields);
     },
     mapPropsToFields(props) {
-        let data = props.dataSource;
+        let data = props.$$state.get("formData").toJS()
 
         return {
             ...data,
