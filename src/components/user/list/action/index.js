@@ -4,18 +4,18 @@ import { user as url, role } from 'api';
 
 
 
-const getListTpl = (params, enableState) => {
+const getListTpl = (params) => {
+	
 	return (dispatch) => {
 		reqwest({
 			url: url.listTpl,
 			method: "GET",
 			data: {
 				param: {
-					enableState:params.searchMap.enableState
+					enableState: params.searchMap.enableState
 				}
 			}
 		}, result => {
-			dispatch(fetchData('USER_LIST_TEMPLATE', { ...result }));
 			reqwest({
 				url: url.user,
 				method: "GET",
@@ -26,7 +26,7 @@ const getListTpl = (params, enableState) => {
 					}
 				},
 			}, result1 => {
-				dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result1, searchMap: params.searchMap, pagination: params.pagination }));
+				dispatch(fetchData('USER_LIST_TEMPLATE', { tpl:result,data:result1, searchMap: params.searchMap, pagination: params.pagination }));
 			})
 		})
 
@@ -56,9 +56,14 @@ const getEditTpl = () => {
 
 
 const showForm = (flag, editData = {}, isEdit) => {
-	return (dispatch) => {
-
-		dispatch(fetchData('USER_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
+	if (flag) {
+		return (dispatch) => {
+			dispatch(fetchData('USER_LIST_SHOWFORM', { editData, isEdit }));
+		}
+	} else {
+		return (dispatch) => {
+			dispatch(fetchData('USER_LIST_CLOSEFORM', { editData, isEdit }));
+		}
 	}
 }
 
@@ -75,7 +80,7 @@ const getListData = (params) => {
 				}
 			},
 		}, result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result, searchMap: params.searchMap, pagination: params.pagination }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data:result, searchMap: params.searchMap, pagination: params.pagination }));
 		})
 	}
 }
@@ -134,7 +139,7 @@ const onDelete = (rowKeys, params) => {
 				},
 			}
 		}, result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result,searchMap: params.searchMap, pagination: params.pagination  }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data:result, searchMap: params.searchMap, pagination: params.pagination }));
 		})
 	}
 }
@@ -154,7 +159,7 @@ const onEnable = (rowKeys, enable, params) => {
 			}
 		}, result => {
 
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { ...result, searchMap: params.searchMap, pagination: params.pagination  }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data:result, searchMap: params.searchMap, pagination: params.pagination }));
 		})
 	}
 }
@@ -205,7 +210,7 @@ const AssignRole = (roleId, userIds, pagination, searchMap) => {
 
 const closeAssign = () => {
 	return (dispatch) => {
-		dispatch(fetchData('USER_LIST_CLOSEASSIGN' ));
+		dispatch(fetchData('USER_LIST_CLOSEASSIGN'));
 	}
 }
 const selectRole = (selectedRole) => {

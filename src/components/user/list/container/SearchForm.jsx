@@ -1,4 +1,4 @@
-import {Modal, Cascader,Select,Form,Row,Col,Input,Button,Icon,Radio} from "antd";
+import {Modal, Cascader,Select,Form,Row,Col,Input,Button,Icon,Radio,Dropdown,Menu} from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
@@ -38,7 +38,9 @@ class SearchForm extends React.Component {
         let searchMap = this.props.$$state.get("searchMap").toJS();
         //可能有问题
         searchMap.enableState = enable;
-        this.props.action.getListData({ pagination, searchMap });
+        // this.props.action.getListData({ pagination, searchMap });
+        debugger
+        this.props.action.getListTpl({ pagination, searchMap });
         // this.props.action.getListTpl(searchMap.enableState);
     };
 
@@ -62,6 +64,16 @@ class SearchForm extends React.Component {
             wrapperCol: { span: 22 }
         };
         let enableState = this.props.$$state.get("searchMap").toJS().enableState;
+        const moreMenu = (
+            <Menu>
+                <Menu.Item key="0">
+                    <span>导入</span>
+                </Menu.Item>
+                <Menu.Item key="1">
+                    <span>导出</span>
+                </Menu.Item>
+            </Menu>
+        );
         return (
             <Row type="flex" align="middle" style={{ height: "54px" }}>
                    
@@ -91,23 +103,30 @@ class SearchForm extends React.Component {
                             </RadioGroup>
                         </Col>
 
+                   
+
+
                         <Col span={4}>
-                            <ButtonGroup className="add-more">
-                                <Button>
-                                    <i className="iconfont icon-daochu" />导入
-                                </Button>
-                                <Button>
-                                    <i className="iconfont icon-daoru" />导出
-                                </Button>
-                            </ButtonGroup>
-                            <Button
-                                type="primary"
-                                className="button_add"
-                                onClick={this.onAdd.bind(this)}
-                            >
-                                <Icon type="plus" />新增
-                            </Button>
-                        </Col>
+                                <Row type="flex" gutter={15} justify="end">
+                                    <Col>
+                                        <Button
+                                            type="primary"
+                                            onClick={this.onAdd.bind(this)}
+                                        >
+                                            <i className="iconfont icon-xinjian" />新建
+                                        </Button>
+                                    </Col>
+                                
+                                    <Col>
+                                        <Dropdown.Button
+                                            overlay={moreMenu}
+                                            trigger={["click"]}
+                                        >
+                                            更多
+                                        </Dropdown.Button>
+                                    </Col>
+                                </Row>
+                            </Col>
                     </Row>
         );
     }
