@@ -8,6 +8,8 @@ import * as roleActions from "../action"
 import RoleCard from "./RoleCard"
 import FuncTree from "./FuncTree"
 import UserTable from "./UserTable"
+import RightPanel from "./RightPanel"
+
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
@@ -126,7 +128,7 @@ class List extends React.Component {
         if(tabIndex == 1){
             this.props.action.getFuncTreeData(selectedRoleId,selectedRoleIsPreseted);
         }else if(tabIndex == 2){
-            
+            this.props.action.getRightData(selectedRoleId);
         }else if(tabIndex == 3){
             const userPagination = this.props.$$state.get("userPagination").toJS();
             this.props.action.getUserListData(selectedRoleId,userPagination);
@@ -205,7 +207,9 @@ class List extends React.Component {
                                 <TabPane tab="功能" key="1">
                                     <FuncTree data={funcData} />
                                 </TabPane>
-                                <TabPane tab="数据" key="2">Content of Tab 2</TabPane>
+                                <TabPane tab="数据" key="2">
+                                    <RightPanel />
+                                </TabPane>
                                 <TabPane tab="人员" key="3">
                                     {/* <Row type="flex" justify="end">
                                         <Col span={4}>
