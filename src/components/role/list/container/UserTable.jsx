@@ -18,7 +18,7 @@ class UserTable extends Component {
             {
                 title: "用户",
                 dataIndex: "name",
-           
+
             },
             {
                 title: "性别",
@@ -49,31 +49,31 @@ class UserTable extends Component {
     }
 
     //点击添加按钮
-    onAddUser(){
+    onAddUser() {
         const selectedRoleId = this.props.$$state.get("selectedRoleId");
         const userCardPagination = this.props.$$state.get("userCardPagination").toJS();
-        this.props.action.showUserCard(selectedRoleId,userCardPagination);
+        this.props.action.showUserCard(selectedRoleId, userCardPagination);
     }
 
-    
+
     //点击人员删除按钮
-    onDeleteUser(){
+    onDeleteUser() {
         const selectedRoleId = this.props.$$state.get("selectedRoleId");
         const selectedUserRowKeys = this.props.$$state.get("selectedUserRowKeys").toJS();
         const userPagination = this.props.$$state.get("userPagination").toJS();
-        this.props.action.deleteUser(selectedRoleId,selectedUserRowKeys,userPagination);
+        this.props.action.deleteUser(selectedRoleId, selectedUserRowKeys, userPagination);
     }
 
     //点击保存按钮
-    onSaveUser(){
+    onSaveUser() {
         const selectedRoleId = this.props.$$state.get("selectedRoleId");
         const selectedUserCardRowKeys = this.props.$$state.get("selectedUserCardRowKeys").toJS();
         const userCardPagination = this.props.$$state.get("userCardPagination").toJS();
-        this.props.action.saveUser(selectedRoleId,selectedUserCardRowKeys,userCardPagination);
+        this.props.action.saveUser(selectedRoleId, selectedUserCardRowKeys, userCardPagination);
         this.props.action.closeUserCard();
     }
 
-    onCloseUserCard(){
+    onCloseUserCard() {
         this.props.action.closeUserCard();
     }
 
@@ -86,19 +86,18 @@ class UserTable extends Component {
         let pagination = this.props.$$state.get("userPagination").toJS()
         //可能有问题
         pagination = { page: page, pageSize: pageSize };
-        this.props.action.getUserListData(selectedRoleId,pagination);
+        this.props.action.getUserListData(selectedRoleId, pagination);
     }
     onPageSizeChange(current, pageSize) {
         let selectedRoleId = this.props.$$state.get("selectedRoleId")
         let pagination = this.props.$$state.get("userPagination").toJS()
         pagination = { page: pagination.page, pageSize: pageSize };
-        this.props.action.getUserListData(selectedRoleId,pagination);
+        this.props.action.getUserListData(selectedRoleId, pagination);
     }
     render() {
         const { $$state } = this.props;
         const page = $$state.get("userList").toJS();
-        const cardPage = $$state.get("userCardList").toJS();
-    
+
         let selectedUserRowKeys = $$state.get("selectedUserRowKeys").toJS();
         let selectedUserRows = $$state.get("selectedUserRows").toJS();
         let userCardVisible = $$state.get("userCardVisible");
@@ -106,52 +105,48 @@ class UserTable extends Component {
             selectedUserRowKeys,
             onChange: this.onSelectChange
         };
+        debugger
         return (
             <div>
-            <Row type="flex" align="center" justify="end">
-                <Col span={4}>
-                    <Button onClick={this.onAddUser.bind(this)} className="returnbtn-class"><i className="iconfont icon-xinjian" />添加</Button>
-                </Col>
-                <Col span={4}>
-                    <Button onClick={this.onDeleteUser.bind(this)} className="returnbtn-class"><i className="iconfont icon-shanchu" />移除</Button>
-                </Col>
-            </Row>
-            <Row>
-                <div className="tabel-recoverd">
-                    <Table
-                        size="middle"
-                        columns={this.columns}
-                        rowKey="id"
-                        pagination={false}
-                        dataSource={page.data}
-                        rowSelection={rowSelection}
-                        pagination={{ size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
+                <Row type="flex" align="center" justify="end" className="userpanel-buttonline">
+                    <Col span={4}>
+                        <Button onClick={this.onAddUser.bind(this)} className="returnbtn-class"><i className="iconfont icon-xinjian" />添加</Button>
+                    </Col>
+                    <Col span={4}>
+                        {selectedUserRows.length > 0 ?
+                            <Button onClick={this.onDeleteUser.bind(this)} className="returnbtn-class"><i className="iconfont icon-shanchu" />移除</Button>
+                            :
+                            <Button disabled className="returnbtn-class"><i className="iconfont icon-shanchu" />移除</Button>
+                        }
+                    </Col>
+                </Row>
+                <Row>
+                    <div className="tabel-recoverd">
+                        <Table
+                            size="middle"
+                            columns={this.columns}
+                            rowKey="id"
+                            pagination={false}
+                            dataSource={page.data}
+                            rowSelection={rowSelection}
+                            pagination={{ size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
 
-                    />
-                </div>
-            </Row>
-            <Modal
-                            title="添加人员"
-                            visible={userCardVisible}
-                            onOk={this.onSaveUser.bind(this)}
-                            onCancel={this.onCloseUserCard.bind(this)}
-                            width={500}
-                        >
-                        <div className="tabel-recoverd">
-                    {/* <Table
-                        size="middle"
-                        columns={this.columns}
-                        rowKey="id"
-                        pagination={false}
-                        dataSource={cardPage.data}
-                        rowSelection={rowSelection}
-                        pagination={{ size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
+                        />
+                    </div>
+                </Row>
+                <Modal
+                    title="添加人员"
+                    visible={userCardVisible}
+                    onOk={this.onSaveUser.bind(this)}
+                    onCancel={this.onCloseUserCard.bind(this)}
+                    width={500}
+                >
+                    <div className="tabel-recoverd">
 
-                    /> */}
-                    <UserCardTable />
-                </div>
-                        </Modal>
-        </div>
+                        <UserCardTable />
+                    </div>
+                </Modal>
+            </div>
         )
     }
 }
