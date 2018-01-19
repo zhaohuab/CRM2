@@ -19,10 +19,7 @@ class UserCardTable extends Component {
                 dataIndex: "name",
            
             },
-            {
-                title: "性别",
-                dataIndex: "customerName"
-            },
+         
             {
                 title: "所属公司",
                 dataIndex: "orgName"
@@ -31,14 +28,7 @@ class UserCardTable extends Component {
                 title: "所属部门",
                 dataIndex: "saleStageName"
             },
-            {
-                title: "手机",
-                dataIndex: "mobile"
-            },
-            {
-                title: "邮箱",
-                dataIndex: "email"
-            }
+      
         ]
 
         const that = this;
@@ -67,6 +57,7 @@ class UserCardTable extends Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("userCardList").toJS();
+        debugger
         let selectedUserCardRowKeys = $$state.get("selectedUserCardRowKeys").toJS();
         let selectedUserCardRows = $$state.get("selectedUserCardRows").toJS();
         let userCardVisible = $$state.get("userCardVisible");

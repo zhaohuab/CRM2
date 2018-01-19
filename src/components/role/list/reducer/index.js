@@ -20,7 +20,7 @@ let $$initialState = {
 	tabIndex: 1,
 	funcData,
 	selectedRoleId: "",
-	selectedRoleIsPreseted: false,
+	selectedRoleIsPreseted: 1,
 	userPagination: {
 		pageSize: 20,
 		page: 1
@@ -130,7 +130,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		case 'ROLE_LIST_GETUSERLISTSUCCESS':
 			return $$state.merge({
-				userList: action.content,
+				userList: action.content.data,
+				selectedRoleIsPreseted: action.content.isPreseted,
+				selectedUserRowKeys: [],
+				selectedUserRows: [],
 			})
 		case 'ROLE_LIST_GETUSERCARDLISTSUCCESS':
 			return $$state.merge({
@@ -150,10 +153,15 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		case 'ROLE_LIST_GETRIGHTDATA':
 			return $$state.merge({
-				rightData: action.content.data
+				rightData: action.content.data,
+				selectedRoleIsPreseted: action.content.isPreseted,
 			})
-
-
+			
+			case 'ROLE_LIST_SELECTRIGHTDATA':
+			debugger
+			return $$state.merge({
+				rightData: action.content,
+			})
 
 		default:
 			return $$state;

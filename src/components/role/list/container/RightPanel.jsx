@@ -65,7 +65,6 @@ class RightPanel extends Component {
 
     hideOnClick() {
         const code = '.class2{border:1px solid #333; display:none;}'
-
         var head = document.head || document.getElementsByTagName('head')[0];
         var style = document.createElement('style');
         style.rel = 'stylesheet';
@@ -75,91 +74,43 @@ class RightPanel extends Component {
         return style.sheet || style.styleSheet;
     }
 
-    selectFunc(funcId, checked) {
-
-        if (checked == "T") {
-            checked = "F"
-        } else {
-            checked = "T"
-        }
+    selectRight(rightId) {
+        const rightData = this.props.$$state.get('rightData').toJS();
         const roleId = this.props.$$state.get("selectedRoleId");
-        const funcData = this.props.$$state.get("funcData").toJS();
-        let flag = false;
-        for (let i = 0; i < funcData.length; i++) {
-            let child = funcData[i].child
-            for (let j = 0; j < child.length; j++) {
-                if (child[j].id == funcId) {
-                    funcData[i].child[j].checked = checked;
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag) {
-                break;
+        const isPreseted = this.props.$$state.get("selectedRoleIsPreseted");
+        if(isPreseted==1){
+            message.error("预制角色不允许修改数据权限");
+            return;
+        }
+        for (let i = 0; i < rightData.length; i++) {
+            if (rightData[i].id == rightId) {
+                rightData[i].checked = "T";
+            } else {
+                rightData[i].checked = "F";
             }
         }
-        const funcIds = [];
-        funcIds.push(funcId);
-        this.props.action.selectFunc(roleId, funcIds, checked, funcData)
+        this.props.action.selectRight( roleId,rightId, rightData)
     }
 
-    selectAllFunc(groupId, checked, e) {
-        e.stopPropagation();
-        const roleId = this.props.$$state.get("selectedRoleId");
-        const funcData = this.props.$$state.get("funcData").toJS();
-        const funcIds = [];
-        //当前不全选时点击全选
-        if (!checked) {
-            for (let i = 0; i < funcData.length; i++) {
-                if (funcData[i].id == groupId) {
-                    let child = funcData[i].child;
-                    for (let j = 0; j < child.length; j++) {
-                        if (funcData[i].child[j].checked == 'F') {
-                            funcIds.push(funcData[i].child[j].id);
-                        }
-                        funcData[i].child[j].checked = "T";
-                    }
-                    break;
-                }
-
-            }
-            this.props.action.selectFunc(roleId, funcIds, "T", funcData)
-        } else {
-            for (let i = 0; i < funcData.length; i++) {
-                if (funcData[i].id == groupId) {
-                    let child = funcData[i].child;
-                    for (let j = 0; j < child.length; j++) {
-                        funcIds.push(funcData[i].child[j].id);
-                        funcData[i].child[j].checked = "F";
-                    }
-                    break;
-                }
-            }
-            this.props.action.selectFunc(roleId, funcIds, "F", funcData)
-        }
-
-    }
 
     render() {
-   
-       
         const showRight = data => data.map((item) => {
             return (
                 <Col span={6}>
-                       <div onclick={this.selectRight.bind(this,item.id)} className={item.checked=='T'?"RightPanel-box-checked":"RightPanel-box"}>{item.name}</div> 
+                    <div onClick={this.selectRight.bind(this, item.id)} className={item.checked == 'T' ? "RightPanel-box-checked" : "RightPanel-box"}>{item.name}</div>
                 </Col>
-                
+
             );
         })
         let rightData = this.props.$$state.get('rightData').toJS();
 
         return (
-                <div className="collapse-recover">
-                    <Row type="flex" gutter={15} >
-                        {showRight(rightData)}
-                    </Row>
-                </div>
-           
+            <div className="collapse-recover">
+                <Row type="flex" gutter={15} >
+                    {showRight(rightData)}
+                </Row>
+            </div>
+
         )
     }
 }

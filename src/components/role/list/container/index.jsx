@@ -54,14 +54,13 @@ class List extends React.Component {
     //点击角色名称
     onNameClick = (row) => {
         const tabIndex = this.props.$$state.get("tabIndex");
-        const selectedRoleId = this.props.$$state.get("selectedRoleId");
         if(tabIndex == 1){
             this.props.action.getFuncTreeData(row.id,row.isPreseted);
         }else if(tabIndex == 2){
-            
+            this.props.action.getRightData(row.id,row.isPreseted);
         }else if(tabIndex == 3){
             const userPagination = this.props.$$state.get("userPagination").toJS();
-            this.props.action.getUserListData(selectedRoleId,userPagination);
+            this.props.action.getUserListData(row.id,userPagination,row.isPreseted);
         }
     }
     //点击新增按钮事件
@@ -98,17 +97,18 @@ class List extends React.Component {
     //保存事件
     onSave() {
         let form = this.formRef.props.form;
-        // form.validateFieldsAndScroll((err, values) => {
-        //     if (!err) {
-        //         console.log('Received values of form: ', values);
-        //     }
-        // });
-        if (this.state.isEdit) {
-            this.props.action.onSaveRole4Edit(form.getFieldsValue());
-        }
-        else {
-            this.props.action.onSaveRole4Add(form.getFieldsValue());
-        }
+        form.validateFieldsAndScroll((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+                if (this.state.isEdit) {
+                    this.props.action.onSaveRole4Edit(values);
+                }
+                else {
+                    this.props.action.onSaveRole4Add(values);
+                }
+            }
+        });
+      
     }
     //form表单关闭按钮事件
     onClose() {
@@ -128,10 +128,10 @@ class List extends React.Component {
         if(tabIndex == 1){
             this.props.action.getFuncTreeData(selectedRoleId,selectedRoleIsPreseted);
         }else if(tabIndex == 2){
-            this.props.action.getRightData(selectedRoleId);
+            this.props.action.getRightData(selectedRoleId,selectedRoleIsPreseted);
         }else if(tabIndex == 3){
             const userPagination = this.props.$$state.get("userPagination").toJS();
-            this.props.action.getUserListData(selectedRoleId,userPagination);
+            this.props.action.getUserListData(selectedRoleId,userPagination,selectedRoleIsPreseted);
         }
     }
     onDispatch = () => {
@@ -211,27 +211,7 @@ class List extends React.Component {
                                     <RightPanel />
                                 </TabPane>
                                 <TabPane tab="人员" key="3">
-                                    {/* <Row type="flex" justify="end">
-                                        <Col span={4}>
-                                        <Button className="returnbtn-class"> <i className="iconfont icon-xinjian" />添加</Button>
-                                        </Col>
-                                        <Col span={4}>
-                                            <Button className="returnbtn-class"><i className="iconfont icon-shanchu" />移除</Button>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <div className="tabel-recoverd">
-
-                                            <Table
-                                                size="middle"
-                                                columns={this.columns}
-                                                rowKey="id"
-                                                pagination={false}
-                                                dataSource={page.data}
-                                                rowSelection={rowSelection}
-                                            />
-                                        </div>
-                                    </Row> */}
+                         
                                     <UserTable />
                                 </TabPane>
                             </Tabs>
