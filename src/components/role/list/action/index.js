@@ -212,7 +212,7 @@ const getEnumData = () => {
 const saveUser = (roleId,userIds,pagination) =>{
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/"+roleId+"users/assign",
+			url: url.role+"/"+roleId+"/users/assign",
 			method: "POST",
 			data: {
 				param:{
@@ -259,6 +259,20 @@ const closeUserCard = () => {
 };
 
 
+const getRightData = (roleId) => {
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/"+roleId+"/right",
+			method: "GET",
+			data: {
+			},
+		}, result => {
+			debugger
+			dispatch(fetchData('ROLE_LIST_GETRIGHTDATA', { ...result }));
+		})
+	}
+}
+
 //输出 type 与 方法
 export {
 	getRoleListData,
@@ -278,5 +292,6 @@ export {
 	closeUserCard,
 	selectUserRow,
 	selectUserCardRow,
-	deleteUser
+	deleteUser,
+	getRightData
 }
