@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import Department from 'components/refs/departments'
 import Enum from 'utils/components/enums'
 import * as roleActions from "../action"
+
 const { TextArea } = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;

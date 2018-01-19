@@ -57,7 +57,6 @@ class UserCardTable extends Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("userCardList").toJS();
-        debugger
         let selectedUserCardRowKeys = $$state.get("selectedUserCardRowKeys").toJS();
         let selectedUserCardRows = $$state.get("selectedUserCardRows").toJS();
         let userCardVisible = $$state.get("userCardVisible");

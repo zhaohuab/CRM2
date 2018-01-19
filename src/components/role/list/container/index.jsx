@@ -9,7 +9,7 @@ import RoleCard from "./RoleCard"
 import FuncTree from "./FuncTree"
 import UserTable from "./UserTable"
 import RightPanel from "./RightPanel"
-
+import SearchForm from './SearchForm'
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
@@ -92,6 +92,7 @@ class List extends React.Component {
     //点击编辑按钮事件
     onEdit = (row) => {
         this.setState({ isEdit: true });
+        debugger
         this.props.action.showRoleForm(true, row,true);
     }
     //保存事件
@@ -157,7 +158,7 @@ class List extends React.Component {
         };
         let operations = <Button onClick={this.onDispatch.bind(this)}>分配</Button>
         const tabIndex = this.props.$$state.get("tabIndex");
-        
+        debugger
         return (
             <div className='list-warpper'>
                 {selectedRowKeys && selectedRowKeys.length >= 1 ?
@@ -182,8 +183,11 @@ class List extends React.Component {
                             :
                             <Button className="default_button" disabled><i className='iconfont icon-shanchu'></i>删除</Button>}
                     </HeaderButton>
-                    : <div className='org-tree-top'>
-                        <Button onClick={this.onAdd.bind(this)}>新增角色</Button>
+                    : 
+                    
+                    <div >
+                        {/* <Button onClick={this.onAdd.bind(this)}>新增角色</Button> */}
+                        <SearchForm />
                     </div>
                 }
 
