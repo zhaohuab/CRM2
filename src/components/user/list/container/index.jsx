@@ -77,6 +77,7 @@ class List extends React.Component {
         let form = this.formRef.props.form;
         e.preventDefault();
         form.validateFields((err, values) => {
+            console.info(err);
             // if (!err) {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {
@@ -157,6 +158,7 @@ class List extends React.Component {
         else {
             tpl = template.add;
         }
+        debugger
         return (
             <div className="user-warpper">
 

@@ -24,7 +24,7 @@ let $$initialState = {
 	selectedRows: [],
 	roleList: [],
 	assignVisible: false,
-	selectedRole:undefined
+	selectedRole: undefined
 };
 
 function pageAdd(page, item) {
@@ -47,16 +47,28 @@ function pageEdit(page, item) {
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 	switch (action.type) {
 		case 'USER_LIST_TEMPLATE':
-			return $$state.mergeDeep({
+			let tpl = $$state.get("template").toJS()
+			return $$state.merge({
 				template: {
-					list: action.content.columns,
-				}
+					list: action.content.tpl.columns,
+					add: tpl.add,
+					edit:  tpl.edit,
+					view:  tpl.view,
+				},
+			}).merge({
+				loading: false,
+				data: action.content.data,
+				visible: action.content.visible,
+				searchMap: action.content.searchMap,
+				pagination: action.content.pagination,
+				selectedRowKeys: [],
+				selectedRows: [],
 			})
 		case 'USER_ADD_TEMPLATE':
 			return $$state.mergeDeep({
 				template: {
 					add: action.content.fields,
-				}
+				},
 			})
 		case 'USER_EDIT_TEMPLATE':
 			return $$state.mergeDeep({
@@ -69,21 +81,22 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				loading: true
 			})
 		case 'USER_LIST_GETLISTSUCCESS':
-			return $$state.merge({
-				loading: false,
-				data: action.content,
-				visible: action.content.visible,
-				searchMap: action.content.searchMap,
-				pagination:action.content.pagination,
-				selectedRowKeys: [],
-				selectedRows: [],
-			})
+			return $$state
 		case 'USER_LIST_SHOWFORM':
 			return $$state.merge({
-				visible: action.content.visible,
+				visible: true,
 				formFields: transToFields(action.content.editData),
 				formData: action.content.editData,
 				isEdit: action.content.isEdit,
+			})
+		case 'USER_LIST_CLOSEFORM':
+			return $$state.merge({
+				visible: false,
+				formFields: {},
+				formData: {},
+				isEdit: action.content.isEdit,
+				selectedRowKeys: [],
+				selectedRows: [],
 			})
 		case 'USER_PAGE_USERCHANGE':
 			return $$state.mergeDeep({
@@ -95,7 +108,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				visible: action.content.visible,
 				data: pageAdd($$state.get("data").toJS(), action.content),
 				formData: {},
-				formFields: {},	
+				formFields: {},
 			})
 		case 'USER_CARD_SAVEEDIT':
 			return $$state.merge({
@@ -117,14 +130,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				data: action.content,
 				selectedRowKeys: [],
 				selectedRows: [],
-				selectedRole:undefined
+				selectedRole: undefined
 			})
-			case 'USER_LIST_CLOSEASSIGN':
+		case 'USER_LIST_CLOSEASSIGN':
 			return $$state.merge({
 				assignVisible: false,
 				selectedRowKeys: [],
 				selectedRows: [],
-				selectedRole:undefined
+				selectedRole: undefined
 			})
 
 		case 'USER_LIST_SELECTROW':
@@ -140,7 +153,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 
 		case 'USER_LIST_GETENUMDATA':
 
-			return $$state.merge({
+			return $$state.mergeDeep({
 				enumData: action.content,
 			})
 

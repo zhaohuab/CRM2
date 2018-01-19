@@ -54,7 +54,7 @@ class Department extends React.Component {
                 method: "get",
                 data: {
                     param:{
-                        orgType:2,
+                        orgType:3,
                         fatherorgId:this.props.fatherorgId
                     }
                 }
