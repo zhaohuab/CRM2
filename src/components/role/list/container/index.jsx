@@ -158,7 +158,6 @@ class List extends React.Component {
         };
         let operations = <Button onClick={this.onDispatch.bind(this)}>分配</Button>
         const tabIndex = this.props.$$state.get("tabIndex");
-        debugger
         return (
             <div className='list-warpper'>
                 {selectedRowKeys && selectedRowKeys.length >= 1 ?

@@ -132,6 +132,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				userList: action.content.data,
 				selectedRoleIsPreseted: action.content.isPreseted,
+				selectedRoleId: action.content.roleId,
 				selectedUserRowKeys: [],
 				selectedUserRows: [],
 			})
@@ -158,11 +159,24 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 			
 			case 'ROLE_LIST_SELECTRIGHTDATA':
-			debugger
 			return $$state.merge({
 				rightData: action.content,
 			})
-
+			
+			case 'ROLE_LIST_SAVEUSERSUCCESS':
+			debugger
+			return $$state.merge({
+				userList: action.content,
+				selectedUserRowKeys: [],
+				selectedUserRows: [],
+			})
+			case 'ROLE_LIST_DELETEUSERSUCCESS':
+			debugger
+			return $$state.merge({
+				userList: action.content,
+				selectedUserRowKeys: [],
+				selectedUserRows: [],
+			})
 		default:
 			return $$state;
 	}
