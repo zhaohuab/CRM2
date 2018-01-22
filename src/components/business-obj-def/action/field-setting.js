@@ -110,7 +110,6 @@ const eidtFieldSettingHide = (index) => {
 
 //改变添加字段数据-弹出框
 const changeAddData = (key, value) => {
-	//debugger;
 	return {
 		type: "field_setting_change_add_data",
 		content: {
@@ -169,7 +168,6 @@ const saveAddField = (addData, objId) => {
 				param: addData
 			}
 		}, (data) => {
-			//debugger
 			message.destroy()
 			dispatch(fetchData('field_setting_save_add_data', {
 				data: data.data
@@ -209,7 +207,6 @@ const saveEditField = (editData) => {
 				param
 			}
 		}, (data) => {
-			//debugger
 			message.destroy()
 			dispatch(fetchData('field_setting_save_edit_data', {
 				data: data.data
@@ -219,8 +216,7 @@ const saveEditField = (editData) => {
 }
 
 //选择参照
-const refChoice = (id) => {
-	//debugger;
+const refChoice = (id) => {//这里不需要参照属性，只需要一个id就可以么？？？？
 	return {
 		type: "field_setting_ref_choice_data",
 		content: {
@@ -250,3 +246,10 @@ export {
 
 	refChoice,
 }
+
+
+
+
+
+
+

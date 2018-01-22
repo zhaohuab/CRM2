@@ -24,7 +24,6 @@ const getTplConfigList = () => {
 			url: `${baseDir}sys/modules/5/layouts`,
 			method: 'get',
 		}, (data) => {
-
 			message.destroy()
 			dispatch(fetchData('tpl_setting_data', {
 				data: data.data
@@ -100,7 +99,6 @@ const  packagingData = (param) => {
 
 //存数据库-添加布局
 const saveAddTpl = (param) => {
-	debugger;
 	let nameFlag;
 	if(!param.name){//非空验证
 		nameFlag = true;
@@ -239,11 +237,21 @@ const addTplData = (clientType, type, moduleType, flag) => {
 				moduleType
 			}));
 		});
+
+		reqwest({//-------获取业务类型----------
+			url: `${baseDir}sys/modules/5/biztypes`,
+			method: 'get',
+		    },data=>{
+				dispatch(fetchData('tpl_setting_bussinessObj_data', {
+					businessObjList: data
+				}));
+			}
+		)
 	}
 }
 
 //编辑布局-弹出框
-const editTplData = (item, index, moduleType,flag) => {
+const editTplData = (item, index, moduleType,flag) => {	
 	return (dispatch, getState) => {
 		message.destroy()
 		message.loading('搜索中..', 0);
@@ -253,7 +261,6 @@ const editTplData = (item, index, moduleType,flag) => {
 			url: `${baseDir}sys/modules/5/fields`,
 			method: 'get',
 		}, (data) => {
-			//debugger
 			let mainModule = data.data.mainModule.fields,
 				/* itemModule = data.data.itemModule.fields, */
 				mainModuleData,
@@ -295,15 +302,13 @@ const editTplData = (item, index, moduleType,flag) => {
 		reqwest({
 			url: `${baseDir}sys/modules/5/relatedObjects`,
 			method: 'get',
-		}, (data) => {
-			
+		}, (data) => {				
 			let databak = data.data.map((item) => {
 				return {
 					label: item.name,
 					value: item.relObjId
 				}
 			});
-
 			dispatch(fetchData('tpl_setting_relativeObj_data', {
 				data: databak
 			}));
@@ -320,7 +325,17 @@ const editTplData = (item, index, moduleType,flag) => {
 				moduleType,
 				data: data.data
 			}));
-		})
+		});
+
+		reqwest({//-------获取业务类型----------
+			url: `${baseDir}sys/modules/5/biztypes`,
+			method: 'get',
+		    },data=>{
+				dispatch(fetchData('tpl_setting_bussinessObj_data', {
+					businessObjList: data
+				}));
+			}
+		)
 	}
 }
 
@@ -334,21 +349,32 @@ const handleTplCancel = () => {
 }
 
 
-//改变模板
-const changeTplList = (name, targetList, selectRelativeObj) => {
+//----------改变模板:改变模板名称，描述，业务类型触发---------------
+const changeTplList = (name, value, targetList, selectRelativeObj) => {
 	return {
 		type: "tpl_setting_change_tpl_list",
 		content: {
 			name,
+			value,
 			targetList,
 			selectRelativeObj,
 		}
 	}
 }
 
+//----------改变模板：拖拽时候触发---------------
+const changeTplList2 = ( targetList, selectRelativeObj) => {
+	return {
+		type: "tpl_setting_change_tpl_list2",
+		content: {
+			targetList,
+			selectRelativeObj,
+		}
+	}
+}
 
 //分配-弹出框
-const distribute = (moduleType) => {
+/* const distribute = (moduleType) => {
 
 	let obj = {
 		pcEditData: {
@@ -369,8 +395,7 @@ const distribute = (moduleType) => {
 		}
 	}
 	return (dispatch, getState) => {
-		message.destroy()
-		message.loading('保存中..', 0);
+		message.loading('请求中..', 0);
 		reqwest({
 			url: `${baseDir}sys/modules/5/layouts/assignmentTemplate`,
 			method: 'get',
@@ -391,6 +416,7 @@ const distribute = (moduleType) => {
 		})
 	}
 }
+ */
 
 //分配-隐藏弹出框
 const distributeCancel = (moduleType) => {
@@ -430,8 +456,161 @@ const changeAssignments = (key, val) => {
 	}
 }
 
+//----------------------------------------
+const businessChoosed = (obj) => {//添加布局模板时选择业务类型
+	return {
+		type: "tpl_setting_business_choosed",
+		content: {
+			obj
+		}
+	}
+}
 
+const filterSource = (data) => {//拖拽结束去掉该项拖拽源
+	return {
+		type: "tpl_setting_filter_source",
+		content: {
+			data
+		}
+	}
+}
 
+const restoreSource = (data) => {//删除拖拽目标，恢复拖拽源数据
+	return {
+		type: "tpl_setting_restore_source",
+		content: {
+			data
+		}
+	}
+}
+
+const layoutChoosed = (name,biztypeId,id) => {//选择布局模板
+	return {
+		type: "tpl_setting_layout_choosed",
+		content: {
+			name,
+			biztypeId,
+			id
+		}
+	}
+}
+
+ 
+ const onSearch = (e)=>{//搜索框输入方法
+	let { value } = e.target;
+	if(value){
+		reqwest(
+			{
+				url: baseDir + "cum/customers",//换地址
+				method: "GET",
+				data: {
+					param: {
+						searchMap: {
+							name: value
+						}
+					}
+				}
+			},
+			result => {
+				dispatch(fetchData('tpl_setting_field_role_inquire', {
+					roleInquireList: result,
+					dataFlag: true,
+				}));
+			}
+		); 
+	}else{
+		dispatch(fetchData('tpl_setting_field_role_inquire', {
+			dataFlag: false,
+		}));
+	}
+}
+
+const distribute = (moduleType,biztypeId) => {//分配按钮		
+		let obj = {
+			pcEditData: {
+				clientType: 1,
+				type: 2
+			},
+			pcViewData: {
+				clientType: 1,
+				type: 1
+			},
+			mobileEditData: {
+				clientType: 2,
+				type: 2
+			},
+			mobileViewData: {
+				clientType: 2,
+				type: 1
+			}
+		}
+		return (dispatch, getState) => {
+			// message.loading('请求中..', 0);
+			reqwest({
+				url: `${baseDir}sys/modules/5/layouts/assignmentTemplate`,
+				method: 'get',
+				data: {
+					param: {
+						clientType: obj[moduleType]["clientType"],
+						layoutType: obj[moduleType]["type"],
+					}
+				}
+			}, (data) => {
+				message.destroy()
+				dispatch(fetchData('tpl_setting_distribute_showModal', {
+					data,
+					clientType: obj[moduleType]["clientType"],
+					type: obj[moduleType]["type"],
+					moduleType
+				}));
+			}) 
+			reqwest({//-------获取业务类型下的角色----------
+				url: `${baseDir}sys/modules/layouts/roles`,
+				method: 'get',
+				data:{
+					param:{
+						roleName:'',
+						biztypeId:biztypeId,
+					}
+				}
+				},data=>{
+					dispatch(fetchData('tpl_setting_distribute_showModal2', {
+						roleList: data.data
+					}));
+				}
+			)
+
+		}
+	}
+
+const rolesChoosed = (list) => {//选择角色
+	return {
+		type: "tpl_setting_roles_choosed",
+		content: {
+			list,
+		}
+	}
+} 
+
+const enable = (name, item, index,isEnable) => {//停启用;如果不传name后台知道我要停用的是哪种布局模板中的id么？？？
+	let status = isEnable == 1 ? 2 : 1;
+	if(item.data.isDefault){return}
+	return (dispatch, getState) => {
+		reqwest({
+			url: `${baseDir}sys/modules/${item.data.id}/layouts/status`,
+			method: 'PUT',
+			data:{
+				param:{status:status}
+			}
+		}, (data) => {
+			dispatch(fetchData('tpl_setting_enable_data', {
+				name,
+				index,
+				status
+			}));
+		})
+	}
+}
 //输出方法
 export {
 	//列表增删改
@@ -450,5 +629,17 @@ export {
 	distribute,
 	distributeCancel,
 	savaDistribute,
-	changeAssignments
+	changeAssignments,
+
+	//----------------
+	businessChoosed,
+	filterSource,
+	restoreSource,
+	layoutChoosed,
+	onSearch,
+	rolesChoosed,
+	changeTplList2,
+	enable,
 }
+
+

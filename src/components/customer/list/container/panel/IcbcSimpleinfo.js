@@ -58,11 +58,6 @@ export default class IcbcSimpleinfo extends React.Component {
                 method: "GET"
             },
             result => {
-<<<<<<< HEAD
-                //debugger;
-=======
-                ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.props.customerListInfo(result.data, id, visiable);
             }
         );
@@ -74,11 +69,6 @@ export default class IcbcSimpleinfo extends React.Component {
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
-<<<<<<< HEAD
-                //debugger;
-=======
-                ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.getIcbcList(icbcName, result => {
                     if (result.data && result.data.length) {
                         this.setState({
@@ -117,11 +107,6 @@ export default class IcbcSimpleinfo extends React.Component {
             },
             () => {
                 let modalVisiable = true;
-<<<<<<< HEAD
-                //debugger;
-=======
-                ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.getIcbcDetal(this.state.select, modalVisiable);
             }
         );

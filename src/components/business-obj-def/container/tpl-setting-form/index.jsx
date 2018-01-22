@@ -10,13 +10,14 @@ import { Button, Input, Radio, Popconfirm, Form, Row, Col, Icon, Checkbox, Modal
 const RadioGroup = Radio.Group;
 const TabPane = Tabs.TabPane;
 const CheckboxGroup = Checkbox.Group;
-
+const { TextArea } = Input;
 import update from 'react/lib/update';
 import "./index.less"
 
 import Dustbin from './Dustbin';
 import TargetBox from './TargetBox';
 import SourceBox from './SourceBox';
+import RolesChoosed from './RolesChoosed';
 
 export default class DragFields extends React.Component {
 
@@ -56,23 +57,29 @@ export default class DragFields extends React.Component {
     this.props.onChange(this.props.name, targetList, this.props.selectRelativeObj);
   }
 
-  changeName = (e) => {
-    let name = e.target.value;
-    this.props.onChange(name, this.props.targetList, this.props.selectRelativeObj);
+  changeName = (name,e) => {
+    let {value} = e.target;
+    this.props.onChange(name, value, this.props.targetList, this.props.selectRelativeObj);
   }
 
   addlist = (item) => {
     let targetList = this.props.targetList;
     item.idForClient = "Id" + this.state.listId;
     targetList.push(item)
-    this.props.onChange(this.props.name, targetList, this.props.selectRelativeObj);
+    this.props.changeTplList(targetList, this.props.selectRelativeObj);
+   /*  if(item.apiName!=''&&item.apiName!='group'){//------自定义过滤方法
+      this.props.filterSource(item)
+    }  */ 
     this.setState({ listId: this.state.listId + 1 });
   }
 
-  delete = (index) => {
+  delete = (index,item) => {
     let targetList = this.props.targetList;
     targetList.splice(index, 1)
-    this.props.onChange(this.props.name, targetList, this.props.selectRelativeObj);
+    this.props.changeTplList(targetList, this.props.selectRelativeObj);
+    /* if(item.apiName!=''&&item.apiName!='group'){//----自定义恢复方法
+       this.props.restoreSource(item);
+    }  */
   }
 
   changeSelectRelativeObj = (checkedValues) => {
@@ -122,13 +129,12 @@ export default class DragFields extends React.Component {
 
   render() {
     let { sourceList, targetList, objFlag, nameFlag } = this.props;
-
     //待拖拽块
     let nodeSourceList = sourceList.map((item, index) => {
       let filterBoolean = targetList.filter((listItem) => {
         return item.apiName == listItem.apiName
       })
-      return (filterBoolean.length == 0 || item.elementType == "group" || item.isBlank == 1) ? <SourceBox {...item} addlist={this.addlist.bind(this)} /> : <div className="sourceBlock disDrag">{item.name}</div>;
+      return (filterBoolean.length == 0 || item.elementType == "group" || item.isBlank == 1) ? <SourceBox {...item} addlist={this.addlist.bind(this)} /> : '';
     });
 
     //已拖拽块-排序
@@ -154,39 +160,91 @@ export default class DragFields extends React.Component {
 
     return (
       <div className="tpl-setting-form">
-        <Row gutter={16} className="gutter-row" type='flex' align='middle'>
-          <Col className="gutter-row form-lable" span={2}>*模板名称</Col>
-          <Col className="gutter-row" span={6}>
-            <Input onChange={this.changeName.bind(this)} placeholder="输入名称。。。" value={this.props.name} />
+        <Row gutter={16} className="gutter-row" type='flex' align='top'>
+          <Col span={12}>
+            <Row type='flex' align='middle'>
+              <Col span={24} style={{marginBottom:'15px'}}>
+                <Row type='flex' align='middle' > 
+                  <Col className="gutter-row form-lable" span={5}>*模板名称：</Col>
+                  <Col className="gutter-row" span={12}>
+                    <Input onChange={this.changeName.bind(this,'name')} placeholder="输入名称。。。" value={this.props.name} />
+                  </Col>
+                  {
+                    nameFlag?
+                    <Col span={7}>
+                      <p className='prompt'>*名称不能为空</p>
+                    </Col>:''
+                  }
+                </Row>
+              </Col>
+              <Col span={24}>
+                <Row type='flex' align='middle'> 
+                  <Col className="gutter-row form-lable" span={5}>*业务类型：</Col>
+                  <Col className="gutter-row" span={12}>
+                    <RolesChoosed businessObj={this.props.businessObj} onChange={this.props.businessChoosed}/>
+                  </Col>
+                  {
+                    nameFlag?
+                    <Col span={7}>
+                      <p className='prompt'>*名称不能为空</p>
+                    </Col>:''
+                  }
+                </Row>
+              </Col>
+            </Row>
           </Col>
-          {
-            nameFlag?
-            <Col span={4}>
-              <p className='prompt'>*名称不能为空</p>
-            </Col>:''
-          }
+          <Col span={12}>
+            <Row type='flex' align='middle'>
+              <Col className="gutter-row" span={24}>
+                <Col className="gutter-row form-lable" span={5}>布局描述：</Col>
+                <Col span={12}>
+                  <TextArea onChange={this.changeName.bind(this,'description')} placeholder="输入描述。。。" value={this.props.description} />
+                </Col>
+              </Col>
+            </Row>
+          </Col>
         </Row>
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1" animated={false}>
           <TabPane tab="主体字段" key="1">
             <div className="drag-fields-box">
-              <div className="drag-fields-block">
-                {nodeSourceList}
+              <div className="drag-fields-list-box">          
+                <Dustbin className='dustbin'/>
+                <div className='layout'>
+                  {nodeTargetList}
+                </div>       
               </div>
-              <div className="drag-fields-list-box">
-                {nodeTargetList}
-                <Dustbin />
+              <div className="drag-fields-block">
+                <p className='drag-fields-block-name'>字段</p>
+                <div className='drag-fields-block-content'>
+                  {nodeSourceList}
+                </div>           
               </div>
             </div>
-          </TabPane>
+          </TabPane>   
           {
             objFlag?
              <TabPane tab="相关对象" key="2">
               <div className="relative-obj">
                 <CheckboxGroup options={this.props.relativeObj} value={this.props.selectRelativeObj} onChange={this.changeSelectRelativeObj} />
               </div>
-            </TabPane>:''
-          }
-         
+            </TabPane>:
+            <TabPane tab="明细字段" key="2">
+           <div className="drag-fields-box">
+              <div className="drag-fields-list-box">          
+                <Dustbin className='dustbin'/>
+                <div className='layout'>
+                  {nodeTargetList}
+                </div>       
+              </div>
+              <div className="drag-fields-block">
+                <p className='drag-fields-block-name'>字段</p>
+                <div className='drag-fields-block-content'>
+                  {nodeSourceList}
+                </div>           
+              </div>
+            </div>
+            </TabPane>
+          }    
         </Tabs>
         <Modal
           width={500}
@@ -214,13 +272,13 @@ export default class DragFields extends React.Component {
                       <Checkbox checked={this.state.editItem.isRequired} onChange={this.changeListItemForm.bind(this, "isRequired")}>必填</Checkbox>
                     </Col>
                     <Col className="gutter-row" span={4}>
-                      <Checkbox checked={this.state.editItem.isReadOnly} onChange={this.changeListItemForm.bind(this, "isReadOnly")}>只读</Checkbox>
+                      <Checkbox checked={this.state.editItem.isReadOnly} defaultChecked={true} onChange={this.changeListItemForm.bind(this, "isReadOnly")}>只读</Checkbox>
                     </Col>
                   </Row>
                   <Row gutter={16} className="gutter-row">
                     <Col className="gutter-row text-align-right" span={6}>宽度：</Col>
                     <Col className="gutter-row" span={10}>
-                      <RadioGroup onChange={this.changeListItemForm.bind(this, "width")} value={this.state.editItem.width}>
+                      <RadioGroup onChange={this.changeListItemForm.bind(this, "width")} value={this.state.editItem.width} defaultValue={0.5}>
                         <Radio value={1}>一行</Radio>
                         <Radio value={0.5}>半行</Radio>
                       </RadioGroup>

@@ -1,4 +1,115 @@
 .field-setting-card {
+    width: 254px;
+    height: 117px;
+    display: flex;
+    margin-right: 9px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 2px;
+    flex-direction: column;
+    position: relative;
+    .card-header {
+        height: 40px;
+        line-height: 40px;
+        display: flex;
+        align-items:center;
+        .card-header-name {
+            position:relative;
+            font-weight: bold;
+            font-size: 14px;
+            padding-left: 15px; 
+            color: #333;
+            flex-grow: 1;
+            .card-header-default-father {
+                position:relative;
+                .card-default {
+                    position: absolute;
+                    right:-14px;
+                    top:-9px;
+                    width:14px;
+                    height:14px;  
+                    line-height: 14px;     
+                    .icon-zhuyaolianxiren {
+                        width:100%;
+                        height:100%;
+                        color:#00A854;
+                        font-size: 13px;
+                    }
+                }
+            }
+        }
+    }
+    .card-body {
+        box-sizing: border-box;
+        display: flex;
+        border-top: 1px solid #eee;
+        flex-grow: 1;
+        .card-body-con {
+            box-sizing: border-box;
+            width:194px;
+            flex-grow: 1;
+            .card-body-con-item {
+                box-sizing: border-box;
+                width: 100%;
+                padding: 15px 0 0 15px;
+                height:50%;
+                display: flex;
+                align-items:center;
+                .card-body-con-name {
+                    box-sizing: border-box;
+                    width: 60px;
+                    height: 17px;
+                    line-height: 17px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    text-align: left;
+                }
+                .card-body-con-text {
+                    box-sizing: border-box;
+                    line-height: 100%;
+                    width:119px;
+                    color: #999999;
+                    padding-left: 4px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow:ellipsis;
+                    
+                    span {
+                        display: inline-block;
+                        margin-right: 4px;
+                    }
+                }
+            }
+        }
+        .card-body-btn {
+            box-sizing: border-box;
+            width: 60px;
+            display: flex;
+            flex-direction: column;
+            &>div {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-grow: 1;
+                background: #f2f2f2;
+                i {
+                    display: inline-block;
+                }
+            }
+            .card-body-btn-edit {
+                border-top: 1px solid #ffffff;
+            }
+        }
+    }
+}
+
+
+
+
+
+/* .field-setting-card {
     padding: 10px;
     margin: 0 10px 10px 0;
     width: 254px;
@@ -17,4 +128,4 @@
         height: 100%;
         z-index: 1;
     }
-}
+} */

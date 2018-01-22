@@ -37,13 +37,10 @@ class BusinessObj extends React.Component {
   }
 
   addData = () => {
-    //debugger;
     let { $$state, action } = this.props;
     let data = $$state.get("editData").toJS();
     let editId = $$state.get("editId");
-
     let editIndex = $$state.get("editIndex");
-
     let isEdit = $$state.get("isEdit");
     if (isEdit) {
       action.saveEditBusinessObj(data, editId, editIndex);
@@ -62,13 +59,13 @@ class BusinessObj extends React.Component {
     //非空验证
     let nameFlag = $$state.get("nameFlag");
     let roleFlag = $$state.get("roleFlag");
-
     let nodeCard = data.map((item, index) => {
       return <Card
         data={item.data}
         operations={item.operations}
         edit={action.showModalEdit.bind(this, item, index)}
         delete={action.delBusinessObj.bind(this, item, index)}
+        enable={action.enable.bind(this, item, index)}
       />
     });
 
@@ -88,9 +85,10 @@ class BusinessObj extends React.Component {
         <div className="card-con">{nodeCard}</div>
         <Modal
           visible={$$state.get('addModelVisible')}
-          title={$$state.get("isEdit") ? "编辑业务类型" : "新建业务类型"}
+          title={$$state.get("isEdit") ? "编辑" : "新建"}
           onCancel={action.handleCancel}
           onOk={this.addData}
+          width={500}
         >
           <CreateForm
             data={editData}

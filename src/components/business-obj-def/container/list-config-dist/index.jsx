@@ -36,7 +36,6 @@ export default class Distribute extends React.Component {
   }
 
   changeSelect = (value) => {
-    debugger
     let { selectData } = this.props.data;
     this.setState({
       checkedVal: value

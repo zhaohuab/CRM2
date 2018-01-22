@@ -55,12 +55,7 @@ class ContactsCard extends React.Component {
     onOk(){
         let {contactsCardData} = this.props.$$state.toJS();
         this.props.form.validateFields((err, values) => {
-<<<<<<< HEAD
-            //debugger
-=======
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
-            if(!err){
-                
+            if(!err){      
                 this.setState({
                     visit:false
                 })
@@ -74,12 +69,7 @@ class ContactsCard extends React.Component {
                             }
                         }
                     },
-                    data => {
-<<<<<<< HEAD
-                        //debugger
-=======
-                        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+                    data => {              
                         this.props.action.refContactFormAdd(data)
                     }
                 );
@@ -307,25 +297,15 @@ const cardForm = Form.create({
         }
         for (let key in contactsCardData) {
             value[key] = { value: contactsCardData[key] };
-        }
-<<<<<<< HEAD
-        //debugger
-=======
-        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+        }   
         return {
             ...value
         };
     },
     onFieldsChange: (props, onChangeFild) => {
-<<<<<<< HEAD
-        //往redux中写值//把值进行更新改变
-        //debugger
-=======
         debugger
         //往redux中写值//把值进行更新改变
         
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         let {contactsCardData,viewData} = props.$$state.toJS();
         for (let key in onChangeFild) {
             contactsCardData[key] = onChangeFild[key].value;

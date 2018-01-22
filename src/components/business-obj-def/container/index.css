@@ -46,10 +46,20 @@
 }
 .business-obj-def-warpper .field-setting-warpper .field-setting-title .title {
   font-size: 14px;
+  color: #333;
+  font-weight: bold;
 }
 .business-obj-def-warpper .field-setting-warpper .card-con {
   display: flex;
   flex-wrap: wrap;
+}
+.business-obj-def-warpper .field-setting-warpper .more {
+  cursor: pointer;
+  height: 16px;
+  line-height: 16px;
+}
+.business-obj-def-warpper .field-setting-warpper .more .icon-gengduo {
+  margin-left: 10px;
 }
 .business-obj-def-warpper .tpl-setting-warpper .tpl-setting-title {
   margin: 10px 0;

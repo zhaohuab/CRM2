@@ -45,11 +45,7 @@ export default class AssignPerson extends React.Component {
 
     //点击分配方法
      assignFn(){
-<<<<<<< HEAD
-        //debugger
-=======
         
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         let { viewData } = this.props
         let orgId = viewData.orgId
 
@@ -65,11 +61,7 @@ export default class AssignPerson extends React.Component {
                 }
             },
             result => {
-<<<<<<< HEAD
-                //debugger;
-=======
                 ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.setState({
                     visible:true,
                     treeList:result.data
@@ -95,11 +87,7 @@ export default class AssignPerson extends React.Component {
                 }
             },
             result => {
-<<<<<<< HEAD
-                //debugger;
-=======
                 ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.setState({
                     visible:true,
                     personList:result,
@@ -136,11 +124,7 @@ export default class AssignPerson extends React.Component {
             },
             data => {
                 if(data){
-<<<<<<< HEAD
-                    //debugger
-=======
                     
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                     let nv = viewData.salesVOs[0]
                     if(this.state.result){
                         nv.ownerUserName = this.state.result.value
@@ -150,11 +134,7 @@ export default class AssignPerson extends React.Component {
                         this.props.changeViewData(viewData)
                     }
                 }
-<<<<<<< HEAD
-                //debugger
-=======
                 
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.setState({
                     visible:false,
                     treeList:[],
@@ -181,11 +161,7 @@ export default class AssignPerson extends React.Component {
 
     //选择table某一项方法
     selectedTableList(selectedRowKeys,selectedRows){
-<<<<<<< HEAD
-        //debugger
-=======
         
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         this.setState({
             result:{id:selectedRowKeys[0],value:selectedRows[0].name},
             selectedTableRowKeys:selectedRowKeys

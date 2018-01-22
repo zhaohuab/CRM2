@@ -45,11 +45,9 @@ class BusinessObjDefine extends React.Component {
           </TabPane>
           <TabPane tab="页面布局" key="3" forceRender = {false}>
             <TplSet />
-          </TabPane>
-          <TabPane tab="列表配置" key="4" forceRender = {false}>
             <ListConfig />
           </TabPane>
-          <TabPane tab="审批流程设置" key="5" forceRender = {false}>
+          <TabPane tab="审批流程" key="4" forceRender = {false}>
             <Approval />
           </TabPane>
         </Tabs>

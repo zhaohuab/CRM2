@@ -41,26 +41,28 @@ export default class DragFields extends React.Component {
     const dragCard = targetList[dragIndex];
     targetList.splice(dragIndex, 1)
     targetList.splice(hoverIndex, 0, dragCard)
-    this.props.onChange(this.props.name, targetList);
+    this.props.onChange(this.props.name, this.props.description, targetList);
   }
 
-  changeName = (e) => {
-    let name = e.target.value;
-    this.props.onChange(name, this.props.targetList);
+  changeName = (title,e) => {
+    let value = e.target.value;
+    this.props.changeListConfig(title, value, this.props.targetList);
   }
 
   addlist = (item) => {
     let targetList = this.props.targetList;
     item.id = "Id" + this.state.listId;
     targetList.push(item)
-    this.props.onChange(this.props.name, targetList);
+    this.props.onChange(this.props.name, this.props.description, targetList);
+    this.props.filterSource(item);
     this.setState({ listId: this.state.listId + 1 });
   }
 
-  delete = (index) => {
+  delete = (index,item) => {
     let targetList = this.props.targetList;
     targetList.splice(index, 1)
-    this.props.onChange(this.props.name, targetList);
+    this.props.onChange(this.props.name, this.props.description, targetList);
+    this.props.restoreSource(item);
   }
 
   edit = (item, index) => {
@@ -96,7 +98,7 @@ export default class DragFields extends React.Component {
   onOkChangeListItem = () => {
     let targetList = this.props.targetList;
     targetList.splice(this.state.editIndex, 1, this.state.editItem)
-    this.props.onChange(this.props.name, targetList);
+    this.props.onChange(this.props.name, this.props.description, targetList);
     this.setState({
       visible: false
     });
@@ -131,16 +133,28 @@ export default class DragFields extends React.Component {
     return (
       <div className="list-config-mobile-form">
         <Row gutter={16} className="gutter-row" type='flex' align='middle'>
-          <Col className="gutter-row form-lable" span={2}>*模板名称</Col>
-          <Col className="gutter-row" span={6}>
-            <Input onChange={this.changeName.bind(this)} placeholder="输入名称。。。" value={this.props.name} />
+          <Col span={12}>
+            <Row type='flex' align='middle' > 
+            <Col className="gutter-row form-lable" span={5}>*列表名称：</Col>
+              <Col className="gutter-row" span={12}>
+                <Input onChange={this.changeName.bind(this, 'name')} placeholder="输入名称。。。" value={this.props.name} />
+              </Col>
+              {
+                nameFlag?
+                <Col span={7}>
+                  <p className='prompt'>*名称不能为空</p>
+                </Col>:''
+              }
+            </Row>
           </Col>
-           {
-            nameFlag?
-            <Col span={4}>
-              <p className='prompt'>*名称不能为空</p>
-            </Col>:''
-          }
+          <Col span={12}>
+            <Row type='flex' align='middle'> 
+              <Col className="gutter-row form-lable" span={5}>列表描述：</Col>
+              <Col className="gutter-row" span={12}>
+                <Input onChange={this.changeName.bind(this, 'description')} placeholder="输入描述。。。" value={this.props.description} />
+              </Col>
+            </Row>
+          </Col>
         </Row>
         <div className="drag-fields-box">
           <div className="drag-fields-block">

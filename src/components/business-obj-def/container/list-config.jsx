@@ -10,13 +10,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Form, Input, Button, Dropdown, Icon, Row, Col, Modal } from 'antd';
 const ButtonGroup = Button.Group;
+const Search = Input.Search;
 
 import Card from './list-config-card';
 import ListConfigPcForm from './list-config-pc-form';
 import ListConfigMobileForm from './list-config-mobile-form';
 import Distribute from './list-config-dist';
-
-
+import RolesChoosed from './list-config-dist/RolesChoosed.jsx';
 
 //action方法
 import * as Actions from "../action/list-config"
@@ -32,6 +32,7 @@ class ListConfig extends React.Component {
   }
 
   savaPcData = () => {
+    
     let { $$state, action } = this.props;
     //组装待添加数据
     let param = {
@@ -60,7 +61,6 @@ class ListConfig extends React.Component {
     }
 
     if ($$state.get("isEdit")) {
-      //debugger
       param.id = $$state.get("editId");
       action.saveMobileEditTpl(param)
     } else {
@@ -97,16 +97,40 @@ class ListConfig extends React.Component {
 
     action.savaDistribute(param)
   }
-
+  onSave = () => {//----------------分配保存
+    let { $$state, action } = this.props;
+    let moduleType = $$state.get("moduleType");
+    let str = moduleType+'Obj';
+    let layoutObj = $$state.get(str).toJS();
+    let rolesIdList = $$state.get("rolesIdList").toJS();
+    let assignment = rolesIdList.map(item=>{
+      let obj={};
+     /*  obj.biztypeId = layoutObj.data.biztypeId;//biztypesId代表的是传参的同名参数，未定 */
+      obj.roleId = item;//rolesId代表的是传参的同名参数，未定
+      obj.layoutId=layoutObj.data.id;
+      return obj;
+    })
+    let param={
+      clientType: $$state.get("clientType"),
+      assignments: assignment
+    }
+    action.savaDistribute(param)
+  }
   render() {
+   
     let { $$state, action } = this.props;
     let nameFlag = $$state.get("nameFlag");
     let listFlag = $$state.get("listFlag");
+    let xx=$$state.get("pcListData").toJS();
+    let aa =  $$state.get("mobileListData").toJS();
     //pc编辑模板布局
     let nodePcListCard = $$state.get("pcListData").toJS().map((item, index) => {
+      
       return <Card
         data={item.data}
         operations={item.operations}
+        onChange={action.layoutChoosed.bind(this,'pcListData')}
+        enable={action.enable.bind(this, 'pcListData', item, index)}
         edit={action.editListConfigData.bind(null, item.data, index, "pcListData")}
         delete={action.delListConfig.bind(null, item.data, index, "pcListData")}
       />
@@ -114,18 +138,41 @@ class ListConfig extends React.Component {
 
     //pc详情模板布局
     let nodeMobileListCard = $$state.get("mobileListData").toJS().map((item, index) => {
+    
       return <Card
         data={item.data}
         operations={item.operations}
+        onChange={action.layoutChoosed.bind(this,'mobileListData')}
+        enable={action.enable.bind(this, 'mobileListData', item, index)}
         edit={action.editListConfigData.bind(null, item.data, index, "mobileListData")}
         delete={action.delListConfig.bind(null, item.data, index, "mobileListData")}
       />
     });
 
+    let getTitle = () => {//------获取弹窗title
+      return (
+        <Row
+            type="flex"
+            justify="space-between"
+            className="reference-main-header"
+            align="middle"
+        >
+            <div className="title">分配角色</div>
+            <div style={{marginLeft:'30px'}}>
+                <Search
+                    placeholder="请输入角色关键字"
+                    style={{ width: 200 }}
+                    onChange={this.props.action.onSearch.bind(this)}
+                />
+            </div>
+        </Row>
+      )
+    }
+
     return (
       <div className="list-config-warpper">
         <Row className="list-config-title">
-          <Col span={20} className="title">PC列表配置</Col>
+          <Col span={20} className="title"><i className="iconfont icon-pcxiangqingmoban" />PC列表配置</Col>
           <Col span={4} className="text-align-right" >
             <ButtonGroup>
               <Button type="primary" onClick={action.addListConfigData.bind(null, "pcListData")} icon="plus">新建</Button>
@@ -135,7 +182,7 @@ class ListConfig extends React.Component {
         </Row>
         <div className="card-con">{nodePcListCard}</div>
         <Row className="list-config-title">
-          <Col span={20} className="title">Mobile列表配置</Col>
+          <Col span={20} className="title"><i className="iconfont icon-yidongxiangqingmoban" />Mobile列表配置</Col>
           <Col span={4} className="text-align-right" >
             <ButtonGroup>
               <Button type="primary" onClick={action.addListConfigData.bind(null, "mobileListData")} icon="plus">新建</Button>
@@ -147,16 +194,20 @@ class ListConfig extends React.Component {
         <Modal
           width={900}
           title={$$state.get("isEdit") ? "编辑PC列表模板" : "创建PC列表模板"}
-          visible={$$state.get('pcVisible')}
+          visible={$$state.get('pcVisible')}    
           onOk={this.savaPcData}
           onCancel={action.pcListConfigCancel}
           style={{ top: 10 }}
         >
           <ListConfigPcForm
             name={$$state.get('name')}
-            sourceList={$$state.get("sourceList").toJS()}
+            description={$$state.get('description')}
+            sourceList={$$state.get("filterSourceList").toJS()}
             targetList={$$state.get("targetList").toJS()}
-            onChange={action.changeListConfig}
+            changeListConfig={action.changeListConfig}
+            onChange={action.addLayout}
+            filterSource={action.filterSource}
+            restoreSource={action.restoreSource}
             nameFlag={nameFlag}
             listFlag={listFlag}
           />
@@ -171,29 +222,30 @@ class ListConfig extends React.Component {
         >
           <ListConfigMobileForm
             name={$$state.get('name')}
-            sourceList={$$state.get("sourceList").toJS()}
-            targetList={$$state.get("targetList").toJS()}
-            onChange={action.changeListConfig}
+            description={$$state.get('description')}
+            sourceList={$$state.get("filterSourceList").toJS()}
+            targetList={$$state.get("targetList").toJS()}      
+            changeListConfig={action.changeListConfig}
+            onChange={action.addLayout}
+            filterSource={action.filterSource}
+            restoreSource={action.restoreSource}
             nameFlag={nameFlag}
             listFlag={listFlag}
           />
         </Modal>
         <Modal
-          title={"列表模板分配"}
+          width={425}
+          title={getTitle()}
           visible={$$state.get('distributeVisible')}
-          onOk={this.savaDistribute}
+          onOk={this.onSave}
           onCancel={action.distributeCancel}
           style={{ top: 10 }}
-        >
-          <Distribute
-            data={{
-              selectData: $$state.get($$state.get("moduleType")).toJS(), //下拉框数据
-              roles: $$state.get("distData").get("roles").toJS(),        //角色数据
-              assignments: $$state.get("distData").get("assignments").toJS()  //已分配数据
-            }}
-            onChange={action.changeAssignments}
+        >        
+          <RolesChoosed
+            dataFlag={$$state.get('dataFlag')}
+            rolesChoosed={action.rolesChoosed}
+            rolesIdList={$$state.get('rolesIdList').toJS()}
           />
-
         </Modal>
       </div>
     )
@@ -216,3 +268,17 @@ function mapDispatchToProps(dispatch) {
 
 //输出绑定state和action后组件
 export default connect(mapStateToProps, mapDispatchToProps)(ListConfig);
+
+
+
+/* 
+  <Distribute
+    data={{
+      selectData: $$state.get($$state.get("moduleType")).toJS(), //下拉框数据
+      roles: $$state.get("distData").get("roles").toJS(),        //角色数据
+      assignments: $$state.get("distData").get("assignments").toJS()  //已分配数据
+    }}
+    onChange={action.changeAssignments}
+  />
+//分配时候原弹出框
+ */

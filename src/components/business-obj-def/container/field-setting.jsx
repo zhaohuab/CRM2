@@ -20,6 +20,12 @@ import Card from './field-setting-card';
 class FieldSet extends React.Component {
   constructor(props) {
     super(props);
+    this.state={
+      moreMainState:false,
+      moreItemState:false,
+      mainVisible:false,
+      itemVisible:false,
+    }
   }
 
   componentDidMount() {
@@ -28,12 +34,24 @@ class FieldSet extends React.Component {
     action.getFieldtTypeList();
   }
 
+  moreMainStateChange = () => {//-----主体字段"更多"控制
+    this.setState({
+      moreMainState:!this.state.moreMainState,
+    })
+  }
+  
+  moreItemStateChange = () => {//-----明细字段"更多"控制
+    this.setState({
+      moreItemState:!this.state.moreItemState,
+    })
+  }
   render() {
 
     let { $$state, action } = this.props;
     let nameFlag =  $$state.get("nameFlag");
     let objId = $$state.get($$state.get("moduleType") + "Id");
-    let nodeMainModuleCard = $$state.get("mainModuleData").toJS().map((item, index) => {
+    let nodeMainList = this.state.moreMainState?$$state.get("mainModuleData").toJS():$$state.get("mainModuleData").toJS().slice(0,15);
+    let nodeMainModuleCard = nodeMainList.map((item, index) => {
       return <Card
         data={item.data}
         operations={item.operations}
@@ -54,21 +72,22 @@ class FieldSet extends React.Component {
     return (
       <div className="field-setting-warpper">
         <Row className="field-setting-title">
-          <Col span={22} className="title">主体字段</Col>
+          <Col span={22} className="title"><i className="iconfont icon-zhutiziduan" />主体字段</Col>
           <Col span={2} className="text-align-right" ><Button type="primary" icon="plus" onClick={action.addFieldSettingShow.bind(null, "mainModule")}>新建</Button></Col>
         </Row>
         <div className="card-con">
           {nodeMainModuleCard}
-        </div>
+        </div>   
+          <div className='more' onClick={this.moreMainStateChange.bind(this)}>{this.state.moreMainState?'收起':'更多'}<i className="iconfont icon-gengduo" /></div>
         <Row className="field-setting-title">
-          <Col span={22} className="title">产品明细字段</Col>
+          <Col span={22} className="title"><i className="iconfont icon-chanpinmingxi" />产品明细</Col>
           <Col span={2} className="text-align-right" ><Button type="primary" icon="plus" onClick={action.addFieldSettingShow.bind(null, "itemModule")}>新建</Button></Col>
         </Row>
         <div className="card-con">
           {nodeItemModuleCard}
         </div>
         <Modal
-          title={"创建字段"}
+          title={"新增"}
           width={800}
           visible={$$state.get('addModelVisible')}
           onCancel={action.addFieldSettingHide}
@@ -86,7 +105,7 @@ class FieldSet extends React.Component {
           />
         </Modal>
         <Modal
-          title={"编辑字段"}
+          title={"编辑"}
           width={500}
           visible={$$state.get('editModelVisible')}
           onOk={action.saveEditField.bind(null, $$state.get("editData").toJS())}

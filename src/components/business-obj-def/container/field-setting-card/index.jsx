@@ -6,11 +6,11 @@
  */
 
 import React from 'react'
-import { Row, Col, Icon, Checkbox, Input, Select, Popconfirm } from 'antd';
+import { Row, Col, Icon, Checkbox, Input, Select, Modal } from 'antd';
 const { TextArea } = Input;
 const Option = Select.Option;
-import "./index.less"
-
+import "./index.less";
+import "assets/stylesheet/all/iconfont.css";
 export default class Card extends React.Component {
   static defaultProps = {
     data: {
@@ -35,6 +35,30 @@ export default class Card extends React.Component {
   constructor(props) {
     super(props);
   }
+  
+ /* onDelete = (xx)=>{
+   this.props.delete()
+ } */
+
+  btnDelete(flag) {
+    let that = this;
+    if(!flag) return ; 
+    Modal.confirm({
+        title: "你是否确认删除选中的内容?",
+        content: "此操作不可逆",
+        okText: "是",
+        okType: "danger",
+        cancelText: "否",
+        onOk() {
+          that.props.delete()
+        },
+        onCancel() {
+            console.log("Cancel");
+        }
+    });
+  }
+
+ 
 
   render() {
   /*   let typeReferencesComponents = {
@@ -62,8 +86,63 @@ export default class Card extends React.Component {
       16:	'参照'
     }
 
+let { isCustom } =this.props.data;
+let deleteStyle = isCustom ? {color:'#666'}:{color:'#ccc'};
     return (
-      <div className="field-setting-card">
+  <div className="field-setting-card">
+    
+        <div className="card-header">
+          <div className="card-header-name">
+            <span className='card-header-default-father'>
+              {this.props.data.name}
+              {
+                !isCustom?<div className='card-default'><i className="iconfont icon-zhuyaolianxiren" /></div>:''
+              } 
+            </span>
+          </div>
+        </div>
+        <div className="card-body">
+          <div className="card-body-con">
+            <div className="card-body-con-item">
+              <div className="card-body-con-name">字段类型：</div>
+              <div className="card-body-con-text">
+               {typeReferencesComponents[this.props.data.type]}
+              </div>
+            </div>         
+          </div>
+          <div className="card-body-btn">
+            <div  onClick={this.btnDelete.bind(this,isCustom)}><Icon type="delete" style={deleteStyle}/></div>
+            <div className="card-body-btn-edit" onClick={this.props.edit}><Icon type="edit" /></div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    )
+  }
+}
+
+Card.propTypes = {
+  name: React.PropTypes.string,
+  contentLabel: React.PropTypes.string
+}
+
+
+/* 
+<div className="field-setting-card">
         <Row gutter={8} type='flex' align='middle'>
           <Col span={20}>
           <Row type="flex" align="middle">
@@ -95,11 +174,5 @@ export default class Card extends React.Component {
           </Col>
         </Row>
       </div>
-    )
-  }
-}
 
-Card.propTypes = {
-  name: React.PropTypes.string,
-  contentLabel: React.PropTypes.string
-}
+ */

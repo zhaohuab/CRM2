@@ -164,13 +164,7 @@ export default class OwnUser extends React.Component {
         const suffix =
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
-            ) : null;
-
-<<<<<<< HEAD
-        //debugger
-=======
-        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+            ) : null;    
         return(
             <div>
             {

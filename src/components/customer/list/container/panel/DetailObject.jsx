@@ -28,7 +28,6 @@ class DetailObject extends React.Component {
                 <Collapse
                     defaultActiveKey={["1", "2", "3"]}
                 >
-<<<<<<< HEAD
                     {
                         detailFilds.map((item,index) => {
                             let { fieldList } = item;
@@ -101,9 +100,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(DetailObject);
                     defaultActiveKey={["1", "2", "3"]}
                 >
                     <Panel key="1" header="&nbsp;">
-=======
-                    <Panel key="1" header ='客户信息' >
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                         <Row className="custom-info">
                             <Col span={12}>
                                 <Row

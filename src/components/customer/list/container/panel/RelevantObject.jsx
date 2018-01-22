@@ -63,11 +63,6 @@ class RelevantObject extends React.Component {
     //遍历折叠表头
     headerFn(obj){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
-<<<<<<< HEAD
-        //debugger
-=======
-
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         let temp
         if(viewDataRelevant[obj.index-1].list){
             temp = viewDataRelevant[obj.index-1].list.data.length
@@ -77,11 +72,6 @@ class RelevantObject extends React.Component {
         }
       
         let  icon = ['icon-canyuren','icon-lianxirenguanxi','icon-xiansuofenpei','icon-shangji','icon-wenjian']
-<<<<<<< HEAD
-    let fn = [[<ContactsCard/>,<i className={'iconfont icon-lianxiren'}/>],'',<Opportunity CusId={viewData} otherRef={this.otherRef.bind(this)}/>,<i className={'iconfont icon-tianjia'}/>]
-    //debugger    
-    return(
-=======
         let fn = [
             [<i className={'iconfont icon-lianxiren'}/>,<ContactsCard/>],
             '',
@@ -97,7 +87,6 @@ class RelevantObject extends React.Component {
         ]
         
         return(
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
             <Row className='relevant-title' type='flex' justify='space-between' align='middle'>
                 <Col className='left'>
                     <i className={'iconfont '+icon[obj.index]} />
@@ -135,11 +124,7 @@ class RelevantObject extends React.Component {
     }
 
     otherRef(){
-<<<<<<< HEAD
-        //debugger
-=======
         
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         let {viewData} = this.props.$$state.toJS();
         this.props.action.getOppList(this.props.JoinPagination,viewData.id,2)
     }
@@ -154,13 +139,8 @@ class RelevantObject extends React.Component {
     }
 
     //删除联系人
-<<<<<<< HEAD
-    delContacts(id){
-        //debugger
-=======
     delContacts(id,e){
         e.stopPropagation()
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         this.props.action.delContacts(
             id,
             this.props.JoinPagination
@@ -229,13 +209,8 @@ class RelevantObject extends React.Component {
                 tempClue = tempClue.slice(0,5)
             }
         }
-<<<<<<< HEAD
-        
-        //debugger
-=======
         let type = ['icon-xsl','icon-word','icon-ppt']
        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         return(
             <div className='relevant-wapper' id='relevant-wapper-item'>
                 <Collapse defaultActiveKey={['1','2','3','4']}>

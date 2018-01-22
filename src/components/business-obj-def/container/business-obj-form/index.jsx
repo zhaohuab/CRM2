@@ -5,7 +5,9 @@
  * @Last Modified time: 2017-12-13 17:14:51
  */
 import { Modal, Button, Input, Radio, Popconfirm, Form, Row, Col, Checkbox } from 'antd';
-import RoleCheckboxGroup from './RoleCheckboxGroup'
+import RoleCheckboxGroup from './RoleCheckboxGroup';
+import RolesChoosed from './RolesChoosed'
+import SuperiorCustomer from  './SuperiorCustomer'
 const FormItem = Form.Item;
 import "./index.less"
 
@@ -37,11 +39,26 @@ export default class FormList extends React.Component {
           </Col>
           {
             nameFlag?
-            <Col span={4} style={{whiteSpace:'nowrap',color:'red'}}>
+            <Col span={4} style={{whiteSpace:'nowrap',color:'red',marginLeft:'-10px'}}>
               <p className='prompt'>*名称不能为空</p>
             </Col>:''
           }
           
+        </Row>
+        <Row gutter={16} className="gutter-row">
+          <Col className="gutter-row form-lable" span={6}>
+            *适用角色
+          </Col>
+          <Col className="gutter-row" span={14}>
+            <RolesChoosed data={data} onChange = {this.onChangeRoles.bind(this)}/>
+          </Col>
+         
+          {
+            roleFlag?
+            <Col span={4} style={{whiteSpace:'nowrap',color:'red',marginLeft:'-10px'}}>
+              <p className='prompt'>*角色不能为空</p>
+            </Col>:''
+          }
         </Row>
         <Row gutter={16} className="gutter-row">
           <Col className="gutter-row form-lable form-lable-line-height" span={6}>
@@ -51,26 +68,17 @@ export default class FormList extends React.Component {
             <Input value={data.description} type="textarea" onChange={this.onChange.bind(this, "description")} />
           </Col>
         </Row>
-        <Row gutter={16} className="gutter-row">
-          <Col className="gutter-row form-lable" span={6}>
-            *适用角色
-          </Col>
-          <Col className="gutter-row" span={14}>
-            <RoleCheckboxGroup value={data.roleIds} onChange={this.onChangeRoles.bind(this)} />
-          </Col>
-          {
-            roleFlag?
-            <Col span={4} style={{whiteSpace:'nowrap',color:'red'}}>
-              <p className='prompt'>*角色不能为空</p>
-            </Col>:''
-          }
-        </Row>
+  
       </div>
     );
   }
 }
 
-
+/* 
+ <Col className="gutter-row" span={14}>
+            <RoleCheckboxGroup value={data.roleIds} onChange={this.onChangeRoles.bind(this)} />
+          </Col>
+ */
 
 // class FormList extends React.Component {
 //   constructor(props) {
@@ -143,3 +151,19 @@ export default class FormList extends React.Component {
 //     console.log(values);
 //   }
 // })(FormList)
+
+
+
+/* 
+        <Row gutter={16} className="gutter-row">
+          <Col className="gutter-row form-lable" span={6}>
+            *适用角色
+          </Col>
+          <Col className="gutter-row" span={14}>
+            <RolesChoosed />
+          </Col>
+          <Col className="gutter-row" span={14}>
+            <RoleCheckboxGroup value={data.roleIds} onChange={this.onChangeRoles.bind(this)} />
+          </Col>
+        
+        </Row> */

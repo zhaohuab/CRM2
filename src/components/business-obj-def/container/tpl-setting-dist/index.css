@@ -1,0 +1,22 @@
+.tpl-setting-dist {
+  height: 500px;
+}
+.tpl-setting-dist table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+}
+.tpl-setting-dist table .head {
+  font-weight: bold;
+  color: #4d87e8;
+}
+.tpl-setting-dist table .table-head-item {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.tpl-setting-dist table .table-checked {
+  width: 140px;
+}
+.tpl-setting-dist td {
+  border: 1px solid #ddd;
+  padding: 10px 4px;
+}

@@ -25,6 +25,7 @@ import { baseDir } from "api";
 
 import Department from "components/refs/departments";
 import Enum from "utils/components/enums";
+import Phone from "utils/components/phone"
 
 import * as enumDataFake from "../data/enumdata";
 import cityData from "../data/citydata";
@@ -53,7 +54,7 @@ const eleType = {//组件显示对应表
     'province_city_district': CityChioce,
     'address': FormMap,
     'email':Input,
-    'tel':Input,
+    'tel': Phone,
     'regCapital':Input,
     'legalRepresent':Input,
 }
@@ -129,6 +130,7 @@ class EditForm extends React.Component {
     }
 
     render() {
+        
         const formItemLayout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 12 }
@@ -149,7 +151,6 @@ class EditForm extends React.Component {
             upLoadList,
             layoutFilds,//新增模板
         } = this.props.$$state.toJS();
-<<<<<<< HEAD
         let customerListInfo = this.customerListInfo.bind(this)//-----------企业核实中方法传递-------------
         let cardData = (data)=> {//----------------个性化数据挂载在自定义属性上-----------------   
             data.attr={};      
@@ -214,8 +215,6 @@ class EditForm extends React.Component {
         let attr6 = {};
         attr6.cityCode=viewData.province_city_district;
         attr6.viewData=viewData;
-=======
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         
         return (
             <div>
@@ -337,9 +336,9 @@ class EditForm extends React.Component {
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-        //debugger;
         let viewData = props.$$state.toJS().viewData;
         let value = {};
+        
         for (let key in viewData) {
             if (key == "address") {
                 value[key] = {
@@ -353,22 +352,12 @@ const cardForm = Form.create({
             }
         }
         //address  把字段合成对象
-
         return {
             ...value
-            /*    
-            name: { value: props.editData.name },
-            description: { value: props.editData.description }
-                   
-            employeeNum:{value: "5"}
-            level:{value: "17"}
-            name:{value: "a"}
-            remark:{value: "6"} */
         };
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-        debugger;
         let viewData = props.$$state.toJS().viewData;      
         for (let key in onChangeFild) {
             if (onChangeFild[key].value && onChangeFild[key].value.key) {
@@ -393,6 +382,7 @@ const cardForm = Form.create({
         }
         props.editCardFn(viewData);
     }
+   
 })(EditForm);
 
 //绑定状态到组件props
@@ -721,7 +711,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                                 </Row>
                                             </Col>
                                             
-                                        </Row> */}
+                                        </Row> 
                                         <Row className="row-bottom">
                                             <Col span={24}>
                                                 <Row type="flex">
@@ -1220,10 +1210,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                     </Col>
                                 </Row>
                             </Row>
-<<<<<<< HEAD
  */
-=======
-                        </Form>
+   
+   
+   
+   /*                      </Form>
                     </Row>
                 </Row>
                 <Modal
@@ -1256,9 +1247,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
+        //debugger;
         let viewData = props.$$state.toJS().viewData;
         let value = {};
-        
         for (let key in viewData) {
             if (key == "address") {
                 value[key] = {
@@ -1272,14 +1263,23 @@ const cardForm = Form.create({
             }
         }
         //address  把字段合成对象
+
         return {
             ...value
+               
+            // name: { value: props.editData.name },
+            // description: { value: props.editData.description }
+                   
+            // employeeNum:{value: "5"}
+            // level:{value: "17"}
+            // name:{value: "a"}
+            // remark:{value: "6"} 
         };
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-        let viewData = props.$$state.toJS().viewData;
-        
+        debugger;
+        let viewData = props.$$state.toJS().viewData;      
         for (let key in onChangeFild) {
             if (onChangeFild[key].value && onChangeFild[key].value.key) {
                 viewData[key] = onChangeFild[key].value.key;
@@ -1318,5 +1318,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 //输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+export default connect(mapStateToProps, mapDispatchToProps)(cardForm); */

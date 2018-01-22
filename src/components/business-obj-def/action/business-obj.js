@@ -37,8 +37,15 @@ const getRolesList = () => {
 		message.destroy()
 		message.loading('搜索中..', 0);
 		reqwest({
-			url: baseDir + "sys/roles",
-			method: 'get'
+			url: baseDir + "sys/roles/ref",
+			method: 'get',
+		/* 	data: {
+				param: {
+					searchKey: {
+						name: value
+					}
+				}
+			} */
 		}, (data) => {
 			message.destroy()
 			dispatch(fetchData('business_obj_get_roles', {
@@ -132,6 +139,26 @@ const delBusinessObj = (item, index) => {
 	}
 }
 
+
+//停启用
+const enable = (item, index,isEnable) => {//正在调试
+	let status = isEnable ? 1 : 0;
+	return (dispatch, getState) => {
+		reqwest({
+			url: `${baseDir}sys/biztypes/${item.data.id}/status`,
+			method: 'PUT',
+			data:{
+				param:{status:status}
+			}
+		}, (data) => {
+			dispatch(fetchData('business_obj_enable_data', {
+				index,
+				status
+			}));
+		})
+	}
+}
+
 //弹出框-添加业务类型
 const showModalAdd = () => {
 	return {
@@ -141,7 +168,8 @@ const showModalAdd = () => {
 }
 
 //弹出框-编辑业务类型
-const showModalEdit = (item, index) => {
+const showModalEdit = (item, index,flag) => {
+	if(flag) {return}
 	return {
 		type: "business_obj_edit_showModal",
 		content: {
@@ -185,4 +213,9 @@ export {
 	showModalEdit,
 	editBusinessObj,
 	handleCancel,
+	enable,
 }
+
+
+
+

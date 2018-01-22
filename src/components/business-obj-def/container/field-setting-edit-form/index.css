@@ -1,6 +1,7 @@
 .feild-setting-edit-form {
   display: flex;
-  height: 400px;
+  min-height: 247px;
+  padding: 4px 0 47px 0;
 }
 .feild-setting-edit-form .feild-setting-form-props {
   flex-grow: 1;
@@ -29,6 +30,7 @@
   left: 0;
   top: 0;
   color: red;
+  padding-left: 10px;
   white-space: nowrap;
   animation: translate2 0.5s;
 }

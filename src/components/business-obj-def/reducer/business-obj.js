@@ -3,8 +3,9 @@ import Immutable from 'immutable'
 let $$initialState = {
     loading: false, //请求加载动画
     addModelVisible: false,
-    nameFlag: false,//名称非空验证控制
-    roleFlag: false,//角色非空验证控制
+    nameFlag: false,//-----名称非空验证控制
+    roleFlag: false,//-----角色非空验证控制
+    enable:false,//--------停启用控制
     data: [
         //   {
         //     id: 1,
@@ -112,6 +113,9 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 nameFlag: action.content.nameFlag,
                 roleFlag: action.content.roleFlag,
             });
+        case 'business_obj_enable_data':
+         return  $$state.setIn(["data", action.content.index,'data','isEnabled'], action.content.status); 
+           
         default:
             return $$state;
     }

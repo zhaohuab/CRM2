@@ -61,11 +61,7 @@ export default class ChangePerson extends React.Component {
         let id = viewData.salesVOs[0].id
         let salesVOs = {ownerUserId:this.state.value.id}
         let that = this
-<<<<<<< HEAD
-        //debugger
-=======
         
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         reqwest(
             {
                 url: baseDir + "/cum/customersales/" +id,
@@ -78,11 +74,7 @@ export default class ChangePerson extends React.Component {
                
 
                 if(data){
-<<<<<<< HEAD
-                    //debugger
-=======
                     
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                     let nv = viewData.salesVOs[0]
                     if(that.state.value){
                         nv.ownerUserName = that.state.value.name

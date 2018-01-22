@@ -24,23 +24,13 @@ export default class UploadImg extends React.Component {
         });
     }
 
-    getBase64(img, callback) {
-<<<<<<< HEAD
-        //debugger
-=======
-        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+    getBase64(img, callback) {      
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result));
         reader.readAsDataURL(img);
     }
 
-    upFn(imageUrl,id){
-<<<<<<< HEAD
-       //debugger
-=======
-       
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+    upFn(imageUrl,id){      
        let c=this.props.onChange
           reqwest(
             {
@@ -52,12 +42,7 @@ export default class UploadImg extends React.Component {
                     }
                 }
             },
-            data => {
-<<<<<<< HEAD
-                //debugger
-=======
-                
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+            data => {             
                 let obj=[{
                         uid: id,
                         name: data.data[1],
@@ -66,12 +51,7 @@ export default class UploadImg extends React.Component {
                 }]
                 this.setState({
                     loading:false
-                },()=>{
-<<<<<<< HEAD
-                    //debugger
-=======
-                    
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+                },()=>{                 
                     if(this.props.onChange){
                         this.props.onChange(JSON.stringify(obj))
                     }
@@ -80,12 +60,7 @@ export default class UploadImg extends React.Component {
         );
     }
 
-    delFn(name,callback){
-<<<<<<< HEAD
-        //debugger
-=======
-        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+    delFn(name,callback){     
         reqwest(
             {
                 url: baseDir + " /cum/customers/deletefile",
@@ -102,12 +77,7 @@ export default class UploadImg extends React.Component {
         );
     }
 
-    handleChange = (info) => {
-<<<<<<< HEAD
-        //debugger
-=======
-        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+    handleChange = (info) => {    
           this.setState({ loading: true });
           if(info.file.originFileObj){
                 let id = info.file.originFileObj.uid

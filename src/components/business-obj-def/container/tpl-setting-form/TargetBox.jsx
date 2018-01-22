@@ -89,7 +89,7 @@ export default class Card extends Component {
     const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(connectDropTarget(
-      <div className={this.props.classNames} style={{ opacity }}>
+      <div className={this.props.classNames} style={{ opacity }} title={item.name}>
         {item.isRequired ? <span className="isRequired">*</span> : null}
         {item.apiName == "" ? null : item.name}
         <div className="btn-con">
@@ -99,7 +99,7 @@ export default class Card extends Component {
             }
           </span>
           <span className="btn-delete">
-            <Icon type="delete" title="删除" onClick={this.props.delete} />
+            <Icon type="delete" title="删除" onClick={this.props.delete.bind(this,item)} />
           </span>
         </div>
       </div >,

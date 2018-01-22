@@ -385,10 +385,11 @@ const mobileListConfigCancel = () => {
 
 
 //改变编辑模板数据
-const changeListConfig = (name, targetList) => {
+const changeListConfig = (title, name, targetList) => {//--------------跟原来相比，添加一个列表描述，这里添加一个title控制输入的是名称还是描述,这里专用于新增或者是编辑模板时，列表名称和描述改变时触发reducer改变；
 	return {
 		type: "list_config_change_tpl_list",
 		content: {
+			title,
 			name,
 			targetList
 		}
@@ -396,7 +397,7 @@ const changeListConfig = (name, targetList) => {
 }
 
 
-//分配-弹出框
+/* //分配-弹出框
 const distribute = (moduleType) => {
 	let obj = {
 		pcListData: {
@@ -426,7 +427,7 @@ const distribute = (moduleType) => {
 			}));
 		})
 	}
-}
+} */
 
 //分配-隐藏弹出框
 const distributeCancel = (moduleType) => {
@@ -436,7 +437,7 @@ const distributeCancel = (moduleType) => {
 }
 
 //分配-存数据库
-const savaDistribute = (param) => {
+const savaDistribute = (param) => {//保存分配结果
 	return (dispatch, getState) => {
 		message.destroy()
 		message.loading('保存中..', 0);
@@ -466,6 +467,148 @@ const changeAssignments = (key, val) => {
 	}
 }
 
+//---------------------------------------------
+const filterSource = (data) => {//拖拽结束去掉该项拖拽源
+	return {
+		type: "list_config_filter_source",
+		content: {
+			data
+		}
+	}
+}
+
+const restoreSource = (data) => {//删除拖拽目标，恢复拖拽源数据
+	return {
+		type: "list_config_restore_source",
+		content: {
+			data
+		}
+	}
+}
+
+const layoutChoosed = (name,id) => {//选择列表模板
+	return {
+		type: "list_config_layout_choosed",
+		content: {
+			name,
+			id
+		}
+	}
+}
+
+ 
+ const onSearch = (e)=>{//搜索框输入方法
+	let { value } = e.target;
+	if(value){
+		reqwest(
+			{
+				url: baseDir + "cum/customers",//换地址
+				method: "GET",
+				data: {
+					param: {
+						searchMap: {
+							name: value
+						}
+					}
+				}
+			},
+			result => {
+				dispatch(fetchData('list_config_field_role_inquire', {
+					roleInquireList: result,
+					dataFlag: true,
+				}));
+			}
+		); 
+	}else{
+		dispatch(fetchData('list_config_field_role_inquire', {
+			dataFlag: false,
+		}));
+	}
+}
+
+const distribute = (moduleType) => {//分配弹出框	
+	let obj = {
+		pcListData: {
+			clientType: 1
+		},
+		mobileListData: {
+			clientType: 2
+		}
+	}
+	return (dispatch, getState) => {
+		message.destroy()
+		message.loading('保存中..', 0);
+		reqwest({
+			url: `${baseDir}sys/modules/5/listLayouts/assignmentTemplate`,
+			method: 'get',
+			data: {
+				param: {
+					clientType: obj[moduleType]["clientType"],
+				}
+			}
+		}, (data) => {
+			message.destroy()
+			dispatch(fetchData('list_config_distribute_showModal', {
+				data,
+				clientType: obj[moduleType]["clientType"],
+				moduleType
+			}));
+		})
+		reqwest({//-------获取角色----------
+			url: `${baseDir}sys/roles/ref`,
+			method: 'get',
+			data:{
+				param:{
+					searchMap:''
+				}
+			}
+			},data=>{
+				dispatch(fetchData('list_config_distribute_showModal2', {
+					roleList: data.data
+				}));
+			}
+		)
+	}
+}
+
+	const rolesChoosed = (list) => {//----选定列表模板
+		return {
+			type: "list_config_roles_choosed",
+			content: {
+				list,
+			}
+		}
+	} 
+
+
+	const addLayout = (name,description,targetList) => {//------增加模板
+		return {
+			type: "list_config_add_tpl_list",
+			content: {
+				name,
+				description,
+				targetList
+			}
+		}
+	}
+
+	const enable = (name, item, index,isEnable) => {//-----------------停启用；这里的接口有问题，后台报错？？
+		return (dispatch, getState) => {
+			reqwest({
+				url: `${baseDir}sys/modules/${item.data.id}/layouts/status`,
+				method: 'PUT',
+				data:{
+					param:{status:status}
+				}
+			}, (data) => {
+				dispatch(fetchData('tpl_setting_enable_data', {
+					name,
+					index,
+					status
+				}));
+			})
+		} 
+	}
 
 //输出方法
 export {
@@ -488,5 +631,15 @@ export {
 	distribute,
 	distributeCancel,
 	savaDistribute,
-	changeAssignments
+	changeAssignments,
+	
+	//--------------------
+	filterSource,
+	restoreSource,
+	layoutChoosed,
+	onSearch,
+	rolesChoosed,
+	addLayout,
+	enable
+
 }

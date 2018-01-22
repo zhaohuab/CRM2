@@ -57,11 +57,6 @@ export default class CuperiorCustomer extends React.Component {
 
     //点击分页时触发的方法
     onPageChange(page, pageSize) {
-<<<<<<< HEAD
-        //debugger;
-=======
-        ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         //let { page, pageSize } = this.state.pagination;
         let pagination = {
             page,
@@ -91,11 +86,6 @@ export default class CuperiorCustomer extends React.Component {
                 }
             },
             result => {
-<<<<<<< HEAD
-                //debugger;
-=======
-                ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.setState({
                     visible: flag,
                     industryData: result
@@ -151,14 +141,8 @@ export default class CuperiorCustomer extends React.Component {
     }
 
     //点击确定
-    onOk() {
-<<<<<<< HEAD
-        //debugger
-=======
-        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+    onOk() {    
         if (this.props.onChange) {
-            debugger
             if(this.props.cusId){
                 this.props.onChange({id:this.props.cusId.id,name:this.props.cusId.name});
             }else{
@@ -188,11 +172,6 @@ export default class CuperiorCustomer extends React.Component {
     //搜索框输入方法
     onSearch(value) {
         console.log(value);
-<<<<<<< HEAD
-        //debugger;
-=======
-        ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
         reqwest(
             {
                 url: baseDir + "cum/customers",
@@ -207,11 +186,6 @@ export default class CuperiorCustomer extends React.Component {
                 }
             },
             result => {
-<<<<<<< HEAD
-                //debugger;
-=======
-                ;
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
                 this.setState({
                     industryData: result
                 });
@@ -220,18 +194,14 @@ export default class CuperiorCustomer extends React.Component {
     }
 
     //下拉时显示的面板布局
-    choiceIndustry() {
-<<<<<<< HEAD
-        //debugger
-=======
-        
->>>>>>> 312d46699d979d9b7f362833e04a0fd802dbca3c
+    choiceIndustry() {       
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
             type: "radio",
             selectedRowKeys: this.state.selectedRowKeys
         };
         let tableData = this.state.industryData;
+        //debugger;
         return (
             <div className="reference">
                 <div

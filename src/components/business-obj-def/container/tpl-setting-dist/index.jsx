@@ -59,7 +59,6 @@ export default class Distribute extends React.Component {
 
   render() {
     let { selectData, biztypes, roles, assignments } = this.props.data;
-    //debugger
     let elsSelectData = selectData.map((item) => {
       return <Option value={item.data.id}>{item.data.name}</Option>
     });
