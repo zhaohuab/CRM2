@@ -1,14 +1,14 @@
 const handle = (changedFields) => {
     for (let fieldKey in changedFields) {
         let field = changedFields[fieldKey];
-        debugger
         if (field.value && field.value.mapper) {
             //参照、枚举类型
-
-            let { mapper, value } = field.value;
+            let { value , ...others} = field;
+            let mapper = value.mapper;
+            let realValue = value.value;
             for (let readField in mapper) {
                 let writeField = mapper[readField];
-                changedFields[writeField] = { value: value[readField] };
+                changedFields[writeField] = { value: realValue[readField],...others};
             }
         }
         

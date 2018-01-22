@@ -14,6 +14,7 @@ const org = {
 const user = {
     listTpl : baseDir + "sys/users/template/list",
     addTpl : baseDir + "sys/users/template/add",
+    editTpl : baseDir + "sys/users/template/edit",
     user: baseDir + "sys/users",
     userBatch: baseDir + "sys/users/batch",
     enable: baseDir + "sys/users/state" // {id}/state
@@ -91,6 +92,20 @@ const prdattrgroup = {
     prdattrgroup: baseDir + 'base/attrgroups',
 }
 
+<<<<<<< HEAD
+=======
+const phonebooks = {
+    mydept: baseDir + 'csns/phonebooks/mydept',
+    organizations: baseDir + 'csns/phonebooks/organizations',
+    search: baseDir + 'csns/phonebooks/search',
+    sub: baseDir + 'csns/phonebooks/sub',
+}
+
+const func = {
+    func: baseDir + "sys/functions"
+};
+
+>>>>>>> fa1d9856800c8f4a416f38d6e3cb853ac12cb8aa
 export {
     login,
     menu,
@@ -113,5 +128,10 @@ export {
     oppflow,
     prdattr,
     prdattrgroup,
+<<<<<<< HEAD
+=======
+    phonebooks,
+    func
+>>>>>>> fa1d9856800c8f4a416f38d6e3cb853ac12cb8aa
 }
  

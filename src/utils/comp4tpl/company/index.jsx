@@ -5,7 +5,7 @@ import reqwest from "utils/reqwest";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
 import "./index.less";
-class Department extends React.Component {
+class yy extends React.Component {
     state = {
         visible: false,
         select: {
@@ -20,7 +20,6 @@ class Department extends React.Component {
         this.getData();
     };
     onOk = () => {
-        debugger
         this.setState({ visible: false });
         this.triggerChange(this.state.select);
     };
@@ -54,7 +53,7 @@ class Department extends React.Component {
                 method: "get",
                 data: {
                     param:{
-                        orgType:3,
+                        orgType:2,
                         fatherorgId:this.props.fatherorgId
                     }
                 }
@@ -80,7 +79,7 @@ class Department extends React.Component {
     getTitle() {
         return (
             <div className="pepole-refer">
-                <div>部门</div>
+                <div>公司</div>
                 <div className="pepole-refer-search">
                     <Search
                         placeholder="请输入关键字"
@@ -95,11 +94,12 @@ class Department extends React.Component {
             this.props.value  ? (
                 <Icon type="close" onClick={this.emitEmpty} />
             ) : null;
+
         return (
             <div>
                 {/* <Input value={key}/> */}
                 
-                {this.props.disabled?<Input disabled value={this.props.value} />:<Input
+                {this.props.disabled?<Input disabled/>:<Input
                     value={this.props.value}
                     placeholder="请选择..."
                     onClick={this.onClick}
@@ -125,4 +125,4 @@ class Department extends React.Component {
     }
 }
 
-export default Department;
+export default yy;
