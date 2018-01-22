@@ -5,6 +5,7 @@ import Department from 'components/refs/departments'
 import Enum from 'utils/components/enums'
 import * as roleActions from "../action"
 
+const { TextArea } = Input;
 const FormItem = Form.Item;
 const Option = Select.Option;
 class Card extends React.Component {
@@ -55,7 +56,7 @@ class Card extends React.Component {
                 >
                     {getFieldDecorator('name', {
                         rules: [{
-                            required: true, message: '请输出角色名称',
+                            required: true, message: '请输入角色名称',
                         }],
                     })(
                         <Input placeholder='请输入...' />
@@ -63,7 +64,7 @@ class Card extends React.Component {
                 </FormItem>
                 {isEdit ?
                     <div><FormItem
-                        label="上级组织"
+                        label="所属组织"
                         {...formItemLayout}
                     >
                         {getFieldDecorator('orgName', {
@@ -77,7 +78,7 @@ class Card extends React.Component {
                             {...formItemLayout}
                         >
                             {getFieldDecorator('typeName', {
-                                required: true, message: '请选择角色名称',
+
                             })(
                                 <Input disabled />
                                 )}
@@ -94,11 +95,13 @@ class Card extends React.Component {
                             )}
                     </div>
                     : <div><FormItem
-                        label="上级组织"
+                        label="所属组织"
                         {...formItemLayout}
                     >
                         {getFieldDecorator('orgId', {
-                            rules: [],
+                            rules: [{
+                                required: true, message: '请选择所属组织',
+                            }],
                         })(
                             <Department />
                             )}
@@ -108,10 +111,12 @@ class Card extends React.Component {
                             {...formItemLayout}
                         >
                             {getFieldDecorator('type', {
-                                required: true, message: '请选择角色名称',
+                                rules: [{
+                                    required: true, message: '请选择角色类型',
+                                }],
                             })(
                                 <Enum
-                                    dataSource={enumData.data}
+                                    dataSource={enumData.data} 
                                 />
                                 )}
                         </FormItem>
@@ -126,7 +131,7 @@ class Card extends React.Component {
                     {getFieldDecorator('description', {
 
                     })(
-                        <Input placeholder='请输入...' />
+                        <TextArea rows='4' placeholder='请输入...' />
                         )}
                 </FormItem>
 

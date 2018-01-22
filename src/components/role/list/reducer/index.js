@@ -6,7 +6,7 @@ let funcData = []
 let $$initialState = {
 	data: [],
 	editData: {},
-	isEdit:false,
+	isEdit: false,
 	roleCardVisible: false,
 	//主列表
 	selectedRowKeys: [],
@@ -20,7 +20,7 @@ let $$initialState = {
 	tabIndex: 1,
 	funcData,
 	selectedRoleId: "",
-	selectedRoleIsPreseted:false,
+	selectedRoleIsPreseted: 1,
 	userPagination: {
 		pageSize: 20,
 		page: 1
@@ -32,7 +32,8 @@ let $$initialState = {
 	userCardVisible: false,
 	userList: [],
 	userCardList: [],
-	enumData:{data:[]}
+	enumData: { data: [] },
+	rightData:[]
 };
 
 function pageAdd(page, item) {
@@ -76,7 +77,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				roleCardVisible: action.content.visible,
 				editData: action.content.editData,
-				isEdit:action.content.isEdit,
+				isEdit: action.content.isEdit,
 			})
 		case 'ROLE_LIST_SELECTROW':
 			return $$state.merge({
@@ -88,12 +89,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedUserRowKeys: action.content.selectedRowKeys,
 				selectedUserRows: action.content.selectedRows
 			})
-			case 'ROLE_LIST_SELECTUSERCARDROW':
+		case 'ROLE_LIST_SELECTUSERCARDROW':
 			return $$state.merge({
 				selectedUserCardRowKeys: action.content.selectedRowKeys,
 				selectedUserCardRows: action.content.selectedRows
 			})
-			
+
 		case 'ROLE_LIST_TABSELECT':
 			return $$state.merge({
 				tabIndex: action.content.tabIndex
@@ -102,7 +103,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				roleCardVisible: false,
 				data: pageAdd($$state.get("data").toJS(), action.content),
-				selectedRoleId:action.content.id
+				selectedRoleId: action.content.id
 			})
 		case 'ROLE_CARD_SAVEEDIT':
 			return $$state.merge({
@@ -129,7 +130,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		case 'ROLE_LIST_GETUSERLISTSUCCESS':
 			return $$state.merge({
-				userList: action.content,
+				userList: action.content.data,
+				selectedRoleIsPreseted: action.content.isPreseted,
+				selectedUserRowKeys: [],
+				selectedUserRows: [],
 			})
 		case 'ROLE_LIST_GETUSERCARDLISTSUCCESS':
 			return $$state.merge({
@@ -137,17 +141,28 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				userCardVisible: true,
 			})
 
-			case 'ROLE_LIST_CLOSEUSERCARD':
+		case 'ROLE_LIST_CLOSEUSERCARD':
 			return $$state.merge({
 				userCardVisible: false,
 				selectedUserCardRowKeys: [],
-	selectedUserCardRows: [],
+				selectedUserCardRows: [],
 			})
-			case 'ROLE_LIST_GETENUMDATA':
+		case 'ROLE_LIST_GETENUMDATA':
 			return $$state.merge({
 				enumData: action.content
 			})
+		case 'ROLE_LIST_GETRIGHTDATA':
+			return $$state.merge({
+				rightData: action.content.data,
+				selectedRoleIsPreseted: action.content.isPreseted,
+			})
 			
+			case 'ROLE_LIST_SELECTRIGHTDATA':
+			debugger
+			return $$state.merge({
+				rightData: action.content,
+			})
+
 		default:
 			return $$state;
 	}

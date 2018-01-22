@@ -142,7 +142,7 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 	return (dispatch) => {
 		// dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
 		reqwest({
-			url: url.role+"/"+roleId+"/assign",
+			url: url.role+"/"+roleId+"/func/assign",
 			method: "POST",
 			data: {
 				param: {
@@ -158,7 +158,7 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 }
 
 
-const getUserListData = (roleId,pagination) => {
+const getUserListData = (roleId,pagination,isPreseted) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.role+"/"+roleId+"/users",
@@ -170,7 +170,7 @@ const getUserListData = (roleId,pagination) => {
 				}
 			},
 		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { ...result }));
+			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data:result,isPreseted }));
 		})
 	}
 }
@@ -188,6 +188,7 @@ const showUserCard = (roleId,pagination) => {
 				}
 			},
 		}, result => {
+			debugger
 			dispatch(fetchData('ROLE_LIST_GETUSERCARDLISTSUCCESS', { ...result }));
 		})
 	}
@@ -212,7 +213,7 @@ const getEnumData = () => {
 const saveUser = (roleId,userIds,pagination) =>{
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/"+roleId+"users/assign",
+			url: url.role+"/"+roleId+"/users/assign",
 			method: "POST",
 			data: {
 				param:{
@@ -259,6 +260,38 @@ const closeUserCard = () => {
 };
 
 
+const getRightData = (roleId,isPreseted) => {
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/"+roleId+"/right",
+			method: "GET",
+			data: {
+			},
+		}, result => {
+			dispatch(fetchData('ROLE_LIST_GETRIGHTDATA', { data:result.data,isPreseted }));
+		})
+	}
+}
+
+
+const selectRight = (roleId, rightId, rightData) => {
+	return (dispatch) => {
+		reqwest({
+			url: url.role+"/"+roleId+"/right/assign",
+			method: "POST",
+			data: {
+				param: {
+					roleId,
+					typeId:rightId
+				},
+			}
+		}, () => {
+			dispatch(fetchData('ROLE_LIST_SELECTRIGHTDATA', rightData));
+		})
+	}
+}
+
+
 //输出 type 与 方法
 export {
 	getRoleListData,
@@ -278,5 +311,7 @@ export {
 	closeUserCard,
 	selectUserRow,
 	selectUserCardRow,
-	deleteUser
+	deleteUser,
+	getRightData,
+	selectRight
 }

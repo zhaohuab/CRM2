@@ -181,19 +181,21 @@ class FuncTree extends Component {
             return (
                 <div>
                     {selectedRoleIsPreseted == 1 ?
-                        <div class="func-cell" >
+                        <div  >
                             <Col span={6}>
                                 <Col span={4}><Checkbox disabled checked={item.checked == 'T' ? true : false} /></Col>
                                 {item.name}
                             </Col>
                         </div>
                         :
-                        <div class="func-cell" onClick={this.selectFunc.bind(this, item.id, item.checked)}>
+                        
                             <Col span={6}>
+                            <span  onClick={this.selectFunc.bind(this, item.id, item.checked)}>
                                 <Col span={4}><Checkbox checked={item.checked == 'T' ? true : false} /></Col>
                                 {item.name}
+                                </span>
                             </Col>
-                        </div>
+                        
                     }
                 </div>
             );
