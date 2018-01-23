@@ -15,6 +15,14 @@ const getFormItem = (getFieldDecorator,field, layout) => {
         return undefined;
     }
     if (field.visible) {
+        let opt = {};
+        if(field.validateType!=""&&field!=undefined) {
+            if(field.validateType == "phone"){
+                opt = {pattern: /^[1][0-9]{10}$/}
+            }else {
+                opt = {type:field.validateType}
+            }
+        }
         return <FormItem
             label={field.name}
             {...layout}
@@ -23,7 +31,8 @@ const getFormItem = (getFieldDecorator,field, layout) => {
                 initialValue:field.defaultValue,
                 rules: [{
                     required: !field.nullAble,
-                    message: field.name+"为必填项"
+                    message: "请输入正确的"+field.name,
+                    ...opt
                 }],
             })(
                 comp

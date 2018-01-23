@@ -23,7 +23,7 @@ class List extends React.Component {
         this.columns = [{
             title: '角色名称',
             dataIndex: 'name',
-            width: 100,
+            width: '20%',
             render: (text, row, index) => {
                 return <a onClick={this.onNameClick.bind(this, row)}>
                     {text}
@@ -33,12 +33,15 @@ class List extends React.Component {
         }, {
             title: '角色描述',
             dataIndex: 'description',
+            width:'40%'
         }, {
             title: '所属组织',
             dataIndex: 'orgName',
+            width:'20%'
         }, {
             title: '角色类型',
             dataIndex: 'typeName',
+            width:'20%'
         }]
 
         this.state = {

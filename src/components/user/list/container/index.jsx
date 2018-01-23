@@ -78,7 +78,7 @@ class List extends React.Component {
         e.preventDefault();
         form.validateFields((err, values) => {
             console.info(err);
-            // if (!err) {
+            if (!err) {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {
                     this.props.action.onSave4Edit(form.getFieldsValue());
@@ -86,7 +86,7 @@ class List extends React.Component {
                 else {
                     this.props.action.onSave4Add(form.getFieldsValue());
                 }
-            // }
+            }
         });
     }
 
@@ -158,7 +158,6 @@ class List extends React.Component {
         else {
             tpl = template.add;
         }
-        debugger
         return (
             <div className="user-warpper">
 
