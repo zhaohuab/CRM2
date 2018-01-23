@@ -110,10 +110,10 @@ class ToolForm extends React.Component {
         let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
         const moreMenu = (
             <Menu>
-                <Menu.Item className="customer:list:import:customer" key="0">
+                <Menu.Item className="customer_list_import_customer" key="0">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item className="customer:list:export:customer" key="1">
+                <Menu.Item className="customer_list_export_customer" key="1">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>
@@ -126,17 +126,17 @@ class ToolForm extends React.Component {
                         length={selectedRowKeys.length}
                     >
                         <Button
-                            className="returnbtn-class customer:list:delete:customer"
+                            className="returnbtn-class customer_list_delete_customer"
                             onClick={this.btnDelete.bind(this)}
                         >
                             <i className="iconfont icon-shanchu" />删除
                         </Button>
 
                         <ButtonGroup className="returnbtn-class">
-                            <Button className="customer:list:start:customer" onClick={this.btnSetEnable.bind(this, 1)}>
+                            <Button className="customer_list_start_customer" onClick={this.btnSetEnable.bind(this, 1)}>
                                 <i className="iconfont icon-qiyong" />启用
                             </Button>
-                            <Button className="customer:list:stop:customer" onClick={this.btnSetEnable.bind(this, 2)}>
+                            <Button className="customer_list_stop_customer" onClick={this.btnSetEnable.bind(this, 2)}>
                                 <i className="iconfont icon-tingyong" />停用
                             </Button>
                         </ButtonGroup>
@@ -191,10 +191,11 @@ class ToolForm extends React.Component {
                                 <Row type="flex" gutter={15} justify="end">
                                     <Col>
                                         <Button
+                                            className="customer_list_add_customer"
                                             type="primary"
                                             onClick={this.btnNew.bind(this)}
                                         >
-                                            <i className="iconfont icon-xinjian customer:list:add:customer" />新建
+                                            <i className="iconfont icon-xinjian" />新建
                                         </Button>
                                     </Col>
                                     <Col>

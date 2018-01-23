@@ -23,6 +23,7 @@ const getFormItem = (getFieldDecorator,field, layout) => {
                 initialValue:field.defaultValue,
                 rules: [{
                     required: !field.nullAble,
+                    message: field.name+"为必填项"
                 }],
             })(
                 comp

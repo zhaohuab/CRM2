@@ -198,7 +198,7 @@ class DetailTop extends React.Component {
                         justify="end"
                         gutter={15}
                     >
-                        <div className="customer:view:verify:customer">
+                        <div className="customer_view_verify_customer">
                             {viewData.verifyId ? (
                                 ""
                             ) : (
@@ -224,12 +224,12 @@ class DetailTop extends React.Component {
                             <ChangePerson viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
                         </div>
                         <div>
-                            <Button className="customer:view:upgrade:customer">
+                            <Button className="customer_view_upgrade_customer">
                                 <i className="iconfont icon-shengji" />升级
                             </Button>
                         </div>
                         <div>
-                            <Button  className="customer:view:edit:customer" onClick={this.btnEdit.bind(this)}>
+                            <Button  className="customer_view_edit_customer" onClick={this.btnEdit.bind(this)}>
                                 <i className="iconfont icon-bianji" />编辑
                             </Button>
                         </div>

@@ -22,7 +22,7 @@ class UserTable extends Component {
             },
             {
                 title: "性别",
-                dataIndex: "customerName"
+                dataIndex: "genderName"
             },
             {
                 title: "所属公司",
@@ -30,11 +30,11 @@ class UserTable extends Component {
             },
             {
                 title: "所属部门",
-                dataIndex: "saleStageName"
+                dataIndex: "deptName"
             },
             {
                 title: "手机",
-                dataIndex: "mobile"
+                dataIndex: "phone"
             },
             {
                 title: "邮箱",

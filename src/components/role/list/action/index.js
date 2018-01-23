@@ -192,6 +192,7 @@ const getUserListData = (roleId,pagination,isPreseted) => {
 				}
 			},
 		}, result => {
+			debugger
 			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data:result,roleId,isPreseted }));
 		})
 	}
@@ -210,7 +211,6 @@ const showUserCard = (roleId,pagination) => {
 				}
 			},
 		}, result => {
-			debugger
 			dispatch(fetchData('ROLE_LIST_GETUSERCARDLISTSUCCESS', { ...result }));
 		})
 	}
