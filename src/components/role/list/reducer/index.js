@@ -33,7 +33,7 @@ let $$initialState = {
 	userList: [],
 	userCardList: [],
 	enumData: { data: [] },
-	rightData:[]
+	rightData: []
 };
 
 function pageAdd(page, item) {
@@ -132,6 +132,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				userList: action.content.data,
 				selectedRoleIsPreseted: action.content.isPreseted,
+				selectedRoleId: action.content.roleId,
 				selectedUserRowKeys: [],
 				selectedUserRows: [],
 			})
@@ -156,13 +157,28 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				rightData: action.content.data,
 				selectedRoleIsPreseted: action.content.isPreseted,
 			})
-			
-			case 'ROLE_LIST_SELECTRIGHTDATA':
-			debugger
+
+		case 'ROLE_LIST_SELECTRIGHTDATA':
 			return $$state.merge({
 				rightData: action.content,
 			})
 
+		case 'ROLE_LIST_SAVEUSERSUCCESS':
+			return $$state.merge({
+				userList: action.content,
+				selectedUserRowKeys: [],
+				selectedUserRows: [],
+				selectedUserCardRowKeys: [],
+				selectedUserCardRows: [],
+			})
+		case 'ROLE_LIST_DELETEUSERSUCCESS':
+			return $$state.merge({
+				userList: action.content,
+				selectedUserRowKeys: [],
+				selectedUserRows: [],
+				selectedUserCardRowKeys: [],
+				selectedUserCardRows: [],
+			})
 		default:
 			return $$state;
 	}

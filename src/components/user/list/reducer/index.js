@@ -81,7 +81,18 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				loading: true
 			})
 		case 'USER_LIST_GETLISTSUCCESS':
-			return $$state
+			return $$state.merge({
+				loading: false,
+				data:action.content.data,
+				formFields: {},
+				formData: {},
+				selectedRowKeys: [],
+				selectedRows: [],
+				pagination:action.content.pagination,
+				searchMap:action.content.searchMap,
+			})
+
+
 		case 'USER_LIST_SHOWFORM':
 			return $$state.merge({
 				visible: true,

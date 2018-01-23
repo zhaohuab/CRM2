@@ -22,7 +22,7 @@ class UserTable extends Component {
             },
             {
                 title: "性别",
-                dataIndex: "customerName"
+                dataIndex: "genderName"
             },
             {
                 title: "所属公司",
@@ -30,11 +30,11 @@ class UserTable extends Component {
             },
             {
                 title: "所属部门",
-                dataIndex: "saleStageName"
+                dataIndex: "deptName"
             },
             {
                 title: "手机",
-                dataIndex: "mobile"
+                dataIndex: "phone"
             },
             {
                 title: "邮箱",
@@ -83,16 +83,18 @@ class UserTable extends Component {
 
     onPageChange(page, pageSize) {
         let selectedRoleId = this.props.$$state.get("selectedRoleId")
+        let selectedRoleIsPreseted = this.props.$$state.get("selectedRoleIsPreseted")
         let pagination = this.props.$$state.get("userPagination").toJS()
         //可能有问题
         pagination = { page: page, pageSize: pageSize };
-        this.props.action.getUserListData(selectedRoleId, pagination);
+        this.props.action.getUserListData(selectedRoleId, pagination,selectedRoleIsPreseted);
     }
     onPageSizeChange(current, pageSize) {
         let selectedRoleId = this.props.$$state.get("selectedRoleId")
+        let selectedRoleIsPreseted = this.props.$$state.get("selectedRoleIsPreseted")
         let pagination = this.props.$$state.get("userPagination").toJS()
         pagination = { page: pagination.page, pageSize: pageSize };
-        this.props.action.getUserListData(selectedRoleId, pagination);
+        this.props.action.getUserListData(selectedRoleId, pagination,selectedRoleIsPreseted);
     }
     render() {
         const { $$state } = this.props;
@@ -105,7 +107,6 @@ class UserTable extends Component {
             selectedUserRowKeys,
             onChange: this.onSelectChange
         };
-        debugger
         return (
             <div>
                 <Row type="flex" align="center" justify="end" className="userpanel-buttonline">
