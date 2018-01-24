@@ -35,13 +35,6 @@ class List extends React.Component {
   onAddTask = () => {
     debugger
     this.props.action.addTask(true)
-    // this.setState({
-    //   visible: true,
-    // }, () => {
-    //   debugger
-    //   this.props.action.addTask(true)
-    //   // this.formRef.props.form.setFieldsValue({ code: '', name: '', groupid: '', url: '', description: '', cronexpression: '' });
-    // });
   }
 
   //新建分组设置属性
@@ -54,17 +47,12 @@ class List extends React.Component {
   }
 
   //新建任务点击保存
-  onSave = () => {
+  onSaveTask = () => {
     debugger;
     this.formRef.props.form.validateFieldsAndScroll((err, values) => {//取值
       debugger;
       if (!err) {
         this.props.action.onAdd(values, false);
-        // this.setState({
-        //   visible: false,
-        // }, () => {
-        //   this.props.action.onAdd(values,false);
-        // });
       }
     });
 
@@ -81,52 +69,39 @@ class List extends React.Component {
     }, () => {
       this.props.action.onAddTaskGroup(value);
     });
-
   }
-
-  //点击或者搜索框搜索
+  //点击分组或者搜索框搜索
   onSearchGroup = (id, name) => {
     debugger
     this.props.action.onSearchGroup(id, name, this.props.$$state.get("pagination").toJS());
   }
-
   handleCancel = (e) => {
     this.setState({
       taskGroupVisible: false
     });
   }
-
   //任务点击取消
   taskCancel = (e) => {
     this.props.action.showForm(false);
-    // console.log(e);
-    // this.setState({
-    //   visible: false, taskGroupVisible: false
-    // });
   }
   render() {
     debugger
     const { $$state } = this.props;
-
     const taskgroupdata = $$state.get("taskgroupdata").toJS();
-
     let {
      taskVisible,
       groupVisible
   } = this.props.$$state.toJS(); //分组，任务显隐
-
-
     return (
       <div className="quartz-warpper">
         <Modal
           title="新建任务"
           visible={taskVisible}
-          onOk={this.onSave.bind(this)}
+          onOk={this.onSaveTask.bind(this)}
           onCancel={this.taskCancel}
         >
           <RegistrationForm wrappedComponentRef={(inst) => this.formRef = inst} />
         </Modal>
-
         <Modal
           title="分组名称"
           visible={this.state.taskGroupVisible}
@@ -140,7 +115,7 @@ class List extends React.Component {
           <Row type="flex" align="middle" justify="space-between" gutter={15}>
             <Col span={10}>
               <Row type="flex">
-                <Col span={8}>调度任务</Col>
+                <Col span={8}></Col>
               </Row>
             </Col>
             <Col span={14}>
@@ -184,7 +159,6 @@ class List extends React.Component {
                   </SubMenu>
                 </Menu>
               </Sider>
-
               <Content>
                 <div className="list-box">
                   <TaskList />

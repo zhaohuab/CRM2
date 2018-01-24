@@ -128,6 +128,18 @@ const phonebooks = {
     sub: baseDir + 'csns/phonebooks/sub',
 }
 
+const approval={
+    notfinished:baseDir+'bpub/approvals/notfinished',
+    finished:baseDir+'bpub/approvals/finished',
+    todo:baseDir+'bpub/approvals/todo',
+    done:baseDir+'bpub/approvals/done',
+    histories:baseDir+'bpub/approvals/details/histories',
+    details:baseDir+'bpub/approvals/details',
+    historyStatus:baseDir+'bpub/approvals/histories',
+    actions:baseDir+'bpub/approvals/actions',
+    todototal:baseDir+'bpub/approvals/todototal',
+    notfinishedtotal:baseDir+'bpub/approvals/notfinishedtotal'
+}
 
 
 
@@ -158,5 +170,6 @@ export {
     prdattr,
     prdattrgroup,
     phonebooks,
-    quartz
+    quartz,
+    approval
 }

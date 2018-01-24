@@ -33,7 +33,9 @@ export default class SlidePanel extends React.Component {
     }
 
     render() {
+        debugger
         if (this.props.viewState) {
+
             this.flag = true;
         }
         return (

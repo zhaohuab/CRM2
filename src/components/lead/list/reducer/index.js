@@ -12,7 +12,7 @@ let $$initialState = {
     editData: {},
     viewState: false,//获取view面板详细信息
     data: {}, //table展示的数据 
-    moreShow:false,
+    moreShow:false,//查询表单的显隐
     enumData: {//查询条件数据
         level: [],
         source: [],
@@ -171,11 +171,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({
                 viewState: action.payload.visible,
             });
-
-
-
-
-
         default:
             return $$state;
     }

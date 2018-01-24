@@ -40,6 +40,15 @@ const showTask= visible => {
     };
 
 };
+const showOver=visible => {
+    debugger
+    return dispatch => {
+        dispatch(
+            fetchData("QUARTZLIST_SHOWOVER", { visible })
+        );
+    };
+
+};
 
 //获取任务分组
 const getTaskgroups = (pagination) => {
@@ -76,9 +85,6 @@ const addTask = (visible) => {
             fetchData("QUARTZ_LIST_ADDTASK", {
                 visible
             })
-            // dispatch({
-            //     type: "QUARTZ_LIST_ADDTASK"
-            // });
         );
     };
 }
@@ -88,6 +94,15 @@ const onView = (record, id,visible) => {
     return dispatch => {
         dispatch(
             fetchData('QUARTZ_LIST_ONVIEW', {record,visible})
+        );
+    };
+
+}
+const onOver = (record, id,visible) => {
+    debugger
+    return dispatch => {
+        dispatch(
+            fetchData('QUARTZ_LIST_ONOVER', {record,visible})
         );
     };
 
@@ -233,15 +248,15 @@ const onDelete = (data) => {
 
 
 //编辑任务列表
-const onEdit = (value,visible) => {
+const onEdit = (values,visible) => {
     debugger
     return (dispatch) => {
         reqwest({
-            url: url.quartz + '/' + value.id,
+            url: url.quartz + '/' + values.id,
             method: 'put',
             data: {
                 param: {
-                    ...value,
+                    ...values,
                     ...pagination,
                 }
             }
@@ -326,5 +341,7 @@ export {
     editCardFn,
     addTask,
     onView,
-    showTask
+    onOver,
+    showTask,
+    showOver
 }

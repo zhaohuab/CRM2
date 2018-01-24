@@ -3,6 +3,8 @@
 @red:#fd786d;
 
  /*首页样式*/
+ .home-layer{
+    position: relative;
 .home-warrper {
    display: flex;
    flex-direction:column;
@@ -282,10 +284,71 @@
                 }
             }
         }
+
+        //审批
        .main-right-top{
         background: white;
         margin-bottom:10px;
+        padding: 15px;
+        padding-top: 0;
+         box-sizing: border-box;
+        h3.chart-title{
+            padding: 0;
+        }
+        .ant-row-flex.ant-row-flex-center{
+         text-align: center
        }
+       .ant-table-pagination.ant-pagination{
+           display: none
+       }
+       .approval-commit{
+           cursor: pointer;
+            margin:10px;
+           div{
+               font-size: 30px;
+               font-weight: 400;
+           }
+       }
+       .approval-approved{
+        cursor: pointer;
+        margin:10px;
+       div{
+           font-size: 30px;
+           font-weight: 400;
+       }
+       }
+       .approval-commitColor{
+        cursor: pointer;
+             margin:10px;
+             color:rgba(28, 127, 235, 1);
+        div{
+            font-size: 30px;
+            font-weight: 400;
+          
+        }
+    }
+       .approval-approvedColor{
+        color:rgba(28, 127, 235, 1);
+        cursor: pointer;
+        margin:10px;
+        div{
+            font-size: 30px;
+            font-weight: 400;
+         
+        }
+       }
+       }
+
+
+
+
+
+
+
+
+
+
+
        .main-right-bottom{
         background: white;
         height:635px;
@@ -294,3 +357,4 @@
     }
   }
 }
+ }

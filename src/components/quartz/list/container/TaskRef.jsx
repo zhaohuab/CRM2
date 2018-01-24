@@ -69,7 +69,6 @@ export default class TaskRef extends React.Component {
         debugger
         reqwest(
             {
-
                 url: baseDir + "quartz/tasks/ref",
                 method: "GET",
                 data: {

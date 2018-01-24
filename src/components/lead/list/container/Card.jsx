@@ -26,7 +26,7 @@ import * as enumDataFake from "./enumdata.jsx";
 import CityChioce from "./CityChioce";
 class EditForm extends React.Component {
     componentDidMount() {
-     
+
     }
 
     render() {
@@ -35,8 +35,8 @@ class EditForm extends React.Component {
             wrapperCol: { span: 14 }
         };
         let formItemLayout1 = {
-            labelCol: { span: 4 },
-            wrapperCol: { span:20 }
+            labelCol: { span: 5 },
+            wrapperCol: { span:24 }
         };
         const { getFieldDecorator } = this.props.form;
         let {
@@ -178,13 +178,38 @@ class EditForm extends React.Component {
                                     </FormItem>
                                 </Col>
                             </Row>
-                            <Row type="flex" justify="space-between">
+                            <Row type="flex" justify="center">
+
                                 <Col span={24} >
-                                    <FormItem label="备注" {...formItemLayout1}>
-                                        {getFieldDecorator("remarks")(
-                                            <TextArea rows={4} placeholder="请输入..." />
-                                        )}
-                                    </FormItem>
+                                    <Row type="flex">
+                                        <Col span={4}>
+                                            <Row
+                                                type="flex"
+                                                justify="end"
+                                            >
+                                                <div>备注：</div>
+                                            </Row>
+                                        </Col>
+                                        <Col span={20} className='remark'>
+                                            <FormItem
+                                                {...formItemLayout1}
+                                            >
+                                                {getFieldDecorator(
+                                                    "remarks",
+                                                    {}
+                                                )(
+                                                    <TextArea
+                                                        autosize={{
+                                                            minRows: 3,
+                                                            maxRows: 8
+                                                        }}
+                                                        placeholder="请输入"
+                                                        style={{ width: '100%' }}
+                                                    />
+                                                    )}
+                                            </FormItem>
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
                         </Form>
@@ -205,18 +230,18 @@ const CardForm = Form.create({
         debugger
         for (let key in viewData) {
 
-                value[key] = { value: viewData[key] };
-            
+            value[key] = { value: viewData[key] };
+
         }
-        //address  把字段合成对象
+        //  把字段合成对象
         return {
             ...value
         };
-        
+
     },
 
     onFieldsChange: (props, onChangeFild) => {
-debugger
+        debugger
         //往redux中写值
         let viewData = props.$$state.toJS().editData;
 

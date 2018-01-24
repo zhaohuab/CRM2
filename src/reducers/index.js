@@ -5,7 +5,9 @@ import login from "components/login/reducer";
 //左侧menu树
 import commonMenu from "components/common/menu/reducer";
 //头部
-import header from "components/common/header/reducer";
+ import header from "components/common/header/reducer";
+//云审批
+import approval from "components/home/reducer/approval.js"
 //最外层component
 import componentReducer from "../components/reducer.js";
 //project目录
@@ -71,7 +73,7 @@ let rootReducer = combineReducers({
     doc,
     login,
     commonMenu,
-    header,
+     header,
     componentReducer,
     userlist,
     orgReducers,
@@ -99,6 +101,7 @@ let rootReducer = combineReducers({
     lead,
     quartz,
     cusAssignReducers,
+    approval
 });
 
 export { rootReducer };

@@ -4,6 +4,7 @@ let $$initialState = {
 	taskVisible: false,
 	groupVisible: false,
 	viewVisible: false,
+	overVisible: false,
 	taskgroupdata: [{}],
 	pagination: {//分页信息
 		pageSize: 20,
@@ -47,7 +48,6 @@ function clearObject(obj) {
 	}
 	return obj
 }
-
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 	switch (action.type) {
 
@@ -61,12 +61,20 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				viewVisible: action.payload.visible,
 			});
-
+		case 'QUARTZLIST_SHOWOVER':
+			return $$state.merge({
+				overVisible: action.payload.visible,
+			});
 		case 'QUARTZ_LIST_ONVIEW': //点击编辑,浏览按钮获取数据
 			debugger
 			return $$state.merge({
 				viewData: action.payload.record,
 				viewVisible: action.payload.visible
+			});
+		case 'QUARTZ_LIST_ONOVER'://点击浏览
+			return $$state.merge({
+				viewData: action.payload.record,
+				overVisible: action.payload.visible
 			});
 		case 'QUARTZ_LIST_GETDATA': //获取分组数据
 			//debugger

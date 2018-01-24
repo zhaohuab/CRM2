@@ -28,7 +28,6 @@ function transData(searchMap) {
     return searchMap;
 }
 
-
 function transDate(date) {
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
@@ -52,6 +51,7 @@ const transReceiveData = (data) => {
     }
     return data;
 }
+
 //转换时间对象为字符串格式
 const transReceiveDataOne = (data) => {
     if (data.createdTime) {

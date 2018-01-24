@@ -52,7 +52,7 @@ class DetailObject extends React.Component {
                                     >
                                         <span>
                                             {
-                                                viewData.ownerUserInfo.name
+                                                viewData.ownerUserInfo? viewData.ownerUserInfo.name:''
                                             }
                                         </span>
                                     </Col>
@@ -512,7 +512,7 @@ class DetailObject extends React.Component {
                                     >
                                         <span>
                                             {
-                                              viewData.ownerUserInfo.deptName
+                                              viewData.ownerUserInfo?viewData.ownerUserInfo.deptName:''
                                             }
                                         </span>
                                     </Col>

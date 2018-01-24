@@ -8,7 +8,6 @@ const AutoCompleteOption = AutoComplete.Option;
 import TaskRef from './TaskRef'
 
 class RegistrationForm extends React.Component {
-
   render() {
     const { getFieldDecorator } = this.props.form;
     const { $$state } = this.props;
@@ -72,7 +71,6 @@ class RegistrationForm extends React.Component {
     );
   }
 }
-
 const Registration = Form.create({
   mapPropsToFields: props => {
       //把redux中的值取出来赋给表单
@@ -106,7 +104,6 @@ const Registration = Form.create({
       props.action.editCardFn(viewData);
   }
 })(RegistrationForm);
-
 
 function mapStateToProps(state, ownProps) {
   return {

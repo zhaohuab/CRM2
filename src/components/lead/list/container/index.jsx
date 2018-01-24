@@ -1,7 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Select, Input, Dropdown, Menu, Table, Button, Icon, Row, Col, Modal, Form, Tabs, Timeline, Collapse } from "antd";
+
+import { Select, Dropdown, Menu, Table, Button, Icon, Row, Col, Modal, Form, Tabs, Collapse } from "antd";
 import './index.less';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
@@ -9,7 +10,6 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 const confirm = Modal.confirm;
 import Immutable from "immutable";
-
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 
 //编辑，修改信息
@@ -22,7 +22,6 @@ import SlidePanel from "../../../common/slidePanel/index.jsx";
 import ViewPanel from "./ViewPanel";
 import "assets/stylesheet/all/iconfont.css";
 import * as Actions from '../action';
-
 
 class Clue extends React.Component {
     constructor(props) {
@@ -74,17 +73,17 @@ class Clue extends React.Component {
             },
             {
                 title: "负责人",
-                dataIndex: "ownerUserInfo"
+                dataIndex: "ownerUserInfo",
+                render: (text, record) => (
+                    <div>
+                        {record.ownerUserInfo.name}
+                    </div>
+                )
             }
-
         ]
-
         const that = this;
-
-
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
             //debugger;
-
             this.props.action.selectClue(selectedRows, selectedRowKeys);
         };
         this.menu = (
@@ -93,21 +92,16 @@ class Clue extends React.Component {
                 <Menu.Item key="2">导出</Menu.Item>
             </Menu>
         );
-
-
         this.state = {
             pagination: {
                 pageSize: 10,
                 page: 1
             }
         }
-
     }
-
     //显示面板
     slideShow(record) {
-        debugger
-        //console.log(44,record)
+       // debugger
         this.props.action.showViewForm(true, record.id);
     }
     //隐藏面版
@@ -186,8 +180,6 @@ class Clue extends React.Component {
         });
     }
 
-
-
     //上传数据时，各种参照的数据转换
     trancFn(data) {
         //城市
@@ -238,26 +230,21 @@ class Clue extends React.Component {
 
         this.props.action.edit(resultNew[0], true);
     }
-
     //新建一条线索
     newClue() {
         debugger
         this.props.action.addClue(true);
     }
-
     //头部按钮层返回按钮方法
     headerBack() {
         this.props.action.selectClue([]);
     }
-
-
     componentDidMount() {
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
         this.props.action.getEnumData();
     }
-
 
     render() {
         //debugger;
@@ -447,18 +434,12 @@ class Clue extends React.Component {
                     onClose={this.slideHide.bind(this)}
                     className='tab-viewPanel-recoverd'
                 >
-                    <ViewPanel/>
+                    <ViewPanel />
                 </SlidePanel>
             </div>
         );
     }
 }
-
-
-
-
-
-
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return { $$state: state.lead };

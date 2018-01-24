@@ -1,8 +1,18 @@
-import fetchData from 'utils/fetchdata';
+//import fetchData from 'utils/fetchdata';
 import reqwest from "utils/reqwest";
-import {baseDir} from 'api';
+//import {baseDir} from 'api';
 import { browserHistory } from 'react-router';
-import { approved as url } from 'api/zhb'
+//import { approved as url } from 'api/zhb'
+
+import { approval as url, doc, baseDir } from "api";
+
+const fetchData = (type, payload) => {
+    return {
+        type,
+        payload
+    };
+};
+
 
  const loginOut = () => {
    return (dispatch)=>{
@@ -96,8 +106,9 @@ const getDeparment = (path,id) => {
 
 //审批流中的方法
 const approvedShow = () => {//审批流显示
+    debugger
     return dispatch => {
-		dispatch(fetchData('HEADER_APPROVED_SHOW',{ approval: true }))
+		dispatch(fetchData('HEADER_APPROVED_SHOWDATE',{ approvalShow: true }))
     }
 }
 
@@ -152,6 +163,28 @@ const getApprovalData = () => {//获取审批流数据
     }
 }
 
+const getUnfinished = (pagination) => {
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.notfinished,
+                method: "GET",
+                data: {
+                    param:{
+                        ...pagination
+                    }
+                }
+            },
+            dataResult => {//我提交--未完成
+                debugger;
+                dispatch(fetchData('HEADER_NOTFINISHED_SUCCESS',{ unfinishedData: dataResult.datalist }))
+            }
+        )
+    }
+}
+
+
 export {
     loginOut,
     getData,
@@ -161,4 +194,5 @@ export {
     searchStateChange,
     approvedShow,
     getApprovalData,
+    getUnfinished
 }

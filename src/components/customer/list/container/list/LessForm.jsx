@@ -93,7 +93,9 @@ class LessForm extends React.Component {
 }
 
 const WarpMilForm = Form.create({
+
     mapPropsToFields: props => {
+        debugger
         //把redux中的值取出来赋给表单
         let searchMap = props.$$state.toJS().searchMap;
         let value = {};
@@ -105,6 +107,7 @@ const WarpMilForm = Form.create({
         };
     },
     onFieldsChange: (props, onChangeFild) => {
+        debugger
         //往redux中写值//把值进行更新改变
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {

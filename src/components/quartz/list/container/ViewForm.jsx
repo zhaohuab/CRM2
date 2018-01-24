@@ -84,29 +84,24 @@ class ViewForm extends React.Component {
 const View = Form.create({
   mapPropsToFields: (props) => {
     //把redux中的值取出来赋给表单
-    // debugger
+     debugger
     let viewData = props.$$state.toJS().viewData;
 
     let value = {};
     // debugger
     for (let key in viewData) {
-
       value[key] = { value: viewData[key] };
-
     }
     //address  把字段合成对象
     return {
       ...value
     };
-
-
   },
 
   onFieldsChange: (props, onChangeFild) => {
-    // debugger
+     debugger
     //往redux中写值
     let viewData = props.$$state.toJS().viewData;
-
     //往redux中写值//把值进行更新改变
     for (let key in onChangeFild) {
       if (onChangeFild[key].value && onChangeFild[key].value.key) {

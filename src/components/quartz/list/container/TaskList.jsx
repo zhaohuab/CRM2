@@ -122,11 +122,6 @@ class TaskList extends React.Component {
       debugger;
       if (!err) {
         this.props.action.onEdit(values,false);
-        // this.setState({
-        //   visible: false,
-        // }, () => {
-        //   this.props.action.onEdit(values);
-        // });
       }
     });
   }
@@ -135,23 +130,12 @@ class TaskList extends React.Component {
   onEdit = (record) => {
     debugger
     this.props.action.onView(record, record.id,true)
-    // this.setState({
-    //   visible: true,
-    // }, () => {
-    //   this.props.action.onView(record, record.id)
-    // });
+    
   }
 
   onView = (record) => {
     debugger
-   
-    this.props.action.onView(record, record.id,true)
-    // this.setState({
-    //   viewVisible: true,
-    // }, () => {
-    //   this.props.action.onView(record, record.id)
-
-    // });
+    this.props.action.onOver(record, record.id,true)
   }
 
   //停启用
@@ -173,7 +157,6 @@ class TaskList extends React.Component {
   confirm = (record) => {
     this.onDelete(record);
   }
-
   handleOk = (e) => {
     console.log(e);
     this.setState({
@@ -181,14 +164,13 @@ class TaskList extends React.Component {
       viewVisible: false
     });
   }
-  handleCancel = (e) => {
+hideView = (e) => { //编辑显隐
+    debugger
     this.props.action.showTask(false);
-    // this.setState({
-    //   visible: false,
-    //   viewVisible: false
-    // });
   }
-
+hideOver=(e)=>{
+  this.props.action.showOver(false);
+}
   //分页方法
   showTotal=(total)=> {
     return `共 ${total} 条`;
@@ -205,13 +187,12 @@ onPageSizeChange=(current, pageSize)=>{
         pagination
     );
 }
-
   render() {
     debugger
     const { $$state } = this.props;
     const page = $$state.get("data").toJS();
     let {
-      viewVisible
+      viewVisible,overVisible
    } = this.props.$$state.toJS(); //分组，任务显隐
     return (
       <div>
@@ -225,8 +206,8 @@ onPageSizeChange=(current, pageSize)=>{
             size: "large",
             showSizeChanger: true,
             showQuickJumper: true,
-            // total: page.total,
-            // showTotal: this.showTotal,
+            total: page.total,
+            showTotal: this.showTotal,
             onChange: this.onPageChange,
             onShowSizeChange: this.onPageSizeChange
           }}
@@ -234,16 +215,16 @@ onPageSizeChange=(current, pageSize)=>{
         <Modal
           title="编辑任务"
           visible={viewVisible}
-          onOk={this.onSave.bind(this)}
-          onCancel={this.handleCancel}
+          onOk={this.onSave}
+          onCancel={this.hideView}
         >
           <ViewForm wrappedComponentRef={(inst) => this.formRef = inst} />
         </Modal>
         <Modal
           title="查看任务"
-          visible={viewVisible}
-          onOk={this.handleCancel}
-          onCancel={this.handleCancel}
+          visible={overVisible}
+          onOk={this.hideOver}
+          onCancel={this.hideOver}
         >
           <ViewForm wrappedComponentRef={(inst) => this.formRefView = inst} />
         </Modal>
@@ -258,7 +239,6 @@ function mapStateToProps(state, ownProps) {
     $$state: state.quartz
   }
 }
-
 //绑定action到组件props
 function mapDispatchToProps(dispatch) {
   return {
