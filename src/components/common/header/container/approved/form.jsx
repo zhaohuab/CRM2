@@ -108,7 +108,7 @@ let WrapedCard = Form.create({
   onFieldsChange(props, changedFields) {//当 Form.Item 子节点的值发生改变时触发，可以把对应的值转存到 Redux store  ;
   console.log('changedFields=======',changedFields)
   if('status' in changedFields){
-    props.action.tableStateChange(changedFields.status.value)
+   props.action.tableStateChange(changedFields.status.value)
   }
   /*   let data = props.editData;
     for (let key in changedFields){
