@@ -96,7 +96,9 @@ class Child extends React.Component {
                 label='单据状态'
                 {...formItemLayout}
               >
-                {getFieldDecorator('status')(
+                {getFieldDecorator('status'
+          
+              )(
                   <RadioGroup size="large" onChange={this.onState}>
                     <RadioButton value="unFinish">未完成</RadioButton>
                     <RadioButton value="finish">已完成</RadioButton>
@@ -142,7 +144,6 @@ const WrapedCard = Form.create({
     return {
       ...value
     };
-
   },
   onFieldsChange: (props, onChangeFild) => {
      
