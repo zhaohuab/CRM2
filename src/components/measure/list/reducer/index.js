@@ -32,7 +32,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 	        return $$state.merge({
                 loading: true
             })
-        case 'MEASURE_LIST_GETLISTSUCCESS': 
+		case 'MEASURE_LIST_GETLISTSUCCESS': 
+		debugger
 	        return $$state.merge({
 	        	loading: false,
 				data: action.content,

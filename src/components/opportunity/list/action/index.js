@@ -111,6 +111,7 @@ const transReceiveDataOne = (data) => {
 //定义方法 action
 const getListData = (pagination, searchMap) => {
     return (dispatch) => {
+        debugger
         searchMap = transSearchMap(searchMap)
         dispatch(fetchData('OPPORTUNITY_LIST_SAVESEARCHMAP', searchMap));
         reqwest({
@@ -123,6 +124,7 @@ const getListData = (pagination, searchMap) => {
                 }
             }
         }, (data) => {
+            debugger
             dispatch(fetchData('OPPORTUNITY_LIST_GETDATA', { data: transReceiveData(data) }));
         })
     }

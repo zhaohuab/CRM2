@@ -30,6 +30,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				formVisitable: false
 			})
 		case 'ORG_LIST_GETLISTSUCCESSBYCLICKTREE':
+		debugger
 			return $$state.merge({
 				listData: action.payload,
 				tabelLoading: false,

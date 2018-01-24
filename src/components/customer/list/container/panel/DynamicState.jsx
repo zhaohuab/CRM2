@@ -1,6 +1,6 @@
 import {Timeline} from "antd";
 
-export default class ChangePerson extends React.Component {
+export default class StatusLine extends React.Component {
     render(){
         return(
             <div className="main-right-timeline timeline-recoverd">

@@ -60,17 +60,20 @@ class Header extends React.Component {
     }
 
     getApprovalData = () => {//获取审批流列表
+        debugger
         this.props.action.approvedShow();
-        this.props.action.getApprovalData();
+
+        this.props.action.getUnfinished(this.props.$$state.get("pagination").toJS());
     }
 
     render() {
-        //debugger;
+        let {approvalShow}=this.props.$$state.toJS();
+        
         const userName = cookie("name");
         let { $$state, action } = this.props;
         let title = $$state.get("title");    
         let phoneBook = $$state.get("phoneBook");  
-        let approval = $$state.get("approval");   
+        
                   
         return (
             <div className="app-header">
@@ -140,7 +143,7 @@ class Header extends React.Component {
                                     </a>                                   
                                 </Dropdown>
                                  { phoneBook ? <PhoneBooks /> : '' }
-                                 { approval ?  <Approved /> : ''}
+                                 {/* { approvalShow ?  <Approved /> : ''} */}
                             </Col>
                         </Row>
                     </Col>

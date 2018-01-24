@@ -230,7 +230,7 @@ class ToolForm extends React.Component {
                             </Row>
                         </div>
                     </Row>
-                )}
+                )}   
             </Row>
         );
     }
