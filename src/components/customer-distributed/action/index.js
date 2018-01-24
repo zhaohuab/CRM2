@@ -1,6 +1,5 @@
 import reqwest from "utils/reqwest";
 import { message } from "antd";
-import { cum as url, doc, baseDir,oppstage ,opportunity,contacts} from "api";
 import { distributed as url } from 'api/zhb';
 
 //包装发给redux的对象
@@ -19,6 +18,35 @@ const distributed = {//客户分布
  */
 
 const getCustomerList = () => {//获取客户数据
+    let src = url.department;
+    debugger
+    return dispatch => {
+        reqwest({
+            url: `${url.department}`,
+            method: "GET",
+            data: {}
+        }, result=>{
+            debugger;
+            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result }));
+        });
+        reqwest({
+            url: `${url.customer}`,
+            method: "GET",
+            data: {
+                param: {
+                    pageSize: 5,
+                    page: 1,
+				}
+            }
+        }, result=>{
+            debugger;
+            dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { ...result }));
+        })
+    }
+  
+}
+
+const getCustomerItem = () => {
     return dispatch => {
         reqwest({
             url: `${url.department}`,
@@ -33,7 +61,6 @@ const getCustomerList = () => {//获取客户数据
             dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result }));
         })
     }
-  
 }
 
 function transData(searchMap) {
@@ -65,4 +92,7 @@ const appendAddress = data => {
 
 
 //输出 type 与 方法
-export {};
+export {
+    getCustomerList,
+    getCustomerItem,
+};
