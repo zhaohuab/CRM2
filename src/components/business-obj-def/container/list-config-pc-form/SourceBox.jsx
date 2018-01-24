@@ -7,8 +7,9 @@ const boxSource = {
     return {
       name: props.name,
       apiName: props.apiName,
-      isReadOnly: props.isReadOnly || 0,
-      isRequired: props.isRequired || 0,
+      isBlank: props.isBlank || 0,
+      width: props.width || 0.5,
+      height: "1",
     };
   },
 
@@ -38,7 +39,7 @@ export default class Box extends Component {
     let opacity = isDragging ? 0.4 : 1;
     return (
       connectDragSource(
-        <div style={{ opacity }} className = "sourceBlock">
+        <div style={{ opacity, }} className = "sourceBlock">
           {name}
         </div>,
       )

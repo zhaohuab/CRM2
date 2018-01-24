@@ -1,6 +1,6 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { taskcard as url } from 'api';
+import { taskcard as url } from 'api/zhb';
 
 const showForm = (visible=false, editData = {}, isEdit = false, bizTypes = []) => {
 	return (dispatch) => {

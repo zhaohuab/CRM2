@@ -111,6 +111,7 @@ class List extends React.Component {
     //显示面板
     slideShow(record) {
         this.props.action.showViewForm(true, record.id);
+        this.props.action.getDetailFilds('customer')//----------------请求详情模板---------------------
     }
     //隐藏面版
     slideHide() {
@@ -140,7 +141,6 @@ class List extends React.Component {
         }
         //详细地址
         if (data.address) {
-            ;
             let value = data.address;
             data["address"] = value.address;
             data["latlng"] = value.latlng;
@@ -160,7 +160,6 @@ class List extends React.Component {
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
                 values = this.trancFn(values);
-                ;
                 if (values.id) {
                     this.props.action.listEditSave(values);
                 } else {
@@ -203,7 +202,6 @@ class List extends React.Component {
     tabChange() {
         let { viewState } = this.props.$$state.toJS();
         if (viewState) {
-            ;
             this.props.action.hideViewForm(false);
         }
     }
@@ -223,7 +221,39 @@ class List extends React.Component {
         );
     }
 
+    columnsTranslate = (columns) => {//----------表头转换：所有返回来的表头结构一致，每个组件进行函数转换，实现个性化操作
+        return columns.map(item=>{
+            if(item.dataIndex=='name'){
+                return (
+                   {
+                        title: "客户名称",
+                        dataIndex: "name",
+                        render: (text, record) => (
+                            <div
+                                onClick={this.slideShow.bind(this, record)}
+                                className="crm-pointer"
+                            >
+                                {record.name}
+                            </div>
+                        )
+                    }
+                )
+            }
+            if (item.dataIndex=='enableState'){
+                return (
+                    {
+                        title: "启用状态",
+                        dataIndex: "enableState",
+                        render: text => <span>{text == 1 ? "启用" : "未启用"}</span>
+                    }
+                )
+            }
+            return item;
+        })
+    }
+
     componentDidMount() {
+         this.props.action.getTitle('customer')
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
@@ -241,13 +271,16 @@ class List extends React.Component {
             viewState,
             viewData,
             icbcVisible,
-            icbcSelect
+            icbcSelect,
+            titleList
         } = this.props.$$state.toJS();
 
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+
+        let columns = this.columnsTranslate.call(this,titleList);//------获取表头
         return (
             
             <div className="custom-warpper ">
@@ -261,7 +294,7 @@ class List extends React.Component {
                     <TabPane tab={this.tabTitle(0)} key="1">
                         <div className="table-bg tabel-recoverd">
                             <Table
-                                columns={this.columns}
+                                columns={columns}
                                 dataSource={page.data}
                                 rowKey="id"
                                 rowSelection={rowSelection}

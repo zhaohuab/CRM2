@@ -61,6 +61,7 @@ const searchStateChange = (flag) => {
 }
  
 const searchData = (path,data) => {//搜索
+    //debugger;
     return dispatch => {
         reqwest(
             {
@@ -102,51 +103,60 @@ const approvedShow = () => {//审批流显示
 }
 
 const getApprovalData = () => {//获取审批流数据
-    let aa = url;
-    debugger;
+    //debugger;
+    let aa=url;
+    let data = { pageSize: 10, page: 1 }
     return dispatch => {
         reqwest(
             {
                 url: url.notfinished,
                 method: "GET",
-                data: {}
+                data: {
+                    param: data
+                }
             },
             dataResult => {//我提交--未完成
-                debugger;
-                dispatch(fetchData('HEADER_NOTFINISHED_SUCCESS',{ unfinishedData: dataResult.data }))
+                //debugger;
+                dispatch(fetchData('HEADER_NOTFINISHED_SUCCESS',{ unfinishedData: dataResult }))
             }
         );
         reqwest(
             { 
                 url: url.finished,
                 method: "GET",
-                data: {}
+                data: {
+                    param: data
+                }
             },
-            dataResult => {//我提交--已完成
-                debugger;
-                dispatch(fetchData('HEADER_FINISHED_SUCCESS',{ finishedData: dataResult.data }))
+            dataResult => {//我提交--已完成 
+                //debugger;             
+                dispatch(fetchData('HEADER_FINISHED_SUCCESS',{ finishedData: dataResult }))
             }
         );
         reqwest(
             {
                 url: url.todo,
                 method: "GET",
-                data: {}
+                data: {
+                    param: data
+                }
             },
-            dataResult => {//我审批--待办
-                debugger;
-                dispatch(fetchData('HEADER_TODO_SUCCESS',{ todoData: dataResult.data }))
+            dataResult => {//我审批--待办  
+                //debugger;           
+                dispatch(fetchData('HEADER_TODO_SUCCESS',{ todoData: dataResult }))
             }
         );
         reqwest(
             { 
                 url: url.done,
                 method: "GET",
-                data: {}
+                data: {
+                    param: data
+                }
             },
-            dataResult => {//我审批--已办
-                debugger;
-                dispatch(fetchData('HEADER_DONE_SUCCESS',{ doneData: dataResult.data }))
+            dataResult => {//我审批--已办     
+                //debugger;           
+                dispatch(fetchData('HEADER_DONE_SUCCESS',{ doneData: dataResult }))
             }
         );
     }

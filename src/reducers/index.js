@@ -57,7 +57,10 @@ import prdattrgroup from 'components/prdattrgroup/list/reducer';
 import businessObjDef from 'components/business-obj-def/reducer';
 
 //分配菜单
-import cusAssignReducers from 'components/customer/assign/reducer'
+import cusAssignReducers from 'components/customer/assign/reducer';
+//
+//客户分布
+import cusDistributed from 'components/customer-distributed/reducer';
 
 let rootReducer = combineReducers({ 
     login, 
@@ -89,7 +92,8 @@ let rootReducer = combineReducers({
     prdattr,
     prdattrgroup,
     businessObjDef,
-    cusAssignReducers
+    cusAssignReducers,
+    cusDistributed
 });
 
 export { rootReducer };

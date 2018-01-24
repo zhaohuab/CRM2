@@ -1,0 +1,23 @@
+.list-config-dist {
+  height: 400px;
+  overflow-y: auto;
+}
+.list-config-dist table {
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+}
+.list-config-dist table .head {
+  font-weight: bold;
+  color: #4d87e8;
+}
+.list-config-dist table .table-head-item {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+.list-config-dist table .table-checked {
+  width: 140px;
+}
+.list-config-dist td {
+  border: 1px solid #ddd;
+  padding: 10px 4px;
+}

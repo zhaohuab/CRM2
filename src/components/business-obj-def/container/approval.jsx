@@ -9,18 +9,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Table, Modal, Button, Input, Select, Radio, Popconfirm, Form, Row, Col, Checkbox } from 'antd';
+import Operation from 'components/common/operation';
+import * as Actions from "../action/approval.js"
+import Card from './approval-card';
+import './index.less';
 
-import Operation from 'components/common/operation'
 const Search = Input.Search;
 const FormItem = Form.Item;
 const CheckboxGroup = Checkbox.Group;
-import './index.less';
-
-//action方法
-import * as Actions from "../action/approval.js"
-
-import CreateForm from './approval-form';
-import Card from './approval-card';
 
 class Approval extends React.Component {
   constructor(props) {

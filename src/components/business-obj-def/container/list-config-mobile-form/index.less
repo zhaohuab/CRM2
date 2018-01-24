@@ -3,12 +3,17 @@
         margin-bottom: 10px;
         padding-bottom: 10px;
         border-bottom: 1px solid #ddd;
+        .prompt{
+            color:red;
+            animation: translate5 0.5s; 
+        }
     }
     .drag-fields-box {
         height: 400px;
         display: flex;
         .drag-fields-block {
             width: 370px;
+            overflow-y: auto;
             h3 {
                 width: 100%;
                 margin-bottom: 10px;
@@ -16,12 +21,16 @@
             .sourceBlock {
                 border: 1px dashed #ccc;
                 background-color: white;
-                padding: 0.5rem 1rem;
-                margin-right: 1.5rem;
-                margin-bottom: 1.5rem;
+                height: 30px;
+                line-height: 30px;
+                margin: 10px;
+                width: 80px;
                 cursor: move;
                 float: left;
                 opacity: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
             .disDrag {
                 background-color: #eee;
@@ -36,10 +45,22 @@
             flex-wrap: wrap;
             align-content: flex-start;
             overflow: auto;
-            h3 {
+            .error-prompt{
                 width: 100%;
-                margin-bottom: 10px;
+                position:relative;
+                h3 {
+                    width: 100%;
+                    margin-bottom: 10px;
+                }
+                .prompt{
+                    position:absolute;
+                    left: 70px;
+                    top:0;
+                    color:red;
+                    animation: translate5 0.5s; 
+                }
             }
+           
             .drag-fields-list-item {
                 position: relative;
                 box-sizing: border-box;
@@ -90,5 +111,16 @@
     .isRequired {
         margin-right: 4px;
         color: red;
+    }
+
+    @keyframes translate5{
+        from{
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to{
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
 }

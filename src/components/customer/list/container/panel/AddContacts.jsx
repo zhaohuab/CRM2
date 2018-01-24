@@ -62,7 +62,6 @@ export default class AddContacts extends React.Component {
                 }
             },
             result => {
-                ;
                 this.setState({
                     visible:true,
                     treeList:result.data
@@ -89,7 +88,6 @@ export default class AddContacts extends React.Component {
                 }
             },
             result => {
-                ;
                 this.setState({
                     visible:true,
                     personList:result,

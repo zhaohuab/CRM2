@@ -24,15 +24,13 @@ export default class UploadImg extends React.Component {
         });
     }
 
-    getBase64(img, callback) {
-        
+    getBase64(img, callback) {      
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result));
         reader.readAsDataURL(img);
     }
 
-    upFn(imageUrl,id){
-       
+    upFn(imageUrl,id){      
        let c=this.props.onChange
           reqwest(
             {
@@ -44,8 +42,7 @@ export default class UploadImg extends React.Component {
                     }
                 }
             },
-            data => {
-                
+            data => {             
                 let obj=[{
                         uid: id,
                         name: data.data[1],
@@ -54,8 +51,7 @@ export default class UploadImg extends React.Component {
                 }]
                 this.setState({
                     loading:false
-                },()=>{
-                    
+                },()=>{                 
                     if(this.props.onChange){
                         this.props.onChange(JSON.stringify(obj))
                     }
@@ -64,8 +60,7 @@ export default class UploadImg extends React.Component {
         );
     }
 
-    delFn(name,callback){
-        
+    delFn(name,callback){     
         reqwest(
             {
                 url: baseDir + " /cum/customers/deletefile",
@@ -82,8 +77,7 @@ export default class UploadImg extends React.Component {
         );
     }
 
-    handleChange = (info) => {
-        
+    handleChange = (info) => {    
           this.setState({ loading: true });
           if(info.file.originFileObj){
                 let id = info.file.originFileObj.uid
@@ -144,3 +138,5 @@ export default class UploadImg extends React.Component {
         );
     }
 }
+
+
