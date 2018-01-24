@@ -49,11 +49,12 @@ class UserTable extends Component {
     }
 
     //点击添加按钮
-    onAddUser() {
+    onAddUser(name) {
         const selectedRoleId = this.props.$$state.get("selectedRoleId");
-        const userCardPagination = this.props.$$state.get("userCardPagination").toJS();
-        this.props.action.showUserCard(selectedRoleId, userCardPagination);
+        this.props.action.showUserCard(selectedRoleId, name);
     }
+
+   
 
 
     //点击人员删除按钮
@@ -64,12 +65,33 @@ class UserTable extends Component {
         this.props.action.deleteUser(selectedRoleId, selectedUserRowKeys, userPagination);
     }
 
+    //存储添加用户页面的查询条件
+    saveUserCardName(userCardName){
+        debugger
+        this.nameRef;
+        this.refs
+        // this.props.action.saveUserCardName(userCardName)
+    }
+
+     //点击查询按钮
+     onSearchUser(name) {
+         debugger
+         
+        //  const name = this.props.$$state.get("userCardName");
+        const selectedRoleId = this.props.$$state.get("selectedRoleId");
+        this.props.action.showUserCard(selectedRoleId, name);
+    }
+
     //点击保存按钮
     onSaveUser() {
         const selectedRoleId = this.props.$$state.get("selectedRoleId");
         const selectedUserCardRowKeys = this.props.$$state.get("selectedUserCardRowKeys").toJS();
-        const userCardPagination = this.props.$$state.get("userCardPagination").toJS();
-        this.props.action.saveUser(selectedRoleId, selectedUserCardRowKeys, userCardPagination);
+        if(selectedUserCardRowKeys.length==0){
+            message.error('至少选择一条数据')
+            return
+        }
+        const userCardSearchMap = this.props.$$state.get("userCardSearchMap").toJS();
+        this.props.action.saveUser(selectedRoleId, selectedUserCardRowKeys, userCardSearchMap);
         this.props.action.closeUserCard();
     }
 
@@ -87,19 +109,19 @@ class UserTable extends Component {
         let pagination = this.props.$$state.get("userPagination").toJS()
         //可能有问题
         pagination = { page: page, pageSize: pageSize };
-        this.props.action.getUserListData(selectedRoleId, pagination,selectedRoleIsPreseted);
+        this.props.action.getUserListData(selectedRoleId, pagination, selectedRoleIsPreseted);
     }
     onPageSizeChange(current, pageSize) {
         let selectedRoleId = this.props.$$state.get("selectedRoleId")
         let selectedRoleIsPreseted = this.props.$$state.get("selectedRoleIsPreseted")
         let pagination = this.props.$$state.get("userPagination").toJS()
         pagination = { page: pagination.page, pageSize: pageSize };
-        this.props.action.getUserListData(selectedRoleId, pagination,selectedRoleIsPreseted);
+        this.props.action.getUserListData(selectedRoleId, pagination, selectedRoleIsPreseted);
     }
     render() {
         const { $$state } = this.props;
         const page = $$state.get("userList").toJS();
-
+        let name = $$state.get("userCardName")
         let selectedUserRowKeys = $$state.get("selectedUserRowKeys").toJS();
         let selectedUserRows = $$state.get("selectedUserRows").toJS();
         let userCardVisible = $$state.get("userCardVisible");
@@ -111,7 +133,7 @@ class UserTable extends Component {
             <div>
                 <Row type="flex" align="center" justify="end" className="userpanel-buttonline">
                     <Col span={4}>
-                        <Button onClick={this.onAddUser.bind(this)} className="returnbtn-class"><i className="iconfont icon-xinjian" />添加</Button>
+                        <Button onClick={this.onAddUser.bind(this, "")} className="returnbtn-class"><i className="iconfont icon-xinjian" />添加</Button>
                     </Col>
                     <Col span={4}>
                         {selectedUserRows.length > 0 ?
@@ -136,14 +158,30 @@ class UserTable extends Component {
                     </div>
                 </Row>
                 <Modal
-                    title="添加人员"
+                    title={
+                        <Row>
+                            <Col span={12}>
+                                人员
+                            </Col>
+                            <Col span={12}>
+                                <Search
+                                    placeholder="请输入关键字"
+                                    //  value = {name}
+                                    ref="myInput"
+                                    // onChange = {this.saveUserCardName.bind(this)}
+                                    //wrappedComponentRef={(inst) => this.nameRef = inst}
+                                    onSearch={this.onSearchUser.bind(this)}
+                                    style={{ width: 250 }}
+                                />
+                            </Col>
+                        </Row>
+                    }
                     visible={userCardVisible}
                     onOk={this.onSaveUser.bind(this)}
                     onCancel={this.onCloseUserCard.bind(this)}
                     width={500}
                 >
                     <div className="tabel-recoverd">
-
                         <UserCardTable />
                     </div>
                 </Modal>
