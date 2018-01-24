@@ -357,10 +357,11 @@ return  option;
     }
 
     getCustomerItem = () => {//点击部门获取到相应的业务员信息，及其客户分布情况
-        this.props.action.
+        this.props.action.getCustomerItem()
     }
 
     componentDidMount() {
+        this.props.action.getCustomerList();
         this.areaMap = echarts.init(this.refs.areaMap);
         this.areaMap.setOption(this.customerOption);
         window.addEventListener("resize", this.onWindowResize.bind(this));

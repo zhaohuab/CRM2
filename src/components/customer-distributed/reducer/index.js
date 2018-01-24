@@ -3,6 +3,7 @@ import Immutable from "immutable";
 let $$initialState = {
     data: [], //
     searchMap: {}, //存放查询条件
+    customerItem:[],
     itemFlag:false,
     pagination: {//分页信息
         pageSize: 5,
@@ -27,7 +28,11 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
                 return $$state.merge({
                     data: action.payload.result,
                 });
-            
+        case "CUSTOMER_ITEM_LIST_GETLISTSUCCESS ": //获取到左侧下半部分详情地址数据           
+                return $$state.merge({
+                    customerItem: action.payload.result,
+                    });
+                
         default:
             return $$state;
     }
