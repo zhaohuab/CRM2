@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Tabs, Table, Icon, Button, Form, Input, Checkbox, Row, Col, Modal, Spin,message } from 'antd';
+import { Tabs, Table, Icon, Button, Form, Input, Checkbox, Row, Col, Modal, Spin, message, Popover } from 'antd';
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import * as roleActions from "../action"
 import RoleCard from "./RoleCard"
@@ -33,15 +33,20 @@ class List extends React.Component {
         }, {
             title: '角色描述',
             dataIndex: 'description',
-            width:'40%'
+            width: '40%',
+            render: (text, row, index) => {
+                return <Popover content={text} trigger="hover">
+                    <div className="role-table-description">{text} </div>
+                </Popover>
+            },
         }, {
             title: '所属组织',
             dataIndex: 'orgName',
-            width:'20%'
+            width: '20%'
         }, {
             title: '角色类型',
             dataIndex: 'typeName',
-            width:'20%'
+            width: '20%'
         }]
 
         this.state = {
@@ -57,23 +62,23 @@ class List extends React.Component {
     //点击角色名称
     onNameClick = (row) => {
         const tabIndex = this.props.$$state.get("tabIndex");
-        if(tabIndex == 1){
-            this.props.action.getFuncTreeData(row.id,row.isPreseted);
-        }else if(tabIndex == 2){
-            this.props.action.getRightData(row.id,row.isPreseted);
-        }else if(tabIndex == 3){
+        if (tabIndex == 1) {
+            this.props.action.getFuncTreeData(row.id, row.isPreseted);
+        } else if (tabIndex == 2) {
+            this.props.action.getRightData(row.id, row.isPreseted);
+        } else if (tabIndex == 3) {
             const userPagination = this.props.$$state.get("userPagination").toJS();
-            this.props.action.getUserListData(row.id,userPagination,row.isPreseted);
+            this.props.action.getUserListData(row.id, userPagination, row.isPreseted);
         }
     }
     //点击新增按钮事件
     onAdd() {
         this.setState({ isEdit: false });
-        this.props.action.showRoleForm(true, {},false);
+        this.props.action.showRoleForm(true, {}, false);
     }
     //点击删除按钮事件
     onDelete = (row) => {
-        if(row.isPreseted ==1){
+        if (row.isPreseted == 1) {
             message.error("预制角色不允许删除");
             return;
         }
@@ -96,7 +101,7 @@ class List extends React.Component {
     onEdit = (row) => {
         this.setState({ isEdit: true });
         debugger
-        this.props.action.showRoleForm(true, row,true);
+        this.props.action.showRoleForm(true, row, true);
     }
     //保存事件
     onSave() {
@@ -112,7 +117,7 @@ class List extends React.Component {
                 }
             }
         });
-      
+
     }
     //form表单关闭按钮事件
     onClose() {
@@ -129,13 +134,13 @@ class List extends React.Component {
         this.props.action.onTabClick(tabIndex);
         const selectedRoleId = this.props.$$state.get("selectedRoleId");
         const selectedRoleIsPreseted = this.props.$$state.get("selectedRoleIsPreseted");
-        if(tabIndex == 1){
-            this.props.action.getFuncTreeData(selectedRoleId,selectedRoleIsPreseted);
-        }else if(tabIndex == 2){
-            this.props.action.getRightData(selectedRoleId,selectedRoleIsPreseted);
-        }else if(tabIndex == 3){
+        if (tabIndex == 1) {
+            this.props.action.getFuncTreeData(selectedRoleId, selectedRoleIsPreseted);
+        } else if (tabIndex == 2) {
+            this.props.action.getRightData(selectedRoleId, selectedRoleIsPreseted);
+        } else if (tabIndex == 3) {
             const userPagination = this.props.$$state.get("userPagination").toJS();
-            this.props.action.getUserListData(selectedRoleId,userPagination,selectedRoleIsPreseted);
+            this.props.action.getUserListData(selectedRoleId, userPagination, selectedRoleIsPreseted);
         }
     }
     onDispatch = () => {
@@ -150,7 +155,7 @@ class List extends React.Component {
         let funcData = $$state.get("funcData").toJS();
         //页面初始化查询第一条数据。
         if (page != null && page.data != null && page.data.length > 0 && funcData.length == 0) {
-            this.props.action.getFuncTreeData(page.data[0].id,page.data[0].isPreseted);
+            this.props.action.getFuncTreeData(page.data[0].id, page.data[0].isPreseted);
         }
         let editData = $$state.get("editData").toJS();
         let selectedRowKeys = $$state.get("selectedRowKeys").toJS();
@@ -168,25 +173,25 @@ class List extends React.Component {
                         goBack={this.btnBack.bind(this)}
                         length={selectedRowKeys.length}
                     >
-                        {selectedRowKeys.length == 1 ? 
-                        <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
-                        
-                            : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>
-                            }
+                        {selectedRowKeys.length == 1 ?
+                            <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
 
-                            {selectedRowKeys.length == 1 ? 
-                        <Button
-                            className="returnbtn-class"
-                            onClick={this.onDelete.bind(this, selectedRows[0])}
-                        >
-                            <i className="iconfont icon-shanchu" />删除
+                            : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>
+                        }
+
+                        {selectedRowKeys.length == 1 ?
+                            <Button
+                                className="returnbtn-class"
+                                onClick={this.onDelete.bind(this, selectedRows[0])}
+                            >
+                                <i className="iconfont icon-shanchu" />删除
                         </Button>
-                            
+
                             :
                             <Button className="default_button" disabled><i className='iconfont icon-shanchu'></i>删除</Button>}
                     </HeaderButton>
-                    : 
-                    
+                    :
+
                     <div >
                         {/* <Button onClick={this.onAdd.bind(this)}>新增角色</Button> */}
                         <SearchForm />
@@ -217,7 +222,7 @@ class List extends React.Component {
                                     <RightPanel />
                                 </TabPane>
                                 <TabPane tab="人员" key="3">
-                         
+
                                     <UserTable />
                                 </TabPane>
                             </Tabs>

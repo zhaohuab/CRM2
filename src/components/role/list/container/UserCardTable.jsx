@@ -33,23 +33,7 @@ class UserCardTable extends Component {
         };
     }
 
-    showTotal(total) {
-        return `共 ${total} 条`;
-    }
 
-    onPageChange(page, pageSize) {
-        let selectedRoleId = this.props.$$state.get("selectedRoleId")
-        let pagination = this.props.$$state.get("userCardPagination").toJS()
-        //可能有问题
-        pagination = { page: page, pageSize: pageSize };
-        this.props.action.showUserCard(selectedRoleId, pagination);
-    }
-    onPageSizeChange(current, pageSize) {
-        let selectedRoleId = this.props.$$state.get("selectedRoleId")
-        let pagination = this.props.$$state.get("userCardPagination").toJS()
-        pagination = { page: pagination.page, pageSize: pageSize };
-        this.props.action.showUserCard(selectedRoleId, pagination);
-    }
     render() {
         const { $$state } = this.props;
         const page = $$state.get("userCardList").toJS();
@@ -70,8 +54,8 @@ class UserCardTable extends Component {
                     rowKey="id"
                     dataSource={page.data}
                     rowSelection={rowSelection}
-                    pagination={{ size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
-
+                    pagination={false}
+                    scroll={{ y: 400 }}
                 />
             </div>
 

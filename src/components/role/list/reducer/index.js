@@ -33,7 +33,8 @@ let $$initialState = {
 	userList: [],
 	userCardList: [],
 	enumData: { data: [] },
-	rightData: []
+	rightData: [],
+	userCardName:''
 };
 
 function pageAdd(page, item) {
@@ -103,12 +104,16 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				roleCardVisible: false,
 				data: pageAdd($$state.get("data").toJS(), action.content),
-				selectedRoleId: action.content.id
+				selectedRoleId: action.content.id,
+				selectedRowKeys: [],
+				selectedRows: [],
 			})
 		case 'ROLE_CARD_SAVEEDIT':
 			return $$state.merge({
 				roleCardVisible: false,
 				data: pageEdit($$state.get("data").toJS(), action.content),
+				selectedRowKeys: [],
+				selectedRows: [],
 			})
 
 		case 'ROLE_LIST_DELETESUCCESS':
