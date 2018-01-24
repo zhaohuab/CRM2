@@ -1,0 +1,78 @@
+Row,
+Col,
+div,
+Button,
+span {
+  margin: 0;
+  padding: 0;
+}
+.customer-panelMap-wraper .customer-panelMap-left {
+  padding: 0 14px 0 16px;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-detail-title {
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #ddd;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-detail-title .customer-detail-total {
+  height: 50px;
+  line-height: 50px;
+  color: #333;
+  font-size: 14px;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-principal {
+  width: 100%;
+  height: 210px;
+  box-sizing: border-box;
+  padding: 15px 15px 5px 15px;
+  overflow-y: auto;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-item {
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  margin: 0 10px 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-item .customer-num {
+  color: #3ca4fb;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address {
+  width: 100%;
+  height: 350px;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item {
+  box-sizing: border-box;
+  width: 100%;
+  height: 70px;
+  border: 1px solid #eee;
+  margin-bottom: -1px;
+  padding: 14px 0;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .item-content {
+  height: 42px;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .item-content .item-content-name {
+  width: 100%;
+  height: 20px;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: #1C7FEB;
+  margin-bottom: 5px;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .item-content .item-content-adress {
+  width: 100%;
+  height: 17px;
+  line-height: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  color: #999;
+}

@@ -19,6 +19,7 @@ class Enum extends React.Component {
     }
     
     render() {
+        
         let key = this.props.value;
         if(key) {
             key = String(key);

@@ -27,7 +27,6 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
-        ;
         this.props.handleSearch(this.props.$$state.toJS().searchMap);
     }
     moreFn() {
@@ -39,9 +38,7 @@ class LessForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        
-        let { enumData } = this.props.$$state.toJS();
-        
+        let { enumData } = this.props.$$state.toJS();       
         return (
             <div className="less-form">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>

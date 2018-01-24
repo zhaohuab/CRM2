@@ -40,8 +40,7 @@ const selectRow = (selectedRows, selectedRowKeys) => {
 };
 
 //控制新增修改表单显隐
-const showForm = visible => {
-    
+const showForm = visible => {   
     return fetchData("CUSTOMER_LIST_SHOWFORM", { visible });
 };
 
@@ -126,8 +125,7 @@ const getListData = (pagination, searchMap) => {
                     }
                 }
             },
-            data => {
-               
+            data => {            
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {
                         data: data,
@@ -150,8 +148,7 @@ const getEnumData = () => {
                     param: { ids: "1,2,3,4,5,6" }
                 }
             },
-            data => {
-                
+            data => {                
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETENUMDATA", {
                         enumData: data.enumData
@@ -163,8 +160,7 @@ const getEnumData = () => {
 };
 
 //修改客户保存
-const listEditSave = data => {
-    
+const listEditSave = data => {   
     return dispatch => {
         reqwest(
             {
@@ -175,7 +171,6 @@ const listEditSave = data => {
                 }
             },
             data => {
-                ;
                 dispatch({
                     type: "CUSTOMER_LIST_EDITSAVE",
                     data
@@ -187,7 +182,6 @@ const listEditSave = data => {
 
 //新增客户保存
 const listAddSave = data => {
-    ;
     return dispatch => {
         reqwest(
             {
@@ -198,7 +192,6 @@ const listAddSave = data => {
                 }
             },
             data => {
-                ;
                 dispatch({
                     type: "CUSTOMER_LIST_ADDSAVE",
                     data
@@ -225,6 +218,7 @@ const showViewForm = (visible, id) => {
                         method: "GET"
                     },
                     state => {
+                        //debugger;
                         dispatch({
                             type: "CUSTOMER_LIST_SHOWVIEWFORM",
                             visible,
@@ -245,10 +239,8 @@ const hideViewForm = visiable => {
 
 //存放工商信息详细数据 viewData, visible, stateIcbc, isClose
 const customerListInfo = (data, visible, viewData) => {
-    ;
     return dispatch => {
         //使用id获取详情发Request
-        ;
         dispatch({
             type: "CUSTOMER_LIST_ICBCDETAILINFO",
             data,
@@ -259,7 +251,6 @@ const customerListInfo = (data, visible, viewData) => {
 };
 
 const icbcDetailInfo = (data, id, visiable) => {
-    ;
     return {
         type: "CUSTOMER_LIST_ICBCINFODETAIL",
         data,
@@ -276,7 +267,6 @@ const changeStateFn = visiable => {
 };
 
 const checkedFn = (id, visiable, verifyId) => {
-    ;
     return dispatch => {
         reqwest(
             {
@@ -290,7 +280,6 @@ const checkedFn = (id, visiable, verifyId) => {
                 }
             },
             result => {
-                ;
                 dispatch({
                     type: "CUSTOMER_LIST_CLEANSELECT",
                     verifyId,
@@ -314,7 +303,6 @@ const checkedCancelFn = (id, visiable) => {
                 }
             },
             result => {
-                ;
                 dispatch({
                     type: "CUSTOMER_LIST_CLEANVERIFYID",
                     visiable
@@ -326,7 +314,6 @@ const checkedCancelFn = (id, visiable) => {
 
 //点击关注按钮
 const attentionFn = (id, state) => {
-    ;
     return dispatch => {
         reqwest(
             {
@@ -339,7 +326,6 @@ const attentionFn = (id, state) => {
                 }
             },
             state => {
-                ;
                 dispatch({
                     //followState
                     type: "CUSTOMER_LIST_FOLLOWSTATECHANGE",
@@ -352,7 +338,6 @@ const attentionFn = (id, state) => {
 
 //控制modal2状态显隐的
 const modalDetalVisiable = (visiable, verifyId) => {
-    ;
     return dispatch => {
         reqwest(
             {
@@ -360,8 +345,6 @@ const modalDetalVisiable = (visiable, verifyId) => {
                 method: "GET"
             },
             result => {
-                ;
-
                 dispatch({
                     type: "CUSTOMER_LIST_MODALDETALSHOW",
                     visiable,
@@ -423,7 +406,6 @@ const editCardFn = changeData => {
 
 //点击分配改变负责人信息
 const assignChangeViewData = (viewData) =>{
-    
     return{
         type: "CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL",
         viewData
@@ -431,8 +413,7 @@ const assignChangeViewData = (viewData) =>{
 }
 
 //点击获取右侧面板相关list
-const getRightPaneltList = (id,JoinPagination,index) =>{
-    
+const getRightPaneltList = (id,JoinPagination,index) =>{  
     return dispatch => {
         reqwest(
             {
@@ -448,7 +429,6 @@ const getRightPaneltList = (id,JoinPagination,index) =>{
                 }
             },
             result => {
-                ;
                 dispatch({
                     type: "CUSTOMER_VIEWPANEL_PANELRIGHT_LIST",
                     data: result,
@@ -468,7 +448,6 @@ const changeLeftPanel = (index)=>{
 
 //点击获取左侧面板相关list
 const getLeftPaneltList = (id,JoinPagination,index)=>{
-    
     return dispatch => {
         reqwest(
             {
@@ -484,7 +463,6 @@ const getLeftPaneltList = (id,JoinPagination,index)=>{
                 }
             },
             result => {
-                ;
                 dispatch({
                     type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
                     index,
@@ -505,7 +483,6 @@ const setRightPaneltList = (data)=>{
 
 //删除参与人
 const delRightPaneltList = (id)=>{
-    
     return{
         type:'CUSTOMER_VIEWPANEL_PANELLEFT_DELLIST',
         id
@@ -514,7 +491,7 @@ const delRightPaneltList = (id)=>{
 
 //保存联系人相关对象表单值
 const refContactForm = (changeData)=>{
-    debugger
+   // debugger
     return {
         type: "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORM",
         data: changeData
@@ -522,7 +499,7 @@ const refContactForm = (changeData)=>{
 }
 
 const refContactFormAdd = (data)=>{
-    debugger
+    //debugger
     return {
         type: "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD",
         data
@@ -531,7 +508,7 @@ const refContactFormAdd = (data)=>{
 
 //新增联系人相关对象
 const clearRefContactsForm = ()=>{
-    debugger
+    //debugger
     return {
         type: "CUSTOMER_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM",
     };
@@ -540,7 +517,6 @@ const clearRefContactsForm = ()=>{
 
 //获取最新商机列表
 const getOppList = (JoinPagination,id,index)=>{
-    
     return dispatch => {
         reqwest(
             {
@@ -556,7 +532,6 @@ const getOppList = (JoinPagination,id,index)=>{
                 }
             },
             result => {
-                ;
                 dispatch({
                     type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
                     data:result.data,
@@ -568,8 +543,7 @@ const getOppList = (JoinPagination,id,index)=>{
 }
 
 //删除一条商机
-const delOpp = (ids,pagination)=>{
-    
+const delOpp = (ids,pagination)=>{   
     return (dispatch) => {
         reqwest({
             url: opportunity.opportunity + '/batch',
@@ -581,8 +555,7 @@ const delOpp = (ids,pagination)=>{
                     searchMap: {}
                 },
             }
-        }, (data) => {
-            
+        }, (data) => {        
             dispatch({
                 type:'CUSTOMER_VIEWPANEL_DELOPP',
                 ids
@@ -592,8 +565,7 @@ const delOpp = (ids,pagination)=>{
 }
 
 //删除一条联系人
-const delContacts = (id,pagination)=>{
-    
+const delContacts = (id,pagination)=>{  
     return (dispatch) => {
         reqwest(
             {
@@ -607,8 +579,7 @@ const delContacts = (id,pagination)=>{
                     }
                 }
             },
-            result => {
-                
+            result => {          
                 dispatch({
                     type: "CUSTOMER_VIEWPANEL_DELCONTACTS",
                     id
@@ -618,6 +589,86 @@ const delContacts = (id,pagination)=>{
     }
 }
 
+
+//======================以下为模板请求方法
+const getLayout = (module) => {//----------------------自定义新增模板--------------
+    debugger;
+    return dispatch => {
+        reqwest(
+            {
+                url: baseDir + `/*/${module}/templates`,
+                method: "GET",
+                data:{
+                    param:{
+                        layoutType:'编辑',
+                        biztypeId:11,
+                        clientType:'PC端',
+                    }
+                }
+            },
+            result => {
+                debugger;
+                console.log('result=================',result)
+                dispatch({
+                    type: "CUSTOMER_CARD_ADD",
+                    layoutFilds: result.mainObject
+                });
+            }
+        );
+    };
+}
+
+
+const getTitle = (module) => {//--------------自定义table表头--------------------
+    //debugger;
+    return dispatch => {
+        reqwest({
+            url:baseDir + `/*/${module}/templates`,
+            method:'GET',
+            data:{
+                param:{
+                    biztypeId:11,
+                    clientType:'PC端',
+                }
+            }
+        },
+        result => {
+           // debugger;
+            dispatch({
+                type: "CUSTOMER_GETTITLE_SUCCESS",
+                titleList: result.mainObject
+            })
+        }
+        )
+    }
+}
+
+const getDetailFilds = (module) => {//------------自定义详情模板---------------
+   // debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: baseDir + `/*/${module}/templates`,
+                method: "GET",
+                data:{
+                    param:{
+                        layoutType:'查看',
+                        biztypeId:11,
+                        clientType:'PC端',
+                    }
+                }
+            },
+            result => {
+               // debugger;
+                dispatch({
+                    type: "CUSTOMER_GETDETAIL_SUCCESS",
+                    detailFilds: result.mainObject,
+                    relationObject: result.relationObject,
+                });
+            }
+        );
+    };
+}
 
 //输出 type 与 方法
 export {
@@ -656,5 +707,10 @@ export {
     clearRefContactsForm,
     getOppList,
     delOpp,
-    delContacts
+    delContacts,
+    
+    //==========以下为模板方法
+    getLayout,
+    getTitle,
+    getDetailFilds
 };

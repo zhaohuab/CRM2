@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row, Modal} from "antd";
 import cookie from "utils/cookie";
 import { bindActionCreators } from "redux";
-import { phonebooks as url } from "api";
+import { phonebooks as url } from "api/zhb";
 import PhoneBooks from './phonebooks/index.jsx';
 import Approved from './approved/index.jsx';
 import * as Actions from "../action/index.js";

@@ -32,7 +32,6 @@ export default class FormMap extends React.Component {
 
         this.placeSearch.search(this.state.inputValue, (status, result) => {
             if (status === "complete" && result.info === "OK") {
-                ;
                 //this.map.setCenter(result.geocodes[0].location);
                 this.setState({
                     markList: result.poiList.pois,

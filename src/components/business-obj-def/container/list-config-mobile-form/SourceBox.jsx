@@ -7,8 +7,12 @@ const boxSource = {
     return {
       name: props.name,
       apiName: props.apiName,
-      isReadOnly: props.isReadOnly || 0,
+      elementType: props.elementType,
+      isReadonly: props.isReadonly || 0,
       isRequired: props.isRequired || 0,
+      isBlank: props.isBlank || 0,
+      width: props.width || 0.5,
+      height: "1",
     };
   },
 

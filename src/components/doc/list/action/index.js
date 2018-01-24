@@ -1,6 +1,6 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { doc as url } from 'api';
+import { doc as url } from 'api/zhb';
 
 const showForm = (detail,flag,editData={}) =>{
 	if(detail=='detail'){//档案详情查看
@@ -195,7 +195,6 @@ const detailAdd = (data) => {//添加档案明细
  }
 
 const onDetail = (data,detailVisible) => {//
-	debugger;	
 	return (dispatch) => {
 		reqwest({
 			url: `${url.doc}/${data.id}`,

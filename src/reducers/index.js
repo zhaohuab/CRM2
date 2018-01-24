@@ -66,7 +66,10 @@ import quartz from 'components/quartz/list/reducer'
 
 
 //分配菜单
-import cusAssignReducers from 'components/customer/assign/reducer'
+import cusAssignReducers from 'components/customer/assign/reducer';
+//
+//客户分布
+import cusDistributed from 'components/customer-distributed/reducer';
 
 let rootReducer = combineReducers({ 
     login, 
@@ -98,6 +101,8 @@ let rootReducer = combineReducers({
     prdattr,
     prdattrgroup,
     businessObjDef,
+    cusAssignReducers,
+    cusDistributed,
     lead,
     quartz,
     cusAssignReducers,

@@ -7,6 +7,7 @@ import tplSetting from './tpl-setting';
 import listConfig from './list-config';
 import approval from './approval';
 
+
 export default combineReducers({
     businessObj,
     fieldSetting,

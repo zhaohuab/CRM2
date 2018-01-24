@@ -12,8 +12,11 @@ const org = {
 };
 
 const user = {
-    listTpl: baseDir + "sys/users/template/list",
-    addTpl: baseDir + "sys/users/template/add",
+
+    listTpl : baseDir + "sys/users/template/list",
+    addTpl : baseDir + "sys/users/template/add",
+    editTpl : baseDir + "sys/users/template/edit",
+
     user: baseDir + "sys/users",
     userBatch: baseDir + "sys/users/batch",
     enable: baseDir + "sys/users/state" // {id}/state
@@ -93,11 +96,6 @@ const oppaction = {
     doc: baseDir + "sprc/oppactions/docs",
 }
 
-const visitrules = {
-    visitrules: baseDir + 'sact/visitrules',
-    enable: baseDir + '/sact/visitrules/state',
-}
-
 const oppstage = {
     oppstage: baseDir + 'sprc/oppstages',
     all: baseDir + 'sprc/oppstages/all',
@@ -128,6 +126,9 @@ const phonebooks = {
     sub: baseDir + 'csns/phonebooks/sub',
 }
 
+const func = {
+    func: baseDir + "sys/functions"
+};
 const approval={
     notfinished:baseDir+'bpub/approvals/notfinished',
     finished:baseDir+'bpub/approvals/finished',
@@ -157,19 +158,17 @@ export {
     product,
     baseDir,
     contacts,
-    taskcard,
     sysinit,
-    doc,
     opportunity,
     oppaction,
     visitRouter,
-    visitrules,
     oppstage,
     oppdimension,
     oppflow,
     prdattr,
     prdattrgroup,
     phonebooks,
+    func,
     quartz,
     approval
 }

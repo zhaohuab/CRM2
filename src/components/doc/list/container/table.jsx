@@ -89,7 +89,7 @@ class FileDetail extends React.Component {
   }
 
   onChange(record, value){
-    debugger;
+    //debugger;
     if (record.editState != 'ADD' ){
       record.editState = 'UPDATE';
     }

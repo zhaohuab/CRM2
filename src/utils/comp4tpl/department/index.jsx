@@ -20,6 +20,7 @@ class Department extends React.Component {
         this.getData();
     };
     onOk = () => {
+        debugger
         this.setState({ visible: false });
         this.triggerChange(this.state.select);
     };
@@ -51,7 +52,12 @@ class Department extends React.Component {
             {
                 url: url.orgTree,
                 method: "get",
-                data: {}
+                data: {
+                    param:{
+                        orgType:3,
+                        fatherorgId:this.props.fatherorgId
+                    }
+                }
             },
             dataResult => {
                 that.setState({ dataSource: dataResult.data });
@@ -74,7 +80,7 @@ class Department extends React.Component {
     getTitle() {
         return (
             <div className="pepole-refer">
-                <div>组织</div>
+                <div>部门</div>
                 <div className="pepole-refer-search">
                     <Search
                         placeholder="请输入关键字"
@@ -89,20 +95,20 @@ class Department extends React.Component {
             this.props.value  ? (
                 <Icon type="close" onClick={this.emitEmpty} />
             ) : null;
-
         return (
             <div>
                 {/* <Input value={key}/> */}
-                <Input
+                
+                {this.props.disabled?<Input disabled value={this.props.value} />:<Input
                     value={this.props.value}
                     placeholder="请选择..."
                     onClick={this.onClick}
                     suffix={suffix}
-                />
+                />}
                 <Modal
                     title={this.getTitle()}
                     visible={this.state.visible}
-                    onOk={this.onOk}
+                    onOk={this.onOk.bind(this)}
                     onCancel={this.onClose}
                     width={400}
                     closable={false}

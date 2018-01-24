@@ -182,7 +182,7 @@ export default class Industry extends React.Component {
 
     //每隔500毫秒执行一次查找请求
     lodashSearch(value) {
-        debugger
+       // debugger
         reqwest(
             {
                 url: baseDir + "/base/industrys/list",

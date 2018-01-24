@@ -2,6 +2,7 @@
 import { Form,Input  } from 'antd';
 import Email from 'utils/comp4tpl/emails'
 import Department from 'utils/comp4tpl/department'
+import Company from 'utils/comp4tpl/company'
 import Enum from 'utils/comp4tpl/enums'
 import RadioGroup from 'utils/comp4tpl/radios'
 import DateTime from 'utils/comp4tpl/datetime'
@@ -14,12 +15,25 @@ const getFormItem = (getFieldDecorator,field, layout) => {
         return undefined;
     }
     if (field.visible) {
+        let opt = {};
+        if(field.validateType!=""&&field!=undefined) {
+            if(field.validateType == "phone"){
+                opt = {pattern: /^[1][0-9]{10}$/}
+            }else {
+                opt = {type:field.validateType}
+            }
+        }
         return <FormItem
             label={field.name}
             {...layout}
         >
             {getFieldDecorator(field.code, {
-
+                initialValue:field.defaultValue,
+                rules: [{
+                    required: !field.nullAble,
+                    message: "请输入正确的"+field.name,
+                    ...opt
+                }],
             })(
                 comp
                 )}
@@ -27,7 +41,7 @@ const getFormItem = (getFieldDecorator,field, layout) => {
     }
     else {
         getFieldDecorator(field.code, {
-
+            initialValue:field.defaultValue,
         })(
             comp
             )
@@ -50,8 +64,12 @@ const getComponent = (field) => {
     else if (field.render == "Email") {
         return <Email />
     }
-    else if (field.render == "Departments") {
-        return <Department mapper={field.readWriteFields} />
+    else if (field.render == "Company") {
+        return !field.disabled ? <Company mapper={field.readWriteFields} />:<Input disabled  />
+    }
+    else if (field.render == "Department") {
+        return  <Department fatherorgId={field.relationId}  mapper={field.readWriteFields} disabled={field.disabled}/>
+        //return  !field.disabled ? <Department fatherorgId={field.relationId}  mapper={field.readWriteFields} />:<Input disabled  />
     }
     else if (field.render == "Date") {
         return <DateTime />

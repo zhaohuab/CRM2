@@ -79,7 +79,7 @@ const viewState = (viewState) => {
 
 
 //审批状态显隐
-const statusShow = (lineState,djId,djType) => {
+const statusShow = (lineState, djId, djType) => {
     debugger
     return dispatch => {
         dispatch(fetchData('APPROVED_STATUSSHOW', { lineState }));
@@ -100,7 +100,7 @@ const statusShow = (lineState,djId,djType) => {
                 dispatch(fetchData(
                     "APPROVAL_LIST_HISTORY",
                     {
-                   data:data.historylist   
+                        data: data.historylist
                     }
                 ));
 
@@ -136,15 +136,15 @@ const saveDetailData = (data) => {
 
     return fetchData("APPROVE_LIST_DETAILDATA", { data });
 };
-const mentionVisible=(visible,action)=>{
+const mentionVisible = (visible, action) => {
     debugger
-    return fetchData("APPROVE_LIST_MENTIONVISIBLE", {visible,action});
+    return fetchData("APPROVE_LIST_MENTIONVISIBLE", { visible, action });
 }
-const mentionVisibleClose=(visible)=>{
-    return fetchData("APPROVE_LIST_MENTIONCLOSE", {visible });
+const mentionVisibleClose = (visible) => {
+    return fetchData("APPROVE_LIST_MENTIONCLOSE", { visible });
 }
 //展示面板，把点击某个客户的所有值，放在redux中
-const showViewForm = (visible, djId, djType,instanceId,taskId,record) => {
+const showViewForm = (visible, djId, djType, instanceId, taskId, record) => {
     return dispatch => {
         debugger
         reqwest(
@@ -164,7 +164,7 @@ const showViewForm = (visible, djId, djType,instanceId,taskId,record) => {
                     "APPROVAL_LIST_SHOWVIEWFORM",
                     {
                         visible,
-                        data:transReceiveDataOne(data),
+                        data: transReceiveDataOne(data),
                         record
                     }
                 ));
@@ -199,8 +199,8 @@ const showViewForm = (visible, djId, djType,instanceId,taskId,record) => {
                 method: "GET",
                 data: {
                     param: {
-                        taskid:taskId,
-                        instanceid:instanceId
+                        taskid: taskId,
+                        instanceid: instanceId
                     }
                 }
             },
@@ -223,7 +223,7 @@ const hideViewForm = visiable => {
     return fetchData("APPROVAL_LIST_HIDEVIEWFORM", { visiable });
 };
 
-const allButtons=(id,type,taskid,instanceid,notes,action)=>{
+const allButtons = (id, type, taskid, instanceid, notes, action) => {
     debugger
     return dispatch => {
         reqwest(
@@ -232,19 +232,19 @@ const allButtons=(id,type,taskid,instanceid,notes,action)=>{
                 method: "POST",
                 data: {
                     param: {
-                        id,type,taskid,instanceid,notes,action
+                        id, type, taskid, instanceid, notes, action
                     }
                 }
             },
             dataResult => {
-              
+
             }
         )
     }
 }
 
 
-const getUnfinished = (pagination,searchMap) => {
+const getUnfinished = (pagination, searchMap) => {
     debugger
     return dispatch => {
         reqwest(
@@ -290,7 +290,7 @@ const getDateUnfinished = (pagination, searchMap, queryDateKey) => {
 }
 
 
-const getFinished = (pagination,searchMap) => {
+const getFinished = (pagination, searchMap) => {
     debugger
     return dispatch => {
         reqwest(
@@ -414,7 +414,12 @@ const getDateDone = (pagination, searchMap, queryDateKey) => {
         );
     }
 
+}
 
+const tableStateChange = (value) => {
+    return dispatch => {
+        dispatch(fetchData('HEADER_TABLESTATECHANGE_SUCCESS', { tableState: value }))
+    }
 }
 
 const getApprovalData = () => {//获取审批流数据
@@ -474,6 +479,9 @@ export {
     getFinished,
     getTodo,
     getDone,
+    tableStateChange,
+
+
     approvedShow,
     saveSearchMap,
     getDateUnfinished,
@@ -557,20 +565,4 @@ const searchData = (path,data) => {//搜索
     }
 }
 
-const getDeparment = (path,id) => {
-    return dispatch => {
-        reqwest(
-            {
-                url: path,
-                method: "GET",
-                data: {
-                    deptId: id
-                }
-            },
-            dataResult => {
-                dispatch(fetchData('HEADER_SEARCH_SUCCESS',{ searchData: dataResult }))
-            }
-        )
-    }
-}
-*/
+/* 更换页码请求数据时候返回的数据没有表格头部 */
