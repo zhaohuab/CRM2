@@ -199,7 +199,7 @@ const getUserListData = (roleId,pagination,isPreseted) => {
 }
 
 
-const showUserCard = (roleId,pagination) => {
+const showUserCard = (roleId,name) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.role+"/"+roleId+"/add/users",
@@ -207,7 +207,7 @@ const showUserCard = (roleId,pagination) => {
 			data: {
 				param:{
 					roleId,
-					...pagination
+					name
 				}
 			},
 		}, result => {
