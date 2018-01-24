@@ -92,8 +92,6 @@ const prdattrgroup = {
     prdattrgroup: baseDir + 'base/attrgroups',
 }
 
-<<<<<<< HEAD
-=======
 const phonebooks = {
     mydept: baseDir + 'csns/phonebooks/mydept',
     organizations: baseDir + 'csns/phonebooks/organizations',
@@ -105,7 +103,6 @@ const func = {
     func: baseDir + "sys/functions"
 };
 
->>>>>>> fa1d9856800c8f4a416f38d6e3cb853ac12cb8aa
 export {
     login,
     menu,
@@ -128,10 +125,7 @@ export {
     oppflow,
     prdattr,
     prdattrgroup,
-<<<<<<< HEAD
-=======
     phonebooks,
     func
->>>>>>> fa1d9856800c8f4a416f38d6e3cb853ac12cb8aa
 }
  

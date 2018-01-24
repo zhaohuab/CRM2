@@ -356,6 +356,10 @@ return  option;
         this.areaMap.setOption(this.getOption())
     }
 
+    getCustomerItem = () => {//点击部门获取到相应的业务员信息，及其客户分布情况
+        this.props.action.
+    }
+
     componentDidMount() {
         this.areaMap = echarts.init(this.refs.areaMap);
         this.areaMap.setOption(this.customerOption);
@@ -363,6 +367,9 @@ return  option;
     }
 
     render() {
+        let {  $$state, action} = this.props;
+        let data = $$state.get('data').toJS();
+        let itemFlag = $$state.get('itemFlag');
         let dataSource = [
             {'name':'张婷1',num:11},
             {'name':'张婷2',num:11},
@@ -396,11 +403,20 @@ return  option;
                         </Row>
                         <Row type="flex" justify="around" align='middle' gutter={10} className='customer-principal'>
                             { 
+                                itemFlag?
                                 dataSource.map(item=>{
                                     return (
                                         <Col span={6} className='customer-principal-item' onClick={this.onChange.bind(this)}>{item.name}<span className='customer-num'>({item.num})</span></Col>
                                     )
-                                }) 
+                                }) :
+                                data.map(item=>{
+                                    return (
+                                        <Col span={24} className='customer-principal-item' onClick={this.getCustomerItem.bind(this)}>
+                                            {item.name}<span className='customer-num'>({item.num})</span>
+                                        </Col>
+                                    )
+                                })
+
                             }                 
                         </Row>
                         <div className='customer-address'>
