@@ -1247,7 +1247,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
+<<<<<<< HEAD
         //debugger;
+=======
+        debugger
+>>>>>>> 2790199c27ac728ddd708317906f1f561afc1709
         let viewData = props.$$state.toJS().viewData;
         let value = {};
         for (let key in viewData) {
@@ -1278,8 +1282,14 @@ const cardForm = Form.create({
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
+<<<<<<< HEAD
         debugger;
         let viewData = props.$$state.toJS().viewData;      
+=======
+        debugger
+        let viewData = props.$$state.toJS().viewData;
+        
+>>>>>>> 2790199c27ac728ddd708317906f1f561afc1709
         for (let key in onChangeFild) {
             if (onChangeFild[key].value && onChangeFild[key].value.key) {
                 viewData[key] = onChangeFild[key].value.key;
@@ -1294,6 +1304,7 @@ const cardForm = Form.create({
                             value.latlng.lng + "," + value.latlng.lat;
                     }
                 } else if (key == "province_city_district") {
+                    debugger
                     viewData[key] = onChangeFild[key].value.result;
                     viewData["cityMyself"] = onChangeFild[key].value.custom;
                 } else {

@@ -48,7 +48,7 @@ class Department extends React.Component {
 
     getData = () => {
         let that = this;
-      console.log('===================')  
+      console.log('==================='+url.orgTree)  
         reqwest(
             {
                 url: url.orgTree,
@@ -56,7 +56,6 @@ class Department extends React.Component {
                 data: {}
             },
             dataResult => {
-                debugger
                 that.setState({ dataSource: dataResult.data });
             }
         );

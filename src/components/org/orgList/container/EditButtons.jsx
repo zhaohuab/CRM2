@@ -36,7 +36,7 @@ export default class EditButtons extends Component {
             <div className='actionButtons-waprper'>
                 <div className='actionButtons-left'>
                     <div className='actionButtons-chioce'>
-                        已选择：{this.props.data.length}
+                        已选择{this.props.data.length}条
                     </div> 
                     <div className='actionButtons'>
                         <Button onClick={this.returnBack.bind(this)} className='returnbtn-class'> <i className='iconfont icon-fanhui'></i> 返回</Button>
@@ -48,7 +48,7 @@ export default class EditButtons extends Component {
                             <Button  onClick={this.setEnablestate.bind(this,this.props.data,1)}><i className='iconfont icon-qiyong'></i>启用</Button>
                             <Button onClick={this.setEnablestate.bind(this,this.props.data,2)}><i className='iconfont icon-tingyong'></i>停用</Button>
                         </ButtonGroup>
-                        <Button className='returnbtn-class' icon='download'>导出</Button>
+                        
                     </div> 
                 </div>
                 <div  className='actionButtons-right'>

@@ -153,6 +153,27 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 			}
 		}, () => {
 			dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
+			// reqwest({
+			// 		url: role.role+"/"+roleId+"/funcres",
+			// 		method: 'GET',
+			// 		data: {
+			// 			param: { roleId },
+			// 		}
+			// 	}, (result) => {
+			// 			debugger
+			// 			const code = '.class2{border:1px solid #333; display:none;}'
+			// 			var head = document.head || document.getElementsByTagName('head')[0];
+			// 			var style = document.createElement('style');
+			// 			style.rel = 'stylesheet';
+			// 			style.type = 'text/css';
+			// 			style.id = "sys_func"
+			// 			style.appendChild(document.createTextNode(code));
+			// 			head.appendChild(style);
+			// 			// return style.sheet || style.styleSheet;
+			// 			dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
+			// 	})
+
+		
 		})
 	}
 }
@@ -170,13 +191,13 @@ const getUserListData = (roleId,pagination,isPreseted) => {
 				}
 			},
 		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data:result,isPreseted }));
+			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data:result,roleId,isPreseted }));
 		})
 	}
 }
 
 
-const showUserCard = (roleId,pagination) => {
+const showUserCard = (roleId,name) => {
 	return (dispatch) => {
 		reqwest({
 			url: url.role+"/"+roleId+"/add/users",
@@ -184,11 +205,10 @@ const showUserCard = (roleId,pagination) => {
 			data: {
 				param:{
 					roleId,
-					...pagination
+					name
 				}
 			},
 		}, result => {
-			debugger
 			dispatch(fetchData('ROLE_LIST_GETUSERCARDLISTSUCCESS', { ...result }));
 		})
 	}
@@ -225,7 +245,7 @@ const saveUser = (roleId,userIds,pagination) =>{
 			},
 		}, result => {
 			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
-			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { ...result }));
+			dispatch(fetchData('ROLE_LIST_SAVEUSERSUCCESS', { ...result }));
 		})
 	}
 }
@@ -246,7 +266,7 @@ const deleteUser = (roleId,userIds,pagination) =>{
 			},
 		}, result => {
 			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
-			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { ...result }));
+			dispatch(fetchData('ROLE_LIST_DELETEUSERSUCCESS', { ...result }));
 		})
 	}
 }
@@ -291,6 +311,12 @@ const selectRight = (roleId, rightId, rightData) => {
 	}
 }
 
+const saveUserCardName =  (name) => {
+	return (dispatch) => {
+		dispatch(fetchData("ROLE_LIST_SAVEUSERCARDNAME",name ))
+	}
+};
+
 
 //输出 type 与 方法
 export {
@@ -313,5 +339,6 @@ export {
 	selectUserCardRow,
 	deleteUser,
 	getRightData,
-	selectRight
+	selectRight,
+	saveUserCardName
 }

@@ -116,7 +116,7 @@ class SearchForm extends React.Component {
                                             <i className="iconfont icon-xinjian" />新建
                                         </Button>
                                     </Col>
-                                
+{/*                                 
                                     <Col>
                                         <Dropdown.Button
                                             overlay={moreMenu}
@@ -124,7 +124,7 @@ class SearchForm extends React.Component {
                                         >
                                             更多
                                         </Dropdown.Button>
-                                    </Col>
+                                    </Col> */}
                                 </Row>
                             </Col>
                     </Row>

@@ -30,6 +30,8 @@ import PanelState from "./state/PanelState";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
+import LeadIn from './list/LeadIn.jsx'
+
 class List extends React.Component {
     constructor(props) {
         super(props);
@@ -67,6 +69,7 @@ class List extends React.Component {
                 }  
             },
             {
+                title: "客户类型",
                 title: "客户类型",
                 dataIndex: "typeName"
             },
@@ -110,6 +113,7 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
+        //console.log(44,record)
         this.props.action.showViewForm(true, record.id);
         this.props.action.getDetailFilds('customer')//----------------请求详情模板---------------------
     }
@@ -146,10 +150,10 @@ class List extends React.Component {
             data["latlng"] = value.latlng;
         }
 
-        if(data.ownerUserId){
+        if (data.ownerUserId) {
             let ownerUserId = data.ownerUserId.id;
             delete data.ownerUserId
-            data.salesVOs = [{ownerUserId}]
+            data.salesVOs = [{ ownerUserId }]
         }
         
         return data;
@@ -260,9 +264,18 @@ class List extends React.Component {
         this.props.action.getEnumData();
     }
 
+
+    handleOkLead(){
+
+    }
+    handleCancelLead(){
+
+    }
+
     render() {
         
         const { $$state } = this.props;
+        debugger;
         const page = $$state.get("data").toJS();
         let {
             selectedRows,
@@ -271,8 +284,8 @@ class List extends React.Component {
             viewState,
             viewData,
             icbcVisible,
-            icbcSelect,
-            titleList
+            leadVisible,
+            icbcSelect
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -282,7 +295,7 @@ class List extends React.Component {
 
         let columns = this.columnsTranslate.call(this,titleList);//------获取表头
         return (
-            
+
             <div className="custom-warpper ">
                 <ToolForm />
                 <Tabs
@@ -343,7 +356,7 @@ class List extends React.Component {
                             editCardFn={this.editCardFn.bind(this)}
                             changeState={this.changeState.bind(this)}
                         />
-                    </div> 
+                    </div>
                 </Modal>
                 <SlidePanel
                     viewState={viewState}
@@ -352,8 +365,20 @@ class List extends React.Component {
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
+
+                <Modal title="导入"
+                    visible={leadVisible}
+                    onOk={this.handleOkLead.bind(this)}
+                    onCancel={this.handleCancelLead.bind(this)}
+                > 
+                 <div className="cur-lead">
+                        <LeadIn> 
+                        </LeadIn>
+                    </div>
+
+                </Modal>
             </div>
-         );
+        );
     }
 }
 //绑定状态到组件props

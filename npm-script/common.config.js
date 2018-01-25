@@ -23,7 +23,7 @@ const environments = {
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
 
-const publicPath = productionEnv + '/lib';
+const publicPath = productionEnv + '/lib/';
 
 //打包之前先清理lib
 if (process.env.npm_lifecycle_event == "btest" || process.env.npm_lifecycle_event == "bup") {

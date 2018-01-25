@@ -59,26 +59,7 @@ class ListTree extends Component {
         this.props.action.showForm(true, rowData);
     }
 
-    delete(item, e) {
-        e.stopPropagation();
-
-        let that = this;
-        confirm({
-            title: "确定要删除吗?",
-            content: "此操作不可逆",
-            okText: "是",
-            okType: "danger",
-            cancelText: "否",
-            onOk() {
-                const record = [];
-                record.push(item);
-                that.props.action.listdel(record, item.id);
-            },
-            onCancel() {
-                console.log("Cancel");
-            }
-        });
-    }
+    
     showEdit(item) {
         this.setState({
             edit: item.id
