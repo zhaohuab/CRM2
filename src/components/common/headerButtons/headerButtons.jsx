@@ -18,29 +18,29 @@ export default class HeaderButton extends React.Component {
     }
     render() {
         return (
-            <div className="crm-header-buttons">
-                <div className="crm-header-buttons-inner">
-                    <div className="crm-buttons-inner-left">
-                        <span className="crm-inner-left-choice">
-                            已选择
-                            <span className="crm-import-choice">
-                                {this.props.length}
-                            </span>
-                            条
-                        </span>
-                        <div className="crm-buttons-inner-btns">
-                            <Button onClick={this.back.bind(this)}>
-                                <i className="iconfont icon-fanhui" />返回
-                            </Button>
-                            {this.props.children}
-                        </div>
-                    </div>
-                    <i
-                        className="iconfont icon-guanbi-xiao"
-                        onClick={this.back.bind(this)}
-                    />
-                </div>
-            </div>
+            <Row type='flex' justify='space-between' align='middle' className='crm-header-button-container'>
+                <Col span={22}>
+                    <Row  type='flex' align='middle'>
+                       <div className='num'>已选择 <span className='import'> {this.props.length}</span>条</div>
+                        <Col span={21}>
+                            <Row type='flex' align='middle' gutter={15}>
+                                <Button onClick={this.back.bind(this)}>
+                                    <i className="iconfont icon-fanhui" />返回
+                                </Button>
+                                {this.props.children}
+                            </Row>
+                        </Col>
+                    </Row>
+                </Col>
+                <Col span={2}>
+                    <Row type='flex' justify='end' align='middle'>
+                        <i
+                            className="iconfont icon-guanbi-xiao"
+                            onClick={this.back.bind(this)}
+                        />
+                    </Row>
+                </Col>
+            </Row>
         );
     }
 }

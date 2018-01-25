@@ -22,23 +22,16 @@ const TabPane = Tabs.TabPane;
 
 import Card from "./list/Card";
 import ViewPanel from "./panel/ViewPanel";
-import ToolForm from "./list/ButtonTool.jsx";
+import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
-import PanelMap from "./map/PanelMap";
-import PanelState from "./state/PanelState";
 
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
-import LeadIn from './list/LeadIn.jsx'
-
 class List extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            classStyle: [],
-            viewState: false
-        };
+        
         this.columns = [
             {
                 title: "客户名称",
@@ -52,16 +45,9 @@ class List extends React.Component {
                             <div className='cum-color'>
                                 <span>{record.name}</span>
                                 {
-                                    record.isGroup =='1'?
-                                    <img
-                                        src={require("../images/company.png")}
-                                        className="img"
-                                    />
-                                    :
-                                    <img
-                                        src={require("../images/grope.png")}
-                                        className="img"
-                                    />
+                                    record.isGroup =='2'?
+                                    <i className="iconfont icon-jituan-icon-" />
+                                    :''
                                 }
                             </div>
                         </div>
@@ -69,7 +55,6 @@ class List extends React.Component {
                 }
             },
             {
-                title: "客户类型",
                 title: "客户类型",
                 dataIndex: "typeName"
             },
@@ -87,11 +72,6 @@ class List extends React.Component {
                 dataIndex: "industryName"
             },
             {
-                title: "启用状态",
-                dataIndex: "enableState",
-                render: text => <span>{text == 1 ? "启用" : "未启用"}</span>
-            },
-            {
                 title: "渠道类型",
                 dataIndex: "cannelTypeName"
             },
@@ -102,8 +82,8 @@ class List extends React.Component {
         ];
         const that = this;
 
-        this.onSelectChange = (selectedRowKeys, selectedRows) => {
-            this.props.action.selectRow(selectedRows, selectedRowKeys);
+        this.onSelectChange = (selectedRowKeys) => {
+            this.props.action.selectedRowKeys(selectedRowKeys);
         };
     }
     //改变编辑状态
@@ -113,9 +93,7 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
-        //console.log(44,record)
         this.props.action.showViewForm(true, record.id);
-        this.props.action.getDetailFilds('customer')//----------------请求详情模板---------------------
     }
     //隐藏面版
     slideHide() {
@@ -125,6 +103,7 @@ class List extends React.Component {
 
     //上传数据时，各种参照的数据转换
     trancFn(data) {
+        debugger
         //行业
         if (data.industry && data.industry.id) {
             data.industry = data.industry.id;
@@ -137,7 +116,7 @@ class List extends React.Component {
         }
         //城市
         if (data.province_city_district) {
-            let change = data.province_city_district;
+            let change = data.province_city_district.result;
             data.province = change[0];
             data.city = change[1];
             data.district = change[2];
@@ -150,23 +129,38 @@ class List extends React.Component {
             data["latlng"] = value.latlng;
         }
 
-        if (data.ownerUserId) {
+        if(data.ownerUserId){
             let ownerUserId = data.ownerUserId.id;
             delete data.ownerUserId
-            data.salesVOs = [{ ownerUserId }]
+            data.salesVOs = [{ownerUserId}]
         }
-        
+
+        if(data.level){
+            data.level=data.level.key
+        }
+
+        if(data.type){
+            data.type=data.type.key
+        }
+
+        if(data.cannelType){
+            data.cannelType=data.cannelType.key
+        }
+        debugger
         return data;
     }
 
     //form新增、或者修改
     formHandleOk() {
-        this.formRef.props.form.validateFields((err, values) => {
+        let { viewData } = this.props.$$state.toJS();
+        this.formRef.props.form.validateFields((err, value) => {
+            debugger
             if (!err) {
-                values = this.trancFn(values);
-                if (values.id) {
+                let values = this.trancFn(viewData);
+                debugger
+                if (values.id) {//修改
                     this.props.action.listEditSave(values);
-                } else {
+                } else {//新增
                     this.props.action.listAddSave(values);
                 }
             }
@@ -202,14 +196,6 @@ class List extends React.Component {
         );
     }
 
-    //切换面板时触发的方法
-    tabChange() {
-        let { viewState } = this.props.$$state.toJS();
-        if (viewState) {
-            this.props.action.hideViewForm(false);
-        }
-    }
-
     //切换面板中tab标题替换
     tabTitle(index) {
         let str = ["icon-liebiao", "icon-ditu1", "icon-zhuangtai1"];
@@ -224,6 +210,11 @@ class List extends React.Component {
             </div>
         );
     }
+
+    btnNew(){
+        this.props.action.addCustomer(true);
+    }
+
 
     columnsTranslate = (columns) => {//----------表头转换：所有返回来的表头结构一致，每个组件进行函数转换，实现个性化操作
         return columns.map(item=>{
@@ -270,28 +261,18 @@ class List extends React.Component {
             }
             return item;
         })
+
     }
 
     componentDidMount() {
-         this.props.action.getTitle('customer')
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
         this.props.action.getEnumData();
     }
 
-
-    handleOkLead(){
-
-    }
-    handleCancelLead(){
-
-    }
-
     render() {
-        
         const { $$state } = this.props;
-        debugger;
         const page = $$state.get("data").toJS();
         let {
             selectedRows,
@@ -299,6 +280,7 @@ class List extends React.Component {
             formVisitable,
             viewState,
             viewData,
+            tableLoading,
             icbcVisible,
             leadVisible,
             icbcSelect,
@@ -309,56 +291,30 @@ class List extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-
-        let columns = this.columnsTranslate.call(this,titleList);//------获取表头
         return (
-
             <div className="custom-warpper ">
-                <ToolForm />
-                <Tabs
-                    defaultActiveKey="1"
-                    tabPosition="right"
-                    onChange={this.tabChange.bind(this)}
-                    className='tab-panel-recoverd'
-                >
-                    <TabPane tab={this.tabTitle(0)} key="1">
-                        <div className="table-bg tabel-recoverd">
-                            <Table
-                                columns={this.columns}
-                                dataSource={page.data}
-                                rowKey="id"
-                                rowSelection={rowSelection}
-                                size="middle"
-                                pagination={{
-                                    size: "large",
-                                    showSizeChanger: true,
-                                    showQuickJumper: true,
-                                    total: page.total,
-                                    showTotal: this.showTotal,
-                                    onChange: this.onPageChange.bind(this),
-                                    onShowSizeChange: this.onPageSizeChange.bind(
-                                        this
-                                    )
-                                }}
-                            />
-                        </div>
-                    </TabPane>
-                    <TabPane
-                        tab={this.tabTitle(1)}
-                        key="2"
-                        className="customer-panelMap"
-                    >
-                        <PanelMap />
-                    </TabPane>
-                    <TabPane
-                        tab={this.tabTitle(2)}
-                        key="3"
-                        className="customer-panelMap"
-                    >
-                        <PanelState />
-                    </TabPane>
-                </Tabs>
-
+                <TopSearchForm btnNew={this.btnNew.bind(this)}/>
+                <div className="table-bg tabel-recoverd">
+                    <Table
+                        columns={this.columns}
+                        dataSource={page.data}
+                        rowKey="id"
+                        rowSelection={rowSelection}
+                        size="middle"
+                        pagination={{
+                            size: "large",
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            total: page.total,
+                            showTotal: this.showTotal,
+                            onChange: this.onPageChange.bind(this),
+                            onShowSizeChange: this.onPageSizeChange.bind(
+                                this
+                            )
+                        }}
+                        loading={tableLoading}
+                    />
+                </div>
                 <Modal
                     title={viewData.id ? "编辑客户" : "新增客户"}
                     visible={formVisitable}
@@ -366,6 +322,7 @@ class List extends React.Component {
                     onCancel={this.formHandleCancel.bind(this)}
                     width={900}
                     maskClosable={false}
+                    className='crm-list-card-modal'
                 >
                     <div className="modal-height">
                         <Card
@@ -373,7 +330,7 @@ class List extends React.Component {
                             editCardFn={this.editCardFn.bind(this)}
                             changeState={this.changeState.bind(this)}
                         />
-                    </div>
+                    </div> 
                 </Modal>
                 <SlidePanel
                     viewState={viewState}
@@ -382,27 +339,14 @@ class List extends React.Component {
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
-
-                <Modal title="导入"
-                    visible={leadVisible}
-                    onOk={this.handleOkLead.bind(this)}
-                    onCancel={this.handleCancelLead.bind(this)}
-                > 
-                 <div className="cur-lead">
-                        <LeadIn> 
-                        </LeadIn>
-                    </div>
-
-                </Modal>
             </div>
-        );
+         );
     }
 }
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList,
-        $$stateCommon: state.componentReducer
+        $$state: state.customerGroupList,
     };
 }
 //绑定action到组件props

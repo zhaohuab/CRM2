@@ -25,13 +25,10 @@ const confirm = Modal.confirm;
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 
-import AddContacts from './AddContacts'
+import AddJoin from './AddJoin'
 
 
 class JoinList extends React.Component {
-    // constructor(){
-        
-    // }
     changeViewData(data){
         this.props.action.setRightPaneltList(data)
     }
@@ -44,7 +41,8 @@ class JoinList extends React.Component {
             <div className='join-round-color' style={{border:'1px solid '+color}}><span>{name}</span></div>
         )
     }
-    joinDel(id){      
+    
+    joinDel(id){
         reqwest(
             {
                 url: baseDir+`cum/customer/relusers/${id}`,
@@ -60,7 +58,8 @@ class JoinList extends React.Component {
             }
         );
     }
-    render(){        
+
+    render(){  
         let {viewData,viewDataJoinList} = this.props.$$state.toJS();
         return(
             <div className='join-warpper'>
@@ -84,7 +83,7 @@ class JoinList extends React.Component {
                     }):''
                 }
                 <div className='join-warpper-item'>
-                    <AddContacts viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
+                    <AddJoin viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
                 </div>
             </div>
         )
