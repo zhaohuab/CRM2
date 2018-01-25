@@ -239,7 +239,7 @@ class List extends Component {
                             />
                         </div>
                         <Modal
-                            title="修改组织"
+                            title={this.state.isEdit?"修改组织":"新增组织"}
                             visible={formVisitable}
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
