@@ -30,6 +30,7 @@ class ListTree extends Component {
     }
 
     onSelect(selectedKeys, obj) {
+        debugger
         if (selectedKeys.length) {
             this.props.action.listTreeChange(selectedKeys[0]);
         }
