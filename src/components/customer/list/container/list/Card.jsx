@@ -27,14 +27,18 @@ import Department from "components/refs/departments";
 import Enum from "utils/components/enums";
 
 import * as enumDataFake from "../data/enumdata";
-import cityData from "../data/citydata";
-import Industry from "./Industry";
-import CuperiorCustomer from "./SuperiorCustomer";
+
+import Industry from "../../../../common/industry";
+import CuperiorCustomer from "./SuperiorCustomer";//组件暂时不用
 import IcbcInfo from "./IcbcInfo";
-import FormMap from "./FormMap";
+import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
-import CityChioce from "./CityChioce";
+import CityChioce from "../../../../common/cityChioce/CityChioce"
 import OwnUser from './OwnUser'
+import ResponseDepart from './ResponseDepart'
+
+import Int from 'utils/components/int'
+import Float from 'utils/components/float/index.jsx'
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -43,39 +47,6 @@ const RadioGroup = Radio.Group;
 class EditForm extends React.Component {
     constructor(props) {
         super(props);
-    }
-
-    //把获取到的客户工商信息放在redux中 id, name, visiable, editId, stateIcbc, isClose
-    customerListInfo(data, visiable, id) {
-        let { viewData } = this.props.$$state.toJS();
-        viewData.verifyId = id;
-        data.forEach(item => {
-            if (item.key == "address") {
-                viewData["address"] = item.value;
-            } else if (item.key == "gongsh") {
-                viewData["bizRegno"] = item.value;
-            } else if (item.key == "orgcode") {
-                viewData["orgCode"] = item.value;
-            } else if (item.key == "money") {
-                viewData["regCapital"] = item.value;
-            } else if (item.key == "proxyer") {
-                viewData["legalRepresent"] = item.value;
-            } else if (item.key == "industry") {
-                viewData["industry"] = { name: item.value };
-            } else if (item.key == "email") {
-                viewData["email"] = item.value;
-            } else if (item.key == "phone") {
-                viewData["tel"] = item.value;
-            } else if (item.key == "taxnumber") {
-                viewData["eaxplayerNo"] = item.value;
-            }
-        });
-        this.props.action.customerListInfo(data, visiable, viewData);
-    }
-
-    //modal取消按钮
-    onCancel() {
-        this.props.action.customerModal1Show(false);
     }
 
     //取消认证
@@ -100,15 +71,6 @@ class EditForm extends React.Component {
         //发Request请求
     }
 
-    //modal框底部按钮
-    footerContent() {
-        return (
-            <div>
-                <Button onClick={this.onCancel.bind(this)}>关闭</Button>
-                <Button onClick={this.onCancel.bind(this)}>确定</Button>
-            </div>
-        );
-    }
 
     render() {
         const formItemLayout = {
@@ -130,7 +92,8 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-        
+        viewData.verifyFullname
+     
         return (
             <div>
                 <Row className="customform-input-recover">
@@ -205,31 +168,17 @@ class EditForm extends React.Component {
                                                             )}
                                                         </FormItem>
                                                     </Col>
-                                                    <Col span={5}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <IcbcInfo
-                                                                viewData={
-                                                                    //获取当前数据所有信息
-                                                                    viewData
-                                                                }
-                                                                icbcSelect={
-                                                                    //当前数据编辑状态
-                                                                    icbcSelect
-                                                                }
-                                                                customerListInfo={this.customerListInfo.bind(
-                                                                    this
-                                                                )} //获取信息详情的方法
-                                                                isClose={
-                                                                    //判断是否为编辑状态初始值
-                                                                    isClose
-                                                                }
-                                                                width={450}
-                                                            />
-                                                        </Row>
-                                                    </Col>
+                                                    {
+                                                        viewData.verifyFullname == 1 && viewData.id?'':
+                                                        <Col span={5}>
+                                                            <Row
+                                                                type="flex"
+                                                                justify="end"
+                                                            >                                   
+                                                                <IcbcInfo width={450}/>
+                                                            </Row>
+                                                        </Col>
+                                                    }
                                                 </Row>
                                             </Col>
                                             <Col span={12}>
@@ -276,14 +225,13 @@ class EditForm extends React.Component {
                                                                 {getFieldDecorator(
                                                                     "turnover"
                                                                 )(
-                                                                    <Input placeholder='请输入'/>
+                                                                    <Float attr = {{precision:2}}/>
                                                                 )}
                                                             </FormItem>
                                                         </Col>
                                                     </Row>
                                                 </Col>
-                                            
-                                          
+
                                         <Col span={12}>
                                             <Row type="flex" align="middle">
                                                 <Col span={6}>
@@ -304,10 +252,8 @@ class EditForm extends React.Component {
                                                             "employeeNum",
                                                             {}
                                                         )(
-                                                            <Input
-                                                                type="text"
-                                                                placeholder="请输入"
-                                                            />
+                                                            <Int/>
+                                                            
                                                         )}
                                                     </FormItem>
                                                 </Col>
@@ -315,132 +261,98 @@ class EditForm extends React.Component {
                                         </Col>
                                 </Row>
                                 <Row className="row-bottom">
-                                   
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>邮箱：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "email",
-                                                            {}
-                                                        )(
-                                                            <Input
-                                                                type="text"
-                                                                placeholder="请输入"
-                                                            />
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>电话：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "tel",
-                                                            {}
-                                                        )(
-                                                            <Input
-                                                                type="text"
-                                                                placeholder="请输入"
-                                                            />
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                   
-                                </Row>
-                                
-                                        {/* <Row className="row-bottom">
-                                            <Col span={12}>
-                                                <Row type="flex" align="middle">
-                                                    <Col span={6}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <div>
-                                                                上级客户：
-                                                            </div>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col span={16}>
-                                                        <FormItem
-                                                            {...formItemLayout}
-                                                        >
-                                                            {getFieldDecorator(
-                                                                "parentId",
-                                                                {}
-                                                            )(
-                                                                <CuperiorCustomer
-                                                                    width={500}
-                                                                />
-                                                            )}
-                                                        </FormItem>
-                                                    </Col>
+                                    <Col span={12}>
+                                        <Row type="flex" align="middle">
+                                            <Col span={6}>
+                                                <Row
+                                                    type="flex"
+                                                    justify="end"
+                                                >
+                                                    <div>邮箱：</div>
                                                 </Row>
                                             </Col>
-                                            
-                                        </Row> */}
-                                        <Row className="row-bottom">
-                                            <Col span={24}>
-                                                <Row type="flex">
-                                                    <Col span={3}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <div>备注：</div>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col span={21} className='remark'>
-                                                        <FormItem
-                                                            {...formItemLayout1}
-                                                        >
-                                                            {getFieldDecorator(
-                                                                "remark",
-                                                                {}
-                                                            )(
-                                                                <TextArea
-                                                                    autosize={{
-                                                                        minRows: 3,
-                                                                        maxRows: 8
-                                                                    }}
-                                                                    placeholder="请输入"
-                                                                    style={{width:'100%'}}
-                                                                />
-                                                            )}
-                                                        </FormItem>
-                                                    </Col>
+                                            <Col span={18}>
+                                                <FormItem
+                                                    {...formItemLayout}
+                                                >
+                                                    {getFieldDecorator(
+                                                        "email",
+                                                        {}
+                                                    )(
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="请输入"
+                                                        />
+                                                    )}
+                                                </FormItem>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Row type="flex" align="middle">
+                                            <Col span={6}>
+                                                <Row
+                                                    type="flex"
+                                                    justify="end"
+                                                >
+                                                    <div>电话：</div>
                                                 </Row>
                                             </Col>
-                                            
+                                            <Col span={18}>
+                                                <FormItem
+                                                    {...formItemLayout}
+                                                >
+                                                    {getFieldDecorator(
+                                                        "tel",
+                                                        {}
+                                                    )(
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="请输入"
+                                                        />
+                                                    )}
+                                                </FormItem>
+                                            </Col>
                                         </Row>
                                     </Col>
                                 </Row>
-                            </Row>
+                            
+                                <Row className="row-bottom">
+                                    <Col span={24}>
+                                        <Row type="flex">
+                                            <Col span={3}>
+                                                <Row
+                                                    type="flex"
+                                                    justify="end"
+                                                >
+                                                    <div>备注：</div>
+                                                </Row>
+                                            </Col>
+                                            <Col span={21} className='remark'>
+                                                <FormItem
+                                                    {...formItemLayout1}
+                                                >
+                                                    {getFieldDecorator(
+                                                        "remark",
+                                                        {}
+                                                    )(
+                                                        <TextArea
+                                                            autosize={{
+                                                                minRows: 3,
+                                                                maxRows: 8
+                                                            }}
+                                                            placeholder="请输入"
+                                                            style={{width:'100%'}}
+                                                        />
+                                                    )}
+                                                </FormItem>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Col>
+                          </Row>
+                        </Row>
 
                             <Row className="form-bottom">
                                 <Row>
@@ -466,9 +378,11 @@ class EditForm extends React.Component {
                                                     <FormItem
                                                         {...formItemLayout}
                                                     >
-                                                        {getFieldDecorator(
-                                                            "province_city_district"
-                                                        )(<CityChioce />)}
+                                                    {getFieldDecorator(
+                                                        "province_city_district"
+                                                    )(
+                                                            <CityChioce/>
+                                                    )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -491,13 +405,8 @@ class EditForm extends React.Component {
                                                             "address"
                                                         )(
                                                             
-                                                            <FormMap
-                                                                cityCode={
-                                                                    viewData.province_city_district
-                                                                }
-                                                                viewData={
-                                                                    viewData
-                                                                }
+                                                            <MultiFunctionMap
+                                                                cityCode={viewData.province_city_district}
                                                             />
                                                         )}
                                                     </FormItem>
@@ -557,7 +466,7 @@ class EditForm extends React.Component {
                                                         {getFieldDecorator(
                                                             "name"
                                                         )(
-                                                            <Input/>
+                                                            <ResponseDepart viewData={viewData}/>
                                                         )}
                                                     </FormItem>
                                                 </Col>
@@ -905,28 +814,6 @@ class EditForm extends React.Component {
                         </Form>
                     </Row>
                 </Row>
-                <Modal
-                    title="工商核实"
-                    visible={icbcVisible}
-                    onCancel={this.onCancel.bind(this)}
-                    footer={this.footerContent.call(this)}
-                    width={500}
-                    maskClosable={false}
-                >
-                    <div className="modal-height">
-                        {icbcInfo && icbcInfo.length
-                            ? icbcInfo.map(item => {
-                                  return (
-                                      <div className="icbc-detail-item">
-                                          <span>{item.name}</span>:<span>
-                                              {item.value}
-                                          </span>
-                                      </div>
-                                  );
-                              })
-                            : ""}
-                    </div>
-                </Modal>
             </div>
         );
     }
@@ -937,18 +824,18 @@ const cardForm = Form.create({
         //把redux中的值取出来赋给表单
         let viewData = props.$$state.toJS().viewData;
         let value = {};
-        
+    
         for (let key in viewData) {
-            if (key == "address") {
-                value[key] = {
-                    value: {
-                        address: viewData[key],
-                        latlng: viewData["latlng"]
-                    }
-                };
-            } else {
+            // if (key == "address") {
+            //     value[key] = {
+            //         value: {
+            //             address: viewData[key],
+            //             latlng: viewData["latlng"]
+            //         }
+            //     };
+            // } else {
                 value[key] = { value: viewData[key] };
-            }
+           // }
         }
         //address  把字段合成对象
         return {
@@ -958,27 +845,19 @@ const cardForm = Form.create({
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
         let viewData = props.$$state.toJS().viewData;
-        
         for (let key in onChangeFild) {
-            if (onChangeFild[key].value && onChangeFild[key].value.key) {
-                viewData[key] = onChangeFild[key].value.key;
-            } else {
-                if (key == "address") {
-                    let value = onChangeFild[key].value;
-                    viewData["address"] = value.address;
-                    if (typeof value.latlng == "string") {
-                        viewData["latlng"] = value.latlng;
-                    } else {
-                        viewData["latlng"] =
-                            value.latlng.lng + "," + value.latlng.lat;
-                    }
-                } else if (key == "province_city_district") {
-                    viewData[key] = onChangeFild[key].value.result;
-                    viewData["cityMyself"] = onChangeFild[key].value.custom;
-                } else {
-                    viewData[key] = onChangeFild[key].value;
-                } //把对像拆成字段  latlng
-            }
+            // if (key == "address") {
+            //     let value = onChangeFild[key].value;
+            //     viewData["address"] = value.address;
+            //     if (typeof value.latlng == "string") {
+            //         viewData["latlng"] = value.latlng;
+            //     } else {
+            //         viewData["latlng"] =
+            //             value.latlng.lng + "," + value.latlng.lat;
+            //     }
+            // } else {
+                viewData[key] = onChangeFild[key].value;
+            //} //把对像拆成字段  latlng
         }
         props.editCardFn(viewData);
     }

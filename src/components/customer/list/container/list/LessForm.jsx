@@ -27,7 +27,6 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
-        ;
         this.props.handleSearch(this.props.$$state.toJS().searchMap);
     }
     moreFn() {
@@ -108,7 +107,7 @@ const WarpMilForm = Form.create({
         //往redux中写值//把值进行更新改变
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {
-            if (onChangeFild[key].value.key) {
+            if (onChangeFild[key].value.key) {//处理Select这部分迟早要删掉
                 searchMap[key] = onChangeFild[key].value.key;
             } else {
                 searchMap[key] = onChangeFild[key].value;

@@ -65,18 +65,19 @@ class RelevantObject extends React.Component {
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
 
         let temp
-        if(viewDataRelevant[obj.index-1].list){
+        if(obj.index==3){
+            temp = viewDataRelevant[4].list.data.length
+        }else if(viewDataRelevant[obj.index-1].list){
             temp = viewDataRelevant[obj.index-1].list.data.length
-           
         }else{
             temp=0
         }
-      
-        let  icon = ['icon-canyuren','icon-lianxirenguanxi','icon-xiansuofenpei','icon-shangji','icon-wenjian']
+      debugger
+        let  icon = ['icon-canyuren','icon-lianxirenguanxi','icon-xiansuofenpei','icon-shengji','icon-wenjian']
         let fn = [
             [<i className={'iconfont icon-lianxiren'}/>,<ContactsCard/>],
-            '',
             <Opportunity viewData={viewData} otherRef={this.otherRef.bind(this)}/>,
+            '',
             <Upload 
                 disabled = {false} 
                 multiple={true}
@@ -124,8 +125,7 @@ class RelevantObject extends React.Component {
         }
     }
 
-    otherRef(){
-        
+    otherRef(){   
         let {viewData} = this.props.$$state.toJS();
         this.props.action.getOppList(this.props.JoinPagination,viewData.id,2)
     }
@@ -199,23 +199,28 @@ class RelevantObject extends React.Component {
 
     render(){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
-        let tempContacts,tempClue
+        let tempContacts,tempOpport,tempUpgrade
+        debugger
         if(viewDataRelevant&&viewDataRelevant.length){
             tempContacts = viewDataRelevant[0].list.data
             if(tempContacts.length>=8){
                 tempContacts = tempContacts.slice(0,7)
             }
-            tempClue = viewDataRelevant[2].list.data
-            if(tempClue.length>=6){
-                tempClue = tempClue.slice(0,5)
+            tempOpport = viewDataRelevant[2].list.data
+            if(tempOpport.length>=6){
+                tempOpport = tempOpport.slice(0,5)
+            }
+            tempUpgrade = viewDataRelevant[4].list.data;
+            if(tempUpgrade.length>=8){
+                tempUpgrade = tempUpgrade.slice(0,7)
             }
         }
         let type = ['icon-xsl','icon-word','icon-ppt']
-       
+       debugger
         return(
             <div className='relevant-wapper' id='relevant-wapper-item'>
                 <Collapse defaultActiveKey={['1','2','3','4']}>
-                    <Panel header={this.headerFn({title:'联系人',index:1,newBtn:'add',data:viewDataRelevant&&viewDataRelevant.length?viewDataRelevant:''})} key="1">
+                    <Panel header={this.headerFn({title:'联系人',index:1})} key="1">
                         <div className='contacts-warpper'>
                         {
                             tempContacts && tempContacts.length?
@@ -243,11 +248,11 @@ class RelevantObject extends React.Component {
                         </div>
                     </Panel>
                     
-                    <Panel header={this.headerFn({title:'商机',index:3,newBtn:'add'})} key="2" >
+                    <Panel header={this.headerFn({title:'商机',index:2})} key="2" >
                         <div className='business-chance'>
                                 {
-                                    tempClue && tempClue.length?
-                                    tempClue.map((item)=>{
+                                    tempOpport && tempOpport.length?
+                                    tempOpport.map((item)=>{
                                         return(
                                             <Row className='business-chance-item' type='flex' justify='space-between' onClick={this.oppDetailModal.bind(this,item)}>
                                                 <Col span={5} className='left'>
@@ -289,7 +294,54 @@ class RelevantObject extends React.Component {
                                 }
                         </div>
                     </Panel>
-                    <Panel header={this.headerFn({title:'文件',index:4,newBtn:'add',type:'file'})}  key="3" >
+                    <Panel header={this.headerFn({title:'升级申请',index:3})}  key="3" >
+                        <div className='business-chance'>
+                            {
+                                tempUpgrade && tempUpgrade.length?
+                                tempUpgrade.map((item)=>{
+                                    return(
+                                        <Row className='business-chance-item upgrade-item' type='flex' justify='space-between' >
+                                            <Col span={5} className='left'>
+                                                <i className='iconfont icon-shengji'/>
+                                            </Col>
+                                            <Col span={19} className='right'>
+                                                <Row type='flex' className='main-top' style={{height:'100%'}}>
+                                                    <Col className='decoret-warpper'>
+                                                        <span className='circle'></span>
+                                                        <span className='smail-circle style1'></span>
+                                                        <span className='smail-circle style1'></span>
+                                                        <span className='smail-circle style1'></span>
+                                                        <span className='smail-circle style1'></span>
+                                                        <span className='smail-circle style1'></span>
+                                                        <span className='smail-circle style1'></span>
+                                                        <span className='smail-circle style1'></span>
+                                                        <span className='smail-circle style1'></span>
+                                                        <span className='circle'></span>
+                                                    </Col>
+                                                    <Col className='main' span={22}>
+                                                    <p className='name'>
+                                                    {item.commitTime?this.changeTime.call(this,item.commitTime.time,'day'):'无'}
+                                                    </p>
+                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>申请公司：</Col><Col span={11}>{item.orgName}</Col></Row>
+                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>申请部门：</Col><Col span={11}>{item.deptName}</Col></Row>
+                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>申请人：</Col><Col span={11}>{item.applyUserName}</Col></Row>
+                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>审批状态：</Col><Col span={11}>{item.approvalStateName}</Col></Row>
+                                                
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                            {/* <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span> */}
+                                        </Row>
+                                    )
+                                }):'暂无数据'
+                            }
+                            {
+                                viewDataRelevant && viewDataRelevant.length && viewDataRelevant[4].list.data.length>7?
+                                <div className='business-chance-item upgrade-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
+                            }
+                        </div>
+                    </Panel>
+                    <Panel header={this.headerFn({title:'文件',index:4})}  key="4" >
                         <div className='file-warpper'>
                             <Row className='file-warpper-item' type='flex' align='middle'>
                                 <div className='img-mark'>

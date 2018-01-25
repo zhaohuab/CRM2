@@ -4,7 +4,7 @@ import { login as url } from "api";
 import { codeConstant } from "utils/reqwest/HandleReqwest";
 //定义方法 action
 const login = (params) => {
-	
+	debugger
 	return (dispatch) => {
 	    dispatch(fetchData('LOGIN_MAIN_LOGIN_START', {}))
 		const { user,password } = params;

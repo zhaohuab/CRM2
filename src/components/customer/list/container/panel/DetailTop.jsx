@@ -12,68 +12,25 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../action";
 
-import IcbcSimpleinfo from "./IcbcSimpleinfo";
-import AssignPerson from './AssignPerson'
+import IcbcDetailInfo from "./IcbcDetailInfo";
+//import AssignPerson from './AssignPerson'
+import PersonChoiceModal from './PersonChoiceModal'
 import ChangePerson from './ChangePerson'
 
 class DetailTop extends React.Component {
-    //选择列表获取工商信息详情
-    customerListInfo(data, id, visiable) {
-        this.props.action.icbcDetailInfo(data, id, visiable);
-    }
 
     //打开编辑按钮
     btnEdit() {
         this.props.action.showForm(true);
     }
 
-    //认证
-    trueIdenti() {
-        //获取已选择的公司id
-        let { viewData, icbcSelect2 } = this.props.$$state.toJS();
-        //modal点击认证的时候，把icbcSelect2清空，往viewData中存储verifyId的值
-        let visiable = false;
-        let id = viewData.id;
-        this.props.action.checkedFn(id, visiable, icbcSelect2);
-    }
-
-    //取消认证
-    cancelIdenti() {
+    //点击升级按钮
+    upgrade(){
+        debugger
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
-        let visiable = false;
-        this.props.action.checkedCancelFn(id, visiable);
-    }
+        this.props.action.cumUpgrade(id)
 
-    //modal底部显示按钮
-    footerContent() {
-        let { viewData } = this.props.$$state.toJS();
-        return (
-            <div>
-                <Button onClick={this.onCancel.bind(this)}>关闭</Button>
-                {viewData.verifyId ? (
-                    <Button onClick={this.cancelIdenti.bind(this)}>
-                        取消认证
-                    </Button>
-                ) : (
-                    <Button onClick={this.trueIdenti.bind(this)}>
-                        确定认证
-                    </Button>
-                )}
-            </div>
-        );
-    }
-    //点击已核实按钮
-    checked() {
-        let { viewData } = this.props.$$state.toJS();
-        let verifyId = viewData.verifyId;
-        ;
-        this.props.action.modalDetalVisiable(true, verifyId);
-    }
-
-    //工商核实modal层点击取消按钮触发方法
-    onCancel() {
-        this.props.action.modalDetalVisiableFalse(false);
     }
 
     //点击关注触发的方法
@@ -87,6 +44,22 @@ class DetailTop extends React.Component {
     changeViewData(viewData){
         this.props.action.assignChangeViewData(viewData)
     }
+
+    //停启用功能
+    canUse(enableState){
+        //点击停用启用
+        debugger
+        let {searchMap,viewData,pagination} = this.props.$$state.toJS()
+        const ids = viewData.id;
+        searchMap={}
+        this.props.action.setDetailEnableState(
+            ids,
+            enableState, //获取起停用数字
+            pagination,
+            searchMap //查询条件
+        );
+    }
+
     render(){
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
         return(
@@ -118,41 +91,15 @@ class DetailTop extends React.Component {
                                         className="pointer"
                                     >
                                         <div className="checked-iconfont">
-                                            {viewData.verifyId ? (
-                                                <span
-                                                    onClick={this.checked.bind(
-                                                        this
-                                                    )}
-                                                    className="blue"
-                                                >
-                                                    <i className="iconfont icon-yiheshi-" />已核实
-                                                </span>
-                                            ) : (
-                                                <span className="red">
-                                                    <i className="iconfont icon-weiheshi-" />未核实
-                                                </span>
-                                            )}
+                                            <IcbcDetailInfo width={450}/>
                                         </div>
                                         <div>
-                                            {viewData.followState ==
-                                            0 ? (
-                                                <span
-                                                    className="red"
-                                                    onClick={this.attentionFn.bind(
-                                                        this,
-                                                        0
-                                                    )}
-                                                >
+                                            {viewData.followState ==0 ? (
+                                                <span className="red" onClick={this.attentionFn.bind(this,0)}>
                                                     <i className="iconfont icon-guanzhu1" />未关注
                                                 </span>
                                             ) : (
-                                                <span
-                                                    className="blue"
-                                                    onClick={this.attentionFn.bind(
-                                                        this,
-                                                        1
-                                                    )}
-                                                >
+                                                <span className="blue" onClick={this.attentionFn.bind(this,1)}>
                                                     <i className="iconfont icon-yiguanzhu" />已关注
                                                 </span>
                                             )}
@@ -160,71 +107,46 @@ class DetailTop extends React.Component {
                                     </Row>
                                 </Row>
                                 <Row className="address pointer">
-                                    {viewData.address?<span><i className="iconfont icon-shouye-dingwei" />{viewData.address}</span>:'暂无地址'}
+                                    {viewData.address?<span>{viewData.address}<i className="iconfont icon-shouye-dingwei" /></span>:'暂无地址'}
                                 </Row>
-                                <Row className="tags">
-                                    <div className="tag-group">
-                                        {viewData.typeName ? (
-                                            <span>
-                                                {viewData.typeName}
-                                            </span>
-                                        ) : (
-                                            <div />
-                                        )}
-                                        {viewData.levelName ? (
-                                            <span>
-                                                {viewData.levelName}
-                                            </span>
-                                        ) : (
-                                            <div />
-                                        )}
-                                        {viewData.stateName ? (
-                                            <span>
-                                                {viewData.stateName}
-                                            </span>
-                                        ) : (
-                                            <div />
-                                        )}
-                                    </div>
+                                <Row type='flex' align='middle'className="tags">
+                                        {
+                                            viewData.typeName ?
+                                            <span className='tags-item'><span>{viewData.typeName}</span></span>: ''
+                                        }
+                                        {
+                                            viewData.levelName ? 
+                                            <span className='tags-item'><span>{viewData.levelName}</span></span>:''
+                                        }
+                                        {
+                                            viewData.stateName ?
+                                            <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
+                                        }
                                 </Row>
                             </Row>
                         </Col>
                     </Row>
                 </Col>
                 <Col span={15}>
-                    <Row
-                        type="flex"
-                        align="middle"
-                        justify="end"
-                        gutter={15}
-                    >
+                    <Row type="flex" align="middle" justify="end" gutter={15} >
                         <div>
-                            {viewData.verifyId ? (
-                                ""
-                            ) : (
-                                <IcbcSimpleinfo
-                                    viewData={viewData}
-                                    icbcSelect={icbcSelect2} //显隐
-                                    customerListInfo={this.customerListInfo.bind(
-                                        this
-                                    )} //点确定触发的条件
-                                    width={450}
-                                />
-                            )}
+                            <PersonChoiceModal viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
                         </div>
+                        {
+                            viewData.enableState == 1?
+                            <div>
+                                <Button onClick={this.canUse.bind(this,2)}>
+                                    <i className="iconfont icon-tingyong" />停用
+                                </Button>
+                            </div>:
+                            <div>
+                                <Button onClick={this.canUse.bind(this,1)}>
+                                    <i className="iconfont icon-qiyong" />启用
+                                </Button>
+                            </div>
+                        }
                         <div>
-                            <Button>
-                                <i className="iconfont icon-fuzebumen1" />客户结构图
-                            </Button>
-                        </div>
-                        <div>
-                            <AssignPerson viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
-                        </div>
-                        <div>
-                            <ChangePerson viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
-                        </div>
-                        <div>
-                            <Button>
+                            <Button onClick={this.upgrade.bind(this)}>
                                 <i className="iconfont icon-shengji" />升级
                             </Button>
                         </div>
@@ -314,28 +236,6 @@ class DetailTop extends React.Component {
                     </Col>
                 </Row>
             </Row>
-            <Modal
-                title="工商核实"
-                visible={icbcVisible2}
-                onCancel={this.onCancel.bind(this)}
-                footer={this.footerContent.call(this)}
-                width={500}
-                maskClosable={false}
-            >
-                <div className="modal-height">
-                    {icbcInfo1 && icbcInfo1.length
-                        ? icbcInfo1.map(item => {
-                                return (
-                                    <div className="icbc-detail-item">
-                                        <span>{item.name}</span>:<span>
-                                            {item.value}
-                                        </span>
-                                    </div>
-                                );
-                            })
-                        : ""}
-                </div>
-            </Modal>
         </Row>           
         )
     }

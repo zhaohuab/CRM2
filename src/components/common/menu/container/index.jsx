@@ -153,7 +153,6 @@ const basePath = '/crm_web/';
         let imgLogo= this.props.collapsed ? "img-logo-hide" : "img-logo";
         if(data && data.length){
             this.dataChange(data)
-            console.log(data)
         }
         return (
           <div className='menu-bg-warpper'>

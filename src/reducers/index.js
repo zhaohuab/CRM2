@@ -18,6 +18,8 @@ import orgReducers from "components/org/orgList/reducer/index.js";
 import measureList from "components/measure/list/reducer/index.js";
 //客户
 import customerList from "../components/customer/list/reducer/index.js";
+//集团客户
+import customerGroupList from "../components/customer/groupList/reducer/index.js";
 //角色
 import roleList from "../components/role/list/reducer/index.js";
 //产品分类
@@ -56,8 +58,10 @@ import prdattrgroup from 'components/prdattrgroup/list/reducer';
 //表单管理
 import businessObjDef from 'components/business-obj-def/reducer';
 
-//分配菜单
+//客户公司分配
 import cusAssignReducers from 'components/customer/assign/reducer'
+//客户集团分配
+import cusGroupAssignReducers from 'components/customer/groupAssign/reducer'
 
 let rootReducer = combineReducers({ 
     login, 
@@ -89,7 +93,9 @@ let rootReducer = combineReducers({
     prdattr,
     prdattrgroup,
     businessObjDef,
-    cusAssignReducers
+    cusAssignReducers,
+    cusGroupAssignReducers,
+    customerGroupList
 });
 
 export { rootReducer };

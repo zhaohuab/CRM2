@@ -20,9 +20,9 @@ import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
 
 import "assets/stylesheet/all/iconfont.css";
-import cityData from "../data/citydata";
+import cityData from "../../../../common/cityChioce/citydata.js";
 import * as enumDataFake from "../data/enumdata";
-import Industry from "./Industry";
+import Industry from "../../../../common/industry";
 
 class MoreForm extends React.Component {
     constructor(props) {
@@ -45,7 +45,6 @@ class MoreForm extends React.Component {
             wrapperCol: { span: 22 }
         };
         let { enumData } = this.props.$$state.toJS();
-
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -173,14 +172,9 @@ const WarpMilForm = Form.create({
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {
-            if (onChangeFild[key].value.key) {
-                searchMap[key] = onChangeFild[key].value.key;
-            } else {
-                searchMap[key] = onChangeFild[key].value;
-            }
+            searchMap[key] = onChangeFild[key].value;
         }
         props.searchMapFn(searchMap);
     }
