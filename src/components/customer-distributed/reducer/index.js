@@ -1,7 +1,9 @@
 import Immutable from 'immutable'
 
 let $$initialState = {
-    data: [], //
+    data: {
+        list:[]
+    }, //
     searchMap: {}, //存放查询条件
     customerItem:{},
     itemFlag:false,
@@ -13,11 +15,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 	switch (action.type) {		
         case "CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS": //查询各种table数据    
             return $$state.merge({
-                data: action.content.result,
+                data: action.content,
             });
         case "CUSTOMER_ITEM_LIST_GETLISTSUCCESS": //获取到左侧下半部分详情地址数据         
             return $$state.merge({
-                customerItem: action.content.result,
+                customerItem: action.content,
             });	
             					
 	  default: 

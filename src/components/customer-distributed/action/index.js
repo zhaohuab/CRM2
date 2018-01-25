@@ -18,7 +18,7 @@ const getCustomerItem = (num) => {//这个地方应该在传一个角色id，确
 		},result => {
             //debugger;
 			console.log('result=============',result)
-			dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { result }));
+			dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { ...result }));
         });
 	}
 }
@@ -31,8 +31,9 @@ const getCustomerList = () => {//获取客户数据
             method: "GET",
             data: {}
         }, result=>{
+            //debugger;
             console.log('xxxxx==========',result)
-            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { result }));
+            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result }));
         })
     }
 }

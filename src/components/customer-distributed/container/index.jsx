@@ -210,6 +210,7 @@ class PanelMap extends React.Component {
 
 
     componentDidMount() {
+        let data = this.props.$$state.get('data').toJS().list[0].
         this.props.action.getCustomerList();//获取部门及业务员
         this.props.action.getCustomerItem(1);//获取具体客户信息
         this.areaMap = echarts.init(this.refs.areaMap);//初始化echarts
@@ -267,17 +268,17 @@ class PanelMap extends React.Component {
                         <Row type="flex" justify="around" align='middle' gutter={10} className='customer-principal'>
                             { 
                                 itemFlag?
-                                data.map(item=>{
+                                data.list.map(item=>{
                                     return (
                                         <Col span={24} className='customer-principal-item' onClick={this.getCustomerItem.bind(this)}>
-                                            {item.name}<span className='customer-num'>({item.num})</span>
+                                            {item[2].name}<span className='customer-num'>({item.num})</span>
                                         </Col>
                                     )
                                 })
                                 :
-                                dataSource.map(item=>{
+                                data.list.map(item=>{debugger
                                     return (
-                                        <Col span={6} className='customer-principal-item' onClick={this.onChange.bind(this,item.id)}>{item.name}<span className='customer-num'>({item.num})</span></Col>
+                                        <Col span={6} className='customer-principal-item' onClick={this.onChange.bind(this,item[2].id)}>{item[2].name}<span className='customer-num'>({item[2].num})</span></Col>
                                     )
                                 }) 
                                
