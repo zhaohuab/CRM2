@@ -70,10 +70,6 @@ import lead from 'components/lead/list/reducer';
 //任务调度
 import quartz from 'components/quartz/list/reducer'
 
-
-//分配菜单
-import cusAssignReducers from 'components/customer/assign/reducer';
-//
 //客户分布
 import cusDistributed from 'components/customer-distributed/reducer';
 
@@ -108,16 +104,13 @@ let rootReducer = combineReducers({
     prdattrgroup,
     businessObjDef,
     cusAssignReducers,
-<<<<<<< HEAD
     cusGroupAssignReducers,
-    customerGroupList
-=======
+    customerGroupList,
     cusDistributed,
     lead,
     quartz,
     cusAssignReducers,
     approval
->>>>>>> e2c64eb3593292bfffb7cc9ff83f8435482d8727
 });
 
 export { rootReducer };

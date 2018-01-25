@@ -274,7 +274,7 @@ export function hideViewForm (visiable){
 };
 
 //客户升级
-export function cumUpgrade(id){//viewDataRelevant:action.data
+export function cumUpgrade(id){
     debugger
     return dispatch => {
         reqwest(

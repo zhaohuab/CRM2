@@ -24,8 +24,6 @@ import Card from "./list/Card";
 import ViewPanel from "./panel/ViewPanel";
 import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
-import PanelMap from "./map/PanelMap";
-import PanelState from "./state/PanelState";
 
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
