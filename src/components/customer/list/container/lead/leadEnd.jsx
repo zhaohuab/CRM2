@@ -1,3 +1,6 @@
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Actions from "../../action";
 import {
     Steps,
     Cascader,
@@ -14,14 +17,14 @@ import {
     Upload
 } from 'antd';
 const Step = Steps.Step;
-export default class LeadIn extends React.Component {
+ class LeadEnd extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <div>
+            <div className="leadin">
                 <Row>
                     <Steps current={1} progressDot>
                         <Step title="上传文档" />
@@ -57,3 +60,18 @@ export default class LeadIn extends React.Component {
         )
     }
 }
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.customerList,
+        $$stateCommon: state.componentReducer
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(LeadEnd);

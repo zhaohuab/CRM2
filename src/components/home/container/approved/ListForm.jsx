@@ -10,7 +10,7 @@ import StatusLine from './StatusLine.jsx'
 class Department extends React.Component {
     constructor(props) {
         super(props);
-       
+
         this.columnsUnfinished = [
             {
                 "title": "序号",
@@ -57,7 +57,9 @@ class Department extends React.Component {
                 "title": "操作",
                 "dataIndex": "operate",
                 render: (text, record) => (
-                    <div className="crm-pointer">{record.operate}</div>
+                    <div
+                        onClick={this.onRemind.bind(this, record)}
+                        className="crm-pointer">{record.operate}</div>
                 )
             },
         ]
@@ -121,19 +123,25 @@ class Department extends React.Component {
         ]
     }
 
+    onRemind = (record) => {
+        debugger
+        this.props.action.onRemind(record.approvalUserList, record.djId, record.djType)
+    }
+
     slideShow = (record) => {
-        this.props.action.showViewForm(true, record.djId, record.djType,record.instanceId,record.taskId,record);
+        debugger
+        this.props.action.showViewForm(true, record.djId, record.djType, record.instanceId, record.taskId, record);
     }
 
     statusShow = (record) => {
-        this.props.action.statusShow(true,record.djId, record.djType)
+        this.props.action.statusShow(true, record.djId, record.djType)
     }
     //分页方法
     showTotal1(total) {
         return `共 ${total} 条`;
     }
     onPageChange1(page, pageSize) {
-         
+
         let pagination = { page: page, pageSize: pageSize };
         this.props.action.getFinished(
             pagination,
@@ -141,7 +149,7 @@ class Department extends React.Component {
         );
     }
     onPageSizeChange1(current, pageSize) {
-         
+
         let pagination = { page: current, pageSize: pageSize };
         this.props.action.getFinished(
             pagination,
@@ -149,7 +157,7 @@ class Department extends React.Component {
         );
     }
 
-   // -----------
+    // -----------
     showTotal2(total) {
         return `共 ${total} 条`;
     }
@@ -167,25 +175,19 @@ class Department extends React.Component {
             this.props.$$state.get("searchMap").toJS()
         );
     }
-
-
-    forceItUpdate() {
-        this.forceUpdate();
-    }
-
     render() {
-         
+
         let { finishState, searchMap, unfinishedData, finishedData, data } = this.props.$$state.toJS();
         debugger
         return (
             <div>
                 {searchMap.status && searchMap.status == 'finish' ?
                     <Table
-                        size="middle"   
+                        size="middle"
                         columns={this.columnsFinished}
-                        dataSource={ finishedData.data}
-                        rowKey={(record)=>{
-                            return  record.id+'';
+                        dataSource={finishedData.data}
+                        rowKey={(record) => {
+                            return record.id + '';
                         }}
                         pagination={{
                             size: "large",
@@ -201,12 +203,10 @@ class Department extends React.Component {
                     /> :
                     <Table
                         size="middle"
-                        //columns={searchMap.status && searchMap.status == 'i' ? this.columnsFinished : this.columnsUnfinished}
                         columns={this.columnsUnfinished}
-                        //dataSource={page}
                         dataSource={unfinishedData.data}
-                        rowKey={(record)=>{
-                            return  record.id+'';
+                        rowKey={(record) => {
+                            return record.id + '';
                         }}
                         pagination={{
                             size: "large",

@@ -27,10 +27,13 @@ import SlidePanel from "../../../common/slidePanel/index.jsx";
 import PanelMap from "./map/PanelMap";
 import PanelState from "./state/PanelState";
 
+
+
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
-import LeadIn from './list/LeadIn.jsx'
+import LeadIn from './lead/LeadIn.jsx'
+import LeadEnd from "./lead/leadEnd.jsx"
 
 class List extends React.Component {
     constructor(props) {
@@ -44,7 +47,7 @@ class List extends React.Component {
                 title: "客户名称",
                 dataIndex: "name",
                 render: (text, record) => {//isGroup
-                    return(
+                    return (
                         <div
                             onClick={this.slideShow.bind(this, record)}
                             className="crm-pointer"
@@ -52,21 +55,21 @@ class List extends React.Component {
                             <div className='cum-color'>
                                 <span>{record.name}</span>
                                 {
-                                    record.isGroup =='1'?
-                                    <img
-                                        src={require("../images/company.png")}
-                                        className="img"
-                                    />
-                                    :
-                                    <img
-                                        src={require("../images/grope.png")}
-                                        className="img"
-                                    />
+                                    record.isGroup == '1' ?
+                                        <img
+                                            src={require("../images/company.png")}
+                                            className="img"
+                                        />
+                                        :
+                                        <img
+                                            src={require("../images/grope.png")}
+                                            className="img"
+                                        />
                                 }
                             </div>
                         </div>
                     )
-                }  
+                }
             },
             {
                 title: "客户类型",
@@ -155,7 +158,7 @@ class List extends React.Component {
             delete data.ownerUserId
             data.salesVOs = [{ ownerUserId }]
         }
-        
+
         return data;
     }
 
@@ -226,10 +229,10 @@ class List extends React.Component {
     }
 
     columnsTranslate = (columns) => {//----------表头转换：所有返回来的表头结构一致，每个组件进行函数转换，实现个性化操作
-        return columns.map(item=>{
-            if(item.dataIndex=='name'){
+        return columns.map(item => {
+            if (item.dataIndex == 'name') {
                 return (
-                   {
+                    {
                         title: "客户名称",
                         dataIndex: "name",
                         render: (text, record) => (
@@ -243,7 +246,7 @@ class List extends React.Component {
                     }
                 )
             }
-            if (item.dataIndex=='enableState'){
+            if (item.dataIndex == 'enableState') {
                 return (
                     {
                         title: "启用状态",
@@ -257,7 +260,7 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-         this.props.action.getTitle('customer')
+        this.props.action.getTitle('customer')
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
@@ -265,15 +268,22 @@ class List extends React.Component {
     }
 
 
-    handleOkLead(){
-
+    leadStart() {
+        this.props.action.leadShow(false);
+        this.props.action.leadEndShow(true);
     }
-    handleCancelLead(){
-
+    leadStartCancel() {
+        this.props.action.leadShow(false)
+    }
+    leadEnd(){
+         this.props.action.leadEndShow(false)
+    }
+    leadEndCancel(){
+        this.props.action.leadEndShow(false)
     }
 
     render() {
-        
+
         const { $$state } = this.props;
         debugger;
         const page = $$state.get("data").toJS();
@@ -284,8 +294,10 @@ class List extends React.Component {
             viewState,
             viewData,
             icbcVisible,
+            icbcSelect,
+
             leadVisible,
-            icbcSelect
+            leadEndVisible
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -293,7 +305,7 @@ class List extends React.Component {
             onChange: this.onSelectChange
         };
 
-        let columns = this.columnsTranslate.call(this,titleList);//------获取表头
+        //let columns = this.columnsTranslate.call(this,titleList);//------获取表头
         return (
 
             <div className="custom-warpper ">
@@ -307,7 +319,7 @@ class List extends React.Component {
                     <TabPane tab={this.tabTitle(0)} key="1">
                         <div className="table-bg tabel-recoverd">
                             <Table
-                                columns={columns}
+                                columns={this.columns}
                                 dataSource={page.data}
                                 rowKey="id"
                                 rowSelection={rowSelection}
@@ -368,14 +380,33 @@ class List extends React.Component {
 
                 <Modal title="导入"
                     visible={leadVisible}
-                    onOk={this.handleOkLead.bind(this)}
-                    onCancel={this.handleCancelLead.bind(this)}
-                > 
-                 <div className="cur-lead">
-                        <LeadIn> 
-                        </LeadIn>
+                    onOk={this.leadStart.bind(this)}
+                    onCancel={this.leadStartCancel.bind(this)}
+                    footer={[
+                        <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                        <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                          开始导入
+                        </Button>
+                      ]}
+                >
+                    <div className="cur-lead">
+                        <LeadIn />
                     </div>
-
+                </Modal>
+                <Modal title="导入"
+                    visible={leadEndVisible}
+                    onOk={this.leadEnd.bind(this)}
+                    onCancel={this.leadEndCancel.bind(this)}
+                    footer={[
+                        // <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                        <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                          关闭
+                        </Button>
+                      ]}
+                > 
+                 <div className="cur-leadEnd">
+                        <LeadEnd/> 
+                    </div>
                 </Modal>
             </div>
         );

@@ -59,7 +59,30 @@ const approvalHomeVisible = (visible) => {
         dispatch(fetchData('HEADER_APPROVED_HOMEVISIBLE', { approvalHomeVisible: visible }))
     }
 }
+const onRemind = (personlist, id, type
+) => {
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.remind,
+                method: "POST",
+                data: {
+                    param: {
+                        personlist,
+                        id,
+                        type
+                    }
+                }
+            },
+            dataResult => {
 
+            }
+        )
+    }
+
+
+}
 
 
 const approvalFlag = (flag) => {
@@ -130,7 +153,6 @@ const viewState = (viewState) => {
 
 }
 
-
 //审批状态显隐
 const statusShow = (lineState, djId, djType) => {
 
@@ -175,9 +197,6 @@ const approvedShow = () => {
 //往redux中存基础、扩展查询条件
 const saveSearchMap = (data) => {
 
-    // return dispatch => {
-    //     dispatch(fetchData("APPROVE_LIST_SEARCHMAP", { data }))
-    // };
     return fetchData("APPROVE_LIST_SEARCHMAP", { data });
 };
 const savesearchMapApproval = (data) => {
@@ -199,7 +218,6 @@ const mentionVisibleClose = (visible) => {
 //展示面板，把点击某个客户的所有值，放在redux中
 const showViewForm = (visible, djId, djType, instanceId, taskId, record) => {
     return dispatch => {
-
         reqwest(
             {
                 url: url.details,
@@ -212,7 +230,6 @@ const showViewForm = (visible, djId, djType, instanceId, taskId, record) => {
                 }
             },
             data => {
-
                 dispatch(fetchData(
                     "APPROVAL_LIST_SHOWVIEWFORM",
                     {
@@ -221,7 +238,6 @@ const showViewForm = (visible, djId, djType, instanceId, taskId, record) => {
                         record
                     }
                 ));
-
             }
         );
         reqwest(
@@ -242,8 +258,8 @@ const showViewForm = (visible, djId, djType, instanceId, taskId, record) => {
                     {
                         data //审批状态数据
                     }
-                ));
-
+                )
+            );
             }
         );
         reqwest(
@@ -320,7 +336,7 @@ const getUnfinished = (pagination, searchMap) => {
 }
 
 const getDateUnfinished = (pagination, searchMap, queryDateKey) => {
-
+debugger
     return dispatch => {
         reqwest(
             {
@@ -500,7 +516,8 @@ export {
     allButtons,
     approvalHomeData,
     approvalHomeVisible,
-    approvalFlag
+    approvalFlag,
+    onRemind
 }
 
 

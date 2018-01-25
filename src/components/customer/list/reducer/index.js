@@ -33,7 +33,10 @@ let $$initialState = {
     contactsCardData:{},//保存联系人相关对象输入值
     clueCardList:{},//保存商机新增表单数据
     clueTableList:{},//保存商机新增表单table数据
-    leadVisible:false
+
+
+    leadVisible:false,//导入显隐
+    leadEndVisible:false
 };
 
 function pageAdd(page, item) {
@@ -65,6 +68,27 @@ function clearObject(obj){
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState),action) {
     switch (action.type) {
+
+
+//----------- 导入
+case 'CUSTOMER_LIST_LEADSHOW':
+return $$state.merge({
+    leadVisible: action.payload.leadVisible,
+
+});
+
+case 'CUSTOMER_LIST_LEADENDSHOW':
+return $$state.merge({
+    leadEndVisible: action.payload.leadVisible,
+
+});
+
+
+//-----------
+
+
+
+
         case "CUSTOMER_LIST_GETDATA": //查询各种table数据
         
             return $$state.merge({

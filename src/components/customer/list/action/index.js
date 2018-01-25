@@ -24,6 +24,36 @@ function transData(searchMap) {
     return searchMap;
 }
 
+//-------导入导出
+const leadShow=(leadVisible)=>{
+    return {
+        type: "CUSTOMER_LIST_LEADSHOW",
+        payload: {leadVisible}
+    };
+};
+
+const leadEndShow=(leadVisible)=>{
+    return {
+        type: "CUSTOMER_LIST_LEADENDSHOW",
+        payload: {leadVisible}
+    };
+};
+
+
+
+
+
+
+
+
+
+//-----------
+
+
+
+
+
+
 //控制查询显隐
 const changeVisible = () => {
     return {
@@ -712,5 +742,11 @@ export {
     //==========以下为模板方法
     getLayout,
     getTitle,
-    getDetailFilds
+    getDetailFilds,
+
+
+
+    //----导入
+    leadShow,
+    leadEndShow
 };

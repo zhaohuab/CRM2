@@ -12,7 +12,7 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class Child extends React.Component {
+class Unfinish extends React.Component {
     constructor(props) {
         super(props)
     }
@@ -39,7 +39,7 @@ class Child extends React.Component {
                                 <FormItem label="申请时间"  {...formItemLayout}>
                                     {getFieldDecorator('approvalTime'
                                     )(
-                                        <Input placeholder="请输入"   disabled/>
+                                        <Input  disabled/>
                                         )}
                                 </FormItem>
 
@@ -48,7 +48,7 @@ class Child extends React.Component {
                                 <FormItem label="申请人"  {...formItemLayout}>
                                     {getFieldDecorator('applyUserName'
                                     )(
-                                        <Input placeholder="请输入"  disabled />
+                                        <Input disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -56,7 +56,7 @@ class Child extends React.Component {
                                 <FormItem label="申请公司"  {...formItemLayout}>
                                     {getFieldDecorator('orgName'
                                     )(
-                                        <Input placeholder="请输入" disabled />
+                                        <Input disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -66,7 +66,7 @@ class Child extends React.Component {
                                 <FormItem label="申请部门" {...formItemLayout}>
                                     {getFieldDecorator('deptName'
                                     )(
-                                        <Input placeholder="请输入" disabled />
+                                        <Input  disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -74,7 +74,7 @@ class Child extends React.Component {
                                 <FormItem label="客户名称" {...formItemLayout}>
                                     {getFieldDecorator('cumName'
                                     )(
-                                        <Input placeholder="请输入" disabled />
+                                        <Input disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -82,7 +82,7 @@ class Child extends React.Component {
                                 <FormItem label="客户全称" {...formItemLayout}>
                                     {getFieldDecorator('cumFullname'
                                     )(
-                                        <Input placeholder="请输入" disabled />
+                                        <Input disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -92,7 +92,7 @@ class Child extends React.Component {
                                 <FormItem label="审批状态" {...formItemLayout}>
                                     {getFieldDecorator('approvalStateName'
                                     )(
-                                        <Input placeholder="请输入" disabled />
+                                        <Input  disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -100,7 +100,7 @@ class Child extends React.Component {
                                 <FormItem label="最后审批人" {...formItemLayout}>
                                     {getFieldDecorator('approvalUserName'
                                     )(
-                                        <Input placeholder="请输入" disabled />
+                                        <Input disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -108,7 +108,7 @@ class Child extends React.Component {
                                 <FormItem label="最后审批时间" {...formItemLayout}>
                                     {getFieldDecorator('approvalTime'
                                     )(
-                                        <Input placeholder="请输入" disabled />
+                                        <Input disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -174,7 +174,7 @@ const WrapedCard = Form.create({
         }
         props.action.saveDetailData(detailData);
     }
-})(Child)
+})(Unfinish)
 
 function mapStateToProps(state, ownProps) {
     return {

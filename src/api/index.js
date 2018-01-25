@@ -139,7 +139,8 @@ const approval={
     historyStatus:baseDir+'bpub/approvals/histories',
     actions:baseDir+'bpub/approvals/actions',
     todototal:baseDir+'bpub/approvals/todototal',
-    notfinishedtotal:baseDir+'bpub/approvals/notfinishedtotal'
+    notfinishedtotal:baseDir+'bpub/approvals/notfinishedtotal',
+    remind:baseDir+'/bpub/approvals/remind'
 }
 
 

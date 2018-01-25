@@ -32,6 +32,22 @@ class ToolForm extends React.Component {
         super(props);
     }
 
+    //--------
+    onMenu(e) {
+        if (e.key == "1") {
+            debugger
+            this.props.action.leadShow(true);
+        } else if (e.key == "2") {
+        }
+
+    }
+
+
+
+    //---------
+
+
+
     //点击返回按钮
     btnBack() {
         this.props.action.selectRow([], []);
@@ -83,7 +99,6 @@ class ToolForm extends React.Component {
     //点击新建按钮
     btnNew() {
         this.props.action.addCustomer(true);
-        this.props.action.getLayout('customer');//---------请求自定义模板数据------------------------------
     }
     //上下表单控制显隐
     changeVisible() {
@@ -91,6 +106,7 @@ class ToolForm extends React.Component {
     }
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
+        ;
         if (searchMap.industry) {
             searchMap.industry = searchMap.industry.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
         }
@@ -106,14 +122,16 @@ class ToolForm extends React.Component {
         this.props.action.saveSearchMap(searchMap);
     }
 
+
     render() {
+        debugger
         let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
         const moreMenu = (
-            <Menu>
-                <Menu.Item className="customer_list_import_customer" key="0">
+            <Menu onClick={this.onMenu.bind(this)}>
+                <Menu.Item key="1">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item className="customer_list_export_customer" key="1">
+                <Menu.Item key="2">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>
@@ -126,111 +144,110 @@ class ToolForm extends React.Component {
                         length={selectedRowKeys.length}
                     >
                         <Button
-                            className="returnbtn-class customer_list_delete_customer"
+                            className="returnbtn-class"
                             onClick={this.btnDelete.bind(this)}
                         >
                             <i className="iconfont icon-shanchu" />删除
                         </Button>
 
                         <ButtonGroup className="returnbtn-class">
-                            <Button className="customer_list_start_customer" onClick={this.btnSetEnable.bind(this, 1)}>
+                            <Button onClick={this.btnSetEnable.bind(this, 1)}>
                                 <i className="iconfont icon-qiyong" />启用
                             </Button>
-                            <Button className="customer_list_stop_customer" onClick={this.btnSetEnable.bind(this, 2)}>
+                            <Button onClick={this.btnSetEnable.bind(this, 2)}>
                                 <i className="iconfont icon-tingyong" />停用
                             </Button>
                         </ButtonGroup>
                     </HeaderButton>
                 ) : (
-                    <Row>
-                        <Row
-                            type="flex"
-                            align="middle"
-                            justify="space-between"
-                            className="header-top"
-                        >
-                            <Col span={17}>
-                                <Row type="flex" align="middle">
-                                    <Col className="select-recover">
-                                        <Select defaultValue="3">
-                                            <Option value="0">全部</Option>
-                                            <Option value="1">我关注</Option>
-                                            <Option value="2">最近创建</Option>
-                                            <Option value="3">最近查看</Option>
-                                            <Option value="4">
-                                                一周前跟进
-                                            </Option>
-                                            <Option value="5">未分配</Option>
-                                            <Option value="6">已分配</Option>
-                                        </Select>
-                                    </Col>
-                                    <Col
-                                        span={18}
-                                        className={
-                                            moreShow
-                                                ? "less-hide-height"
-                                                : "less-show-height"
-                                        }
-                                    >
-                                        <LessForm
-                                            handleSearch={this.handleSearch.bind(
-                                                this
-                                            )} //点击查询方法
-                                            searchMapFn={this.searchMapFn.bind(
-                                                this
-                                            )} //动态赋值查询条件到redux中
-                                            formMore={this.changeVisible.bind(
-                                                this
-                                            )} //控制查询显隐
-                                        />
-                                    </Col>
-                                </Row>
-                            </Col>
-
-                            <Col span={7}>
-                                <Row type="flex" gutter={15} justify="end">
-                                    <Col>
-                                        <Button
-                                            className="customer_list_add_customer"
-                                            type="primary"
-                                            onClick={this.btnNew.bind(this)}
-                                        >
-                                            <i className="iconfont icon-xinjian" />新建
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Button>
-                                            <i className="iconfont icon-shuaxin" />刷新
-                                        </Button>
-                                    </Col>
-                                    <Col>
-                                        <Dropdown.Button
-                                            overlay={moreMenu}
-                                            trigger={["click"]}
-                                        >
-                                            更多
-                                        </Dropdown.Button>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <div className="header-bottom">
+                        <Row>
                             <Row
-                                className={
-                                    moreShow
-                                        ? "more-show-height"
-                                        : "less-hide-height"
-                                }
+                                type="flex"
+                                align="middle"
+                                justify="space-between"
+                                className="header-top"
                             >
-                                <MoreForm
-                                    handleSearch={this.handleSearch.bind(this)} //点击查询方法
-                                    searchMapFn={this.searchMapFn.bind(this)} //动态赋值查询条件到redux中
-                                    formMore={this.changeVisible.bind(this)} //控制查询显隐
-                                />
+                                <Col span={17}>
+                                    <Row type="flex" align="middle">
+                                        <Col className="select-recover">
+                                            <Select defaultValue="3">
+                                                <Option value="0">全部</Option>
+                                                <Option value="1">我关注</Option>
+                                                <Option value="2">最近创建</Option>
+                                                <Option value="3">最近查看</Option>
+                                                <Option value="4">
+                                                    一周前跟进
+                                            </Option>
+                                                <Option value="5">未分配</Option>
+                                                <Option value="6">已分配</Option>
+                                            </Select>
+                                        </Col>
+                                        <Col
+                                            span={18}
+                                            className={
+                                                moreShow
+                                                    ? "less-hide-height"
+                                                    : "less-show-height"
+                                            }
+                                        >
+                                            <LessForm
+                                                handleSearch={this.handleSearch.bind(
+                                                    this
+                                                )} //点击查询方法
+                                                searchMapFn={this.searchMapFn.bind(
+                                                    this
+                                                )} //动态赋值查询条件到redux中
+                                                formMore={this.changeVisible.bind(
+                                                    this
+                                                )} //控制查询显隐
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Col>
+
+                                <Col span={7}>
+                                    <Row type="flex" gutter={15} justify="end">
+                                        <Col>
+                                            <Button
+                                                type="primary"
+                                                onClick={this.btnNew.bind(this)}
+                                            >
+                                                <i className="iconfont icon-xinjian" />新建
+                                        </Button>
+                                        </Col>
+                                        <Col>
+                                            <Button>
+                                                <i className="iconfont icon-shuaxin" />刷新
+                                        </Button>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown.Button
+                                                overlay={moreMenu}
+                                                trigger={["click"]}
+                                            >
+                                                更多
+                                        </Dropdown.Button>
+                                        </Col>
+                                    </Row>
+                                </Col>
                             </Row>
-                        </div>
-                    </Row>
-                )}   
+                            <div className="header-bottom">
+                                <Row
+                                    className={
+                                        moreShow
+                                            ? "more-show-height"
+                                            : "less-hide-height"
+                                    }
+                                >
+                                    <MoreForm
+                                        handleSearch={this.handleSearch.bind(this)} //点击查询方法
+                                        searchMapFn={this.searchMapFn.bind(this)} //动态赋值查询条件到redux中
+                                        formMore={this.changeVisible.bind(this)} //控制查询显隐
+                                    />
+                                </Row>
+                            </div>
+                        </Row>
+                    )}
             </Row>
         );
     }

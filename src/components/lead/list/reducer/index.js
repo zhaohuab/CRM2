@@ -23,7 +23,7 @@ let $$initialState = {
 };
 
 function pageAdd(page, item) {
-    ////debugger;
+    //////debugger;
     page.total += 1;
     page.data.unshift(item);
     page.page = Math.ceil(page.total / page.pageSize);
@@ -43,7 +43,7 @@ function pageEdit(page, item) {
 }
 
 function clearObject(obj){
-    debugger
+    //debugger
     for(let key in obj){
         
         obj[key] = undefined
@@ -56,7 +56,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
     switch (action.type) {
 
         case "CLUE_LIST_GETDATA": //查询各种table数据
-            //debugger
+            ////debugger
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination
@@ -80,7 +80,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 selectedRowKeys: []
             });
         case "CLUE_LIST_SHOWFORM": //显示、关闭modal层
-        debugger
+        //debugger
             return $$state.merge({
                 visible: action.data
             });
@@ -90,7 +90,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({ moreShow: !visit });
 
             case "CLUE_LIST_SEARCHMAP": //存放扩展、基础查询条件
-            debugger
+            //debugger
             return $$state.merge({
                 searchMap: action.data
             });
@@ -99,7 +99,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
 
         //点击编辑获取数据
         case "CLUE_LIST_EDIT":
-            //debugger
+            ////debugger
             let getData = action.edit;
             getData.province_city_district = [
                 getData.province.toString(),
@@ -112,7 +112,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
         //点击新建，清空数据
         case "CLUE_LIST_EMPTY":
-            debugger
+            //debugger
             return $$state.merge({
                 editData: clearObject($$state.get('editData').toJS()),
                 visible: action.data,
@@ -145,7 +145,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         case "CLUE_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
-            debugger
+            //debugger
             let actionData = action.data;
             // actionData.industry = {
             //     id: actionData.industry,

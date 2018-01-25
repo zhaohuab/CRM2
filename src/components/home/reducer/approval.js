@@ -105,7 +105,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 showAction: ''
             })
         case 'APPROVAL_LIST_SHOWVIEWAPPROVAL':
-             
+             debugger
             return $$state.merge({
                 detailapproval: action.content.data,
                 commit: action.content.data.commit,
