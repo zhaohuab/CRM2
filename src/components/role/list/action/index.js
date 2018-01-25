@@ -100,7 +100,6 @@ const onSaveRole4Add = (data, index) => {
 				param: transData(data)
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('ROLE_CARD_SAVEADD', { ...result }));
 		})
 	}
@@ -192,7 +191,6 @@ const getUserListData = (roleId,pagination,isPreseted) => {
 				}
 			},
 		}, result => {
-			debugger
 			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data:result,roleId,isPreseted }));
 		})
 	}
@@ -313,6 +311,12 @@ const selectRight = (roleId, rightId, rightData) => {
 	}
 }
 
+const saveUserCardName =  (name) => {
+	return (dispatch) => {
+		dispatch(fetchData("ROLE_LIST_SAVEUSERCARDNAME",name ))
+	}
+};
+
 
 //输出 type 与 方法
 export {
@@ -335,5 +339,6 @@ export {
 	selectUserCardRow,
 	deleteUser,
 	getRightData,
-	selectRight
+	selectRight,
+	saveUserCardName
 }

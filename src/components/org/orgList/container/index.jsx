@@ -38,14 +38,6 @@ class List extends Component {
                 dataIndex: "fatherorgName"
             },
             {
-                title: "负责人",
-                dataIndex: "respoPerson"
-            },
-            {
-                title: "其他负责人",
-                dataIndex: "otherRespoPerson"
-            },
-            {
                 title: "组织类型",
                 dataIndex: "orgTypeName"
             },
@@ -207,8 +199,8 @@ class List extends Component {
                         />
                     </div>
                     <div className="list-table" ref="listTablePanel">
-                        <div className="table-header">
-                            {selectedRows.length ? (
+                        
+                            {selectedRows.length ? (<div className="table-header">
                                 <EditButton
                                     data={selectedRows}
                                     setEnablestate={this.btnSetEnablestate.bind(
@@ -224,26 +216,11 @@ class List extends Component {
                                     returnFn={this.btnBack.bind(this)}
                                     changeForm={this.changeForm.bind(this)}
                                 />
-                            ) : (
+                                </div>) : (
                                 ""
                             )}
-                            <div className="list-add">
-                                <ButtonGroup className="list-add-group">
-                                    <Button>
-                                        <i className="iconfont icon-daochu" />导入
-                                    </Button>
-                                    <Button>
-                                        <i className="iconfont icon-daoru" />导出
-                                    </Button>
-                                </ButtonGroup>
-                                <Button
-                                    type="primary"
-                                    onClick={this.addFormBtn.bind(this)}
-                                >
-                                    <Icon type="plus" />新建
-                                </Button>
-                            </div>
-                        </div>
+                            
+                        
                         <div className="org-tabel tabel-recoverd">
                             <Table
                                 columns={this.columns}

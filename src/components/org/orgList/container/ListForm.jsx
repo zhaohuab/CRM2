@@ -63,14 +63,12 @@ class ListForm extends React.Component {
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='简称'>
                                     {getFieldDecorator('simpleName', {
-                                        rules: [{ required: true, message: '请输入简称!' }],
                                     })(
                                         <Input type='text' placeholder="请输入简称!" />
                                         )}
                                 </FormItem>
                                 <FormItem  {...formItemLayout} label='助记码'>
                                     {getFieldDecorator('simpleCode', {
-                                        rules: [{ required: true, message: '请输入助记码!' }],
                                     })(
                                         <Input type='text' placeholder="请输入助记码!" />
                                         )}
@@ -85,22 +83,9 @@ class ListForm extends React.Component {
                                         <Department />
                                         )}
                                 </FormItem>
-                                <FormItem  {...formItemLayout} label='负责人'>
-                                    {getFieldDecorator('respoPerson', {
-                                        rules: [],
-                                    })(
-                                        <Input disabled='true' type='text' placeholder="无" />
-                                        )}
-                                </FormItem>
-                                <FormItem  {...formItemLayout} label='其他负责人'>
-                                    {getFieldDecorator('otherRespoPerson', {
-                                        rules: [],
-                                    })(
-                                        <Input disabled='true' type='text' placeholder="无" />
-                                        )}
-                                </FormItem>
                                 <FormItem  {...formItemLayout} label='组织类型'>
                                     {getFieldDecorator('orgType', {
+                                        initialValue:3,
                                         rules: [{ required: true, message: '请输入组织类型!' }],
                                     })(
                                         <RadioGroup>
