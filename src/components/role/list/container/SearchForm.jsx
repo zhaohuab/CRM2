@@ -21,8 +21,8 @@ class SearchForm extends React.Component {
         let that = this;
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.props.action.getListData(this.props.$$state.get("pagination").toJS(), values);
-                this.props.action.getFunnelData(values)
+                this.props.action.getRoleListData(values);
+                // this.props.action.getFunnelData(values)
             }
         });
     }
@@ -63,7 +63,7 @@ class SearchForm extends React.Component {
                                 <Col span={9}>
 
                                     <FormItem {...formItemLayout}>
-                                        {getFieldDecorator("type", {})(
+                                        {getFieldDecorator("name", {})(
                                             <Input
                                                 placeholder="角色名称"
                                             />
@@ -72,7 +72,7 @@ class SearchForm extends React.Component {
                                 </Col>
                                 <Col span={9}>
                                     <FormItem {...formItemLayout}>
-                                        {getFieldDecorator("saleStage", {})(
+                                        {getFieldDecorator("orgId", {})(
                                             <Department />
                                         )}
                                     </FormItem>

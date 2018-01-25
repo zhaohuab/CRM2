@@ -55,7 +55,7 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-        this.props.action.getRoleListData();
+        this.props.action.getRoleListData({});
         this.props.action.getEnumData();
     }
 

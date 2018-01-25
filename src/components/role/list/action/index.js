@@ -19,16 +19,19 @@ const transData = (data) => {
 	return data;
 }
 
-const getRoleListData = () => {
+const getRoleListData = (searchMap) => {
 
 	return (dispatch) => {
 		reqwest({
 			url: url.role,
 			method: "GET",
 			data: {
+				param:{
+					searchMap:transData(searchMap)
+				}
 			},
 		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', { ...result }));
+			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', {data:result,searchMap}));
 		})
 	}
 }
@@ -36,7 +39,6 @@ const getRoleListData = () => {
 const getFuncTreeData = (roleId,isPreseted) => {
 	
 	return (dispatch) => {
-	
 		reqwest({
 			// `${url.user}/${data.id}`
 			url: url.role+"/"+roleId+"/funcs",
@@ -49,10 +51,9 @@ const getFuncTreeData = (roleId,isPreseted) => {
 		}, funcData => {
 			dispatch(fetchData("ROLE_LIST_GETFUNCTREESUCCESS", { funcData, roleId,isPreseted }))
 		})
-
 	}
-
 }
+
 const selectRow = (selectedRows, selectedRowKeys) => {
 	return (dispatch) => {
 		dispatch(fetchData("ROLE_LIST_SELECTROW", { selectedRows, selectedRowKeys }))

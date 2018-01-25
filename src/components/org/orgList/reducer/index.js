@@ -1,6 +1,7 @@
 import Immutable from 'immutable'
 
 let $$initialState = {
+	isEdit:false,
 	listData: [],
 	treeData: [],
 	tabelLoading: false,
@@ -52,7 +53,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				formVisitable: action.payload.visible,
 				editData: action.payload.editData,
-				isEdit : action.payload.editData.id==undefined?false:true
+				isEdit : action.payload.isEdit
 			})
 		case 'ORG_LIST_CHANGEADDCLOSE':
 			return $$state.merge({ formVisitable: false })
