@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import * as Actions from "../action/approval.js";
 import { Map, Markers, Polyline } from "react-amap";
 import {
     Input,
@@ -32,8 +33,8 @@ import target from "./targetEcharts.js";
 import moneyEcharts from "./moneyEcharts.js";
 import funnelEcharts from "./funnelEcharts.js";
 import customerEcharts from "./customerEcharts";
-
-import * as Actions from "../action/index.js";
+import Approved from "./approved/index.jsx"
+//import * as Actions from "../action/index.js";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
@@ -126,7 +127,49 @@ const targetTabelData = [
         }
     ]
 ];
+const commitColumns = [
+    {
+        "title": "任务主题",
+        "dataIndex": "name",
+        render: (text, record) => (
+            <div className="table-color"
 
+            >
+                {record.name}
+            </div>
+        )
+    },
+    {
+        "title": "待审人",
+        "dataIndex": "approvalUserList",
+        render: (text, record) => (
+            <div>
+                11111
+                {/* {record.approvalUserList[0].name} */}
+            </div>
+        )
+    },
+    {
+        "title": "停留时长",
+        "dataIndex": "stayTimeLength"
+    }
+]
+const approvalColumns = [
+    {
+        "title": "任务主题",
+        "dataIndex": "name",
+        render: (text, record) => (
+            <div>
+                {record.name}
+            </div>
+
+        )
+    },
+    {
+        "title": "停留时长",
+        "dataIndex": "stayTimeLength"
+    }
+]
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -220,17 +263,34 @@ class Home extends React.Component {
         this.areaMap = echarts.init(this.refs.areaMap);
         this.areaMap.setOption(this.customerOption);
 
+        this.props.action.approvalHomeData();//审批数据
+
         window.addEventListener("resize", this.onWindowResize.bind(this));
+    }
+
+    commit = () => {
+        this.props.action.approvalHomeVisible(true);
+        this.props.action.approvalFlag(false)
+    }
+    approval = () => {
+        this.props.action.approvalHomeVisible(false)
+        this.props.action.approvalFlag(true)
+    }
+    approvalShow = () => {
+
+        this.props.action.approvedShow();
+        this.props.action.getUnfinished(this.props.$$state.get("pagination").toJS());
     }
     render() {
         const events = {
-            created: ins => {},
-            click: () => {}
+            created: ins => { },
+            click: () => { }
         };
         this.onWindowResize();
 
+        let { commitData, approvalData, approvalHomeVisible, approvalHomeShow, approvalFlag } = this.props.$$state.toJS();
         return (
-            <div>
+            <div className="home-layer">
                 <div className="home-warrper">
                     <Row className="clinet-main" id="recover-select">
                         <Col span={9} className="clinet-main-left">
@@ -318,11 +378,46 @@ class Home extends React.Component {
                         <Col span={6} className="clinet-main-right">
                             <div className="main-right-top">
                                 <h3 className="chart-title">
-                                    <span>公告</span>
-                                    <span className="chart-title-more">
-                                        更多
-                                    </span>
+                                    <span className="chart-title-more"
+                                        onClick={this.approvalShow}
+                                    >审批</span>
                                 </h3>
+                                <Row type='flex' justify="center" gutter={15}>
+                                    <Col span={10}>
+                                        <div onClick={this.commit}
+                                            className={approvalFlag ? 'approval-commit' : 'approval-commitColor'}
+
+                                        >
+                                            <div>{commitData.total}</div>
+                                            <p>我提交</p>
+                                        </div>
+
+                                    </Col>
+                                    <Col span={10} onClick={this.approval}>
+                                        <div
+                                            className={approvalFlag ? 'approval-approvedColor' : 'approval-approved'}
+                                        >
+                                            <div >{approvalData.total}</div>
+                                            <p>我审批</p>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                {approvalHomeVisible ?
+                                    <Table
+                                        size="middle"
+                                        columns={commitColumns}
+                                        dataSource={commitData.data}
+                                        rowKey="id"
+                                    />
+
+                                    : <Table
+                                        size="middle"
+                                        columns={approvalColumns}
+                                        dataSource={approvalData.data}
+                                        rowKey="id"
+                                    />}
+
+                                {/*                                 
                                 <div className="notice-right-padding">
                                     <ul>
                                         <li>
@@ -338,8 +433,23 @@ class Home extends React.Component {
                                             营销云U会员帮助西山美滋每客实现线上线下
                                         </li>
                                     </ul>
-                                </div>
+                                </div> */}
                             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             <div className="main-right-bottom">
                                 <h3 className="chart-title">
                                     <span>日程</span>
@@ -485,8 +595,17 @@ class Home extends React.Component {
                                 </div>
                             </div>
                         </Col>
+
+
+
                     </Row>
+
+
+
+
                 </div>
+
+                {approvalHomeShow ? <Approved /> : null}
             </div>
         );
     }
@@ -495,12 +614,12 @@ class Home extends React.Component {
 export default connect(
     state => {
         return {
-            componentState: state.componentReducer
+            $$state: state.approval
         };
     },
     dispatch => {
         return {
-            componentAction: bindActionCreators(Actions, dispatch)
+            action: bindActionCreators(Actions, dispatch)
         };
     }
 )(Home);

@@ -1,0 +1,80 @@
+.approval-obj-def-card {
+  width: 322px;
+  height: 185px;
+  display: flex;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  border-radius: 2px;
+  flex-direction: column;
+  position: relative;
+}
+.approval-obj-def-card .ant-checkbox-wrapper {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+}
+.approval-obj-def-card .ant-checkbox-wrapper .ant-checkbox {
+  vertical-align: top;
+}
+.approval-obj-def-card .card-header {
+  height: 68px;
+  line-height: 68px;
+  display: flex;
+}
+.approval-obj-def-card .card-header .card-header-name {
+  font-weight: bold;
+  font-size: 14px;
+  padding-left: 10px;
+  color: #333;
+  flex-grow: 1;
+}
+.approval-obj-def-card .card-header .card-header-btn {
+  width: 100px;
+  text-align: center;
+}
+.approval-obj-def-card .card-body {
+  display: flex;
+  border-top: 1px solid #eee;
+  flex-grow: 1;
+}
+.approval-obj-def-card .card-body .card-body-con {
+  flex-grow: 1;
+}
+.approval-obj-def-card .card-body .card-body-con .card-body-con-item {
+  padding: 10px;
+  display: flex;
+}
+.approval-obj-def-card .card-body .card-body-con .card-body-con-item .card-body-con-name {
+  width: 62px;
+  font-weight: bold;
+  text-align: right;
+}
+.approval-obj-def-card .card-body .card-body-con .card-body-con-item .card-body-con-text {
+  color: #999999;
+  padding-left: 4px;
+}
+.approval-obj-def-card .card-body .card-body-con .card-body-con-item .card-body-con-text span {
+  display: inline-block;
+  margin-right: 4px;
+}
+.approval-obj-def-card .card-body .card-body-btn {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+}
+.approval-obj-def-card .card-body .card-body-btn > div {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  background: #f2f2f2;
+}
+.approval-obj-def-card .card-body .card-body-btn > div i {
+  display: inline-block;
+}
+.approval-obj-def-card .card-body .card-body-btn .card-body-btn-edit {
+  border-top: 1px solid #ffffff;
+}

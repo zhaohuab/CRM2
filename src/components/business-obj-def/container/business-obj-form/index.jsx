@@ -2,10 +2,12 @@
  * @Author: yangtmm 
  * @Date: 2017-11-06 14:01:09 
  * @Last Modified by: yangtmm
- * @Last Modified time: 2017-12-06 13:37:13
+ * @Last Modified time: 2017-12-13 17:14:51
  */
 import { Modal, Button, Input, Radio, Popconfirm, Form, Row, Col, Checkbox } from 'antd';
-import RoleCheckboxGroup from './RoleCheckboxGroup'
+import RoleCheckboxGroup from './RoleCheckboxGroup';
+import RolesChoosed from './RolesChoosed'
+import SuperiorCustomer from  './SuperiorCustomer'
 const FormItem = Form.Item;
 import "./index.less"
 
@@ -16,57 +18,67 @@ export default class FormList extends React.Component {
   }
 
   onChange = (keyName, e) => {
-    debugger;
     let value = e.target.value;
     this.props.onChange(keyName, value)
   }
 
   onChangeRoles = (checkedList) => {
-    debugger;
-    this.props.onChange("roles", checkedList)
+    this.props.onChange("roleIds", checkedList)
   }
 
   render() {
-    const { visible, onCancel, onCreate, editData } = this.props;
+    const { data, nameFlag, roleFlag } = this.props;
     return (
-      <Modal
-        visible={visible}
-        title={ this.props.title}
-        onCancel={onCancel}
-        onOk={onCreate}
-      >
-       <div className="business-obj-form">
+      <div className="business-obj-form">
         <Row gutter={16} className="gutter-row">
           <Col className="gutter-row form-lable form-lable-line-height" span={6}>
             *业务类型名称
           </Col>
-          <Col className="gutter-row" span={16}>
-            <Input value = {editData.name} onChange = {this.onChange.bind(this, "name")} placeholder="输入名称。。。" />
+          <Col className="gutter-row" span={14}>
+            <Input value={data.name} onChange={this.onChange.bind(this, "name")} placeholder="输入名称。。。" />
           </Col>
-        </Row>
-        <Row gutter={16} className="gutter-row">
-          <Col className="gutter-row form-lable form-lable-line-height" span={6}>
-            业务类型描述
-          </Col>
-          <Col className="gutter-row " span={16}>
-            <Input value = {editData.des}  type="textarea" onChange = {this.onChange.bind(this, "des")}/>
-          </Col>
+          {
+            nameFlag?
+            <Col span={4} style={{whiteSpace:'nowrap',color:'red',marginLeft:'-10px'}}>
+              <p className='prompt'>*名称不能为空</p>
+            </Col>:''
+          }
+          
         </Row>
         <Row gutter={16} className="gutter-row">
           <Col className="gutter-row form-lable" span={6}>
             *适用角色
           </Col>
-          <Col className="gutter-row" span={16}>
-            <RoleCheckboxGroup value = {editData.roles} onChange = {this.onChangeRoles.bind(this)}/>
+          <Col className="gutter-row" span={14}>
+            <RolesChoosed data={data} onChange = {this.onChangeRoles.bind(this)}/>
+          </Col>
+         
+          {
+            roleFlag?
+            <Col span={4} style={{whiteSpace:'nowrap',color:'red',marginLeft:'-10px'}}>
+              <p className='prompt'>*角色不能为空</p>
+            </Col>:''
+          }
+        </Row>
+        <Row gutter={16} className="gutter-row">
+          <Col className="gutter-row form-lable form-lable-line-height" span={6}>
+            业务类型描述
+          </Col>
+          <Col className="gutter-row " span={14}>
+            <Input value={data.description} type="textarea" onChange={this.onChange.bind(this, "description")} />
           </Col>
         </Row>
-        </div>
-      </Modal>
+  
+      </div>
     );
   }
 }
 
-
+/* 
+ <Col className="gutter-row" span={14}>
+            <RoleCheckboxGroup value={data.roleIds} onChange={this.onChangeRoles.bind(this)} />
+          </Col>
+ */
 
 // class FormList extends React.Component {
 //   constructor(props) {
@@ -139,3 +151,19 @@ export default class FormList extends React.Component {
 //     console.log(values);
 //   }
 // })(FormList)
+
+
+
+/* 
+        <Row gutter={16} className="gutter-row">
+          <Col className="gutter-row form-lable" span={6}>
+            *适用角色
+          </Col>
+          <Col className="gutter-row" span={14}>
+            <RolesChoosed />
+          </Col>
+          <Col className="gutter-row" span={14}>
+            <RoleCheckboxGroup value={data.roleIds} onChange={this.onChangeRoles.bind(this)} />
+          </Col>
+        
+        </Row> */

@@ -137,7 +137,6 @@ const listAddSave = (data) => {
                 param: transData(data)
             }
         }, (data) => {
-            debugger
             dispatch(fetchData('OPPORTUNITY_LIST_ADDSAVE', transReceiveDataOne(data)));
         })
     }

@@ -37,6 +37,12 @@ const approved = {//审批流
     done: baseDir+'bpub/approvals/tasks/done',   
 }
 
+const distributed = {//客户分布
+    department: baseDir+'cum/customerchart',//获取部门（人员）、客户数量
+    customer: baseDir+'cum/customerchart/customers',//获取客户数据
+}
+
+
 export {
     taskcard,
     doc,
@@ -44,5 +50,6 @@ export {
     phonebooks,
     approval,
     approved,
+    distributed,
 }
  

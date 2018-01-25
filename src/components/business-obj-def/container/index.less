@@ -4,28 +4,33 @@
     background: #ffffff;
     box-sizing: border-box;
     min-height: 100%;
-    .ifram {
-        width: 100%;
-        min-height: 100%;
-        position: absolute;
-        left:0;
-        top:0;
-        border:1px solid rgb(217,217,217);
-        z-index: 2; 
-        html,body {
-            overflow-x: hidden;
-            background-color:red;
-        }        
+    .ifram-wraper{
+        width:100%;
+        height:100%;
+        .ifram {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left:0;
+            top:0;
+            border:1px solid rgb(217,217,217);
+            z-index: 2; 
+            body {
+                /* overflow: scroll; */
+                overflow-x : hidden;  
+                background-color:red;
+            }        
+        }
+        .closed {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 20px;
+            z-index: 3;
+            cursor: pointer;
+        }
     }
-    .closed {
-        position: absolute;
-        top: 0;
-        right: 0;
-        font-size: 20px;
-        z-index: 3;
-        cursor: pointer;
-    }
-    .business-obj-warpper {   
+    .business-obj-warpper {
         .head-panel {
             padding: 10px 0;
         }
@@ -40,11 +45,21 @@
             margin: 10px 0;
             .title {
                 font-size: 14px;
+                color:#333;
+                font-weight: bold;
             }
         }
         .card-con {
             display: flex;
             flex-wrap: wrap;
+        }
+        .more {
+            cursor: pointer;
+            height: 16px;
+            line-height: 16px;
+            .icon-gengduo {
+                margin-left:10px;
+            }
         }
     }
     .tpl-setting-warpper {

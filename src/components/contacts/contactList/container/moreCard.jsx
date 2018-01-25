@@ -108,14 +108,14 @@ export default class MoreCard extends React.Component {
                         <Col span={6}>
                             <FormItem>
                                 {getFieldDecorator("customer")(
-                                    <Input placeholder="态度" />
+                                    <Input placeholder="行业" />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem>
                                 {getFieldDecorator("customer")(
-                                    <Input placeholder="主联系人" />
+                                    <Input placeholder="部门" />
                                 )}
                             </FormItem>
                         </Col>

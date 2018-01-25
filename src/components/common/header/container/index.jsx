@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Icon, Button, Dropdown, Menu, Input, Badge, Col, Row, Modal} from "antd";
 import cookie from "utils/cookie";
 import { bindActionCreators } from "redux";
-import { phonebooks as url } from "api";
+import { phonebooks as url } from "api/zhb";
 import PhoneBooks from './phonebooks/index.jsx';
 import Approved from './approved/index.jsx';
 import * as Actions from "../action/index.js";
@@ -60,17 +60,20 @@ class Header extends React.Component {
     }
 
     getApprovalData = () => {//获取审批流列表
+        debugger
         this.props.action.approvedShow();
-        //this.props.action.getApprovalData();
+
+        this.props.action.getUnfinished(this.props.$$state.get("pagination").toJS());
     }
 
     render() {
-        //debugger;
+        let {approvalShow}=this.props.$$state.toJS();
+        
         const userName = cookie("name");
         let { $$state, action } = this.props;
         let title = $$state.get("title");    
         let phoneBook = $$state.get("phoneBook");  
-        let approval = $$state.get("approval");   
+        
                   
         return (
             <div className="app-header">
@@ -140,7 +143,7 @@ class Header extends React.Component {
                                     </a>                                   
                                 </Dropdown>
                                  { phoneBook ? <PhoneBooks /> : '' }
-                                 { approval ?  <Approved /> : ''}
+                                 {/* { approvalShow ?  <Approved /> : ''} */}
                             </Col>
                         </Row>
                     </Col>

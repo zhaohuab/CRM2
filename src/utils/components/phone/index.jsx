@@ -3,6 +3,7 @@ import './index.less'
 
 class Phone extends React.Component {
     state = {
+        dataSource: [],
         flag: false,
     }
 
@@ -36,6 +37,7 @@ class Phone extends React.Component {
         if(this.state.flag){
             this.setState({
                 flag: false,
+                length: 255,
             })
         }       
         if (onChange) {

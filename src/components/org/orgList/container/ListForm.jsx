@@ -104,8 +104,8 @@ class ListForm extends React.Component {
                                         rules: [{ required: true, message: '请输入组织类型!' }],
                                     })(
                                         <RadioGroup>
-                                            <Radio value={1}>公司</Radio>
-                                            <Radio value={2}>部门</Radio>
+                                            <Radio value={2}>公司</Radio>
+                                            <Radio value={3}>部门</Radio>
                                         </RadioGroup>
                                         )}
                                 </FormItem>

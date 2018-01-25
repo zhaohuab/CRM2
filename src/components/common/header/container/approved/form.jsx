@@ -37,20 +37,19 @@ class Child extends React.Component {
           { ...formItemLayout }
         >  
         <Row gutter = { 10 }>
-          <Col span= { 20 }>
+          <Col span= { 24 }>
             { getFieldDecorator('date', {
-              rules: [{}],
+              rules: [{}],initialValue: 'a' 
             })(
-                <RadioGroup defaultValue="a" size="large">
-                        <RadioButton value="a">今天</RadioButton>
-                        <RadioButton value="b">本周</RadioButton>
-                        <RadioButton value="c">本季</RadioButton>
-                        <RadioButton value="d">今年</RadioButton>
-                        <RadioButton value="e">不限</RadioButton>  
+                <RadioGroup size="large">
+                  <RadioButton value="a">今天</RadioButton>
+                  <RadioButton value="b">本周</RadioButton>
+                  <RadioButton value="c">本季</RadioButton>
+                  <RadioButton value="d">今年</RadioButton>
+                  <RadioButton value="e">不限</RadioButton>  
                 </RadioGroup>
             )}
           </Col>
-          <Col span = { 4 }></Col>
         </Row>
         </FormItem>                   
         <FormItem
@@ -60,31 +59,26 @@ class Child extends React.Component {
             <Row gutter = { 10 }>
               { 
                myState ? 
-                <Col span = { 20 }>
+                <Col span = { 24 }>
                 { getFieldDecorator('status', {
-                    rules: [{
-                    
-                    }],
+                    rules: [{}], initialValue: '1' 
                 })(
-                        <RadioGroup defaultValue="a" size="large">
-                            <RadioButton value="a">未完成</RadioButton>
-                            <RadioButton value="b">已完成</RadioButton>                
-                        </RadioGroup>
-                    )}
+                    <RadioGroup size="large">
+                      <RadioButton value="1">未完成</RadioButton>
+                      <RadioButton value="2">已完成</RadioButton>                
+                    </RadioGroup>
+                  )}
                 </Col>:
-                 <Col span = { 20 }>
+                 <Col span = { 24 }>
                 { getFieldDecorator('status', {
-                    rules: [{
-                    
-                    }],
+                    rules: [{}], initialValue: '3' 
                 })(
-                        <RadioGroup defaultValue="a" size="large">
-                            <RadioButton value="a">待办</RadioButton>
-                            <RadioButton value="b">已办</RadioButton>               
+                        <RadioGroup  size="large">
+                            <RadioButton value="3">待办</RadioButton>
+                            <RadioButton value="4">已办</RadioButton>               
                         </RadioGroup>
                     )}
                 </Col>}
-                <Col span = { 4 }></Col>
             </Row>
         </FormItem>:
         <FormItem
@@ -92,7 +86,7 @@ class Child extends React.Component {
           {...formItemLayout}
         >
             <Row gutter = { 10 }>
-            <Col span = { 20 }>
+            <Col span = { 24 }>
                 { getFieldDecorator('searchData', {
                     rules: [{
                         required: true,
@@ -111,9 +105,11 @@ class Child extends React.Component {
 }
 
 let WrapedCard = Form.create({
- onFieldsChange(props, changedFields) {//当 Form.Item 子节点的值发生改变时触发，可以把对应的值转存到 Redux store  ;
- console.log('changedFields=======',changedFields)
- debugger;
+  onFieldsChange(props, changedFields) {//当 Form.Item 子节点的值发生改变时触发，可以把对应的值转存到 Redux store  ;
+  console.log('changedFields=======',changedFields)
+  if('status' in changedFields){
+   props.action.tableStateChange(changedFields.status.value)
+  }
   /*   let data = props.editData;
     for (let key in changedFields){
       data[key] = changedFields[key].value
@@ -121,8 +117,7 @@ let WrapedCard = Form.create({
     */
   },
   mapPropsToFields(props) {//把redux中的数据读出
-  //debugger;
-  console.log('props============',props)
+  //debugger;)
  /*    return {
       name: { value: props.editData.name },
       description: { value: props.editData.description }
