@@ -590,6 +590,9 @@ const delContacts = (id,pagination)=>{
 }
 
 
+
+
+
 //======================以下为模板请求方法
 const getLayout = (module) => {//----------------------自定义新增模板--------------
     debugger;
@@ -709,8 +712,8 @@ export {
     delOpp,
     delContacts,
     
-    //==========以下为模板方法
-    getLayout,
-    getTitle,
-    getDetailFilds
+     //==========以下为模板方法
+     getLayout,
+     getTitle,
+     getDetailFilds
 };

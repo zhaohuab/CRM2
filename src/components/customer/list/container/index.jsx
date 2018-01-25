@@ -65,8 +65,8 @@ class List extends React.Component {
                                 }
                             </div>
                         </div>
-                    )
-                }  
+                    ) 
+                }
             },
             {
                 title: "客户类型",
@@ -228,20 +228,36 @@ class List extends React.Component {
     columnsTranslate = (columns) => {//----------表头转换：所有返回来的表头结构一致，每个组件进行函数转换，实现个性化操作
         return columns.map(item=>{
             if(item.dataIndex=='name'){
-                return (
-                   {
-                        title: "客户名称",
-                        dataIndex: "name",
-                        render: (text, record) => (
-                            <div
-                                onClick={this.slideShow.bind(this, record)}
-                                className="crm-pointer"
-                            >
-                                {record.name}
+                return(
+                 {
+                title: "客户名称",
+                dataIndex: "name",
+                render: (text, record) => {//isGroup
+                    return(
+                        <div
+                            onClick={this.slideShow.bind(this, record)}
+                            className="crm-pointer"
+                        >
+                            <div className='cum-color'>
+                                <span>{record.name}</span>
+                                {
+                                    record.isGroup =='1'?
+                                    <img
+                                        src={require("../images/company.png")}
+                                        className="img"
+                                    />
+                                    :
+                                    <img
+                                        src={require("../images/grope.png")}
+                                        className="img"
+                                    />
+                                }
                             </div>
-                        )
-                    }
-                )
+                        </div>
+                    )
+                }  
+            })
+                   
             }
             if (item.dataIndex=='enableState'){
                 return (
@@ -285,7 +301,8 @@ class List extends React.Component {
             viewData,
             icbcVisible,
             leadVisible,
-            icbcSelect
+            icbcSelect,
+            titleList,
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -307,7 +324,7 @@ class List extends React.Component {
                     <TabPane tab={this.tabTitle(0)} key="1">
                         <div className="table-bg tabel-recoverd">
                             <Table
-                                columns={columns}
+                                columns={this.columns}
                                 dataSource={page.data}
                                 rowKey="id"
                                 rowSelection={rowSelection}
