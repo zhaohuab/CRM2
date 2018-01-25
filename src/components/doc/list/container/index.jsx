@@ -339,12 +339,14 @@ class List extends React.Component {
 }
 
 function mapStateToProps(state, ownProps) {
+  debugger;
   return {
     $$state: state.doc
   }
 }
 
 function mapDispatchToProps(dispatch) {
+  debugger;
   return {
       action: bindActionCreators(Actions, dispatch)
   }

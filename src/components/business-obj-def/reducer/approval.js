@@ -87,7 +87,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 
         case 'APPROVAL_GETLIST_SUCCESS':
             return $$state.merge({
-                data: action.content.data,
+                data: action.content.data.list,
                 addModelVisible: true,
                 isEdit: false,
             })

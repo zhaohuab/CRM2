@@ -97,7 +97,6 @@ body {
 .modal-height {
     height: 480px;
     overflow-y: auto;
-    margin: -16px;
     padding: 16px;
 }
 
@@ -110,7 +109,6 @@ body {
     height: 380px;
     overflow: auto;
 }
-
 
 /*列表头部高度*/
 
@@ -139,74 +137,3 @@ body {
     cursor: pointer;
 }
 
-
-/*参照样式*/
-
-.reference {
-    .reference-main {
-        width: 300px;
-        border-radius: 5px;
-        background: white;
-        box-shadow: 0 0 15px rgb(136, 136, 136);
-        .reference-main-header {
-            height: 54px;
-            padding: 12px;
-            box-sizing: border-box;
-            background: #fafafa;
-            border-bottom: 1px solid #f0f0f0;
-            .title {
-                line-height: 34px;
-                font-size: 16px;
-                color: #666666;
-            }
-        }
-        .reference-main-footer {
-            padding: 12px;
-            box-sizing: border-box;
-            height: 60px;
-            border-top: 1px solid #f0f0f0;
-            width: 100%;
-            background: white;
-            margin-left: 0;
-        }
-        .reference-main-choice {
-            padding: 10px;
-            box-sizing: border-box;
-            .reference-tree {
-                border: 1px solid #eeeeee;
-                border-radius: 5px;
-                padding: 10px;
-                box-sizing: border-box;
-                width: 100%;
-                height: 280px;
-                overflow: auto;
-            }
-            .inner {
-                width: 100%;
-                border: 1px solid #eeeeee;
-                height: 280px;
-                overflow: auto;
-            }
-        }
-    }
-    .reference-search {
-        width: 200px;
-        max-height: 300px;
-        overflow-y: auto;
-        background: white;
-        box-shadow: 0 0 15px rgb(136, 136, 136);
-    }
-    .reference-search-choice {
-        background: red;
-    }
-    .reference-search-list {
-        min-height: 40px;
-        padding: 15px 10px;
-        box-sizing: border-box;
-        cursor: pointer;
-        border-bottom: 1px solid #ccc;
-    }
-    .reference-search-list:last-child {
-        border-bottom: none;
-    }
-}

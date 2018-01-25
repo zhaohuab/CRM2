@@ -1,5 +1,5 @@
 
-import distributed from 'components/customer-distributed/container/map/PanelMap.jsx';
+import distributed from 'components/customer-distributed/container/index.jsx';
 const route = {
   path: 'cusDistributed',
   getComponent(nextState, cb) {

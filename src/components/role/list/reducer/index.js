@@ -72,7 +72,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 
 		case 'ROLE_LIST_GETROLELISTSUCCESS':
 			return $$state.merge({
-				data: action.content,
+				data: action.content.data,
+				searchMap:action.content.searchMap
 			})
 		case 'ROLE_LIST_SHOWFORM':
 			return $$state.merge({

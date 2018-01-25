@@ -44,9 +44,9 @@ export function getlistByClickSearch(searchMap){
 }
 
 //打开新增/编辑页面
-export function showForm(flag, editData = {}){
+export function showForm(flag, editData = {},isEdit){
     return (dispatch) => {
-		dispatch(fetchData('ORG_LIST_SHOWFORM', { visible: flag, editData }));
+		dispatch(fetchData('ORG_LIST_SHOWFORM', { visible: flag, editData, isEdit}));
 	}
 }
 
@@ -194,7 +194,6 @@ export function setEnablestate(treeId,searchFilter,data,state){
 
 //获取tree数据
 export function getTreeList(){
-    debugger
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETTREELISTSTART'})
         request({

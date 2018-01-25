@@ -25,76 +25,28 @@ import { baseDir } from "api";
 
 import Department from "components/refs/departments";
 import Enum from "utils/components/enums";
-import Phone from "utils/components/phone"
 
 import * as enumDataFake from "../data/enumdata";
-import cityData from "../data/citydata";
-import Industry from "./Industry";
-import CuperiorCustomer from "./SuperiorCustomer";
+
+import Industry from "../../../../common/industry";
+import CuperiorCustomer from "./SuperiorCustomer";//组件暂时不用
 import IcbcInfo from "./IcbcInfo";
-import FormMap from "./FormMap";
+import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
-import CityChioce from "./CityChioce";
-import OwnUser from './OwnUser';
-import CustomerName from './customerName'
+import CityChioce from "../../../../common/cityChioce/CityChioce"
+import OwnUser from './OwnUser'
+import ResponseDepart from './ResponseDepart'
+
+import Int from 'utils/components/int'
+import Float from 'utils/components/float/index.jsx'
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 
-const eleType = {//组件显示对应表
-    'name': CustomerName,
-    'level': Enum,
-    'ownerUserId': OwnUser,
-    'industry': Industry,
-    'parentId': CuperiorCustomer,
-    'cannelType': Enum,
-    'remark': TextArea,
-    'employeeNum': Input,
-    'province_city_district': CityChioce,
-    'address': FormMap,
-    'email':Input,
-    'tel': Phone,
-    'regCapital':Input,
-    'legalRepresent':Input,
-}
-
 class EditForm extends React.Component {
     constructor(props) {
         super(props);
-    }
-
-    //把获取到的客户工商信息放在redux中 id, name, visiable, editId, stateIcbc, isClose
-    customerListInfo(data, visiable, id) {
-        let { viewData } = this.props.$$state.toJS();
-        viewData.verifyId = id;
-        data.forEach(item => {
-            if (item.key == "address") {
-                viewData["address"] = item.value;
-            } else if (item.key == "gongsh") {
-                viewData["bizRegno"] = item.value;
-            } else if (item.key == "orgcode") {
-                viewData["orgCode"] = item.value;
-            } else if (item.key == "money") {
-                viewData["regCapital"] = item.value;
-            } else if (item.key == "proxyer") {
-                viewData["legalRepresent"] = item.value;
-            } else if (item.key == "industry") {
-                viewData["industry"] = { name: item.value };
-            } else if (item.key == "email") {
-                viewData["email"] = item.value;
-            } else if (item.key == "phone") {
-                viewData["tel"] = item.value;
-            } else if (item.key == "taxnumber") {
-                viewData["eaxplayerNo"] = item.value;
-            }
-        });
-        this.props.action.customerListInfo(data, visiable, viewData);
-    }
-
-    //modal取消按钮
-    onCancel() {
-        this.props.action.customerModal1Show(false);
     }
 
     //取消认证
@@ -119,18 +71,8 @@ class EditForm extends React.Component {
         //发Request请求
     }
 
-    //modal框底部按钮
-    footerContent() {
-        return (
-            <div>
-                <Button onClick={this.onCancel.bind(this)}>关闭</Button>
-                <Button onClick={this.onCancel.bind(this)}>确定</Button>
-            </div>
-        );
-    }
 
     render() {
-        
         const formItemLayout = {
             labelCol: { span: 6 },
             wrapperCol: { span: 12 }
@@ -148,74 +90,10 @@ class EditForm extends React.Component {
             icbcInfo,
             icbcSelect,
             isClose,
-            upLoadList,
-            layoutFilds,//新增模板
+            upLoadList
         } = this.props.$$state.toJS();
-        let customerListInfo = this.customerListInfo.bind(this)//-----------企业核实中方法传递-------------
-        let cardData = (data)=> {//----------------个性化数据挂载在自定义属性上-----------------   
-            data.attr={};      
-            switch(data.fieldApiName){ 
-                case 'name':
-                    data.attr.viewData=viewData;
-                    data.attr.icbcSelect=icbcSelect;
-                    data.attr.customerListInfo=customerListInfo;
-                    data.attr.isClose=isClose;
-                    data.attr.width=450;
-                    break;             
-                case 'level':               
-                    data.attr.addOptionAll="客户等级";
-                    data.attr.dataSource=enumData.level;
-                    break;
-                case 'ownerUserId':
-                    data.attr.viewData=viewData;
-                    data.attr.disabled=true ;
-                    data.attr.width=650 ;
-                    data.attr.height=300;
-                    break;
-                case 'cannelType':
-                    data.attr.addOptionAll="渠道类型" ;
-                    data.attr.dataSource=enumData.cannelType;
-                    break;
-                case 'parentId':
-                    data.attr.width=500;
-                    break;
-                case 'address':
-                    data.attr.cityCode=viewData.province_city_district;
-                    data.attr.viewData=viewData;
-                    break;
-                default :
-                    data.attr = '';
-            }
-            return  data            
-        }
-        //--------------客户名称字段转换-------------------
-        let  attr1={};
-        attr1.viewData=viewData;
-        attr1.icbcSelect=icbcSelect;
-        attr1.customerListInfo=customerListInfo;
-        attr1.isClose=isClose;
-        //--------------客户等级字段转换-------------------
-        let attr2 = {};
-        attr2.addOptionAll='客户等级';
-        attr2.dataSource=enumData.level;
-        //--------------负责人字段转换-------------------
-        let attr3 = {};
-        attr3.viewData=viewData;
-        attr3.disabled=true;
-        attr3.width=650;
-        attr3.height=300;
-        //--------------上级客户字段转换-------------------
-        let attr4 = {};
-        attr4.viewData=500;
-        //--------------渠道类型字段转换-------------------
-        let attr5 = {};
-        attr5.addOptionAll="渠道类型";
-        attr5.dataSource=enumData.cannelType;
-        //--------------详细地址字段转换-------------------
-        let attr6 = {};
-        attr6.cityCode=viewData.province_city_district;
-        attr6.viewData=viewData;
-        
+        viewData.verifyFullname
+     
         return (
             <div>
                 <Row className="customform-input-recover">
@@ -243,229 +121,6 @@ class EditForm extends React.Component {
                                     <Input type="text" placeholder="请输入" />
                                 )}
                             </FormItem>
-                          {/* ===================上分界线===================== */}
-
-
-
-                             {
-                                layoutFilds.map(item => {
-                                  
-                                    let { fieldList } = item;                                 
-                                    return (
-                                        <Row className="form-bottom">
-                                            <Row>
-                                                <Col span={2} className="form-label">
-                                                    {item.blockName}：
-                                                </Col>
-                                            </Row> 
-                                            <Row className="row-bottom"> 
-                                            {
-                                                fieldList.map(data => {                                               
-                                                    let item = cardData(data)
-                                                    let span = item.width*24;
-                                                    let Content = eleType[item.fieldApiName]||Input;
-                                                    let message = item.isRequired ? `${item.fieldName}内容不能为空`:'';
-                                                    return (                                                       
-                                                        <Col span={span}>
-                                                            <Row type="flex" align="middle">
-                                                                <Col span={6}>
-                                                                    <Row
-                                                                        type="flex"
-                                                                        justify="end"
-                                                                    >
-                                                                        <div>{item.fieldName}：</div>
-                                                                    </Row>
-                                                                </Col>
-                                                                <Col span={16}>
-                                                                    <FormItem
-                                                                        {...formItemLayout}
-                                                                    >
-                                                                        {getFieldDecorator(item.fieldApiName,{
-                                                                            rules:[{
-                                                                                    required:item.isRequired,
-                                                                                    message:message
-                                                                                }]
-                                                                            })(
-                                                                            <Content attr={item.attr} />
-                                                                        )}
-                                                                    </FormItem>
-                                                                </Col>
-                                                            </Row>
-                                                        </Col>                                                  
-                                                    )
-                                               }) 
-                                            } 
-                                            </Row>                                          
-                                        </Row>                                       
-                                    )
-                                })
-                            }
-
-
-                        {/* ==========================下分界线============================== */}
-                        </Form>
-                    </Row>
-                </Row>
-                <Modal
-                    title="工商核实"
-                    visible={icbcVisible}
-                    onCancel={this.onCancel.bind(this)}
-                    footer={this.footerContent.call(this)}
-                    width={500}
-                    maskClosable={false}
-                >
-                    <div className="modal-height">
-                        {icbcInfo && icbcInfo.length
-                            ? icbcInfo.map(item => {
-                                  return (
-                                      <div className="icbc-detail-item">
-                                          <span>{item.name}</span>:<span>
-                                              {item.value}
-                                          </span>
-                                      </div>
-                                  );
-                              })
-                            : ""}
-                    </div>
-                </Modal>
-            </div>
-        );
-    }
-}
-
-const cardForm = Form.create({
-    mapPropsToFields: props => {
-        //把redux中的值取出来赋给表单
-        let viewData = props.$$state.toJS().viewData;
-        let value = {};
-        
-        for (let key in viewData) {
-            if (key == "address") {
-                value[key] = {
-                    value: {
-                        address: viewData[key],
-                        latlng: viewData["latlng"]
-                    }
-                };
-            } else {
-                value[key] = { value: viewData[key] };
-            }
-        }
-        //address  把字段合成对象
-        return {
-            ...value
-        };
-    },
-    onFieldsChange: (props, onChangeFild) => {
-        //往redux中写值//把值进行更新改变
-        let viewData = props.$$state.toJS().viewData;      
-        for (let key in onChangeFild) {
-            if (onChangeFild[key].value && onChangeFild[key].value.key) {
-                viewData[key] = onChangeFild[key].value.key;
-            } else {
-                if (key == "address") {
-                    let value = onChangeFild[key].value;
-                    viewData["address"] = value.address;
-                    if (typeof value.latlng == "string") {
-                        viewData["latlng"] = value.latlng;
-                    } else {
-                        viewData["latlng"] =
-                            value.latlng.lng + "," + value.latlng.lat;
-                    }
-                } else if (key == "province_city_district") {
-                    viewData[key] = onChangeFild[key].value.result;
-                    viewData["cityMyself"] = onChangeFild[key].value.custom;
-                } else {
-                    viewData[key] = onChangeFild[key].value;
-                } //把对像拆成字段  latlng
-            }
-        }
-        props.editCardFn(viewData);
-    }
-   
-})(EditForm);
-
-//绑定状态到组件props
-function mapStateToProps(state, ownProps) {
-    return {
-        $$state: state.customerList
-    };
-}
-//绑定action到组件props
-function mapDispatchToProps(dispatch) {
-    return {
-        action: bindActionCreators(Actions, dispatch)
-    };
-}
-//输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
-
-
-
-
-/* //循环结构
-{
-                                layoutFilds.map(item => {
-                                    debugger; 
-                                    let { fieldList } = item;                                 
-                                    return (
-                                        <Row className="form-bottom">
-                                            <Row>
-                                                <Col span={2} className="form-label">
-                                                    {item.blockName}：
-                                                </Col>
-                                            </Row> 
-                                            <Row className="row-bottom"> 
-                                            {
-                                                fieldList.map(data => {   
-                                                    //debugger;                                 
-                                                    let item = cardData(data)
-                                                    let span = item.width*24;
-                                                    let Content = eleType[item.type]||eleType[1];
-                                                    let message = item.isRequired ? `${item.fieldName}内容不能为空`:'';
-
-                                                    return (
-                                                        
-                                                        <Col span={span}>
-                                                            <Row type="flex" align="middle">
-                                                                <Col span={6}>
-                                                                    <Row
-                                                                        type="flex"
-                                                                        justify="end"
-                                                                    >
-                                                                        <div>{item.fieldName}：</div>
-                                                                    </Row>
-                                                                </Col>
-                                                                <Col span={16}>
-                                                                    <FormItem
-                                                                        {...formItemLayout}
-                                                                    >
-                                                                        {getFieldDecorator("item.fieldApiName",{
-                                                                            rules:[
-                                                                                {
-                                                                                    required:item.isRequired,
-                                                                                    message:message
-                                                                                }
-                                                                                ]
-                                                                            })(
-                                                                            <Content attr={item.attr} />
-                                                                        )}
-                                                                    </FormItem>
-                                                                </Col>
-                                                            </Row>
-                                                        </Col>                                                  
-                                                    )
-                                               }) 
-                                            } 
-                                            </Row>                                          
-                                        </Row>                                       
-                                    )
-                                })
-                            }
- */
-
-/* //原始结构
-                           
                             <Row className="form-bottom">
                                 <Row>
                                     <Col span={2} className="form-title">
@@ -475,7 +130,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                 <Row>
                                     <Col offset={1}>
                                         <Row className="row-bottom">
-                                          <Col span={12}>
+                                            <Col span={12}>
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -507,37 +162,23 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                                                 }
                                                             )(
                                                                 <Input
-                                                                    type='text'
-                                                                    placeholder='请输入。。。'
+                                                                    type="text"
+                                                                    placeholder="请输入"
                                                                 />
                                                             )}
                                                         </FormItem>
                                                     </Col>
-                                               <Col span={5}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <IcbcInfo
-                                                                viewData={
-                                                                    //获取当前数据所有信息
-                                                                    viewData
-                                                                }
-                                                                icbcSelect={
-                                                                    //当前数据编辑状态
-                                                                    icbcSelect
-                                                                }
-                                                                customerListInfo={this.customerListInfo.bind(
-                                                                    this
-                                                                )} //获取信息详情的方法
-                                                                isClose={
-                                                                    //判断是否为编辑状态初始值
-                                                                    isClose
-                                                                }
-                                                                width={450}
-                                                            />
-                                                        </Row>
-                                                    </Col> 
+                                                    {
+                                                        viewData.verifyFullname == 1 && viewData.id?'':
+                                                        <Col span={5}>
+                                                            <Row
+                                                                type="flex"
+                                                                justify="end"
+                                                            >                                   
+                                                                <IcbcInfo width={450}/>
+                                                            </Row>
+                                                        </Col>
+                                                    }
                                                 </Row>
                                             </Col>
                                             <Col span={12}>
@@ -584,14 +225,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                                                 {getFieldDecorator(
                                                                     "turnover"
                                                                 )(
-                                                                    <Input placeholder='请输入'/>
+                                                                    <Float attr = {{precision:2}}/>
                                                                 )}
                                                             </FormItem>
                                                         </Col>
                                                     </Row>
                                                 </Col>
-                                            
-                                          
+
                                         <Col span={12}>
                                             <Row type="flex" align="middle">
                                                 <Col span={6}>
@@ -612,10 +252,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                                             "employeeNum",
                                                             {}
                                                         )(
-                                                            <Input
-                                                                type="text"
-                                                                placeholder="请输入"
-                                                            />
+                                                            <Int/>
+                                                            
                                                         )}
                                                     </FormItem>
                                                 </Col>
@@ -623,132 +261,98 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                         </Col>
                                 </Row>
                                 <Row className="row-bottom">
-                                   
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>邮箱：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "email",
-                                                            {}
-                                                        )(
-                                                            <Input
-                                                                type="text"
-                                                                placeholder="请输入"
-                                                            />
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>电话：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "tel",
-                                                            {}
-                                                        )(
-                                                            <Input
-                                                                type="text"
-                                                                placeholder="请输入"
-                                                            />
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                   
-                                </Row>
-                                
-                                        {/* <Row className="row-bottom">
-                                            <Col span={12}>
-                                                <Row type="flex" align="middle">
-                                                    <Col span={6}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <div>
-                                                                上级客户：
-                                                            </div>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col span={16}>
-                                                        <FormItem
-                                                            {...formItemLayout}
-                                                        >
-                                                            {getFieldDecorator(
-                                                                "parentId",
-                                                                {}
-                                                            )(
-                                                                <CuperiorCustomer
-                                                                    width={500}
-                                                                />
-                                                            )}
-                                                        </FormItem>
-                                                    </Col>
+                                    <Col span={12}>
+                                        <Row type="flex" align="middle">
+                                            <Col span={6}>
+                                                <Row
+                                                    type="flex"
+                                                    justify="end"
+                                                >
+                                                    <div>邮箱：</div>
                                                 </Row>
                                             </Col>
-                                            
-                                        </Row> 
-                                        <Row className="row-bottom">
-                                            <Col span={24}>
-                                                <Row type="flex">
-                                                    <Col span={3}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <div>备注：</div>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col span={21} className='remark'>
-                                                        <FormItem
-                                                            {...formItemLayout1}
-                                                        >
-                                                            {getFieldDecorator(
-                                                                "remark",
-                                                                {}
-                                                            )(
-                                                                <TextArea
-                                                                    autosize={{
-                                                                        minRows: 3,
-                                                                        maxRows: 8
-                                                                    }}
-                                                                    placeholder="请输入"
-                                                                    style={{width:'100%'}}
-                                                                />
-                                                            )}
-                                                        </FormItem>
-                                                    </Col>
+                                            <Col span={18}>
+                                                <FormItem
+                                                    {...formItemLayout}
+                                                >
+                                                    {getFieldDecorator(
+                                                        "email",
+                                                        {}
+                                                    )(
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="请输入"
+                                                        />
+                                                    )}
+                                                </FormItem>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    <Col span={12}>
+                                        <Row type="flex" align="middle">
+                                            <Col span={6}>
+                                                <Row
+                                                    type="flex"
+                                                    justify="end"
+                                                >
+                                                    <div>电话：</div>
                                                 </Row>
                                             </Col>
-                                            
+                                            <Col span={18}>
+                                                <FormItem
+                                                    {...formItemLayout}
+                                                >
+                                                    {getFieldDecorator(
+                                                        "tel",
+                                                        {}
+                                                    )(
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="请输入"
+                                                        />
+                                                    )}
+                                                </FormItem>
+                                            </Col>
                                         </Row>
                                     </Col>
                                 </Row>
-                            </Row>
+                            
+                                <Row className="row-bottom">
+                                    <Col span={24}>
+                                        <Row type="flex">
+                                            <Col span={3}>
+                                                <Row
+                                                    type="flex"
+                                                    justify="end"
+                                                >
+                                                    <div>备注：</div>
+                                                </Row>
+                                            </Col>
+                                            <Col span={21} className='remark'>
+                                                <FormItem
+                                                    {...formItemLayout1}
+                                                >
+                                                    {getFieldDecorator(
+                                                        "remark",
+                                                        {}
+                                                    )(
+                                                        <TextArea
+                                                            autosize={{
+                                                                minRows: 3,
+                                                                maxRows: 8
+                                                            }}
+                                                            placeholder="请输入"
+                                                            style={{width:'100%'}}
+                                                        />
+                                                    )}
+                                                </FormItem>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Col>
+                          </Row>
+                        </Row>
 
                             <Row className="form-bottom">
                                 <Row>
@@ -774,9 +378,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                                     <FormItem
                                                         {...formItemLayout}
                                                     >
-                                                        {getFieldDecorator(
-                                                            "province_city_district"
-                                                        )(<CityChioce />)}
+                                                    {getFieldDecorator(
+                                                        "province_city_district"
+                                                    )(
+                                                            <CityChioce/>
+                                                    )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -799,13 +405,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                                             "address"
                                                         )(
                                                             
-                                                            <FormMap
-                                                                cityCode={
-                                                                    viewData.province_city_district
-                                                                }
-                                                                viewData={
-                                                                    viewData
-                                                                }
+                                                            <MultiFunctionMap
+                                                                cityCode={viewData.province_city_district}
                                                             />
                                                         )}
                                                     </FormItem>
@@ -865,7 +466,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                                         {getFieldDecorator(
                                                             "name"
                                                         )(
-                                                            <Input/>
+                                                            <ResponseDepart viewData={viewData}/>
                                                         )}
                                                     </FormItem>
                                                 </Col>
@@ -1210,35 +811,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
                                     </Col>
                                 </Row>
                             </Row>
- */
-   
-   
-   
-   /*                      </Form>
+                        </Form>
                     </Row>
                 </Row>
-                <Modal
-                    title="工商核实"
-                    visible={icbcVisible}
-                    onCancel={this.onCancel.bind(this)}
-                    footer={this.footerContent.call(this)}
-                    width={500}
-                    maskClosable={false}
-                >
-                    <div className="modal-height">
-                        {icbcInfo && icbcInfo.length
-                            ? icbcInfo.map(item => {
-                                  return (
-                                      <div className="icbc-detail-item">
-                                          <span>{item.name}</span>:<span>
-                                              {item.value}
-                                          </span>
-                                      </div>
-                                  );
-                              })
-                            : ""}
-                    </div>
-                </Modal>
             </div>
         );
     }
@@ -1247,70 +822,42 @@ export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-<<<<<<< HEAD
-        //debugger;
-=======
-        debugger
->>>>>>> 2790199c27ac728ddd708317906f1f561afc1709
         let viewData = props.$$state.toJS().viewData;
         let value = {};
+    
         for (let key in viewData) {
-            if (key == "address") {
-                value[key] = {
-                    value: {
-                        address: viewData[key],
-                        latlng: viewData["latlng"]
-                    }
-                };
-            } else {
+            // if (key == "address") {
+            //     value[key] = {
+            //         value: {
+            //             address: viewData[key],
+            //             latlng: viewData["latlng"]
+            //         }
+            //     };
+            // } else {
                 value[key] = { value: viewData[key] };
-            }
+           // }
         }
         //address  把字段合成对象
-
         return {
             ...value
-               
-            // name: { value: props.editData.name },
-            // description: { value: props.editData.description }
-                   
-            // employeeNum:{value: "5"}
-            // level:{value: "17"}
-            // name:{value: "a"}
-            // remark:{value: "6"} 
         };
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-<<<<<<< HEAD
-        debugger;
-        let viewData = props.$$state.toJS().viewData;      
-=======
-        debugger
         let viewData = props.$$state.toJS().viewData;
-        
->>>>>>> 2790199c27ac728ddd708317906f1f561afc1709
         for (let key in onChangeFild) {
-            if (onChangeFild[key].value && onChangeFild[key].value.key) {
-                viewData[key] = onChangeFild[key].value.key;
-            } else {
-                if (key == "address") {
-                    let value = onChangeFild[key].value;
-                    viewData["address"] = value.address;
-                    if (typeof value.latlng == "string") {
-                        viewData["latlng"] = value.latlng;
-                    } else {
-                        viewData["latlng"] =
-                            value.latlng.lng + "," + value.latlng.lat;
-                    }
-                } else if (key == "province_city_district") {
-                    debugger
-                    viewData[key] = onChangeFild[key].value.result;
-                    viewData["cityMyself"] = onChangeFild[key].value.custom;
-                } else {
-                    viewData[key] = onChangeFild[key].value;
-                } //把对像拆成字段  latlng
-            }
+            // if (key == "address") {
+            //     let value = onChangeFild[key].value;
+            //     viewData["address"] = value.address;
+            //     if (typeof value.latlng == "string") {
+            //         viewData["latlng"] = value.latlng;
+            //     } else {
+            //         viewData["latlng"] =
+            //             value.latlng.lng + "," + value.latlng.lat;
+            //     }
+            // } else {
+                viewData[key] = onChangeFild[key].value;
+            //} //把对像拆成字段  latlng
         }
         props.editCardFn(viewData);
     }
@@ -1329,4 +876,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 //输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(cardForm); */
+export default connect(mapStateToProps, mapDispatchToProps)(cardForm);

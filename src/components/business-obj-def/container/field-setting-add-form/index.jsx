@@ -58,7 +58,8 @@ export default class FormList extends React.Component {
   render() {
 
     let { data, menuData, nameFlag, formTypeList } = this.props;
-    let src=`./image/${data.type}.png`,alt=`${data.name}`;
+    let src=`./image/${data.type}.png`, alt=`${data.name}`;
+        src = require(src+"");//+""是为了解决require引入路径时使用上面表达式发出警告的问题
     let elsformControls = formTypeList.map((item) => {
       return <div
         className={data.type == item.type ? "form-control-item form-control-item-checked" : "form-control-item"}
@@ -92,7 +93,7 @@ export default class FormList extends React.Component {
           <div className='feild-setting-form-example'>
             <p className='example'>示例</p>
             <div className='image-wraper'>
-              <img src={require(src)} alt={alt} className='image'/>
+              <img src={src} alt={alt} className='image'/>
             </div>
           </div>
           
