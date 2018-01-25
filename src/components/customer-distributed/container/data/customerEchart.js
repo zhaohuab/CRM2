@@ -1,41 +1,10 @@
 var data = [
-    { name: "海门", value: 9 },
-    { name: "鄂尔多斯", value: 12 },
-    { name: "招远", value: 12 },
-    { name: "舟山", value: 12 },
-    { name: "齐齐哈尔", value: 14 },
-    { name: "盐城", value: 15 },
-    { name: "赤峰", value: 16 },
-    { name: "青岛", value: 18 },
-    { name: "乳山", value: 18 },
-    { name: "金昌", value: 19 },
-    { name: "泉州", value: 21 },
-    { name: "莱西", value: 21 },
-    { name: "日照", value: 21 },
-    { name: "胶南", value: 22 },
-    { name: "南通", value: 23 },
-    { name: "拉萨", value: 24 },
-    { name: "云浮", value: 24 },
-    { name: "宜昌", value: 130 },
-    { name: "义乌", value: 132 },
-    { name: "丽水", value: 133 },
-    { name: "洛阳", value: 134 },
-    { name: "秦皇岛", value: 136 },
-    { name: "株洲", value: 143 },
-    { name: "石家庄", value: 147 },
-    { name: "莱芜", value: 148 },
-    { name: "常德", value: 152 },
-    { name: "保定", value: 153 },
-    { name: "湘潭", value: 154 },
-    { name: "金华", value: 157 },
-    { name: "岳阳", value: 169 },
-    { name: "长沙", value: 175 },
-    { name: "衢州", value: 177 },
-    { name: "廊坊", value: 193 },
-    { name: "菏泽", value: 194 },
-    { name: "合肥", value: 229 },
-    { name: "武汉", value: 273 },
-    { name: "大庆", value: 279 }
+
+    { name: "拉萨", value: 24,adress:'西藏' },
+    { name: "云浮", value: 24,adress:'云南'  },
+    { name: "宜昌", value: 130 ,adress:'江西' },
+    { name: "武汉", value: 273 ,adress:'湖北' },
+    { name: "大庆", value: 279 ,adress:'西藏' }
 ];
 
 var geoCoordMap = {
@@ -238,7 +207,7 @@ var convertData = function(data) {
         if (geoCoord) {
             res.push({
                 name: data[i].name,
-                value: geoCoord.concat(data[i].value)
+                value: geoCoord.concat(data[i].value),
             });
         }
     }
@@ -247,11 +216,11 @@ var convertData = function(data) {
 let option = {
     backgroundColor: "#404a59",
     tooltip: {
-        trigger: "none"
+        trigger: "item"
     },
     bmap: {
         center: [104.114129, 37.550339],
-        zoom: 4,
+        zoom: 5,
         roam: true,
         mapStyle: {}
     },
@@ -283,7 +252,7 @@ let option = {
     ],
     series: [
         {
-            name: "pm2.5",
+            name: "客户分布",
             type: "scatter",
             coordinateSystem: "bmap",
             data: convertData(data),
@@ -301,7 +270,7 @@ let option = {
             }
         },
         {
-            name: "pm2.5pin",
+            name: "客户分布",
             type: "scatter",
             symbol: "pin",
             coordinateSystem: "bmap",
@@ -323,12 +292,13 @@ let option = {
             }
         },
         {
-            name: "Top 5",
+            name: "客户分布",
             type: "effectScatter",
             coordinateSystem: "bmap",
             data: convertData(
                 data
                     .sort(function(a, b) {
+                        //debugger;
                         return b.value - a.value;
                     })
                     .slice(0, 6)

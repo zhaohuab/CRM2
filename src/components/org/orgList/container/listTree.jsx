@@ -25,11 +25,12 @@ class ListTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            edit: ""
+            edit: "" 
         };
     }
 
     onSelect(selectedKeys, obj) {
+        debugger
         if (selectedKeys.length) {
             this.props.action.listTreeChange(selectedKeys[0]);
         }
