@@ -1,6 +1,7 @@
 .feild-setting-edit-form {
     display: flex;
-    height: 400px;
+    min-height: 247px;
+    padding:4px 0 47px 0; 
     .feild-setting-form-props {
         flex-grow: 1;
         &>.gutter-row {
@@ -21,6 +22,26 @@
             margin-bottom: 5px;
             padding-bottom: 5px;
             border-bottom: 1px solid #f5f5f5;
+        }
+    }
+    .prompt{
+        position: absolute;
+        left: 0;
+        top:0; 
+        color:red;
+        padding-left:10px;
+        white-space: nowrap;
+        animation: translate2 0.5s; 
+    }
+    
+    @keyframes translate2{
+        from{
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to{
+            transform: translateY(0);
+            opacity: 1;
         }
     }
 }

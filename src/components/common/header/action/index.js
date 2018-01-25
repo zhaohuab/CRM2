@@ -1,8 +1,18 @@
-import fetchData from 'utils/fetchdata';
+//import fetchData from 'utils/fetchdata';
 import reqwest from "utils/reqwest";
-import {baseDir} from 'api';
+//import {baseDir} from 'api';
 import { browserHistory } from 'react-router';
-import { approved as url } from 'api/zhb'
+//import { approved as url } from 'api/zhb'
+
+import { approval as url, doc, baseDir } from "api";
+
+const fetchData = (type, payload) => {
+    return {
+        type,
+        payload
+    };
+};
+
 
  const loginOut = () => {
    return (dispatch)=>{
@@ -61,6 +71,7 @@ const searchStateChange = (flag) => {
 }
  
 const searchData = (path,data) => {//搜索
+    //debugger;
     return dispatch => {
         reqwest(
             {
@@ -96,61 +107,93 @@ const getDeparment = (path,id) => {
 
 //审批流中的方法
 const approvedShow = () => {//审批流显示
+    debugger
     return dispatch => {
-		dispatch(fetchData('HEADER_APPROVED_SHOW',{ approval: true }))
+		dispatch(fetchData('HEADER_APPROVED_SHOWDATE',{ approvalShow: true }))
     }
 }
 
 const getApprovalData = () => {//获取审批流数据
-    let aa = url;
-    debugger;
+    //debugger;
+    let aa=url;
+    let data = { pageSize: 10, page: 1 }
     return dispatch => {
         reqwest(
             {
                 url: url.notfinished,
                 method: "GET",
-                data: {}
+                data: {
+                    param: data
+                }
             },
             dataResult => {//我提交--未完成
-                debugger;
-                dispatch(fetchData('HEADER_NOTFINISHED_SUCCESS',{ unfinishedData: dataResult.data }))
+                //debugger;
+                dispatch(fetchData('HEADER_NOTFINISHED_SUCCESS',{ unfinishedData: dataResult }))
             }
         );
         reqwest(
             { 
                 url: url.finished,
                 method: "GET",
-                data: {}
+                data: {
+                    param: data
+                }
             },
-            dataResult => {//我提交--已完成
-                debugger;
-                dispatch(fetchData('HEADER_FINISHED_SUCCESS',{ finishedData: dataResult.data }))
+            dataResult => {//我提交--已完成 
+                //debugger;             
+                dispatch(fetchData('HEADER_FINISHED_SUCCESS',{ finishedData: dataResult }))
             }
         );
         reqwest(
             {
                 url: url.todo,
                 method: "GET",
-                data: {}
+                data: {
+                    param: data
+                }
             },
-            dataResult => {//我审批--待办
-                debugger;
-                dispatch(fetchData('HEADER_TODO_SUCCESS',{ todoData: dataResult.data }))
+            dataResult => {//我审批--待办  
+                //debugger;           
+                dispatch(fetchData('HEADER_TODO_SUCCESS',{ todoData: dataResult }))
             }
         );
         reqwest(
             { 
                 url: url.done,
                 method: "GET",
-                data: {}
+                data: {
+                    param: data
+                }
             },
-            dataResult => {//我审批--已办
-                debugger;
-                dispatch(fetchData('HEADER_DONE_SUCCESS',{ doneData: dataResult.data }))
+            dataResult => {//我审批--已办     
+                //debugger;           
+                dispatch(fetchData('HEADER_DONE_SUCCESS',{ doneData: dataResult }))
             }
         );
     }
 }
+
+const getUnfinished = (pagination) => {
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.notfinished,
+                method: "GET",
+                data: {
+                    param:{
+                        ...pagination
+                    }
+                }
+            },
+            dataResult => {//我提交--未完成
+                debugger;
+                dispatch(fetchData('HEADER_NOTFINISHED_SUCCESS',{ unfinishedData: dataResult.datalist }))
+            }
+        )
+    }
+}
+
 
 export {
     loginOut,
@@ -161,4 +204,5 @@ export {
     searchStateChange,
     approvedShow,
     getApprovalData,
+    getUnfinished
 }

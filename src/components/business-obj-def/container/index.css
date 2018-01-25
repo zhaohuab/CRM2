@@ -5,21 +5,25 @@
   box-sizing: border-box;
   min-height: 100%;
 }
-.business-obj-def-warpper .ifram {
+.business-obj-def-warpper .ifram-wraper {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+}
+.business-obj-def-warpper .ifram-wraper .ifram {
+  width: 100%;
+  height: 100%;
   position: absolute;
   left: 0;
   top: 0;
   border: 1px solid #d9d9d9;
   z-index: 2;
 }
-.business-obj-def-warpper .ifram html,
-.business-obj-def-warpper .ifram body {
+.business-obj-def-warpper .ifram-wraper .ifram body {
+  /* overflow: scroll; */
   overflow-x: hidden;
   background-color: red;
 }
-.business-obj-def-warpper .closed {
+.business-obj-def-warpper .ifram-wraper .closed {
   position: absolute;
   top: 0;
   right: 0;
@@ -42,10 +46,20 @@
 }
 .business-obj-def-warpper .field-setting-warpper .field-setting-title .title {
   font-size: 14px;
+  color: #333;
+  font-weight: bold;
 }
 .business-obj-def-warpper .field-setting-warpper .card-con {
   display: flex;
   flex-wrap: wrap;
+}
+.business-obj-def-warpper .field-setting-warpper .more {
+  cursor: pointer;
+  height: 16px;
+  line-height: 16px;
+}
+.business-obj-def-warpper .field-setting-warpper .more .icon-gengduo {
+  margin-left: 10px;
 }
 .business-obj-def-warpper .tpl-setting-warpper .tpl-setting-title {
   margin: 10px 0;

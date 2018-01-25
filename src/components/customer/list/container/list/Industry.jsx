@@ -170,16 +170,19 @@ export default class Industry extends React.Component {
 
     //动态赋予this.props.value input中的值
     inputChange(e) {
+
+        debugger;
         let value = e.target.value;
 
         if (this.props.onChange) {
+            debugger
             this.props.onChange({ name: value, id: null });
         }
     }
 
     //每隔500毫秒执行一次查找请求
     lodashSearch(value) {
-        debugger
+       // debugger
         reqwest(
             {
                 url: baseDir + "/base/industrys/list",

@@ -85,19 +85,21 @@ export default class Card extends Component {
   }
 
   render() {
-    const {item, isDragging, connectDragSource, connectDropTarget } = this.props;
+    const { item, isDragging, connectDragSource, connectDropTarget } = this.props;
     const opacity = isDragging ? 0 : 1;
 
     return connectDragSource(connectDropTarget(
-      <div className={this.props.classNames} style={{ opacity }}>
-        {item.isRequired ?  <span className="isRequired">*</span> : null}
-        {item.name}
+      <div className={this.props.classNames} style={{ opacity }} title={item.name}>
+        {item.isRequired ? <span className="isRequired">*</span> : null}
+        {item.apiName == "" ? null : item.name}
         <div className="btn-con">
-          <span className="btn-edit" title="编辑" >
-            <Icon type="edit" onClick={this.props.edit}/>
+          <span className="btn-edit" >
+            {
+              item.apiName == "" ? null : <Icon type="edit" title="编辑" onClick={this.props.edit} />
+            }
           </span>
-          <span className="btn-delete" title="删除">
-            <Icon type="delete" onClick={this.props.delete} />
+          <span className="btn-delete">
+            <Icon type="delete" title="删除" onClick={this.props.delete.bind(this,item)} />
           </span>
         </div>
       </div >,

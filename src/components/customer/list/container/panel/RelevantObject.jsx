@@ -63,7 +63,6 @@ class RelevantObject extends React.Component {
     //遍历折叠表头
     headerFn(obj){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
-
         let temp
         if(viewDataRelevant[obj.index-1].list){
             temp = viewDataRelevant[obj.index-1].list.data.length

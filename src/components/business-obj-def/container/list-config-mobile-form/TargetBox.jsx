@@ -97,7 +97,7 @@ export default class Card extends Component {
             <Icon type="edit" onClick={this.props.edit}/>
           </span>
           <span className="btn-delete" title="删除">
-            <Icon type="delete" onClick={this.props.delete} />
+            <Icon type="delete" onClick={this.props.delete.bind(this,item)} />
           </span>
         </div>
       </div >,

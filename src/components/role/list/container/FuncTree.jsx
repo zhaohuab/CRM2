@@ -85,12 +85,21 @@ class FuncTree extends Component {
         const roleId = this.props.$$state.get("selectedRoleId");
         const funcData = this.props.$$state.get("funcData").toJS();
         let flag = false;
+        //用于存放勾选的项所在的功能分组
+        let groupData = false;
+        const funcIds = [];
         for (let i = 0; i < funcData.length; i++) {
             let child = funcData[i].child
             for (let j = 0; j < child.length; j++) {
                 if (child[j].id == funcId) {
                     funcData[i].child[j].checked = checked;
                     flag = true;
+                  
+                    //如果所选项所在分组的浏览没有选中，则添加到选中数组中
+                    if(funcData[i].child[0].checked == 'F'){
+                        funcData[i].child[0].checked = checked;
+                        funcIds.push(funcData[i].child[0].id);
+                    }
                     break;
                 }
             }
@@ -98,7 +107,7 @@ class FuncTree extends Component {
                 break;
             }
         }
-        const funcIds = [];
+      
         funcIds.push(funcId);
         this.props.action.selectFunc(roleId, funcIds, checked, funcData)
     }
@@ -137,22 +146,24 @@ class FuncTree extends Component {
             }
             this.props.action.selectFunc(roleId, funcIds, "F", funcData)
         }
-
     }
 
     render() {
         let selectedRoleIsPreseted = this.props.$$state.get("selectedRoleIsPreseted");
         const showGroup = data => data.map((item, index) => {
+            //标识全选按钮是否为选中状态
             let flag = true;
             if (item.child) {
                 for (let i = 0; i < item.child.length; i++) {
+
                     if (item.child[i].checked == 'F') {
                         flag = false;
-                        break;
+                    }
+                    if(item.child[i].checked == 'T'&&i!=0){
+                        item.child[0].readOnly = true;
                     }
                 }
             }
-
             const header = (
                 <div>
                     <Row>
@@ -180,7 +191,7 @@ class FuncTree extends Component {
         const showChild = data => data.map((item) => {
             return (
                 <div>
-                    {selectedRoleIsPreseted == 1 ?
+                    {selectedRoleIsPreseted == 1 ||item.readOnly ?
                         <div  >
                             <Col span={6}>
                                 <Col span={4}><Checkbox disabled checked={item.checked == 'T' ? true : false} /></Col>

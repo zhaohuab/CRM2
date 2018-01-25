@@ -61,6 +61,7 @@ class List extends React.Component {
     };
     onClose() {
         this.props.action.showForm(false, {}, false);
+        form.resetFields();
     }
     onEnable(enable) {
         return enable => {
@@ -78,15 +79,17 @@ class List extends React.Component {
         e.preventDefault();
         form.validateFields((err, values) => {
             console.info(err);
-            // if (!err) {
+            if (!err) {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {
                     this.props.action.onSave4Edit(form.getFieldsValue());
+                    form.resetFields();
                 }
                 else {
                     this.props.action.onSave4Add(form.getFieldsValue());
+                    form.resetFields();
                 }
-            // }
+            }
         });
     }
 
@@ -147,7 +150,8 @@ class List extends React.Component {
         };
         let editData = this.props.$$state.get("formData").toJS();
         let formFields = this.props.$$state.get("formFields").toJS();
-
+        let pagination = this.props.$$state.get("pagination").toJS();
+        
         let template = this.props.$$state.get("template").toJS();
         let isEdit = this.props.$$state.get("isEdit");
         let enableState = this.props.$$state.get("searchMap").toJS().enableState;
@@ -158,7 +162,6 @@ class List extends React.Component {
         else {
             tpl = template.add;
         }
-        debugger
         return (
             <div className="user-warpper">
 
@@ -223,12 +226,14 @@ class List extends React.Component {
                 }
                 <div className="list-box tabel-recoverd">
                     <Table
+                    
                         size="middle"
                         columns={template.list}
                         dataSource={page.data}
                         rowSelection={rowSelection}
                         rowKey="id"
                         pagination={{
+                            current: pagination.page,
                             size: "large",
                             showSizeChanger: true,
                             showQuickJumper: true,

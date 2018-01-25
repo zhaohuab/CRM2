@@ -5,7 +5,9 @@ import login from "components/login/reducer";
 //左侧menu树
 import commonMenu from "components/common/menu/reducer";
 //头部
-import header from "components/common/header/reducer";
+ import header from "components/common/header/reducer";
+//云审批
+import approval from "components/home/reducer/approval.js"
 //最外层component
 import componentReducer from "../components/reducer.js";
 //project目录
@@ -56,15 +58,25 @@ import prdattrgroup from 'components/prdattrgroup/list/reducer';
 //表单管理
 import businessObjDef from 'components/business-obj-def/reducer';
 
+
+//线索
+import lead from 'components/lead/list/reducer';
+//任务调度
+import quartz from 'components/quartz/list/reducer'
+
+
 //分配菜单
-import cusAssignReducers from 'components/customer/assign/reducer'
+import cusAssignReducers from 'components/customer/assign/reducer';
+//
+//客户分布
+import cusDistributed from 'components/customer-distributed/reducer';
 
 let rootReducer = combineReducers({ 
     login, 
     doc,
     login,
     commonMenu,
-    header,
+     header,
     componentReducer,
     userlist,
     orgReducers,
@@ -89,7 +101,12 @@ let rootReducer = combineReducers({
     prdattr,
     prdattrgroup,
     businessObjDef,
-    cusAssignReducers
+    cusAssignReducers,
+    cusDistributed,
+    lead,
+    quartz,
+    cusAssignReducers,
+    approval
 });
 
 export { rootReducer };

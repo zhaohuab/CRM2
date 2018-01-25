@@ -16,7 +16,7 @@ export default class Card extends React.Component {
 
   render() {
     return (
-      <div className="busi-obj-def-card">
+      <div className="approval-obj-def-card">
         <div className="card-header">
           <div className="card-header-name">
            流程名称

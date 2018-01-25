@@ -20,6 +20,7 @@ export function getlist(searchMap={}){
                 param : {searchMap}
             }
         },(data) => {
+            debugger
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
         })
     }
@@ -193,7 +194,7 @@ export function setEnablestate(treeId,searchFilter,data,state){
 
 //获取tree数据
 export function getTreeList(){
-
+    debugger
     return(dispatch,getState)=>{
         dispatch({type:'ORG_LIST_GETTREELISTSTART'})
         request({
@@ -201,6 +202,7 @@ export function getTreeList(){
             method:'get',
             data:{}
         },(data) => {
+            debugger
             dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
         })
         
@@ -210,6 +212,7 @@ export function getTreeList(){
 
 //获取一个部门tree信息，变换表格数据
 export function listTreeChange(id){
+    debugger
     return(dispatch,getState)=>{
         request({
             url: url.org,
