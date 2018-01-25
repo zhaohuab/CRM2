@@ -21,7 +21,7 @@ import {
 } from "antd";
 
 import echarts from "echarts";
-import bmap from 'echarts/extension/bmap/bmap';//-----后添加，不知可否
+import bmap from 'echarts/extension/bmap/bmap';
 import ReactEcharts from 'echarts-for-react';
 import "echarts/lib/chart/scatter";
 import "echarts/lib/chart/effectScatter";
@@ -44,7 +44,7 @@ class PanelMap extends React.Component {
             var geoCoord = geoCoordMap[data[i].name];
             if (geoCoord) {
                 res.push({
-                    name: data[i].name,
+                    name: data[i].name+':'+data[i].value,
                     value: geoCoord.concat(data[i].value),
                 });
             }
@@ -52,22 +52,135 @@ class PanelMap extends React.Component {
         return res;
     };
 
-   getOption=()=>{}
-
-    getCustomer = (id) => {//点击业务员是获取对应的客户信息
-        let getOption = this.getOption;
-        reqwest({
-            url:'',
-            method:'get',
-            data:{
-                param:{
-                    id:1
+   getOption = () => {//得到新的option
+        /* let convertData = this.convertData;
+        let{ geoCoordMap,provinceData } = area;
+        let center=provinceData[];//获取到相应的省区经纬度
+        let zoom = 8
+        let name = 'xx'
+        let data=provinceData;
+        let option = {
+            title: {
+                text: '客户分布',
+                subtext: name,
+                left: 'center'
+            },
+            backgroundColor: "#404a59",
+            tooltip: {
+                trigger: "item"
+        },
+        bmap: {
+            center:center,
+            zoom: zoom,
+            roam: true,
+            mapStyle: {}
+        },
+        visualMap: [
+            {
+                show: false,
+                calculable: true,
+                dimension: 2,
+                seriesIndex: [0, 2],
+                inRange: {
+                    symbolSize: [20, 30]
+                },
+                outRange: {
+                    symbolSize: [20, 30]
+                }
+            },
+            {
+                show: false,
+                calculable: true,
+                dimension: 2,
+                seriesIndex: [1],
+                inRange: {
+                    symbolSize: [40, 60]
+                },
+                outRange: {
+                    symbolSize: [40, 60]
                 }
             }
-        },data=>{
-            getOption(data)
-        })
+        ],
+        series: [
+            {
+                name: "客户分布",
+                type: "scatter",
+                coordinateSystem: "bmap",
+                data: convertData(data),
+                label: {
+                    normal: {
+                        formatter: "{b}",
+                        position: "right",
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: "#ead53c"
+                    }
+                }
+            },
+            {
+                name: "客户分布",
+                type: "scatter",
+                symbol: "pin",
+                coordinateSystem: "bmap",
+                data: convertData(data),
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 9
+                        }
+                    }
+                },
+                zlevel: 6,
+                itemStyle: {
+                    normal: {
+                        color: "#4384de" //标志颜色
+                    }
+                }
+            },
+            {
+                name: "客户分布",
+                type: "effectScatter",
+                coordinateSystem: "bmap",
+                data: convertData(
+                    data
+                        .sort(function(a, b) {
+                            //debugger;
+                            return b.value - a.value;
+                        })
+                        .slice(0, 6)
+                ),
+                rippleEffect: {
+                    brushType: "stroke"
+                },
+                hoverAnimation: true,
+                label: {
+                    normal: {
+                        formatter: "{b}",
+                        position: "right",
+                        show: true
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: "#f4e925",
+                        shadowBlur: 10,
+                        shadowColor: "#b3aa0e"
+                    }
+                },
+                zlevel: 1
+            }
+        ]
+    };
+    return option */
+
     }
+
+
     
     
      
@@ -219,127 +332,21 @@ export default  connect( mapStateToProps, mapDispatchToProps)(PanelMap);
 
 /* 
 
- getOption = () => {//得到新的option
-        let convertData = this.convertData;
-        let{ geoCoordMap,provinceData } = area;
-        // let center=provinceData[];//获取到相应的省区经纬度
-        //let zoom = 
-        let data=provinceData;
-        let option = {
-            backgroundColor: "#404a59",
-            tooltip: {
-                trigger: "item"
-        },
-        bmap: {
-            center: [104.114129, 37.550339],
-            zoom: 5,
-            roam: true,
-            mapStyle: {}
-        },
-        visualMap: [
-            {
-                show: false,
-                calculable: true,
-                dimension: 2,
-                seriesIndex: [0, 2],
-                inRange: {
-                    symbolSize: [20, 30]
-                },
-                outRange: {
-                    symbolSize: [20, 30]
-                }
-            },
-            {
-                show: false,
-                calculable: true,
-                dimension: 2,
-                seriesIndex: [1],
-                inRange: {
-                    symbolSize: [40, 60]
-                },
-                outRange: {
-                    symbolSize: [40, 60]
-                }
-            }
-        ],
-        series: [
-            {
-                name: "客户分布",
-                type: "scatter",
-                coordinateSystem: "bmap",
-                data: convertData(data),
-                label: {
-                    normal: {
-                        formatter: "{b}",
-                        position: "right",
-                        show: true
-                    }
-                },
-                itemStyle: {
-                    normal: {
-                        color: "#ead53c"
-                    }
-                }
-            },
-            {
-                name: "客户分布",
-                type: "scatter",
-                symbol: "pin",
-                coordinateSystem: "bmap",
-                data: convertData(data),
-                label: {
-                    normal: {
-                        show: true,
-                        textStyle: {
-                            color: "#fff",
-                            fontSize: 9
-                        }
-                    }
-                },
-                zlevel: 6,
-                itemStyle: {
-                    normal: {
-                        color: "#4384de" //标志颜色
-                    }
-                }
-            },
-            {
-                name: "客户分布",
-                type: "effectScatter",
-                coordinateSystem: "bmap",
-                data: convertData(
-                    data
-                        .sort(function(a, b) {
-                            //debugger;
-                            return b.value - a.value;
-                        })
-                        .slice(0, 6)
-                ),
-                rippleEffect: {
-                    brushType: "stroke"
-                },
-                hoverAnimation: true,
-                label: {
-                    normal: {
-                        formatter: "{b}",
-                        position: "right",
-                        show: true
-                    }
-                },
-                itemStyle: {
-                    normal: {
-                        color: "#f4e925",
-                        shadowBlur: 10,
-                        shadowColor: "#b3aa0e"
-                    }
-                },
-                zlevel: 1
-            }
-        ]
-    };
 
+    getCustomer = (id) => {//点击业务员是获取对应的客户信息
+        let getOption = this.getOption;
+        reqwest({
+            url:'',
+            method:'get',
+            data:{
+                param:{
+                    id:1
+                }
+            }
+        },data=>{
+            getOption(data)
+        })
     }
-
 
 
  
