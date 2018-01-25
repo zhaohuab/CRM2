@@ -55,7 +55,8 @@ class ContactsCard extends React.Component {
     onOk(){
         let {contactsCardData} = this.props.$$state.toJS();
         this.props.form.validateFields((err, values) => {
-            if(!err){      
+            if(!err){
+                
                 this.setState({
                     visit:false
                 })
@@ -69,7 +70,8 @@ class ContactsCard extends React.Component {
                             }
                         }
                     },
-                    data => {              
+                    data => {
+                        
                         this.props.action.refContactFormAdd(data)
                     }
                 );
@@ -100,7 +102,7 @@ class ContactsCard extends React.Component {
                     width={900}
                     maskClosable={false}
                 >
-                    <div className='refs-panel-contacts-card'>
+                    <div className='crm-panel-contacts-card'>
                         <Form>
                             <div className="card-header-title">
                                 基本信息{" "}
@@ -283,7 +285,6 @@ class ContactsCard extends React.Component {
 
 const cardForm = Form.create({
     mapPropsToFields: props => {
-        //debugger
         //把redux中的值取出来赋给表单
         let {contactsCardData,viewData} = props.$$state.toJS()
         let value = {};
@@ -292,18 +293,18 @@ const cardForm = Form.create({
             value.customer = {value:viewData.id}
         }
         //保存部门id
-        if(viewData.salesVOs[0]){
+        if(viewData.salesVOs && viewData.salesVOs[0]){
             value.deptId = {value:viewData.salesVOs[0].ownerDeptId}
         }
         for (let key in contactsCardData) {
             value[key] = { value: contactsCardData[key] };
-        }   
+        }
+        
         return {
             ...value
         };
     },
     onFieldsChange: (props, onChangeFild) => {
-        debugger
         //往redux中写值//把值进行更新改变
         
         let {contactsCardData,viewData} = props.$$state.toJS();
@@ -314,10 +315,12 @@ const cardForm = Form.create({
         if(viewData.id){
             contactsCardData.customer = viewData.id
         }
-        if(viewData.salesVOs[0]){
+
+        //保存部门id
+        if(viewData.salesVOs && viewData.salesVOs[0]){
             contactsCardData.deptId = viewData.salesVOs[0].ownerDeptId
         }
-        //保存部门id
+        
         
         props.action.refContactForm(contactsCardData);
     }

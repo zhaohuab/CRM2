@@ -5,7 +5,6 @@ import { codeConstant } from "utils/reqwest/HandleReqwest";
 import getInfo from "utils/cookie"
 //定义方法 action
 const login = (params) => {
-
 	return (dispatch) => {
 		dispatch(fetchData('LOGIN_MAIN_LOGIN_START', {}))
 		const { user, password } = params;

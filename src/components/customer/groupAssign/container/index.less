@@ -1,0 +1,100 @@
+.assignment-container{
+    background: white;
+    padding:0 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    .container-header{
+        width:100%;
+        .container-header-show{
+            height:54px;
+            .top-more{
+                height:100%;
+            }
+        }  
+        .container-header-hide{
+            border-top: 1px solid #efefef;
+            padding-top:10px;
+            .inner{
+                width:90%;
+                margin:0 auto;
+            }
+        }
+        .ant-form-item{
+            margin-right:0;
+            width: 100%;
+        }
+        .ant-form-item > div{
+            width: 95%;
+        }
+        .ant-input{
+            height:28px;
+        }
+        .form-list-item{
+            margin-bottom:10px;
+        }
+        .operate{
+            color:#666;
+            .search{
+                padding-right:10px;
+                margin-right:10px;
+                border-right:1px solid #DDDDDD;
+                cursor: pointer
+            }
+            .more,.up{
+                cursor: pointer
+            }
+            .up .anticon{
+                transform: rotate(180deg)
+            }
+        }
+    }
+}
+
+/*集团客户变更modal样式*/
+.crm-group-assignperson-modal{
+    .modal-height{
+        padding:16px;
+        box-sizing: border-box;
+        height: 300px;
+        overflow-y: auto;
+    }
+}
+
+/*集团客户收回modal样式*/
+.crm-group-takeback-modal{
+    .modal-height{
+        padding:16px;
+        box-sizing: border-box;
+        height: 280px;
+        overflow-y: auto;
+    }
+    .tags-item{
+        position: relative;
+        padding:6px 10px;
+        box-sizing: border-box;
+        border-radius:5px;
+        user-select: none;
+        cursor: pointer;
+        border:1px solid #ccc;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+    .tags-item.tags-item-hide{
+        border:1px solid #ccc;
+        .iconfont{
+            display: none;
+        }
+    }
+    .tags-item.tags-item-show{
+        border:1px solid #3CA4FB ;
+        .iconfont{
+            display: block;
+            position: absolute;
+            right: -11px;
+            bottom: -4px;
+            color:#3CA4FB;
+        }
+    }
+}
