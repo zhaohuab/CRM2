@@ -1,6 +1,6 @@
 var data = [
     
-        { name: "拉萨", value: 24,adress:'西藏' },
+        { name: "拉萨", value: 260,adress:'西藏' },
         { name: "云浮", value: 24,adress:'云南'  },
         { name: "宜昌", value: 130 ,adress:'江西' },
         { name: "北京市", value: 273 ,adress:'湖北' },
@@ -263,7 +263,113 @@ var data = [
             center: [104.114129, 37.550339],
             zoom: 5,
             roam: true,
-            mapStyle: {}
+            mapStyle: {
+                styleJson: [
+                   
+                       
+                  
+                        {//铁路
+                            "featureType": "railway",
+                            "elementType": "all",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//高速公路
+                            "featureType": "highway",
+                            "elementType": "geometry",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//高速公路
+                            "featureType": "highway",
+                            "elementType": "geometry.fill",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//高速公路
+                            "featureType": "highway",
+                            "elementType": "labels",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//动脉
+                            "featureType": "arterial",
+                            "elementType": "geometry",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//
+                            "featureType": "arterial",
+                            "elementType": "geometry.fill",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//
+                            "featureType": "poi",
+                            "elementType": "all",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//
+                            "featureType": "green",
+                            "elementType": "all",
+                            "stylers": {
+                                "color": "#056197",
+                                "visibility": "off"
+                            }
+                        },
+                        {//地铁
+                            "featureType": "subway",
+                            "elementType": "all",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//人造
+                            "featureType": "manmade",
+                            "elementType": "all",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//本地
+                            "featureType": "local",
+                            "elementType": "all",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                        {//动脉
+                            "featureType": "arterial",
+                            "elementType": "labels",
+                            "stylers": {
+                                "visibility": "off"
+                            }
+                        },
+                   
+                        {//建筑
+                            "featureType": "building",
+                            "elementType": "all",
+                            "stylers": {
+                                "color": "#1a5787"
+                            }
+                        },
+                     /*    {//标签
+                            "featureType": "label",
+                            "elementType": "all",
+                            "stylers": {
+                                "color": "#32cd99"
+                            }
+                        } */
+                ]
+            }
         },
         visualMap: [
             {
@@ -271,12 +377,7 @@ var data = [
                 calculable: true,
                 dimension: 2,
                 seriesIndex: [0, 2],
-                inRange: {
-                    symbolSize: [20, 30]
-                },
-                outRange: {
-                    symbolSize: [20, 30]
-                }
+            
             },
             {
                 show: false,
@@ -305,8 +406,8 @@ var data = [
                     }
                 },
                 itemStyle: {
-                    normal: {
-                        color: "#ead53c"
+                    normal: {//文字颜色  
+                        color: "#f00"
                     }
                 }
             },
@@ -325,7 +426,7 @@ var data = [
                         }
                     }
                 },
-                zlevel: 6,
+                zlevel: 4,
                 itemStyle: {
                     normal: {
                         color: "#4384de" //标志颜色

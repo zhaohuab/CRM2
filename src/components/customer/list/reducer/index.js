@@ -29,8 +29,13 @@ let $$initialState = {
     RightJoinPanelKeys:'1',//保存详情面板左侧面板选项卡选中值,
     contactsCardData:{},//保存联系人相关对象输入值
     clueCardList:{},//保存商机新增表单数据
-    clueTableList:{},//保存商机新增表单table数据,
-    
+    clueTableList:{},//保存商机新增表单table数据
+    leadVisible:false,
+    //==================以下为模板数据
+    layoutFilds:[],//--------新增弹框模板
+    titleList:[],//----------主列表表头模板
+    detailFilds:[],//--------详情模板
+    relationObject:[],//-----相关对象模板
 };
 
 function pageAdd(page, item) {
@@ -300,6 +305,21 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
             return $$state.merge({
                 viewDataRelevant:Immutable.fromJS(delContacts)
             });
+        
+        //=================================以下为模板方法
+        case 'CUSTOMER_CARD_ADD'://弹出框模板
+        return $$state.merge({
+            layoutFilds: action.layoutFilds 
+        });
+    case 'CUSTOMER_GETTITLE_SUCCESS'://表头模板
+        return $$state.merge({
+            titleList: action.titleList 
+        });
+    case 'CUSTOMER_GETDETAIL_SUCCESS'://详情模板
+        return $$state.merge({
+            detailFilds: action.detailFilds,
+            relationObject: action.relationObject
+        });
         default:
             return $$state;
     }

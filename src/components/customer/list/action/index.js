@@ -738,3 +738,132 @@ export function delContacts(id,pagination){
         );
     }
 }
+
+
+
+
+
+//======================以下为模板请求方法
+const getLayout = (module) => {//----------------------自定义新增模板--------------
+    debugger;
+    return dispatch => {
+        reqwest(
+            {
+                url: baseDir + `/*/${module}/templates`,
+                method: "GET",
+                data:{
+                    param:{
+                        layoutType:'编辑',
+                        biztypeId:11,
+                        clientType:'PC端',
+                    }
+                }
+            },
+            result => {
+                debugger;
+                console.log('result=================',result)
+                dispatch({
+                    type: "CUSTOMER_CARD_ADD",
+                    layoutFilds: result.mainObject
+                });
+            }
+        );
+    };
+}
+
+
+const getTitle = (module) => {//--------------自定义table表头--------------------
+    //debugger;
+    return dispatch => {
+        reqwest({
+            url:baseDir + `/*/${module}/templates`,
+            method:'GET',
+            data:{
+                param:{
+                    biztypeId:11,
+                    clientType:'PC端',
+                }
+            }
+        },
+        result => {
+           // debugger;
+            dispatch({
+                type: "CUSTOMER_GETTITLE_SUCCESS",
+                titleList: result.mainObject
+            })
+        }
+        )
+    }
+}
+
+const getDetailFilds = (module) => {//------------自定义详情模板---------------
+   // debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: baseDir + `/*/${module}/templates`,
+                method: "GET",
+                data:{
+                    param:{
+                        layoutType:'查看',
+                        biztypeId:11,
+                        clientType:'PC端',
+                    }
+                }
+            },
+            result => {
+               // debugger;
+                dispatch({
+                    type: "CUSTOMER_GETDETAIL_SUCCESS",
+                    detailFilds: result.mainObject,
+                    relationObject: result.relationObject,
+                });
+            }
+        );
+    };
+}
+
+//输出 type 与 方法
+export {
+    // getListData,
+    // changeVisible,
+    // selectRow,
+    // showForm,
+    // listAddSave,
+    // listEditSave,
+    // showViewForm,
+    // deleteData,
+    // setEnableState,
+    // getEnumData,
+    // saveSearchMap,
+    // editCardFn,
+    // addCustomer,
+    // customerListInfo,
+    // customerModal1Show,
+    // changeStateFn,
+    // hideViewForm,
+    // icbcDetailInfo,
+    // modalDetalVisiable,
+    // checkedFn,
+    // checkedCancelFn,
+    // modalDetalVisiableFalse,
+    // closeIcbcVisible1,
+    // attentionFn,
+    // assignChangeViewData,
+    // getRightPaneltList,
+    // getLeftPaneltList,
+    // setRightPaneltList,
+    // delRightPaneltList,
+    // changeLeftPanel,
+    // refContactForm,
+    // refContactFormAdd,
+    // clearRefContactsForm,
+    // getOppList,
+    // delOpp,
+    // delContacts,
+    
+     //==========以下为模板方法
+     getLayout,
+     getTitle,
+     getDetailFilds
+};
