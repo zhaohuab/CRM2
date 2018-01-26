@@ -34,9 +34,11 @@ let $$initialState = {
     clueCardList:{},//保存商机新增表单数据
     clueTableList:{},//保存商机新增表单table数据
 
-
+    viewLeadVisible:false,
     leadVisible:false,//导入显隐
-    leadEndVisible:false
+    leadEndVisible:false,
+    leadingVisible:false,
+    leadStep:1
 };
 
 function pageAdd(page, item) {
@@ -71,6 +73,13 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
 
 
 //----------- 导入
+case 'CUSTOMER_LIST_VIEWLEADSHOW':
+return $$state.merge({
+    viewLeadVisible: action.payload.leadVisible,
+
+});
+
+
 case 'CUSTOMER_LIST_LEADSHOW':
 return $$state.merge({
     leadVisible: action.payload.leadVisible,
@@ -81,6 +90,10 @@ case 'CUSTOMER_LIST_LEADENDSHOW':
 return $$state.merge({
     leadEndVisible: action.payload.leadVisible,
 
+});
+case 'CUSTOMER_LIST_LEADINGSHOW':
+return $$state.merge({
+    leadingVisible: action.payload.leadVisible,
 });
 
 

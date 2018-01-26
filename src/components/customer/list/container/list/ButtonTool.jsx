@@ -36,7 +36,7 @@ class ToolForm extends React.Component {
     onMenu(e) {
         if (e.key == "1") {
             debugger
-            this.props.action.leadShow(true);
+            this.props.action.viewLeadShow(true);
         } else if (e.key == "2") {
         }
 

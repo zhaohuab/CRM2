@@ -25,6 +25,13 @@ function transData(searchMap) {
 }
 
 //-------导入导出
+const viewLeadShow=(leadVisible)=>{
+    return {
+        type: "CUSTOMER_LIST_VIEWLEADSHOW",
+        payload: {leadVisible}
+    };
+}
+
 const leadShow=(leadVisible)=>{
     return {
         type: "CUSTOMER_LIST_LEADSHOW",
@@ -39,7 +46,12 @@ const leadEndShow=(leadVisible)=>{
     };
 };
 
-
+const leadEndIngShow=(leadVisible)=>{
+    return {
+        type: "CUSTOMER_LIST_LEADINGSHOW",
+        payload: {leadVisible}
+    };
+}
 
 
 
@@ -748,5 +760,7 @@ export {
 
     //----导入
     leadShow,
-    leadEndShow
+    leadEndShow,
+    viewLeadShow,
+    leadEndIngShow
 };

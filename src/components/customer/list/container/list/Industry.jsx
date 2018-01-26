@@ -170,7 +170,7 @@ export default class Industry extends React.Component {
 
     //动态赋予this.props.value input中的值
     inputChange(e) {
-
+     
         debugger;
         let value = e.target.value;
 

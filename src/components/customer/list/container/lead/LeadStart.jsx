@@ -1,6 +1,9 @@
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../action";
+
+
+import UpLoad from './UpLoad'
 import {
     Steps,
     Cascader,
@@ -17,28 +20,34 @@ import {
     Upload
 } from 'antd';
 const Step = Steps.Step;
- class LeadIn extends React.Component {
+class LeadIn extends React.Component {
     constructor(props) {
         super(props);
     }
 
+    onLoad=()=>{
+
+    }
+
     render() {
+        let { leadEndVisible,leadStep} = this.props.$$state.toJS();
         return (
             <div className="leadin">
                 <Row>
-                    <Steps current={1} progressDot>
+                    <Steps current={leadStep} progressDot>
                         <Step title="上传文档" />
                         <Step title="导入数据" />
                         <Step title="完成" />
                     </Steps>
                 </Row>
+
+                {leadEndVisible ? <div className="stepboder"> </div>:
+                <div>
                 <Row type="flex" justify="center">
                     <Col>
-                        <Upload>
-                            <Button>
-                                <Icon type="upload" /> 下载数据模板
+                        <Button onClick={this.onLoad.bind(this)}>
+                            <Icon type="upload" /> 下载数据模板
                             </Button>
-                        </Upload>
                     </Col>
                     <Col>
                         <span>支持扩展名：.xls</span>
@@ -46,16 +55,17 @@ const Step = Steps.Step;
                 </Row>
                 <Row type="flex" justify="center">
                     <Col>
-                        <Upload>
+                        <UpLoad>
                             <Button>
                                 <Icon type="upload" /> 添加文件
                            </Button>
-                        </Upload>
+                        </UpLoad>
                     </Col>
                     <Col>
                         <span>仅支持Excel格式</span>
                     </Col>
                 </Row>
+                </div>}
             </div>
         )
     }

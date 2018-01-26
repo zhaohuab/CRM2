@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../action";
+import CkUpload from "./Input"
 import {
     Steps,
     Cascader,
@@ -23,10 +24,12 @@ const Step = Steps.Step;
     }
 
     render() {
+
+       let{leadStep}=this.props.$$state.toJS()
         return (
             <div className="leadin">
                 <Row>
-                    <Steps current={1} progressDot>
+                    <Steps current={leadStep} progressDot>
                         <Step title="上传文档" />
                         <Step title="导入数据" />
                         <Step title="完成" />
@@ -34,11 +37,13 @@ const Step = Steps.Step;
                 </Row>
                 <Row type="flex" justify="center">
                     <Col>
-                        <Upload>
+                        {/* <Upload>
                             <Button>
                                 <Icon type="upload" /> 下载数据模板
                             </Button>
-                        </Upload>
+                        </Upload> */}
+
+<CkUpload/>
                     </Col>
                     <Col>
                         <span>支持扩展名：.xls</span>

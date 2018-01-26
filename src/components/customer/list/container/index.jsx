@@ -28,11 +28,10 @@ import PanelMap from "./map/PanelMap";
 import PanelState from "./state/PanelState";
 
 
-
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
-import LeadIn from './lead/LeadIn.jsx'
+import LeadStart from './lead/LeadStart.jsx'
 import LeadEnd from "./lead/leadEnd.jsx"
 
 class List extends React.Component {
@@ -269,17 +268,24 @@ class List extends React.Component {
 
 
     leadStart() {
-        this.props.action.leadShow(false);
-        this.props.action.leadEndShow(true);
+       
+       // this.props.action.leadShow(false);
+        //this.props.action.leadEndShow(true);
+        this.props.action.leadEndShow(true)
     }
     leadStartCancel() {
-        this.props.action.leadShow(false)
+
+        this.props.action.viewLeadShow(false)
     }
     leadEnd(){
-         this.props.action.leadEndShow(false)
+        this.props.action.viewLeadShow(false);
+        //  this.props.action.leadEndShow(false)
     }
     leadEndCancel(){
         this.props.action.leadEndShow(false)
+    }
+    leadIng(){
+        this.props.action.leadEndShow(true)
     }
 
     render() {
@@ -297,7 +303,9 @@ class List extends React.Component {
             icbcSelect,
 
             leadVisible,
-            leadEndVisible
+            leadEndVisible,
+            leadingVisible,
+            viewLeadVisible
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -378,22 +386,45 @@ class List extends React.Component {
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
 
+{/*导入导出 --------- */}
                 <Modal title="导入"
-                    visible={leadVisible}
+                    visible={viewLeadVisible}
                     onOk={this.leadStart.bind(this)}
                     onCancel={this.leadStartCancel.bind(this)}
-                    footer={[
+                    footer={leadEndVisible?[
+                        <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
+                         关闭
+                        </Button>
+                      ]:
+                      [
                         <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
                         <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
                           开始导入
                         </Button>
                       ]}
+                    
+                    // footer={leadEndVisible?[
+                    //     <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
+                    //      关闭
+                    //     </Button>
+                    //   ]:leadingVisible?[
+                    //     <Button key="submit" type="primary" onClick={this.leadIng.bind(this)}>
+                    //      导入中
+                    //     </Button>
+                    //   ]:
+                    //   [
+                    //     <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                    //     <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                    //       开始导入
+                    //     </Button>
+                    //   ]}
                 >
                     <div className="cur-lead">
-                        <LeadIn />
+                        <LeadStart/>
                     </div>
                 </Modal>
-                <Modal title="导入"
+                
+                {/* <Modal title="导入"
                     visible={leadEndVisible}
                     onOk={this.leadEnd.bind(this)}
                     onCancel={this.leadEndCancel.bind(this)}
@@ -407,7 +438,7 @@ class List extends React.Component {
                  <div className="cur-leadEnd">
                         <LeadEnd/> 
                     </div>
-                </Modal>
+                </Modal> */}
             </div>
         );
     }
