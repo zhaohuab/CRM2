@@ -64,7 +64,7 @@ const transReceiveDataOne = (data) => {
 }
 //拼接省市县
 const appendAddress = data => {
-    debugger
+    ////debugger
     let province=data.provinceName;
     let city=data.cityName;
     let distric=data.districtName;
@@ -76,7 +76,7 @@ const appendAddress = data => {
 export function getListData(pagination, searchMap){
     return dispatch => {
         dispatch(fetchData("CLUE_LIST_SAVESEARCHMAP", searchMap));
-        debugger
+        //debugger
         reqwest(
             {
                 url: url.lead,
@@ -89,7 +89,7 @@ export function getListData(pagination, searchMap){
                 }
             },
             data => {
-               debugger
+               //debugger
                 dispatch(
                     fetchData("CLUE_LIST_GETDATA", {
                         data: transReceiveData(data),
@@ -113,7 +113,7 @@ export function getEnumData() {
                 }
             },
             data => { //level source
-                debugger
+                //debugger
                 dispatch(
                     fetchData("CLUE_LIST_GETENUMDATA", {
                         enumData: data.enumData
@@ -135,7 +135,7 @@ export function saveSearchMap(data){
 
 //保存已选择的数据
 export function selectClue(selectedRows, selectedRowKeys) {
-    //debugger;
+    ////debugger;
     return {
         type: "CLUE_LIST_SELECTCLUE",
         payload: { selectedRows, selectedRowKeys }
@@ -144,7 +144,7 @@ export function selectClue(selectedRows, selectedRowKeys) {
 
 //删除已选择的线索
 export function  deleteData(ids, searchMap, pagination) {
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -159,7 +159,7 @@ export function  deleteData(ids, searchMap, pagination) {
                 }
             },
             data => {   //返回的是没有删除的data
-               // debugger
+               // //debugger
                 dispatch(
                     fetchData("CLUE_LIST_GETLISTUPDATE", {
                        data:transReceiveData(data)
@@ -186,7 +186,7 @@ export function showForm(data) {
 
 //点击编辑获取数据
 export function edit(edit,show){
-    debugger
+    //debugger
     return {
        type: "CLUE_LIST_EDIT",
        edit,
@@ -198,7 +198,7 @@ export function edit(edit,show){
 //编辑已选择（确定按钮）
 export function onEdit(values) {
 
-   debugger
+   //debugger
     return dispatch => {
         reqwest(
             {
@@ -209,7 +209,7 @@ export function onEdit(values) {
                 }
             },
             result => {
-                debugger
+                //debugger
                 dispatch({
                     type: "CLUE_LIST_UPDATELIST",
                     data: transReceiveDataOne(result)
@@ -221,7 +221,7 @@ export function onEdit(values) {
 
 //点击新建按钮清空数据
 export function addClue(data){
-   // debugger
+   // //debugger
     return dispatch => {
         dispatch({
             type: "CLUE_LIST_EMPTY",
@@ -232,7 +232,7 @@ export function addClue(data){
 
 //保存新增联系人
 export function onSave(oneData) {
-    debugger;
+    //debugger;
     return dispatch => {
         reqwest(
             {
@@ -243,7 +243,7 @@ export function onSave(oneData) {
                 }
             },
             data => {
-                debugger;
+                //debugger;
                 dispatch({
                     type: "CLUE_CARD_SAVEADD",
                     data:transReceiveDataOne(data)
@@ -264,7 +264,7 @@ export function editCardFn(changeData) {
 //展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id){
     return dispatch => {
-         debugger
+         //debugger
         reqwest(
             {
                 url: url.lead + "/" + id,
@@ -273,7 +273,7 @@ export function showViewForm(visible, id){
                 }
             },
             data => {
-                debugger
+                //debugger
                         dispatch({
                             type: "CLUE_LIST_SHOWVIEWFORM",
                             visible,

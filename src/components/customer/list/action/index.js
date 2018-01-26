@@ -25,6 +25,49 @@ function transData(searchMap) {
     return searchMap;
 }
 
+//-------导入导出
+const viewLeadShow=(leadVisible)=>{
+    debugger
+    return {
+        type: "CUSTOMER_LIST_VIEWLEADSHOW",
+        payload: {leadVisible}
+    };
+}
+
+const leadShow=(leadVisible)=>{
+    return {
+        type: "CUSTOMER_LIST_LEADSHOW",
+        payload: {leadVisible}
+    };
+};
+
+const leadEndShow=(leadVisible)=>{
+    return {
+        type: "CUSTOMER_LIST_LEADENDSHOW",
+        payload: {leadVisible}
+    };
+};
+
+const leadEndIngShow=(leadVisible)=>{
+    return {
+        type: "CUSTOMER_LIST_LEADINGSHOW",
+        payload: {leadVisible}
+    };
+}
+
+
+
+
+
+
+
+//-----------
+
+
+
+
+
+
 //控制查询显隐
 export function changeVisible(){
     return {
@@ -863,8 +906,16 @@ export {
     // delOpp,
     // delContacts,
     
-     //==========以下为模板方法
-     getLayout,
-     getTitle,
-     getDetailFilds
+    //==========以下为模板方法
+    getLayout,
+    getTitle,
+    getDetailFilds,
+
+
+
+    //----导入
+    leadShow,
+    leadEndShow,
+    viewLeadShow,
+    leadEndIngShow
 };

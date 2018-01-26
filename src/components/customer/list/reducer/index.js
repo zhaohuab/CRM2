@@ -29,7 +29,19 @@ let $$initialState = {
     RightJoinPanelKeys:'1',//保存详情面板左侧面板选项卡选中值,
     contactsCardData:{},//保存联系人相关对象输入值
     clueCardList:{},//保存商机新增表单数据
-    clueTableList:{},//保存商机新增表单table数据,
+    clueTableList:{},//保存商机新增表单table数据
+
+    viewLeadVisible:false,
+    leadVisible:false,//导入显隐
+    leadEndVisible:false,
+    leadingVisible:false,
+    leadStep:1,
+ 
+    //==================以下为模板数据
+    layoutFilds:[],//--------新增弹框模板
+    titleList:[],//----------主列表表头模板
+    detailFilds:[],//--------详情模板
+    relationObject:[],//-----相关对象模板
 };
 
 function pageAdd(page, item) {
@@ -61,8 +73,39 @@ function clearObject(obj){
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState),action) {
     switch (action.type) {
-        case "CUSTOMERCOMPANY_LIST_GETDATA": //查询各种table数据
-        debugger
+
+
+//----------- 导入
+case 'CUSTOMER_LIST_VIEWLEADSHOW':
+return $$state.merge({
+    viewLeadVisible: action.payload.leadVisible,
+
+});
+
+
+case 'CUSTOMER_LIST_LEADSHOW':
+return $$state.merge({
+    leadVisible: action.payload.leadVisible,
+
+});
+
+case 'CUSTOMER_LIST_LEADENDSHOW':
+return $$state.merge({
+    leadEndVisible: action.payload.leadVisible,
+
+});
+case 'CUSTOMER_LIST_LEADINGSHOW':
+return $$state.merge({
+    leadingVisible: action.payload.leadVisible,
+});
+
+
+//-----------
+
+
+
+
+        case "CUSTOMER_LIST_GETDATA": //查询各种table数据
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,

@@ -24,6 +24,7 @@ import Card from "./list/Card";
 import ViewPanel from "./panel/ViewPanel";
 import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
+import LeadStart from "./lead/LeadStart"
 
 
 import "./index.less";
@@ -87,6 +88,9 @@ class List extends React.Component {
             this.props.action.selectedRowKeys(selectedRowKeys);
         };
     }
+
+
+
     //改变编辑状态
     changeState(visiable) {
         this.props.action.changeStateFn(visiable);
@@ -223,6 +227,30 @@ class List extends React.Component {
         this.props.action.getEnumData();
     }
 
+
+    leadStart() {
+       
+        // this.props.action.leadShow(false);
+         //this.props.action.leadEndShow(true);
+         this.props.action.leadEndShow(true)
+     }
+     leadStartCancel() {
+ 
+         this.props.action.viewLeadShow(false)
+     }
+     leadEnd(){
+         this.props.action.viewLeadShow(false);
+         //  this.props.action.leadEndShow(false)
+     }
+     leadEndCancel(){
+         this.props.action.leadEndShow(false)
+     }
+     leadIng(){
+         this.props.action.leadEndShow(true)
+     }
+ 
+
+
     render() {
         debugger
         const { $$state } = this.props;
@@ -233,7 +261,12 @@ class List extends React.Component {
             formVisitable,
             viewState,
             viewData,
-            tableLoading
+            tableLoading,
+            leadVisible,
+            leadEndVisible,
+            leadingVisible,
+            viewLeadVisible
+
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -288,6 +321,47 @@ class List extends React.Component {
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
+
+                <Modal title="导入"
+                    visible={viewLeadVisible}
+                    onOk={this.leadStart.bind(this)}
+                    onCancel={this.leadStartCancel.bind(this)}
+                    footer={leadEndVisible?[
+                        <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
+                         关闭
+                        </Button>
+                      ]:
+                      [
+                        <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                        <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                          开始导入
+                        </Button>
+                      ]}
+                    
+                    // footer={leadEndVisible?[
+                    //     <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
+                    //      关闭
+                    //     </Button>
+                    //   ]:leadingVisible?[
+                    //     <Button key="submit" type="primary" onClick={this.leadIng.bind(this)}>
+                    //      导入中
+                    //     </Button>
+                    //   ]:
+                    //   [
+                    //     <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                    //     <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                    //       开始导入
+                    //     </Button>
+                    //   ]}
+                >
+                    <div className="cur-lead">
+                        <LeadStart/>
+                    </div>
+                </Modal>
+                
+
+
+                
             </div>
          );
     }

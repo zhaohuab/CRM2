@@ -12,7 +12,7 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class Child extends React.Component {
+class Search extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -98,7 +98,8 @@ class Child extends React.Component {
                 label='单据状态'
                 {...formItemLayout}
               >
-                {getFieldDecorator('status')(
+                {getFieldDecorator('status',     
+              )(
                   <RadioGroup size="large " onChange={this.onState}>
                     <RadioButton value="todo">待办</RadioButton>
                     <RadioButton value="done">已办</RadioButton>
@@ -161,7 +162,7 @@ const WrapedCard = Form.create({
     }
     props.action.savesearchMapApproval(viewData);
   }
-})(Child)
+})(Search)
 
 function mapStateToProps(state, ownProps) {
   return {

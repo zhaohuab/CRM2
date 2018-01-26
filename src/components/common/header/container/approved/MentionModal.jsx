@@ -55,7 +55,6 @@ class MentionModal extends React.Component {
                     cancelText="取消"
                 >
                     <div>请输入{this.props.show?'同意':'驳回'}的理由(非必填项)：</div>
-
                     <TextArea
                         value={this.state.val}
                         onChange={this.change}

@@ -102,14 +102,29 @@ class ToolForm extends React.Component {
         this.props.action.saveSearchMap(searchMap);
     }
 
+
+    
+     
+     onMenu(e) {
+         debugger
+        if (e.key == "1") {
+            debugger
+            this.props.action.viewLeadShow(true);
+        } else if (e.key == "2") {
+        }
+
+    }
+
+
+
     render() {
         let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
         const moreMenu = (
-            <Menu>
-                <Menu.Item key="0">
+            <Menu  onClick={this.onMenu.bind(this)}>
+                <Menu.Item key="1">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item key="1">
+                <Menu.Item key="2">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>
@@ -188,11 +203,11 @@ class ToolForm extends React.Component {
                                             <i className="iconfont icon-xinjian" />新建
                                         </Button>
                                     </Col>
-                                    <Col>
+                                    {/* <Col>
                                         <Button>
                                             <i className="iconfont icon-shuaxin" />刷新
                                         </Button>
-                                    </Col>
+                                    </Col> */}
                                     <Col>
                                         <Dropdown.Button
                                             overlay={moreMenu}
@@ -228,7 +243,7 @@ class ToolForm extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList
+        $$state: state.customerGroupList
     };
 }
 //绑定action到组件props
