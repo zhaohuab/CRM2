@@ -42,7 +42,7 @@ class UserCardTable extends Component {
         debugger
         let userCardVisible = $$state.get("userCardVisible");
         let rowSelection = {
-            selectedUserCardRowKeys,
+            selectedRowKeys:selectedUserCardRowKeys,
             onChange: this.onSelectChange
         };
         return (

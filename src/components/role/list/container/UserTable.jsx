@@ -54,7 +54,7 @@ class UserTable extends Component {
         this.props.action.showUserCard(selectedRoleId, name);
     }
 
-   
+
 
 
     //点击人员删除按钮
@@ -66,17 +66,12 @@ class UserTable extends Component {
     }
 
     //存储添加用户页面的查询条件
-    saveUserCardName(userCardName){
-        debugger
-        this.nameRef;
-        this.refs
-        // this.props.action.saveUserCardName(userCardName)
+    saveUserCardName(e) {
+        this.props.action.saveUserCardName(e.target.value)
     }
 
-     //点击查询按钮
-     onSearchUser(name) {
-         debugger
-         
+    //点击查询按钮
+    onSearchUser(name) {
         //  const name = this.props.$$state.get("userCardName");
         const selectedRoleId = this.props.$$state.get("selectedRoleId");
         this.props.action.showUserCard(selectedRoleId, name);
@@ -86,12 +81,12 @@ class UserTable extends Component {
     onSaveUser() {
         const selectedRoleId = this.props.$$state.get("selectedRoleId");
         const selectedUserCardRowKeys = this.props.$$state.get("selectedUserCardRowKeys").toJS();
-        if(selectedUserCardRowKeys.length==0){
+        if (selectedUserCardRowKeys.length == 0) {
             message.error('至少选择一条数据')
             return
         }
-        const userCardSearchMap = this.props.$$state.get("userCardSearchMap").toJS();
-        this.props.action.saveUser(selectedRoleId, selectedUserCardRowKeys, userCardSearchMap);
+        const userPagination = this.props.$$state.get("userPagination").toJS();
+        this.props.action.saveUser(selectedRoleId, selectedUserCardRowKeys, userPagination);
         this.props.action.closeUserCard();
     }
 
@@ -121,12 +116,12 @@ class UserTable extends Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("userList").toJS();
-        let name = $$state.get("userCardName")
+        let name = $$state.get("userCardName");
         let selectedUserRowKeys = $$state.get("selectedUserRowKeys").toJS();
         let selectedUserRows = $$state.get("selectedUserRows").toJS();
         let userCardVisible = $$state.get("userCardVisible");
         let rowSelection = {
-            selectedUserRowKeys,
+            selectedRowKeys:selectedUserRowKeys,
             onChange: this.onSelectChange
         };
         return (
@@ -166,10 +161,8 @@ class UserTable extends Component {
                             <Col span={12}>
                                 <Search
                                     placeholder="请输入关键字"
-                                    //  value = {name}
-                                    ref="myInput"
-                                    // onChange = {this.saveUserCardName.bind(this)}
-                                    //wrappedComponentRef={(inst) => this.nameRef = inst}
+                                    value={name}
+                                    onChange={this.saveUserCardName.bind(this)}
                                     onSearch={this.onSearchUser.bind(this)}
                                     style={{ width: 250 }}
                                 />

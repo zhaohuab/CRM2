@@ -22,7 +22,12 @@ const getBusinessObjList = (val) => {
 		reqwest({
 			url: url.approval,
 			method: 'get',
-			data:[]
+			data:{
+				param:{
+					djType:1,
+					bizTypeId:0
+				}
+			}
 		}, (data) => {
 			debugger;
 			message.destroy()

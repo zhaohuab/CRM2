@@ -30,7 +30,6 @@ let $$initialState = {
     contactsCardData:{},//保存联系人相关对象输入值
     clueCardList:{},//保存商机新增表单数据
     clueTableList:{},//保存商机新增表单table数据,
-    qqqqqqqqqqqqq:{}
 };
 
 function pageAdd(page, item) {
