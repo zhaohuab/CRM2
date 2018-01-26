@@ -11,6 +11,8 @@ import {
     Dropdown,
     Menu
 } from "antd";
+
+import { baseDir } from "api";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
@@ -102,17 +104,14 @@ class ToolForm extends React.Component {
         this.props.action.saveSearchMap(searchMap);
     }
 
-
-    
-     
      onMenu(e) {
          debugger
         if (e.key == "1") {
             debugger
             this.props.action.viewLeadShow(true);
         } else if (e.key == "2") {
+            location.href = baseDir + "tpub/excels/1/export"
         }
-
     }
 
 

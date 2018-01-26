@@ -276,7 +276,7 @@ export default class PersonChoiceModal extends React.Component {
                             <Col span={6} offset={2}>
                                 <Row type='flex' justify='end'>现负责人：</Row>
                             </Col>
-                            <Col span={10}>{viewData.salesVOs?viewData.salesVOs[0].ownerUserName:''}</Col>
+                            <Col span={10}>{viewData.salesVOs && viewData.salesVOs.length?viewData.salesVOs[0].ownerUserName:''}</Col>
                         </Row>
                         <Row type='flex' align='middle' className='change-person-item'>
                             <Col span={6} offset={2}>

@@ -25,52 +25,20 @@ class LeadIn extends React.Component {
         super(props);
     }
 
-    onLoad=()=>{
-debugger
-        reqwest(
-            {
-                url: baseDir + "/tpub/excels/1/templates/import",
-                method: "POST",
-                data: {
-                    param: {
-                        // searchMap: {
-                        //     searchKey: value
-                        // }
-                    }
-                }
-            },
-            result => {
-                result = result.data;
-                let resultEnd = [];
-                // if (result && result.length) {
-                //     result.forEach(item => {
-                //         resultEnd.push({ id: item.id, name: item.name });
-                //     });
-
-                //     this.setState({
-                //         visible: true,
-                //         keyDownVisiable: true,
-                //         industryDataSearch: resultEnd
-                //     });
-                // } else {
-                //     this.setState({
-                //         keyDownVisiable: true,
-                //         visible: true,
-                //         industryDataSearch: [{ id: null, name: "暂无数据" }]
-                //     });
-                // }
-            }
-        );
-
-
+    //下载excel 表格 
+    onLoad = () => {
+        location.href = baseDir + "/tpub/excels/1/templates/import"
+    }
+    importSuccess = (result) => {
+        console.log(66, result)
 
     }
-
     render() {
-        let { leadEndVisible,leadStep} = this.props.$$state.toJS();
+        debugger
+        let { leadEndVisible, leadStep,result} = this.props.$$state.toJS();
         return (
             <div className="leadin">
-                <Row>
+                <Row className="leadStep">
                     <Steps current={leadStep} progressDot>
                         <Step title="上传文档" />
                         <Step title="导入数据" />
@@ -78,31 +46,45 @@ debugger
                     </Steps>
                 </Row>
 
-                {leadEndVisible ? <div className="stepboder"> </div>:
-                <div>
-                <Row type="flex" justify="center">
-                    <Col>
-                        <Button onClick={this.onLoad.bind(this)}>
-                            <Icon type="upload" /> 下载数据模板
+                {leadEndVisible ?
+                    <div className="stepboder"></div> :
+                    <div className="leadLoad">
+                        <Row type="flex" justify="center">
+                            <Col>
+                                <Button onClick={this.onLoad.bind(this)}>
+                                    <Icon type="upload" /> 下载数据模板
                             </Button>
-                    </Col>
-                    <Col>
-                        <span>支持扩展名：.xls</span>
-                    </Col>
-                </Row>
-                <Row type="flex" justify="center">
-                    <Col>
-                        <UpLoad>
-                            <Button>
-                                <Icon type="upload" /> 添加文件
+                            </Col>
+                            <Col>
+                                <span>支持扩展名：.xls</span>
+                            </Col>
+                        </Row>
+                        <Row type="flex" justify="center">
+                            <Col>
+                                <UpLoad
+                                    disabled={false}
+                                    multiple={true}
+                                    success={this.importSuccess}
+                                    fail={this.importFail}
+                                >
+                                    <Button>
+                                        <Icon type="upload" /> 添加文件
                            </Button>
-                        </UpLoad>
-                    </Col>
-                    <Col>
-                        <span>仅支持Excel格式</span>
-                    </Col>
-                </Row>
-                </div>}
+                                </UpLoad>
+                            </Col>
+                            <Col>
+                                <span>仅支持Excel格式</span>
+                            </Col>
+                        </Row>
+                    </div>}
+
+                <div className="importView">
+                    <span>下载错误报告，查看失败原因</span>
+                    <i className="iconfont icon-word"></i>
+                    <span></span>
+                    <Icon type="upload"/>
+                </div>
+
             </div>
         )
     }
