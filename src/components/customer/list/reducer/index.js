@@ -3,9 +3,10 @@ import Immutable from "immutable";
 let $$initialState = {
     data: [], //tabel展示数据
     enumData: {},//存储查询条件预制数据
-    //selectedRows: [],
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
+    newCumMenu:[],//点击新增按钮时获取的业务类型
+    newTypeId:'',//保存新增是选中的业务类型字段
     searchMap: {}, //存放实时输入的表单查询查询条件
     viewData: {}, //获取当前客户信息，view面板使用数据
     pagination: {//list列表页table分页信息
@@ -78,10 +79,13 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
                 viewData:enableState
             });
         case "CUSTOMERCOMPANY_LIST_SHOWFORM": //新增、修改编辑菜单显示
-            
-            $$state.get('viewData')
             return $$state.merge({
                 formVisitable: action.payload.visible,
+            });
+        case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE":
+            debugger
+            return $$state.merge({
+                newCumMenu: action.typeItem,
             });
         case "CUSTOMERCOMPANY_LIST_CHANGEVISIBLE": //查询功能显示
             let visit = $$state.get("moreShow");
@@ -94,9 +98,11 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
                 )
             });
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER": //点击新建按钮时，清空viewPanel数据,增加带过来的值
+        debugger
             return $$state.merge({
                 viewData: {},
                 formVisitable: action.data,
+                newTypeId:action.typeId
             });
         //点击选择公司获取工商信息列表    
         case "CUSTOMERCOMPANY_LIST_ICBCDETAILINFO":
@@ -169,12 +175,14 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
             });
         //增加客户，增加一条新数据，清空工商详情，和保存的客户名称
         case "CUSTOMERCOMPANY_LIST_ADDSAVE": 
+        debugger
             return $$state.merge({
                 formVisitable: false,
                 data: pageAdd($$state.get("data").toJS(), action.data),
                 icbcInfo:[],
                 addIcbcName:'',
-                viewData:clearObject($$state.get('contactsCardData').toJS())
+                viewData:clearObject($$state.get('contactsCardData').toJS()),
+                newTypeId:''
             });
         case "CUSTOMERCOMPANY_LIST_EDITSAVE": //修改客户
             return $$state.merge({

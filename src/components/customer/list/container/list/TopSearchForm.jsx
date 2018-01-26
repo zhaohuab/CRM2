@@ -76,21 +76,24 @@ class ToolForm extends React.Component {
             }
         });
     }
-    //点击新建按钮
+    //点击新增按钮先请求查询条件 再弹出modal-card
     btnNew() {
-        this.props.btnNew()
+        this.props.action.addNewType();
     }
+
+    //点击新增的获取的业务类型
+    newCumMenuClick(item, key){
+        debugger
+        let typeId = item.key;
+        this.props.action.addCustomer(true,typeId);
+    }
+
     //上下表单控制显隐
     changeVisible() {
         this.props.action.changeVisible();
     }
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
-        debugger
-        if (searchMap.industry) {
-            searchMap.industry = searchMap.industry.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
-        }
-        //还差城市条件过滤
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS(),
             searchMap
@@ -103,7 +106,18 @@ class ToolForm extends React.Component {
     }
 
     render() {
-        let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
+        let { enumData, moreShow, selectedRowKeys,newCumMenu} = this.props.$$state.toJS();
+        
+        const loop = data => data.map((item,index) => {
+            return <Menu.Item key={item.key} >{item.title}</Menu.Item>
+        });
+
+        const newBtnMenu = (
+            <Menu onClick={this.newCumMenuClick.bind(this)}>
+                {loop(newCumMenu)}
+            </Menu>
+        );
+
         const moreMenu = (
             <Menu>
                 <Menu.Item key="0">
@@ -114,6 +128,8 @@ class ToolForm extends React.Component {
                 </Menu.Item>
             </Menu>
         );
+        
+        
         return (
             <Row className="header-warpper">
                 {selectedRowKeys && selectedRowKeys.length >= 1 ? (
@@ -181,12 +197,11 @@ class ToolForm extends React.Component {
                             <Col span={7}>
                                 <Row type="flex" gutter={15} justify="end">
                                     <Col>
-                                        <Button
-                                            type="primary"
-                                            onClick={this.btnNew.bind(this)}
-                                        >
-                                            <i className="iconfont icon-xinjian" />新建
-                                        </Button>
+                                        <Dropdown overlay={newBtnMenu} trigger={['click']} placement="bottomCenter"> 
+                                            <Button type="primary" onClick = {this.btnNew.bind(this)}>
+                                                <i className="iconfont icon-xinjian" />新建
+                                            </Button>
+                                        </Dropdown>
                                     </Col>
                                     <Col>
                                         <Button>

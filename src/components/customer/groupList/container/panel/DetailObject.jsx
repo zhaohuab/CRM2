@@ -427,187 +427,78 @@ class DetailObject extends React.Component {
                     <Panel key="4" header ='公司' >
                         <Row className="custom-info">
                             <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            公司:
-                                        </span>
+                                <Row type="flex" gutter={10} align="middle">
+                                    <Col span={8} className="custom-info-title">
+                                        <span>公司:</span>
                                     </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                           
-                                        </span>
+                                    <Col span={16} className="custom-info-content">
+                                        <span> </span>
                                     </Col>
                                 </Row>
                             </Col>
                             <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                           客户等级:
-                                        </span>
+                                <Row type="flex" gutter={10} align="middle">
+                                    <Col span={8} className="custom-info-title">
+                                        <span>客户等级:</span>
                                     </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.industryName
-                                            }
-                                        </span>
+                                    <Col span={16} className="custom-info-content">
+                                        <span>{viewData.industryName}</span>
                                     </Col>
                                 </Row>
                             </Col>
                             <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            客户状态:
-                                        </span>
+                                <Row type="flex" gutter={10} align="middle">
+                                    <Col span={8} className="custom-info-title">
+                                        <span>客户状态:</span>
                                     </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.cannelTypeName
-                                            }
-                                        </span>
+                                    <Col span={16} className="custom-info-content">
+                                        <span>{viewData.industryName}</span>
                                     </Col>
                                 </Row>
                             </Col>
                             <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            负责人:
-                                        </span>
+                                <Row type="flex" gutter={10} align="middle">
+                                    <Col span={8} className="custom-info-title">
+                                        <span>负责人:</span>
                                     </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.cannelTypeName
-                                            }
-                                        </span>
+                                    <Col span={16} className="custom-info-content">
+                                        <span>{viewData.industryName}</span>
                                     </Col>
                                 </Row>
                             </Col>
                             <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            负责部门:
-                                        </span>
+                                <Row type="flex" gutter={10} align="middle">
+                                    <Col span={8} className="custom-info-title">
+                                        <span>负责部门:</span>
                                     </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.cannelTypeName
-                                            }
-                                        </span>
+                                    <Col span={16} className="custom-info-content">
+                                        <span>{viewData.industryName}</span>
                                     </Col>
                                 </Row>
                             </Col>
                             <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            首次跟进时间:
-                                        </span>
+                                <Row type="flex" gutter={10} align="middle">
+                                    <Col span={8} className="custom-info-title">
+                                        <span>首次跟进:</span>
                                     </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.cannelTypeName
-                                            }
-                                        </span>
+                                    <Col span={16} className="custom-info-content">
+                                        <span>{viewData.industryName}</span>
                                     </Col>
                                 </Row>
                             </Col>
                             <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            最近跟进时间:
-                                        </span>
+                                <Row type="flex" gutter={10} align="middle">
+                                    <Col span={8} className="custom-info-title">
+                                        <span>最近跟进:</span>
                                     </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.cannelTypeName
-                                            }
-                                        </span>
+                                    <Col span={16} className="custom-info-content">
+                                        <span>{viewData.industryName}</span>
                                     </Col>
                                 </Row>
                             </Col>
-                        </Row>
+                         </Row>  
                     </Panel>
+
             </Collapse>
         )
     }
