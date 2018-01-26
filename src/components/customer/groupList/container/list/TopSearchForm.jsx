@@ -62,6 +62,7 @@ class ToolForm extends React.Component {
             cancelText: "否",
             onOk() {
                 debugger
+                //let {}
                 const searchMap = that.props.$$state.get("searchMap").toJS();
                 const ids = that.props.$$state.get("selectedRowKeys").toJS();
                 
@@ -188,11 +189,11 @@ class ToolForm extends React.Component {
                                             <i className="iconfont icon-xinjian" />新建
                                         </Button>
                                     </Col>
-                                    <Col>
+                                    {/* <Col>
                                         <Button>
                                             <i className="iconfont icon-shuaxin" />刷新
                                         </Button>
-                                    </Col>
+                                    </Col> */}
                                     <Col>
                                         <Dropdown.Button
                                             overlay={moreMenu}

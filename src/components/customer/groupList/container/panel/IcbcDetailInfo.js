@@ -41,7 +41,7 @@ class IcbcDetailInfo extends React.Component {
     //遍历更改客户数据
     changeCustomer(viewData){
         //industry  ownerUserId  province_city_district
-        debugger
+        
         for(let key in viewData){
             if(key == 'industry' || key == 'ownerUserId'){
                 if(viewData[key].id){
@@ -56,7 +56,7 @@ class IcbcDetailInfo extends React.Component {
                 }
             }
         }
-        debugger
+        
         return viewData
      }
 
@@ -69,7 +69,7 @@ class IcbcDetailInfo extends React.Component {
           title: '确认覆盖客户信息?',
           content: '此操作会覆盖现有信息',
           onOk(){
-            debugger
+            
             let { viewData ,icbcInfo1} = that.props.$$state.toJS();
             let name
             name = icbcInfo1.find((item)=>{
@@ -77,7 +77,7 @@ class IcbcDetailInfo extends React.Component {
             })
             viewData.verifyFullname = name.value
             viewData.fullname = name.value
-            debugger
+            
             icbcInfo1.forEach(item => {
                 if (item.key == "street") {
                     viewData["street"] = item.value;
@@ -116,7 +116,7 @@ class IcbcDetailInfo extends React.Component {
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
         let visiable = false;
-        debugger
+        
         this.props.action.checkedCancelFn(id, visiable);
     }
 
@@ -124,7 +124,7 @@ class IcbcDetailInfo extends React.Component {
     footerContent() {
         let { viewData } = this.props.$$state.toJS();
      
-        debugger
+        
         return (
             <div>
                 <Button onClick={this.onIcbcCancel.bind(this)}>关闭</Button>
@@ -155,13 +155,13 @@ class IcbcDetailInfo extends React.Component {
 
     //选择列表获取工商信息详情,获取的详情，已选择的公司名称，显示modal
     customerListInfo(data,visiable) {
-        debugger
+        
         this.props.action.icbcDetailInfo(data,visiable);
     }
 
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
-        debugger
+        
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/",
@@ -182,14 +182,14 @@ class IcbcDetailInfo extends React.Component {
     //根据客户id获取详细客户工商信息
     getIcbcDetal(select, visiable) {
         let id = select.companyid
-        debugger
+        
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/" + id,
                 method: "GET"
             },
             result => {
-                debugger
+                
                 this.customerListInfo(result.data,visiable);
             }
         );
@@ -207,13 +207,13 @@ class IcbcDetailInfo extends React.Component {
             //如果面板是显示状态
             if (icbcName) {
                 if(viewData.verifyFullname){//如果已核实
-                    debugger
+                    
 
                     //再次点击工商核实并没有把值返回给我！！！！！！！！！！！！！！！！！！！1
                     this.props.action.hasIcbc(verifyId,true)
                 }else{
                     this.getIcbcList(icbcName, result => {
-                        debugger
+                        
                         if (result.data && result.data.length) {
                             this.setState({
                                 visible: flag,

@@ -25,6 +25,7 @@ import ViewPanel from "./panel/ViewPanel";
 import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
 
+
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
@@ -215,6 +216,7 @@ class List extends React.Component {
     }
 
     componentDidMount() {
+        debugger
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
@@ -222,6 +224,7 @@ class List extends React.Component {
     }
 
     render() {
+        debugger
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -230,7 +233,6 @@ class List extends React.Component {
             formVisitable,
             viewState,
             viewData,
-
             tableLoading
         } = this.props.$$state.toJS();
 
@@ -293,7 +295,7 @@ class List extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerGroupList,
+        $$state: state.customerList,
     };
 }
 //绑定action到组件props
