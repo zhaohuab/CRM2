@@ -5,7 +5,7 @@ import { user as url, role } from 'api';
 
 
 const getListTpl = (params) => {
-	
+
 	return (dispatch) => {
 		reqwest({
 			url: url.listTpl,
@@ -26,7 +26,7 @@ const getListTpl = (params) => {
 					}
 				},
 			}, result1 => {
-				dispatch(fetchData('USER_LIST_TEMPLATE', { tpl:result,data:result1, searchMap: params.searchMap, pagination: params.pagination }));
+				dispatch(fetchData('USER_LIST_TEMPLATE', { tpl: result, data: result1, searchMap: params.searchMap, pagination: params.pagination }));
 			})
 		})
 
@@ -59,6 +59,22 @@ const showForm = (flag, editData = {}, isEdit) => {
 	if (flag) {
 		return (dispatch) => {
 			dispatch(fetchData('USER_LIST_SHOWFORM', { editData, isEdit }));
+			reqwest({
+				url: role.role + "/ref",
+				method: "GET",
+				data: {
+				}
+			}, result => {
+				debugger
+				let roleEnum = []
+				for (let i = 0; i < result.data.length; i++) {
+					let role = {}
+					role.key = result.data[i].id;
+					role.title = result.data[i].name;
+					roleEnum.push(role);
+				}
+				dispatch(fetchData('USER_LIST_GETENUMDATA', { roleEnum }));
+			})
 		}
 	} else {
 		return (dispatch) => {
@@ -80,7 +96,7 @@ const getListData = (params) => {
 				}
 			},
 		}, result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data:result, searchMap: params.searchMap, pagination: params.pagination }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data: result, searchMap: params.searchMap, pagination: params.pagination }));
 		})
 	}
 }
@@ -105,6 +121,7 @@ const onSave4Add = (data) => {
 				param: transData(data)
 			}
 		}, result => {
+			debugger
 			dispatch(fetchData('USER_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}
@@ -139,7 +156,7 @@ const onDelete = (rowKeys, params) => {
 				},
 			}
 		}, result => {
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data:result, searchMap: params.searchMap, pagination: params.pagination }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data: result, searchMap: params.searchMap, pagination: params.pagination }));
 		})
 	}
 }
@@ -159,7 +176,7 @@ const onEnable = (rowKeys, enable, params) => {
 			}
 		}, result => {
 
-			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data:result, searchMap: params.searchMap, pagination: params.pagination }));
+			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data: result, searchMap: params.searchMap, pagination: params.pagination }));
 		})
 	}
 }

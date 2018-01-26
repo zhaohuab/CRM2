@@ -1,27 +1,27 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { role as url, func,org } from 'api';
+import { role as url, func, org } from 'api';
 import funcTreeData from '../container/data'
+import getInfo from 'utils/cookie'
 
 const showRoleForm = (flag, editData = {}, isEdit) => {
 
 	return (dispatch) => {
-		if(isEdit){
-			dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData,isEdit }));
-		}else{
-			editData.
+		if (isEdit) {
+			dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
+		} else {
+			const orgId = getInfo("orgid");
 			reqwest({
-			url: org.org+'/',
-			method: "GET",
-			data: {
-			
-			},
-		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', {data:result,searchMap}));
-		})
-			dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData,isEdit }));
+				url: org.org + '/'+orgId,
+				method: "GET",
+				data: {
+				},
+			}, result => {
+				editData.orgId = { key: result.id, title: result.name }
+				dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
+			})
 		}
-		
+
 	}
 }
 
@@ -42,22 +42,22 @@ const getRoleListData = (searchMap) => {
 			url: url.role,
 			method: "GET",
 			data: {
-				param:{
-					searchMap:transData(searchMap)
+				param: {
+					searchMap: transData(searchMap)
 				}
 			},
 		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', {data:result,searchMap}));
+			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', { data: result, searchMap }));
 		})
 	}
 }
 
-const getFuncTreeData = (roleId,isPreseted) => {
-	
+const getFuncTreeData = (roleId, isPreseted) => {
+
 	return (dispatch) => {
 		reqwest({
 			// `${url.user}/${data.id}`
-			url: url.role+"/"+roleId+"/funcs",
+			url: url.role + "/" + roleId + "/funcs",
 			method: "GET",
 			data: {
 				param: {
@@ -65,7 +65,7 @@ const getFuncTreeData = (roleId,isPreseted) => {
 				}
 			},
 		}, funcData => {
-			dispatch(fetchData("ROLE_LIST_GETFUNCTREESUCCESS", { funcData, roleId,isPreseted }))
+			dispatch(fetchData("ROLE_LIST_GETFUNCTREESUCCESS", { funcData, roleId, isPreseted }))
 		})
 	}
 }
@@ -155,16 +155,16 @@ const onDelete = (id) => {
 
 
 const selectFunc = (roleId, funcIds, checked, funcData) => {
-	
+
 	return (dispatch) => {
 		// dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
 		reqwest({
-			url: url.role+"/"+roleId+"/func/assign",
+			url: url.role + "/" + roleId + "/func/assign",
 			method: "POST",
 			data: {
 				param: {
 					roleId,
-					funcperIds:funcIds.join(","),
+					funcperIds: funcIds.join(","),
 					checked
 				},
 			}
@@ -190,37 +190,37 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 			// 			dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
 			// 	})
 
-		
+
 		})
 	}
 }
 
 
-const getUserListData = (roleId,pagination,isPreseted) => {
+const getUserListData = (roleId, pagination, isPreseted) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/"+roleId+"/users",
+			url: url.role + "/" + roleId + "/users",
 			method: "GET",
 			data: {
-				param:{
+				param: {
 					roleId,
 					...pagination
 				}
 			},
 		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data:result,roleId,isPreseted }));
+			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data: result, roleId, isPreseted }));
 		})
 	}
 }
 
 
-const showUserCard = (roleId,name) => {
+const showUserCard = (roleId, name) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/"+roleId+"/add/users",
+			url: url.role + "/" + roleId + "/add/users",
 			method: "GET",
 			data: {
-				param:{
+				param: {
 					roleId,
 					name
 				}
@@ -236,7 +236,7 @@ const showUserCard = (roleId,name) => {
 const getEnumData = () => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/roletypes",
+			url: url.role + "/roletypes",
 			method: "GET",
 			data: {
 			},
@@ -247,18 +247,18 @@ const getEnumData = () => {
 }
 
 
-const saveUser = (roleId,userIds,pagination) =>{
+const saveUser = (roleId, userIds, pagination) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/"+roleId+"/users/assign",
+			url: url.role + "/" + roleId + "/users/assign",
 			method: "POST",
 			data: {
-				param:{
+				param: {
 					roleId,
-					userIds:userIds.join(","),
-				...pagination
+					userIds: userIds.join(","),
+					...pagination
 				}
-				
+
 			},
 		}, result => {
 			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
@@ -268,18 +268,18 @@ const saveUser = (roleId,userIds,pagination) =>{
 }
 
 
-const deleteUser = (roleId,userIds,pagination) =>{
+const deleteUser = (roleId, userIds, pagination) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/unassign",
+			url: url.role + "/unassign",
 			method: "DELETE",
 			data: {
-				param:{
+				param: {
 					roleId,
-					userIds:userIds.join(","),
-				...pagination
+					userIds: userIds.join(","),
+					...pagination
 				}
-				
+
 			},
 		}, result => {
 			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
@@ -297,15 +297,15 @@ const closeUserCard = () => {
 };
 
 
-const getRightData = (roleId,isPreseted) => {
+const getRightData = (roleId, isPreseted) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/"+roleId+"/right",
+			url: url.role + "/" + roleId + "/right",
 			method: "GET",
 			data: {
 			},
 		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETRIGHTDATA', { data:result.data,isPreseted }));
+			dispatch(fetchData('ROLE_LIST_GETRIGHTDATA', { data: result.data, isPreseted }));
 		})
 	}
 }
@@ -314,12 +314,12 @@ const getRightData = (roleId,isPreseted) => {
 const selectRight = (roleId, rightId, rightData) => {
 	return (dispatch) => {
 		reqwest({
-			url: url.role+"/"+roleId+"/right/assign",
+			url: url.role + "/" + roleId + "/right/assign",
 			method: "POST",
 			data: {
 				param: {
 					roleId,
-					typeId:rightId
+					typeId: rightId
 				},
 			}
 		}, () => {
@@ -328,9 +328,9 @@ const selectRight = (roleId, rightId, rightData) => {
 	}
 }
 
-const saveUserCardName =  (name) => {
+const saveUserCardName = (name) => {
 	return (dispatch) => {
-		dispatch(fetchData("ROLE_LIST_SAVEUSERCARDNAME",name ))
+		dispatch(fetchData("ROLE_LIST_SAVEUSERCARDNAME", name))
 	}
 };
 

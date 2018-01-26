@@ -33,7 +33,7 @@ class List extends React.Component {
         // this.props.action.getListTpl(searchMap.enableState);
         // this.props.action.getListData({ pagination, searchMap });
         this.props.action.getListTpl({ pagination, searchMap });
-        this.props.action.getEnumData();
+        // this.props.action.getEnumData();
     }
 
 
@@ -76,7 +76,7 @@ class List extends React.Component {
     };
     onClose() {
         this.props.action.showForm(false, {}, false);
-        form.resetFields();
+        // form.resetFields();
     }
     onEnable(enable) {
         return enable => {
@@ -133,7 +133,6 @@ class List extends React.Component {
 
 
     getDateRender = (text, row, index) => {
-        debugger
         let date = new Date(text.time);
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
@@ -142,7 +141,6 @@ class List extends React.Component {
         var minute = date.getMinutes();
         var second = date.getSeconds();
         return year + "-" + month + "-" + day + "   " + hour + ":" + minute + ":" + second;
-        
     }
 
 
@@ -182,6 +180,7 @@ class List extends React.Component {
         let template = this.props.$$state.get("template").toJS();
         let isEdit = this.props.$$state.get("isEdit");
         let enableState = this.props.$$state.get("searchMap").toJS().enableState;
+        debugger
         let tpl;
         if (isEdit) {
             tpl = template.edit;

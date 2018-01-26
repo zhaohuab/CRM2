@@ -166,7 +166,6 @@ class List extends Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-        
        // const WrapCard = Form.create()(card);
         let editData = $$state.get("editData").toJS();
         return (

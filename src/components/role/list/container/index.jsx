@@ -99,8 +99,6 @@ class List extends React.Component {
     }
     //点击编辑按钮事件
     onEdit = (row) => {
-        this.setState({ isEdit: true });
-        debugger
         this.props.action.showRoleForm(true, row, true);
     }
     //保存事件

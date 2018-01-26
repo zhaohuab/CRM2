@@ -31,7 +31,7 @@ function pageAdd(page, item) {
 	debugger
 	page.total += 1;
 	page.data.unshift(item)
-	page.page = Math.ceil(page.total / page.pageSize);
+	// page.page = Math.ceil(page.total / page.pageSize);
 	return page;
 }
 function pageEdit(page, item) {
@@ -48,6 +48,7 @@ function pageEdit(page, item) {
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 	switch (action.type) {
 		case 'USER_LIST_TEMPLATE':
+		debugger
 			let tpl = $$state.get("template").toJS()
 			return $$state.merge({
 				template: {
@@ -165,7 +166,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 
 		case 'USER_LIST_GETENUMDATA':
 
-			return $$state.mergeDeep({
+			return $$state.merge({
 				enumData: action.content,
 			})
 
