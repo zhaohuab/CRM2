@@ -28,21 +28,21 @@ function transData(searchMap) {
 //控制查询显隐
 export function changeVisible(){
     return {
-        type: "CUSTOMER_LIST_CHANGEVISIBLE"
+        type: "CUSTOMERCOMPANY_LIST_CHANGEVISIBLE"
     };
 };
 
 //保存table已选择行数据
 export function selectedRowKeys (selectedRowKeys){
     return {
-        type: "CUSTOMER_LIST_SELECTROW",
+        type: "CUSTOMERCOMPANY_LIST_SELECTROW",
         payload: { selectedRowKeys }
     };
 };
 
 //控制新增修改表单显隐
 export function showForm (visible){
-    return fetchData("CUSTOMER_LIST_SHOWFORM", { visible });
+    return fetchData("CUSTOMERCOMPANY_LIST_SHOWFORM", { visible });
 };
 
 //删除客户
@@ -64,7 +64,7 @@ export function deleteData (ids, searchMap, pagination){
             data => {
                 debugger
                 dispatch(
-                    fetchData("CUSTOMER_LIST_DELETE", {
+                    fetchData("CUSTOMERCOMPANY_LIST_DELETE", {
                         data: data
                     })
                 );
@@ -120,7 +120,7 @@ export function setDetailEnableState (ids, state, page, searchMap){
             dataResult => {
                 debugger
                 dispatch({
-                    type:"CUSTOMER_LIST_DETAILENABLESTATE",
+                    type:"CUSTOMERCOMPANY_LIST_DETAILENABLESTATE",
                     data: dataResult,
                     pagination: page,
                     state
@@ -146,7 +146,8 @@ export function appendAddress(data){
 export function getListData (pagination, searchMap){
     debugger
     return dispatch => {
-        dispatch(fetchData("CUSTOMER_LIST_SAVESEARCHMAP", searchMap));
+        dispatch(fetchData("CUSTOMERCOMPANY_LIST_SAVESEARCHMAP", searchMap));
+        debugger
         reqwest(
             {
                 url: url.customer,
@@ -161,7 +162,7 @@ export function getListData (pagination, searchMap){
             data => {
                debugger
                 dispatch(
-                    fetchData("CUSTOMER_LIST_GETDATA", {
+                    fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
                         data: data,
                         pagination
                     })
@@ -186,7 +187,7 @@ export function getEnumData(){
             data => {
                 debugger
                 dispatch(
-                    fetchData("CUSTOMER_LIST_GETENUMDATA", {
+                    fetchData("CUSTOMERCOMPANY_LIST_GETENUMDATA", {
                         enumData: data.enumData
                     })
                 );
@@ -209,7 +210,7 @@ export function listEditSave(data){
             data => {
                 ;
                 dispatch({
-                    type: "CUSTOMER_LIST_EDITSAVE",
+                    type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
                     data
                 });
             }
@@ -231,7 +232,7 @@ export function listAddSave(data){
             data => {
                 
                 dispatch({
-                    type: "CUSTOMER_LIST_ADDSAVE",
+                    type: "CUSTOMERCOMPANY_LIST_ADDSAVE",
                     data
                 });
             }
@@ -257,7 +258,7 @@ export function showViewForm(visible, id){
                     },
                     state => {
                         dispatch({
-                            type: "CUSTOMER_LIST_SHOWVIEWFORM",
+                            type: "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM",
                             visible,
                             data,
                             state
@@ -270,11 +271,11 @@ export function showViewForm(visible, id){
 };
 
 export function hideViewForm (visiable){
-    return fetchData("CUSTOMER_LIST_HIDEVIEWFORM", { visiable });
+    return fetchData("CUSTOMERCOMPANY_LIST_HIDEVIEWFORM", { visiable });
 };
 
 //客户升级
-export function cumUpgrade(id){
+export function cumUpgrade(id){//viewDataRelevant:action.data
     debugger
     return dispatch => {
         reqwest(
@@ -301,7 +302,7 @@ export function cumUpgrade(id){
                     result => {
                         debugger
                         dispatch({
-                            type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
+                            type:'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_LIST',
                             index:2,
                             data:result.data
                         });
@@ -323,7 +324,7 @@ export function cumUpgrade(id){
 export function customerListInfo(data,visiable){
     debugger
     return {
-        type: "CUSTOMER_LIST_ICBCDETAILINFO",
+        type: "CUSTOMERCOMPANY_LIST_ICBCDETAILINFO",
         data,
         visiable
     };
@@ -333,7 +334,7 @@ export function customerListInfo(data,visiable){
 export function saveIcbcName(viewData,visiable){
     debugger
     return{
-        type:'CUSTOMER_LIST_SAVEICBCNAME',
+        type:'CUSTOMERCOMPANY_LIST_SAVEICBCNAME',
         viewData,
         visiable
     }
@@ -341,7 +342,7 @@ export function saveIcbcName(viewData,visiable){
 //在新增时关闭工商详情
 export function saveIcbcNameCancel(visiable){
     return{
-        type:'CUSTOMER_LIST_SAVEICBCNAMECANCEL',
+        type:'CUSTOMERCOMPANY_LIST_SAVEICBCNAMECANCEL',
         visiable
     }
 }
@@ -351,7 +352,7 @@ export function saveIcbcNameCancel(visiable){
 export function icbcDetailInfo(data,visiable){
     debugger
     return {
-        type: "CUSTOMER_LIST_ICBCINFODETAIL",
+        type: "CUSTOMERCOMPANY_LIST_ICBCINFODETAIL",
         data,
         visiable
     };
@@ -359,7 +360,7 @@ export function icbcDetailInfo(data,visiable){
 
 export function changeStateFn(visiable){
     return {
-        type: "CUSTOMER_LIST_CHANGESTATEEDIT",
+        type: "CUSTOMERCOMPANY_LIST_CHANGESTATEEDIT",
         visiable
     };
 };
@@ -419,7 +420,7 @@ export function checkedCancelFn(id, visiable){
             result => {
                 debugger
                 dispatch({
-                    type: "CUSTOMER_LIST_CLEANVERIFYID",
+                    type: "CUSTOMERCOMPANY_LIST_CLEANVERIFYID",
                     visiable
                 });
             }
@@ -438,7 +439,7 @@ export function hasIcbc(verifyId,visiable){
             result => {
                 debugger
                 dispatch({
-                    type: "CUSTOMER_LIST_ICBCDETAILMODAL",
+                    type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
                     visiable,
                     data:result.data,
                 });
@@ -475,7 +476,7 @@ export function attentionFn(id, state){
                 ;
                 dispatch({
                     //followState
-                    type: "CUSTOMER_LIST_FOLLOWSTATECHANGE",
+                    type: "CUSTOMERCOMPANY_LIST_FOLLOWSTATECHANGE",
                     state
                 });
             }
@@ -493,7 +494,7 @@ export function modalDetalVisiable(visiable, verifyId){
             },
             result => {
                 dispatch({
-                    type: "CUSTOMER_LIST_MODALDETALSHOW",
+                    type: "CUSTOMERCOMPANY_LIST_MODALDETALSHOW",
                     visiable,
                     data: result.data
                 });
@@ -504,7 +505,7 @@ export function modalDetalVisiable(visiable, verifyId){
 
 export function modalDetalVisiableFalse(visiable){
     return {
-        type: "CUSTOMER_LIST_MODALDETALHIDE",
+        type: "CUSTOMERCOMPANY_LIST_MODALDETALHIDE",
         visiable
     };
 };
@@ -512,7 +513,7 @@ export function modalDetalVisiableFalse(visiable){
 //控制modal1状态显隐的
 export function customerModal1Show(visible){
     return {
-        type: "CUSTOMER_LIST_MODALSHOW1",
+        type: "CUSTOMERCOMPANY_LIST_MODALSHOW1",
         visible
     };
 };
@@ -520,7 +521,7 @@ export function customerModal1Show(visible){
 //关闭modal1
 export function closeIcbcVisible1(visible){
     return {
-        type: "CUSTOMER_LIST_MODALCLOSE1",
+        type: "CUSTOMERCOMPANY_LIST_MODALCLOSE1",
         visible
     };
 };
@@ -529,7 +530,7 @@ export function closeIcbcVisible1(visible){
 export function addCustomer(data){
     return dispatch => {
         dispatch({
-            type: "CUSTOMER_LIST_ADDCUSTOMER",
+            type: "CUSTOMERCOMPANY_LIST_ADDCUSTOMER",
             data
         });
     };
@@ -538,7 +539,7 @@ export function addCustomer(data){
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data){
     return {
-        type: "CUSTOMER_LIST_SEARCHMAP",
+        type: "CUSTOMERCOMPANY_LIST_SEARCHMAP",
         data
     };
 };
@@ -546,7 +547,7 @@ export function saveSearchMap(data){
 //往redux中存放编辑新增修改条件
 export function editCardFn(changeData){
     return {
-        type: "CUSTOMER_LIST_CARDEDITCHANGE",
+        type: "CUSTOMERCOMPANY_LIST_CARDEDITCHANGE",
         data: changeData
     };
 };
@@ -554,7 +555,7 @@ export function editCardFn(changeData){
 //点击分配改变负责人信息
 export function assignChangeViewData(viewData){  
     return{
-        type: "CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL",
+        type: "CUSTOMERCOMPANY_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL",
         viewData
     }
 }
@@ -578,7 +579,7 @@ export function getRightPaneltList(id,JoinPagination,index){
             result => {
                 ;
                 dispatch({
-                    type: "CUSTOMER_VIEWPANEL_PANELRIGHT_LIST",
+                    type: "CUSTOMERCOMPANY_VIEWPANEL_PANELRIGHT_LIST",
                     data: result,
                     index
                 });
@@ -589,7 +590,7 @@ export function getRightPaneltList(id,JoinPagination,index){
 //改变详情面板点击左侧tab时切换index
 export function changeLeftPanel(index){
     return{
-        type:'CUSTOMER_VIEWPANEL_CHANGEPANELLEFT',
+        type:'CUSTOMERCOMPANY_VIEWPANEL_CHANGEPANELLEFT',
         index
     }
 }
@@ -614,7 +615,7 @@ export function getLeftPaneltList(id,JoinPagination,index){
             result => {
                 debugger
                 dispatch({
-                    type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
+                    type:'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_LIST',
                     index,
                     data:result.data
                 });
@@ -626,7 +627,7 @@ export function getLeftPaneltList(id,JoinPagination,index){
 //添加参与人
 export function setRightPaneltList(data){
     return{
-        type:'CUSTOMER_VIEWPANEL_PANELLEFT_SETLIST',
+        type:'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_SETLIST',
         data
     }
 }
@@ -634,7 +635,7 @@ export function setRightPaneltList(data){
 //删除参与人
 export function delRightPaneltList(id){
     return{
-        type:'CUSTOMER_VIEWPANEL_PANELLEFT_DELLIST',
+        type:'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_DELLIST',
         id
     }
 }
@@ -642,14 +643,14 @@ export function delRightPaneltList(id){
 //保存联系人相关对象表单值
 export function refContactForm(changeData){
     return {
-        type: "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORM",
+        type: "CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_CONTACTSFORM",
         data: changeData
     };
 }
 
 export function refContactFormAdd(data){
     return {
-        type: "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD",
+        type: "CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_CONTACTSFORMADD",
         data
     };
 }
@@ -657,7 +658,7 @@ export function refContactFormAdd(data){
 //新增联系人相关对象
 export function clearRefContactsForm(){
     return {
-        type: "CUSTOMER_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM",
+        type: "CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM",
     };
 }
 
@@ -681,7 +682,7 @@ export function getOppList(JoinPagination,id,index){
             result => {
                 ;
                 dispatch({
-                    type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
+                    type:'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_LIST',
                     data:result.data,
                     index
                 });
@@ -706,7 +707,7 @@ export function delOpp(ids,pagination){
         }, (data) => {
             
             dispatch({
-                type:'CUSTOMER_VIEWPANEL_DELOPP',
+                type:'CUSTOMERCOMPANY_VIEWPANEL_DELOPP',
                 ids
             });
         })
@@ -731,7 +732,7 @@ export function delContacts(id,pagination){
             result => {
                 
                 dispatch({
-                    type: "CUSTOMER_VIEWPANEL_DELCONTACTS",
+                    type: "CUSTOMERCOMPANY_VIEWPANEL_DELCONTACTS",
                     id
                 });
             }

@@ -55,7 +55,6 @@ class ViewPanel extends React.Component {
 
     //详情面板左侧rab列表数据
     panelTabLeftFn(index){
-        debugger
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id
         if(index == 2){

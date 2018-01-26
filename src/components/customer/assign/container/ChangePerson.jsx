@@ -10,6 +10,7 @@ import {
 
 import "assets/stylesheet/all/iconfont.css";
 import PersonChioce from '../../../common/personChoice'
+import DropDownModal from '../../../common/DrowdownModal'
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 
@@ -28,7 +29,8 @@ export default class ChangePerson extends React.Component {
             personList:[],
             result:{},
             selectedTableRowKeys:[],
-            selectedTreeKeys:[]
+            selectedTreeKeys:[],
+            value:''
         }
     }
 
@@ -90,37 +92,40 @@ export default class ChangePerson extends React.Component {
         })
     }
 
+    onSearch(){
+
+    }
+
+    onChange(value){
+        this.setState({
+            value
+        })
+    }
+
     creatPanel(){
-        
         return(
-            <div className='reference'>
-               <div className='reference-main' style={{width:this.props.width?this.props.width:'650px'}}>
-                  <div className='reference-main-header'>
-                    <p className='title'>
-                        负责人
-                    </p>
-                  </div>
-                  <div className='reference-main-choice'>
-                        <PersonChioce 
-                            data={this.state.treeList}  //获取所有部门数据
-                            personList = {this.state.personList}//人员列表数据
-                            selectList={this.treeSelect.bind(this)} //点击获取部门人员方法
-                            selectedTableList = {this.selectedTableList.bind(this)}//table选中
-                            selectedRowKeys = {this.state.selectedTableRowKeys}
-                            selectedKeys = {this.state.selectedTreeKeys}
-                            columns = {columns}
-                        />
-                  </div>
-                    <Row className='reference-main-footer' type = 'flex' justify = 'end' align='middle' gutter={15} style={{marginLeft:0}}>
-                        <div>
-                            <Button onClick={this.onOk.bind(this)} type='primary'>确定</Button>
-                        </div>
-                        <div>
-                            <Button onClick={this.onCancel.bind(this)}>取消</Button>
-                        </div>
-                    </Row>
-               </div>
-            </div>
+            <DropDownModal 
+                title='销售公司' 
+                onCancel={this.onCancel.bind(this)}  
+                onOk={this.onOk.bind(this)} 
+                onSearch = {this.onSearch.bind(this)}
+                value = {this.state.value}
+                onChange = {this.onChange.bind(this)}
+                width = {400}
+                height= {320}
+            >  
+                <div className='crm-company-assign-changeperson-modal'>
+                    <PersonChioce 
+                        data={this.state.treeList}  //获取所有部门数据
+                        personList = {this.state.personList}//人员列表数据
+                        selectList={this.treeSelect.bind(this)} //点击获取部门人员方法
+                        selectedTableList = {this.selectedTableList.bind(this)}//table选中
+                        selectedRowKeys = {this.state.selectedTableRowKeys}
+                        selectedKeys = {this.state.selectedTreeKeys}
+                        columns = {columns}
+                    />
+                </div>
+            </DropDownModal>
         )
     }
 

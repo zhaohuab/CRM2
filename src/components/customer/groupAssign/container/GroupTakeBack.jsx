@@ -55,27 +55,9 @@ class GroupTakeBack extends React.Component {
     //点击回收方法
     takeBackFn(){
         let { selectedRowKeys ,data,pagination} = this.props.$$state.toJS()
-        debugger
-        // reqwest(
-        //     {
-        //         url: baseDir+'/cum/customerchart/customers',
-        //         method: "GET",
-        //         data:{
-        //             param:{
-        //                 ...pagination
-        //             }
-        //         }
-        //     },
-        //     result => {
-        //         debugger
-                
-        //     }
-        // );
-
+    
         //拿到已选中table客户
-        
         let select = this.selectPerson(selectedRowKeys,data);
-
         let companys = []
         //遍历所有客户的销售公司
         select.forEach((cumItem)=>{
@@ -192,7 +174,10 @@ class GroupTakeBack extends React.Component {
                             </Checkbox>
                         </Row>
                         <Row>
-                            <Tags value = {this.state.companyList} onChange = {this.onTagsChange.bind(this)}/>
+                            {
+                                this.state.companyList && this.state.companyList.length?
+                                <Tags value = {this.state.companyList} onChange = {this.onTagsChange.bind(this)}/>:''
+                            }
                         </Row>
                    </div>
                 </Modal>

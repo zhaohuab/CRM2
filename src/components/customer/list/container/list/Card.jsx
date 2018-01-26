@@ -464,7 +464,7 @@ class EditForm extends React.Component {
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "name"
+                                                            "ownerDeptName"
                                                         )(
                                                             <ResponseDepart viewData={viewData}/>
                                                         )}

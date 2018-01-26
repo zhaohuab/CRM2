@@ -20,21 +20,14 @@ import ChangePerson from './ChangePerson'
 class DetailTop extends React.Component {
 
     //打开编辑按钮
-    btnEdit() {
-        this.props.action.showForm(true);
-    }
-
-    //点击升级按钮
-    upgrade(){
+    btnEdit(){
         debugger
-        let { viewData } = this.props.$$state.toJS();
-        let id = viewData.id;
-        this.props.action.cumUpgrade(id)
-
+        this.props.action.showFormEdit(true);
     }
 
     //点击关注触发的方法
     attentionFn(state) {
+        
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
         this.props.action.attentionFn(id, state);
@@ -45,20 +38,6 @@ class DetailTop extends React.Component {
         this.props.action.assignChangeViewData(viewData)
     }
 
-    //停启用功能
-    canUse(enableState){
-        //点击停用启用
-        debugger
-        let {searchMap,viewData,pagination} = this.props.$$state.toJS()
-        const ids = viewData.id;
-        searchMap={}
-        this.props.action.setDetailEnableState(
-            ids,
-            enableState, //获取起停用数字
-            pagination,
-            searchMap //查询条件
-        );
-    }
 
     render(){
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
@@ -93,7 +72,7 @@ class DetailTop extends React.Component {
                                         <div className="checked-iconfont">
                                             <IcbcDetailInfo width={450}/>
                                         </div>
-                                        <div>
+                                        {/* <div>
                                             {viewData.followState ==0 ? (
                                                 <span className="red" onClick={this.attentionFn.bind(this,0)}>
                                                     <i className="iconfont icon-guanzhu1" />未关注
@@ -103,7 +82,7 @@ class DetailTop extends React.Component {
                                                     <i className="iconfont icon-yiguanzhu" />已关注
                                                 </span>
                                             )}
-                                        </div>
+                                        </div> */}
                                     </Row>
                                 </Row>
                                 <Row className="address pointer">
@@ -129,27 +108,19 @@ class DetailTop extends React.Component {
                 </Col>
                 <Col span={15}>
                     <Row type="flex" align="middle" justify="end" gutter={15} >
-                        <div>
+                        {/* <div>
                             <PersonChoiceModal viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
-                        </div>
-                        {
-                            viewData.enableState == 1?
-                            <div>
-                                <Button onClick={this.canUse.bind(this,2)}>
-                                    <i className="iconfont icon-tingyong" />停用
-                                </Button>
-                            </div>:
-                            <div>
-                                <Button onClick={this.canUse.bind(this,1)}>
-                                    <i className="iconfont icon-qiyong" />启用
-                                </Button>
-                            </div>
-                        }
-                        <div>
-                            <Button onClick={this.upgrade.bind(this)}>
-                                <i className="iconfont icon-shengji" />升级
+                        </div> */}
+                        {/* <div>
+                            <Button>
+                                <i className="iconfont icon-qiyong" />分配
                             </Button>
                         </div>
+                        <div>
+                            <Button>
+                                <i className="iconfont icon-shengji" />收回
+                            </Button>
+                        </div> */}
                         <div>
                             <Button onClick={this.btnEdit.bind(this)}>
                                 <i className="iconfont icon-bianji" />编辑
@@ -231,7 +202,7 @@ class DetailTop extends React.Component {
                             justify="center"
                             className="info-content"
                         >
-                            {viewData.salesVOs?viewData.salesVOs[0].ownerUserName:'无'}
+                            {viewData.salesVOs && viewData.salesVOs.length?viewData.salesVOs[0].ownerUserName:'无'}
                         </Row>
                     </Col>
                 </Row>

@@ -30,7 +30,6 @@ let $$initialState = {
     contactsCardData:{},//保存联系人相关对象输入值
     clueCardList:{},//保存商机新增表单数据
     clueTableList:{},//保存商机新增表单table数据,
-    
 };
 
 function pageAdd(page, item) {
@@ -62,13 +61,13 @@ function clearObject(obj){
 
 export default function customerGroupList($$state = Immutable.fromJS($$initialState),action) {
     switch (action.type) {
-        case "CUSTOMER_LIST_GETDATA": //查询各种table数据
+        case "CUSTOMERGROUP_LIST_GETDATA": //查询各种table数据
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
                 selectedRowKeys:[]
             });
-        case 'CUSTOMER_LIST_DETAILENABLESTATE'://详情起停用功能
+        case 'CUSTOMERGROUP_LIST_DETAILENABLESTATE'://详情起停用功能
             let enableState = $$state.get('viewData').toJS()
             enableState.enableState = action.state;
             debugger
@@ -77,36 +76,67 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 pagination: action.pagination,
                 viewData:enableState
             });
-        case "CUSTOMER_LIST_SHOWFORM": //新增、修改编辑菜单显示
-            
-            $$state.get('viewData')
+        case "CUSTOMERGROUP_LIST_SHOWFORM": //新增显示
             return $$state.merge({
                 formVisitable: action.payload.visible,
             });
-        case "CUSTOMER_LIST_CHANGEVISIBLE": //查询功能显示
+        //点击编辑按钮触发的方法
+        case 'CUSTOMERGROUP_LIST_SHOWEDITFORM':
+        debugger
+            let editViewData =  $$state.get('viewData').toJS()
+            let streetEdit = {
+                address:editViewData.street,
+                location:{
+                    lng:editViewData.longitude,
+                    lat:editViewData.latitude
+                }
+            }
+            let industry = {
+                id:editViewData.industry,
+                name:editViewData.industryName
+            }
+            
+            let district = [
+                editViewData.province.toString(),
+                editViewData.city.toString(),
+                editViewData.district.toString()
+            ]
+
+            editViewData.province_city_district = {}
+
+            //重新复制组合详细地址地图组件，和行业组件所需数据
+            editViewData.province_city_district.result= district
+            editViewData.street = streetEdit
+            editViewData.industry = industry
+            debugger
+            return $$state.merge({
+                formVisitable: action.visiable,
+                viewData:editViewData
+            });
+        case "CUSTOMERGROUP_LIST_CHANGEVISIBLE": //查询功能显示
             let visit = $$state.get("moreShow");
             return $$state.merge({ moreShow: !visit });
 
-        case "CUSTOMER_LIST_SELECTROW": //保存table已选择条件
+        case "CUSTOMERGROUP_LIST_SELECTROW": //保存table已选择条件
             return $$state.merge({
                 selectedRowKeys: Immutable.fromJS(
                     action.payload.selectedRowKeys
                 )
             });
-        case "CUSTOMER_LIST_ADDCUSTOMER": //点击新建按钮时，清空viewPanel数据,增加带过来的值
+        case "CUSTOMERGROUP_LIST_ADDCUSTOMER": //点击新建按钮时，清空viewPanel数据,增加带过来的值
             return $$state.merge({
                 viewData: {},
                 formVisitable: action.data,
             });
         //点击选择公司获取工商信息列表    
-        case "CUSTOMER_LIST_ICBCDETAILINFO":
+        case "CUSTOMERGROUP_LIST_ICBCDETAILINFO":
             debugger
             return $$state.merge({
                 icbcInfo: action.data,
                 icbcVisible: action.visiable,
             });
         //新增时，保存已获取工商信息的客户名称,和表单已赋值的数据
-        case 'CUSTOMER_LIST_SAVEICBCNAME':
+        case 'CUSTOMERGROUP_LIST_SAVEICBCNAME':
         debugger
             return $$state.merge({
                 icbcVisible: action.visiable,
@@ -114,61 +144,61 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 viewData:action.viewData
             });
         //新增时,关闭工商信息详情modal
-        case "CUSTOMER_LIST_SAVEICBCNAMECANCEL":
+        case "CUSTOMERGROUP_LIST_SAVEICBCNAMECANCEL":
             return $$state.merge({
                 icbcVisible: action.visiable
             });
         //客户详情获取工商详情列表，打开modal    
-        case "CUSTOMER_LIST_ICBCINFODETAIL":
+        case "CUSTOMERGROUP_LIST_ICBCINFODETAIL":
             debugger
             return $$state.merge({
                 icbcInfo1: action.data,
                 icbcVisible2: action.visiable,
             });
-        case 'CUSTOMER_LIST_ICBCDETAILMODAL':
+        case 'CUSTOMERGROUP_LIST_ICBCDETAILMODAL':
             return $$state.merge({
                 icbcVisible2: action.visiable,
                 icbcInfo1:action.data
             })
-        case "CUSTOMER_LIST_MODALDETALHIDE":
+        case "CUSTOMERGROUP_LIST_MODALDETALHIDE":
             return $$state.merge({
                 icbcVisible2: action.visiable
             });
 
-        case "CUSTOMER_LIST_CLEANSELECT":
+        case "CUSTOMERGROUP_LIST_CLEANSELECT":
      
             return $$state.merge({
                 icbcVisible2: action.visiable,
                 data: pageEdit($$state.get("data").toJS(), action.data)
             });
-        case "CUSTOMER_LIST_CHANGESTATEEDIT":
+        case "CUSTOMERGROUP_LIST_CHANGESTATEEDIT":
             return $$state.merge({
                 icbcSelect: action.visiable
             });
-        case "CUSTOMER_LIST_MODALDETALSHOW":
+        case "CUSTOMERGROUP_LIST_MODALDETALSHOW":
             return $$state.merge({
                 icbcVisible2: action.visiable,
                 icbcInfo1: action.data
             });
-        case "CUSTOMER_LIST_MODALCLOSE1":
+        case "CUSTOMERGROUP_LIST_MODALCLOSE1":
             return $$state.merge({
                 //编辑中的modal显示、关闭
                 icbcVisible: action.visible
             });
-        case "CUSTOMER_LIST_SEARCHMAP": //存放扩展、基础查询条件
+        case "CUSTOMERGROUP_LIST_SEARCHMAP": //存放扩展、基础查询条件
             return $$state.merge({
                 searchMap: action.data
             });
-        case "CUSTOMER_LIST_CARDEDITCHANGE": //存放新增修改表单数据
+        case "CUSTOMERGROUP_LIST_CARDEDITCHANGE": //存放新增修改表单数据
             return $$state.merge({
                 viewData: action.data
             });
-        case "CUSTOMER_LIST_SAVESEARCHMAP": //每次根据查询条件进行获取table数据
+        case "CUSTOMERGROUP_LIST_SAVESEARCHMAP": //每次根据查询条件进行获取table数据
             return $$state.merge({
                 searchMap: action.payload == undefined ? {} : action.payload
             });
         //增加客户，增加一条新数据，清空工商详情，和保存的客户名称
-        case "CUSTOMER_LIST_ADDSAVE": 
+        case "CUSTOMERGROUP_LIST_ADDSAVE": 
             return $$state.merge({
                 formVisitable: false,
                 data: pageAdd($$state.get("data").toJS(), action.data),
@@ -176,50 +206,44 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 addIcbcName:'',
                 viewData:clearObject($$state.get('contactsCardData').toJS())
             });
-        case "CUSTOMER_LIST_EDITSAVE": //修改客户
+        case "CUSTOMERGROUP_LIST_EDITSAVE": //修改客户
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
                 viewData:action.data
             });
-        case "CUSTOMER_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
-            //把重新复制操作放到点击编辑按钮的地方，这个地方保留关注属性
-            let actionData = action.data;
-            actionData.industry = {
-                id: actionData.industry,
-                name: actionData.industryName
-            };
-            // actionData.parentId = {
-            //     id: actionData.parentId,
-            //     name: actionData.parentName
-            // };
-            actionData.followState = action.state.followState;
-            
-            actionData.province_city_district = {}
-            actionData.province_city_district.result= [
-                actionData.province.toString(),
-                actionData.city.toString(),
-                actionData.district.toString()
-            ];
-            
-            actionData.ownerUserId = {id:actionData.salesVOs[0].ownerUserId,name:actionData.salesVOs[0].ownerUserName}
+        //点击一条客户数据时    
+        case "CUSTOMERGROUP_LIST_SHOWVIEWFORM":
+        //     let actionData = action.data;
+        //    debugger
+        //     actionData.industry = {
+        //         id: actionData.industry,
+        //         name: actionData.industryName
+        //     };
+        
+        //     actionData.province_city_district = {}
+        //     actionData.province_city_district.result= [
+        //         actionData.province.toString(),
+        //         actionData.city.toString(),
+        //         actionData.district.toString()
+        //     ];
             return $$state.merge({
                 viewState: action.visible,
-                viewData: actionData,
+                viewData: action.data,
                 leftJoinPanelKeys:'1',
                 RightJoinPanelKeys:'1'
             });
-        case "CUSTOMER_LIST_FOLLOWSTATECHANGE": //更改关注未关注
+        case "CUSTOMERGROUP_LIST_FOLLOWSTATECHANGE": //更改关注未关注
             return $$state.setIn(
                 ["viewData", "followState"],
                 action.state.followState
             );
-        case "CUSTOMER_LIST_HIDEVIEWFORM":
+        case "CUSTOMERGROUP_LIST_HIDEVIEWFORM":
             return $$state.merge({
                 viewState: action.payload.visiable,
                 icbcInfo1: []
             });
-        case "CUSTOMER_LIST_CLEANVERIFYID":
+        case "CUSTOMERGROUPLIST_CLEANVERIFYID":
             let clean = $$state.get("viewData").merge({
                 verifyFullname: ""
             });
@@ -227,63 +251,64 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 icbcVisible2: action.visiable,
                 viewData: clean
             });
-        case "CUSTOMER_LIST_DELETE": //删除客户
+        case "CUSTOMERGROUP_LIST_DELETE": //删除客户
             return $$state.merge({
                 data: action.payload.data,
                 selectedRowKeys:[]
             });
 
-        case "CUSTOMER_LIST_GETENUMDATA": //获取查询条件基础显示内容
+        case "CUSTOMERGROUP_LIST_GETENUMDATA": //获取查询条件基础显示内容
             return $$state.merge({ enumData: action.payload.enumData });
             
-        case 'CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
+        case 'CUSTOMERGROUP_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
+            debugger
             return $$state.merge({
                  viewData: action.viewData 
             });
-        case 'CUSTOMER_VIEWPANEL_PANELRIGHT_LIST'://点击详情面板中右侧详情部分列表数据
+        case 'CUSTOMERGROUP_VIEWPANEL_PANELRIGHT_LIST'://点击详情面板中右侧详情部分列表数据
             
             return $$state.merge({
                 viewDataJoinList: action.data,
                 RightJoinPanelKeys:action.index
             });
-        case 'CUSTOMER_VIEWPANEL_PANELLEFT_LIST'://点击详情面板中左侧详情部分列表数据
+        case 'CUSTOMERGROUP_VIEWPANEL_PANELLEFT_LIST'://点击详情面板中左侧详情部分列表数据
         
             return $$state.merge({
                 leftJoinPanelKeys:action.index+'',
                 viewDataRelevant:action.data
             });
         
-        case 'CUSTOMER_VIEWPANEL_PANELLEFT_SETLIST'://只能加参与人
+        case 'CUSTOMERGROUP_VIEWPANEL_PANELLEFT_SETLIST'://只能加参与人
             let joinList = $$state.getIn(['viewDataJoinList','data']) 
             return $$state.setIn(['viewDataJoinList','data'],joinList.push(Immutable.fromJS(action.data))) 
-        case 'CUSTOMER_VIEWPANEL_PANELLEFT_DELLIST'://删除一条联系人
+        case 'CUSTOMERGROUP_VIEWPANEL_PANELLEFT_DELLIST'://删除一条联系人
             let delList = $$state.getIn(['viewDataJoinList','data']).toJS();
             
             delList = delList.filter((item)=>{
                 return item.id !=action.id
             })
             return $$state.setIn(['viewDataJoinList','data'],Immutable.fromJS(delList)) 
-        case 'CUSTOMER_VIEWPANEL_CHANGEPANELLEFT'://触发详情左侧tab
+        case 'CUSTOMERGROUP_VIEWPANEL_CHANGEPANELLEFT'://触发详情左侧tab
             return $$state.merge({
                 leftJoinPanelKeys:action.index
             });
-        case "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORM"://获取相关对象联系人表单数据
+        case "CUSTOMERGROUP_VIEWPANEL_PANELLEFT_CONTACTSFORM"://获取相关对象联系人表单数据
             return $$state.merge({
                 contactsCardData:action.data
             });
-        case "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD"://增加联系人对象    
+        case "CUSTOMERGROUP_VIEWPANEL_PANELLEFT_CONTACTSFORMADD"://增加联系人对象    
            let addContacts = $$state.get('viewDataRelevant').toJS()
            debugger
            addContacts[0].list.data.unshift(action.data)
            return $$state.merge({
                 viewDataRelevant:addContacts
            });
-        case "CUSTOMER_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM":
+        case "CUSTOMERGROUP_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM":
         
             return $$state.merge({
                 contactsCardData:clearObject($$state.get('contactsCardData').toJS())
             });
-        case 'CUSTOMER_VIEWPANEL_DELOPP':
+        case 'CUSTOMERGROUP_VIEWPANEL_DELOPP':
             let delOpp = $$state.get('viewDataRelevant').toJS();
             delOpp[2].list.data = delOpp[2].list.data.filter((item)=>{
                 return item.id != action.ids
@@ -292,7 +317,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             return $$state.merge({
                 viewDataRelevant:Immutable.fromJS(delOpp)
             });
-        case 'CUSTOMER_VIEWPANEL_DELCONTACTS':
+        case 'CUSTOMERGROUP_VIEWPANEL_DELCONTACTS':
             let delContacts = $$state.get('viewDataRelevant').toJS();
             delContacts[0].list.data = delContacts[0].list.data.filter((item)=>{
                 return item.id != action.id

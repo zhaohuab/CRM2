@@ -25,6 +25,7 @@ import ViewPanel from "./panel/ViewPanel";
 import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
 
+
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
@@ -51,8 +52,8 @@ class List extends React.Component {
                                 }
                             </div>
                         </div>
-                    ) 
-                }
+                    )
+                }  
             },
             {
                 title: "客户类型",
@@ -210,61 +211,12 @@ class List extends React.Component {
             </div>
         );
     }
-
     btnNew(){
         this.props.action.addCustomer(true);
     }
 
-
-    columnsTranslate = (columns) => {//----------表头转换：所有返回来的表头结构一致，每个组件进行函数转换，实现个性化操作
-        return columns.map(item=>{
-            if(item.dataIndex=='name'){
-                return(
-                 {
-                title: "客户名称",
-                dataIndex: "name",
-                render: (text, record) => {//isGroup
-                    return(
-                        <div
-                            onClick={this.slideShow.bind(this, record)}
-                            className="crm-pointer"
-                        >
-                            <div className='cum-color'>
-                                <span>{record.name}</span>
-                                {
-                                    record.isGroup =='1'?
-                                    <img
-                                        src={require("../images/company.png")}
-                                        className="img"
-                                    />
-                                    :
-                                    <img
-                                        src={require("../images/grope.png")}
-                                        className="img"
-                                    />
-                                }
-                            </div>
-                        </div>
-                    )
-                }  
-            })
-                   
-            }
-            if (item.dataIndex=='enableState'){
-                return (
-                    {
-                        title: "启用状态",
-                        dataIndex: "enableState",
-                        render: text => <span>{text == 1 ? "启用" : "未启用"}</span>
-                    }
-                )
-            }
-            return item;
-        })
-
-    }
-
     componentDidMount() {
+        debugger
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
@@ -272,6 +224,7 @@ class List extends React.Component {
     }
 
     render() {
+        debugger
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -280,11 +233,7 @@ class List extends React.Component {
             formVisitable,
             viewState,
             viewData,
-            tableLoading,
-            icbcVisible,
-            leadVisible,
-            icbcSelect,
-            titleList,
+            tableLoading
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -346,7 +295,7 @@ class List extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerGroupList,
+        $$state: state.customerList,
     };
 }
 //绑定action到组件props

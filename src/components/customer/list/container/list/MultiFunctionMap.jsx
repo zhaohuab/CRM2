@@ -132,11 +132,9 @@ export default class MultiFunctionMap extends React.Component {
         if(location){//根据坐标点查地图
             this.Geocoder.getAddress(location, (status, mapResult) => {
                 debugger
-                
                 if (status === "complete" && mapResult.info === "OK") {
-                    
                     let result = mapResult.regeocode;
-                    this.map.setCity(result.adcode)
+                    this.map.setZoomAndCenter(13,location)
                     debugger
                     this.setState({
                         infoPosition:location,
@@ -155,7 +153,7 @@ export default class MultiFunctionMap extends React.Component {
                 debugger
                 if (status === "complete" && mapResult.info === "OK") {
                     let result = mapResult.geocodes[0]
-                    this.map.setCity(result.adcode)
+                    this.map.setZoomAndCenter(13,result.location)
                     debugger
                     this.setState({
                         clickMarkerPosition:result.location,
@@ -174,21 +172,19 @@ export default class MultiFunctionMap extends React.Component {
         }  
     }
 
-    //显示地图
+
+    //显示地图，点击定位中心点还是对
     showMap(flag){
-        debugger
         if(this.state.flag){
+            debugger
             let value = this.props.value?this.props.value.address:'北京'
             let location = this.props.value?this.props.value.location:''
-            debugger
             if(location){//根据坐标点查地图
                 this.Geocoder.getAddress(location, (status, mapResult) => {
-                    debugger
                     if (status === "complete" && mapResult.info === "OK") {
-                        
-                        let result = mapResult.regeocode;
-                        this.map.setCity(result.adcode)
                         debugger
+                        let result = mapResult.regeocode;
+                        this.map.setZoomAndCenter(13,location)
                         this.setState({
                             infoPosition:location,
                             result: {
@@ -204,9 +200,9 @@ export default class MultiFunctionMap extends React.Component {
             }else{
                 this.Geocoder.getLocation(value, (status, mapResult) => {
                     if (status === "complete" && mapResult.info === "OK") {
-                        debugger
                         let result = mapResult.geocodes[0]
-                        this.map.setCity(result.adcode)
+                        debugger
+                        this.map.setZoomAndCenter(13,result.location)
                         this.setState({
                             clickMarkerPosition:result.location,
                             infoPosition:result.location,
@@ -266,7 +262,6 @@ export default class MultiFunctionMap extends React.Component {
 
     //地图里input搜索
     inputSearch(){
-        debugger
         let value = this.state.searchValue;
         if(!value) {
             message.error('请输入查询条件')
@@ -275,9 +270,7 @@ export default class MultiFunctionMap extends React.Component {
         this.placeSearch.search(value,(status, result)=>{
             if (status === 'complete' && result.info === 'OK'){
                 this.getSingleValueLocation(value).then((data)=>{
-                    debugger
-                    this.map.setCity(data.adcode);
-                    this.map.setZoom(3)
+                    this.map.setZoomAndCenter(13,data.location)
                     this.setState({
                         searchMarkersPositio:result.poiList.pois
                     })
@@ -307,7 +300,6 @@ export default class MultiFunctionMap extends React.Component {
                     value={this.props.value?this.props.value.address:''}
                     onChange={this.onChange.bind(this)}
                 />
-            {/* <Input value={this.props.value?this.props.value.address:''} addonAfter={<Icon type="search" onClick={this.showMap.bind(this)}/>} placeholder="请输入地址" onChange={this.onChange.bind(this)}/> */}
             {
                 this.state.visible?
                 <Modal
