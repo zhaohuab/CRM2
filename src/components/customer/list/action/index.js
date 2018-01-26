@@ -47,7 +47,13 @@ const leadEndShow=(leadVisible)=>{
         payload: {leadVisible}
     };
 };
+const leadEndView=(leadVisible,leadStep)=>{
+    return {
+        type: "CUSTOMER_LIST_LEADENDVIEW",
+        payload: {leadVisible,leadStep}
+    };
 
+}
 const leadEndIngShow=(leadVisible)=>{
     return {
         type: "CUSTOMER_LIST_LEADINGSHOW",
@@ -55,8 +61,25 @@ const leadEndIngShow=(leadVisible)=>{
     };
 }
 
-
-
+const saveFiles =(files)=>{
+    debugger
+    return {
+        type: "CUSTOMER_LIST_SAVEFILES",
+        payload: {files}
+    };
+}
+const fileSuccess=(filesSuccess,result)=>{
+    return {
+        type: "CUSTOMER_LIST_FILESUCCESS",
+        payload: {filesSuccess,result}
+    };
+}
+const fileFail=(filesFail)=>{
+    return {
+        type: "CUSTOMER_LIST_FILEFAIL",
+        payload: {filesFail}
+    };
+}
 
 
 
@@ -917,5 +940,9 @@ export {
     leadShow,
     leadEndShow,
     viewLeadShow,
-    leadEndIngShow
+    leadEndIngShow,
+    saveFiles,
+    fileSuccess,
+    fileFail,
+    leadEndView
 };

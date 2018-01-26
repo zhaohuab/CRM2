@@ -25,21 +25,21 @@ import ViewPanel from "./panel/ViewPanel";
 import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
 import LeadStart from "./lead/LeadStart"
-
-
+import reqwest from "reqwest";
+import { baseDir } from "api";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
 class List extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.columns = [
             {
                 title: "客户名称",
                 dataIndex: "name",
                 render: (text, record) => {//isGroup
-                    return(
+                    return (
                         <div
                             onClick={this.slideShow.bind(this, record)}
                             className="crm-pointer"
@@ -47,14 +47,14 @@ class List extends React.Component {
                             <div className='cum-color'>
                                 <span>{record.name}</span>
                                 {
-                                    record.isGroup =='2'?
-                                    <i className="iconfont icon-jituan-icon-" />
-                                    :''
+                                    record.isGroup == '2' ?
+                                        <i className="iconfont icon-jituan-icon-" />
+                                        : ''
                                 }
                             </div>
                         </div>
                     )
-                }  
+                }
             },
             {
                 title: "客户类型",
@@ -88,8 +88,6 @@ class List extends React.Component {
             this.props.action.selectedRowKeys(selectedRowKeys);
         };
     }
-
-
 
     //改变编辑状态
     changeState(visiable) {
@@ -134,22 +132,22 @@ class List extends React.Component {
             data["latlng"] = value.latlng;
         }
 
-        if(data.ownerUserId){
+        if (data.ownerUserId) {
             let ownerUserId = data.ownerUserId.id;
             delete data.ownerUserId
-            data.salesVOs = [{ownerUserId}]
+            data.salesVOs = [{ ownerUserId }]
         }
 
-        if(data.level){
-            data.level=data.level.key
+        if (data.level) {
+            data.level = data.level.key
         }
 
-        if(data.type){
-            data.type=data.type.key
+        if (data.type) {
+            data.type = data.type.key
         }
 
-        if(data.cannelType){
-            data.cannelType=data.cannelType.key
+        if (data.cannelType) {
+            data.cannelType = data.cannelType.key
         }
         debugger
         return data;
@@ -215,7 +213,7 @@ class List extends React.Component {
             </div>
         );
     }
-    btnNew(){
+    btnNew() {
         this.props.action.addCustomer(true);
     }
 
@@ -229,26 +227,71 @@ class List extends React.Component {
 
 
     leadStart() {
-       
+        debugger
         // this.props.action.leadShow(false);
-         //this.props.action.leadEndShow(true);
-         this.props.action.leadEndShow(true)
-     }
-     leadStartCancel() {
- 
-         this.props.action.viewLeadShow(false)
-     }
-     leadEnd(){
-         this.props.action.viewLeadShow(false);
-         //  this.props.action.leadEndShow(false)
-     }
-     leadEndCancel(){
-         this.props.action.leadEndShow(false)
-     }
-     leadIng(){
-         this.props.action.leadEndShow(true)
-     }
- 
+        //this.props.action.leadEndShow(true);
+        //this.props.action.leadEndShow(true);
+        this.uploadFiles.call(this);
+        let { filesSuccess } = this.props.$$state.toJS();
+        if (filesSuccess) {
+            setTimeout(() => {
+                this.props.action.leadEndView(true, 2);
+            }, 1000)
+        }
+
+    }
+    leadStartCancel() {
+
+        this.props.action.viewLeadShow(false)
+    }
+    leadEnd() {
+        this.props.action.viewLeadShow(false);
+        this.props.action.leadEndShow(false)
+    }
+    leadEndCancel() {
+        this.props.action.leadEndShow(false)
+    }
+    leadIng() {
+        this.props.action.leadEndShow(true)
+    }
+
+    uploadFiles() {
+        debugger
+        let { leadFiles } = this.props.$$state.toJS();
+        // files = Array.from(leadFiles);
+        let files = Array.prototype.slice.call(leadFiles)
+        let proAry = []
+        debugger
+        files.forEach((file, index, items) => {
+            proAry.push(this.upLoad(file));
+        })
+
+        Promise.all(proAry).then((result) => {
+            debugger
+            console.log(12, result)
+            this.props.action.fileSuccess(true,result)
+        }, (error) => {
+            console.log(34, error)
+            this.props.action.fileFail(false)
+        })
+
+    }
+
+    upLoad(file) {
+        let formdata = new FormData();
+        formdata.append('file', file)
+        //formdata.get("filedata")
+
+        return reqwest(
+            {
+                url: baseDir + "/tpub/excels/1/import",
+                method: "POST",
+                processData: false,
+                contentType: false,
+                data: formdata
+            }
+        );
+    }
 
 
     render() {
@@ -275,7 +318,7 @@ class List extends React.Component {
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm btnNew={this.btnNew.bind(this)}/>
+                <TopSearchForm btnNew={this.btnNew.bind(this)} />
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
@@ -312,7 +355,7 @@ class List extends React.Component {
                             editCardFn={this.editCardFn.bind(this)}
                             changeState={this.changeState.bind(this)}
                         />
-                    </div> 
+                    </div>
                 </Modal>
                 <SlidePanel
                     viewState={viewState}
@@ -323,47 +366,48 @@ class List extends React.Component {
                 </SlidePanel>
 
                 <Modal title="导入"
+                    destroyOnClose={true}
                     visible={viewLeadVisible}
                     onOk={this.leadStart.bind(this)}
                     onCancel={this.leadStartCancel.bind(this)}
-                    footer={leadEndVisible?[
+                    footer={leadEndVisible ? [
                         <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
-                         关闭
+                            关闭
                         </Button>
-                      ]:
-                      [
-                        <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
-                        <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
-                          开始导入
+                    ] :
+                        [
+                            <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                            <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                                开始导入
                         </Button>
-                      ]}
-                    
-                    // footer={leadEndVisible?[
-                    //     <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
-                    //      关闭
-                    //     </Button>
-                    //   ]:leadingVisible?[
-                    //     <Button key="submit" type="primary" onClick={this.leadIng.bind(this)}>
-                    //      导入中
-                    //     </Button>
-                    //   ]:
-                    //   [
-                    //     <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
-                    //     <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
-                    //       开始导入
-                    //     </Button>
-                    //   ]}
+                        ]}
+
+                // footer={leadEndVisible?[
+                //     <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
+                //      关闭
+                //     </Button>
+                //   ]:leadingVisible?[
+                //     <Button key="submit" type="primary" onClick={this.leadIng.bind(this)}>
+                //      导入中
+                //     </Button>
+                //   ]:
+                //   [
+                //     <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                //     <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                //       开始导入
+                //     </Button>
+                //   ]}
                 >
-                    <div className="cur-lead">
-                        <LeadStart/>
+                    <div className="cur-lead" ref="leadContent">
+                        {viewLeadVisible ? <LeadStart /> : null}
                     </div>
                 </Modal>
-                
 
 
-                
+
+
             </div>
-         );
+        );
     }
 }
 //绑定状态到组件props

@@ -264,6 +264,9 @@ class List extends React.Component {
                         rowSelection={rowSelection}
                         rowKey="id"
                         pagination={{
+
+              
+
                             current: pagination.page,
                             size: "large",
                             showSizeChanger: true,

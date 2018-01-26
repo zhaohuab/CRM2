@@ -1,9 +1,9 @@
 //import Animate from 'rc-animate'
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import {Button, Icon} from 'antd';
+import { Button, Icon } from 'antd';
 import reqwest from 'reqwest';
-import {Promise} from 'promise';
+import { Promise } from 'promise';
 
 const noop = function () {
 
@@ -78,7 +78,7 @@ export default class CkUpload extends React.Component {
         const props = this.props
         let uploadRequests = []
         const postFiles = Array.prototype.slice.call(files)
-        postFiles.forEach((file, i, files)=> {
+        postFiles.forEach((file, i, files) => {
             // 调用beforeUpload, 根据返回值判断是否上传到服务器
             const before = props.beforeUpload(file, i, files);
             if (typeof before === 'boolean' && before) {
@@ -87,7 +87,7 @@ export default class CkUpload extends React.Component {
         })
 
         this.onUpload()
-        Promise.all(uploadRequests).then(rsArray=> {
+        Promise.all(uploadRequests).then(rsArray => {
 
             this.setState({
                 disabled: false
@@ -95,14 +95,14 @@ export default class CkUpload extends React.Component {
 
             if (props.onSuccess) {
 
-                props.onSuccess(rsArray.map((rs)=> {
+                props.onSuccess(rsArray.map((rs) => {
                     return JSON.parse(rs)
                 }), files)
 
 
             }
 
-        }, reason=> {
+        }, reason => {
             console.log(reason)
             this.setState({
                 disabled: false
@@ -112,8 +112,6 @@ export default class CkUpload extends React.Component {
             }
 
         })
-
-
     }
 
     render() {
@@ -126,15 +124,15 @@ export default class CkUpload extends React.Component {
                 onKeyDown={this.onKeyDown}
                 onClick={this.onClick}>
 
-                   <input
-                       type="file"
-                       ref="file"
-                       disabled={this.props.disabled || this.state.disabled}
-                      style={{ display: 'none' }}
-                       accept={props.accept}
-                       multiple={props.multiple}
-                       onChange={this.onChange}
-                   />
+                <input
+                    type="file"
+                    ref="file"
+                    disabled={this.props.disabled || this.state.disabled}
+                    style={{ display: 'none' }}
+                    accept={props.accept}
+                    multiple={props.multiple}
+                    onChange={this.onChange}
+                />
                 {props.children}
             </span>
         )
