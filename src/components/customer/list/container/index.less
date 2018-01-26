@@ -1,40 +1,6 @@
 //主体色
 @primary-project: #3ca4fb;
-.customform-input-recover {
-    .ant-form-inline .ant-form-item {
-        width: 100%;
-    }
-    .ant-form-item-control-wrapper {
-        width: 70%;
-    }
-    .ant-input-lg {
-        height: 28px;
-    }
-    .icbc {
-        color: #3ca4fb;
-        cursor: pointer;
-        text-decoration: underline;
-    }
-    .import {
-        color: #3ca4fb;
-    }
-    .remark{
-        .ant-form-item-control-wrapper {
-            width: 87.5%;
-        }
-    }
-    .form-title {
-        text-align: right;
-        font-size: 13px;
-        color: #333;
-    }
-}
 
-#upload-form-item {
-    .ant-form-item-control-wrapper {
-        width: 100%;
-    }
-}
 
 #relevant-wapper-item{
     .ant-collapse-item{
@@ -147,6 +113,19 @@
             .tags {
                 margin-top: 10px;
                 margin-left: -2.5px;
+                .tags-item{
+                    width:60px;
+                    height: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: rgb(236, 236, 236);
+                    border-radius: 2px;
+                    margin-right:10px;
+                    span{
+                        transform: scale(.8,.8)
+                    }
+                }
             }
             .pointer {
                 cursor: pointer;
@@ -181,7 +160,14 @@
                 height: 30px;
                 line-height: 30px;
             }
+            .icbc-detail-container{
+                .icbc-icon{
+                    width: 15px;
+                    height: 16px;
+                }
+            }
         }
+
         .view-warrper-main {
             border-top: 10px solid rgba(242, 242, 242, 1);
             background: white;
@@ -440,6 +426,9 @@
                                                 margin-left: 1.9px;
                                                 background: rgb(228, 228, 228);
                                             }
+                                            .smail-circle,style1{
+                                                margin-bottom:10px
+                                            }
                                         }
                                         .main{
                                             height:100%;
@@ -481,11 +470,16 @@
                             }
                         }
                     }
+                    .business-chance .upgrade-item{
+                        width:24%;
+                    }
+
                     .contacts-warpper-item:hover,.business-chance-item:hover{
                         .del{
                             display: block
                         }
                     }
+                   
                     .business-chance-item:nth-of-type(4n){
                         margin-right:1%;
                     }
@@ -895,275 +889,6 @@
     .ant-upload-list-picture-card .ant-upload-list-item {
         padding: 0;
     }
-
-    /*ant tab-float 样式修改*/
-    .ant-tabs {
-        height: 90%;
-    }
-    .ant-tabs-vertical.ant-tabs-right>.ant-tabs-bar {
-        position: absolute;
-        right: 15px;
-        z-index: 300;
-        top: 0;
-        width: 50px;
-        height: 150px;
-        border-left: none;
-    }
-    .ant-tabs-vertical.ant-tabs-right>.ant-tabs-content {
-        left: 0px;
-        width: 100%;
-        padding-right: 0;
-        border-right: none;
-        height: 100%;
-    }
-    .ant-tabs-vertical>.ant-tabs-bar .ant-tabs-ink-bar {
-        display: none;
-        width: 0;
-    }
-    
-    .ant-tabs-vertical>.ant-tabs-bar .ant-tabs-tab {
-        padding: 10px;
-        padding-right: 0;
-        box-sizing: border-box;
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 0;
-    }
-   
-    .tab-change-item {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        border-radius: 30px;
-        color: white;
-        font-weight: bold;
-        text-align: center;
-        cursor: pointer;
-        user-select: none;
-        .iconfont {
-            margin-right: 0;
-        }
-    }
-    .grey {
-        background: #b3b4bc;
-    }
-    .green {
-        background: #44c0e8;
-    }
-    .tab-blue {
-        background: #3ca4fb;
-    }
-    .echartsSize {
-        width: 800px;
-        height: 500px;
-    }
-    .tab-panel-recoverd{
-        .ant-tabs-bar{
-            margin-top:70px
-        }
-    }
-    
-    /*地图面板样式*/
-    .customer-panelMap {
-        height: 100%;
-        border-top: 10px solid #f2f2f3;
-        .customer-panelMap-content {
-            height: 100%;
-            .customer-panelMap-left {
-                border-right: 10px solid #f2f2f3;
-                padding: 0 15px;
-                padding-top: 30px;
-                box-sizing: border-box;
-                .top-select {
-                    color: #333;
-                    height: 70px;
-                    .select {
-                        width: 180px;
-                        margin-left: 10px;
-                    }
-                }
-                .top-title {
-                    color: #333;
-                    width: 100%;
-                    margin: 0 auto;
-                    height: 50px;
-                    line-height: 50px;
-                    font-size: 14px;
-                    border-bottom: 1px solid #dddddd;
-                    .import {
-                        color: #1c7feb;
-                    }
-                }
-                .top-tags {
-                    padding: 10px 0;
-                    padding-bottom: 0;
-                    box-sizing: border-box;
-                    display: flex;
-                    flex-wrap: wrap;
-                    .tags {
-                        padding: 3px 8px;
-                        box-sizing: border-box;
-                        border-radius: 5px;
-                        border: 1px solid #dddddd;
-                        margin-bottom: 10px;
-                        margin-right: 10px;
-                        cursor: pointer;
-                        user-select: none;
-                        .tags-num {
-                            color: #1c7feb;
-                        }
-                    }
-                }
-                .list {
-                    border: 1px solid #eeeeee;
-                    margin-bottom: 20px;
-                    .list-item {
-                        border-bottom: 1px solid #eeeeee;
-                        padding: 15px;
-                        padding-right: 5px;
-                        box-sizing: border-box;
-                        .customer {
-                            cursor: pointer;
-                            .customer-name {
-                                color: #1c7feb;
-                                font-size: 14px;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                                height: 25px;
-                            }
-                            .customer-address {
-                                color: #999999;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                            }
-                            .customer-name:hover {
-                                color: #e64026;
-                            }
-                        }
-                        .customer-info {
-                            text-align: right;
-                            transform: scale(0.8, 0.8);
-                            .customer-type {
-                                color: #999;
-                                height: 25px;
-                            }
-                            .customer-level {
-                                color: rgba(0, 168, 84, 0.8);
-                            }
-                        }
-                    }
-                    .list-item:last-child {
-                        border-bottom: none;
-                    }
-                }
-            }
-            .customer-panelMap-right {
-                padding: 0 15px;
-                box-sizing: border-box;
-                .map-title {
-                    height: 50px;
-                    line-height: 50px;
-                    font-size: 14px;
-                    color: #999999;
-                }
-            }
-        }
-    }
-    /*状态面板样式*/
-    .customer-panel {
-        height: 100%;
-        .customer-panelState-content {
-            height: 100%;
-            .customer-panelState-left {
-                border-right: 10px solid #f2f2f3;
-                padding: 0 15px;
-                box-sizing: border-box;
-                .top-title {
-                    color: #333;
-                    width: 100%;
-                    margin: 0 auto;
-                    height: 50px;
-                    line-height: 50px;
-                    font-size: 14px;
-                    border-bottom: 1px solid #dddddd;
-                    margin-bottom: 15px;
-                    .import {
-                        color: #1c7feb;
-                    }
-                }
-                .customer-list-warpper {
-                    margin-bottom: 20px;
-                    .customer-list {
-                        height: 58px;
-                        border-bottom: 1px dashed #dddddd;
-                        .left {
-                            color: #333;
-                        }
-                        .right {
-                            color: #999;
-                            i {
-                                margin-left: 10px;
-                                margin-right: 0;
-                                font-size: 12px;
-                            }
-                        }
-                    }
-                }
-                .list {
-                    border: 1px solid #eeeeee;
-                    margin-bottom: 10px;
-                    .list-item {
-                        border-bottom: 1px solid #eeeeee;
-                        .item-checkbox {
-                            border-right: 1px solid #eeeeee;
-                            .height {
-                                height: 100%;
-                            }
-                        }
-                        .list-name {
-                            font-size: 14px;
-                            color: #333;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                        }
-                        .list-main {
-                            padding: 15px 0 0 10px;
-                            box-sizing: border-box;
-                        }
-                        .list-time {
-                            color: #999;
-                        }
-                        .list-main p:nth-of-type(2) {
-                            height: 25px;
-                            line-height: 30px;
-                        }
-                        .list-main p:nth-of-type(3) {
-                            height: 30px;
-                        }
-                        .list-bottom {
-                            background: #fafafa;
-                            width: 100%;
-                            height: 30px;
-                            padding: 0 10px;
-                            color: #bbbbbb;
-                        }
-                    }
-                    .list-item:last-child {
-                        border-bottom: none;
-                        box-sizing: border-box;
-                        margin-bottom: 0;
-                    }
-                }
-            }
-            .customer-panelState-right {
-                padding: 15px 15px 0 15px;
-                box-sizing: border-box;
-            }
-        }
-    }
 }
 
 
@@ -1227,11 +952,8 @@
 
 .icbc-btn {
     color: #3ca4fb;
-    .iconfont {
-        font-size: 12px;
-        margin-right: 0;
-        color: #3ca4fb;
-    }
+    text-decoration: underline;
+    cursor: pointer
 }
 
 .icbc-item {
@@ -1253,6 +975,7 @@
 .icbc-item-choice {
     width: 100%;
     padding: 10px;
+    height:40px;
     box-sizing: border-box;
     border-bottom: 1px solid #eeeeee;
     cursor: pointer;
@@ -1318,21 +1041,31 @@
     } 
 }
 
-/*变更销售员*/
-.change-person{
-    .change-person-item{
-        height:40px;
-    }
-}
+
 
 /*客户中联系人card样式*/
-.refs-panel-contacts-card{
-    height:400px;
-    overflow-y:auto;
-    margin: -15px; 
+.crm-panel-contacts-card{
+    height: 450px;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 /*客户对象商机modal中样式*/
+.crm-panel-opp-modal{
+    height: 450px;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/*客户对象参与人modal样式*/
+.crm-panel-join-modal{
+    height: 320px;
+    overflow-y: auto;
+    padding: 10px;
+    box-sizing: border-box;
+}
 
 /*客户对象联系人详情modal样式*/
 .custom-modal-contacts{
@@ -1439,12 +1172,117 @@
 }
 
 
-//导入导出
+
 .leadin{
     .stepboder{
        
         height: 10px;
         background-color: #333;
-        margin:10px;
+        margin:10px;}}
+
+
+        
+/*card新增修改model*/
+.crm-list-card-modal{
+  
+
+}
+.crm-list-card-icbc{
+    width: 100%;
+}
+.customform-input-recover {
+    .ant-form-inline .ant-form-item {
+        width: 100%;
+    }
+    .ant-form-item-control-wrapper {
+        width: 70%;
+    }
+    .ant-input-lg {
+        height: 28px;
+    }
+    .icbc {
+        color: #3ca4fb;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+    .import {
+        color: #3ca4fb;
+    }
+    .remark{
+        .ant-form-item-control-wrapper {
+            width: 87.5%;
+        }
+    }
+    .form-title {
+        text-align: right;
+        font-size: 13px;
+        color: #333;
+    }
+}
+
+/*表单中地图样式*/
+.crm-list-card-map-modal{
+    width:100%;
+    height:550px;
+    position: relative;
+    .search-map{
+        width: 100%;
+        height:50px;
+        position: absolute;
+        top:10px;
+        left:10px;
+        z-index: 10
+    }
+    .cum-amap-infowindow{
+        width:250px;
+        height:145px;
+        .info-top{
+            height:110px;
+            color:#999;
+        }
+        .info-bottom{
+            border-top:1px solid rgb(230, 230, 230);
+            height:45px;
+        }
+    }
+    .ant-input-lg{
+        height:40px;
+    }
+    .ant-input-group-addon{
+        padding: 4px 18px;
+        font-size:18px;
+        color:white;
+        background: #3CA4FB;
+        border:1px solid #3385FF;
+        cursor: pointer;
+    }
+    .ant-input{
+        border:1px solid #3385FF
+    }
+}
+
+/*客户详情分配modal中样式*/
+.crm-list-panel-ownerUser-modal{
+    .height{
+        width:100%
+    }
+}
+
+/*客户详情变更modal样式*/
+.crm-list-panel-assign-modal{
+    .height{
+        height:100px;
+        width:100%;
+    }
+}
+
+/*变更销售员*/
+.crm-list-panel-change-modal{
+    .height{
+        height:150px;
+        width:100%;
+    }
+    .change-person-item{
+        height:50px;
     }
 }

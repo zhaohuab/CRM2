@@ -72,7 +72,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 
 		case 'ROLE_LIST_GETROLELISTSUCCESS':
 			return $$state.merge({
-				data: action.content,
+				data: action.content.data,
+				searchMap:action.content.searchMap
 			})
 		case 'ROLE_LIST_SHOWFORM':
 			return $$state.merge({
@@ -152,6 +153,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				userCardVisible: false,
 				selectedUserCardRowKeys: [],
 				selectedUserCardRows: [],
+				userCardName:''
 			})
 		case 'ROLE_LIST_GETENUMDATA':
 			return $$state.merge({
@@ -184,6 +186,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedUserCardRowKeys: [],
 				selectedUserCardRows: [],
 			})
+			case 'ROLE_LIST_SAVEUSERCARDNAME':
+			return $$state.merge({
+				userCardName: action.content,
+			})
+
+			
 		default:
 			return $$state;
 	}

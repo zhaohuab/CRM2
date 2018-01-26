@@ -38,14 +38,6 @@ class List extends Component {
                 dataIndex: "fatherorgName"
             },
             {
-                title: "负责人",
-                dataIndex: "respoPerson"
-            },
-            {
-                title: "其他负责人",
-                dataIndex: "otherRespoPerson"
-            },
-            {
                 title: "组织类型",
                 dataIndex: "orgTypeName"
             },
@@ -56,7 +48,6 @@ class List extends Component {
         ];
         this.state = {
             minH: "",
-            isEdit: false
         };
         //点击每行table触发的onchange方法
         let that = this;
@@ -68,8 +59,7 @@ class List extends Component {
 
     //修改一条数据方法
     changeForm(record) {
-        this.setState({ isEdit: true });
-        this.props.action.showForm(true, record);
+        this.props.action.showForm(true, record,true);
     }
 
     //删除一条数据方法
@@ -84,7 +74,7 @@ class List extends Component {
 
     //修改页面取消按钮
     handleCancel() {
-        this.props.action.showForm(false, {});
+        this.props.action.showForm(false, {},false);
     }
 
     //表单页面确定方法
@@ -103,7 +93,7 @@ class List extends Component {
     //点击增加组织
     addFormBtn() {
         this.setState({ isEdit: false });
-        this.props.action.showForm(true, {});
+        this.props.action.showForm(true, {},false);
         // this.props.action.changeAdd()
     }
 
@@ -123,13 +113,13 @@ class List extends Component {
                 break;
             }
         }
-        this.props.action.showForm(true, rowData);
+        this.props.action.showForm(true, rowData,true);
     }
     //点击一个节点数的增加操作
     treeSelectAddFn(item) {
         this.setState({ isEdit: false });
         let rowData = { fatherorgId: item.id, fatherorgName: item.name };
-        this.props.action.showForm(true, rowData);
+        this.props.action.showForm(true, rowData,false);
     }
 
     //点击一个节点数的删除操作
@@ -207,8 +197,8 @@ class List extends Component {
                         />
                     </div>
                     <div className="list-table" ref="listTablePanel">
-                        <div className="table-header">
-                            {selectedRows.length ? (
+                        
+                            {selectedRows.length ? (<div className="table-header">
                                 <EditButton
                                     data={selectedRows}
                                     setEnablestate={this.btnSetEnablestate.bind(
@@ -224,26 +214,11 @@ class List extends Component {
                                     returnFn={this.btnBack.bind(this)}
                                     changeForm={this.changeForm.bind(this)}
                                 />
-                            ) : (
+                                </div>) : (
                                 ""
                             )}
-                            <div className="list-add">
-                                <ButtonGroup className="list-add-group">
-                                    <Button>
-                                        <i className="iconfont icon-daochu" />导入
-                                    </Button>
-                                    <Button>
-                                        <i className="iconfont icon-daoru" />导出
-                                    </Button>
-                                </ButtonGroup>
-                                <Button
-                                    type="primary"
-                                    onClick={this.addFormBtn.bind(this)}
-                                >
-                                    <Icon type="plus" />新建
-                                </Button>
-                            </div>
-                        </div>
+                            
+                        
                         <div className="org-tabel tabel-recoverd">
                             <Table
                                 columns={this.columns}
@@ -262,7 +237,7 @@ class List extends Component {
                             />
                         </div>
                         <Modal
-                            title="修改组织"
+                            title={this.state.isEdit?"修改组织":"新增组织"}
                             visible={formVisitable}
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}

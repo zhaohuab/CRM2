@@ -55,7 +55,7 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-        this.props.action.getRoleListData();
+        this.props.action.getRoleListData({});
         this.props.action.getEnumData();
     }
 
@@ -86,9 +86,9 @@ class List extends React.Component {
         confirm({
             title: '确定要删除吗?',
             content: '此操作不可逆',
-            okText: '是',
-            okType: 'danger',
-            cancelText: '否',
+            okText: '确定',
+            // okType: 'danger',
+            cancelText: '取消',
             onOk() {
                 that.props.action.onDelete(row.id);
             },

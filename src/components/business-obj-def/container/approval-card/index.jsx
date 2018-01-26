@@ -19,12 +19,12 @@ export default class Card extends React.Component {
       <div className="approval-obj-def-card">
         <div className="card-header">
           <div className="card-header-name">
-           流程名称
+           {this.props.data.ysModelName}
           </div>
           <div className="card-header-btn">审批流设置</div>
         </div>
         <div className="card-body">
-          <div className="card-body-con">
+          <div className="card-body-con"> 
             <div className="card-body-con-item">
               <div className="card-body-con-name"></div>
               <div className="card-body-con-text"></div>

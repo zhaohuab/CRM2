@@ -1,69 +1,43 @@
-import reqwest from "utils/reqwest";
+import fetchData from 'utils/fetchdata';
+import reqwest from 'utils/reqwest';
 import { message } from "antd";
 import { distributed as url } from 'api/zhb';
 
-//包装发给redux的对象
-const fetchData = (type, payload) => {
-    return {
-        type,
-        payload
-    };
-};
 
-/* 
-const distributed = {//客户分布
-    department: baseDir+'cum/customerchart',//获取部门（人员）、客户数量
-    customer: baseDir+'cum/customerchart/customers',//获取客户数据
+const getCustomerItem = (num) => {//这个地方应该在传一个角色id，确定是某个角色下的客户
+    return (dispatch) => {
+        reqwest({
+			url: url.customer,
+			method: "GET",
+            data: {
+                param: {
+                    pageSize: 5,
+                    page: num,
+				}
+            }
+		},result => {
+            //debugger;
+			console.log('result=============',result)
+			dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { result }));
+        });
+	}
 }
- */
+
 
 const getCustomerList = () => {//获取客户数据
-    let src = url.department;
-    debugger
     return dispatch => {
         reqwest({
-            url: `${url.department}`,
+            url: url.department,
             method: "GET",
             data: {}
         }, result=>{
-            debugger;
-            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result }));
-        });
-        reqwest({
-            url: `${url.customer}`,
-            method: "GET",
-            data: {
-                param: {
-                    pageSize: 5,
-                    page: 1,
-				}
-            }
-        }, result=>{
-            debugger;
-            dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { ...result }));
-        })
-    }
-  
-}
-
-const getCustomerItem = () => {
-    return dispatch => {
-        reqwest({
-            url: `${url.department}`,
-            method: "GET",
-            data: {
-                param: {
-                    pageSize: 5,
-                    page: 1,
-				}
-            }
-        }, result=>{
-            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result }));
+            console.log('xxxxx==========',result)
+            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { result }));
         })
     }
 }
 
-function transData(searchMap) {
+const transData = (searchMap)=> {
     if (searchMap == null) {
         return searchMap;
     }
@@ -89,10 +63,16 @@ const appendAddress = data => {
     return data;
 };
 
-
+const aa = () => {
+    debugger;
+    return (dispatch)=>{
+        dispatch(fetchData('DOC_LIST_SHOWFORM', { visible: false }))
+      }
+}
 
 //输出 type 与 方法
 export {
     getCustomerList,
     getCustomerItem,
+    aa
 };

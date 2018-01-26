@@ -3,6 +3,7 @@
     padding:0 15px;
     box-sizing: border-box;
     display: flex;
+    flex-direction: column;
     height:100%;
     .container-header{
         width:100%;
@@ -11,17 +12,52 @@
             .top-more{
                 height:100%;
             }
-            .ant-form-item{
-                margin-right:0;
-                width: 100%;
-            }
-            .ant-form-item > div{
-                width: 95%;
-            }
-            .ant-input{
-                height:28px;
+        }  
+        .container-header-hide{
+            border-top: 1px solid #efefef;
+            padding-top:10px;
+            .inner{
+                width:90%;
+                margin:0 auto;
             }
         }
-        
+        .ant-form-item{
+            margin-right:0;
+            width: 100%;
+        }
+        .ant-form-item > div{
+            width: 95%;
+        }
+        .ant-input{
+            height:28px;
+        }
+        .form-list-item{
+            margin-bottom:10px;
+        }
+        .operate{
+            color:#666;
+            .search{
+                padding-right:10px;
+                margin-right:10px;
+                border-right:1px solid #DDDDDD;
+                cursor: pointer
+            }
+            .more,.up{
+                cursor: pointer
+            }
+            .up .anticon{
+                transform: rotate(180deg)
+            }
+        }
+    }
+}
+
+/*公司客户变更modal样式*/
+.crm-company-changeperson-modal{
+    .change-person-item{
+        height:50px;
+        .change-person-name{
+            margin-right:10px;
+        }
     }
 }

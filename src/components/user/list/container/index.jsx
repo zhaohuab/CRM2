@@ -18,6 +18,7 @@ let RadioGroup = Radio.Group;
 const ButtonGroup = Button.Group;
 import "assets/stylesheet/all/iconfont.css";
 
+const confirm = Modal.confirm;
 //导入action方法
 import * as Actions from "../action";
 
@@ -37,14 +38,28 @@ class List extends React.Component {
 
 
     onDelete = () => {
-        let selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
-        let pagination = this.props.$$state.get("pagination").toJS();
-        let searchMap = this.props.$$state.get("searchMap").toJS();
-        this.props.action.onDelete(selectedRowKeys, {
-            pagination,
-            searchMap
+        let that = this
+        confirm({
+            title: '确定要删除吗?',
+            content: '此操作不可逆',
+            okText: '确定',
+            // okType: 'danger',
+            cancelText: '取消',
+            onOk() {
+                let selectedRowKeys = that.props.$$state.get("selectedRowKeys").toJS();
+                let pagination = that.props.$$state.get("pagination").toJS();
+                let searchMap = that.props.$$state.get("searchMap").toJS();
+                that.props.action.onDelete(selectedRowKeys, {
+                    pagination,
+                    searchMap
+                });
+                that.props.action.selectRow([], []);
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
         });
-        this.props.action.selectRow([], []);
+       
     };
     onEdit = () => {
         let rowKey = this.props.$$state.get("selectedRowKeys").toJS()[0];
@@ -83,11 +98,11 @@ class List extends React.Component {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {
                     this.props.action.onSave4Edit(form.getFieldsValue());
-                    form.resetFields();
+                    // form.resetFields();
                 }
                 else {
                     this.props.action.onSave4Add(form.getFieldsValue());
-                    form.resetFields();
+                    // form.resetFields();
                 }
             }
         });
@@ -127,16 +142,13 @@ class List extends React.Component {
         let searchMap = this.props.$$state.get("searchMap").toJS();
         //可能有问题
         pagination = { page: page, pageSize: pageSize };
-        this.setState({ pagination });
         this.props.action.getListData({ pagination, searchMap });
     }
     onPageSizeChange(current, pageSize) {
         let pagination = this.props.$$state.get("pagination").toJS();
         let searchMap = this.props.$$state.get("searchMap").toJS();
-        pagination = { page: pagination.page, pageSize: pageSize };
-        this.setState({ pagination });
+        pagination = { page: 1, pageSize: pageSize };
         this.props.action.getListData({ pagination, searchMap });
-        console.info(`pageSize:${pageSize}`);
     }
     render() {
         let page = this.props.$$state.get("data").toJS();
@@ -151,7 +163,6 @@ class List extends React.Component {
         let editData = this.props.$$state.get("formData").toJS();
         let formFields = this.props.$$state.get("formFields").toJS();
         let pagination = this.props.$$state.get("pagination").toJS();
-        
         let template = this.props.$$state.get("template").toJS();
         let isEdit = this.props.$$state.get("isEdit");
         let enableState = this.props.$$state.get("searchMap").toJS().enableState;
@@ -185,17 +196,11 @@ class List extends React.Component {
                             <i className="iconfont icon-bianji" />编辑
                 </Button> : ""}
 
-                        <Popconfirm
-                            placement="bottom"
-                            title="确认删除吗"
-                            onConfirm={this.onDelete}
-                            okText="是"
-                            cancelText="否"
-                        >
-                            <Button className="default_button">
+                   
+                            <Button className="default_button" onClick={this.onDelete}>
                                 <i className="iconfont icon-shanchu" />删除
                     </Button>
-                        </Popconfirm>
+                     
 
                         {enableState == 1 ? (
                             <Button

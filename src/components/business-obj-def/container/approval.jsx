@@ -27,7 +27,7 @@ class Approval extends React.Component {
     //初始请求数据
     let { $$state, action } = this.props;
     console.log(this.props.newObj)
-    //action.getBusinessObjList();
+    action.getBusinessObjList();
   }
 
   handleCreate = () => {//--保存按钮
@@ -55,6 +55,7 @@ class Approval extends React.Component {
     let editData = $$state.get("editData").toJS();
     //批量渲染card
     let nodeCard = $$state.get("data").toJS().map((item, index) => {
+      debugger;
       return <Card
         data={item}
         operations={item.operations}

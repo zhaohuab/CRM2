@@ -2,14 +2,15 @@ import reqwest from "utils/reqwest";
 import { message } from "antd";
 import { cum as url, doc, baseDir,oppstage ,opportunity,contacts} from "api";
 
+
 //包装发给redux的对象
-const fetchData = (type, payload) => {
+export function fetchData(type, payload){
     return {
         type,
         payload
     };
 };
-
+//遍历表单更改为可传数据
 function transData(searchMap) {
     if (searchMap == null) {
         return searchMap;
@@ -26,6 +27,7 @@ function transData(searchMap) {
 
 //-------导入导出
 const viewLeadShow=(leadVisible)=>{
+    debugger
     return {
         type: "CUSTOMER_LIST_VIEWLEADSHOW",
         payload: {leadVisible}
@@ -67,27 +69,28 @@ const leadEndIngShow=(leadVisible)=>{
 
 
 //控制查询显隐
-const changeVisible = () => {
+export function changeVisible(){
     return {
         type: "CUSTOMER_LIST_CHANGEVISIBLE"
     };
 };
 
 //保存table已选择行数据
-const selectRow = (selectedRows, selectedRowKeys) => {
+export function selectedRowKeys (selectedRowKeys){
     return {
         type: "CUSTOMER_LIST_SELECTROW",
-        payload: { selectedRows, selectedRowKeys }
+        payload: { selectedRowKeys }
     };
 };
 
 //控制新增修改表单显隐
-const showForm = visible => {   
+export function showForm (visible){
     return fetchData("CUSTOMER_LIST_SHOWFORM", { visible });
 };
 
 //删除客户
-const deleteData = (ids, searchMap, pagination) => {
+export function deleteData (ids, searchMap, pagination){
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -102,6 +105,7 @@ const deleteData = (ids, searchMap, pagination) => {
                 }
             },
             data => {
+                debugger
                 dispatch(
                     fetchData("CUSTOMER_LIST_DELETE", {
                         data: data
@@ -112,7 +116,7 @@ const deleteData = (ids, searchMap, pagination) => {
     };
 };
 //启停用功能
-const setEnableState = (ids, state, page, searchMap) => {
+export function setEnableState (ids, state, page, searchMap){
     return dispatch => {
         reqwest(
             {
@@ -120,7 +124,7 @@ const setEnableState = (ids, state, page, searchMap) => {
                 method: "PUT",
                 data: {
                     param: {
-                        ids: ids.join(","),
+                        ids,
                         ...page,
                         searchMap: transData(searchMap),
                         enableState: String(state)
@@ -139,8 +143,38 @@ const setEnableState = (ids, state, page, searchMap) => {
     };
 };
 
+//详情器停用
+export function setDetailEnableState (ids, state, page, searchMap){
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.customer + "/state",
+                method: "PUT",
+                data: {
+                    param: {
+                        ids,
+                        ...page,
+                        searchMap: transData(searchMap),
+                        enableState: String(state)
+                    }
+                }
+            },
+            dataResult => {
+                debugger
+                dispatch({
+                    type:"CUSTOMER_LIST_DETAILENABLESTATE",
+                    data: dataResult,
+                    pagination: page,
+                    state
+                });
+            }
+        );
+    };
+};
+
 //拼接一堆地址
-const appendAddress = data => {
+export function appendAddress(data){
     for (let i = 0; i < data.data.length; i++) {
         data.data[i].address =
             String(data.data[i].provinceName) +
@@ -152,7 +186,7 @@ const appendAddress = data => {
 };
 
 //获取数据、基础查询数据、扩展查询数据
-const getListData = (pagination, searchMap) => {
+export function getListData (pagination, searchMap){
     debugger
     return dispatch => {
         dispatch(fetchData("CUSTOMER_LIST_SAVESEARCHMAP", searchMap));
@@ -167,7 +201,8 @@ const getListData = (pagination, searchMap) => {
                     }
                 }
             },
-            data => {            
+            data => {
+               debugger
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETDATA", {
                         data: data,
@@ -180,7 +215,8 @@ const getListData = (pagination, searchMap) => {
 };
 
 //获取查询条件初始值
-const getEnumData = () => {
+export function getEnumData(){
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -190,7 +226,8 @@ const getEnumData = () => {
                     param: { ids: "1,2,3,4,5,6" }
                 }
             },
-            data => {                
+            data => {
+                debugger
                 dispatch(
                     fetchData("CUSTOMER_LIST_GETENUMDATA", {
                         enumData: data.enumData
@@ -202,7 +239,7 @@ const getEnumData = () => {
 };
 
 //修改客户保存
-const listEditSave = data => {   
+export function listEditSave(data){
     return dispatch => {
         reqwest(
             {
@@ -213,6 +250,7 @@ const listEditSave = data => {
                 }
             },
             data => {
+                ;
                 dispatch({
                     type: "CUSTOMER_LIST_EDITSAVE",
                     data
@@ -223,7 +261,7 @@ const listEditSave = data => {
 };
 
 //新增客户保存
-const listAddSave = data => {
+export function listAddSave(data){
     return dispatch => {
         reqwest(
             {
@@ -234,6 +272,7 @@ const listAddSave = data => {
                 }
             },
             data => {
+                
                 dispatch({
                     type: "CUSTOMER_LIST_ADDSAVE",
                     data
@@ -244,23 +283,22 @@ const listAddSave = data => {
 };
 
 //展示面板，把点击某个客户的所有值，放在redux中
-const showViewForm = (visible, id) => {
+export function showViewForm(visible, id){
+    debugger
     return dispatch => {
-        debugger
         reqwest(
             {
                 url: url.customer + "/" + id,
                 method: "GET"
             },
             data => {
-                ;
+                debugger
                 reqwest(
                     {
                         url: baseDir + `cum/customers/${id}/isfollow`,
                         method: "GET"
                     },
                     state => {
-                        //debugger;
                         dispatch({
                             type: "CUSTOMER_LIST_SHOWVIEWFORM",
                             visible,
@@ -274,41 +312,103 @@ const showViewForm = (visible, id) => {
     };
 };
 
-const hideViewForm = visiable => {
+export function hideViewForm (visiable){
     return fetchData("CUSTOMER_LIST_HIDEVIEWFORM", { visiable });
 };
 
-
-//存放工商信息详细数据 viewData, visible, stateIcbc, isClose
-const customerListInfo = (data, visible, viewData) => {
+//客户升级
+export function cumUpgrade(id){
+    debugger
     return dispatch => {
-        //使用id获取详情发Request
-        dispatch({
-            type: "CUSTOMER_LIST_ICBCDETAILINFO",
-            data,
-            visible,
-            viewData
-        });
+        reqwest(
+            {
+                url:baseDir + `/cum/customers/${id}/submit`,
+                method: "POST"
+            },
+            data => {
+                debugger
+                reqwest(
+                    {
+                        url: baseDir + 'cum/customers/rel',
+                        method: "GET",
+                        data: {
+                            param: {
+                                pageSize: 50,
+                                page: 1,
+                                searchMap:{
+                                    cumId:id
+                                } 
+                            }
+                        }
+                    },
+                    result => {
+                        debugger
+                        dispatch({
+                            type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
+                            index:2,
+                            data:result.data
+                        });
+                    }
+                );
+            }
+        );
     };
-};
+}
 
-const icbcDetailInfo = (data, id, visiable) => {
+
+/**
+ * 
+ * @param {*} data 存放工商信息详细数据
+ * @param {*} viewData  存储表单数据
+ * @param {*} visiable 显示modal
+ */
+
+export function customerListInfo(data,visiable){
+    debugger
     return {
-        type: "CUSTOMER_LIST_ICBCINFODETAIL",
+        type: "CUSTOMER_LIST_ICBCDETAILINFO",
         data,
-        id,
         visiable
     };
 };
 
-const changeStateFn = visiable => {
+//在新增时保存客户工商名称，工商详情的时候,保存名字
+export function saveIcbcName(viewData,visiable){
+    debugger
+    return{
+        type:'CUSTOMER_LIST_SAVEICBCNAME',
+        viewData,
+        visiable
+    }
+}
+//在新增时关闭工商详情
+export function saveIcbcNameCancel(visiable){
+    return{
+        type:'CUSTOMER_LIST_SAVEICBCNAMECANCEL',
+        visiable
+    }
+}
+
+
+//保存工商核实详情数据
+export function icbcDetailInfo(data,visiable){
+    debugger
+    return {
+        type: "CUSTOMER_LIST_ICBCINFODETAIL",
+        data,
+        visiable
+    };
+};
+
+export function changeStateFn(visiable){
     return {
         type: "CUSTOMER_LIST_CHANGESTATEEDIT",
         visiable
     };
 };
-
-const checkedFn = (id, visiable, verifyId) => {
+//详情中工商核实
+export function checkedFn(viewData,select,id, visiable){
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -317,22 +417,37 @@ const checkedFn = (id, visiable, verifyId) => {
                 data: {
                     param: {
                         status: "Y",
-                        companyid: verifyId
+                        companyid: select.companyid,
+                        verifyFullname:select.companyname,
+                        data:viewData
                     }
                 }
             },
             result => {
-                dispatch({
-                    type: "CUSTOMER_LIST_CLEANSELECT",
-                    verifyId,
-                    visiable
-                });
+                debugger
+                // reqwest(
+                //     {
+                //         url: url.customer + "/" + id,
+                //         method: "put",
+                //         data: {
+                //             param: viewData
+                //         }
+                //     },
+                //     data => {
+                //         debugger
+                //          dispatch({
+                //             type: "CUSTOMER_LIST_CLEANSELECT",
+                //             data,
+                //             visiable
+                //         });
+                //     }
+                // );
             }
         );
     };
 };
-
-const checkedCancelFn = (id, visiable) => {
+//详情中取消工商核实
+export function checkedCancelFn(id, visiable){
     return dispatch => {
         reqwest(
             {
@@ -345,6 +460,7 @@ const checkedCancelFn = (id, visiable) => {
                 }
             },
             result => {
+                debugger
                 dispatch({
                     type: "CUSTOMER_LIST_CLEANVERIFYID",
                     visiable
@@ -354,8 +470,39 @@ const checkedCancelFn = (id, visiable) => {
     };
 };
 
+export function hasIcbc(verifyId,visiable){
+    return dispatch => {
+        debugger
+        reqwest(
+            {
+                url: baseDir + "cum/customers/identifications/" + verifyId,
+                method: "GET"
+            },
+            result => {
+                debugger
+                dispatch({
+                    type: "CUSTOMER_LIST_ICBCDETAILMODAL",
+                    visiable,
+                    data:result.data,
+                });
+          
+            }
+        );
+    }
+}
+
+//详情中工商核实详情modal
+// export function icbcDetailModal(icbcInfo1,visiable){
+//     return {
+//         type: "CUSTOMER_LIST_ICBCDETAILMODAL",
+//         visiable
+//     }
+// }
+
+
+
 //点击关注按钮
-const attentionFn = (id, state) => {
+export function attentionFn(id, state){
     return dispatch => {
         reqwest(
             {
@@ -368,6 +515,7 @@ const attentionFn = (id, state) => {
                 }
             },
             state => {
+                ;
                 dispatch({
                     //followState
                     type: "CUSTOMER_LIST_FOLLOWSTATECHANGE",
@@ -379,7 +527,7 @@ const attentionFn = (id, state) => {
 };
 
 //控制modal2状态显隐的
-const modalDetalVisiable = (visiable, verifyId) => {
+export function modalDetalVisiable(visiable, verifyId){
     return dispatch => {
         reqwest(
             {
@@ -397,7 +545,7 @@ const modalDetalVisiable = (visiable, verifyId) => {
     };
 };
 
-const modalDetalVisiableFalse = visiable => {
+export function modalDetalVisiableFalse(visiable){
     return {
         type: "CUSTOMER_LIST_MODALDETALHIDE",
         visiable
@@ -405,7 +553,7 @@ const modalDetalVisiableFalse = visiable => {
 };
 
 //控制modal1状态显隐的
-const customerModal1Show = visible => {
+export function customerModal1Show(visible){
     return {
         type: "CUSTOMER_LIST_MODALSHOW1",
         visible
@@ -413,7 +561,7 @@ const customerModal1Show = visible => {
 };
 
 //关闭modal1
-const closeIcbcVisible1 = visible => {
+export function closeIcbcVisible1(visible){
     return {
         type: "CUSTOMER_LIST_MODALCLOSE1",
         visible
@@ -421,7 +569,7 @@ const closeIcbcVisible1 = visible => {
 };
 
 //点击新建按钮清空viewPanel面板数据
-const addCustomer = data => {
+export function addCustomer(data){
     return dispatch => {
         dispatch({
             type: "CUSTOMER_LIST_ADDCUSTOMER",
@@ -431,7 +579,7 @@ const addCustomer = data => {
 };
 
 //往redux中存基础、扩展查询条件
-const saveSearchMap = data => {
+export function saveSearchMap(data){
     return {
         type: "CUSTOMER_LIST_SEARCHMAP",
         data
@@ -439,7 +587,7 @@ const saveSearchMap = data => {
 };
 
 //往redux中存放编辑新增修改条件
-const editCardFn = changeData => {
+export function editCardFn(changeData){
     return {
         type: "CUSTOMER_LIST_CARDEDITCHANGE",
         data: changeData
@@ -447,7 +595,7 @@ const editCardFn = changeData => {
 };
 
 //点击分配改变负责人信息
-const assignChangeViewData = (viewData) =>{
+export function assignChangeViewData(viewData){  
     return{
         type: "CUSTOMER_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL",
         viewData
@@ -455,7 +603,7 @@ const assignChangeViewData = (viewData) =>{
 }
 
 //点击获取右侧面板相关list
-const getRightPaneltList = (id,JoinPagination,index) =>{  
+export function getRightPaneltList(id,JoinPagination,index){
     return dispatch => {
         reqwest(
             {
@@ -471,6 +619,7 @@ const getRightPaneltList = (id,JoinPagination,index) =>{
                 }
             },
             result => {
+                ;
                 dispatch({
                     type: "CUSTOMER_VIEWPANEL_PANELRIGHT_LIST",
                     data: result,
@@ -481,7 +630,7 @@ const getRightPaneltList = (id,JoinPagination,index) =>{
     };
 }
 //改变详情面板点击左侧tab时切换index
-const changeLeftPanel = (index)=>{
+export function changeLeftPanel(index){
     return{
         type:'CUSTOMER_VIEWPANEL_CHANGEPANELLEFT',
         index
@@ -489,7 +638,8 @@ const changeLeftPanel = (index)=>{
 }
 
 //点击获取左侧面板相关list
-const getLeftPaneltList = (id,JoinPagination,index)=>{
+export function getLeftPaneltList(id,JoinPagination,index){  
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -505,6 +655,7 @@ const getLeftPaneltList = (id,JoinPagination,index)=>{
                 }
             },
             result => {
+                debugger
                 dispatch({
                     type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
                     index,
@@ -516,7 +667,7 @@ const getLeftPaneltList = (id,JoinPagination,index)=>{
 }
 
 //添加参与人
-const setRightPaneltList = (data)=>{
+export function setRightPaneltList(data){
     return{
         type:'CUSTOMER_VIEWPANEL_PANELLEFT_SETLIST',
         data
@@ -524,7 +675,7 @@ const setRightPaneltList = (data)=>{
 }
 
 //删除参与人
-const delRightPaneltList = (id)=>{
+export function delRightPaneltList(id){
     return{
         type:'CUSTOMER_VIEWPANEL_PANELLEFT_DELLIST',
         id
@@ -532,16 +683,14 @@ const delRightPaneltList = (id)=>{
 }
 
 //保存联系人相关对象表单值
-const refContactForm = (changeData)=>{
-   // debugger
+export function refContactForm(changeData){
     return {
         type: "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORM",
         data: changeData
     };
 }
 
-const refContactFormAdd = (data)=>{
-    //debugger
+export function refContactFormAdd(data){
     return {
         type: "CUSTOMER_VIEWPANEL_PANELLEFT_CONTACTSFORMADD",
         data
@@ -549,8 +698,7 @@ const refContactFormAdd = (data)=>{
 }
 
 //新增联系人相关对象
-const clearRefContactsForm = ()=>{
-    //debugger
+export function clearRefContactsForm(){
     return {
         type: "CUSTOMER_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM",
     };
@@ -558,7 +706,7 @@ const clearRefContactsForm = ()=>{
 
 
 //获取最新商机列表
-const getOppList = (JoinPagination,id,index)=>{
+export function getOppList(JoinPagination,id,index){ 
     return dispatch => {
         reqwest(
             {
@@ -574,6 +722,7 @@ const getOppList = (JoinPagination,id,index)=>{
                 }
             },
             result => {
+                ;
                 dispatch({
                     type:'CUSTOMER_VIEWPANEL_PANELLEFT_LIST',
                     data:result.data,
@@ -585,7 +734,7 @@ const getOppList = (JoinPagination,id,index)=>{
 }
 
 //删除一条商机
-const delOpp = (ids,pagination)=>{   
+export function delOpp(ids,pagination){
     return (dispatch) => {
         reqwest({
             url: opportunity.opportunity + '/batch',
@@ -597,7 +746,8 @@ const delOpp = (ids,pagination)=>{
                     searchMap: {}
                 },
             }
-        }, (data) => {        
+        }, (data) => {
+            
             dispatch({
                 type:'CUSTOMER_VIEWPANEL_DELOPP',
                 ids
@@ -607,7 +757,7 @@ const delOpp = (ids,pagination)=>{
 }
 
 //删除一条联系人
-const delContacts = (id,pagination)=>{  
+export function delContacts(id,pagination){
     return (dispatch) => {
         reqwest(
             {
@@ -621,7 +771,8 @@ const delContacts = (id,pagination)=>{
                     }
                 }
             },
-            result => {          
+            result => {
+                
                 dispatch({
                     type: "CUSTOMER_VIEWPANEL_DELCONTACTS",
                     id
@@ -630,6 +781,9 @@ const delContacts = (id,pagination)=>{
         );
     }
 }
+
+
+
 
 
 //======================以下为模板请求方法
@@ -714,42 +868,42 @@ const getDetailFilds = (module) => {//------------自定义详情模板---------
 
 //输出 type 与 方法
 export {
-    getListData,
-    changeVisible,
-    selectRow,
-    showForm,
-    listAddSave,
-    listEditSave,
-    showViewForm,
-    deleteData,
-    setEnableState,
-    getEnumData,
-    saveSearchMap,
-    editCardFn,
-    addCustomer,
-    customerListInfo,
-    customerModal1Show,
-    changeStateFn,
-    hideViewForm,
-    icbcDetailInfo,
-    modalDetalVisiable,
-    checkedFn,
-    checkedCancelFn,
-    modalDetalVisiableFalse,
-    closeIcbcVisible1,
-    attentionFn,
-    assignChangeViewData,
-    getRightPaneltList,
-    getLeftPaneltList,
-    setRightPaneltList,
-    delRightPaneltList,
-    changeLeftPanel,
-    refContactForm,
-    refContactFormAdd,
-    clearRefContactsForm,
-    getOppList,
-    delOpp,
-    delContacts,
+    // getListData,
+    // changeVisible,
+    // selectRow,
+    // showForm,
+    // listAddSave,
+    // listEditSave,
+    // showViewForm,
+    // deleteData,
+    // setEnableState,
+    // getEnumData,
+    // saveSearchMap,
+    // editCardFn,
+    // addCustomer,
+    // customerListInfo,
+    // customerModal1Show,
+    // changeStateFn,
+    // hideViewForm,
+    // icbcDetailInfo,
+    // modalDetalVisiable,
+    // checkedFn,
+    // checkedCancelFn,
+    // modalDetalVisiableFalse,
+    // closeIcbcVisible1,
+    // attentionFn,
+    // assignChangeViewData,
+    // getRightPaneltList,
+    // getLeftPaneltList,
+    // setRightPaneltList,
+    // delRightPaneltList,
+    // changeLeftPanel,
+    // refContactForm,
+    // refContactFormAdd,
+    // clearRefContactsForm,
+    // getOppList,
+    // delOpp,
+    // delContacts,
     
     //==========以下为模板方法
     getLayout,

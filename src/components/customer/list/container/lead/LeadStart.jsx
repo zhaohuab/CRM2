@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../../action";
-
-
+import { baseDir } from "api";
+import reqwest from "utils/reqwest";
 import UpLoad from './UpLoad'
 import {
     Steps,
@@ -26,6 +26,43 @@ class LeadIn extends React.Component {
     }
 
     onLoad=()=>{
+debugger
+        reqwest(
+            {
+                url: baseDir + "/tpub/excels/1/templates/import",
+                method: "POST",
+                data: {
+                    param: {
+                        // searchMap: {
+                        //     searchKey: value
+                        // }
+                    }
+                }
+            },
+            result => {
+                result = result.data;
+                let resultEnd = [];
+                // if (result && result.length) {
+                //     result.forEach(item => {
+                //         resultEnd.push({ id: item.id, name: item.name });
+                //     });
+
+                //     this.setState({
+                //         visible: true,
+                //         keyDownVisiable: true,
+                //         industryDataSearch: resultEnd
+                //     });
+                // } else {
+                //     this.setState({
+                //         keyDownVisiable: true,
+                //         visible: true,
+                //         industryDataSearch: [{ id: null, name: "暂无数据" }]
+                //     });
+                // }
+            }
+        );
+
+
 
     }
 
