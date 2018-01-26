@@ -57,20 +57,6 @@ class List extends Component {
         };
     }
 
-    //修改一条数据方法
-    changeForm(record) {
-        this.props.action.showForm(true, record,true);
-    }
-
-    //删除一条数据方法
-    btnDelete(treeSelect, searchFilter, record) {
-        this.props.action.listdel(record, treeSelect, searchFilter);
-    }
-
-    //启停用按钮
-    btnSetEnablestate(treeSelect, searchFilter, data, state) {
-        this.props.action.setEnablestate(treeSelect, searchFilter, data, state);
-    }
 
     //修改页面取消按钮
     handleCancel() {
@@ -81,20 +67,15 @@ class List extends Component {
     formHandelOk() {
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
-                if (this.state.isEdit) {
+                debugger
+                let isEdit = this.props.$$state.get("isEdit");
+                if (isEdit) {
                     this.props.action.listchange(values);
                 } else {
                     this.props.action.listadd(values);
                 }
             }
         });
-    }
-
-    //点击增加组织
-    addFormBtn() {
-        this.setState({ isEdit: false });
-        this.props.action.showForm(true, {},false);
-        // this.props.action.changeAdd()
     }
 
     //显示每行数据后的返回按钮
@@ -128,10 +109,7 @@ class List extends Component {
         record.push(item);
         this.props.action.listdel(record, item.id);
     }
-    //点击查询按钮
-    searchList(item) {
-        this.props.action.getlistByClickSearch({ searchKey: item });
-    }
+  
     reSizeFn() {
         let h = document.documentElement.clientHeight;
         this.setState({
@@ -161,14 +139,15 @@ class List extends Component {
         let formVisitable = $$state.get("formVisitable");
         let treeLoading = $$state.get("treeLoading");
         let treeSelect = $$state.get("treeSelect");
-        let searchFilter = $$state.get("searchFilter");
         let page = $$state.get("listData").toJS();
         let selectedRows = $$state.get("selectedRows").toJS();
         let selectedRowKeys = $$state.get("selectedRowKeys").toJS();
+        let isEdit = $$state.get("isEdit");
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+        
        // const WrapCard = Form.create()(card);
         let editData = $$state.get("editData").toJS();
         return (
@@ -183,13 +162,7 @@ class List extends Component {
                                 : "auto"
                         }}
                     >
-                        <div className="org-tree-top">
-                            <Search
-                                placeholder="请输入关键字段"
-                                onSearch={this.searchList.bind(this)}
-                            />
-                        </div>
-                        <Spin spinning={treeLoading} tip="正在加载" />
+                 
                         <ListTree
                             edit={this.treeSelectEditFn.bind(this)}
                             add={this.treeSelectAddFn.bind(this)}
@@ -200,19 +173,7 @@ class List extends Component {
                         
                             {selectedRows.length ? (<div className="table-header">
                                 <EditButton
-                                    data={selectedRows}
-                                    setEnablestate={this.btnSetEnablestate.bind(
-                                        this,
-                                        treeSelect,
-                                        searchFilter
-                                    )}
-                                    deleteList={this.btnDelete.bind(
-                                        this,
-                                        treeSelect,
-                                        searchFilter
-                                    )}
                                     returnFn={this.btnBack.bind(this)}
-                                    changeForm={this.changeForm.bind(this)}
                                 />
                                 </div>) : (
                                 ""
@@ -237,7 +198,7 @@ class List extends Component {
                             />
                         </div>
                         <Modal
-                            title={this.state.isEdit?"修改组织":"新增组织"}
+                            title={isEdit?"修改组织":"新增组织"}
                             visible={formVisitable}
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}

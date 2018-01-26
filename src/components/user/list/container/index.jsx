@@ -130,6 +130,22 @@ class List extends React.Component {
         }
         
     }
+
+
+    getDateRender = (text, row, index) => {
+        debugger
+        let date = new Date(text.time);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        return year + "-" + month + "-" + day + "   " + hour + ":" + minute + ":" + second;
+        
+    }
+
+
     onAssignClose = () => {
         this.props.action.closeAssign()
     }
@@ -173,6 +189,17 @@ class List extends React.Component {
         else {
             tpl = template.add;
         }
+        
+        let listTpl = template.list;
+        if(listTpl){
+            for(let i=0;i<listTpl.length;i++){
+                if(listTpl[i].render=="Date"){
+                    listTpl[i].render = this.getDateRender
+                }
+            } 
+        }
+     
+        
         return (
             <div className="user-warpper">
 
@@ -233,7 +260,7 @@ class List extends React.Component {
                     <Table
                     
                         size="middle"
-                        columns={template.list}
+                        columns={listTpl}
                         dataSource={page.data}
                         rowSelection={rowSelection}
                         rowKey="id"

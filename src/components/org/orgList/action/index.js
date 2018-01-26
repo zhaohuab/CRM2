@@ -52,21 +52,18 @@ export function showForm(flag, editData = {},isEdit){
 
 
 const transData = (data) => {
-    if(data.fatherorgId&&data.fatherorgId.key){
-        if(data.fatherorgId.path&&data.fatherorgId.path!=""){
-            data.path = data.fatherorgId.path+","+data.fatherorgId.key;
+  
+        if(data.path&&data.path!=""){
+            data.path = data.path+","+data.fatherorgId;
         }else{
-            data.path = data.fatherorgId.key
+            data.path = data.fatherorgId
         }
-        data.fatherorgId = data.fatherorgId.key;
-    }else{
-        data.fatherorgId = undefined
-    }
 	return data;
 }
 
 //新增数据
 export function listadd(list){
+    debugger
     return(dispatch,getState)=>{
         request({
             url: url.org,   
@@ -75,16 +72,16 @@ export function listadd(list){
             data:{
                 param:transData(list)
             }
-        }, (dataResult) => {
+        }, (result) => {
+        
             // dispatch(fetchData('ORG_LIST_LISTADDSUCCESS',{data:data.data})) 
-            const listData=dataResult;
             request({
                 url: url.orgTree,
                 method:'get',
                 data:{}
             }
             ,(data) => {
-                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData,treeData:data.data}));
+                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: result,treeData:data.data}));
             })
         })
     }
@@ -101,7 +98,7 @@ export function listchange(data){
             data:{
                 param: transData(data)
             }
-        },(dataResult) => {
+        },(result) => {
             request({
                 url: url.org, 
                 method:'get',
@@ -111,7 +108,7 @@ export function listchange(data){
                     }
                 }
             },(data) => {
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data})) 
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:result})) 
             })
         })
     }
@@ -160,17 +157,13 @@ export function listdel(record,treeId,searchFilter){
 
 
 //启停用功能
-export function setEnablestate(treeId,searchFilter,data,state){
-
+export function setEnablestate(treeId,data,state){
     var ids = [];
     let searchMap = {};
     if(treeId!=null&&treeId!=undefined&&treeId!=""){
         searchMap.id = treeId;
     }
-    if(searchFilter!=null&&searchFilter!=undefined&&searchFilter!=""){
-        searchMap.searchKey = searchFilter;
-    }
-    for(let i=0;i<data.length;i++){
+       for(let i=0;i<data.length;i++){
         ids.push(data[i].id);
     }
     return (dispatch) => {
@@ -211,7 +204,6 @@ export function getTreeList(){
 
 //获取一个部门tree信息，变换表格数据
 export function listTreeChange(id){
-    debugger
     return(dispatch,getState)=>{
         request({
             url: url.org,

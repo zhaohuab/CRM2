@@ -20,7 +20,6 @@ class Department extends React.Component {
         this.getData();
     };
     onOk = () => {
-        debugger
         this.setState({ visible: false });
         this.triggerChange(this.state.select);
     };
@@ -81,11 +80,11 @@ class Department extends React.Component {
         return (
             <div className="pepole-refer">
                 <div>部门</div>
-                <div className="pepole-refer-search">
+                {/* <div className="pepole-refer-search">
                     <Search
                         placeholder="请输入关键字"
                     />
-                </div>
+                </div> */}
             </div>
         );
     }

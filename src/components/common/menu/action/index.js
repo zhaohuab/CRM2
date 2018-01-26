@@ -17,6 +17,7 @@ const getMenuData = () => {
 				if(roleId == undefined||roleId==""||roleId=="undefined"){
 					return 
 				}
+				debugger
 				reqwest({
 					url: role.role + "/" + roleId + "/funcres",
 					method: 'GET',
@@ -26,7 +27,7 @@ const getMenuData = () => {
 				}, (result) => {
 					const data = result.data
 					let code = ""
-
+				debugger
 					for (let i = 0; i < data.length; i++) {
 						if (data[i].isDisplay == 2) {
 							code += "\.";

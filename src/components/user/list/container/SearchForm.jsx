@@ -39,7 +39,6 @@ class SearchForm extends React.Component {
         //可能有问题
         searchMap.enableState = enable;
         // this.props.action.getListData({ pagination, searchMap });
-        debugger
         this.props.action.getListTpl({ pagination, searchMap });
         // this.props.action.getListTpl(searchMap.enableState);
     };

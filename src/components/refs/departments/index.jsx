@@ -78,12 +78,12 @@ class Department extends React.Component {
         return (
             <div className="pepole-refer">
                 <div>组织</div>
-                <div className="pepole-refer-search">
+                {/* <div className="pepole-refer-search">
                     <Search
                         placeholder="请输入关键字"
                         onSearch={value => console.log(value)}
                     />
-                </div>
+                </div> */}
             </div>
         );
     }
