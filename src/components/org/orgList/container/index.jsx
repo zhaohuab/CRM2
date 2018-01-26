@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Table, Icon,Button,Form,Input,Checkbox,Col,Modal,Spin} from "antd";
+import {Table, Icon,Button,Form,Input,Checkbox,Col,Modal,Spin,message} from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action/index.js";
@@ -53,6 +53,25 @@ class List extends Component {
         let that = this;
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            let rowKeys = this.props.$$state.get("selectedRowKeys").toJS();
+            let rows = this.props.$$state.get("selectedRows").toJS();
+            if(selectedRowKeys.length>2||selectedRows.length>2){
+                message.error("最多选择一条组织")
+                return 
+            }
+            for(let i=0;i<selectedRowKeys.length;i++){
+                if(rowKeys[0] == selectedRowKeys[i]){
+                    selectedRowKeys.splice(i,1);
+                    break;
+                }
+            }
+            for(let i=0;i<selectedRows.length;i++){
+                if(rows&&rows[0]&&rows[0].id == selectedRows[i].id){
+                    selectedRows.splice(i,1);
+                    break;
+                }
+            }
+         
             this.props.action.selectData({ selectedRows, selectedRowKeys });
         };
     }

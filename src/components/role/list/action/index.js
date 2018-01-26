@@ -1,11 +1,27 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { role as url, func } from 'api';
+import { role as url, func,org } from 'api';
 import funcTreeData from '../container/data'
 
 const showRoleForm = (flag, editData = {}, isEdit) => {
+
 	return (dispatch) => {
-		dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData,isEdit }));
+		if(isEdit){
+			dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData,isEdit }));
+		}else{
+			editData.
+			reqwest({
+			url: org.org+'/',
+			method: "GET",
+			data: {
+			
+			},
+		}, result => {
+			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', {data:result,searchMap}));
+		})
+			dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData,isEdit }));
+		}
+		
 	}
 }
 

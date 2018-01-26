@@ -35,25 +35,23 @@ class ListTree extends Component {
 
     edit(item, e) {
         e.stopPropagation();
-        this.props.edit(item.id);
+        // this.props.edit(item.id);
 
-        this.setState({ isEdit: true });
         let rowData = {};
         let data = this.props.$$state.get("listData").toJS().data;
         for (let i = 0, len = data.length; i < len; i++) {
-            if (rowKey == data[i].id) {
+            if (item.id == data[i].id) {
                 rowData = data[i];
                 break;
             }
         }
-        this.props.action.showForm(true, rowData);
+        this.props.action.showForm(true, rowData,true);
     }
 
     add(item, e) {
         e.stopPropagation();
-        this.setState({ isEdit: false });
-        let rowData = { fatherorgId: item.id, fatherorgName: item.name,path:item.path };
-        this.props.action.showForm(true, rowData);
+        let rowData = { fatherorgId: item.id, fatherorgName: item.name,path:item.path,orgType:3 };
+        this.props.action.showForm(true, rowData,false);
     }
 
     delete(item, e) {
@@ -64,7 +62,7 @@ class ListTree extends Component {
             title: "确定要删除吗?",
             content: "此操作不可逆",
             okText: "是",
-            okType: "danger",
+            // okType: "danger",
             cancelText: "否",
             onOk() {
                 const record = [];
@@ -146,7 +144,7 @@ class ListTree extends Component {
                         <div className="org-tree-main">
                             <Tree
                                 showLine
-                                defaultExpandedKeys={["1015"]}
+                                defaultExpandedKeys={[String(data[0].id)]}
                                 onSelect={this.onSelect.bind(this)}
                             >
                                 {loop(data)}

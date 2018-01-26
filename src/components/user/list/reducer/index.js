@@ -28,6 +28,7 @@ let $$initialState = {
 };
 
 function pageAdd(page, item) {
+	debugger
 	page.total += 1;
 	page.data.unshift(item)
 	page.page = Math.ceil(page.total / page.pageSize);

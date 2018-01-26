@@ -143,6 +143,17 @@ class List extends React.Component {
             this.props.action.getUserListData(selectedRoleId, userPagination, selectedRoleIsPreseted);
         }
     }
+
+    getRowClassName = (aaa,record, index) =>{
+        if(record.id == aaa){
+            return "row_high_light"
+        }
+        return aaa;
+    }
+
+
+
+
     onDispatch = () => {
         let tabIndex = this.props.$$state.get("tabIndex");
         console.info(tabIndex);
@@ -209,6 +220,7 @@ class List extends React.Component {
                                 rowKey="id"
                                 pagination={false}
                                 dataSource={page.data}
+                                rowClassName={this.getRowClassName.bind(this,selectedRoleId)}
                                 rowSelection={rowSelection}
                             />
                         </div>

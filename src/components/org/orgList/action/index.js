@@ -63,7 +63,7 @@ const transData = (data) => {
 
 //新增数据
 export function listadd(list){
-    debugger
+   
     return(dispatch,getState)=>{
         request({
             url: url.org,   
@@ -192,9 +192,10 @@ export function getTreeList(){
         request({
             url: url.orgTree,
             method:'get',
-            data:{}
+            data:{
+                type:1
+            }
         },(data) => {
-            debugger
             dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
         })
         
