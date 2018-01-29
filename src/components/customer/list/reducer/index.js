@@ -102,7 +102,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
             return $$state.merge({
                 viewData: {},
                 formVisitable: action.data,
-                newTypeId:action.typeId
+                newTypeId:action.typeId,
+                viewData:clearObject($$state.get('contactsCardData').toJS())
             });
         //点击选择公司获取工商信息列表    
         case "CUSTOMERCOMPANY_LIST_ICBCDETAILINFO":
@@ -112,7 +113,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
                 icbcVisible: action.visiable,
             });
         //新增时，保存已获取工商信息的客户名称,和表单已赋值的数据
-        case 'CUSTOMERCOMPANYLIST_SAVEICBCNAME':
+        case 'CUSTOMERCOMPANY_LIST_SAVEICBCNAME':
+
         debugger
             return $$state.merge({
                 icbcVisible: action.visiable,
@@ -296,7 +298,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState),a
             delOpp[2].list.data = delOpp[2].list.data.filter((item)=>{
                 return item.id != action.ids
             })
-            
             return $$state.merge({
                 viewDataRelevant:Immutable.fromJS(delOpp)
             });

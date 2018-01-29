@@ -212,7 +212,6 @@ export function listEditSave(data){
                 }
             },
             data => {
-                ;
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
                     data
