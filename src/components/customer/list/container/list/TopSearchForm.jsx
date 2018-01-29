@@ -116,7 +116,7 @@ class ToolForm extends React.Component {
             debugger
             this.props.action.viewLeadShow(true);
         } else if (e.key == "2") {
-          location.href = baseDir + "tpub/excels/1/export?param="+"{\"page\":"+`${page}`+",\"pageSize\":"+`${pageSize}`+",\"searchMap\":"+`${search}`+"}"
+          location.href = baseDir + "tpub/excels/1/export?param="+"{\"page\":"+`${page}`+",\"pageSize\":"+`${pageSize}`+",\"searchMap\":"+`${search}`+",\"mode\":"+2+"}"
 
         }
     }
