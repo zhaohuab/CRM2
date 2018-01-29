@@ -16,7 +16,7 @@ import {
 import "assets/stylesheet/all/iconfont.css";
 
 import debounce from "lodash.debounce";
-import { baseDir } from "api";
+import { baseDir } from "api";import reqwest from "utils/reqwest";
 import reqwest from "utils/reqwest";
 
 const confirm = Modal.confirm;

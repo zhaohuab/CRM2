@@ -44,22 +44,11 @@ class List extends React.Component {
                             onClick={this.slideShow.bind(this, record)}
                             className="crm-pointer"
                         >
-<<<<<<< HEAD
-                            <div className='cum-color'>
-                                <span>{record.name}</span>
-                                {
-                                    record.isGroup == '2' ?
-                                        <i className="iconfont icon-jituan-icon-" />
-                                        : ''
-                                }
-                            </div>
-=======
                             {
                                 record.enableState == 1?
                                 <span  className='cum-color-blue'>{record.name}</span>:
                                 <span  className='cum-color-red'>{record.name}</span>
                             }
->>>>>>> 95b3c2c9ef4b39672c6f5a7165d99b3faeb55856
                         </div>
                     )
                 }
@@ -114,7 +103,7 @@ class List extends React.Component {
 
     //上传数据时，各种参照的数据转换
     trancFn(data) {
-        debugger
+         
         //行业
         if (data.industry && data.industry.id) {
             data.industry = data.industry.id;
@@ -157,7 +146,7 @@ class List extends React.Component {
         if (data.cannelType) {
             data.cannelType = data.cannelType.key
         }
-        debugger
+         
         return data;
     }
 
@@ -165,10 +154,10 @@ class List extends React.Component {
     formHandleOk() {
         let { viewData,newTypeId } = this.props.$$state.toJS();
         this.formRef.props.form.validateFields((err, value) => {
-            debugger
+             
             if (!err) {
                 let values = this.trancFn(viewData);
-                debugger
+                 
                 if (values.id) {//修改
                     this.props.action.listEditSave(values);
                 } else {//新增
@@ -193,6 +182,7 @@ class List extends React.Component {
         return `共 ${total} 条`;
     }
     onPageChange(page, pageSize) {
+         
         let pagination = { page: page, pageSize: pageSize };
         this.props.action.getListData(
             pagination,
@@ -208,6 +198,7 @@ class List extends React.Component {
     }
 
     componentDidMount() {
+         
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
@@ -216,26 +207,31 @@ class List extends React.Component {
 
 
     leadStart() {
-        debugger
         // this.props.action.leadShow(false);
         //this.props.action.leadEndShow(true);
         //this.props.action.leadEndShow(true);
         this.uploadFiles.call(this);
-        let { filesSuccess } = this.props.$$state.toJS();
-        if (filesSuccess) {
-            setTimeout(() => {
-                this.props.action.leadEndView(true, 2);
-            }, 1000)
-        }
-
+         this.props.action.leadEndView(true, 2);
+        // let { filesSuccess } = this.props.$$state.toJS();
+        // if (filesSuccess) {
+        //      
+        //     setTimeout(() => {
+        //         this.props.action.leadEndView(true, 2);
+        //     }, 1000)
+        // }
     }
     leadStartCancel() {
-
-        this.props.action.viewLeadShow(false)
+        this.props.action.viewLeadShow(false);
+        this.props.action.leadEndShow(false);
+        this.props.action.leadEndView(false, 1);
+        this.props.action.fileSuccess(false, {})
     }
     leadEnd() {
+         
         this.props.action.viewLeadShow(false);
-        this.props.action.leadEndShow(false)
+        this.props.action.leadEndShow(false);
+        this.props.action.leadEndView(false, 1);
+        this.props.action.fileSuccess(false, {})
     }
     leadEndCancel() {
         this.props.action.leadEndShow(false)
@@ -243,22 +239,42 @@ class List extends React.Component {
     leadIng() {
         this.props.action.leadEndShow(true)
     }
-
+    //上传之前的验证
+    beforeUpload(file, index, items) {
+         
+        let type = ['.bmp', '.gif', '.jpeg', '.html', '.txt', '.vsd', '.ppt', '.doc', '.xml', '.jpg', '.png', '.xlsx','.xls']
+        let pos = file.name.lastIndexOf('.')
+        let end = file.name.slice(pos)
+        if (type.indexOf(end)>=0) {
+            return true
+        } else {
+            //保存信息写不符合上传类型
+            console.log('文件类型错误')
+            return false
+        }
+    }
     uploadFiles() {
-        debugger
+         
         let { leadFiles } = this.props.$$state.toJS();
-        // files = Array.from(leadFiles);
         let files = Array.prototype.slice.call(leadFiles)
         let proAry = []
-        debugger
+         
+        // files.forEach((file, index, items) => {
+        //     proAry.push(this.upLoad(file));
+        // })
         files.forEach((file, index, items) => {
-            proAry.push(this.upLoad(file));
+             
+            let before = this.beforeUpload(file, index, items);
+            if (typeof before == 'boolean' && before) {
+                proAry.push(this.upLoad(file))
+            }
         })
 
         Promise.all(proAry).then((result) => {
-            debugger
+            
             console.log(12, result)
-            this.props.action.fileSuccess(true,result)
+            if (result.length&&result[0].code == '0') { this.props.action.fileSuccess(true, result,true)}
+
         }, (error) => {
             console.log(34, error)
             this.props.action.fileFail(false)
@@ -284,6 +300,7 @@ class List extends React.Component {
 
 
     render() {
+       
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -296,17 +313,22 @@ class List extends React.Component {
             leadVisible,
             leadEndVisible,
             leadingVisible,
-            viewLeadVisible
+            viewLeadVisible,
+            pagination,
+            searchMap
 
         } = this.props.$$state.toJS();
-
+         ;
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm/>
+                <TopSearchForm 
+                pagination={pagination}
+                searchMap={searchMap}
+                 />
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
@@ -354,9 +376,9 @@ class List extends React.Component {
                 </SlidePanel>
 
                 <Modal title="导入"
-                    destroyOnClose={true}
+                    // destroyOnClose={true}
                     visible={viewLeadVisible}
-                    onOk={this.leadStart.bind(this)}
+                    // onOk={this.leadStart.bind(this)}
                     onCancel={this.leadStartCancel.bind(this)}
                     footer={leadEndVisible ? [
                         <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
@@ -390,9 +412,6 @@ class List extends React.Component {
                         {viewLeadVisible ? <LeadStart /> : null}
                     </div>
                 </Modal>
-
-
-
 
             </div>
         );

@@ -8,7 +8,7 @@ let $$initialState = {
     searchMap: {}, //存放实时输入的表单查询查询条件
     viewData: {}, //获取当前客户信息，view面板使用数据
     pagination: {//list列表页table分页信息
-        pageSize: 20,
+        pageSize: 10,
         page: 1
     },
     moreShow: false, //查询条件显隐,

@@ -57,7 +57,11 @@ class Upload extends React.Component {
     //             contentType: false,
     //             data:formdata
     //         }
-    //     );
+    //     ).then(function(result){
+        //    console.lo(5,result)
+        // }).fail(function(error){
+        //     console.log(6,error)
+        // });
     // }
     
     iconClick(e){

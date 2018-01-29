@@ -109,11 +109,18 @@ class ToolForm extends React.Component {
 
      onMenu(e) {
          debugger
+         let {searchMap,pagination}=this.props.$$state.toJS();
+         let page=pagination.page;
+         let pageSize=pagination.pageSize
+         let search=JSON.stringify(searchMap)
+         
+         debugger
         if (e.key == "1") {
             debugger
             this.props.action.viewLeadShow(true);
         } else if (e.key == "2") {
-            location.href = baseDir + "tpub/excels/1/export"
+          location.href = baseDir + "tpub/excels/1/export?param="+"{\"page\":"+`${page}`+",\"pageSize\":"+`${pageSize}`+",\"searchMap\":"+`${search}`+"}"
+
         }
     }
 
@@ -257,7 +264,7 @@ class ToolForm extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerGroupList
+        $$state:state.customerList
     };
 }
 //绑定action到组件props

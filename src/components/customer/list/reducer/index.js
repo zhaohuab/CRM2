@@ -10,7 +10,7 @@ let $$initialState = {
     searchMap: {}, //存放实时输入的表单查询查询条件
     viewData: {}, //获取当前客户信息，view面板使用数据
     pagination: {//list列表页table分页信息
-        pageSize: 20,
+        pageSize: 10,
         page: 1
     },
     moreShow: false, //查询条件显隐,
@@ -34,13 +34,13 @@ let $$initialState = {
 
     viewLeadVisible: false,
     leadVisible: false,//导入显隐
-    leadEndVisible: false,
-    leadingVisible: false,
-    leadStep: 1,
-    leadFiles: {},
-    filesSuccess: false,
+    leadEndVisible: false,//导入完成
+    leadingVisible: false,//导入中
+    leadStep: 1,//导入步骤
+    leadFiles: {},//导入文件内容
+    filesSuccess: false, 
     filesFail: false,
-    successResult:{}
+    successResult:{} //导入成功后返回结果
 };
 
 function pageAdd(page, item) {
@@ -116,10 +116,13 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 leadFiles: action.payload.files,
             });
-        case 'CUSTOMER_LIST_FILESUCCESS':
+        case 'CUSTOMER_LIST_FILESUCCESS':///???
+        debugger
             return $$state.merge({
                 filesSuccess: action.payload.filesSuccess,
-                successResult:action.payload.result
+                successResult:action.payload.result,
+                leadEndVisible:action.payload.show,
+                // leadStep:action.payload.leadStep
             });
         case 'CUSTOMER_LIST_FILEFAIL':
             return $$state.merge({
@@ -132,6 +135,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
 
         case "CUSTOMERCOMPANY_LIST_GETDATA": //查询各种table数据
+
+        let xx=action.payload.pagination
             debugger
             return $$state.merge({
                 data: action.payload.data,
