@@ -12,29 +12,23 @@ const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-class Child extends React.Component {
+class Commit extends React.Component {
   constructor(props) {
     super(props)
   }
 
   handleSearch = (e) => {
-     
     e.preventDefault();
     let { searchMap, pagination } = this.props.$$state.toJS();
     if (searchMap.status == 'unFinish') {
       this.props.action.getDateUnfinished(pagination, searchMap, searchMap.queryDateKey)
-
     } else if (searchMap.status == 'finish') {
       this.props.action.getDateFinish(pagination, searchMap, searchMap.queryDateKey)
     } else {
-
       this.props.action.getUnfinished(pagination)
     }
-
   }
-
   onState = (e) => {
-     
     let { searchMap, pagination } = this.props.$$state.toJS();
     e.preventDefault();
     if (e.target.value == 'todo') { this.props.action.getTodo(pagination) }
@@ -96,7 +90,8 @@ class Child extends React.Component {
                 label='单据状态'
                 {...formItemLayout}
               >
-                {getFieldDecorator('status')(
+                {getFieldDecorator('status',
+              )(
                   <RadioGroup size="large" onChange={this.onState}>
                     <RadioButton value="unFinish">未完成</RadioButton>
                     <RadioButton value="finish">已完成</RadioButton>
@@ -128,10 +123,8 @@ class Child extends React.Component {
 }
 
 const WrapedCard = Form.create({
-
   mapPropsToFields: (props) => {
     //把redux中的值取出来赋给表单
-     
     let viewData = props.$$state.toJS().searchMap;
     let value = {};
      
@@ -142,7 +135,6 @@ const WrapedCard = Form.create({
     return {
       ...value
     };
-
   },
   onFieldsChange: (props, onChangeFild) => {
      
@@ -159,7 +151,7 @@ const WrapedCard = Form.create({
     }
     props.action.saveSearchMap(viewData);
   }
-})(Child)
+})(Commit)
 
 function mapStateToProps(state, ownProps) {
   return {

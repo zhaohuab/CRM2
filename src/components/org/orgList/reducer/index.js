@@ -1,17 +1,16 @@
 import Immutable from 'immutable'
 
 let $$initialState = {
-	isEdit:false,
+	isEdit: false,
 	listData: [],
 	treeData: [],
 	tabelLoading: false,
 	formVisitable: false,
 	treeLoading: false,
 	selectedRows: [],
-	selectedRowKeys:[],
+	selectedRowKeys: [],
 	treeSelect: undefined,
 	editData: {},
-	searchFilter: undefined,
 };
 function pageAdd(page, item) {
 	page.data.unshift(item)
@@ -28,17 +27,19 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				listData: action.payload,
 				tabelLoading: false,
-				formVisitable: false
+				formVisitable: false,
+				selectedRows: [],
+				selectedRowKeys: [],
 			})
 		case 'ORG_LIST_GETLISTSUCCESSBYCLICKTREE':
-		debugger
 			return $$state.merge({
 				listData: action.payload,
 				tabelLoading: false,
 				treeSelect: action.payload.treeSelect,
 				formVisitable: false,
 				searchFilter: undefined,
-				selectedRows: []
+				selectedRows: [],
+				selectedRowKeys: [],
 			})
 		case 'ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH':
 			return $$state.merge({
@@ -50,10 +51,11 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 
 		case 'ORG_LIST_SHOWFORM':
+		debugger
 			return $$state.merge({
 				formVisitable: action.payload.visible,
 				editData: action.payload.editData,
-				isEdit : action.payload.isEdit
+				isEdit: action.payload.isEdit
 			})
 		case 'ORG_LIST_CHANGEADDCLOSE':
 			return $$state.merge({ formVisitable: false })
@@ -83,10 +85,10 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				selectedRows: action.payload.selectedRows,
 				selectedRowKeys: action.payload.selectedRowKeys,
 			})
-		case 'ORG_LIST_SETFORM' : 
-				return $$state.merge({
-					editData:action.content
-				})  
+		case 'ORG_LIST_SETFORM':
+			return $$state.merge({
+				editData: action.content
+			})
 		default:
 			return $$state;
 	}

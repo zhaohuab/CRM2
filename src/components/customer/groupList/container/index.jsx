@@ -43,14 +43,11 @@ class List extends React.Component {
                             onClick={this.slideShow.bind(this, record)}
                             className="crm-pointer"
                         >
-                            <div className='cum-color'>
-                                <span>{record.name}</span>
-                                {
-                                    record.isGroup =='2'?
-                                    <i className="iconfont icon-jituan-icon-" />
-                                    :''
-                                }
-                            </div>
+                            {
+                                record.enableState == 1?
+                                <span  className='cum-color-blue'>{record.name}</span>:
+                                <span  className='cum-color-red'>{record.name}</span>
+                            }
                         </div>
                     )
                 }  
@@ -58,15 +55,6 @@ class List extends React.Component {
             {
                 title: "客户类型",
                 dataIndex: "typeName"
-            },
-
-            {
-                title: "客户等级",
-                dataIndex: "levelName"
-            },
-            {
-                title: "客户状态",
-                dataIndex: "stateName"
             },
             {
                 title: "行业",
@@ -78,7 +66,7 @@ class List extends React.Component {
             },
             {
                 title: "地址",
-                dataIndex: "address"
+                dataIndex: "street"   
             }
         ];
         const that = this;
@@ -94,6 +82,7 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
+        debugger
         this.props.action.showViewForm(true, record.id);
     }
     //隐藏面版
@@ -102,67 +91,18 @@ class List extends React.Component {
         this.props.action.hideViewForm(false);
     }
 
-    //上传数据时，各种参照的数据转换
-    trancFn(data) {
-        debugger
-        //行业
-        if (data.industry && data.industry.id) {
-            data.industry = data.industry.id;
-        } else {
-            data.industry = "";
-        }
-        //上级客户
-        if (data.parentId) {
-            data.parentId = data.parentId.id;
-        }
-        //城市
-        if (data.province_city_district) {
-            let change = data.province_city_district.result;
-            data.province = change[0];
-            data.city = change[1];
-            data.district = change[2];
-            data.province_city_district = "";
-        }
-        //详细地址
-        if (data.address) {
-            let value = data.address;
-            data["address"] = value.address;
-            data["latlng"] = value.latlng;
-        }
-
-        if(data.ownerUserId){
-            let ownerUserId = data.ownerUserId.id;
-            delete data.ownerUserId
-            data.salesVOs = [{ownerUserId}]
-        }
-
-        if(data.level){
-            data.level=data.level.key
-        }
-
-        if(data.type){
-            data.type=data.type.key
-        }
-
-        if(data.cannelType){
-            data.cannelType=data.cannelType.key
-        }
-        debugger
-        return data;
-    }
-
     //form新增、或者修改
     formHandleOk() {
         let { viewData } = this.props.$$state.toJS();
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
-                let values = this.trancFn(viewData);
+                //let values = this.trancFn(viewData);
                 debugger
-                if (values.id) {//修改
-                    this.props.action.listEditSave(values);
+                if (viewData.id) {//修改
+                    this.props.action.listEditSave(viewData);
                 } else {//新增
-                    this.props.action.listAddSave(values);
+                    this.props.action.listAddSave(viewData);
                 }
             }
         });
@@ -197,24 +137,6 @@ class List extends React.Component {
         );
     }
 
-    //切换面板中tab标题替换
-    tabTitle(index) {
-        let str = ["icon-liebiao", "icon-ditu1", "icon-zhuangtai1"];
-        let className = [
-            "tab-change-item grey",
-            "tab-change-item green",
-            "tab-change-item tab-blue"
-        ];
-        return (
-            <div className={className[index]}>
-                <i className={"iconfont " + str[index]} />
-            </div>
-        );
-    }
-    btnNew(){
-        this.props.action.addCustomer(true);
-    }
-
     componentDidMount() {
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
@@ -223,6 +145,7 @@ class List extends React.Component {
     }
 
     render() {
+        debugger
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -239,9 +162,10 @@ class List extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+       
         return (
             <div className="custom-warpper ">
-                <TopSearchForm btnNew={this.btnNew.bind(this)}/>
+                <TopSearchForm/>
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}

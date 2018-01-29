@@ -62,11 +62,11 @@ class Opportunity extends React.Component {
     render(){
         let {biztypeList} = this.props.$$state.toJS() 
         
-        const loop = data => data.map((item) => {
-            return <Menu.Item key={item.key} >{item.title}</Menu.Item>
+        const loop = data => data.map((item,index) => {
+            return <Menu.Item key={index} style={{width:'200px'}}>{item.title}</Menu.Item>
         });
         const menu = (
-            <Menu  style={{minWidth:'200px'}} onClick={this.btnNew.bind(this)}>
+            <Menu  onClick={this.btnNew.bind(this)}>
                 {loop(biztypeList)}
             </Menu>
           );

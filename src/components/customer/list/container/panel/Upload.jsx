@@ -13,6 +13,7 @@ export default class Upload extends React.Component {
         let proAry = []
         
         files.forEach((file,index,items)=>{
+            debugger
             let before = this.props.beforeUpload(file,index,items);
             if(typeof before == 'boolean' && before){
                 proAry.push(this.upLoad(file))
@@ -20,11 +21,11 @@ export default class Upload extends React.Component {
         })
         Promise.all(proAry).then((result)=>{
             
-            console.log(result)
+            console.log(12,result)
             this.props.success()
         },(error)=>{
             
-            console.log(error)
+            console.log(34,error)
         })
     }
 

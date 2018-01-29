@@ -1,4 +1,4 @@
-import {Modal, Cascader,Select,Form,Row,Col,Input,Button,Icon,Radio,Dropdown,Menu} from "antd";
+import { Modal, Cascader, Select, Form, Row, Col, Input, Button, Icon, Radio, Dropdown, Menu } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
@@ -30,7 +30,7 @@ class SearchForm extends React.Component {
         //装箱过程
         this.props.form.setFieldsValue(this.props.$$state.get("searchMap").toJS());
     }
-  
+
     onEableRadioChange = e => {
         let enable = e.target.value;
         let pagination = this.props.$$state.get("pagination").toJS();
@@ -39,7 +39,6 @@ class SearchForm extends React.Component {
         //可能有问题
         searchMap.enableState = enable;
         // this.props.action.getListData({ pagination, searchMap });
-        debugger
         this.props.action.getListTpl({ pagination, searchMap });
         // this.props.action.getListTpl(searchMap.enableState);
     };
@@ -48,13 +47,13 @@ class SearchForm extends React.Component {
         this.props.action.showForm(true, {}, false);
         this.props.action.getAddTpl();
     }
-    btnSearchOnClick(){
+    btnSearchOnClick() {
         let pagination = this.props.$$state.get("pagination").toJS();
-        
+
         const enableState = this.props.$$state.get("searchMap").toJS().enableState;
         const data = this.props.form.getFieldsValue();
         data.enableState = enableState;
-        this.props.action.getListData({ pagination, searchMap:data });
+        this.props.action.getListData({ pagination, searchMap: data });
     }
 
     render() {
@@ -76,47 +75,47 @@ class SearchForm extends React.Component {
         );
         return (
             <Row type="flex" align="middle" style={{ height: "54px" }}>
-                   
-                        <Col span={4}>
-                        <Form layout="inline">
-                                {getFieldDecorator("searchKey", {})(
-                                    <Input
-                                    placeholder="请输入..."
-                                    onSearch={value => console.log(value)}
-                                />
-                                )}
-                                </Form>
-                        </Col>
-                       
-                        <Col span={2}>
-                            <div className="searchButton" onClick={this.btnSearchOnClick.bind(this)}><Button >搜索</Button></div>
-                        </Col>
-                        
-                        <Col span={14}>
-                            <RadioGroup
-                                onChange={this.onEableRadioChange}
-                                value={enableState}
-                                className="simple-title-color"
+
+                <Col span={4}>
+                    <Form layout="inline">
+                        {getFieldDecorator("searchKey", {})(
+                            <Input
+                                placeholder="请输入..."
+                                onSearch={value => console.log(value)}
+                            />
+                        )}
+                    </Form>
+                </Col>
+
+                <Col span={2}>
+                    <div className="searchButton" onClick={this.btnSearchOnClick.bind(this)}><Button >搜索</Button></div>
+                </Col>
+
+                <Col span={14}>
+                    <RadioGroup
+                        onChange={this.onEableRadioChange}
+                        value={enableState}
+                        className="simple-title-color"
+                    >
+                        <Radio value={1}>启用</Radio>
+                        <Radio value={2}>停用</Radio>
+                    </RadioGroup>
+                </Col>
+
+
+
+
+                <Col span={4}>
+                    <Row type="flex" gutter={15} justify="end">
+                        <Col>
+                            <Button
+                                type="primary"
+                                onClick={this.onAdd.bind(this)}
                             >
-                                <Radio value={1}>启用</Radio>
-                                <Radio value={2}>停用</Radio>
-                            </RadioGroup>
-                        </Col>
-
-                   
-
-
-                        <Col span={4}>
-                                <Row type="flex" gutter={15} justify="end">
-                                    <Col>
-                                        <Button
-                                            type="primary"
-                                            onClick={this.onAdd.bind(this)}
-                                        >
-                                            <i className="iconfont icon-xinjian" />新建
+                                <i className="iconfont icon-xinjian" />新建
                                         </Button>
-                                    </Col>
-{/*                                 
+                        </Col>
+                        {/*                                 
                                     <Col>
                                         <Dropdown.Button
                                             overlay={moreMenu}
@@ -125,9 +124,9 @@ class SearchForm extends React.Component {
                                             更多
                                         </Dropdown.Button>
                                     </Col> */}
-                                </Row>
-                            </Col>
                     </Row>
+                </Col>
+            </Row>
         );
     }
 }
@@ -143,7 +142,7 @@ const WarpSearchForm = Form.create({
     //                 if(onChangeFild[key].value.key == enumData.biztypeList[i].key){
     //                     enumData.stageList = enumData.biztypeList[i].stageList;
     //                 }
-                    
+
     //             }
     //         }
     //     }

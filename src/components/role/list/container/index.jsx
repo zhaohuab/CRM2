@@ -99,8 +99,6 @@ class List extends React.Component {
     }
     //点击编辑按钮事件
     onEdit = (row) => {
-        this.setState({ isEdit: true });
-        debugger
         this.props.action.showRoleForm(true, row, true);
     }
     //保存事件
@@ -143,6 +141,17 @@ class List extends React.Component {
             this.props.action.getUserListData(selectedRoleId, userPagination, selectedRoleIsPreseted);
         }
     }
+
+    getRowClassName = (aaa,record, index) =>{
+        if(record.id == aaa){
+            return "row_high_light"
+        }
+        return aaa;
+    }
+
+
+
+
     onDispatch = () => {
         let tabIndex = this.props.$$state.get("tabIndex");
         console.info(tabIndex);
@@ -150,12 +159,14 @@ class List extends React.Component {
     render() {
         let { $$state } = this.props;
         let roleCardVisible = $$state.get("roleCardVisible");
+        let selectedRoleId = $$state.get("selectedRoleId");
+        
         let WarpRoleCard = Form.create()(RoleCard)
         let page = $$state.get("data").toJS();
         let funcData = $$state.get("funcData").toJS();
-        //页面初始化查询第一条数据。
-        if (page != null && page.data != null && page.data.length > 0 && funcData.length == 0) {
-            this.props.action.getFuncTreeData(page.data[0].id, page.data[0].isPreseted);
+        //如果没有选中的条数，则选中第一条
+        if (page != null && page.data != null && page.data.length > 0 && selectedRoleId == undefined) {
+            this.onNameClick(page.data[0]);
         }
         let editData = $$state.get("editData").toJS();
         let selectedRowKeys = $$state.get("selectedRowKeys").toJS();
@@ -207,6 +218,7 @@ class List extends React.Component {
                                 rowKey="id"
                                 pagination={false}
                                 dataSource={page.data}
+                                rowClassName={this.getRowClassName.bind(this,selectedRoleId)}
                                 rowSelection={rowSelection}
                             />
                         </div>

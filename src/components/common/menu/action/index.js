@@ -26,7 +26,6 @@ const getMenuData = () => {
 				}, (result) => {
 					const data = result.data
 					let code = ""
-
 					for (let i = 0; i < data.length; i++) {
 						if (data[i].isDisplay == 2) {
 							code += "\.";

@@ -217,7 +217,7 @@ class IcbcInfo extends React.Component {
                     viewData["bizRegno"] = item.value;
                 } else if (item.key == "orgCode") {
                     viewData["orgCode"] = item.value;
-                } else if (item.key == "regCapital") {
+                } else if (item.key == "regCapital"){
                     viewData["regCapital"] = item.value;
                 } else if (item.key == "legalRepresent") {
                     viewData["legalRepresent"] = item.value;

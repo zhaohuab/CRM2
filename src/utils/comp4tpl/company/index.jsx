@@ -80,11 +80,11 @@ class yy extends React.Component {
         return (
             <div className="pepole-refer">
                 <div>公司</div>
-                <div className="pepole-refer-search">
+                {/* <div className="pepole-refer-search">
                     <Search
                         placeholder="请输入关键字"
                     />
-                </div>
+                </div> */}
             </div>
         );
     }

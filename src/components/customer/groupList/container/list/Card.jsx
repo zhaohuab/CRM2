@@ -34,8 +34,7 @@ import IcbcInfo from "./IcbcInfo";
 import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
 import CityChioce from "../../../../common/cityChioce/CityChioce"
-import OwnUser from './OwnUser'
-import ResponseDepart from './ResponseDepart'
+//import OwnUser from './OwnUser'
 
 import Int from 'utils/components/int'
 import Float from 'utils/components/float/index.jsx'
@@ -402,7 +401,7 @@ class EditForm extends React.Component {
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "address"
+                                                            "street"
                                                         )(
                                                             
                                                             <MultiFunctionMap
@@ -422,122 +421,6 @@ class EditForm extends React.Component {
                                         <div className="form-title">
                                             负责人信息:
                                         </div>
-                                    </Col>
-                                </Row>
-                                <Row className="row-bottom">
-                                    <Col offset={1}>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>负责人：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "ownerUserId"
-                                                        )(
-                                                            <OwnUser viewData={viewData} disabled={true} width={650} height={300}/>
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>负责部门：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "name"
-                                                        )(
-                                                            <ResponseDepart viewData={viewData}/>
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    </Col>
-                                </Row>
-                                <Row className="row-bottom">
-                                    <Col offset={1}>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>客户类型：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "type"
-                                                        )(
-                                                            <Enum
-                                                                addOptionAll={
-                                                                    "客户类型"
-                                                                }
-                                                                dataSource={
-                                                                    enumData.cannelType
-                                                                }
-                                                            />
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>
-                                                            客户等级：
-                                                        </div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "level"
-                                                        )(
-                                                            <Enum
-                                                                addOptionAll={
-                                                                    "客户等级"
-                                                                }
-                                                                dataSource={
-                                                                    enumData.level
-                                                                }
-                                                            />
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
                                     </Col>
                                 </Row>
                                 <Row className="row-bottom">
