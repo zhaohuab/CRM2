@@ -152,7 +152,6 @@ class GroupAssignList extends React.Component {
 
     //进入页面请求列表、查询方案数据
     componentDidMount(){
-        
         let {pagination} = this.props.$$state.toJS()
         //获取列表数据
         this.props.action.getList(pagination)

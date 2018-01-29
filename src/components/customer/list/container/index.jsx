@@ -44,6 +44,7 @@ class List extends React.Component {
                             onClick={this.slideShow.bind(this, record)}
                             className="crm-pointer"
                         >
+<<<<<<< HEAD
                             <div className='cum-color'>
                                 <span>{record.name}</span>
                                 {
@@ -52,6 +53,13 @@ class List extends React.Component {
                                         : ''
                                 }
                             </div>
+=======
+                            {
+                                record.enableState == 1?
+                                <span  className='cum-color-blue'>{record.name}</span>:
+                                <span  className='cum-color-red'>{record.name}</span>
+                            }
+>>>>>>> 95b3c2c9ef4b39672c6f5a7165d99b3faeb55856
                         </div>
                     )
                 }
@@ -155,7 +163,7 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData } = this.props.$$state.toJS();
+        let { viewData,newTypeId } = this.props.$$state.toJS();
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
@@ -164,7 +172,7 @@ class List extends React.Component {
                 if (values.id) {//修改
                     this.props.action.listEditSave(values);
                 } else {//新增
-                    this.props.action.listAddSave(values);
+                    this.props.action.listAddSave(values,newTypeId);
                 }
             }
         });
@@ -199,26 +207,7 @@ class List extends React.Component {
         );
     }
 
-    //切换面板中tab标题替换
-    tabTitle(index) {
-        let str = ["icon-liebiao", "icon-ditu1", "icon-zhuangtai1"];
-        let className = [
-            "tab-change-item grey",
-            "tab-change-item green",
-            "tab-change-item tab-blue"
-        ];
-        return (
-            <div className={className[index]}>
-                <i className={"iconfont " + str[index]} />
-            </div>
-        );
-    }
-    btnNew() {
-        this.props.action.addCustomer(true);
-    }
-
     componentDidMount() {
-        debugger
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
@@ -295,7 +284,6 @@ class List extends React.Component {
 
 
     render() {
-        debugger
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -318,7 +306,7 @@ class List extends React.Component {
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm btnNew={this.btnNew.bind(this)} />
+                <TopSearchForm/>
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}

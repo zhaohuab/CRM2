@@ -10,85 +10,24 @@ export function fetchData(type, payload){
         payload
     };
 };
-//遍历表单更改为可传数据
-function transData(searchMap) {
-    if (searchMap == null) {
-        return searchMap;
+
+let changeSearchData=(data)=>{
+    for(let key in data){
+        if(key=='isGroup' && data[key] ||key == 'cannelType'&& data[key]|| key == 'enableState'&& data[key]|| key == 'level'&& data[key]|| key == 'state'&& data[key]|| key == 'type'&& data[key]){
+            data[key] = data[key].key
+        }
+        if(key=='province_city_district'&& data[key]){
+            data.province = data[key][0];
+            data.city = data[key][1];
+            data.district = data[key][2];
+            delete data.province_city_district;
+        }
+        if (key == 'industry'&& data[key]) {
+            data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+        }
     }
-    let change = searchMap.province_city_district;
-    if (change) {
-        searchMap.province = change[0];
-        searchMap.city = change[1];
-        searchMap.district = change[2];
-        delete searchMap.province_city_district;
-    }
-    return searchMap;
+    return data
 }
-
-//-------导入导出
-const viewLeadShow=(leadVisible)=>{
-    debugger
-    return {
-        type: "CUSTOMER_LIST_VIEWLEADSHOW",
-        payload: {leadVisible}
-    };
-}
-
-const leadShow=(leadVisible)=>{
-    return {
-        type: "CUSTOMER_LIST_LEADSHOW",
-        payload: {leadVisible}
-    };
-};
-
-const leadEndShow=(leadVisible)=>{
-    return {
-        type: "CUSTOMER_LIST_LEADENDSHOW",
-        payload: {leadVisible}
-    };
-};
-const leadEndView=(leadVisible,leadStep)=>{
-    return {
-        type: "CUSTOMER_LIST_LEADENDVIEW",
-        payload: {leadVisible,leadStep}
-    };
-
-}
-const leadEndIngShow=(leadVisible)=>{
-    return {
-        type: "CUSTOMER_LIST_LEADINGSHOW",
-        payload: {leadVisible}
-    };
-}
-
-const saveFiles =(files)=>{
-    debugger
-    return {
-        type: "CUSTOMER_LIST_SAVEFILES",
-        payload: {files}
-    };
-}
-const fileSuccess=(filesSuccess,result)=>{
-    return {
-        type: "CUSTOMER_LIST_FILESUCCESS",
-        payload: {filesSuccess,result}
-    };
-}
-const fileFail=(filesFail)=>{
-    return {
-        type: "CUSTOMER_LIST_FILEFAIL",
-        payload: {filesFail}
-    };
-}
-
-
-
-
-//-----------
-
-
-
-
 
 
 //控制查询显隐
@@ -123,7 +62,7 @@ export function deleteData (ids, searchMap, pagination){
                     param: {
                         ids: ids.join(","),
                         ...pagination,
-                        searchMap: transData(searchMap)
+                        searchMap: changeSearchData(searchMap)
                     }
                 }
             },
@@ -149,14 +88,14 @@ export function setEnableState (ids, state, page, searchMap){
                     param: {
                         ids,
                         ...page,
-                        searchMap: transData(searchMap),
+                        searchMap: changeSearchData(searchMap),
                         enableState: String(state)
                     }
                 }
             },
             dataResult => {
                 dispatch(
-                    fetchData("CUSTOMER_LIST_GETDATA", {
+                    fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
                         data: dataResult,
                         pagination: page
                     })
@@ -178,7 +117,7 @@ export function setDetailEnableState (ids, state, page, searchMap){
                     param: {
                         ids,
                         ...page,
-                        searchMap: transData(searchMap),
+                        searchMap: changeSearchData(searchMap),
                         enableState: String(state)
                     }
                 }
@@ -208,7 +147,7 @@ export function appendAddress(data){
     return data;
 };
 
-//获取数据、基础查询数据、扩展查询数据
+//获取数据、基础查询数据、扩展查询数据  
 export function getListData (pagination, searchMap){
     debugger
     return dispatch => {
@@ -221,7 +160,7 @@ export function getListData (pagination, searchMap){
                 data: {
                     param: {
                         ...pagination,
-                        searchMap: transData(searchMap)
+                        searchMap: changeSearchData(searchMap)
                     }
                 }
             },
@@ -270,11 +209,10 @@ export function listEditSave(data){
                 url: url.customer + "/" + data.id,
                 method: "put",
                 data: {
-                    param: transData(data)
+                    param: changeSearchData(data)
                 }
             },
             data => {
-                ;
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
                     data
@@ -285,7 +223,9 @@ export function listEditSave(data){
 };
 
 //新增客户保存
-export function listAddSave(data){
+export function listAddSave(data,newTypeId){
+    data.biztypeId = newTypeId
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -296,7 +236,7 @@ export function listAddSave(data){
                 }
             },
             data => {
-                
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_ADDSAVE",
                     data
@@ -341,7 +281,7 @@ export function hideViewForm (visiable){
 };
 
 //客户升级
-export function cumUpgrade(id){//viewDataRelevant:action.data
+export function cumUpgrade(id){
     debugger
     return dispatch => {
         reqwest(
@@ -593,14 +533,36 @@ export function closeIcbcVisible1(visible){
 };
 
 //点击新建按钮清空viewPanel面板数据
-export function addCustomer(data){
+export function addCustomer(data,typeId){
     return dispatch => {
         dispatch({
             type: "CUSTOMERCOMPANY_LIST_ADDCUSTOMER",
-            data
+            data,
+            typeId
         });
     };
 };
+
+
+//点击新增按钮获取业务类型
+export function addNewType(){
+    return dispatch => {
+        debugger
+        reqwest(
+            {
+                url: baseDir + 'cum/customers/roles/biztypes',
+                method: "GET",
+            },
+            result => {
+                debugger
+                dispatch({
+                    type: "CUSTOMERCOMPANY_LIST_NEWEDITTYPE",
+                    typeItem:result.biztypeList,
+                });
+            }
+        );
+    };
+}
 
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data){
@@ -805,144 +767,3 @@ export function delContacts(id,pagination){
         );
     }
 }
-
-
-
-
-
-//======================以下为模板请求方法
-const getLayout = (module) => {//----------------------自定义新增模板--------------
-    debugger;
-    return dispatch => {
-        reqwest(
-            {
-                url: baseDir + `/*/${module}/templates`,
-                method: "GET",
-                data:{
-                    param:{
-                        layoutType:'编辑',
-                        biztypeId:11,
-                        clientType:'PC端',
-                    }
-                }
-            },
-            result => {
-                debugger;
-                console.log('result=================',result)
-                dispatch({
-                    type: "CUSTOMER_CARD_ADD",
-                    layoutFilds: result.mainObject
-                });
-            }
-        );
-    };
-}
-
-
-const getTitle = (module) => {//--------------自定义table表头--------------------
-    //debugger;
-    return dispatch => {
-        reqwest({
-            url:baseDir + `/*/${module}/templates`,
-            method:'GET',
-            data:{
-                param:{
-                    biztypeId:11,
-                    clientType:'PC端',
-                }
-            }
-        },
-        result => {
-           // debugger;
-            dispatch({
-                type: "CUSTOMER_GETTITLE_SUCCESS",
-                titleList: result.mainObject
-            })
-        }
-        )
-    }
-}
-
-const getDetailFilds = (module) => {//------------自定义详情模板---------------
-   // debugger
-    return dispatch => {
-        reqwest(
-            {
-                url: baseDir + `/*/${module}/templates`,
-                method: "GET",
-                data:{
-                    param:{
-                        layoutType:'查看',
-                        biztypeId:11,
-                        clientType:'PC端',
-                    }
-                }
-            },
-            result => {
-               // debugger;
-                dispatch({
-                    type: "CUSTOMER_GETDETAIL_SUCCESS",
-                    detailFilds: result.mainObject,
-                    relationObject: result.relationObject,
-                });
-            }
-        );
-    };
-}
-
-//输出 type 与 方法
-export {
-    // getListData,
-    // changeVisible,
-    // selectRow,
-    // showForm,
-    // listAddSave,
-    // listEditSave,
-    // showViewForm,
-    // deleteData,
-    // setEnableState,
-    // getEnumData,
-    // saveSearchMap,
-    // editCardFn,
-    // addCustomer,
-    // customerListInfo,
-    // customerModal1Show,
-    // changeStateFn,
-    // hideViewForm,
-    // icbcDetailInfo,
-    // modalDetalVisiable,
-    // checkedFn,
-    // checkedCancelFn,
-    // modalDetalVisiableFalse,
-    // closeIcbcVisible1,
-    // attentionFn,
-    // assignChangeViewData,
-    // getRightPaneltList,
-    // getLeftPaneltList,
-    // setRightPaneltList,
-    // delRightPaneltList,
-    // changeLeftPanel,
-    // refContactForm,
-    // refContactFormAdd,
-    // clearRefContactsForm,
-    // getOppList,
-    // delOpp,
-    // delContacts,
-    
-    //==========以下为模板方法
-    getLayout,
-    getTitle,
-    getDetailFilds,
-
-
-
-    //----导入
-    leadShow,
-    leadEndShow,
-    viewLeadShow,
-    leadEndIngShow,
-    saveFiles,
-    fileSuccess,
-    fileFail,
-    leadEndView
-};

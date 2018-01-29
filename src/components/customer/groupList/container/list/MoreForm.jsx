@@ -48,7 +48,7 @@ class MoreForm extends React.Component {
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
-                    <Row>
+                    <Row type='flex' align='middle'>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("name", {})(
@@ -86,18 +86,6 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("isGroup", {})(
-                                    <Enum
-                                        addOptionAll={"集团客户"}
-                                        dataSource={enumDataFake.isGroupEnum}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("industry", {})(
@@ -115,18 +103,6 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("state", {})(
-                                    <Enum
-                                        addOptionAll={"客户状态"}
-                                        dataSource={enumData.state}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("enableState", {})(
