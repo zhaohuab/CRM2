@@ -112,6 +112,8 @@ export default class CkUpload extends React.Component {
             }
 
         })
+
+
     }
 
     render() {

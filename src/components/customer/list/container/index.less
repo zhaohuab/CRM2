@@ -1173,13 +1173,51 @@
 
 
 //导入导出 
+.leadEndBorder{
+    border-bottom: 1px solid #999;
+    border-bottom-width: 80%;
+}
 .leadin{
+    position: relative;
+    height: 120px;
+    .leadStep{
+        margin-top:20px; 
+    }
     .stepboder{
         height: 10px;
         background-color: #333;
-        margin:10px;
+        margin:10px 25px;
+    }
+    .importView{
+        position: absolute;
+        left:20px;
+        bottom: -210px;
+        width:400px;
+        height: 200px;
+        .errorFile{
+            margin: 5px;
+            width: 30px;
+            height: 30px;
+          line-height: 30px;
+           i{
+            font-size: 28px;
+           }
+        }
+        .errorExcel{
+            margin-right: 5px;
+        }
     }
 }
+.ant-modal-footer{
+    padding: 60px 16px 10px 10px;
+    border-top:none
+}
+.ant-modal-body{
+    padding: 15px;
+}
+
+
+//========
 
 
 

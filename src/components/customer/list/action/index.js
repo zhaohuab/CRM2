@@ -26,7 +26,7 @@ function transData(searchMap) {
 }
 
 //-------导入导出
-const viewLeadShow=(leadVisible)=>{
+export function viewLeadShow(leadVisible){
     debugger
     return {
         type: "CUSTOMER_LIST_VIEWLEADSHOW",
@@ -34,47 +34,48 @@ const viewLeadShow=(leadVisible)=>{
     };
 }
 
-const leadShow=(leadVisible)=>{
+export function leadShow(leadVisible){
     return {
         type: "CUSTOMER_LIST_LEADSHOW",
         payload: {leadVisible}
     };
 };
 
-const leadEndShow=(leadVisible)=>{
+export function leadEndShow(leadVisible){
     return {
         type: "CUSTOMER_LIST_LEADENDSHOW",
         payload: {leadVisible}
     };
 };
-const leadEndView=(leadVisible,leadStep)=>{
+export function leadEndView(leadVisible,leadStep){
+    debugger
     return {
         type: "CUSTOMER_LIST_LEADENDVIEW",
         payload: {leadVisible,leadStep}
     };
 
 }
-const leadEndIngShow=(leadVisible)=>{
+export function leadEndIngShow(leadVisible){
     return {
         type: "CUSTOMER_LIST_LEADINGSHOW",
         payload: {leadVisible}
     };
 }
 
-const saveFiles =(files)=>{
+export function saveFiles(files){
     debugger
     return {
         type: "CUSTOMER_LIST_SAVEFILES",
         payload: {files}
     };
 }
-const fileSuccess=(filesSuccess,result)=>{
+export function fileSuccess(filesSuccess,result,show,leadStep){
     return {
         type: "CUSTOMER_LIST_FILESUCCESS",
-        payload: {filesSuccess,result}
+        payload: {filesSuccess,result,show,leadStep}
     };
 }
-const fileFail=(filesFail)=>{
+export function fileFail(filesFail){
     return {
         type: "CUSTOMER_LIST_FILEFAIL",
         payload: {filesFail}
@@ -113,7 +114,7 @@ export function showForm (visible){
 
 //删除客户
 export function deleteData (ids, searchMap, pagination){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -128,7 +129,7 @@ export function deleteData (ids, searchMap, pagination){
                 }
             },
             data => {
-                debugger
+               // debugger
                 dispatch(
                     fetchData("CUSTOMERCOMPANY_LIST_DELETE", {
                         data: data
@@ -937,12 +938,12 @@ export {
 
 
     //----导入
-    leadShow,
-    leadEndShow,
-    viewLeadShow,
-    leadEndIngShow,
-    saveFiles,
-    fileSuccess,
-    fileFail,
-    leadEndView
+    // leadShow,
+    // leadEndShow,
+    // viewLeadShow,
+    // leadEndIngShow,
+    // saveFiles,
+    // fileSuccess,
+    // fileFail,
+    // leadEndView
 };
