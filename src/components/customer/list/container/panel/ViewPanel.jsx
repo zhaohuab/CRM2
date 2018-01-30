@@ -75,6 +75,7 @@ class ViewPanel extends React.Component {
 
     render() {
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1,viewDataRelevant,leftJoinPanelKeys,RightJoinPanelKeys} = this.props.$$state.toJS();
+        
         let defaultList = [
             {
                 uid: -1,
