@@ -140,7 +140,7 @@ class TaskList extends React.Component {
 
   //停启用
   onOpen = (record) => {
-    //debugger
+    debugger
     this.props.action.onOpen(record);
   }
   //立即执行

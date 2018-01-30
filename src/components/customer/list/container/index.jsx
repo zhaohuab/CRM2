@@ -12,7 +12,9 @@ import {
     Icon,
     Row,
     Col,
-    Tabs
+    Tabs,
+    message,
+    Spin
 } from "antd";
 
 let Search = Input.Search;
@@ -45,9 +47,9 @@ class List extends React.Component {
                             className="crm-pointer"
                         >
                             {
-                                record.enableState == 1?
-                                <span  className='cum-color-blue'>{record.name}</span>:
-                                <span  className='cum-color-red'>{record.name}</span>
+                                record.enableState == 1 ?
+                                    <span className='cum-color-blue'>{record.name}</span> :
+                                    <span className='cum-color-red'>{record.name}</span>
                             }
                         </div>
                     )
@@ -84,6 +86,9 @@ class List extends React.Component {
         this.onSelectChange = (selectedRowKeys) => {
             this.props.action.selectedRowKeys(selectedRowKeys);
         };
+        this.state={
+            importVisible:false
+        }
     }
 
     //改变编辑状态
@@ -103,7 +108,7 @@ class List extends React.Component {
 
     //上传数据时，各种参照的数据转换
     trancFn(data) {
-         
+
         //行业
         if (data.industry && data.industry.id) {
             data.industry = data.industry.id;
@@ -145,22 +150,22 @@ class List extends React.Component {
         if (data.cannelType) {
             data.cannelType = data.cannelType.key
         }
-         
+
         return data;
     }
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData,newTypeId } = this.props.$$state.toJS();
+        let { viewData, newTypeId } = this.props.$$state.toJS();
         this.formRef.props.form.validateFields((err, value) => {
-             
+
             if (!err) {
                 let values = this.trancFn(viewData);
-                 
+
                 if (values.id) {//修改
                     this.props.action.listEditSave(values);
                 } else {//新增
-                    this.props.action.listAddSave(values,newTypeId);
+                    this.props.action.listAddSave(values, newTypeId);
                 }
             }
         });
@@ -181,7 +186,7 @@ class List extends React.Component {
         return `共 ${total} 条`;
     }
     onPageChange(page, pageSize) {
-         
+
         let pagination = { page: page, pageSize: pageSize };
         this.props.action.getListData(
             pagination,
@@ -197,7 +202,7 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-         
+
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
@@ -207,31 +212,42 @@ class List extends React.Component {
 
     leadStart() {
         debugger
+        let { leadFiles,filesSuccess} = this.props.$$state.toJS();
+        let files = Array.prototype.slice.call(leadFiles)
         // this.props.action.leadShow(false);
         //this.props.action.leadEndShow(true);
-        //this.props.action.leadEndShow(true);
-        this.uploadFiles.call(this);
-         this.props.action.leadEndView(true, 2);
-        // let { filesSuccess } = this.props.$$state.toJS();
-        // if (filesSuccess) {
-        //      
-        //     setTimeout(() => {
-        //         this.props.action.leadEndView(true, 2);
-        //     }, 1000)
-        // }
+        if(files&&files.length){
+            this.setState({importVisible:true})
+            this.uploadFiles.call(this);
+        }
+        // this.props.action.leadEndView(true, 2);
+        if (filesSuccess) {
+            debugger
+            this.props.action.leadEndView(true);
+            // setTimeout(() => {
+            //     debugger
+            //     this.props.action.leadEndView(true, 2);
+            // }, 1000)
+        }
+
     }
     leadStartCancel() {
+        this.setState({importVisible:false});
         this.props.action.viewLeadShow(false);
         this.props.action.leadEndShow(false);
-        this.props.action.leadEndView(false, 1);
-        this.props.action.fileSuccess(false, {})
+        // this.props.action.leadEndView(false, 1);
+        // this.props.action.fileSuccess(false, {});
+        this.props.action.fileSuccess(false, {},false, 1);
     }
     leadEnd() {
-         
+        this.setState({importVisible:false})
         this.props.action.viewLeadShow(false);
         this.props.action.leadEndShow(false);
-        this.props.action.leadEndView(false, 1);
-        this.props.action.fileSuccess(false, {})
+        this.props.action.fileSuccess(false, {},false, 1);
+        // setTimeout(() => {
+        //     debugger
+        //     this.props.action.leadEndView(false, 1);
+        // }, 1000)
     }
     leadEndCancel() {
         this.props.action.leadEndShow(false)
@@ -241,11 +257,11 @@ class List extends React.Component {
     }
     //上传之前的验证
     beforeUpload(file, index, items) {
-         debugger
-        let type = ['.bmp', '.gif', '.jpeg', '.html', '.txt', '.vsd', '.ppt', '.doc', '.xml', '.jpg', '.png', '.xlsx','.xls']
+        debugger
+        let type = ['.bmp', '.gif', '.jpeg', '.html', '.txt', '.vsd', '.ppt', '.doc', '.xml', '.jpg', '.png', '.xlsx', '.xls']
         let pos = file.name.lastIndexOf('.')
         let end = file.name.slice(pos)
-        if (type.indexOf(end)>=0) {
+        if (type.indexOf(end) >= 0) {
             return true
         } else {
             //保存信息写不符合上传类型
@@ -254,16 +270,15 @@ class List extends React.Component {
         }
     }
     uploadFiles() {
-         debugger
+        debugger
         let { leadFiles } = this.props.$$state.toJS();
         let files = Array.prototype.slice.call(leadFiles)
         let proAry = []
-         
         // files.forEach((file, index, items) => {
         //     proAry.push(this.upLoad(file));
         // })
         files.forEach((file, index, items) => {
-             
+
             let before = this.beforeUpload(file, index, items);
             if (typeof before == 'boolean' && before) {
                 proAry.push(this.upLoad(file))
@@ -271,17 +286,16 @@ class List extends React.Component {
         })
 
         Promise.all(proAry).then((result) => {
-            
+            debugger
             console.log(12, result)
-            if (result.length&&result[0].code == '0') { this.props.action.fileSuccess(true, result,true)}
-
+            if (result.length && result[0].code == '0') { 
+                message.success([result[0].message]);
+                this.props.action.fileSuccess(true, result, true, 2) }
         }, (error) => {
             console.log(34, error)
             this.props.action.fileFail(false)
         })
-
     }
-
     upLoad(file) {
         let formdata = new FormData();
         formdata.append('file', file)
@@ -291,15 +305,15 @@ class List extends React.Component {
                 url: baseDir + "/tpub/excels/1/import",
                 method: "POST",
                 processData: false,
-                contentType: false,
+                contentType: 'text/html;charset=utf-8',
                 data: formdata
             }
-        );
+        )
     }
 
 
     render() {
-       
+
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -317,17 +331,17 @@ class List extends React.Component {
             searchMap
 
         } = this.props.$$state.toJS();
-         ;
+        ;
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm 
-                pagination={pagination}
-                searchMap={searchMap}
-                 />
+                <TopSearchForm
+                    pagination={pagination}
+                    searchMap={searchMap}
+                />
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
@@ -374,10 +388,8 @@ class List extends React.Component {
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
 
-
-              
-               <Modal title="导入"
-               className="lead-cur-import"
+                <Modal title="导入"
+                    className="lead-cur-import"
                     // destroyOnClose={true}
                     visible={viewLeadVisible}
                     // onOk={this.leadStart.bind(this)}
@@ -389,7 +401,9 @@ class List extends React.Component {
                     ] :
                         [
                             <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
-                            <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                            <Button key="submit"
+                            loading={this.state.importVisible}
+                            type="primary" onClick={this.leadStart.bind(this)}>
                                 开始导入
                         </Button>
                         ]}
@@ -414,8 +428,8 @@ class List extends React.Component {
                         {viewLeadVisible ? <LeadStart /> : null}
                     </div>
                 </Modal>
-               </div>
-             
+            </div>
+
         );
     }
 }

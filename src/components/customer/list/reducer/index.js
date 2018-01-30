@@ -116,13 +116,14 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 leadFiles: action.payload.files,
             });
-        case 'CUSTOMER_LIST_FILESUCCESS':///???
+        case 'CUSTOMER_LIST_FILESUCCESS':///???--------
         debugger
             return $$state.merge({
                 filesSuccess: action.payload.filesSuccess,
                 successResult:action.payload.result,
                 leadEndVisible:action.payload.show,
-                // leadStep:action.payload.leadStep
+                leadFiles:{},
+                leadStep:action.payload.leadStep
             });
         case 'CUSTOMER_LIST_FILEFAIL':
             return $$state.merge({
