@@ -89,8 +89,8 @@ class DetailTop extends React.Component {
                                     {viewData.address?<span>{viewData.address}<i className="iconfont icon-shouye-dingwei" /></span>:'暂无地址'}
                                 </Row>
                                 <Row type='flex' align='middle' className="tags">
-                                    <Col span={8}>
-                                          {//-----外面包一个col标签，分成左右两部分
+                                
+                                        {
                                             viewData.typeName ?
                                             <span className='tags-item'><span>{viewData.typeName}</span></span>: ''
                                         }
@@ -102,7 +102,7 @@ class DetailTop extends React.Component {
                                             viewData.stateName ?
                                             <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
                                         }
-                                    </Col>                                     
+                                                                      
                                 </Row>
                                 {/* <Row type='flex' align='middle' className='company'>
                                     {

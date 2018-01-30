@@ -22,13 +22,13 @@ const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
 
 
-import UploadImg from "../list/UploadImg";
-import DetailObject from './DetailObject';//------详情
-import RelevantObject from './RelevantObject';//-----相关
-import DealObject from './DealObject';//-----交易
-import DynamicState from './DynamicState';
-import JoinList from './JoinList';
-import DetailTop from './DetailTop';
+import UploadImg from "../list/UploadImg";//-------
+import DetailObject from './DetailObject';//-------详情
+import RelevantObject from './RelevantObject';//---相关
+import DealObject from './DealObject';//-----------交易
+import DynamicState from './DynamicState';//-------动态
+import JoinList from './JoinList';//---------------参与人
+import DetailTop from './DetailTop';//-------------详情页面抬头
 
 //分配table头部
 const columns = [{

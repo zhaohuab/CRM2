@@ -699,7 +699,7 @@ class EditForm extends React.Component {
                                                             {...formItemLayout}
                                                         >
                                                             {getFieldDecorator(
-                                                                "eaxplayerNo"
+                                                                "taxpayerNo"
                                                             )(
                                                                 <Input
                                                                     type="text"
