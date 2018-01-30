@@ -52,7 +52,7 @@ class GroupAssign extends React.Component {
 
     //点击分配方法
      assignFn(){
-        debugger
+        //debugger
         reqwest(
             {
                 url: baseDir+'sys/orgs/orgTree',
@@ -64,7 +64,7 @@ class GroupAssign extends React.Component {
                 }
             },
             result => {
-                debugger
+                //debugger
                 this.setState({
                     visible:true,
                     groupList:result.data
@@ -92,7 +92,17 @@ class GroupAssign extends React.Component {
         select.forEach((item)=>{
             cumIds.push(item.id)
         })
-        debugger
+
+        //-------------自添加，查看分配时传递参数是否正确，调完删除即可
+        let param =  {
+                        orgIds:this.state.checkedKeys.join(','),
+                        cumIds:cumIds.join(','),
+                        ownerDeptId:'',
+                        ownerUserId:'',
+                        relate:[]
+                    }
+        //-------------
+debugger
         reqwest(
             {
                 url: baseDir + 'cum/groupcustomers/allocation',
@@ -132,7 +142,7 @@ class GroupAssign extends React.Component {
     }
 
     onCheck(keys,keyObj){
-        debugger
+        //debugger
         this.setState({
             checkedKeys:keys.checked
         })

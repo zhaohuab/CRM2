@@ -24,6 +24,7 @@ import UploadImg from "../list/UploadImg";
 class DetailObject extends React.Component {
     render(){
         let {viewData} = this.props.$$state.toJS();
+        let {salesVOs} = viewData;//-----详情下的公司部分
         return(
                 <Collapse
                     defaultActiveKey={["1", "2", "3"]}
@@ -425,80 +426,85 @@ class DetailObject extends React.Component {
                         </Row>
                     </Panel>
                     <Panel key="4" header ='公司' >
-                        <Row className="custom-info">
-                            <Col span={12}>
-                                <Row type="flex" gutter={10} align="middle">
-                                    <Col span={8} className="custom-info-title">
-                                        <span>公司:</span>
-                                    </Col>
-                                    <Col span={16} className="custom-info-content">
-                                        <span> </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row type="flex" gutter={10} align="middle">
-                                    <Col span={8} className="custom-info-title">
-                                        <span>客户等级:</span>
-                                    </Col>
-                                    <Col span={16} className="custom-info-content">
-                                        <span>{viewData.industryName}</span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row type="flex" gutter={10} align="middle">
-                                    <Col span={8} className="custom-info-title">
-                                        <span>客户状态:</span>
-                                    </Col>
-                                    <Col span={16} className="custom-info-content">
-                                        <span>{viewData.industryName}</span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row type="flex" gutter={10} align="middle">
-                                    <Col span={8} className="custom-info-title">
-                                        <span>负责人:</span>
-                                    </Col>
-                                    <Col span={16} className="custom-info-content">
-                                        <span>{viewData.industryName}</span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row type="flex" gutter={10} align="middle">
-                                    <Col span={8} className="custom-info-title">
-                                        <span>负责部门:</span>
-                                    </Col>
-                                    <Col span={16} className="custom-info-content">
-                                        <span>{viewData.industryName}</span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row type="flex" gutter={10} align="middle">
-                                    <Col span={8} className="custom-info-title">
-                                        <span>首次跟进:</span>
-                                    </Col>
-                                    <Col span={16} className="custom-info-content">
-                                        <span>{viewData.industryName}</span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row type="flex" gutter={10} align="middle">
-                                    <Col span={8} className="custom-info-title">
-                                        <span>最近跟进:</span>
-                                    </Col>
-                                    <Col span={16} className="custom-info-content">
-                                        <span>{viewData.industryName}</span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                         </Row>  
+                        {
+                            salesVOs.map(item=>{//-----循环生成各个公司详情
+                                return (
+                                    <Row className="custom-info">
+                                        <Col span={12}>
+                                            <Row type="flex" gutter={10} align="middle">
+                                                <Col span={8} className="custom-info-title">
+                                                    <span>公司:</span>
+                                                </Col>
+                                                <Col span={16} className="custom-info-content">
+                                                    <span>{item.orgName} </span>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Row type="flex" gutter={10} align="middle">
+                                                <Col span={8} className="custom-info-title">
+                                                    <span>客户等级:</span>
+                                                </Col>
+                                                <Col span={16} className="custom-info-content">
+                                                    <span>{item.levelName}</span>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Row type="flex" gutter={10} align="middle">
+                                                <Col span={8} className="custom-info-title">
+                                                    <span>客户状态:</span>
+                                                </Col>
+                                                <Col span={16} className="custom-info-content">
+                                                    <span>{item.stateName}</span>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Row type="flex" gutter={10} align="middle">
+                                                <Col span={8} className="custom-info-title">
+                                                    <span>负责人:</span>
+                                                </Col>
+                                                <Col span={16} className="custom-info-content">
+                                                    <span>{item.ownerUserName}</span>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Row type="flex" gutter={10} align="middle">
+                                                <Col span={8} className="custom-info-title">
+                                                    <span>负责部门:</span>
+                                                </Col>
+                                                <Col span={16} className="custom-info-content">
+                                                    <span>{item.ownerDeptName}</span>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Row type="flex" gutter={10} align="middle">
+                                                <Col span={8} className="custom-info-title">
+                                                    <span>首次跟进:</span>
+                                                </Col>
+                                                <Col span={16} className="custom-info-content">
+                                                    <span>{item.firstFollowTime}</span>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Row type="flex" gutter={10} align="middle">
+                                                <Col span={8} className="custom-info-title">
+                                                    <span>最近跟进:</span>
+                                                </Col>
+                                                <Col span={16} className="custom-info-content">
+                                                    <span>{item.followTime}</span>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Row>  
+                                )
+                            })
+                        }                      
                     </Panel>
-
             </Collapse>
         )
     }
@@ -517,5 +523,4 @@ function mapDispatchToProps(dispatch) {
 }
 //输出绑定state和action后组件
 export default connect(mapStateToProps, mapDispatchToProps)(DetailObject);
-
 

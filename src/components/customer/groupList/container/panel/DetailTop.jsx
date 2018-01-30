@@ -38,9 +38,9 @@ class DetailTop extends React.Component {
         this.props.action.assignChangeViewData(viewData)
     }
 
-
     render(){
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
+
         return(
         <Row className="view-warrper-header">
             <Row className="header-customer">
@@ -72,7 +72,7 @@ class DetailTop extends React.Component {
                                         <div className="checked-iconfont">
                                             <IcbcDetailInfo width={450}/>
                                         </div>
-                                        {/* <div>
+                                        <div>
                                             {viewData.followState ==0 ? (
                                                 <span className="red" onClick={this.attentionFn.bind(this,0)}>
                                                     <i className="iconfont icon-guanzhu1" />未关注
@@ -82,14 +82,15 @@ class DetailTop extends React.Component {
                                                     <i className="iconfont icon-yiguanzhu" />已关注
                                                 </span>
                                             )}
-                                        </div> */}
+                                        </div>
                                     </Row>
                                 </Row>
                                 <Row className="address pointer">
                                     {viewData.address?<span>{viewData.address}<i className="iconfont icon-shouye-dingwei" /></span>:'暂无地址'}
                                 </Row>
                                 <Row type='flex' align='middle' className="tags">
-                                        {
+                                    <Col span={8}>
+                                          {//-----外面包一个col标签，分成左右两部分
                                             viewData.typeName ?
                                             <span className='tags-item'><span>{viewData.typeName}</span></span>: ''
                                         }
@@ -101,6 +102,7 @@ class DetailTop extends React.Component {
                                             viewData.stateName ?
                                             <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
                                         }
+                                    </Col>                                     
                                 </Row>
                                 {/* <Row type='flex' align='middle' className='company'>
                                     {

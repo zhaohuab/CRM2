@@ -82,9 +82,22 @@ const saveEditBusinessObj = (editData, editIndex) => {
 
 //删除业务类型
 const delBusinessObjData = (item, index) => {
-	return {
-		type: "approval_del_data",
-		content: {item, index}
+	return (dispatch, getState) => {
+		reqwest({
+			url: url.approval,
+			method: 'DELETE',
+			data:{
+				param:{
+					ysModelId:item.ysModelId,
+				}
+			}
+		}, (data) => {
+			message.destroy()
+			dispatch(fetchData('approval_del_data', {
+				item, 
+				index
+			}));
+		})
 	}
 }
 

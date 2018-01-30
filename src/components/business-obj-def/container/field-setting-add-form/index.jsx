@@ -12,7 +12,6 @@ import RolesChoosed from './RolesChoosed';
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
-
 function Power(props) {
   let showBool = props.showBool || false;
   return <div className="gutter-row">{showBool ? props.children : null}</div>
@@ -56,22 +55,22 @@ export default class FormList extends React.Component {
   } */
 
   render() {
-
     let { data, menuData, nameFlag, formTypeList } = this.props;
     let src=`./image/${data.type}.png`, alt=`${data.name}`;
         src = require(src+"");//+""是为了解决require引入路径时使用上面表达式发出警告的问题
     let elsformControls = formTypeList.map((item) => {
-      return <div
+      return (
+        <div
         className={data.type == item.type ? "form-control-item form-control-item-checked" : "form-control-item"}
         onClick={this.props.checkFormControls.bind(this, item)}
-      >
-        {item.name}
-        {
-          data.type == item.type ?
-          <i className="iconfont icon-xuanzhong" />:''
-        }
-         
-      </div>
+        >
+          {item.name}
+          {
+            data.type == item.type ?
+            <i className="iconfont icon-xuanzhong" />:''
+          }     
+        </div>
+      )
     });
     let menu =<div></div>;
     if(menuData.length){
