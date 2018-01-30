@@ -26,6 +26,7 @@ function handleMessage(result) {
     let { code ,message,developerMessage } = JSON.parse(response);
     if(developerMessage) {
         console.log(developerMessage);
+        message = developerMessage;
     }
     //message.destroy()
     if(!message && code == codeConstant.Success) {

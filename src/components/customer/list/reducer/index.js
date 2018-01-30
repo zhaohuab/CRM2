@@ -116,6 +116,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 leadFiles: action.payload.files,
             });
+<<<<<<< HEAD
         case 'CUSTOMER_LIST_FILESUCCESS':///???--------
         debugger
             return $$state.merge({
@@ -125,6 +126,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 leadFiles:{},
                 leadStep:action.payload.leadStep
             });
+=======
+>>>>>>> e54a0ddec031b0de6c487070e586793c018b74dd
         case 'CUSTOMER_LIST_FILEFAIL':
             return $$state.merge({
                 filesFail: action.payload.filesFail,
@@ -357,10 +360,29 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         case "CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_CONTACTSFORMADD"://增加联系人对象    
             let addContacts = $$state.get('viewDataRelevant').toJS()
-            debugger
             addContacts[0].list.data.unshift(action.data)
             return $$state.merge({
                 viewDataRelevant: addContacts
+            });
+        case "CUSTOMER_LIST_FILESUCCESS"://添加附件
+            let viewDataRelevant = $$state.get('viewDataRelevant').toJS()
+            viewDataRelevant[3].list.data.unshift(action.payload)
+            return $$state.merge({
+                viewDataRelevant: viewDataRelevant
+            });
+        case "CUSTOMER_LIST_DELETEFILE"://删除附件
+        debugger
+            let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
+            let fileArr = viewDataRelevant2[3].list.data;
+            let file = action.file;
+            for(let i=0,len=fileArr.length;i<len;i++) {
+                if(fileArr[i].id == file.id) {
+                    fileArr.splice(i,1);
+                    break;
+                }
+            }
+            return $$state.merge({
+                viewDataRelevant: viewDataRelevant2
             });
         case "CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM":
 
