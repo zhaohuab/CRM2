@@ -19,7 +19,7 @@ let $$initialState = {
 	selectedUserCardRows: [],
 	tabIndex: 1,
 	funcData,
-	selectedRoleId: "",
+	selectedRoleId: undefined,
 	selectedRoleIsPreseted: 1,
 	userPagination: {
 		pageSize: 20,
@@ -105,7 +105,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			return $$state.merge({
 				roleCardVisible: false,
 				data: pageAdd($$state.get("data").toJS(), action.content),
-				selectedRoleId: action.content.id,
+				//新增成功后清除选中可以在列表默认选中第一条
+				selectedRoleId: undefined,
 				selectedRowKeys: [],
 				selectedRows: [],
 			})

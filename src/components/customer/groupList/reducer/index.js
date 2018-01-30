@@ -3,7 +3,6 @@ import Immutable from "immutable";
 let $$initialState = {
     data: [], //tabel展示数据
     enumData: {},//存储查询条件预制数据
-    //selectedRows: [],
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
     searchMap: {}, //存放实时输入的表单查询查询条件
@@ -21,7 +20,6 @@ let $$initialState = {
 
     icbcInfo1: [], //根据客户工商id查询出来的所有详情信息,用在详情中
     icbcVisible2: false, //工商信息查询详情面板显隐
-    
 
     viewDataRelevant:[],//获取详情相关list面板
     viewDataJoinList:{},//存放参与人列表数据

@@ -33,7 +33,7 @@ class List extends React.Component {
         // this.props.action.getListTpl(searchMap.enableState);
         // this.props.action.getListData({ pagination, searchMap });
         this.props.action.getListTpl({ pagination, searchMap });
-        this.props.action.getEnumData();
+        // this.props.action.getEnumData();
     }
 
 
@@ -76,7 +76,7 @@ class List extends React.Component {
     };
     onClose() {
         this.props.action.showForm(false, {}, false);
-        form.resetFields();
+        // form.resetFields();
     }
     onEnable(enable) {
         return enable => {
@@ -130,6 +130,20 @@ class List extends React.Component {
         }
         
     }
+
+
+    getDateRender = (text, row, index) => {
+        let date = new Date(text.time);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        return year + "-" + month + "-" + day + "   " + hour + ":" + minute + ":" + second;
+    }
+
+
     onAssignClose = () => {
         this.props.action.closeAssign()
     }
@@ -166,6 +180,7 @@ class List extends React.Component {
         let template = this.props.$$state.get("template").toJS();
         let isEdit = this.props.$$state.get("isEdit");
         let enableState = this.props.$$state.get("searchMap").toJS().enableState;
+        debugger
         let tpl;
         if (isEdit) {
             tpl = template.edit;
@@ -173,6 +188,17 @@ class List extends React.Component {
         else {
             tpl = template.add;
         }
+        
+        let listTpl = template.list;
+        if(listTpl){
+            for(let i=0;i<listTpl.length;i++){
+                if(listTpl[i].render=="Date"){
+                    listTpl[i].render = this.getDateRender
+                }
+            } 
+        }
+     
+        
         return (
             <div className="user-warpper">
 
@@ -233,11 +259,14 @@ class List extends React.Component {
                     <Table
                     
                         size="middle"
-                        columns={template.list}
+                        columns={listTpl}
                         dataSource={page.data}
                         rowSelection={rowSelection}
                         rowKey="id"
                         pagination={{
+
+              
+
                             current: pagination.page,
                             size: "large",
                             showSizeChanger: true,

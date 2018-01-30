@@ -88,7 +88,7 @@ class DetailTop extends React.Component {
                                 <Row className="address pointer">
                                     {viewData.address?<span>{viewData.address}<i className="iconfont icon-shouye-dingwei" /></span>:'暂无地址'}
                                 </Row>
-                                <Row type='flex' align='middle'className="tags">
+                                <Row type='flex' align='middle' className="tags">
                                         {
                                             viewData.typeName ?
                                             <span className='tags-item'><span>{viewData.typeName}</span></span>: ''
@@ -102,6 +102,16 @@ class DetailTop extends React.Component {
                                             <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
                                         }
                                 </Row>
+                                {/* <Row type='flex' align='middle' className='company'>
+                                    {
+                                        viewData.salesVOs?viewData.salesVOs.length?
+                                        viewData.map((item)=>{
+                                            return (
+                                                <Col>{item.}</Col>
+                                            )
+                                        })
+                                    }
+                                </Row> */}
                             </Row>
                         </Col>
                     </Row>

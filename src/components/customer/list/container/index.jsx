@@ -44,14 +44,11 @@ class List extends React.Component {
                             onClick={this.slideShow.bind(this, record)}
                             className="crm-pointer"
                         >
-                            <div className='cum-color'>
-                                <span>{record.name}</span>
-                                {
-                                    record.isGroup == '2' ?
-                                        <i className="iconfont icon-jituan-icon-" />
-                                        : ''
-                                }
-                            </div>
+                            {
+                                record.enableState == 1?
+                                <span  className='cum-color-blue'>{record.name}</span>:
+                                <span  className='cum-color-red'>{record.name}</span>
+                            }
                         </div>
                     )
                 }
@@ -155,7 +152,7 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData } = this.props.$$state.toJS();
+        let { viewData,newTypeId } = this.props.$$state.toJS();
         this.formRef.props.form.validateFields((err, value) => {
              
             if (!err) {
@@ -164,7 +161,7 @@ class List extends React.Component {
                 if (values.id) {//修改
                     this.props.action.listEditSave(values);
                 } else {//新增
-                    this.props.action.listAddSave(values);
+                    this.props.action.listAddSave(values,newTypeId);
                 }
             }
         });
@@ -200,24 +197,6 @@ class List extends React.Component {
         );
     }
 
-    //切换面板中tab标题替换
-    tabTitle(index) {
-        let str = ["icon-liebiao", "icon-ditu1", "icon-zhuangtai1"];
-        let className = [
-            "tab-change-item grey",
-            "tab-change-item green",
-            "tab-change-item tab-blue"
-        ];
-        return (
-            <div className={className[index]}>
-                <i className={"iconfont " + str[index]} />
-            </div>
-        );
-    }
-    btnNew() {
-        this.props.action.addCustomer(true);
-    }
-
     componentDidMount() {
          
         this.props.action.getListData(
@@ -228,6 +207,7 @@ class List extends React.Component {
 
 
     leadStart() {
+        debugger
         // this.props.action.leadShow(false);
         //this.props.action.leadEndShow(true);
         //this.props.action.leadEndShow(true);
@@ -262,7 +242,7 @@ class List extends React.Component {
     }
     //上传之前的验证
     beforeUpload(file, index, items) {
-         
+         debugger
         let type = ['.bmp', '.gif', '.jpeg', '.html', '.txt', '.vsd', '.ppt', '.doc', '.xml', '.jpg', '.png', '.xlsx','.xls']
         let pos = file.name.lastIndexOf('.')
         let end = file.name.slice(pos)
@@ -275,7 +255,7 @@ class List extends React.Component {
         }
     }
     uploadFiles() {
-         
+         debugger
         let { leadFiles } = this.props.$$state.toJS();
         let files = Array.prototype.slice.call(leadFiles)
         let proAry = []
@@ -307,7 +287,6 @@ class List extends React.Component {
         let formdata = new FormData();
         formdata.append('file', file)
         //formdata.get("filedata")
-
         return reqwest(
             {
                 url: baseDir + "/tpub/excels/1/import",
@@ -349,7 +328,7 @@ class List extends React.Component {
                 <TopSearchForm 
                 pagination={pagination}
                 searchMap={searchMap}
-                btnNew={this.btnNew.bind(this)} />
+                 />
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
@@ -396,7 +375,10 @@ class List extends React.Component {
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
 
-                <Modal title="导入"
+
+              
+               <Modal title="导入"
+               className="lead-cur-import"
                     // destroyOnClose={true}
                     visible={viewLeadVisible}
                     // onOk={this.leadStart.bind(this)}
@@ -433,8 +415,10 @@ class List extends React.Component {
                         {viewLeadVisible ? <LeadStart /> : null}
                     </div>
                 </Modal>
+               </div>
+             
 
-            </div>
+          
         );
     }
 }

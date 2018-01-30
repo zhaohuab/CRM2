@@ -109,7 +109,7 @@ export function getList(pagination,search,keys){
     return dispatch => {
         reqwest(
             {
-                url:baseDir + 'cum/customersales',
+                url:baseDir + '/cum/groupcustomers',//url:baseDir + '/cum/groupcustomers','cum/customersales'
                 method: "GET",
                 data: {
                     param: {

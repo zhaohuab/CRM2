@@ -34,7 +34,6 @@ class SearchForm extends React.Component {
 
     //点击新增按钮事件
     onAdd() {
-        this.setState({ isEdit: false });
         this.props.action.showRoleForm(true, {}, false);
     }
 

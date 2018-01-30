@@ -34,7 +34,7 @@ class ToolForm extends React.Component {
 
     //点击返回按钮
     btnBack() {
-        this.props.action.selectRow([], []);
+        this.props.action.selectedRowKeys([]);
     }
 
     //点击停用启用
@@ -62,14 +62,12 @@ class ToolForm extends React.Component {
             cancelText: "否",
             onOk() {
                 debugger
-                //let {}
-                const searchMap = that.props.$$state.get("searchMap").toJS();
-                const ids = that.props.$$state.get("selectedRowKeys").toJS();
-                
+                let {searchMap,selectedRowKeys,pagination} = that.props.$$state.toJS();
+                const ids = selectedRowKeys.join(',');
                 that.props.action.deleteData(
                     ids,
                     searchMap,
-                    that.props.$$state.get("pagination").toJS()
+                    pagination
                 );
             },
             onCancel() {
@@ -79,7 +77,7 @@ class ToolForm extends React.Component {
     }
     //点击新建按钮
     btnNew() {
-        this.props.btnNew()
+        this.props.action.addCustomer(true);
     }
     //上下表单控制显隐
     changeVisible() {
@@ -89,7 +87,7 @@ class ToolForm extends React.Component {
     handleSearch(searchMap) {
         debugger
         if (searchMap.industry) {
-            searchMap.industry = searchMap.industry.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+            searchMap.industry = searchMap.industry.id;
         }
         //还差城市条件过滤
         this.props.action.getListData(

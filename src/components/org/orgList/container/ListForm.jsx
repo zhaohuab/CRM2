@@ -17,8 +17,11 @@ class ListForm extends React.Component {
     componentDidMount() {
         //装箱过程
         let { fatherorgId, fatherorgName, path } = this.props.data;
-        this.props.data.fatherorgId = { key: fatherorgId, title: fatherorgName, path };
-
+        // this.props.data.fatherorgId = { key: fatherorgId, title: fatherorgName, path };
+        let isEdit = this.props.$$state.isEdit;
+        if (!isEdit) {
+            this.props.data.orgType = 3
+        }
         this.props.form.setFieldsValue(this.props.data);
     }
 
@@ -73,19 +76,29 @@ class ListForm extends React.Component {
                                     <Input type='text' placeholder="请输入助记码!" />
                                     )}
                             </FormItem>
+                            {getFieldDecorator('fatherorgId', {
+                                rules: [],
+                            })(
+                                <Input style={{ display: 'none' }} type='text' />
+                                )}
+                                {getFieldDecorator('path', {
+                                rules: [],
+                            })(
+                                <Input style={{ display: 'none' }} type='text' />
+                                )}
                             <FormItem
                                 label="上级组织"
                                 {...formItemLayout}
                             >
-                                {getFieldDecorator('fatherorgId', {
+                                {getFieldDecorator('fatherorgName', {
                                     rules: [],
                                 })(
-                                    <Department />
+                                    <Input disabled />
                                     )}
                             </FormItem>
                             <FormItem  {...formItemLayout} label='组织类型'>
                                 {getFieldDecorator('orgType', {
-                                    initialValue:3,
+                                    //initialValue:3,
                                     rules: [{ required: true, message: '请输入组织类型!' }],
                                 })(
                                     <RadioGroup>
@@ -145,8 +158,17 @@ export default connect(mapStateToProps, mapDispatchToProps)(
                 simpleCode: {
                     value: data.simpleCode
                 },
+                // fatherorgId: {
+                //     value: { key: data.fatherorgId, title: data.fatherorgName, path: data.path }
+                // },
                 fatherorgId: {
-                    value: { key: data.fatherorgId, title: data.fatherorgName, path: data.path }
+                    value:  data.fatherorgId
+                },
+                path: {
+                    value:  data.path
+                },
+                fatherorgName: {
+                    value:  data.fatherorgName
                 },
                 respoPerson: {
                     value: data.respoPerson

@@ -11,18 +11,22 @@ export function fetchData(type, payload){
     };
 };
 //遍历表单更改为可传数据
-function transData(searchMap) {
-    if (searchMap == null) {
-        return searchMap;
+let changeSearchData=(data)=>{
+    for(let key in data){
+        if(key == 'cannelType'&& data[key]|| key == 'level'&& data[key]|| key == 'enableState'&& data[key]|| key == 'type'&& data[key]){
+            data[key] = data[key].key
+        }
+        if(key=='province_city_district'&& data[key]){
+            data.province = data[key][0];
+            data.city = data[key][1];
+            data.district = data[key][2];
+            delete data.province_city_district;
+        }
+        if (key == 'industry'&& data[key]) {
+            data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+        }
     }
-    let change = searchMap.province_city_district;
-    if (change) {
-        searchMap.province = change[0];
-        searchMap.city = change[1];
-        searchMap.district = change[2];
-        delete searchMap.province_city_district;
-    }
-    return searchMap;
+    return data
 }
 
 //控制查询显隐
@@ -39,6 +43,7 @@ export function selectedRowKeys (selectedRowKeys){
         payload: { selectedRowKeys }
     };
 };
+
 
 //控制新增表单显隐
 export function showForm (visible){
@@ -61,13 +66,13 @@ export function deleteData (ids, searchMap, pagination){
     return dispatch => {
         reqwest(
             {
-                url: basedir+'cum/groupcustomers/batch',
+                url: baseDir+'cum/groupcustomers/batch',
                 method: "DELETE",
                 data: {
                     param: {
-                        ids: ids.join(","),
+                        ids,
                         ...pagination,
-                        searchMap: transData(searchMap)
+                        searchMap
                     }
                 }
             },
@@ -84,16 +89,17 @@ export function deleteData (ids, searchMap, pagination){
 };
 //启停用功能
 export function setEnableState (ids, state, page, searchMap){
+    debugger
     return dispatch => {
         reqwest(
             {
-                url: url.customer + "/state",
+                url: baseDir + 'cum/groupcustomers/state',
                 method: "PUT",
                 data: {
                     param: {
                         ids,
                         ...page,
-                        searchMap: transData(searchMap),
+                        searchMap,
                         enableState: String(state)
                     }
                 }
@@ -122,7 +128,7 @@ export function setDetailEnableState (ids, state, page, searchMap){
                     param: {
                         ids,
                         ...page,
-                        searchMap: transData(searchMap),
+                        searchMap: changeSearchData(searchMap),
                         enableState: String(state)
                     }
                 }
@@ -164,7 +170,7 @@ export function getListData (pagination, searchMap){
                 data: {
                     param: {
                         ...pagination,
-                        searchMap: transData(searchMap),
+                        searchMap: changeSearchData(searchMap),
                         searchPlan:{}
                     }
                 }
