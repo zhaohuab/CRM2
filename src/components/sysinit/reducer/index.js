@@ -8,7 +8,8 @@ let $$initialState = {
     tenantFields:{},
     template:{
         edit:undefined,
-    }
+    },
+    isEdit:false
 };
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
@@ -49,6 +50,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
         case 'SYSINIT_PAGE_ONEDIT':
             return $$state.merge({
                 current:0,
+                isEdit:true
             })
         default: 
             return $$state;

@@ -18,7 +18,7 @@ class ListForm extends React.Component {
         //装箱过程
         let { fatherorgId, fatherorgName, path } = this.props.data;
         // this.props.data.fatherorgId = { key: fatherorgId, title: fatherorgName, path };
-        let isEdit = this.props.$$state.isEdit;
+        let isEdit = this.props.$$state.get("isEdit");
         if (!isEdit) {
             this.props.data.orgType = 3
         }
@@ -38,6 +38,7 @@ class ListForm extends React.Component {
             },
         };
         const { getFieldDecorator } = this.props.form;
+        let isEdit = this.props.$$state.get("isEdit");
         return (
             <div>
                 {
@@ -101,7 +102,7 @@ class ListForm extends React.Component {
                                     //initialValue:3,
                                     rules: [{ required: true, message: '请输入组织类型!' }],
                                 })(
-                                    <RadioGroup>
+                                    <RadioGroup disabled={isEdit}>
                                         <Radio value={2}>公司</Radio>
                                         <Radio value={3}>部门</Radio>
                                     </RadioGroup>

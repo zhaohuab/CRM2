@@ -6,13 +6,14 @@ const RadioButton = R.Button;
 class RadioGroup extends React.Component {
     
     trans = (dataSource,type) => {
+        debugger
         if(type == "button") {
             return dataSource.map((item) => {
-                return <RadioButton value={item.key} >{item.title}</RadioButton>
+                return <RadioButton disabled={this.props.disabled}  value={item.key} >{item.title}</RadioButton>
             })
         }
         return dataSource.map((item) => {
-            return <R value={item.key} >{item.title}</R>
+            return <R disabled={this.props.disabled} value={item.key} >{item.title}</R>
         })
     }
 

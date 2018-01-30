@@ -170,27 +170,6 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 			}
 		}, () => {
 			dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
-			// reqwest({
-			// 		url: role.role+"/"+roleId+"/funcres",
-			// 		method: 'GET',
-			// 		data: {
-			// 			param: { roleId },
-			// 		}
-			// 	}, (result) => {
-			// 			debugger
-			// 			const code = '.class2{border:1px solid #333; display:none;}'
-			// 			var head = document.head || document.getElementsByTagName('head')[0];
-			// 			var style = document.createElement('style');
-			// 			style.rel = 'stylesheet';
-			// 			style.type = 'text/css';
-			// 			style.id = "sys_func"
-			// 			style.appendChild(document.createTextNode(code));
-			// 			head.appendChild(style);
-			// 			// return style.sheet || style.styleSheet;
-			// 			dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
-			// 	})
-
-
 		})
 	}
 }
