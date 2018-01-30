@@ -417,8 +417,6 @@ class List extends React.Component {
                 </Modal>
                </div>
              
-
-          
         );
     }
 }
