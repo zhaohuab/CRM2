@@ -94,7 +94,7 @@ export function setEnableState (ids, state, page, searchMap){
             },
             dataResult => {
                 dispatch(
-                    fetchData("CUSTOMER_LIST_GETDATA", {
+                    fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
                         data: dataResult,
                         pagination: page
                     })

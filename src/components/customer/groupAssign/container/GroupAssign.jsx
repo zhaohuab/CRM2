@@ -95,7 +95,7 @@ class GroupAssign extends React.Component {
         debugger
         reqwest(
             {
-                url: baseDir + 'cum/customersales/allocation',
+                url: baseDir + 'cum/groupcustomers/allocation',
                 method: "PUT",
                 data: {
                     param: {
