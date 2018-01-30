@@ -99,7 +99,7 @@ class GroupTakeBack extends React.Component {
         debugger
         reqwest(
             {
-                url: baseDir+'cum/customersales/resume',
+                url: baseDir+'cum/groupcustomers/resume',
                 method: "POST",
                 data:{
                     param:{

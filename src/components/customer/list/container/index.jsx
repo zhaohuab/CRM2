@@ -76,7 +76,7 @@ class List extends React.Component {
             },
             {
                 title: "地址",
-                dataIndex: "address"
+                dataIndex: "street"
             }
         ];
         const that = this;
@@ -122,11 +122,10 @@ class List extends React.Component {
             data.district = change[2];
             data.province_city_district = "";
         }
-        //详细地址
-        if (data.address) {
-            let value = data.address;
-            data["address"] = value.address;
-            data["latlng"] = value.latlng;
+        if (data.street && data.street.location) {
+            data.longitude = data.street.location.lng
+            data.latitude = data.street.location.lat
+            data.street = data.street.address
         }
 
         if (data.ownerUserId) {
