@@ -402,7 +402,7 @@ class EditForm extends React.Component {
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "address"
+                                                            "street"
                                                         )(
                                                             
                                                             <MultiFunctionMap

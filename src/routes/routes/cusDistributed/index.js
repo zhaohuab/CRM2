@@ -1,5 +1,5 @@
 
-import distributed from 'components/customer-distributed/container/index.jsx';
+import distributed from 'components/cusDistributed/container/index.jsx';
 const route = {
   path: 'cusDistributed',
   getComponent(nextState, cb) {

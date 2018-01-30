@@ -53,7 +53,11 @@ class Department extends React.Component {
             {
                 url: url.orgTree,
                 method: "get",
-                data: {}
+                data: {
+                    param:{
+                        type:1
+                    }
+                }
             },
             dataResult => {
                 that.setState({ dataSource: dataResult.data });

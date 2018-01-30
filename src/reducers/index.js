@@ -71,7 +71,9 @@ import lead from 'components/lead/list/reducer';
 import quartz from 'components/quartz/list/reducer'
 
 //客户分布
-import cusDistributed from 'components/customer-distributed/reducer';
+import cusDistributed from 'components/cusDistributed/reducer';
+//客户动态
+import cusStatus from 'components/cusStatus/reducer';
 
 let rootReducer = combineReducers({ 
     login, 
@@ -110,7 +112,8 @@ let rootReducer = combineReducers({
     lead,
     quartz,
     cusAssignReducers,
-    approval
+    approval,
+    cusStatus
 });
 
 export { rootReducer };
