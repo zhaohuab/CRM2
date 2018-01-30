@@ -49,11 +49,12 @@ const getFormItem = (getFieldDecorator,field, layout) => {
     }
 }
 const getComponent = (field) => {
+    debugger
     if (field.render == "Input") {
         return <Input placeholder='请输入...' />
     }
     else if (field.render == "Ratio") {
-        return <RadioGroup dataSource={field.enumeration} mapper={field.readWriteFields} disabled/>
+        return <RadioGroup dataSource={field.enumeration} mapper={field.readWriteFields} disabled={field.disabled}/>
     }
     else if (field.render == "Ratio-button") {
         return <RadioGroup type="button" dataSource={field.enumeration} mapper={field.readWriteFields} />
