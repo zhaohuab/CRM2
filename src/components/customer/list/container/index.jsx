@@ -153,7 +153,6 @@ class List extends React.Component {
     formHandleOk() {
         let { viewData,newTypeId } = this.props.$$state.toJS();
         this.formRef.props.form.validateFields((err, value) => {
-             
             if (!err) {
                 let values = this.trancFn(viewData);
                  
@@ -206,7 +205,6 @@ class List extends React.Component {
 
 
     leadStart() {
-        debugger
         // this.props.action.leadShow(false);
         //this.props.action.leadEndShow(true);
         //this.props.action.leadEndShow(true);
@@ -241,7 +239,6 @@ class List extends React.Component {
     }
     //上传之前的验证
     beforeUpload(file, index, items) {
-         debugger
         let type = ['.bmp', '.gif', '.jpeg', '.html', '.txt', '.vsd', '.ppt', '.doc', '.xml', '.jpg', '.png', '.xlsx','.xls']
         let pos = file.name.lastIndexOf('.')
         let end = file.name.slice(pos)
@@ -254,7 +251,6 @@ class List extends React.Component {
         }
     }
     uploadFiles() {
-         debugger
         let { leadFiles } = this.props.$$state.toJS();
         let files = Array.prototype.slice.call(leadFiles)
         let proAry = []
