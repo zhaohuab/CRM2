@@ -27,7 +27,7 @@ const phonebooks = {//通讯录
 }
 
 const approval = {//客户中审批流设置
-    approval: baseDir+'bpub/approvals/processes'
+    approval: baseDir+'bpub/approvals/processes',
 }
 
 const approved = {//审批流

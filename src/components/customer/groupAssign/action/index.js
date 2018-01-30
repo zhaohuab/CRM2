@@ -10,7 +10,7 @@ export function saveSearchMap (value){
 }
 //点击查询方案进行查询并保存查询方案条件
 export function saveSearchPlan(pagination,searchPlan){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -26,7 +26,7 @@ export function saveSearchPlan(pagination,searchPlan){
                 }
             },
             data => {
-                debugger
+                //debugger
                 dispatch(
                     {
                         type:'CUSTOMER_GROUPASSIGNMENT_SEARCHPLAN',
@@ -41,7 +41,7 @@ export function saveSearchPlan(pagination,searchPlan){
 
 //点击查询条件进行查询并保存查询条件
 export function searchMapSearch(pagination,searchMap){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -57,7 +57,7 @@ export function searchMapSearch(pagination,searchMap){
                 }
             },
             data => {
-                debugger
+                //debugger
                 dispatch(
                     {
                         type:'CUSTOMER_GROUPASSIGNMENT_SEARCHMAP',
@@ -105,7 +105,7 @@ export function getSearchList(pagination){
 }
 //获取列表数据，包括根据各种查询信息返回列表数据
 export function getList(pagination,search,keys){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -119,7 +119,7 @@ export function getList(pagination,search,keys){
                 }
             },
             data => {
-                debugger
+                //debugger
                 //点击分配时  从新查列表 再把tablekey过滤掉
                 if(typeof keys == 'object'){
                     dispatch(
