@@ -272,15 +272,15 @@ const onEdit = (values,visible) => {
 }
 
 //停启用 
-const onOpen = (data) => {
+const onOpen = (record) => {
     debugger
     return (dispatch) => {
         reqwest({
-            url: url.quartz + '/' + data.id + '/state',
+            url: url.quartz + '/' + record.id + '/state',
             method: 'put',
             data: {
                 param: {
-                    enableStatus: data.enableStatus,
+                    enableStatus: record.enableStatus,
                     ...pagination
                 }
             }

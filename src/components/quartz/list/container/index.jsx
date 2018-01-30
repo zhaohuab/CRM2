@@ -55,8 +55,6 @@ class List extends React.Component {
         this.props.action.onAdd(values, false);
       }
     });
-
-
   }
 
   //新建分组点击保存
