@@ -1,10 +1,12 @@
 import  React, { Component } from 'react';
 import { Table, Icon,Button ,Form,  Input,  Checkbox,Col,Modal,Spin} from 'antd';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 const ButtonGroup = Button.Group;
 const confirm = Modal.confirm;
 import './index.less'
-
-export default class EditButtons extends Component {
+import * as Actions from "../action/index.js";
+class EditButtons extends Component {
    returnBack(){
      this.props.returnFn()
    }
@@ -27,28 +29,28 @@ export default class EditButtons extends Component {
         },
      });
    }
- 
-   setEnablestate(data,state){
-        this.props.setEnablestate(data,state);
-   }
+
+    //启停用按钮
+    setEnablestate(state) {
+        let treeSelect = this.props.$$state.get("treeSelect");
+        let selectedRows = this.props.$$state.get("selectedRows").toJS();
+        this.props.action.setEnablestate(treeSelect,selectedRows, state);
+    }
+
     render(){
+        let selectedRows = this.props.$$state.get("selectedRows").toJS();
         return(
             <div className='actionButtons-waprper'>
                 <div className='actionButtons-left'>
                     <div className='actionButtons-chioce'>
-                        已选择{this.props.data.length}条
+                        已选择{selectedRows.length}条
                     </div> 
                     <div className='actionButtons'>
                         <Button onClick={this.returnBack.bind(this)} className='returnbtn-class'> <i className='iconfont icon-fanhui'></i> 返回</Button>
-                        <Button className='returnbtn-class' onClick={this.deleteList.bind(this,this.props.data)}><i className='iconfont icon-shanchu'></i>删除</Button>
-                        {this.props.data.length===1?
-                        <Button onClick={this.changeForm.bind(this,this.props.data[0])} className='returnbtn-class'> <i className='iconfont icon-bianji'></i>编辑</Button>
-                        :''}
                         <ButtonGroup className='returnbtn-class'>
-                            <Button  onClick={this.setEnablestate.bind(this,this.props.data,1)}><i className='iconfont icon-qiyong'></i>启用</Button>
-                            <Button onClick={this.setEnablestate.bind(this,this.props.data,2)}><i className='iconfont icon-tingyong'></i>停用</Button>
+                            <Button  onClick={this.setEnablestate.bind(this,1)}><i className='iconfont icon-qiyong'></i>启用</Button>
+                            <Button onClick={this.setEnablestate.bind(this,2)}><i className='iconfont icon-tingyong'></i>停用</Button>
                         </ButtonGroup>
-                        
                     </div> 
                 </div>
                 <div  className='actionButtons-right'>
@@ -58,3 +60,17 @@ export default class EditButtons extends Component {
         )
     }
 }
+
+
+export default connect(
+    state => {
+        return {
+            $$state: state.orgReducers
+        };
+    },
+    dispatch => {
+        return {
+            action: bindActionCreators(Actions, dispatch)
+        };
+    }
+)(EditButtons);

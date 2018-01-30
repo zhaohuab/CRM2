@@ -1,17 +1,5 @@
-var data = [
-    
-        { name: "拉萨", value: 260,adress:'西藏' },
-        { name: "云浮", value: 24,adress:'云南'  },
-        { name: "宜昌", value: 130 ,adress:'江西' },
-        { name: "北京市", value: 273 ,adress:'湖北' },
-        { name: "天津市", value: 279 ,adress:'西藏' },
-        { name: "河南省", value: 130 ,adress:'江西' },
-        { name: "湖南省", value: 273 ,adress:'湖北' },
-        { name: "台湾省", value: 279 ,adress:'西藏' }
-        
-    ];
-    
-    var geoCoordMap = {
+
+const geoCoordMap = {//问题：五个自治区以及港澳台的名字后台怎么存的。
         海门: [121.15, 31.89],
         鄂尔多斯: [109.781327, 39.608266],
         招远: [120.38, 37.35],
@@ -202,71 +190,128 @@ var data = [
         合肥: [117.27, 31.86],
         武汉: [114.31, 30.52],
         大庆: [125.03, 46.58],
-        北京市: [116.4,39.9],
-        天津市: [117.2,39.12],
-        山西省: [112.55,37.87],
-        内蒙古	:[111.73,40.83],
-        辽宁省: [123.43,41.8],
-        黑龙江省:[126.53,45.8],
+        北京市: [116.410018,39.916319],
+        天津市: [117.242496,38.938964],
+        山西省: [112.022263,37.318679],
+        内蒙古	:[113.953979,43.7799111],
+        辽宁省: [122.563914,40.7749991],
+        黑龙江省:[125.728249,47.345029],
         上海市: [121.47,31.23],
-        江苏省: [118.78,32.07],
-        浙江省: [120.15,30.28],
-        安徽省: [117.25,31.83],
-        福建省: [119.3,26.08],
-        江西省: [115.85,28.68],
-        山东省: [116.98,36.67],
-        河南省: [113.62,34.75],
-        湖北省: [114.3,30.6],
-        广东省: [113.27,23.13],
-        广西:   [108.37,22.82],
-        海南省: [110.32,20.03],
+        江苏省: [119.100623,33.655801],
+        浙江省: [120.057282,29.112187],
+        安徽省: [116.672179,31.411762],
+        福建省: [117.481662,25.564096],
+        江西省: [114.611682,27.746066],
+        山东省: [118.438321,36.081612],
+        河南省: [112.829444,33.984099],
+        河北省: [114.611682,37.560678],
+        湖北省: [111.005812,31.348625],
+        湖南省: [110.858634,27.746066],
+        广东省: [114.464504,24.018968],
+        广西:   [108.209423,24.086549],
+        海南省: [109.607617,18.993623],
         重庆市: [106.55,29.57],
-        四川省: [104.07,30.67],
-        贵州省: [106.63,26.65],
-        云南省: [102.72,25.05],
-        西藏:   [91.13,29.65],
-        陕西省: [108.93,34.27],
-        甘肃省: [103.82,36.07],
-        青海省: [101.78,36.62],
-        宁夏:   [106.28,38.47],
-        新疆:	  [87.62,43.82],
-        香港:   [114.08,22.2],
-        澳门:   [113.33,22.13],
-        台湾省:   [121.5,25.03]
+        四川省: [100.487158,30.020989],
+        贵州省: [105.707391,26.296091],
+        云南省: [100.188201,24.356514],
+        西藏:   [84.812661,32.111325],
+        陕西省: [107.790884,34.097055],
+        甘肃省: [103.357136,35.369063],
+        青海省: [94.379255,36.148847],
+        宁夏:   [105.693593,37.248852],
+        新疆:	  [82.016271,40.998401],
+        香港:   [114.105756,22.403585],
+        澳门:   [113.535441,22.202422],
+        台湾:   [120.797773,23.655172],
+        台湾省: [120.797773,23.655172]
+    };
 
-    };
-    
-    var convertData = function(data) {
-        var res = [];
-        for (var i = 0; i < data.length; i++) {
-            var geoCoord = geoCoordMap[data[i].name];
-            if (geoCoord) {
-                res.push({
-                    name: data[i].name+':'+data[i].value,
-                    value: geoCoord.concat(data[i].value),
-                });
-            }
+
+const convertData = function(data) {//处理data
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+        var geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+            res.push({
+                name: data[i].name,
+                value: geoCoord.concat(data[i].value),
+                //selected:true
+            });
         }
-        return res;
+    }
+    debugger;
+    return res;
+};
+
+const getData = (data) => {
+    let proObj={},//当前角色下所有省份名称和客户数量
+        proArr=[],//省份data
+        proLength=0,//proObj的长度
+        cityObj={},//当前角色下所有市区名称和客户数量
+        cityArr=[],//市区data
+        cityLength=0,//cityObj的长度 
+        dataObj={};//抛出的数据，包括series中的data、显示的区域标识(国/省/市)、放大倍数，区域名称
+    data.list.forEach(listItem=>{
+        listItem.province.forEach(proItem=>{
+            if(proItem.id!='zero'){
+                proObj[proItem.name]?proObj[proItem.name]+=proItem.num : proObj[proItem.name]=proItem.num;
+                proItem.city.forEach(cityItem=>{
+                    cityObj[cityItem.name]?cityObj[cityItem.name]+=proItem.num : cityObj[cityItem.name]=cityItem.num;
+                }) 
+            }          
+        })
+    })
+    for(let key in proObj) {
+        proLength++;
+        let obj = {};
+        obj.name = key;
+        obj.value = proObj[key];
+        proArr.push(obj);
     };
+    for(let key in cityObj) {
+        cityLength++;
+        let obj = {};
+        obj.name = key;
+        obj.value = cityObj[key];
+        cityArr.push(obj);
+    };
+    if(proLength>1){
+        dataObj.zoom=5;
+        dataObj.name='中国';
+        dataObj.flag='country';
+        dataObj.data=proArr;
+    }else if(proLength==1&&cityLength>1){
+        dataObj.zoom=7;
+        dataObj.flag='province';
+        dataObj.data=cityArr;
+        dataObj.name=proArr[0].name;
+    }else{
+        dataObj.zoom=10;
+        dataObj.flag='city';
+        dataObj.data=cityArr;
+        dataObj.name=cityArr[0].name;
+    }
+    return dataObj; 
+}
+
+const getOption = (data) =>{//这个data是直接从后台获取到的原始数据结构，没有在index.jsx中做任何处理
+    let dataSource=getData(data);
+    let center = dataSource.flag=='country'?[104.114129, 37.550339]:geoCoordMap[dataSource.name];//地图展示的经纬度中心;
+    //***********注意：获取center时，仅仅是geoCoordMap中含有的省市才可以，如果没有就会报错，现在市不全面，县区一个都没有
     let option = {
-        title: {
-            text: '客户分布',
-            subtext: '张婷',
-            left: 'center'
-        },
-        backgroundColor: "#404a59",
+       // backgroundColor: "#404a59",
         tooltip: {
-            trigger: "item"
+            trigger: "item",
+            formatter:function(params){
+                return '分布区域'+'：'+params.name+'<br/>'+'客户数量'+'：'+params.value[2]
+            }
         },
         bmap: {
-            center: [104.114129, 37.550339],
-            zoom: 5,
+            center: center,
+            zoom: dataSource.zoom,
             roam: true,
             mapStyle: {
-                styleJson: [
-                   
-                       
+                 styleJson: [               
                   
                         {//铁路
                             "featureType": "railway",
@@ -352,22 +397,22 @@ var data = [
                             "stylers": {
                                 "visibility": "off"
                             }
-                        },
-                   
+                        },  
                         {//建筑
                             "featureType": "building",
                             "elementType": "all",
                             "stylers": {
                                 "color": "#1a5787"
                             }
+                           
                         },
-                     /*    {//标签
+                        {//标签
                             "featureType": "label",
                             "elementType": "all",
                             "stylers": {
-                                "color": "#32cd99"
+                                 "color": "#bbb"
                             }
-                        } */
+                        }            
                 ]
             }
         },
@@ -381,49 +426,45 @@ var data = [
             },
             {
                 show: false,
-                calculable: true,
-                dimension: 2,
-                seriesIndex: [1],
-                inRange: {
-                    symbolSize: [40, 60]
+                calculable: true,//是否显示拖拽用的手柄
+                dimension: 2,//数组的第几列显示在视觉元素上
+                seriesIndex: [1],//指定取哪个系列的数据，即哪个系列的 series.data。
+                inRange: {//在选中范围内 的视觉元素
+                    symbolSize: [40, 60],//图元大小
+                    //color:['#f00','#f00']//图元颜色
                 },
-                outRange: {
-                    symbolSize: [40, 60]
+                outRange: {// 在选中范围外 的视觉元素
+                    symbolSize: [20, 40],
+                    //color:['#f00','#f00']
                 }
             }
         ],
         series: [
             {
-                name: "客户分布",
+                name: "",
                 type: "scatter",
                 coordinateSystem: "bmap",
-                data: convertData(data),
+                data: convertData(dataSource.data),
                 label: {
                     normal: {
                         formatter: "{b}",
                         position: "right",
-                        show: true
-                    }
+                        show: true,
+                        color: 'blue',
+                        
+                    },
+                     
                 },
-                itemStyle: {
-                    normal: {//文字颜色  
-                        color: "#f00"
-                    }
-                }
             },
             {
-                name: "客户分布",
+                name: "",
                 type: "scatter",
                 symbol: "pin",
                 coordinateSystem: "bmap",
-                data: convertData(data),
+                data: convertData(dataSource.data),
                 label: {
                     normal: {
                         show: true,
-                        textStyle: {
-                            color: "#fff",
-                            fontSize: 9
-                        }
                     }
                 },
                 zlevel: 4,
@@ -434,16 +475,16 @@ var data = [
                 }
             },
             {
-                name: "客户分布",
+                name: "",
                 type: "effectScatter",
                 coordinateSystem: "bmap",
                 data: convertData(
-                    data
+                    dataSource.data
                         .sort(function(a, b) {
                             //debugger;
                             return b.value - a.value;
                         })
-                        .slice(0, 6)
+                        .slice(0)
                 ),
                 rippleEffect: {
                     brushType: "stroke"
@@ -453,21 +494,22 @@ var data = [
                     normal: {
                         formatter: "{b}",
                         position: "right",
-                        show: true
+                        show: true,
+                        color: 'blue',
                     }
                 },
                 itemStyle: {
                     normal: {
-                        color: "#f00",
+                        color: "#f4e925",
                         shadowBlur: 10,
-                        shadowColor: "#00f"
+                        shadowColor: "#b3aa0e"
                     }
                 },
                 zlevel: 1
             }
         ]
     };
+    return option
+}
     
-    export default option;
-    
-    
+export default getOption;

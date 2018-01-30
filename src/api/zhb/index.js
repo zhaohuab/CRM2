@@ -41,7 +41,11 @@ const distributed = {//客户分布
     department: baseDir+'cum/customerchart',//获取部门（人员）、客户数量
     customer: baseDir+'cum/customerchart/customers',//获取客户数据
 }
-
+const cusStatus = {//客户状态
+    department: baseDir+'cum/customerchart',//获取部门（人员）、客户数量
+    customer: baseDir+'cum/customerchart/customers',//获取客户数据
+    echarts: baseDir+'cum/customerchart/ratio',
+}
 
 export {
     taskcard,
@@ -51,5 +55,6 @@ export {
     approval,
     approved,
     distributed,
+    cusStatus,
 }
  

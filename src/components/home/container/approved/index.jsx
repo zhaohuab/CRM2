@@ -26,14 +26,10 @@ class Appropved extends React.Component {
     }
     //隐藏面版
     slideHide = () => {
-         
         //关闭面板清空数据
         this.props.action.hideViewForm(false);
-
     }
-
     approvedChange = (key) => {
-         
         let flag = key == 1 ? false : true;
         this.props.action.approvedChange(key, flag);
         let pagination = this.props.$$state.get('pagination').toJS()
@@ -72,7 +68,6 @@ class Appropved extends React.Component {
         );
     }
 }
-
 
 function mapStateToProps(state, ownProps) {
     return {

@@ -33,21 +33,26 @@ class ViewPanel extends React.Component {
         super(props);
         this.state = {
             flag: false,
-            show: false, 
+            show: false,
         }
-    } 
+    }
     mention = () => {
-        const that=this
+        const that = this
         Modal.success({
             title: '提醒审批成功',
-            okText: '确定'
+            okText: '确定',
+            onOk(){
+                that.onMention()
+            }
         });
     }
-
+    onMention=()=>{
+        let current = this.props.$$state.get('currentRecord').toJS();
+        this.props.action.onRemind(current.approvalUserList, current.djId,current.djType)
+    }
     onClick = (item) => {
-         debugger
+        debugger
         if (item.action == 'agree') {
-             
             this.setState({
                 show: true
             }, () => {
@@ -55,27 +60,23 @@ class ViewPanel extends React.Component {
             })
         }
         if (item.action == 'reject') {
-             
             this.props.action.mentionVisible(true, 'reject')
         }
         if (item.action == 'rejectall') {
-             
             this.props.action.mentionVisible(true, 'rejectall')
         }
     }
-//撤回按钮
-    onReturnOk=()=>{
+    //撤回按钮
+    onReturnOk = () => {
         let current = this.props.$$state.get('currentRecord').toJS();
         this.props.action.allButtons(current.djId, current.djType, current.taskId, current.instanceId, '', 'cancel');
-        setTimeout(()=>{
+        setTimeout(() => {
             this.props.action.getUnfinished(this.props.$$state.get("pagination").toJS());
         }, 1000)
-         this.props.action.hideViewForm(false); 
+        this.props.action.hideViewForm(false);
     }
-    
     returnApproval = () => {
-         
-    const that=this
+        const that = this
         Modal.confirm({
             title: '你是否确认撤回？',
             okText: '确定',
@@ -83,7 +84,7 @@ class ViewPanel extends React.Component {
             onCancel() {
             },
             onOk() {
-               that.onReturnOk()
+                that.onReturnOk()
             }
         });
     }
@@ -103,8 +104,8 @@ class ViewPanel extends React.Component {
                 {done && done.length ? done.map((item, index) => {
                     return (
                         <div className="stepApprovalOne">
-                            <div className="ApprovalOne">{index + 1}</div>
-                            <div className="ApprovalPerson">
+                            <div className="approvalOne">{index + 1}</div>
+                            <div className="approvalPerson">
                                 <div>
                                     {item.personlist[0].name}
                                     <span>
@@ -123,7 +124,7 @@ class ViewPanel extends React.Component {
             </div>)
     }
     mapButtons = () => {
-         
+
         let buttons = this.props.$$state.get("approvalButtons").toJS().reverse();
         return (
             <div className="approval-buttons">
@@ -141,7 +142,7 @@ class ViewPanel extends React.Component {
         )
     }
     render() {
-         
+
         let { mentionVisible, detailData, detailapproval, commit, done, todo, tableState, approvalButtons } = this.props.$$state.toJS();
         return (
             <div className="view-warrper">
@@ -226,17 +227,17 @@ class ViewPanel extends React.Component {
                                             <div className="detailName">
                                                 {done.length ? done[done.length - 1].time : ''}
                                             </div>
-                                           
-                                          <div className="arrows"
-                                           onClick={this.onArrow}>
-                                          {this.state.flag ? <div className="arrow"></div>:
-                                           <div className="arrow-top"></div>}
-                                          </div>
+
+                                            <div className="arrows"
+                                                onClick={this.onArrow}>
+                                                {this.state.flag ? <div className="arrow"></div> :
+                                                    <div className="arrow-top"></div>}
+                                            </div>
                                         </div>
                                     </Popover>
                                 </Row>
                             </Col> : null}
-
+                            {todo.length?
                             <Col span={8}>
                                 <Row
                                     type="flex"
@@ -246,16 +247,36 @@ class ViewPanel extends React.Component {
                                     <div className="detailList">
                                         <div className="detailStatus">
                                             待审
-                                     </div>
-                                        <div className="detailName">
+                                        </div>
+                                        {/* <div className="detailName">
                                             {todo.length ? todo[0].personlist[0].name : ''}
                                         </div>
                                         <div className="detailName">
                                             {todo.length ? todo[0].time : ''}
-                                        </div>
+                                        </div> */}
+                                        {todo.length && todo[0].personlist && todo[0].personlist.length > 3 ?
+                                            todo[0].personlist.slice(0, 3).map((item, index) => {
+                                                return (
+                                                    <div className="detailName">
+                                                        {item.name}
+                                                    </div>
+                                                )
+
+                                            })
+                                            :
+                                            todo.length && todo[0].personlist && todo[0].personlist.length <= 3 ?
+                                                todo[0].personlist.map((item, index) => {
+                                                    return (
+                                                        <div className="detailName">
+                                                            {item.name}
+                                                        </div>
+                                                    )
+                                                }) : null}
+
+                                        {todo.length && todo[0].personlist && todo[0].personlist.length > 3 ? '...' : null}
                                     </div>
                                 </Row>
-                            </Col>
+                            </Col>:null}
                         </Row>
                     </Row>
                     {/* --------------- */}

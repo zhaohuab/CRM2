@@ -19,7 +19,7 @@ function renderFullPage(html, initialState) {
         <body>
           <div id="root" class="full-height">
           </div>
-          <script type="text/javascript"  src="http://10.6.254.142:3000/lib/main.min.js"></script>
+          <script type="text/javascript"  src="http://10.6.230.123:3000/lib/main.min.js"></script>
         </body>
       </html>
       `

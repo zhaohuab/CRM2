@@ -24,21 +24,22 @@ import Card from "./list/Card";
 import ViewPanel from "./panel/ViewPanel";
 import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
-
-
+import LeadStart from "./lead/LeadStart"
+import reqwest from "reqwest";
+import { baseDir } from "api";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
 class List extends React.Component {
     constructor(props) {
         super(props);
-        
+
         this.columns = [
             {
                 title: "客户名称",
                 dataIndex: "name",
                 render: (text, record) => {//isGroup
-                    return(
+                    return (
                         <div
                             onClick={this.slideShow.bind(this, record)}
                             className="crm-pointer"
@@ -50,7 +51,7 @@ class List extends React.Component {
                             }
                         </div>
                     )
-                }  
+                }
             },
             {
                 title: "客户类型",
@@ -84,6 +85,7 @@ class List extends React.Component {
             this.props.action.selectedRowKeys(selectedRowKeys);
         };
     }
+
     //改变编辑状态
     changeState(visiable) {
         this.props.action.changeStateFn(visiable);
@@ -101,7 +103,7 @@ class List extends React.Component {
 
     //上传数据时，各种参照的数据转换
     trancFn(data) {
-        debugger
+         
         //行业
         if (data.industry && data.industry.id) {
             data.industry = data.industry.id;
@@ -127,24 +129,24 @@ class List extends React.Component {
             data["latlng"] = value.latlng;
         }
 
-        if(data.ownerUserId){
+        if (data.ownerUserId) {
             let ownerUserId = data.ownerUserId.id;
             delete data.ownerUserId
-            data.salesVOs = [{ownerUserId}]
+            data.salesVOs = [{ ownerUserId }]
         }
 
-        if(data.level){
-            data.level=data.level.key
+        if (data.level) {
+            data.level = data.level.key
         }
 
-        if(data.type){
-            data.type=data.type.key
+        if (data.type) {
+            data.type = data.type.key
         }
 
-        if(data.cannelType){
-            data.cannelType=data.cannelType.key
+        if (data.cannelType) {
+            data.cannelType = data.cannelType.key
         }
-        debugger
+         
         return data;
     }
 
@@ -152,10 +154,10 @@ class List extends React.Component {
     formHandleOk() {
         let { viewData,newTypeId } = this.props.$$state.toJS();
         this.formRef.props.form.validateFields((err, value) => {
-            debugger
+             
             if (!err) {
                 let values = this.trancFn(viewData);
-                debugger
+                 
                 if (values.id) {//修改
                     this.props.action.listEditSave(values);
                 } else {//新增
@@ -180,6 +182,7 @@ class List extends React.Component {
         return `共 ${total} 条`;
     }
     onPageChange(page, pageSize) {
+         
         let pagination = { page: page, pageSize: pageSize };
         this.props.action.getListData(
             pagination,
@@ -195,13 +198,109 @@ class List extends React.Component {
     }
 
     componentDidMount() {
+         
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
         );
         this.props.action.getEnumData();
     }
 
+
+    leadStart() {
+        // this.props.action.leadShow(false);
+        //this.props.action.leadEndShow(true);
+        //this.props.action.leadEndShow(true);
+        this.uploadFiles.call(this);
+         this.props.action.leadEndView(true, 2);
+        // let { filesSuccess } = this.props.$$state.toJS();
+        // if (filesSuccess) {
+        //      
+        //     setTimeout(() => {
+        //         this.props.action.leadEndView(true, 2);
+        //     }, 1000)
+        // }
+    }
+    leadStartCancel() {
+        this.props.action.viewLeadShow(false);
+        this.props.action.leadEndShow(false);
+        this.props.action.leadEndView(false, 1);
+        this.props.action.fileSuccess(false, {})
+    }
+    leadEnd() {
+         
+        this.props.action.viewLeadShow(false);
+        this.props.action.leadEndShow(false);
+        this.props.action.leadEndView(false, 1);
+        this.props.action.fileSuccess(false, {})
+    }
+    leadEndCancel() {
+        this.props.action.leadEndShow(false)
+    }
+    leadIng() {
+        this.props.action.leadEndShow(true)
+    }
+    //上传之前的验证
+    beforeUpload(file, index, items) {
+         
+        let type = ['.bmp', '.gif', '.jpeg', '.html', '.txt', '.vsd', '.ppt', '.doc', '.xml', '.jpg', '.png', '.xlsx','.xls']
+        let pos = file.name.lastIndexOf('.')
+        let end = file.name.slice(pos)
+        if (type.indexOf(end)>=0) {
+            return true
+        } else {
+            //保存信息写不符合上传类型
+            console.log('文件类型错误')
+            return false
+        }
+    }
+    uploadFiles() {
+         
+        let { leadFiles } = this.props.$$state.toJS();
+        let files = Array.prototype.slice.call(leadFiles)
+        let proAry = []
+         
+        // files.forEach((file, index, items) => {
+        //     proAry.push(this.upLoad(file));
+        // })
+        files.forEach((file, index, items) => {
+             
+            let before = this.beforeUpload(file, index, items);
+            if (typeof before == 'boolean' && before) {
+                proAry.push(this.upLoad(file))
+            }
+        })
+
+        Promise.all(proAry).then((result) => {
+            
+            console.log(12, result)
+            if (result.length&&result[0].code == '0') { this.props.action.fileSuccess(true, result,true)}
+
+        }, (error) => {
+            console.log(34, error)
+            this.props.action.fileFail(false)
+        })
+
+    }
+
+    upLoad(file) {
+        let formdata = new FormData();
+        formdata.append('file', file)
+        //formdata.get("filedata")
+
+        return reqwest(
+            {
+                url: baseDir + "/tpub/excels/1/import",
+                method: "POST",
+                processData: false,
+                contentType: false,
+                data: formdata
+            }
+        );
+    }
+
+
     render() {
+       
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -210,16 +309,26 @@ class List extends React.Component {
             formVisitable,
             viewState,
             viewData,
-            tableLoading
-        } = this.props.$$state.toJS();
+            tableLoading,
+            leadVisible,
+            leadEndVisible,
+            leadingVisible,
+            viewLeadVisible,
+            pagination,
+            searchMap
 
+        } = this.props.$$state.toJS();
+         ;
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm/>
+                <TopSearchForm 
+                pagination={pagination}
+                searchMap={searchMap}
+                 />
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
@@ -256,7 +365,7 @@ class List extends React.Component {
                             editCardFn={this.editCardFn.bind(this)}
                             changeState={this.changeState.bind(this)}
                         />
-                    </div> 
+                    </div>
                 </Modal>
                 <SlidePanel
                     viewState={viewState}
@@ -265,8 +374,47 @@ class List extends React.Component {
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
+
+                <Modal title="导入"
+                    // destroyOnClose={true}
+                    visible={viewLeadVisible}
+                    // onOk={this.leadStart.bind(this)}
+                    onCancel={this.leadStartCancel.bind(this)}
+                    footer={leadEndVisible ? [
+                        <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
+                            关闭
+                        </Button>
+                    ] :
+                        [
+                            <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                            <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                                开始导入
+                        </Button>
+                        ]}
+
+                // footer={leadEndVisible?[
+                //     <Button key="submit" type="primary" onClick={this.leadEnd.bind(this)}>
+                //      关闭
+                //     </Button>
+                //   ]:leadingVisible?[
+                //     <Button key="submit" type="primary" onClick={this.leadIng.bind(this)}>
+                //      导入中
+                //     </Button>
+                //   ]:
+                //   [
+                //     <Button key="back" onClick={this.leadStartCancel.bind(this)}>取消</Button>,
+                //     <Button key="submit" type="primary" onClick={this.leadStart.bind(this)}>
+                //       开始导入
+                //     </Button>
+                //   ]}
+                >
+                    <div className="cur-lead" ref="leadContent">
+                        {viewLeadVisible ? <LeadStart /> : null}
+                    </div>
+                </Modal>
+
             </div>
-         );
+        );
     }
 }
 //绑定状态到组件props

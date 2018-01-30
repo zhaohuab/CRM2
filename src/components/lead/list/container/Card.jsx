@@ -223,11 +223,11 @@ class EditForm extends React.Component {
 const CardForm = Form.create({
     mapPropsToFields: (props) => {
         //把redux中的值取出来赋给表单
-        debugger
+        //debugger
         let viewData = props.$$state.toJS().editData;
 
         let value = {};
-        debugger
+        //debugger
         for (let key in viewData) {
 
             value[key] = { value: viewData[key] };
@@ -241,7 +241,7 @@ const CardForm = Form.create({
     },
 
     onFieldsChange: (props, onChangeFild) => {
-        debugger
+        //debugger
         //往redux中写值
         let viewData = props.$$state.toJS().editData;
 

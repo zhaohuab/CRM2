@@ -73,10 +73,11 @@ const rootRoutes = {
                                 require('./routes/prdattr').default,
                                 require('./routes/prdattrgroup').default,
                                 require('./routes/business-obj-def').default,
-                                require('./routes/customer-distributed').default,
+                                require('./routes/cusDistributed').default,
                                 require('./routes/lead/routes/list/index').default,
                                 require('./routes/quartz/routes/list/index').default,
                                 require('./routes/patch/routes/list/index').default,
+                                require('./routes/cusStatus').default,
                                 {
                                     //未开发页面
                                     path: "developing",

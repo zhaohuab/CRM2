@@ -1,117 +1,117 @@
 import request from 'utils/reqwest'
-import { message} from 'antd';
+import { message } from 'antd';
 import { org as url } from 'api';
 
-const fetchData = (type, payload)=> {
-        return {
-            type,
-            payload
-        }
+const fetchData = (type, payload) => {
+    return {
+        type,
+        payload
+    }
 }
 
 //获取所有数据
-export function getlist(searchMap={}){
-    return(dispatch,getState)=>{
-        dispatch({type:'ORG_LIST_GETLISTSTART'})    
+export function getlist(searchMap = {}) {
+    return (dispatch, getState) => {
+        dispatch({ type: 'ORG_LIST_GETLISTSTART' })
         request({
             url: url.org,
-            method:'get',
-            data:{
-                param : {searchMap}
+            method: 'get',
+            data: {
+                param: { searchMap }
             }
-        },(data) => {
-            debugger
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: data.data}));
+        }, (data) => {
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: data.data }));
         })
     }
 }
 
 //点击查询按钮获取所有数据
-export function getlistByClickSearch(searchMap){
-    return(dispatch,getState)=>{
-        
-        dispatch({type:'ORG_LIST_GETLISTSTART'})
+export function getlistByClickSearch(searchMap) {
+    return (dispatch, getState) => {
+
+        dispatch({ type: 'ORG_LIST_GETLISTSTART' })
         request({
             url: url.org,
-            method:'get',
-            data:{
-                param : {searchMap}
+            method: 'get',
+            data: {
+                param: { searchMap }
             }
-        },(data) => {
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH', {data: data.data,searchFilter:searchMap.searchKey}));
+        }, (data) => {
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH', { data: data.data, searchFilter: searchMap.searchKey }));
         })
     }
 }
 
 //打开新增/编辑页面
-export function showForm(flag, editData = {},isEdit){
+export function showForm(flag, editData = {}, isEdit) {
     return (dispatch) => {
-		dispatch(fetchData('ORG_LIST_SHOWFORM', { visible: flag, editData, isEdit}));
-	}
+        dispatch(fetchData('ORG_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
+    }
 }
 
 
 const transData = (data) => {
-    if(data.fatherorgId&&data.fatherorgId.key){
-        if(data.fatherorgId.path&&data.fatherorgId.path!=""){
-            data.path = data.fatherorgId.path+","+data.fatherorgId.key;
-        }else{
-            data.path = data.fatherorgId.key
-        }
-        data.fatherorgId = data.fatherorgId.key;
-    }else{
-        data.fatherorgId = undefined
+
+    if (data.path && data.path != "") {
+        data.path = data.path + "," + data.fatherorgId;
+    } else {
+        data.path = data.fatherorgId
     }
-	return data;
+    return data;
 }
 
 //新增数据
-export function listadd(list){
-    return(dispatch,getState)=>{
+export function listadd(list) {
+
+    return (dispatch, getState) => {
         request({
-            url: url.org,   
-            method:'post',
+            url: url.org,
+            method: 'post',
             // data:"param="+JSON.stringify(transData(list)),
-            data:{
-                param:transData(list)
+            data: {
+                param: transData(list)
             }
-        }, (dataResult) => {
+        }, (result) => {
+
             // dispatch(fetchData('ORG_LIST_LISTADDSUCCESS',{data:data.data})) 
-            const listData=dataResult;
             request({
                 url: url.orgTree,
-                method:'get',
-                data:{}
+                method: 'get',
+                data: {
+                    param: {
+                        type: 1
+                    }
+                }
             }
-            ,(data) => {
-                dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', {data: listData,treeData:data.data}));
-            })
+                , (data) => {
+                    dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', { data: result, treeData: data.data }));
+                })
         })
     }
 }
 
 
 //改变一条数据
-export function listchange(data){
-    return(dispatch)=>{
-        let id=data.id
+export function listchange(data) {
+    return (dispatch) => {
+        let id = data.id
         request({
             url: `${url.org}/${id}`,
-            method:'put',
-            data:{
+            method: 'put',
+            data: {
                 param: transData(data)
             }
-        },(dataResult) => {
+        }, (result) => {
             request({
-                url: url.org, 
-                method:'get',
-                data:{
+                url: url.org,
+                method: 'get',
+                data: {
                     param: {
-                        condMap:typeof(params) == "undefined"?{}:params
+                        condMap: typeof (params) == "undefined" ? {} : params
                     }
                 }
-            },(data) => {
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS',{data:data.data})) 
+            }, (data) => {
+                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: result }))
             })
         })
     }
@@ -119,127 +119,128 @@ export function listchange(data){
 
 
 //删除数据
-export function listdel(record,treeId,searchFilter){
+export function listdel(record, treeId, searchFilter) {
     var ids = [];
     let searchMap = {};
-    if(treeId!=null&&treeId!=undefined&&treeId!=""){
+    if (treeId != null && treeId != undefined && treeId != "") {
         searchMap.id = treeId;
     }
-    if(searchFilter!=null&&searchFilter!=undefined&&searchFilter!=""){
+    if (searchFilter != null && searchFilter != undefined && searchFilter != "") {
         searchMap.searchKey = searchFilter;
     }
-    for(let i=0;i<record.length;i++){
+    for (let i = 0; i < record.length; i++) {
         ids.push(record[i].id);
     }
-    return(dispatch,getState)=>{
-        let id=record.id
+    return (dispatch, getState) => {
+        let id = record.id
         request({
-            url:url.org+'/batch',
-			method: "DELETE",
-			data:{
-				param: {
-					ids:ids.join(","),
-					searchMap:searchMap
-				},
-			}
-        }
-        ,(dataResult) => {
-            const listData=dataResult;
-            request({
-                url: url.orgTree,
-                method:'get',
-                data:{}
+            url: url.org + '/batch',
+            method: "DELETE",
+            data: {
+                param: {
+                    ids: ids.join(","),
+                    searchMap: searchMap
+                },
             }
-            ,(data) => {
-                dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data}));
+        }
+            , (dataResult) => {
+                const listData = dataResult;
+                request({
+                    url: url.orgTree,
+                    method: 'get',
+                    data: {
+                        param: {
+                            type: 1
+                        }
+                    }
+                }
+                    , (data) => {
+                        dispatch({ type: 'ORG_LIST_GETTREELISTSUCCESS', data: data.data })
+                        dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: listData.data }));
+                    })
             })
-        })
     }
 }
 
 
 //启停用功能
-export function setEnablestate(treeId,searchFilter,data,state){
-
+export function setEnablestate(treeId, data, state) {
     var ids = [];
     let searchMap = {};
-    if(treeId!=null&&treeId!=undefined&&treeId!=""){
+    if (treeId != null && treeId != undefined && treeId != "") {
         searchMap.id = treeId;
     }
-    if(searchFilter!=null&&searchFilter!=undefined&&searchFilter!=""){
-        searchMap.searchKey = searchFilter;
-    }
-    for(let i=0;i<data.length;i++){
+    for (let i = 0; i < data.length; i++) {
         ids.push(data[i].id);
     }
     return (dispatch) => {
-		request({
-			url: url.org+'/enable',
-			method: "PUT",
-			data: {
-				param: {
-					ids: ids.join(","),
-					enablestate: state,
-					searchMap:searchMap
-				},
-			}
-		},(dataResult) => {
-                const listData=dataResult;
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', {data: listData.data}));
+        request({
+            url: url.org + '/enable',
+            method: "PUT",
+            data: {
+                param: {
+                    ids: ids.join(","),
+                    enablestate: state,
+                    searchMap: searchMap
+                },
+            }
+        }, (dataResult) => {
+            const listData = dataResult;
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: listData.data }));
         })
-			
-	}
+
+    }
 }
 
 //获取tree数据
-export function getTreeList(){
-    return(dispatch,getState)=>{
-        dispatch({type:'ORG_LIST_GETTREELISTSTART'})
+export function getTreeList() {
+    return (dispatch, getState) => {
+        dispatch({ type: 'ORG_LIST_GETTREELISTSTART' })
         request({
             url: url.orgTree,
-            method:'get',
-            data:{}
-        },(data) => {
-            debugger
-            dispatch({type:'ORG_LIST_GETTREELISTSUCCESS',data:data.data})
+            method: 'get',
+            data: {
+                param: {
+                    type: 1
+                }
+            }
+        }, (data) => {
+            dispatch({ type: 'ORG_LIST_GETTREELISTSUCCESS', data: data.data })
         })
-        
+
     }
 }
 
 
 //获取一个部门tree信息，变换表格数据
-export function listTreeChange(id){
-    debugger
-    return(dispatch,getState)=>{
+export function listTreeChange(id) {
+    return (dispatch, getState) => {
         request({
             url: url.org,
-            
-            method:'get',
-            data:{
+
+            method: 'get',
+            data: {
                 param: {
-                    searchMap:{id}
+                    searchMap: { id }
                 }
             }
-        },(data) => {
-            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKTREE', {data: data.data,treeSelect:id}));
+        }, (data) => {
+            dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKTREE', { data: data.data, treeSelect: id }));
         })
-        
-    } 
-}
 
-
-export function selectData(data){
-    return (dispatch)=>{
-        dispatch(fetchData('ORG_LIST_SELECTDATA',data))
     }
 }
 
-export function setFormData(data)
-{
-    return (dispatch)=>{
-        dispatch(fetchData('ORG_LIST_SETFORMDATA',data))
+
+export function selectData(data) {
+    return (dispatch) => {
+        dispatch(fetchData('ORG_LIST_SELECTDATA', data))
+    }
+}
+
+export function setFormData(data) {
+    return (dispatch) => {
+        dispatch(fetchData('ORG_LIST_SETFORMDATA', data))
     }
 }
 

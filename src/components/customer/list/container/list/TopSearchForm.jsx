@@ -11,6 +11,8 @@ import {
     Dropdown,
     Menu
 } from "antd";
+
+import { baseDir } from "api";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
@@ -105,6 +107,25 @@ class ToolForm extends React.Component {
         this.props.action.saveSearchMap(searchMap);
     }
 
+     onMenu(e) {
+         debugger
+         let {searchMap,pagination}=this.props.$$state.toJS();
+         let page=pagination.page;
+         let pageSize=pagination.pageSize
+         let search=JSON.stringify(searchMap)
+         
+         debugger
+        if (e.key == "1") {
+            debugger
+            this.props.action.viewLeadShow(true);
+        } else if (e.key == "2") {
+          location.href = baseDir + "tpub/excels/1/export?param="+"{\"page\":"+`${page}`+",\"pageSize\":"+`${pageSize}`+",\"searchMap\":"+`${search}`+"}"
+
+        }
+    }
+
+
+
     render() {
         let { enumData, moreShow, selectedRowKeys,newCumMenu} = this.props.$$state.toJS();
         
@@ -119,11 +140,11 @@ class ToolForm extends React.Component {
         );
 
         const moreMenu = (
-            <Menu>
-                <Menu.Item key="0">
+            <Menu  onClick={this.onMenu.bind(this)}>
+                <Menu.Item key="1">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item key="1">
+                <Menu.Item key="2">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>
@@ -203,11 +224,11 @@ class ToolForm extends React.Component {
                                             </Button>
                                         </Dropdown>
                                     </Col>
-                                    <Col>
+                                    {/* <Col>
                                         <Button>
                                             <i className="iconfont icon-shuaxin" />刷新
                                         </Button>
-                                    </Col>
+                                    </Col> */}
                                     <Col>
                                         <Dropdown.Button
                                             overlay={moreMenu}
@@ -243,7 +264,7 @@ class ToolForm extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList
+        $$state:state.customerList
     };
 }
 //绑定action到组件props
