@@ -88,10 +88,11 @@ export function saveFiles(files) {
         payload: { files }
     };
 }
-export function fileSuccess(filesSuccess, result, show, leadStep) {
+export function fileSuccess(file) {
+    
     return {
         type: "CUSTOMER_LIST_FILESUCCESS",
-        payload: { filesSuccess, result, show, leadStep }
+        payload: file,
     };
 }
 export function fileFail(filesFail) {
@@ -840,3 +841,20 @@ export function delContacts(id, pagination) {
     }
 }
 
+//删除某个附件
+export function onDeleteFile(file) {
+    return (dispatch) => {
+        reqwest(
+            {
+                url: baseDir + `sys/upload/${file.objType}/${file.objId}/${file.name}/${file.id}`,
+                method: "DELETE",
+            },
+            result => {
+                dispatch({
+                    type: "CUSTOMER_LIST_DELETEFILE",
+                    file
+                });
+            }
+        );
+    }
+}
