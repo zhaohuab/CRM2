@@ -206,6 +206,7 @@ class List extends React.Component {
 
 
     leadStart() {
+        debugger
         // this.props.action.leadShow(false);
         //this.props.action.leadEndShow(true);
         //this.props.action.leadEndShow(true);
@@ -240,7 +241,7 @@ class List extends React.Component {
     }
     //上传之前的验证
     beforeUpload(file, index, items) {
-         
+         debugger
         let type = ['.bmp', '.gif', '.jpeg', '.html', '.txt', '.vsd', '.ppt', '.doc', '.xml', '.jpg', '.png', '.xlsx','.xls']
         let pos = file.name.lastIndexOf('.')
         let end = file.name.slice(pos)
@@ -253,7 +254,7 @@ class List extends React.Component {
         }
     }
     uploadFiles() {
-         
+         debugger
         let { leadFiles } = this.props.$$state.toJS();
         let files = Array.prototype.slice.call(leadFiles)
         let proAry = []
@@ -285,7 +286,6 @@ class List extends React.Component {
         let formdata = new FormData();
         formdata.append('file', file)
         //formdata.get("filedata")
-
         return reqwest(
             {
                 url: baseDir + "/tpub/excels/1/import",
@@ -374,7 +374,10 @@ class List extends React.Component {
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
 
-                <Modal title="导入"
+
+              
+               <Modal title="导入"
+               className="lead-cur-import"
                     // destroyOnClose={true}
                     visible={viewLeadVisible}
                     // onOk={this.leadStart.bind(this)}
@@ -411,8 +414,10 @@ class List extends React.Component {
                         {viewLeadVisible ? <LeadStart /> : null}
                     </div>
                 </Modal>
+               </div>
+             
 
-            </div>
+          
         );
     }
 }
