@@ -107,7 +107,6 @@ class LeadIn extends React.Component {
                         <div className="errorExcel">{successResult[0].data.fileName}
                             <Icon type="upload" onClick={this.onErrorLoad.bind(this, successResult[0].data.errorURL)} />
                         </div>
-
                     </div>
                     : null}
 
