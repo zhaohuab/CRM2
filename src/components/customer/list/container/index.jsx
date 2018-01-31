@@ -101,66 +101,21 @@ class List extends React.Component {
         this.props.action.hideViewForm(false);
     }
 
-    //上传数据时，各种参照的数据转换
-    trancFn(data) {
-         
-        //行业
-        if (data.industry && data.industry.id) {
-            data.industry = data.industry.id;
-        } else {
-            data.industry = "";
-        }
-        //上级客户
-        if (data.parentId) {
-            data.parentId = data.parentId.id;
-        }
-        //城市
-        if (data.province_city_district) {
-            let change = data.province_city_district.result;
-            data.province = change[0];
-            data.city = change[1];
-            data.district = change[2];
-            data.province_city_district = "";
-        }
-        if (data.street && data.street.location) {
-            data.longitude = data.street.location.lng
-            data.latitude = data.street.location.lat
-            data.street = data.street.address
-        }
-
-        if (data.ownerUserId) {
-            let ownerUserId = data.ownerUserId.id;
-            delete data.ownerUserId
-            data.salesVOs = [{ ownerUserId }]
-        }
-
-        if (data.level) {
-            data.level = data.level.key
-        }
-
-        if (data.type) {
-            data.type = data.type.key
-        }
-
-        if (data.cannelType) {
-            data.cannelType = data.cannelType.key
-        }
-         
-        return data;
-    }
-
     //form新增、或者修改
     formHandleOk() {
         let { viewData,newTypeId } = this.props.$$state.toJS();
+        let clear = ()=>{
+            this.formRef.props.form.resetFields()
+        }
         this.formRef.props.form.validateFields((err, value) => {
+            debugger
             if (!err) {
-                let values = this.trancFn(viewData);
-                 
-                if (values.id) {//修改
-                    this.props.action.listEditSave(values);
+                if (viewData.id) {//修改
+                    this.props.action.listEditSave(viewData,clear);
                 } else {//新增
-                    this.props.action.listAddSave(values,newTypeId);
+                    this.props.action.listAddSave(viewData,newTypeId,clear);
                 }
+                
             }
         });
     }
@@ -168,6 +123,7 @@ class List extends React.Component {
     //form取消
     formHandleCancel() {
         this.props.action.showForm(false);
+        this.formRef.props.form.resetFields()
     }
 
     //保存修改、编辑等动作后，把修改的值保存在redux中
@@ -281,7 +237,6 @@ class List extends React.Component {
     upLoad(file) {
         let formdata = new FormData();
         formdata.append('file', file)
-        //formdata.get("filedata")
         return reqwest(
             {
                 url: baseDir + "/tpub/excels/1/import",
@@ -299,7 +254,6 @@ class List extends React.Component {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
-            selectedRows,
             selectedRowKeys,
             formVisitable,
             viewState,
@@ -313,17 +267,13 @@ class List extends React.Component {
             searchMap
 
         } = this.props.$$state.toJS();
-         ;
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm 
-                pagination={pagination}
-                searchMap={searchMap}
-                 />
+                <TopSearchForm/>
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}

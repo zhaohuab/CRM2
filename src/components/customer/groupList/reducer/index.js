@@ -123,7 +123,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             });
         case "CUSTOMERGROUP_LIST_ADDCUSTOMER": //点击新建按钮时，清空viewPanel数据,增加带过来的值
             return $$state.merge({
-                viewData: {},
+                viewData: clearObject($$state.get('contactsCardData').toJS()),
                 formVisitable: action.data,
             });
         //点击选择公司获取工商信息列表    

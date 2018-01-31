@@ -34,8 +34,8 @@ import IcbcInfo from "./IcbcInfo";
 import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
 import CityChioce from "../../../../common/cityChioce/CityChioce"
-import OwnUser from './OwnUser'
-import ResponseDepart from './ResponseDepart'
+//import OwnUser from './OwnUser'
+//import ResponseDepart from './ResponseDepart'
 
 import Int from 'utils/components/int'
 import Float from 'utils/components/float/index.jsx'
@@ -82,7 +82,7 @@ class EditForm extends React.Component {
             wrapperCol: { span: 20 }
         };
 
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator ,resetFields} = this.props.form;
         let {
             viewData,
             enumData,
@@ -92,7 +92,6 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-        viewData.verifyFullname
      
         return (
             <div>
@@ -424,7 +423,7 @@ class EditForm extends React.Component {
                                         </div>
                                     </Col>
                                 </Row>
-                                <Row className="row-bottom">
+                                {/* <Row className="row-bottom">
                                     <Col offset={1}>
                                         <Col span={12}>
                                             <Row type="flex" align="middle">
@@ -473,7 +472,7 @@ class EditForm extends React.Component {
                                             </Row>
                                         </Col>
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <Row className="row-bottom">
                                     <Col offset={1}>
                                         <Col span={12}>
@@ -822,6 +821,7 @@ class EditForm extends React.Component {
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
+        
         let viewData = props.$$state.toJS().viewData;
         let value = {};
     

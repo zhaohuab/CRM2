@@ -300,7 +300,7 @@ class RelevantObject extends React.Component {
                                 tempUpgrade && tempUpgrade.length?
                                 tempUpgrade.map((item)=>{
                                     return(
-                                        <Row className='business-chance-item upgrade-item' type='flex' justify='space-between' >
+                                        <Row className='business-chance-item' type='flex' justify='space-between' >
                                             <Col span={5} className='left'>
                                                 <i className='iconfont icon-shengji'/>
                                             </Col>
@@ -319,14 +319,13 @@ class RelevantObject extends React.Component {
                                                         <span className='circle'></span>
                                                     </Col>
                                                     <Col className='main' span={22}>
-                                                    <p className='name'>
-                                                    {item.commitTime?this.changeTime.call(this,item.commitTime.time,'day'):'无'}
-                                                    </p>
-                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>申请公司：</Col><Col span={11}>{item.orgName}</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>申请部门：</Col><Col span={11}>{item.deptName}</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>申请人：</Col><Col span={11}>{item.applyUserName}</Col></Row>
-                                                    <Row className='minor' type='flex'><Col span={13} className='text-right'>审批状态：</Col><Col span={11}>{item.approvalStateName}</Col></Row>
-                                                
+                                                        <p className='name'>
+                                                        {item.commitTime?this.changeTime.call(this,item.commitTime.time,'day'):'无'}
+                                                        </p>
+                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请公司：</div><div className='mian-right' title = {item.orgName}></div></Row>
+                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请部门：</div><div className='mian-right' title = {item.orgName}>{item.deptName}</div></Row>
+                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请人：</div><div className='mian-right' title = {item.orgName}>{item.applyUserName}</div></Row>
+                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>审批状态：</div><div className='mian-right' title = {item.orgName}>{item.approvalStateName}</div></Row>
                                                     </Col>
                                                 </Row>
                                             </Col>
@@ -336,7 +335,7 @@ class RelevantObject extends React.Component {
                                 }):'暂无数据'
                             }
                             {
-                                viewDataRelevant && viewDataRelevant.length && viewDataRelevant[4].list.data.length>7?
+                                viewDataRelevant && viewDataRelevant.length && viewDataRelevant[4].list.data.length>5?
                                 <div className='business-chance-item upgrade-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
                             }
                         </div>

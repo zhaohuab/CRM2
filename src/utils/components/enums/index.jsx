@@ -28,7 +28,6 @@ class Enum extends React.Component {
         let key = "";
         if (this.props.value) {
             if (this.props.value.key) {
-                debugger
                 key = this.props.value.key;
             } else {
                 key = this.props.value;

@@ -300,7 +300,7 @@ class RelevantObject extends React.Component {
                                 tempUpgrade && tempUpgrade.length?
                                 tempUpgrade.map((item)=>{
                                     return(
-                                        <Row className='business-chance-item upgrade-item' type='flex' justify='space-between' >
+                                        <Row className='business-chance-item' type='flex' justify='space-between' >
                                             <Col span={5} className='left'>
                                                 <i className='iconfont icon-shengji'/>
                                             </Col>
