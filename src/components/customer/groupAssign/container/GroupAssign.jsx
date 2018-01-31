@@ -127,7 +127,7 @@ class GroupAssign extends React.Component {
             groupList:[]
         },()=>{
             this.props.headerBtnsClose()
-        })
+        }) 
     }
 
     onCheck(keys,keyObj){
