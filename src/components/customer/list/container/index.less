@@ -439,11 +439,21 @@
                                                 text-overflow:ellipsis;
                                                 white-space: nowrap;
                                             }
-                                            .minor{
+                                          
+                                            .mian-left{
+                                                width:40%;
                                                 color:#999;
+                                                text-align: right
+                                            }
+                                            .mian-right{
+                                                color:#999;
+                                                width: 60%;
                                                 overflow: hidden;
                                                 text-overflow:ellipsis;
                                                 white-space: nowrap;
+                                            }
+                                            .main-height{
+                                                height:25px;
                                             }
                                         }
                                 }
@@ -469,9 +479,6 @@
                                 margin-right:5px;
                             }
                         }
-                    }
-                    .business-chance .upgrade-item{
-                        width:24%;
                     }
 
                     .contacts-warpper-item:hover,.business-chance-item:hover{
@@ -1311,8 +1318,10 @@
 /*客户详情变更modal样式*/
 .crm-list-panel-assign-modal{
     .height{
-        height:100px;
+        height:320px;
         width:100%;
+        padding:10px;
+        box-sizing: border-box;
     }
 }
 

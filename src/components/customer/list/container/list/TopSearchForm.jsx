@@ -36,7 +36,7 @@ class ToolForm extends React.Component {
 
     //点击返回按钮
     btnBack() {
-        this.props.action.selectRow([], []);
+        this.props.action.selectedRowKeys([]);
     }
 
     //点击停用启用

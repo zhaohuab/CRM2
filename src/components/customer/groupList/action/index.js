@@ -243,7 +243,7 @@ export function getEnumData(){
 }
 
 //修改客户保存
-export function listEditSave(data){
+export function listEditSave(data,callback){
     debugger
     trancFn(data)
     if(data.industry && data.industry.name && (!data.industry.id)){
@@ -291,6 +291,7 @@ export function listEditSave(data){
                         type: "CUSTOMERGROUP_LIST_EDITSAVE",
                         data
                     });
+                    callback()
                 }
             );
         })
@@ -318,6 +319,7 @@ export function listEditSave(data){
                         type: "CUSTOMERGROUP_LIST_EDITSAVE",
                         data
                     });
+                    callback()
                 }
             );
         };
@@ -325,7 +327,7 @@ export function listEditSave(data){
 };
 
 //新增客户保存
-export function listAddSave(data){
+export function listAddSave(data,callback){
     debugger
     return dispatch => {
         debugger
@@ -375,6 +377,7 @@ export function listAddSave(data){
                             type: "CUSTOMERGROUP_LIST_ADDSAVE",
                             data
                         });
+                        callback()
                     }
                 );
             })
@@ -400,6 +403,7 @@ export function listAddSave(data){
                         type: "CUSTOMERGROUP_LIST_ADDSAVE",
                         data
                     });
+                    callback()
                 }
             );
         }  

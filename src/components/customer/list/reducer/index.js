@@ -63,6 +63,7 @@ function pageEdit(page, item) {
 }
 
 function clearObject(obj) {
+    debugger
     for (let key in obj) {
         debugger
         obj[key] = undefined
@@ -149,9 +150,11 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 formVisitable: action.payload.visible,
             });
         case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE":
+        debugger
             debugger
             return $$state.merge({
                 newCumMenu: action.typeItem,
+                viewData:clearObject($$state.get('contactsCardData').toJS())
             });
         case "CUSTOMERCOMPANY_LIST_CHANGEVISIBLE": //查询功能显示
             let visit = $$state.get("moreShow");
@@ -166,7 +169,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER": //点击新建按钮时，清空viewPanel数据,增加带过来的值
         debugger
             return $$state.merge({
-                viewData: {},
                 formVisitable: action.data,
                 newTypeId:action.typeId,
                 viewData:clearObject($$state.get('contactsCardData').toJS())

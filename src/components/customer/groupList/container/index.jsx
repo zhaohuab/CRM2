@@ -94,15 +94,19 @@ class List extends React.Component {
     //form新增、或者修改
     formHandleOk() {
         let { viewData } = this.props.$$state.toJS();
+
+        let clear = ()=>{
+            this.formRef.props.form.resetFields()
+        }
+
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
-                //let values = this.trancFn(viewData);
                 debugger
                 if (viewData.id) {//修改
-                    this.props.action.listEditSave(viewData);
+                    this.props.action.listEditSave(viewData,clear);
                 } else {//新增
-                    this.props.action.listAddSave(viewData);
+                    this.props.action.listAddSave(viewData,clear);
                 }
             }
         });
@@ -111,6 +115,7 @@ class List extends React.Component {
     //form取消
     formHandleCancel() {
         this.props.action.showForm(false);
+        this.formRef.props.form.resetFields()
     }
 
     //保存修改、编辑等动作后，把修改的值保存在redux中
@@ -122,6 +127,7 @@ class List extends React.Component {
     showTotal(total) {
         return `共 ${total} 条`;
     }
+
     onPageChange(page, pageSize) {
         let pagination = { page: page, pageSize: pageSize };
         this.props.action.getListData(
