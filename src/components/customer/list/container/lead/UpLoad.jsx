@@ -12,7 +12,6 @@ class Upload extends React.Component {
         debugger
         let files = e.target.files
         this.props.action.saveFiles(files);
-
         // this.uploadFiles(files)
     }
 

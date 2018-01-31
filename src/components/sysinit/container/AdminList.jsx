@@ -42,21 +42,6 @@ class List extends React.Component {
         render: (text, record, index) => this.renderColumn('email', text, record, index),
       },
       {
-        title: '密码',
-        dataIndex: 'password',
-        render: (text, record, index) => this.renderColumn('password', "******", record, index),
-      },
-      // {
-      //   title: '确认密码',
-      //   dataIndex:'password2',
-      //   render:(text, record, index) => this.renderColumn('password2',"123456",record,index),
-      // },
-      {
-        title: '角色',
-        dataIndex: 'typeName',
-        render: (text, record, index) => this.renderColumn('typeName', text, record, index),
-      },
-      {
         title: '启用状态',
         dataIndex: 'enableStateName',
         render: (text, record, index) => this.renderColumn("enableStateName", "已启用", record, index),

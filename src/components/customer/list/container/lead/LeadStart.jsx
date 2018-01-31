@@ -45,7 +45,7 @@ class LeadIn extends React.Component {
         let type = ['.bmp', '.gif', '.jpeg', '.html', '.txt', '.vsd', '.ppt', '.doc', '.xml', '.jpg', '.png', '.xlsx']
         let pos = file.name.lastIndexOf('.')
         let end = file.name.slice(pos)
-        if (type.indexOf(end)>=0) {
+        if (type.indexOf(end) >= 0) {
             return true
         } else {
             //保存信息写不符合上传类型
@@ -54,7 +54,8 @@ class LeadIn extends React.Component {
     }
     render() {
         debugger
-        let { leadEndVisible, leadStep, successResult,leadFiles} = this.props.$$state.toJS();
+        let { leadEndVisible, leadStep, successResult, leadFiles } = this.props.$$state.toJS();
+        let files = Array.prototype.slice.call(leadFiles);
         return (
             <div className={leadEndVisible ? 'leadin leadEndBorder' : 'leadin'}>
                 <Row className="leadStep">
@@ -89,32 +90,31 @@ class LeadIn extends React.Component {
                                     <Button style={{ borderRadius: '40px', height: '25px', width: '150px' }}>
                                         <Icon type="paper-clip" /> 添加文件
                            </Button>
-                    
+
                                 </UpLoad>
                             </Col>
                             <Col>
                                 <span>仅支持Excel格式</span>
                             </Col>
                         </Row>
-                        {/* <div>{leadFiles[0]}</div> */}
+                        {/* <div>{files&&files.length?files[0].name:''}</div> */}
                     </div>}
 
-                {successResult.length && successResult[0].data.errorURL ?
+                {successResult.length && successResult[0].data && successResult[0].data.errorURL ?
                     <div className="importView">
                         <p>下载错误报告，查看失败原因</p>
                         <div className="errorFile"><i className="iconfont icon-word"></i></div>
                         <div className="errorExcel">{successResult[0].data.fileName}
                             <Icon type="upload" onClick={this.onErrorLoad.bind(this, successResult[0].data.errorURL)} />
                         </div>
-
                     </div>
                     : null}
-           
-{/*            
+
+                {/*            
         <AntInput/>
     
             */}
-           
+
             </div>
         )
     }

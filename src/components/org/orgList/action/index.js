@@ -17,7 +17,9 @@ export function getlist(searchMap = {}) {
             url: url.org,
             method: 'get',
             data: {
-                param: { searchMap }
+                param: {
+                    searchMap,
+                }
             }
         }, (data) => {
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: data.data }));
@@ -73,7 +75,6 @@ export function listadd(list) {
             }
         }, (result) => {
 
-            // dispatch(fetchData('ORG_LIST_LISTADDSUCCESS',{data:data.data})) 
             request({
                 url: url.orgTree,
                 method: 'get',

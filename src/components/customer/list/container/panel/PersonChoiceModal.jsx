@@ -238,7 +238,7 @@ export default class PersonChoiceModal extends React.Component {
         return(
             <div>
                 {
-                    this.props.title?this.props.title:<Button onClick={this.getTreeList.bind(this)}><i className="iconfont icon-fenpeijiaose" />分配</Button>
+                    this.props.title?this.props.title:<Button className="customer_view_distribute_p_customer" onClick={this.getTreeList.bind(this)}><i className="iconfont icon-fenpeijiaose" />分配</Button>
                 }
                 <Modal
                     title="分配"

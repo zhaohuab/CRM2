@@ -11,7 +11,6 @@ import {
 } from "antd";
 
 import './index.less'
-
 export default class DropDownModal extends React.Component {
     onChange(e){
         let value = e.target.value;

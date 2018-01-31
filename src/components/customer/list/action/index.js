@@ -10,6 +10,36 @@ export function fetchData(type, payload) {
         payload
     };
 };
+let trancFn=(data)=>{
+    debugger
+    for (let key in data) {
+        //枚举
+        if ( key == 'cannelType' && data[key] || key == 'level' && data[key] || key == 'type' && data[key]) {
+            data[key] = data[key].key
+        }
+
+        //城市
+        if (data.province_city_district) {
+            let change = data.province_city_district.result;
+            data.province = change[0];
+            data.city = change[1];
+            data.district = change[2];
+            data.province_city_district = "";
+        }
+
+        //详细地址
+        if (data.street && data.street.location) {
+            data.longitude = data.street.location.lng
+            data.latitude = data.street.location.lat
+            data.street = data.street.address
+        }
+    }
+
+    data.address = ''
+    debugger
+    return data;
+}
+
 
 let changeSearchData = (data) => {
     for (let key in data) {
@@ -22,12 +52,12 @@ let changeSearchData = (data) => {
             data.district = data[key][2];
             delete data.province_city_district;
         }
+
         if (key == 'industry' && data[key]) {
             data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
         }
     }
     return data
-
 }
 //遍历表单更改为可传数据
 function transData(searchMap) {
@@ -274,14 +304,15 @@ export function getEnumData() {
 };
 
 //修改客户保存
-export function listEditSave(data) {
+export function listEditSave(data,callback) {
+    debugger
     return dispatch => {
         reqwest(
             {
                 url: url.customer + "/" + data.id,
                 method: "put",
                 data: {
-                    param: changeSearchData(data)
+                    param: trancFn(data)
                 }
             },
             data => {
@@ -289,13 +320,14 @@ export function listEditSave(data) {
                     type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
                     data
                 });
+                callback()
             }
         );
     };
 };
 
 //新增客户保存
-export function listAddSave(data, newTypeId) {
+export function listAddSave(data, newTypeId,callback) {
     data.biztypeId = newTypeId
     debugger
     return dispatch => {
@@ -304,7 +336,7 @@ export function listAddSave(data, newTypeId) {
                 url: url.customer,
                 method: "POST",
                 data: {
-                    param: data
+                    param: trancFn(data)
                 }
             },
             data => {
@@ -313,6 +345,7 @@ export function listAddSave(data, newTypeId) {
                     type: "CUSTOMERCOMPANY_LIST_ADDSAVE",
                     data
                 });
+                callback()
             }
         );
     };

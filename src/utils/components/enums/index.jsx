@@ -12,7 +12,6 @@ class Enum extends React.Component {
 
     trans = dataSource => {
         return dataSource.map(item => {
-            debugger;
             item.key = String(item.key);
             return <Option key={item.key}>{item.title}</Option>;
         });
@@ -29,7 +28,6 @@ class Enum extends React.Component {
         let key = "";
         if (this.props.value) {
             if (this.props.value.key) {
-                debugger
                 key = this.props.value.key;
             } else {
                 key = this.props.value;

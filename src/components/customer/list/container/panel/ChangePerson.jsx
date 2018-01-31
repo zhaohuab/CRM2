@@ -132,7 +132,6 @@ export default class ChangePerson extends React.Component {
                     method: "GET",
                 },
                 result => {
-                    ;
                     this.setState({
                         visible:true,
                         treeList:result.data

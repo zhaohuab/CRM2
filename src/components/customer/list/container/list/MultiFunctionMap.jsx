@@ -290,8 +290,6 @@ export default class MultiFunctionMap extends React.Component {
     }
    
     render(){
-        this.props.cityCode
-        debugger
         return(
             <div>
                 <Search

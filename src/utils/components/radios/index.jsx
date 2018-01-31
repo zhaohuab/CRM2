@@ -17,8 +17,9 @@ class RadioGroup extends React.Component {
                 return <RadioButton value={item.key} >{item.title}</RadioButton>
             })
         }
+        debugger
         return dataSource.map((item) => {
-            return <R value={item.key} >{item.title}</R>
+            return <R disabled value={item.key} >{item.title}</R>
         })
     }
 
@@ -31,7 +32,6 @@ class RadioGroup extends React.Component {
         }
     }
     onChange = (e) => {
-        debugger
         const onChange = this.props.onChange;
         let key = Number(e.target.value);
         if (onChange) {

@@ -228,7 +228,7 @@ class IcbcInfo extends React.Component {
                 } else if (item.key == "tel") {
                     viewData["tel"] = item.value;
                 } else if (item.key == "taxpayerNo") {
-                    viewData["eaxplayerNo"] = item.value;
+                    viewData["taxpayerNo"] = item.value;
                 } else if (item.key == "remark") {
                     viewData["remark"] = item.value;
                 }

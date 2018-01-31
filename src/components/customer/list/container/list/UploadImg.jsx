@@ -44,12 +44,10 @@ export default class UploadImg extends React.Component {
             {
                 url: baseDir + "cum/customers/upload",
                 method: "POST",
-                type:'Multipart/Form-data',
-                contentType:'Multipart/Form-data',
+                //type:'Multipart/Form-data',
+                //contentType:'Multipart/Form-data',
                 data: {
-                    param: {
-                        filename:formdata
-                    }
+                    file: formdata
                 }
             },
             data => {
