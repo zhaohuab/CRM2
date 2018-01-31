@@ -64,7 +64,6 @@ class LeadIn extends React.Component {
                         <Step title="完成" />
                     </Steps>
                 </Row>
-
                 {leadEndVisible ?
                     <div className="stepboder"></div> :
                     <div className="leadLoad">

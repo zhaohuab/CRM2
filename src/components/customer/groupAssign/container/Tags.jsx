@@ -26,6 +26,8 @@ export default class Tags extends React.Component {
     }
 
     render(){
+        let value = this.props.value;
+        debugger;
         return(
             <Row type='flex' gutter={15} align='middle' className='tags-container'>
                 {
