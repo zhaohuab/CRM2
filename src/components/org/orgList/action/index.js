@@ -19,7 +19,6 @@ export function getlist(searchMap = {}) {
             data: {
                 param: {
                     searchMap,
-                    type: 1
                 }
             }
         }, (data) => {
@@ -104,7 +103,6 @@ export function listchange(data) {
                 param: transData(data)
             }
         }, (result) => {
-            debugger
             request({
                 url: url.org,
                 method: 'get',

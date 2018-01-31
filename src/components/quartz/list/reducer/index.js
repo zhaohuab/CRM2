@@ -108,6 +108,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				viewData: action.payload.data.data[0]
 			});
 		case 'QUARTZ_LIST_OPEN'://启用
+		debugger
 			return $$state.merge({
 				data: pageEdit($$state.get("data").toJS(), action.payload.data.data[0]),
 				viewData: action.payload.data.data[0]

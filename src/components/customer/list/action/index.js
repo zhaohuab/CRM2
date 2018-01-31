@@ -52,7 +52,6 @@ let changeSearchData = (data) => {
             data.district = data[key][2];
             delete data.province_city_district;
         }
-        
 
         if (key == 'industry' && data[key]) {
             data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象

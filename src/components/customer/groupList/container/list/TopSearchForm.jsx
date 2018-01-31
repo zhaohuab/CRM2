@@ -85,10 +85,11 @@ class ToolForm extends React.Component {
     }
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
-        debugger
+     /*    //此地方产生 bug，注掉试试
+     debugger
         if (searchMap.industry) {
             searchMap.industry = searchMap.industry.id;
-        }
+        } */
         //还差城市条件过滤
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS(),

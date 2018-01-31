@@ -9,7 +9,7 @@ class RadioGroup extends React.Component {
         debugger
         if(type == "button") {
             return dataSource.map((item) => {
-                return <RadioButton disabled={this.props.disabled}  value={item.key} >{item.title}</RadioButton>
+                return <RadioButton  value={item.key} >{item.title}</RadioButton>
             })
         }
         return dataSource.map((item) => {
@@ -26,7 +26,6 @@ class RadioGroup extends React.Component {
         }
     }
     onChange = (e) => {
-        debugger
         const { onChange,mapper } = this.props;
         let value = Number(e.target.value);
         let title = this.findTitle(value);
@@ -35,14 +34,14 @@ class RadioGroup extends React.Component {
         }
     }
     render() {
-        
+        debugger
         let key = this.props.value;
         if(key) {
             key = Number(key);
         }
         return (
             <div>
-                <RG onChange={this.onChange} value={key}>
+                <RG disabled={this.props.disabled}  onChange={this.onChange} value={key}>
                     {this.trans(this.props.dataSource,this.props.type)}
                 </RG>
             </div>

@@ -140,10 +140,10 @@ class ToolForm extends React.Component {
 
         const moreMenu = (
             <Menu  onClick={this.onMenu.bind(this)}>
-                <Menu.Item key="1">
+                <Menu.Item className="customer:list:import:customer" key="1">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item key="2">
+                <Menu.Item className="customer:list:export:customer" key="2">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>

@@ -23,10 +23,12 @@ import { cum as url, doc, baseDir,oppstage ,opportunity,contacts} from "api";
 
 import ContactsCard from './ContactsCard'
 import Opportunity from './Opportunity'
-
+import * as objTypeConst from 'utils/const/ObjTypeConst'
 import ContactsModal from './ContactsDetailModal'
 import OppModal from './OppDetailModal'
 import Upload from './Upload'
+import RelFile from './RelFile'
+
 
 class RelevantObject extends React.Component {
     constructor(props){
@@ -53,11 +55,12 @@ class RelevantObject extends React.Component {
     }
 
     //上传图片成功
-    fileSuccess(){
+    fileSuccess(file){
         //把拿到的数据放在已有图片数据中
         //点击某一个文件能下载，是图片类型才能预览
         //IE iframe chorm/firefox a downlond下载文件
         //safiri // window.open('http://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=http%3A%2F%2Fwww.th7.cn%2Fd%2Ffile%2Fp%2F2014%2F07%2F04%2Feb26cd61a6c822839b70e7784fe90685.jpg&thumburl=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D925173830%2C3059306923%26fm%3D27%26gp%3D0.jpg', '_self');
+        this.props.action.fileSuccess(file);
     }
 
     //遍历折叠表头
@@ -72,7 +75,7 @@ class RelevantObject extends React.Component {
         }else{
             temp=0
         }
-      debugger
+      
         let  icon = ['icon-canyuren','icon-lianxirenguanxi','icon-xiansuofenpei','icon-shengji','icon-wenjian']
         let fn = [
             [<i className={'iconfont icon-lianxiren'}/>,<ContactsCard/>],
@@ -81,6 +84,8 @@ class RelevantObject extends React.Component {
             <Upload 
                 disabled = {false} 
                 multiple={true}
+                objType={objTypeConst.CUSTOMER}
+                objId={viewData.id}         
                 beforeUpload = {this.beforeUpload.bind(this)}
                 success = {this.fileSuccess.bind(this)}
             >
@@ -150,7 +155,7 @@ class RelevantObject extends React.Component {
 
     //展示联系人详情
     contactsDetailModal(item,e){
-        debugger
+        
         e.stopPropagation();
         reqwest(
             {
@@ -175,7 +180,7 @@ class RelevantObject extends React.Component {
 
     //展示商机详情
     oppDetailModal(item,e){
-        debugger
+        
         e.stopPropagation();
         reqwest({
             url: opportunity.opportunity + "/" + item.id,
@@ -197,10 +202,15 @@ class RelevantObject extends React.Component {
         })
     }
 
+    onDeleteFile(file) {
+        return (e) => {
+            this.props.action.onDeleteFile(file);
+        }
+    }
     render(){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
-        let tempContacts,tempOpport,tempUpgrade
-        debugger
+        let tempContacts,tempOpport,tempUpgrade,tempFile;
+        
         if(viewDataRelevant&&viewDataRelevant.length){
             tempContacts = viewDataRelevant[0].list.data
             if(tempContacts.length>=8){
@@ -210,13 +220,14 @@ class RelevantObject extends React.Component {
             if(tempOpport.length>=6){
                 tempOpport = tempOpport.slice(0,5)
             }
+            tempFile = viewDataRelevant[3].list.data;
             tempUpgrade = viewDataRelevant[4].list.data;
             if(tempUpgrade.length>=8){
                 tempUpgrade = tempUpgrade.slice(0,7)
             }
         }
         let type = ['icon-xsl','icon-word','icon-ppt']
-       debugger
+       
         return(
             <div className='relevant-wapper' id='relevant-wapper-item'>
                 <Collapse defaultActiveKey={['1','2','3','4']}>
@@ -341,73 +352,7 @@ class RelevantObject extends React.Component {
                         </div>
                     </Panel>
                     <Panel header={this.headerFn({title:'文件',index:4})}  key="4" >
-                        <div className='file-warpper'>
-                            <Row className='file-warpper-item' type='flex' align='middle'>
-                                <div className='img-mark'>
-                                    {/* <img
-                                        src={require("../../images/bg.png")}
-                                        className="top-img"
-                                    /> */}
-                                    <i className='iconfont icon-xsl'/>
-                                    <span className='cover'><Icon type="loading" /></span>
-                                    
-                                </div>
-                                <div className='detail'>
-                                    <p className='detail-name'>发发发水电费</p>
-                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
-                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
-                                </div>
-                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
-                            </Row>
-                            <Row className='file-warpper-item' type='flex' align='middle'>
-                                <div className='img-mark'>
-                                    {/* <img
-                                        src={require("../../images/bg.png")}
-                                        className="top-img"
-                                    /> */}
-                                    <i className='iconfont icon-word'/>
-                                   
-                                </div>
-                                <div className='detail'>
-                                    <p className='detail-name wrong'>发发发水电费</p>
-                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
-                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
-                                </div>
-                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
-                            </Row>
-                            <Row className='file-warpper-item' type='flex' align='middle'>
-                                <div className='img-mark'>
-                                    {/* <img
-                                        src={require("../../images/bg.png")}
-                                        className="top-img"
-                                    /> */}
-                                    <i className='iconfont icon-ppt'/>
-                                </div>
-                                <div className='detail'>
-                                    <p className='detail-name'>发发发水电费</p>
-                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
-                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
-                                </div>
-                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
-                            </Row>
-                            <Row className='file-warpper-item' type='flex' align='middle'>
-                                <div className='img-mark'>
-                                    <img
-                                        src={require("../../images/bg.png")}
-                                        className="top-img"
-                                    />
-                                    {/* <i className='iconfont icon-ppt'/> */}
-                                    <span className='show-img'><Icon type="eye-o" /></span>
-                                </div>
-                                <div className='detail'>
-                                    <p className='detail-name'>发发发水电费</p>
-                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
-                                    <p className='detail-remark'><span>上传时间:</span><span>2010-12-12</span></p>
-                                </div>
-                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
-                            </Row>
-                            
-                        </div>
+                        <RelFile files={tempFile} onDeleteFile={this.onDeleteFile.bind(this)}/>
                     </Panel>
             </Collapse>
             <ContactsModal visiable={this.state.visiable} data={this.state.contactsData} cancel={this.cancelContacts.bind(this)}/>
