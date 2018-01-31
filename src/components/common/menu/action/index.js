@@ -46,9 +46,8 @@ const getMenuData = () => {
 					style.appendChild(document.createTextNode(code));
 					head.appendChild(style);
 					// return style.sheet || style.styleSheet;
-
+					dispatch(fetchData("SAVECSSCODE", { code }));
 				})
-
 			}
 		);
 	};

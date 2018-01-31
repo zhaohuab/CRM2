@@ -140,10 +140,10 @@ class ToolForm extends React.Component {
 
         const moreMenu = (
             <Menu  onClick={this.onMenu.bind(this)}>
-                <Menu.Item className="customer:list:import:customer" key="1">
+                <Menu.Item className="customer_list_import_customer" key="1">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item className="customer:list:export:customer" key="2">
+                <Menu.Item className="customer_list_export_customer" key="2">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>
@@ -158,17 +158,17 @@ class ToolForm extends React.Component {
                         length={selectedRowKeys.length}
                     >
                         <Button
-                            className="returnbtn-class"
+                            className="returnbtn-class customer_list_delete_customer"
                             onClick={this.btnDelete.bind(this)}
                         >
                             <i className="iconfont icon-shanchu" />删除
                         </Button>
 
                         <ButtonGroup className="returnbtn-class">
-                            <Button onClick={this.btnSetEnable.bind(this, 1)}>
+                            <Button onClick={this.btnSetEnable.bind(this, 1)} className="customer_list_start_customer">
                                 <i className="iconfont icon-qiyong" />启用
                             </Button>
-                            <Button onClick={this.btnSetEnable.bind(this, 2)}>
+                            <Button onClick={this.btnSetEnable.bind(this, 2)} className="customer_list_stop_customer">
                                 <i className="iconfont icon-tingyong" />停用
                             </Button>
                         </ButtonGroup>
@@ -218,7 +218,7 @@ class ToolForm extends React.Component {
                                 <Row type="flex" gutter={15} justify="end">
                                     <Col>
                                         <Dropdown overlay={newBtnMenu} trigger={['click']} placement="bottomCenter"> 
-                                            <Button type="primary" onClick = {this.btnNew.bind(this)}>
+                                            <Button className="customer_list_add_customer" type="primary" onClick = {this.btnNew.bind(this)}>
                                                 <i className="iconfont icon-xinjian" />新建
                                             </Button>
                                         </Dropdown>

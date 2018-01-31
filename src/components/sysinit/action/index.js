@@ -16,12 +16,12 @@ const getMainEditTpl = () => {
 }
 const getSysInitInfo = () => {
 	return (dispatch) => {
-		
+		console.log(url.info)
 		 reqwest({
 		 	url: url.info,
 		 	method: "GET",
 		 }, result => {
-			 
+			 debugger
 			dispatch(fetchData('SYSINIT_PAGE_INFO', { ...result }));
 		 })
 	}
