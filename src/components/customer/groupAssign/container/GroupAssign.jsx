@@ -92,17 +92,6 @@ class GroupAssign extends React.Component {
         select.forEach((item)=>{
             cumIds.push(item.id)
         })
-
-        //-------------自添加，查看分配时传递参数是否正确，调完删除即可
-        let param =  {
-                        orgIds:this.state.checkedKeys.join(','),
-                        cumIds:cumIds.join(','),
-                        ownerDeptId:'',
-                        ownerUserId:'',
-                        relate:[]
-                    }
-        //-------------
-debugger
         reqwest(
             {
                 url: baseDir + 'cum/groupcustomers/allocation',
