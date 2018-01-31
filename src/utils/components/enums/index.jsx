@@ -12,7 +12,6 @@ class Enum extends React.Component {
 
     trans = dataSource => {
         return dataSource.map(item => {
-            debugger;
             item.key = String(item.key);
             return <Option key={item.key}>{item.title}</Option>;
         });
