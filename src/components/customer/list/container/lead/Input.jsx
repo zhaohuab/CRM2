@@ -88,18 +88,14 @@ export default class CkUpload extends React.Component {
 
         this.onUpload()
         Promise.all(uploadRequests).then(rsArray => {
-
             this.setState({
                 disabled: false
             })
 
             if (props.onSuccess) {
-
                 props.onSuccess(rsArray.map((rs) => {
                     return JSON.parse(rs)
                 }), files)
-
-
             }
 
         }, reason => {
