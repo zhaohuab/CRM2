@@ -200,26 +200,26 @@ export default class TaskRef extends React.Component {
         };
         let tableData = this.state.industryData;
         return (
-            <div className="reference">
-                <div
-                    className="reference-main"
-                    style={{ width: this.props.width + "px" }}
-                >
+            <div className="quartz-group">
+                {/* <div
+                    className="quartz-group-main"
+                    // style={{ width: this.props.width + "px" }}
+                > */}
                     <Row
                         type="flex"
                         justify="space-between"
-                        className="reference-main-header"
+                        className="group-header"
                     >
-                        <div className="title">任务分组</div>
+                        <div  className='title'>任务分组</div>
                         <div>
                             {/* <Search
                                 placeholder="搜索任务分组"
                                 style={{ width: 200 }}
-                                onSearch={this.onSearch.bind(this)}
+                                // onSearch={this.onSearch.bind(this)}
                             /> */}
                         </div>
                     </Row>
-                    <Row className="tabel-recoverd reference-main-choice ">
+                    <Row className="group-tabel-body">
                         <Table
                             columns={this.columns}
                             dataSource={tableData.data}
@@ -240,7 +240,7 @@ export default class TaskRef extends React.Component {
                         type="flex"
                         justify="end"
                         align="middle"
-                        className="reference-main-footer"
+                        className="group-tabel-footer"
                     >
                         <Row
                             type="flex"
@@ -248,12 +248,12 @@ export default class TaskRef extends React.Component {
                             align="middle"
                             gutter={15}
                         >
-                            <div>
+                            <div className='btnGroup'>
                                 <Button onClick={this.onCancel.bind(this)}>
                                     取消
                                 </Button>
                             </div>
-                            <div>
+                            <div  className='btnGroup'>
                                 <Button
                                     type="primary"
                                     onClick={this.onOk.bind(this)}
@@ -263,7 +263,7 @@ export default class TaskRef extends React.Component {
                             </div>
                         </Row>
                     </Row>
-                </div>
+                {/* </div> */}
             </div>
         );
     }
@@ -278,7 +278,6 @@ export default class TaskRef extends React.Component {
         return (
             <div>
                 <div className="reference-warpper">
-
                     {
                         this.props.groupid ?
                             <Input disabled value={this.props.value.name} /> :

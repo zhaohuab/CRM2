@@ -272,7 +272,7 @@ class CompanyAssign extends React.Component {
         let {selectedRowKeys,data} = this.props.$$state.toJS()
         return(
             <div>
-                <Button onClick={this.assignFn.bind(this)}><i className="iconfont icon-fenpei" />分配</Button>
+                <Button onClick={this.assignFn.bind(this)} className="customer_list_batchassign_p_customer"><i className="iconfont icon-fenpei" />分配</Button>
                 <Modal
                     title="分配"
                     visible={this.state.visible}

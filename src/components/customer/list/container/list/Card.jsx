@@ -508,7 +508,7 @@ class EditForm extends React.Component {
                                                                     "客户类型"
                                                                 }
                                                                 dataSource={
-                                                                    enumData.cannelType
+                                                                    enumData.type
                                                                 }
                                                             />
                                                         )}

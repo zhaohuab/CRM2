@@ -6,7 +6,7 @@ import './index.less'
 import {Input} from 'antd';
 //导入action方法
 import * as Actions from "../action"
-
+import Department from 'components/refs/departments'
 class List extends React.Component {
   constructor(props) {
     super(props)
@@ -14,7 +14,7 @@ class List extends React.Component {
       //dataSource : [],
     }
     this.enableColumns = [
-      "code", "name", "phone", "email",
+      "code", "name", "phone", "email","orgId",
     ];
     this.columns = [
       {
@@ -45,7 +45,13 @@ class List extends React.Component {
         title: '启用状态',
         dataIndex: 'enableStateName',
         render: (text, record, index) => this.renderColumn("enableStateName", "已启用", record, index),
-      }
+      },
+      {
+        title: '负责公司',
+        dataIndex: 'orgId',
+        width: "200px",
+        render: (text, record, index) => this.renderOrg('orgId', text, record, index),
+      },
     ]
   }
   renderColumn = (key, text, record, index) => {
@@ -57,14 +63,44 @@ class List extends React.Component {
     }
     return text;
   }
+
+  renderOrg = (key, text, record, index) => {
+
+        //编辑态 且 列可编辑
+        if (this.props.editable && this.enableColumns.indexOf(key) != -1) {
+          // <Department />
+          let value = {key:record[key],title:record["orgName"]}
+          
+          return <Department value={value} onBlur={this.onOrgChange(record.id,key).bind(this) }onChange={this.onOrgChange(record.id,key).bind(this)}/>
+        }
+        if(key == "orgId"){
+          return record["orgName"]
+        }
+        return text;
+      }
   onInputChange = (id, dataIndex) => {
     return (e) => {
-      
       let value = e.target.value;
       let adminList = this.props.$$state.get("adminList").toJS();
       const target = adminList.find(item => item.id === id);
       if (target) {
         target[dataIndex] = value;
+        if(target.editState == "" || target.editState == "NORMAL") {
+          target.editState = "UPDATE";
+        }
+        this.props.action.onAdminListChange(adminList);
+      }
+    };
+  }
+  onOrgChange = (id, dataIndex) => {
+    return (e) => {
+      let orgId = e.key;
+      let orgName = e.title;
+      let adminList = this.props.$$state.get("adminList").toJS();
+      const target = adminList.find(item => item.id === id);
+      if (target) {
+        target["orgId"] = orgId;
+        target["orgName"] = orgName;
         if(target.editState == "" || target.editState == "NORMAL") {
           target.editState = "UPDATE";
         }

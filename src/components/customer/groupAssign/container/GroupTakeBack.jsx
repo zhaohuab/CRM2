@@ -32,6 +32,7 @@ class GroupTakeBack extends React.Component {
 
     //遍历table选择出来的人
     selectPerson(selectedRowKeys ,data){
+        debugger;
         let choicePerson = data.data || [];
         choicePerson = choicePerson.filter((item)=>{
             if(selectedRowKeys.indexOf(item.id)>=0){
@@ -54,16 +55,20 @@ class GroupTakeBack extends React.Component {
 
     //点击回收方法
     takeBackFn(){
+        
         let { selectedRowKeys ,data,pagination} = this.props.$$state.toJS()
     
         //拿到已选中table客户
         let select = this.selectPerson(selectedRowKeys,data);
+        debugger;
         let companys = []
         //遍历所有客户的销售公司
         select.forEach((cumItem)=>{
+            debugger
             if(cumItem.salesVOs && cumItem.salesVOs.length){
                 cumItem.salesVOs.forEach((saleItem)=>{
-                    companys.push({id:saleItem.orgId,name:saleItem.def1})
+                    debugger;
+                    companys.push({id:saleItem.orgId,name:saleItem.orgName})
                 })
             }
         })
@@ -78,14 +83,14 @@ class GroupTakeBack extends React.Component {
                 name[companys[i].name] = 1;
             }
         }
-
+        debugger
         this.setState({
             visible:true,
             companyList:showCompany
         }) 
     }
 
-    //分配modal确定
+    //收回modal确定
     handleOk(){
         let companyList = this.state.companyList;
         let { selectedRowKeys ,data,pagination} = this.props.$$state.toJS()
@@ -99,8 +104,8 @@ class GroupTakeBack extends React.Component {
         debugger
         reqwest(
             {
-                url: baseDir+'cum/groupcustomers/resume',
-                method: "POST",
+                url: baseDir+'cum/customersales/resume',
+                method: "PUT",
                 data:{
                     param:{
                         orgIds:companyList.join(','),

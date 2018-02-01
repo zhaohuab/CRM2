@@ -51,7 +51,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 
 		case 'ORG_LIST_SHOWFORM':
-		debugger
 			return $$state.merge({
 				formVisitable: action.payload.visible,
 				editData: action.payload.editData,

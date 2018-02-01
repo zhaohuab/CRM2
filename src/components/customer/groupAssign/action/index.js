@@ -10,7 +10,7 @@ export function saveSearchMap (value){
 }
 //点击查询方案进行查询并保存查询方案条件
 export function saveSearchPlan(pagination,searchPlan){
-    //debugger
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -41,7 +41,7 @@ export function saveSearchPlan(pagination,searchPlan){
 
 //点击查询条件进行查询并保存查询条件
 export function searchMapSearch(pagination,searchMap){
-    //debugger
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -71,6 +71,7 @@ export function searchMapSearch(pagination,searchMap){
 
 //保存table选中keys值
 export function saveTableKeys(keys){
+    debugger
     return {
         type:'CUSTOMER_GROUPASSIGNMENT_SAVETABLEKEYS',
         keys
@@ -79,6 +80,7 @@ export function saveTableKeys(keys){
 
 //获取查询条件，查询方案的前置条件
 export function getSearchList(pagination){
+    debugger;
     return dispatch => {
         reqwest(
             {
@@ -105,11 +107,12 @@ export function getSearchList(pagination){
 }
 //获取列表数据，包括根据各种查询信息返回列表数据
 export function getList(pagination,search,keys){
-    //debugger
+    debugger
     return dispatch => {
         reqwest(
             {
                 url:baseDir + '/cum/groupcustomers',//url:baseDir + '/cum/groupcustomers','cum/customersales'
+                //'/cum/groupcustomers'
                 method: "GET",
                 data: {
                     param: {
@@ -119,8 +122,9 @@ export function getList(pagination,search,keys){
                 }
             },
             data => {
-                //debugger
+                debugger
                 //点击分配时  从新查列表 再把tablekey过滤掉
+                console.log('data==========',data)
                 if(typeof keys == 'object'){
                     dispatch(
                         {

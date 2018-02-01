@@ -39,6 +39,7 @@ class Enum extends React.Component {
         return (
             <div>
                 <Select
+                    defaultValue='1'
                     value={
                         this.props.addOptionAll != undefined && key == ""
                             ? "0"

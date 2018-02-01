@@ -137,23 +137,23 @@ class DetailTop extends React.Component {
                         {
                             viewData.enableState == 1?
                             <div>
-                                <Button onClick={this.canUse.bind(this,2)}>
+                                <Button onClick={this.canUse.bind(this,2)} className="customer_view_stop_customer" >
                                     <i className="iconfont icon-tingyong" />停用
                                 </Button>
                             </div>:
                             <div>
-                                <Button onClick={this.canUse.bind(this,1)}>
+                                <Button onClick={this.canUse.bind(this,1)} className="customer_view_start_customer">
                                     <i className="iconfont icon-qiyong" />启用
                                 </Button>
                             </div>
                         }
                         <div>
-                            <Button onClick={this.upgrade.bind(this)}>
+                            <Button onClick={this.upgrade.bind(this)} className="customer_view_upgrade_customer">
                                 <i className="iconfont icon-shengji" />升级
                             </Button>
                         </div>
                         <div>
-                            <Button onClick={this.btnEdit.bind(this)}>
+                            <Button onClick={this.btnEdit.bind(this)} className="customer_view_edit_customer">
                                 <i className="iconfont icon-bianji" />编辑
                             </Button>
                         </div>

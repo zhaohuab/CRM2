@@ -6,7 +6,6 @@ const RadioButton = R.Button;
 class RadioGroup extends React.Component {
     
     trans = (dataSource,type) => {
-        debugger
         if(type == "button") {
             return dataSource.map((item) => {
                 return <RadioButton  value={item.key} >{item.title}</RadioButton>
@@ -34,7 +33,6 @@ class RadioGroup extends React.Component {
         }
     }
     render() {
-        debugger
         let key = this.props.value;
         if(key) {
             key = Number(key);
