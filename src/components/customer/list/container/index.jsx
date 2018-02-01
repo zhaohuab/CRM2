@@ -98,8 +98,19 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
+        //显示侧滑面板，获取选中客户信息
         this.props.action.showViewForm(true, record.id);
+        //获取动态
+        this.props.action.getDynamic(record.id)
     }
+
+    //清除表单数据
+    clearForm(){
+        if(this.formRef){
+            this.formRef.props.form.resetFields()
+        }
+    }
+
     //隐藏面版
     slideHide() {
         //关闭面板清空数据
@@ -109,18 +120,15 @@ class List extends React.Component {
     //form新增、或者修改
     formHandleOk() {
         let { viewData,newTypeId } = this.props.$$state.toJS();
-        let clear = ()=>{
-            this.formRef.props.form.resetFields()
-        }
+    
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
                 if (viewData.id) {//修改
-                    this.props.action.listEditSave(viewData,clear);
+                    this.props.action.listFormSave(viewData);
                 } else {//新增
-                    this.props.action.listAddSave(viewData,newTypeId,clear);
+                    this.props.action.listFormSave(viewData,newTypeId);
                 }
-                
             }
         });
     }
@@ -128,7 +136,6 @@ class List extends React.Component {
     //form取消
     formHandleCancel() {
         this.props.action.showForm(false);
-        this.formRef.props.form.resetFields()
     }
 
     //保存修改、编辑等动作后，把修改的值保存在redux中
@@ -140,6 +147,8 @@ class List extends React.Component {
     showTotal(total) {
         return `共 ${total} 条`;
     }
+
+    //点击分页
     onPageChange(page, pageSize) {
 
         let pagination = { page: page, pageSize: pageSize };
@@ -148,6 +157,8 @@ class List extends React.Component {
             this.props.$$state.get("searchMap").toJS()
         );
     }
+
+    //点击分页跳转
     onPageSizeChange(current, pageSize) {
         let pagination = { page: current, pageSize: pageSize };
         this.props.action.getListData(
@@ -157,10 +168,10 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-
-        this.props.action.getListData(
-            this.props.$$state.get("pagination").toJS()
-        );
+        let {pagination} =  this.props.$$state.toJS()
+        //获取列表数据
+        this.props.action.getListData( pagination );
+        //获取查询条件、查询方案预置信息
         this.props.action.getEnumData();
     }
 
@@ -267,7 +278,6 @@ class List extends React.Component {
 
 
     render() {
-
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
         let {
@@ -290,7 +300,7 @@ class List extends React.Component {
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm/>
+                <TopSearchForm clearForm = {this.clearForm.bind(this)}/>
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}

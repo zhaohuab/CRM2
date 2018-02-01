@@ -123,8 +123,6 @@ class IcbcDetailInfo extends React.Component {
     //modal底部显示按钮
     footerContent() {
         let { viewData } = this.props.$$state.toJS();
-     
-        debugger
         return (
             <div>
                 <Button onClick={this.onIcbcCancel.bind(this)}>关闭</Button>
@@ -277,9 +275,7 @@ class IcbcDetailInfo extends React.Component {
         this.setState({
             value
         })
-    }
-
-     
+    } 
 
     createList() {
         let index = this.state.index;
