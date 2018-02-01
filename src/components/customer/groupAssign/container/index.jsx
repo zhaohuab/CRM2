@@ -50,6 +50,7 @@ class GroupAssignList extends React.Component {
             title: "销售公司",
             dataIndex: "org",
             render: (text, record, index) =>{
+                debugger;
                 let company=[]
                 record.salesVOs.forEach((item)=>{
                     company.push(item.def1)
@@ -195,7 +196,7 @@ class GroupAssignList extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange.bind(this)
         }
-    
+    console.log('客户分配列表===============',data)
         return(
             <div className='assignment-container'>
                 {
@@ -205,7 +206,7 @@ class GroupAssignList extends React.Component {
                         length={selectedRowKeys.length}
                     >
                         <GroupAssign headerBtnsClose = {this.headerBtnsClose.bind(this)}/> 
-                        <GroupTakeBack headerBtnsClose = {this.headerBtnsClose.bind(this)}/>
+                        <GroupTakeBack headerBtnsClose = {this.headerBtnsClose.bind(this)} getList={this.props.action.getList.bind(this)}/>
                     </HeaderButton>:
                     <div className='container-header'>
                         <Row className='container-header-show' type='flex' justify='space-between'>

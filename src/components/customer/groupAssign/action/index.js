@@ -10,7 +10,7 @@ export function saveSearchMap (value){
 }
 //点击查询方案进行查询并保存查询方案条件
 export function saveSearchPlan(pagination,searchPlan){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -94,6 +94,7 @@ export function getSearchList(pagination){
                 }
             },
             data => {
+                
                 dispatch(
                     {
                         type:"CUSTOMER_GROUPASSIGNMENT_PRESEARCHMAP", 
@@ -107,7 +108,6 @@ export function getSearchList(pagination){
 }
 //获取列表数据，包括根据各种查询信息返回列表数据
 export function getList(pagination,search,keys){
-    debugger
     return dispatch => {
         reqwest(
             {
@@ -122,9 +122,8 @@ export function getList(pagination,search,keys){
                 }
             },
             data => {
-                debugger
                 //点击分配时  从新查列表 再把tablekey过滤掉
-                console.log('data==========',data)
+                console.log('集团分配刷新时获取到数据==============',data)
                 if(typeof keys == 'object'){
                     dispatch(
                         {

@@ -32,7 +32,7 @@ class GroupTakeBack extends React.Component {
 
     //遍历table选择出来的人
     selectPerson(selectedRowKeys ,data){
-        debugger;
+        //debugger;
         let choicePerson = data.data || [];
         choicePerson = choicePerson.filter((item)=>{
             if(selectedRowKeys.indexOf(item.id)>=0){
@@ -60,15 +60,15 @@ class GroupTakeBack extends React.Component {
     
         //拿到已选中table客户
         let select = this.selectPerson(selectedRowKeys,data);
-        debugger;
+        //debugger;
         let companys = []
         //遍历所有客户的销售公司
         select.forEach((cumItem)=>{
-            debugger
-            if(cumItem.salesVOs && cumItem.salesVOs.length){
+            //debugger
+            if(cumItem.salesVOs && cumItem.salesVOs.length){//-----------------为了配合enableState的使用，这里自己为companyList中每一项添加enableState属性
                 cumItem.salesVOs.forEach((saleItem)=>{
-                    debugger;
-                    companys.push({id:saleItem.orgId,name:saleItem.orgName})
+                    //debugger;
+                    companys.push({id:saleItem.orgId,name:saleItem.orgName,enableState:saleItem.enableState})
                 })
             }
         })
@@ -81,9 +81,10 @@ class GroupTakeBack extends React.Component {
                 companys[i].checked = false
                 showCompany.push(companys[i]);
                 name[companys[i].name] = 1;
+
             }
         }
-        debugger
+        //debugger
         this.setState({
             visible:true,
             companyList:showCompany
@@ -104,7 +105,7 @@ class GroupTakeBack extends React.Component {
         debugger
         reqwest(
             {
-                url: baseDir+'cum/customersales/resume',
+                url: baseDir+'cum/groupcustomers/resume',
                 method: "PUT",
                 data:{
                     param:{
@@ -114,14 +115,14 @@ class GroupTakeBack extends React.Component {
                 }
             },
             result => {
-                debugger
                 this.setState({
                     visible:false,
                     companyList:[],
                     checkedAll:false
                 },()=>{
-                    this.props.headerBtnsClose()
-                })
+                    this.props.headerBtnsClose()    
+                });
+               // this.props.getList()
             }
         );
     }
@@ -152,7 +153,7 @@ class GroupTakeBack extends React.Component {
 
     //标签触发onchange
     onTagsChange(list){
-        debugger
+        //debugger
         this.setState({
             companyList:list
         })

@@ -95,7 +95,8 @@ class PanelMap extends React.Component {
         let {  $$state, action} = this.props;
         let { data, customerItem } =  $$state.toJS();
         let itemFlag = $$state.get('itemFlag');
-        let departmentName = $$state.get('departmentName');      
+        let departmentName = $$state.get('departmentName');  
+        console.log('customerItem=================',customerItem)    
       // debugger;
         return (
             <Row type="flex" className="customer-panelMap-wraper">
@@ -149,7 +150,7 @@ class PanelMap extends React.Component {
                             }
                         </div>
                         <Row type="flex" justify="end" className='page-list'>
-                            <Pagination total={100} onChange={pageChange.bind(this)}/>
+                            <Pagination total={ customerItem.total } onChange={ pageChange.bind(this) } pageSize={ 5 }/>
                         </Row>
                 </Col>
                 <Col span={16} className="customer-panelMap-right">

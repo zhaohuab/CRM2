@@ -302,7 +302,7 @@ class CompanyAssign extends React.Component {
                     className='crm-company-changeperson-modal'
                 >
                    <Row type='flex' align='middle' className='change-person-item'>
-                       <Col span={4} offset={2} className=''>原客户:</Col>
+                       <Col span={4} offset={2} className=''>原负责人:</Col>
                        <Col span={10}>
                         {this.state.isChange && this.state.isChange.length?
                             this.state.isChange.map((item)=>{
@@ -315,7 +315,7 @@ class CompanyAssign extends React.Component {
                    </Row>
 
                    <Row type='flex' align='middle' className='change-person-item'>
-                        <Col span={4} offset={2}>现客户:</Col>
+                        <Col span={4} offset={2}>现负责人:</Col>
                         <Col span={10}>
                            <ChangePerson width={500} onChange={this.onChange.bind(this)} value={this.state.changeOwnUserValue}/>
                         </Col>
