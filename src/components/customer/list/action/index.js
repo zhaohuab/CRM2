@@ -74,39 +74,39 @@ function transData(searchMap) {
     return searchMap;
 }
 
-//-------导入导出
+//-------导入导出 1.30号 余春梅
 export function viewLeadShow(leadVisible) {
     debugger
     return {
-        type: "CUSTOMER_LIST_VIEWLEADSHOW",
+        type: "CUSTOMERCOMPANY_LIST_VIEWLEADSHOW",
         payload: { leadVisible }
     };
 }
 
 export function leadShow(leadVisible) {
     return {
-        type: "CUSTOMER_LIST_LEADSHOW",
+        type: "CUSTOMERCOMPANY_LIST_LEADSHOW",
         payload: { leadVisible }
     };
 };
 
 export function leadEndShow(leadVisible) {
     return {
-        type: "CUSTOMER_LIST_LEADENDSHOW",
+        type: "CUSTOMERCOMPANY_LIST_LEADENDSHOW",
         payload: { leadVisible }
     };
 };
 export function leadEndView(leadVisible, leadStep) {
     debugger
     return {
-        type: "CUSTOMER_LIST_LEADENDVIEW",
+        type: "CUSTOMERCOMPANY_LIST_LEADENDVIEW",
         payload: { leadVisible, leadStep }
     };
 
 }
 export function leadEndIngShow(leadVisible) {
     return {
-        type: "CUSTOMER_LIST_LEADINGSHOW",
+        type: "CUSTOMERCOMPANY_LIST_LEADINGSHOW",
         payload: { leadVisible }
     };
 }
@@ -114,23 +114,23 @@ export function leadEndIngShow(leadVisible) {
 export function saveFiles(files) {
     debugger
     return {
-        type: "CUSTOMER_LIST_SAVEFILES",
+        type: "CUSTOMERCOMPANY_LIST_SAVEFILES",
         payload: { files }
     };
 }
 export function fileSuccess(filesSuccess, result, show, leadStep) {
     return {
-        type: "CUSTOMER_LIST_FILESUCCESS",
+        type: "CUSTOMERCOMPANY_LIST_FILESUCCESS",
         payload: { filesSuccess, result, show, leadStep }
     };
 }
 export function fileFail(filesFail) {
     return {
-        type: "CUSTOMER_LIST_FILEFAIL",
+        type: "CUSTOMERCOMPANY_LIST_FILEFAIL",
         payload: { filesFail }
     };
 }
-
+//==============
 
 //控制查询显隐
 export function changeVisible() {

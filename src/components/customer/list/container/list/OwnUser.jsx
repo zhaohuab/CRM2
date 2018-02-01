@@ -67,6 +67,7 @@ export default class OwnUser extends React.Component {
         );
     }
     onOk(){
+        
         this.setState({
             visible:false,
             treeList:[],
@@ -74,7 +75,7 @@ export default class OwnUser extends React.Component {
             selectedTableRowKeys:[],
             selectedTreeKeys:[],
         },()=>{
-            
+            debugger
             this.props.onChange(this.state.result)
         })
     }
@@ -102,6 +103,7 @@ export default class OwnUser extends React.Component {
     }
 
     creatPanel(){
+        debugger
         return(
             <DropDownModal 
                 title='负责人' 
@@ -165,6 +167,7 @@ export default class OwnUser extends React.Component {
     }
 
     render(){
+        debugger
         const suffix =
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
