@@ -46,7 +46,6 @@ class Card extends React.Component {
         
         const { getFieldDecorator } = this.props.form;
         let { tpl } = this.props;
-        debugger
         return (<div>
         <Form >
             <Row >
