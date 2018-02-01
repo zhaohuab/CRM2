@@ -35,7 +35,7 @@ class View extends React.Component {
             key:"companySimpleName",
             name:"简称"
         },{
-            key:"companyIndustry",
+            key:"companyIndustryName",
             name:"所属行业"
         },{
             key:"companyCreatedTime",

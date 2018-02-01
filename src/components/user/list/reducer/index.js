@@ -24,7 +24,8 @@ let $$initialState = {
 	selectedRows: [],
 	roleList: [],
 	assignVisible: false,
-	selectedRole: undefined
+	selectedRole: undefined,
+	enumData:{}
 };
 
 function pageAdd(page, item) {
@@ -48,7 +49,6 @@ function pageEdit(page, item) {
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 	switch (action.type) {
 		case 'USER_LIST_TEMPLATE':
-		debugger
 			let tpl = $$state.get("template").toJS()
 			return $$state.merge({
 				template: {
@@ -67,16 +67,18 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRows: [],
 			})
 		case 'USER_ADD_TEMPLATE':
-			return $$state.mergeDeep({
-				template: {
-					add: action.content.fields,
-				},
+			let tmpAdd =  $$state.get("template").merge({
+				add: action.content.fields,
+			})
+			return $$state.merge({
+				template: tmpAdd
 			})
 		case 'USER_EDIT_TEMPLATE':
-			return $$state.mergeDeep({
-				template: {
-					edit: action.content.fields,
-				}
+			let tmpEdit =  $$state.get("template").merge({
+				edit: action.content.fields,
+			})
+			return $$state.merge({
+				template: tmpEdit
 			})
 		case 'USER_LIST_GETLIST':
 			return $$state.merge({
@@ -93,8 +95,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				pagination:action.content.pagination,
 				searchMap:action.content.searchMap,
 			})
-
-
 		case 'USER_LIST_SHOWFORM':
 			return $$state.merge({
 				visible: true,
@@ -165,9 +165,9 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 
 		case 'USER_LIST_GETENUMDATA':
-
+debugger
 			return $$state.merge({
-				enumData: action.content,
+				enumData: Immutable.fromJS(action.content)
 			})
 
 		case 'USER_LIST_SAVETEMPLATE':

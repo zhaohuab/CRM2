@@ -6,7 +6,7 @@ import './index.less'
 import {Input} from 'antd';
 //导入action方法
 import * as Actions from "../action"
-import Department from 'components/refs/departments'
+import Department from 'utils/comp4tpl/company'
 class List extends React.Component {
   constructor(props) {
     super(props)
@@ -71,7 +71,7 @@ class List extends React.Component {
           // <Department />
           let value = {key:record[key],title:record["orgName"]}
           
-          return <Department value={value} onBlur={this.onOrgChange(record.id,key).bind(this) }onChange={this.onOrgChange(record.id,key).bind(this)}/>
+          return <Department type={2} value={record["orgName"]} onBlur={this.onOrgChange(record.id,key).bind(this) }onChange={this.onOrgChange(record.id,key).bind(this)}/>
         }
         if(key == "orgId"){
           return record["orgName"]
@@ -94,8 +94,9 @@ class List extends React.Component {
   }
   onOrgChange = (id, dataIndex) => {
     return (e) => {
-      let orgId = e.key;
-      let orgName = e.title;
+      debugger
+      let orgId = e.value.id;
+      let orgName = e.value.name;
       let adminList = this.props.$$state.get("adminList").toJS();
       const target = adminList.find(item => item.id === id);
       if (target) {
