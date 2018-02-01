@@ -25,7 +25,13 @@ class Card extends React.Component {
         let { getFieldsValue, validateFieldsAndScroll } = this.props.form;
         validateFieldsAndScroll((err, values) => {
             if (!err) {
-                this.props.action.onOrgSave(getFieldsValue());
+                let data = getFieldsValue();
+                if(data.companyIndustryName){
+                    data.companyIndustry = data.companyIndustryName.id
+                    data.companyIndustryName = data.companyIndustryName.name
+                }
+                
+                this.props.action.onOrgSave(data);
             }
         });
     }
@@ -46,7 +52,6 @@ class Card extends React.Component {
         
         const { getFieldDecorator } = this.props.form;
         let { tpl } = this.props;
-        debugger
         return (<div>
         <Form >
             <Row >
@@ -85,6 +90,13 @@ const WrapCard = Form.create({
         //         data.companyCreatedTime.isTrans = true;
         //     }
         // }
+        debugger
+        if(data.companyIndustry&&data.companyIndustryName){
+            if(!data.companyIndustryName.value.id){
+                data.companyIndustryName = {value:{id:data.companyIndustry.value,name:data.companyIndustryName.value}}
+            }
+        }
+       
         return {
             ...data,
         }

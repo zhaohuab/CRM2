@@ -333,10 +333,10 @@ class RelevantObject extends React.Component {
                                                         <p className='name'>
                                                         {item.commitTime?this.changeTime.call(this,item.commitTime.time,'day'):'无'}
                                                         </p>
-                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请公司：</div><div className='mian-right' title = {item.orgName}></div></Row>
-                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请部门：</div><div className='mian-right' title = {item.orgName}>{item.deptName}</div></Row>
-                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请人：</div><div className='mian-right' title = {item.orgName}>{item.applyUserName}</div></Row>
-                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>审批状态：</div><div className='mian-right' title = {item.orgName}>{item.approvalStateName}</div></Row>
+                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请公司：</div><div className='mian-right' title = {item.orgName}>{item.orgName}</div></Row>
+                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请部门：</div><div className='mian-right' title = {item.deptName}>{item.deptName}</div></Row>
+                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>申请人：</div><div className='mian-right' title = {item.applyUserName}>{item.applyUserName}</div></Row>
+                                                        <Row type='flex' align='middle' className='main-height'><div className='mian-left'>审批状态：</div><div className='mian-right' title = {item.approvalStateName}>{item.approvalStateName}</div></Row>
                                                     </Col>
                                                 </Row>
                                             </Col>

@@ -23,7 +23,7 @@ class StatusLine extends React.Component {
                     onCancel={this.hideModal}
                     footer={null}
                 >
-                 <div className="main-right-timeline timeline-recoverd">
+                 <div className="approval-timeline approval-timeline-recoverd">
                     <Timeline>
                         {historyStatus && historyStatus.length ? historyStatus.map((item) => {
                             return (

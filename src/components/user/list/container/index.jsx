@@ -180,7 +180,6 @@ class List extends React.Component {
         let template = this.props.$$state.get("template").toJS();
         let isEdit = this.props.$$state.get("isEdit");
         let enableState = this.props.$$state.get("searchMap").toJS().enableState;
-        debugger
         let tpl;
         if (isEdit) {
             tpl = template.edit;

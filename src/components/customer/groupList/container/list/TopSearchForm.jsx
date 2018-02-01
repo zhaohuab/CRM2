@@ -78,6 +78,7 @@ class ToolForm extends React.Component {
     }
     //点击新建按钮
     btnNew() {
+        this.props.clearForm()
         this.props.action.addCustomer(true);
     }
     //上下表单控制显隐

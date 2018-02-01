@@ -44,7 +44,7 @@ class EditForm extends React.Component {
         } = this.props.$$state.toJS();
         return (
             <div>
-                <Row className="form-input-recover">
+                <Row className="leadForm-input-recover">
                     <Row>
                         <Form>
                             <Row type="flex" justify="center">

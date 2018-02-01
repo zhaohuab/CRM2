@@ -121,6 +121,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'ROLE_LIST_DELETESUCCESS':
 			return $$state.merge({
 				data: pageDelete($$state.get("data").toJS(), action.content),
+				//删除成功后清除选中可以在列表默认选中第一条
+				selectedRoleId: undefined,
 				selectedRowKeys: [],
 				selectedRows: [],
 			})

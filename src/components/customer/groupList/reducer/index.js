@@ -13,6 +13,7 @@ let $$initialState = {
     },
     moreShow: false, //查询条件显隐,
     viewState: false, //滑动面板显隐,
+    dynamicData:[],//动态数据
 
     icbcInfo: [], //根据客户工商id查询出来的所有详情信息,用在编辑和新增中
     icbcVisible: false, //工商信息查询新增编辑时面板显隐控制
@@ -142,6 +143,11 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             return $$state.merge({
                 formVisitable: action.payload.visible,
             });
+        case "CUSTOMERGROUP_LIST_GETDYNAMIC":
+            debugger
+            return $$state.merge({
+                dynamicData: action.data
+            });    
         //点击编辑按钮触发的方法
         case 'CUSTOMERGROUP_LIST_SHOWEDITFORM':
             let editViewData =  $$state.get('viewData').toJS()
@@ -247,6 +253,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 searchMap: action.data
             });
         case "CUSTOMERGROUP_LIST_CARDEDITCHANGE": //存放新增修改表单数据
+        debugger
             return $$state.merge({
                 viewData: action.data
             });
@@ -272,18 +279,6 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             });
         //点击一条客户数据时    
         case "CUSTOMERGROUP_LIST_SHOWVIEWFORM":
-        //     let actionData = action.data;
-        //     actionData.industry = {
-        //         id: actionData.industry,
-        //         name: actionData.industryName
-        //     };
-        
-        //     actionData.province_city_district = {}
-        //     actionData.province_city_district.result= [
-        //         actionData.province.toString(),
-        //         actionData.city.toString(),
-        //         actionData.district.toString()
-        //     ];
             return $$state.merge({
                 viewState: action.visible,
                 viewData: action.data,

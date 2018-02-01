@@ -10,24 +10,7 @@ export function fetchData(type, payload){
         payload
     };
 };
-//遍历表单更改为可传数据
-let changeSearchData=(data)=>{
-    for(let key in data){
-        if(key == 'cannelType'&& data[key]|| key == 'level'&& data[key]|| key == 'enableState'&& data[key]|| key == 'type'&& data[key]){
-            data[key] = data[key].key
-        }
-        if(key=='province_city_district'&& data[key]){
-            data.province = data[key][0];
-            data.city = data[key][1];
-            data.district = data[key][2];
-            delete data.province_city_district;
-        }
-        if (key == 'industry'&& data[key]) {
-            data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
-        }
-    }
-    return data
-}
+
 
 //控制查询显隐
 export function changeVisible(){
@@ -213,6 +196,47 @@ export function getEnumData(){
     };
 };
 
+//获取动态信息
+export function getDynamic(id){
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: baseDir + `cum/customers/${id}/dynamic`,
+                method: "GET",
+            },
+            data => {
+                debugger
+
+                dispatch({
+                    type:"CUSTOMERGROUP_LIST_GETDYNAMIC",
+                    data:data && data.dynamiclist?data.dynamiclist:[]
+                });
+            }
+        );
+    };
+}
+
+//遍历表单更改为可传数据
+let changeSearchData=(data)=>{
+    for(let key in data){
+        if(key == 'cannelType'|| key == 'level'|| key == 'enableState'|| key == 'type'){
+            if(data[key] && data[key].key){
+                data[key] = data[key].key
+            }
+        }
+        if(key=='province_city_district'&& data[key]){
+            data.province = data[key][0];
+            data.city = data[key][1];
+            data.district = data[key][2];
+            delete data.province_city_district;
+        }
+        if (key == 'industry'&& data[key]) {
+            data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+        }
+    }
+    return data
+}
 
 
  //上传数据时，各种参照的数据转换
@@ -234,7 +258,7 @@ export function getEnumData(){
         data.street = data.street.address
     }
 
-    if(data.cannelType){
+    if(data.cannelType && data.cannelType.key){
         data.cannelType = data.cannelType.key
     }
 
@@ -243,175 +267,119 @@ export function getEnumData(){
     return data;
 }
 
-//修改客户保存
-export function listEditSave(data,callback){//-----------------------
-    debugger
-    trancFn(data)
-    if(data.industry && data.industry.name && (!data.industry.id)){
+
+//根据名称获取行业id,返回promise
+let getIndustry = (industry)=>{
+    return new Promise(function(resolve, reject) {
         debugger
-        let promise = new Promise(function(resolve, reject) {
-            debugger
-            reqwest(
-                {
-                    url: baseDir + 'base/industrys/list',
-                    method: "GET",
-                    data: {
-                        param: {
-                            searchMap:{
-                                searchKey:data.industry.name
-                            }
+        reqwest(
+            {
+                url: baseDir + 'base/industrys/list',
+                method: "GET",
+                data: {
+                    param: {
+                        searchMap:{
+                            searchKey:industry
                         }
                     }
-                },
-                indastry => {
-                    debugger
-                    resolve(indastry)
-                    //data.industry = indastry
                 }
-            );
-        });
-        promise.then((indastry)=>{
-            debugger
-            if(indastry && indastry.data.length){
-                data.industry = indastry.data[0].id;
-            }else{
-                data.industry = 'undefined'
+            },
+            indastry => {
+                debugger
+                resolve(indastry)
             }
-            debugger
-            reqwest(
-                {
-                    url: baseDir + "cum/groupcustomers/" + data.id,
-                    method: "put",
-                    data: {
-                        param: data
-                    }
-                },
-                data => {
-                  
-                    debugger
-                    dispatch({
-                        type: "CUSTOMERGROUP_LIST_EDITSAVE",
-                        data
-                    });
-                    callback()
-                }
-            );
-        })
-    }else{
-        debugger
-        if( data.industry && (!data.industry.name) && data.industry.id){
-            data.industry = data.industry.id
-        }else if(data.industry && data.industry.name && data.industry.id){
-            data.industry = data.industry.id
-        }else{
-            data.industry = 'undefined'
-        }
-        return dispatch => {
-            reqwest(
-                {
-                    url: baseDir + "cum/groupcustomers/" + data.id,
-                    method: "put",
-                    data: {
-                        param: data
-                    }
-                },
-                data => {
-                    debugger
-                    console.log('xxxxxxxxxxxxxxxxxxxx',data)
-                    dispatch({
-                        type: "CUSTOMERGROUP_LIST_EDITSAVE",
-                        data
-                    });
-                    callback()
-                }
-            );
-        };
-    }
-};
+        );
+    });
 
-//新增客户保存
-export function listAddSave(data,callback){
+}
+
+//编辑的Request请求
+let sendCumRequest = (data,dispatch)=>{
+debugger
+reqwest(
+    {
+        url: baseDir + "cum/groupcustomers/" + data.id,
+        method: "put",
+        data: {
+            param: data
+        }
+    },
+    data => {
+        debugger
+        dispatch({
+            type: "CUSTOMERGROUP_LIST_EDITSAVE",
+            data
+        });
+    }
+);
+}
+
+//新增的Request请求
+let sendCumNewRequest = (data,dispatch)=>{
+debugger
+    reqwest(
+        {
+            url: baseDir + 'cum/groupcustomers',
+            method: "POST",
+            data: {
+                param: data
+            }
+        },
+        data => {
+            debugger
+            dispatch({
+                type: "CUSTOMERGROUP_LIST_ADDSAVE",
+                data
+            });
+        }
+    );
+}
+
+//新增、编辑表单
+export function listFormSave(data,id) {
+    data = trancFn(data);
+    
     debugger
     return dispatch => {
-        debugger
-        data = trancFn(data);
-        debugger
         if(data.industry && data.industry.name && (!data.industry.id)){
-            let promise = new Promise(function(resolve, reject) {
-                debugger
-                reqwest(
-                    {
-                        url: baseDir + 'base/industrys/list',
-                        method: "GET",
-                        data: {
-                            param: {
-                                searchMap:{
-                                    searchKey:data.industry.name
-                                }
-                            }
-                        }
-                    },
-                    indastry => {
-                        debugger
-                        resolve(indastry)
-                        //data.industry = indastry
-                    }
-                );
-            });
-            promise.then((indastry)=>{
+            getIndustry(data.industry.name).then((indastry)=>{
                 debugger
                 if(indastry && indastry.data.length){
                     data.industry = indastry.data[0].id;
                 }else{
                     data.industry = 'undefined'
                 }
-                debugger
-                reqwest(
-                    {
-                        url: baseDir + 'cum/groupcustomers',
-                        method: "POST",
-                        data: {
-                            param: data
-                        }
-                    },
-                    data => {
-                        debugger
-                        dispatch({
-                            type: "CUSTOMERGROUP_LIST_ADDSAVE",
-                            data
-                        });
-                        callback()
-                    }
-                );
+                //然后再发送编辑Request请求
+                //如果newTypeId存在代表是新增
+                if(!id){
+                    sendCumNewRequest(data,dispatch)
+                }else{
+                    sendCumRequest(data,dispatch)
+                } 
             })
         }else{
+            //有行业id没有行业name
+            debugger
             if( data.industry && (!data.industry.name) && data.industry.id){
                 data.industry = data.industry.id
+            //都有的情况下只获取行业id    
             }else if(data.industry && data.industry.name && data.industry.id){
                 data.industry = data.industry.id
+            //都没有获取undefined    
             }else{
                 data.industry = 'undefined'
             }
-            reqwest(
-                {
-                    url: baseDir + 'cum/groupcustomers',
-                    method: "POST",
-                    data: {
-                        param: data
-                    }
-                },
-                data => {
-                    debugger
-                    dispatch({
-                        type: "CUSTOMERGROUP_LIST_ADDSAVE",
-                        data
-                    });
-                    callback()
-                }
-            );
-        }  
+            //然后再发送编辑Request请求
+            //如果newTypeId存在代表是新增
+            if(!id){
+                sendCumNewRequest(data,dispatch)
+            }else{
+                sendCumRequest(data,dispatch)
+            }
+        }
     };
 };
+
 
 
 //展示面板，把点击某个客户的所有值，放在redux中
@@ -727,6 +695,7 @@ export function saveSearchMap(data){
 
 //往redux中存放编辑新增修改条件
 export function editCardFn(changeData){
+    debugger
     return {
         type: "CUSTOMERGROUP_LIST_CARDEDITCHANGE",
         data: changeData

@@ -14,8 +14,10 @@ let trancFn=(data)=>{
     debugger
     for (let key in data) {
         //枚举
-        if ( key == 'cannelType' && data[key] || key == 'level' && data[key] || key == 'type' && data[key]) {
-            data[key] = data[key].key
+        if ( key == 'cannelType' || key == 'level'|| key == 'type') {
+            if(data[key] && data[key].key){
+                data[key] = data[key].key
+            }
         }
 
         //城市
@@ -43,8 +45,10 @@ let trancFn=(data)=>{
 
 let changeSearchData = (data) => {
     for (let key in data) {
-        if (key == 'isGroup' && data[key] || key == 'cannelType' && data[key] || key == 'enableState' && data[key] || key == 'level' && data[key] || key == 'state' && data[key] || key == 'type' && data[key]) {
-            data[key] = data[key].key
+        if (key == 'isGroup'|| key == 'cannelType'|| key == 'enableState'|| key == 'level'|| key == 'state'|| key == 'type') {
+            if(data[key] && data[key].key){
+                data[key] = data[key].key
+            }
         }
         if (key == 'province_city_district' && data[key]) {
             data.province = data[key][0];
@@ -74,39 +78,39 @@ function transData(searchMap) {
     return searchMap;
 }
 
-//-------导入导出
+//-------导入导出 1.30号 余春梅
 export function viewLeadShow(leadVisible) {
     debugger
     return {
-        type: "CUSTOMER_LIST_VIEWLEADSHOW",
+        type: "CUSTOMERCOMPANY_LIST_VIEWLEADSHOW",
         payload: { leadVisible }
     };
 }
 
 export function leadShow(leadVisible) {
     return {
-        type: "CUSTOMER_LIST_LEADSHOW",
+        type: "CUSTOMERCOMPANY_LIST_LEADSHOW",
         payload: { leadVisible }
     };
 };
 
 export function leadEndShow(leadVisible) {
     return {
-        type: "CUSTOMER_LIST_LEADENDSHOW",
+        type: "CUSTOMERCOMPANY_LIST_LEADENDSHOW",
         payload: { leadVisible }
     };
 };
 export function leadEndView(leadVisible, leadStep) {
     debugger
     return {
-        type: "CUSTOMER_LIST_LEADENDVIEW",
+        type: "CUSTOMERCOMPANY_LIST_LEADENDVIEW",
         payload: { leadVisible, leadStep }
     };
 
 }
 export function leadEndIngShow(leadVisible) {
     return {
-        type: "CUSTOMER_LIST_LEADINGSHOW",
+        type: "CUSTOMERCOMPANY_LIST_LEADINGSHOW",
         payload: { leadVisible }
     };
 }
@@ -114,23 +118,23 @@ export function leadEndIngShow(leadVisible) {
 export function saveFiles(files) {
     debugger
     return {
-        type: "CUSTOMER_LIST_SAVEFILES",
+        type: "CUSTOMERCOMPANY_LIST_SAVEFILES",
         payload: { files }
     };
 }
 export function fileSuccess(filesSuccess, result, show, leadStep) {
     return {
-        type: "CUSTOMER_LIST_FILESUCCESS",
+        type: "CUSTOMERCOMPANY_LIST_FILESUCCESS",
         payload: { filesSuccess, result, show, leadStep }
     };
 }
 export function fileFail(filesFail) {
     return {
-        type: "CUSTOMER_LIST_FILEFAIL",
+        type: "CUSTOMERCOMPANY_LIST_FILEFAIL",
         payload: { filesFail }
     };
 }
-
+//==============
 
 //控制查询显隐
 export function changeVisible() {
@@ -149,8 +153,18 @@ export function selectedRowKeys(selectedRowKeys) {
 
 //控制新增修改表单显隐
 export function showForm(visible) {
+    debugger
     return fetchData("CUSTOMERCOMPANY_LIST_SHOWFORM", { visible });
 };
+
+//
+export function showFormEdit(visiable){
+    debugger
+    return{
+        type:'CUSTOMERCOMPANY_LIST_SHOWEDITFORM',
+        visiable
+    }
+}
 
 //删除客户
 export function deleteData(ids, searchMap, pagination) {
@@ -303,40 +317,80 @@ export function getEnumData() {
     };
 };
 
-//修改客户保存
-export function listEditSave(data,callback) {
+//获取动态信息
+export function getDynamic(id){
     debugger
     return dispatch => {
         reqwest(
             {
-                url: url.customer + "/" + data.id,
-                method: "put",
-                data: {
-                    param: trancFn(data)
-                }
+                url: baseDir + `cum/customers/${id}/dynamic`,
+                method: "GET",
             },
             data => {
+                debugger
                 dispatch({
-                    type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
-                    data
+                    type:"CUSTOMERCOMPANY_LIST_GETDYNAMIC",
+                    data:data && data.dynamiclist?data.dynamiclist:[]
                 });
-                callback()
             }
         );
     };
-};
+}
 
-//新增客户保存
-export function listAddSave(data, newTypeId,callback) {
-    data.biztypeId = newTypeId
-    debugger
-    return dispatch => {
+//根据名称获取行业id,返回promise
+let getIndustry = (industry)=>{
+    return new Promise(function(resolve, reject) {
+        debugger
         reqwest(
+            {
+                url: baseDir + 'base/industrys/list',
+                method: "GET",
+                data: {
+                    param: {
+                        searchMap:{
+                            searchKey:industry
+                        }
+                    }
+                }
+            },
+            indastry => {
+                debugger
+                resolve(indastry)
+            }
+        );
+    });
+}
+
+//编辑的Request请求
+let sendCumRequest = (data,dispatch)=>{
+    debugger
+    reqwest(
+        {
+            url: url.customer + "/" + data.id,
+            method: "put",
+            data: {
+                param: data
+            }
+        },
+        data => {
+            debugger
+            dispatch({
+                type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
+                data
+            });
+        }
+    );
+}
+
+//新增的Request请求
+let sendCumNewRequest = (data,dispatch)=>{
+    debugger
+     reqwest(
             {
                 url: url.customer,
                 method: "POST",
                 data: {
-                    param: trancFn(data)
+                    param: data
                 }
             },
             data => {
@@ -345,9 +399,55 @@ export function listAddSave(data, newTypeId,callback) {
                     type: "CUSTOMERCOMPANY_LIST_ADDSAVE",
                     data
                 });
-                callback()
             }
-        );
+    );
+}
+
+//新增、修改客户保存
+export function listFormSave(data,newTypeId) {
+    data = trancFn(data);
+    if(newTypeId){//如果newTypeId存在代表是新增
+        data.biztypeId = newTypeId
+    }
+    
+    debugger
+    return dispatch => {
+        if(data.industry && data.industry.name && (!data.industry.id)){
+            getIndustry(data.industry.name).then((indastry)=>{
+                debugger
+                if(indastry && indastry.data.length){
+                    data.industry = indastry.data[0].id;
+                }else{
+                    data.industry = 'undefined'
+                }
+                //然后再发送编辑Request请求
+                //如果newTypeId存在代表是新增
+                if(newTypeId){
+                    sendCumNewRequest(data,dispatch)
+                }else{
+                    sendCumRequest(data,dispatch)
+                } 
+            })
+        }else{
+            //有行业id没有行业name
+            debugger
+            if( data.industry && (!data.industry.name) && data.industry.id){
+                data.industry = data.industry.id
+            //都有的情况下只获取行业id    
+            }else if(data.industry && data.industry.name && data.industry.id){
+                data.industry = data.industry.id
+            //都没有获取undefined    
+            }else{
+                data.industry = 'undefined'
+            }
+            //然后再发送编辑Request请求
+            //如果newTypeId存在代表是新增
+            if(newTypeId){
+                sendCumNewRequest(data,dispatch)
+            }else{
+                sendCumRequest(data,dispatch)
+            }
+        }
     };
 };
 

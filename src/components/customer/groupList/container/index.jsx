@@ -85,6 +85,8 @@ class List extends React.Component {
     slideShow(record) {
         //debugger
         this.props.action.showViewForm(true, record.id);
+        //获取动态
+        this.props.action.getDynamic(record.id)
     }
     //隐藏面版
     slideHide() {
@@ -95,35 +97,36 @@ class List extends React.Component {
     //form新增、或者修改
     formHandleOk() {
         let { viewData } = this.props.$$state.toJS();
-        let clear = ()=>{
-            this.formRef.props.form.resetFields()
-        }
-        for (let key in viewData) {//-----把行业传输值由id和name组成的对象改为只有id值
-            if(key=='industry'){
-                viewData[key]=viewData[key].id
-            }
-        }
-        this.formRef.props.form.validateFields((err, value) => {         
+
+        this.formRef.props.form.validateFields((err, value) => {
+            debugger
             if (!err) {
-                //debugger
-                if (viewData.id) {//修改
-                    this.props.action.listEditSave(viewData,clear);
+                let id = viewData.id
+                debugger
+                if (id) {//修改
+                    this.props.action.listFormSave(viewData,id);
                 } else {//新增
-                    this.props.action.listAddSave(viewData,clear);
+                    this.props.action.listFormSave(viewData);
                 }
             }
         });
     }
 
+    //清除表单数据
+    clearForm(){
+        if(this.formRef){
+            this.formRef.props.form.resetFields()
+        }
+    }
+
     //form取消
     formHandleCancel() {
         this.props.action.showForm(false);
-        this.formRef.props.form.resetFields()
     }
 
     //保存修改、编辑等动作后，把修改的值保存在redux中
     editCardFn(changeData) {
-        debugger;
+        debugger
         this.props.action.editCardFn(changeData);
     }
 
@@ -176,7 +179,7 @@ class List extends React.Component {
        
         return (
             <div className="custom-warpper ">
-                <TopSearchForm/>
+                <TopSearchForm clearForm = {this.clearForm.bind(this)}/>
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}

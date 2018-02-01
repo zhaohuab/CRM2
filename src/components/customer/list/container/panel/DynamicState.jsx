@@ -1,60 +1,66 @@
+import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as Actions from "../../action";
 import {Timeline} from "antd";
 
-export default class ChangePerson extends React.Component {
+class DynamicState extends React.Component {
     render(){
+        let { dynamicData } = this.props.$$state.toJS()
+      
         return(
             <div className="main-right-timeline timeline-recoverd">
-                <Timeline>
-                    <Timeline.Item>
-                        <p>
-                            <span className="timeline-import">
-                                winni
-                            </span>创建了任务<span className="timeline-import">
-                                AAA
-                            </span>
-                        </p>
-                        <p className="timeline-time">
-                            2017-08-18 14:30
-                        </p>
-                    </Timeline.Item>
-                    <Timeline.Item>
-                        <p>
-                            <span className="timeline-import">
-                                winni
-                            </span>创建了任务<span className="timeline-import">
-                                AAA
-                            </span>
-                        </p>
-                        <p className="timeline-time">
-                            2017-08-18 14:30
-                        </p>
-                    </Timeline.Item>
-                    <Timeline.Item>
-                        <p>
-                            <span className="timeline-import">
-                                winni
-                            </span>创建了任务<span className="timeline-import">
-                                AAA
-                            </span>
-                        </p>
-                        <p className="timeline-time">
-                            2017-08-18 14:30
-                        </p>
-                    </Timeline.Item>
-                    <Timeline.Item>
-                        <p>
-                            <span className="timeline-import">
-                                winni
-                            </span>创建了任务<span className="timeline-import">
-                                AAA
-                            </span>
-                        </p>
-                        <p className="timeline-time">
-                            2017-08-18 14:30
-                        </p>
-                    </Timeline.Item>
-                </Timeline>
+                {
+                    dynamicData && dynamicData.length?
+                    <Timeline>
+                        {
+                            dynamicData && dynamicData.length?
+                            dynamicData.map((item)=>{
+                                return(
+                                    <Timeline.Item>
+                                        <p>
+                                            {
+                                                item.content && item.content.length?
+                                                item.content.map((itemDetail)=>{
+                                                    return (
+                                                        <span>
+                                                            {
+                                                                itemDetail.link?
+                                                                <span className="timeline-import">
+                                                                    {itemDetail.title + itemDetail.link.title}
+                                                                </span>:
+                                                                <span>{itemDetail.title}</span>
+                                                            }
+                                                        </span>
+                                                    )
+                                                }):''
+                                            }
+                                        </p>
+                                        <p className="timeline-time">
+                                            {item.time?item.time:'暂无创建时间'}
+                                        </p>
+                                    </Timeline.Item>
+                                )
+                            }):''
+                        }
+                    </Timeline>:<div>暂无动态</div>
+                }
             </div>
         )
     }
 }
+
+//绑定状态到组件props
+function mapStateToProps(state, ownProps) {
+    return {
+        $$state: state.customerList
+    };
+}
+//绑定action到组件props
+function mapDispatchToProps(dispatch) {
+    return {
+        action: bindActionCreators(Actions, dispatch)
+    };
+}
+//输出绑定state和action后组件
+export default connect(mapStateToProps, mapDispatchToProps)(DynamicState);

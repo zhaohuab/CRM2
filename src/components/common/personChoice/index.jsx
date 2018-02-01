@@ -39,6 +39,7 @@ export default class PersonChioce extends React.Component {
     }
     //树选中方法
     onSelect(selectedKeys,selectedObj){
+        debugger
         let {page,pageSize} = this.state;
         this.props.selectList(page,pageSize,selectedKeys)
     }

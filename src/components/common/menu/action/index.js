@@ -25,6 +25,7 @@ const getMenuData = () => {
 					}
 				}, (result) => {
 					const data = result.data
+					debugger
 					let code = ""
 					for (let i = 0; i < data.length; i++) {
 						if (data[i].isDisplay == 2) {

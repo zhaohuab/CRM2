@@ -126,12 +126,14 @@ export default class ChangePerson extends React.Component {
 
     getList(flag){
         if(flag){
+            debugger
             reqwest(
                 {
                     url: baseDir+'sys/orgs/orgTree',
                     method: "GET",
                 },
                 result => {
+                    debugger
                     this.setState({
                         visible:true,
                         treeList:result.data
