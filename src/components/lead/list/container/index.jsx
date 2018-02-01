@@ -210,6 +210,23 @@ class Clue extends React.Component {
             }
         });
 
+    } //modal点击确定按钮
+    onOk() {
+        debugger;
+        this.formRef.props.form.validateFieldsAndScroll((err, values) => {//取值
+            debugger;
+            if (!err) {
+                values = this.trancFn(values);
+                if (values.id) {
+                    // debugger;
+                    this.props.action.onEdit(values);
+                } else {
+                    debugger;
+                    this.props.action.onSave(values);
+                }
+            }
+        });
+
     }
     //modal 点击取消
     onCancel() {

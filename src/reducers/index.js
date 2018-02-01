@@ -70,6 +70,11 @@ import lead from 'components/lead/list/reducer';
 //任务调度
 import quartz from 'components/quartz/list/reducer'
 
+//销售话术
+import speech from 'components/speech/list/reducer'
+//客户状态完成的工作
+
+
 //客户分布
 import cusDistributed from 'components/cusDistributed/reducer';
 //客户动态
@@ -113,7 +118,8 @@ let rootReducer = combineReducers({
     quartz,
     cusAssignReducers,
     approval,
-    cusStatus
+    cusStatus,
+    speech
 });
 
 export { rootReducer };

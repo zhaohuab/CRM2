@@ -78,6 +78,7 @@ export default class PersonChoiceModal extends React.Component {
 
      //分配获取人员列表方法
      getTableList(page,pageSize,selectedKeys){
+        debugger
         let { viewData } = this.props
         let orgId = viewData.orgId;//组织id
         let deptId = selectedKeys[0];//部门id
@@ -93,7 +94,7 @@ export default class PersonChoiceModal extends React.Component {
                 }
             },
             result => {
-                
+                debugger
                 this.setState({
                     visible:true,
                     personList:result,
@@ -113,6 +114,7 @@ export default class PersonChoiceModal extends React.Component {
 
     //分配modal确定
     onOk(){
+        debugger
         if(!this.state.result){
             this.setState({
                 visible:false,
