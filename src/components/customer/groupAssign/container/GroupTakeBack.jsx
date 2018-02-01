@@ -120,8 +120,8 @@ class GroupTakeBack extends React.Component {
                     companyList:[],
                     checkedAll:false
                 },()=>{
-                    this.props.headerBtnsClose() ;
-                    this.props.action.getList(pagination,{},[])   
+                    this.props.headerBtnsClose();
+                    this.props.action.getList(pagination)   
                 });
             }
         );
