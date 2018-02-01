@@ -24,7 +24,8 @@ import UploadImg from "../list/UploadImg";
 class DetailObject extends React.Component {
     render(){
         let {viewData} = this.props.$$state.toJS();
-        let {salesVOs} = viewData;//-----详情下的公司部分
+        let salesVOs = viewData.salesVOs||[];//-----详情下的公司部分
+        debugger;
         return(
                 <Collapse
                     defaultActiveKey={["1", "2", "3"]}

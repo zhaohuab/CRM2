@@ -1,26 +1,31 @@
 const getData = (dataSource) => {
     let data=[], dataObj={},colorObj={'交易客户':'#FACE4C','机会客户':'#77D1A7','沉默客户':'#9FD563','潜在客户':'#42C0E8'};
-    for(let key in dataSource){
-        dataObj.name=key;
-        dataObj.value=dataSource[key];
-        dataObj.itemStyle={normal:{color:colorObj[key]}};
-        dataObj.label={
-                        normal: {
-                            formatter: params => {
-                                return `${params.name}(${params.value})`;
+    if(dataSource){
+        for(let key in dataSource){
+            dataObj.name=key;
+            dataObj.value=dataSource[key];
+            dataObj.itemStyle={normal:{color:colorObj[key]}};
+            dataObj.label={
+                            normal: {
+                                formatter: params => {
+                                    return `${params.name}(${params.value})`;
+                                }
                             }
-                        }
-                    };
-        data.push(dataObj);
+                        };
+            data.push(dataObj);
+        }
     }
     return data
 }
 
 const getStateOption = (data) => {
     let stateObj = {};
-    data.data.forEach(item=>{
-        stateObj[item.name]=item.num
-    })
+    if(data.data){
+        data.data.forEach(item=>{
+            stateObj[item.name]=item.num
+        })  
+    }
+   
     let option = {
     tooltip: {
         trigger: "item",

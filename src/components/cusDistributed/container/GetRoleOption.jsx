@@ -250,17 +250,22 @@ const getData = (data) => {
         cityObj={},//当前角色下所有市区名称和客户数量
         cityArr=[],//市区data
         cityLength=0,//cityObj的长度 
-        dataObj={};//抛出的数据，包括series中的data、显示的区域标识(国/省/市)、放大倍数，区域名称
-    data.list.forEach(listItem=>{
-        listItem.province.forEach(proItem=>{
-            if(proItem.id!='zero'){
-                proObj[proItem.name]?proObj[proItem.name]+=proItem.num : proObj[proItem.name]=proItem.num;
-                proItem.city.forEach(cityItem=>{
-                    cityObj[cityItem.name]?cityObj[cityItem.name]+=proItem.num : cityObj[cityItem.name]=cityItem.num;
-                }) 
-            }          
-        })
-    })
+        dataObj={zoom:5,data:[],name:'',flag:'country'};//抛出的数据，包括series中的data、显示的区域标识(国/省/市)、放大倍数，区域名称
+        if (data&&data.list){
+            data.list.forEach(listItem=>{
+                if (listItem){
+                    listItem.province.forEach(proItem=>{
+                        if (proItem.id!='zero'){
+                            proObj[proItem.name]?proObj[proItem.name]+=proItem.num : proObj[proItem.name]=proItem.num;
+                            proItem.city.forEach(cityItem=>{
+                                cityObj[cityItem.name]?cityObj[cityItem.name]+=proItem.num : cityObj[cityItem.name]=cityItem.num;
+                            }) 
+                        }          
+                    })
+                }
+            })
+        }
+ 
     for(let key in proObj) {
         proLength++;
         let obj = {};
@@ -285,11 +290,13 @@ const getData = (data) => {
         dataObj.flag='province';
         dataObj.data=cityArr;
         dataObj.name=proArr[0].name;
-    }else{
+    }else if(proLength==1&&cityLength==1){
         dataObj.zoom=10;
         dataObj.flag='city';
         dataObj.data=cityArr;
         dataObj.name=cityArr[0].name;
+    }else{
+        return dataObj; 
     }
     return dataObj; 
 }

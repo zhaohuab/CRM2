@@ -65,10 +65,10 @@ class GroupTakeBack extends React.Component {
         //遍历所有客户的销售公司
         select.forEach((cumItem)=>{
             //debugger
-            if(cumItem.salesVOs && cumItem.salesVOs.length){
+            if(cumItem.salesVOs && cumItem.salesVOs.length){//-----------------为了配合enableState的使用，这里自己为companyList中每一项添加enableState属性
                 cumItem.salesVOs.forEach((saleItem)=>{
                     //debugger;
-                    companys.push({id:saleItem.orgId,name:saleItem.orgName})
+                    companys.push({id:saleItem.orgId,name:saleItem.orgName,enableState:saleItem.enableState})
                 })
             }
         })
@@ -81,6 +81,7 @@ class GroupTakeBack extends React.Component {
                 companys[i].checked = false
                 showCompany.push(companys[i]);
                 name[companys[i].name] = 1;
+
             }
         }
         //debugger
@@ -114,14 +115,14 @@ class GroupTakeBack extends React.Component {
                 }
             },
             result => {
-                debugger
                 this.setState({
                     visible:false,
                     companyList:[],
                     checkedAll:false
                 },()=>{
-                    this.props.headerBtnsClose()
-                })
+                    this.props.headerBtnsClose()    
+                });
+               // this.props.getList()
             }
         );
     }

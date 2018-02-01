@@ -11,6 +11,7 @@ import {
     Dropdown,
     Menu
 } from "antd";
+import { baseDir } from 'api';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Enum from "utils/components/enums";
@@ -52,7 +53,7 @@ class ToolForm extends React.Component {
     }
 
     //点击删除按钮?
-    btnDelete() {
+    btnDelete() {//-------------这里与公司客户不一致
         let that = this;
         confirm({
             title: "确定要删除吗?",
@@ -85,7 +86,7 @@ class ToolForm extends React.Component {
     }
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
-     /*    //此地方产生 bug，注掉试试
+     /*    //此地方产生 bug，注掉后正常
      debugger
         if (searchMap.industry) {
             searchMap.industry = searchMap.industry.id;
@@ -102,14 +103,30 @@ class ToolForm extends React.Component {
         this.props.action.saveSearchMap(searchMap);
     }
 
+    onMenu(e) {//-----导入导出
+        debugger
+        let { searchMap, pagination } = this.props.$$state.toJS();
+        let page = pagination.page;
+        let pageSize = pagination.pageSize
+        let search = JSON.stringify(searchMap)
+        debugger
+        if (e.key == "1") {
+            debugger
+            this.props.action.viewLeadShow(true);
+        } else if (e.key == "2") {
+            location.href = baseDir + "tpub/excels/2/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 + "}"
+
+        }
+    }
+
     render() {
         let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
         const moreMenu = (
-            <Menu>
-                <Menu.Item key="0">
+            <Menu onClick={this.onMenu.bind(this)}>
+                <Menu.Item key="1">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item key="1">
+                <Menu.Item key="2">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>

@@ -24,6 +24,7 @@ import Card from "./list/Card";
 import ViewPanel from "./panel/ViewPanel";
 import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
+import LeadExport from './lead/LeadExport'; //导入导出
 
 
 import "./index.less";
@@ -82,7 +83,7 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
-        debugger
+        //debugger
         this.props.action.showViewForm(true, record.id);
     }
     //隐藏面版
@@ -94,15 +95,17 @@ class List extends React.Component {
     //form新增、或者修改
     formHandleOk() {
         let { viewData } = this.props.$$state.toJS();
-
         let clear = ()=>{
             this.formRef.props.form.resetFields()
         }
-
-        this.formRef.props.form.validateFields((err, value) => {
-            debugger
+        for (let key in viewData) {//-----把行业传输值由id和name组成的对象改为只有id值
+            if(key=='industry'){
+                viewData[key]=viewData[key].id
+            }
+        }
+        this.formRef.props.form.validateFields((err, value) => {         
             if (!err) {
-                debugger
+                //debugger
                 if (viewData.id) {//修改
                     this.props.action.listEditSave(viewData,clear);
                 } else {//新增
@@ -120,6 +123,7 @@ class List extends React.Component {
 
     //保存修改、编辑等动作后，把修改的值保存在redux中
     editCardFn(changeData) {
+        debugger;
         this.props.action.editCardFn(changeData);
     }
 
@@ -154,6 +158,7 @@ class List extends React.Component {
         debugger
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
+        console.log('data=================',page.data)
         let {
             selectedRows,
             selectedRowKeys,
@@ -217,6 +222,7 @@ class List extends React.Component {
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
+                <LeadExport/>
             </div>
          );
     }

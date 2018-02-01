@@ -112,8 +112,7 @@ class List extends React.Component {
         let clear = ()=>{
             this.formRef.props.form.resetFields()
         }
-        this.formRef.props.form.validateFields((err, value) => {
-            debugger
+        this.formRef.props.form.validateFields((err, value) => {         
             if (!err) {
                 if (viewData.id) {//修改
                     this.props.action.listEditSave(viewData,clear);

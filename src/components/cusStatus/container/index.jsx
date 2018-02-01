@@ -90,7 +90,8 @@ class PanelMap extends React.Component {
         let {  $$state, action} = this.props;
         let { data, customerItem, statusData } =  $$state.toJS();
         let itemFlag = $$state.get('itemFlag');
-        let departmentName = $$state.get('departmentName');      
+        let departmentName = $$state.get('departmentName');    
+        console.log('customerItem=========',customerItem)  
         return (
             <Row type="flex" className="customer-status-wraper">
                 <Col span={8} className="customer-panelMap-left">
@@ -152,7 +153,12 @@ class PanelMap extends React.Component {
                                                                 <Col span={20} className='item-time'>
                                                                     <div className='time-name'>首次跟进</div>
                                                                     <div className='time-value'>
-                                                                        {moment(item.sysModifiedTime.time).format('YYYY-MM-DD')}
+                                                                        {
+                                                                            item.firstFollowTime?
+                                                                            moment(item.firstFollowTime).format('YYYY-MM-DD')
+                                                                            :
+                                                                            '暂无'
+                                                                        }
                                                                     </div>                                                               
                                                                 </Col>
                                                             </Row>
@@ -163,7 +169,12 @@ class PanelMap extends React.Component {
                                                                 <Col span={20} className='item-time'>
                                                                     <div className='time-name'>最近跟进</div>
                                                                     <div className='time-value'>
-                                                                        {moment(item.sysModifiedTime.time).format('YYYY-MM-DD')}
+                                                                        {
+                                                                            item.followTime ?
+                                                                            moment(item.followTime).format('YYYY-MM-DD')
+                                                                            :
+                                                                            '暂无'
+                                                                        }
                                                                     </div>                                                               
                                                                 </Col>
                                                             </Row>
@@ -177,7 +188,7 @@ class PanelMap extends React.Component {
                             }
                         </div>
                         <Row type="flex" justify="end" className='page-list'>
-                            <Pagination total={100} onChange={pageChange.bind(this)}/>
+                            <Pagination total={customerItem.total} onChange={pageChange.bind(this)} pageSize={5}/>
                         </Row>
                 </Col>
                 <Col span={16} className="customer-panelMap-right">

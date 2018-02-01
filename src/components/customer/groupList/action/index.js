@@ -176,7 +176,8 @@ export function getListData (pagination, searchMap){
                 }
             },
             data => {
-               debugger
+                debugger;
+              
                 dispatch(
                     fetchData("CUSTOMERGROUP_LIST_GETDATA", {
                         data: data,
@@ -215,7 +216,7 @@ export function getEnumData(){
 
 
  //上传数据时，各种参照的数据转换
- let trancFn=(data)=>{
+ let trancFn=(data)=>{//--------------------
     debugger
     //城市
     if (data.province_city_district) {
@@ -243,7 +244,7 @@ export function getEnumData(){
 }
 
 //修改客户保存
-export function listEditSave(data,callback){
+export function listEditSave(data,callback){//-----------------------
     debugger
     trancFn(data)
     if(data.industry && data.industry.name && (!data.industry.id)){
@@ -286,6 +287,7 @@ export function listEditSave(data,callback){
                     }
                 },
                 data => {
+                  
                     debugger
                     dispatch({
                         type: "CUSTOMERGROUP_LIST_EDITSAVE",
@@ -315,6 +317,7 @@ export function listEditSave(data,callback){
                 },
                 data => {
                     debugger
+                    console.log('xxxxxxxxxxxxxxxxxxxx',data)
                     dispatch({
                         type: "CUSTOMERGROUP_LIST_EDITSAVE",
                         data
@@ -916,4 +919,61 @@ export function delContacts(id,pagination){
             }
         );
     }
+}
+
+//-------导入导出
+export function viewLeadShow(leadVisible) {
+    debugger
+    return {
+        type: "CUSTOMER_LIST_VIEWLEADSHOW",
+        payload: { leadVisible }
+    };
+}
+
+export function leadShow(leadVisible) {
+    return {
+        type: "CUSTOMER_LIST_LEADSHOW",
+        payload: { leadVisible }
+    };
+};
+
+export function leadEndShow(leadVisible) {
+    return {
+        type: "CUSTOMER_LIST_LEADENDSHOW",
+        payload: { leadVisible }
+    };
+};
+export function leadEndView(leadVisible, leadStep) {
+    debugger
+    return {
+        type: "CUSTOMER_LIST_LEADENDVIEW",
+        payload: { leadVisible, leadStep }
+    };
+
+}
+export function leadEndIngShow(leadVisible) {
+    return {
+        type: "CUSTOMER_LIST_LEADINGSHOW",
+        payload: { leadVisible }
+    };
+}
+
+export function saveFiles(files) {
+    debugger
+    return {
+        type: "CUSTOMER_LIST_SAVEFILES",
+        payload: { files }
+    };
+}
+export function fileSuccess(filesSuccess, result, show, leadStep) {
+    return {
+        type: "CUSTOMER_LIST_FILESUCCESS",
+        payload: { filesSuccess, result, show, leadStep }
+    };
+}
+export function fileFail(filesFail) {
+    return {
+        type: "CUSTOMER_LIST_FILEFAIL",
+        payload: { filesFail }
+    };
 }
