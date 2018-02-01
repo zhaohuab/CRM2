@@ -45,7 +45,6 @@ class List extends React.Component {
       this.formRefTaskGroup.props.form.setFieldsValue({ name: '' });
     });
   }
-
   //新建任务点击保存
   onSaveTask = () => {
     debugger;
