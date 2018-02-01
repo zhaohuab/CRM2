@@ -706,21 +706,12 @@ const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
         let viewData = props.$$state.toJS().viewData;
+        debugger
         let value = {};
     
         for (let key in viewData) {
-            // if (key == "address") {
-            //     value[key] = {
-            //         value: {
-            //             address: viewData[key],
-            //             latlng: viewData["latlng"]
-            //         }
-            //     };
-            // } else {
-                value[key] = { value: viewData[key] };
-           // }
+            value[key] = { value: viewData[key] };
         }
-        //address  把字段合成对象
         return {
             ...value
         };
@@ -729,18 +720,7 @@ const cardForm = Form.create({
         //往redux中写值//把值进行更新改变
         let viewData = props.$$state.toJS().viewData;
         for (let key in onChangeFild) {
-            // if (key == "address") {
-            //     let value = onChangeFild[key].value;
-            //     viewData["address"] = value.address;
-            //     if (typeof value.latlng == "string") {
-            //         viewData["latlng"] = value.latlng;
-            //     } else {
-            //         viewData["latlng"] =
-            //             value.latlng.lng + "," + value.latlng.lat;
-            //     }
-            // } else {
-                viewData[key] = onChangeFild[key].value;
-            //} //把对像拆成字段  latlng
+             viewData[key] = onChangeFild[key].value;
         }
         props.editCardFn(viewData);
     }

@@ -191,6 +191,47 @@ class IcbcInfo extends React.Component {
             value
         })
     }
+    
+    //获取公司信息进行核实代码
+    verifyFn(){
+        let {viewData,icbcInfo} = this.props.$$state.toJS();
+        let name
+        name = icbcInfo.find((item)=>{
+            return item.key == 'name'
+        })
+        debugger
+        if(!viewData.fullname){
+            viewData.fullname = name.value
+        }
+        viewData.verifyFullname = name.value
+        debugger
+        icbcInfo.forEach(item => {
+            if (item.key == "street") {
+                viewData["street"] = item.value;
+            } else if (item.key == "bizRegno") {
+                viewData["bizRegno"] = item.value;
+            } else if (item.key == "orgCode") {
+                viewData["orgCode"] = item.value;
+            } else if (item.key == "regCapital") {
+                viewData["regCapital"] = item.value;
+            } else if (item.key == "legalRepresent") {
+                viewData["legalRepresent"] = item.value;
+            } else if (item.key == "industry") {
+                viewData["industry"] = { name: item.value };
+            } else if (item.key == "email") {
+                viewData["email"] = item.value;
+            } else if (item.key == "tel") {
+                viewData["tel"] = item.value;
+            } else if (item.key == "taxpayerNo") {
+                viewData["taxpayerNo"] = item.value;
+            } else if (item.key == "remark") {
+                viewData["remark"] = item.value;
+            }
+        });
+        return viewData
+    }
+
+
      //覆盖表单信息二次确认modal
      icbcConfirm() {
         let that = this;
@@ -199,41 +240,9 @@ class IcbcInfo extends React.Component {
           content: '确认后之前填写的客户信息将被覆盖，如已填写客户全称，此操作并不会覆盖客户名称',
           onOk(){
               debugger
-            let {viewData,icbcInfo} = that.props.$$state.toJS();
-            let name
-            name = icbcInfo.find((item)=>{
-                return item.key == 'name'
-            })
-            debugger
-            if(!viewData.fullname){
-                viewData.fullname = name.value
-            }
-            viewData.verifyFullname = name.value
-            debugger
-            icbcInfo.forEach(item => {
-                if (item.key == "street") {
-                    viewData["street"] = item.value;
-                } else if (item.key == "bizRegno") {
-                    viewData["bizRegno"] = item.value;
-                } else if (item.key == "orgCode") {
-                    viewData["orgCode"] = item.value;
-                } else if (item.key == "regCapital"){
-                    viewData["regCapital"] = item.value;
-                } else if (item.key == "legalRepresent") {
-                    viewData["legalRepresent"] = item.value;
-                } else if (item.key == "industry") {
-                    viewData["industry"] = { name: item.value };
-                } else if (item.key == "email") {
-                    viewData["email"] = item.value;
-                } else if (item.key == "tel") {
-                    viewData["tel"] = item.value;
-                } else if (item.key == "taxpayerNo") {
-                    viewData["taxpayerNo"] = item.value;
-                } else if (item.key == "remark") {
-                    viewData["remark"] = item.value;
-                }
-            });
-            that.props.action.saveIcbcName(viewData,false)
+              let viewData = that.verifyFn.call(that)
+              debugger
+              that.props.action.saveIcbcName(viewData,false)
           },
           onCancel() {
             that.props.action.saveIcbcNameCancel(false);
@@ -254,7 +263,12 @@ class IcbcInfo extends React.Component {
         if(viewData.name == addIcbcName){
             this.props.action.saveIcbcName(viewData,false)
         }else{
-            this.icbcConfirm.call(this)
+            if(!viewData.verifyFullname){
+                let viewData = this.verifyFn()
+                this.props.action.saveIcbcName(viewData,false)
+            }else{
+                this.icbcConfirm.call(this)
+            }
         }
     }
 

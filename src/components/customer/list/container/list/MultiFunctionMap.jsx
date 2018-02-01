@@ -54,24 +54,20 @@ export default class MultiFunctionMap extends React.Component {
             //地图点击事件
             click: event => {
                 let clickMarker = event.lnglat;
-                this.Geocoder.getAddress(clickMarker, (status, mapResult) => {
-                    if (status === "complete" && mapResult.info === "OK") {
-                        
-                        let result = mapResult.regeocode
-
-                        this.setState({
-                            clickMarkerPosition:clickMarker,
-                            infoPosition:clickMarker,
-                            result: {
-                                citycode:result.addressComponent.citycode,
-                                adcode:result.addressComponent.adcode,
-                                address:result.formattedAddress,
-                                location:clickMarker
-                            },
-                            InfoVisible: true
-                        });
-                    }
-                });
+                this.getSingleAddress(clickMarker,(result)=>{
+                    debugger
+                    this.setState({
+                        clickMarkerPosition:clickMarker,
+                        infoPosition:clickMarker,
+                        result: {
+                            citycode:result.addressComponent.citycode,
+                            adcode:result.addressComponent.adcode,
+                            address:result.formattedAddress,
+                            location:clickMarker
+                        },
+                        InfoVisible: true
+                    });
+                })
             }
         };
         //点击地图上的一个坐标点时，infoWindow显示
@@ -87,23 +83,18 @@ export default class MultiFunctionMap extends React.Component {
         this.markerEvents1 = {
             click:(e) => {
                 debugger
-                this.Geocoder.getAddress(e.lnglat, (status, mapResult) => {
-                    if (status === "complete" && mapResult.info === "OK") {
-                        
-                        let result = mapResult.regeocode
-                        debugger
-                        this.setState({
-                            infoPosition:e.lnglat,
-                            result: {
-                                citycode:result.addressComponent.citycode,
-                                adcode:result.addressComponent.adcode,
-                                address:result.formattedAddress,
-                                location:e.lnglat
-                            },
-                            InfoVisible: true
-                        });
-                    }
-                });
+                this.getSingleAddress(e.lnglat,(result)=>{
+                    this.setState({
+                        infoPosition:e.lnglat,
+                        result: {
+                            citycode:result.addressComponent.citycode,
+                            adcode:result.addressComponent.adcode,
+                            address:result.formattedAddress,
+                            location:e.lnglat
+                        },
+                        InfoVisible: true
+                    });
+                })
             }
         }
     }
@@ -111,11 +102,12 @@ export default class MultiFunctionMap extends React.Component {
     //通过value值获取精确地理坐标
     getSingleValueLocation(value){
         return  new Promise((resolve, reject) => {
+            debugger
             this.Geocoder.getLocation(value, (status, mapResult) => {
                 debugger
                 if (status === "complete" && mapResult.info === "OK") {
                     let result = mapResult.geocodes[0]
-                    debugger
+                    
                     resolve(result)
                 }else{
                     reject()
@@ -130,45 +122,39 @@ export default class MultiFunctionMap extends React.Component {
         debugger
         let location = this.props.value?this.props.value.location:''
         if(location){//根据坐标点查地图
-            this.Geocoder.getAddress(location, (status, mapResult) => {
+            this.getSingleAddress(location,(result)=>{
                 debugger
-                if (status === "complete" && mapResult.info === "OK") {
-                    let result = mapResult.regeocode;
-                    this.map.setZoomAndCenter(13,location)
-                    debugger
-                    this.setState({
-                        infoPosition:location,
-                        result: {
-                            citycode:result.addressComponent.citycode,
-                            adcode:result.addressComponent.adcode,
-                            address:result.formattedAddress,
-                            location:location
-                        },
-                        InfoVisible: true
-                    });
-                }
-            });
+                this.setState({
+                    infoPosition:location,
+                    result: {
+                        citycode:result.addressComponent.citycode,
+                        adcode:result.addressComponent.adcode,
+                        address:result.formattedAddress,
+                        location:location
+                    },
+                    InfoVisible: true
+                },()=>{
+                    this.map.setCenter(location)
+                });
+            })
         }else{//根据名称查地图
-            this.Geocoder.getLocation(value, (status, mapResult) => {
+            this.getSingleLocation(value,(result)=>{
                 debugger
-                if (status === "complete" && mapResult.info === "OK") {
-                    let result = mapResult.geocodes[0]
-                    this.map.setZoomAndCenter(13,result.location)
-                    debugger
-                    this.setState({
-                        clickMarkerPosition:result.location,
-                        infoPosition:result.location,
-                        InfoVisible: true,
-                        flag:true,
-                        result: {
-                            citycode:result.addressComponent.citycode,
-                            adcode:result.addressComponent.adcode,
-                            address:result.formattedAddress,
-                            location:result.location
-                        }
-                    });
-                }
-            });
+                this.setState({
+                    clickMarkerPosition:result.location,
+                    infoPosition:result.location,
+                    InfoVisible: true,
+                    flag:true,
+                    result: {
+                        citycode:result.addressComponent.citycode,
+                        adcode:result.addressComponent.adcode,
+                        address:result.formattedAddress,
+                        location:result.location
+                    }
+                },()=>{
+                    this.map.setCenter(result.location)
+                });
+            })
         }  
     }
 
@@ -180,42 +166,38 @@ export default class MultiFunctionMap extends React.Component {
             let value = this.props.value?this.props.value.address:'北京'
             let location = this.props.value?this.props.value.location:''
             if(location){//根据坐标点查地图
-                this.Geocoder.getAddress(location, (status, mapResult) => {
-                    if (status === "complete" && mapResult.info === "OK") {
-                        debugger
-                        let result = mapResult.regeocode;
-                        this.map.setZoomAndCenter(13,location)
-                        this.setState({
-                            infoPosition:location,
-                            result: {
-                                citycode:result.addressComponent.citycode,
-                                adcode:result.addressComponent.adcode,
-                                address:result.formattedAddress,
-                                location:location
-                            },
-                            InfoVisible: true
-                        });
-                    }
-                });
+                this.getSingleAddress(location,(result)=>{
+                    debugger 
+                    this.setState({
+                        infoPosition:location,
+                        result: {
+                            citycode:result.addressComponent.citycode,
+                            adcode:result.addressComponent.adcode,
+                            address:result.formattedAddress,
+                            location:location
+                        },
+                        InfoVisible: true
+                    },()=>{
+                        this.map.setCenter(location)
+                    });
+                })
             }else{
-                this.Geocoder.getLocation(value, (status, mapResult) => {
-                    if (status === "complete" && mapResult.info === "OK") {
-                        let result = mapResult.geocodes[0]
-                        debugger
-                        this.map.setZoomAndCenter(13,result.location)
-                        this.setState({
-                            clickMarkerPosition:result.location,
-                            infoPosition:result.location,
-                            InfoVisible: true,
-                            result: {
-                                citycode:result.addressComponent.citycode,
-                                adcode:result.addressComponent.adcode,
-                                address:result.formattedAddress,
-                                location:result.location
-                            }  
-                        });
-                    }
-                });
+                this.getSingleLocation(value,(result)=>{
+                    debugger
+                    this.setState({
+                        clickMarkerPosition:result.location,
+                        infoPosition:result.location,
+                        InfoVisible: true,
+                        result: {
+                            citycode:result.addressComponent.citycode,
+                            adcode:result.addressComponent.adcode,
+                            address:result.formattedAddress,
+                            location:result.location
+                        }  
+                    },()=>{
+                        this.map.setCenter(result.location)
+                    });
+                })
             }
         }
         this.setState({
@@ -270,7 +252,7 @@ export default class MultiFunctionMap extends React.Component {
         this.placeSearch.search(value,(status, result)=>{
             if (status === 'complete' && result.info === 'OK'){
                 this.getSingleValueLocation(value).then((data)=>{
-                    this.map.setZoomAndCenter(13,data.location)
+                    this.map.setCenter(data.location)
                     this.setState({
                         searchMarkersPositio:result.poiList.pois
                     })
@@ -288,8 +270,33 @@ export default class MultiFunctionMap extends React.Component {
             searchValue:value,
         })
     }
+
+    getSingleLocation(value,callback){
+        debugger
+        this.Geocoder.getLocation(value, (status, mapResult) => {
+            debugger
+            if (status === "complete" && mapResult.info === "OK") {
+                let result = mapResult.geocodes[0];
+                callback(result,result.adcode)
+            }
+        });
+    }
+
+    getSingleAddress(lngLat,callback){
+        debugger
+        this.Geocoder.getAddress(lngLat, (status, mapResult) => {
+            debugger
+            if (status === "complete" && mapResult.info === "OK") {
+                let result = mapResult.regeocode
+                
+                callback(result)
+            }
+        });
+    }
    
     render(){
+        this.props.cityCode
+        
         return(
             <div>
                 <Search
@@ -366,3 +373,6 @@ export default class MultiFunctionMap extends React.Component {
         )
     }
 }
+
+
+

@@ -21,7 +21,9 @@ class DetailTop extends React.Component {
 
     //打开编辑按钮
     btnEdit() {
-        this.props.action.showForm(true);
+        let { viewData } = this.props.$$state.toJS();
+        debugger
+        this.props.action.showFormEdit(true);
     }
 
     //点击升级按钮
@@ -107,7 +109,7 @@ class DetailTop extends React.Component {
                                     </Row>
                                 </Row>
                                 <Row className="address pointer">
-                                    {viewData.address?<span>{viewData.address}<i className="iconfont icon-shouye-dingwei" /></span>:'暂无地址'}
+                                    {viewData.street?<span>{viewData.street}<i className="iconfont icon-shouye-dingwei" /></span>:'暂无地址'}
                                 </Row>
                                 <Row type='flex' align='middle'className="tags">
                                         {
@@ -231,7 +233,7 @@ class DetailTop extends React.Component {
                             justify="center"
                             className="info-content"
                         >
-                            {viewData.salesVOs?viewData.salesVOs[0].ownerUserName:'无'}
+                            {viewData.salesVOs && viewData.salesVOs.length?viewData.salesVOs[0].ownerUserName:'无'}
                         </Row>
                     </Col>
                 </Row>

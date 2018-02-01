@@ -427,6 +427,7 @@ class DetailObject extends React.Component {
                     </Panel>
                     <Panel key="4" header ='公司' >
                         {
+                            salesVOs && salesVOs.length?
                             salesVOs.map(item=>{//-----循环生成各个公司详情
                                 return (
                                     <Row className="custom-info">
@@ -502,7 +503,7 @@ class DetailObject extends React.Component {
                                         </Col>
                                     </Row>  
                                 )
-                            })
+                            }):''
                         }                      
                     </Panel>
             </Collapse>

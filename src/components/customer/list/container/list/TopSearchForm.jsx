@@ -80,6 +80,7 @@ class ToolForm extends React.Component {
     }
     //点击新增按钮先请求查询条件 再弹出modal-card
     btnNew() {
+        this.props.clearForm()
         this.props.action.addNewType();
     }
 
