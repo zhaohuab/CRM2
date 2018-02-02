@@ -84,6 +84,7 @@ class List extends React.Component {
         const that = this;
 
         this.onSelectChange = (selectedRowKeys) => {
+            debugger
             this.props.action.selectedRowKeys(selectedRowKeys);
         };
         this.state={

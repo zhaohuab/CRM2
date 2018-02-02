@@ -130,6 +130,9 @@ export default class ChangePerson extends React.Component {
                 {
                     url: baseDir+'sys/orgs/orgTree',
                     method: "GET",
+                    param:{
+                        orgType:2
+                    }
                 },
                 result => {
                     ;

@@ -145,6 +145,7 @@ export function changeVisible() {
 
 //保存table已选择行数据
 export function selectedRowKeys(selectedRowKeys) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_SELECTROW",
         payload: { selectedRowKeys }
@@ -405,6 +406,7 @@ let sendCumNewRequest = (data,dispatch)=>{
 
 //新增、修改客户保存
 export function listFormSave(data,newTypeId) {
+    debugger
     data = trancFn(data);
     if(newTypeId){//如果newTypeId存在代表是新增
         data.biztypeId = newTypeId
@@ -593,24 +595,12 @@ export function checkedFn(viewData, select, id, visiable) {
                 }
             },
             result => {
+                dispatch({
+                    type: "CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL",
+                    visiable,
+                    verifyFullname: select.companyname
+                });
                 debugger
-                // reqwest(
-                //     {
-                //         url: url.customer + "/" + id,
-                //         method: "put",
-                //         data: {
-                //             param: viewData
-                //         }
-                //     },
-                //     data => {
-                //         debugger
-                //          dispatch({
-                //             type: "CUSTOMER_LIST_CLEANSELECT",
-                //             data,
-                //             visiable
-                //         });
-                //     }
-                // );
             }
         );
     };
@@ -639,13 +629,33 @@ export function checkedCancelFn(id, visiable) {
     };
 };
 
-export function hasIcbc(verifyId, visiable) {
+export function hasIcbc(name, visiable) {
     return dispatch => {
         debugger
+        // reqwest(
+        //     {
+        //         url: baseDir + "cum/customers/identifications/" + verifyId,
+        //         method: "GET"
+        //     },
+        //     result => {
+        //         debugger
+        //         dispatch({
+        //             type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
+        //             visiable,
+        //             data: result.data,
+        //         });
+
+        //     }
+        // );
         reqwest(
             {
-                url: baseDir + "cum/customers/identifications/" + verifyId,
-                method: "GET"
+                url: baseDir + "cum/customers/identifications/full",
+                method: "GET",
+                data:{
+                    param:{
+                        name:name
+                    }
+                }
             },
             result => {
                 debugger
@@ -654,7 +664,6 @@ export function hasIcbc(verifyId, visiable) {
                     visiable,
                     data: result.data,
                 });
-
             }
         );
     }
