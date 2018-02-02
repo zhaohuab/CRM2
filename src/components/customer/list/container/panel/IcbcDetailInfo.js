@@ -362,7 +362,7 @@ class IcbcDetailInfo extends React.Component {
                     : viewData.verifyFullname ?
                         "" :
                         <Row type='flex' justify='center'>
-                            <img src={require("assets/images/cum/icbc-false.png")} className='icbc-icon' />未核实
+                            <img src={require("assets/images/cum/icbc-false.png")} className='icbc-icon' />未核实1
                             </Row>
                 }
 

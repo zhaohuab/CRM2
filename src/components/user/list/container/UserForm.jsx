@@ -36,6 +36,9 @@ class Card extends React.Component {
             for(let i=0;i<tpl.length;i++){
                 if(tpl[i].relation&&formData[tpl[i].relation]&&formData[tpl[i].relation].value){
                    tpl[i].relationId = formData[tpl[i].relation].value;
+                }else if(tpl[i].relation&&formData[tpl[i].relation]){
+                    //此为编辑时打开情况。
+                    tpl[i].relationId = formData[tpl[i].relation];
                 }
             }
         }
