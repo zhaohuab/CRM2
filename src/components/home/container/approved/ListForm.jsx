@@ -33,8 +33,28 @@ class Department extends React.Component {
                 render: (text, record) => (
                     <div
                     >
-                        {record.approvalUserList.length ? record.approvalUserList[0].name : ''
-                        }
+
+{record.approvalUserList.length && record.approvalUserList.length > 3 ?
+    record.approvalUserList.slice(0, 3).map((item, index) => {
+                                                return (
+                                                    <span style={{marginRight:'2px'}}>
+                                                        {item.name}
+                                                    </span>
+                                                )
+
+                                            })
+                                            :
+                                            record.approvalUserList.length && record.approvalUserList.length <= 3 ?
+                                            record.approvalUserList.map((item, index) => {
+                                                    return (
+                                                        <span style={{marginRight:'2px'}}>
+                                                            {item.name}
+                                                        </span>
+                                                    )
+                                                }):''}
+
+                                        {record.approvalUserList.length && record.approvalUserList.length> 3 ? '...' : null}
+                                        
                     </div>
                 )
             },
@@ -181,6 +201,7 @@ class Department extends React.Component {
         debugger
         return (
             <div>
+    
                 {searchMap.status && searchMap.status == 'finish' ?
                     <Table
                         size="middle"

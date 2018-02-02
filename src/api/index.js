@@ -1,7 +1,7 @@
 import cookie from "utils/cookie";
 
 let baseDir = cookie("basedir"); // host:ip/crm_web/
-baseDir = baseDir+'/'
+baseDir = baseDir + '/'
 
 const login = baseDir + "login";
 
@@ -14,9 +14,9 @@ const org = {
 
 const user = {
 
-    listTpl : baseDir + "sys/users/template/list",
-    addTpl : baseDir + "sys/users/template/add",
-    editTpl : baseDir + "sys/users/template/edit",
+    listTpl: baseDir + "sys/users/template/list",
+    addTpl: baseDir + "sys/users/template/add",
+    editTpl: baseDir + "sys/users/template/edit",
 
     user: baseDir + "sys/users",
     userBatch: baseDir + "sys/users/batch",
@@ -39,9 +39,9 @@ const lead = {
     doc: baseDir + "sprc/leads/docs"
 }
 //任务调度
-const quartz={
-    quartz: baseDir +"quartz/tasks",
-    taskgroup:baseDir +"quartz/taskgroups"
+const quartz = {
+    quartz: baseDir + "quartz/tasks",
+    taskgroup: baseDir + "quartz/taskgroups"
 }
 
 
@@ -130,21 +130,23 @@ const phonebooks = {
 const func = {
     func: baseDir + "sys/functions"
 };
-const approval={
-    notfinished:baseDir+'bpub/approvals/notfinished',
-    finished:baseDir+'bpub/approvals/finished',
-    todo:baseDir+'bpub/approvals/todo',
-    done:baseDir+'bpub/approvals/done',
-    histories:baseDir+'bpub/approvals/details/histories',
-    details:baseDir+'bpub/approvals/details',
-    historyStatus:baseDir+'bpub/approvals/histories',
-    actions:baseDir+'bpub/approvals/actions',
-    todototal:baseDir+'bpub/approvals/todototal',
-    notfinishedtotal:baseDir+'bpub/approvals/notfinishedtotal',
-    remind:baseDir+'/bpub/approvals/remind'
+const approval = {
+    notfinished: baseDir + 'bpub/approvals/notfinished',
+    finished: baseDir + 'bpub/approvals/finished',
+    todo: baseDir + 'bpub/approvals/todo',
+    done: baseDir + 'bpub/approvals/done',
+    histories: baseDir + 'bpub/approvals/details/histories',
+    details: baseDir + 'bpub/approvals/details',
+    historyStatus: baseDir + 'bpub/approvals/histories',
+    actions: baseDir + 'bpub/approvals/actions',
+    todototal: baseDir + 'bpub/approvals/todototal',
+    notfinishedtotal: baseDir + 'bpub/approvals/notfinishedtotal',
+    remind: baseDir + '/bpub/approvals/remind'
 }
 
-
+const speech = {
+    saletalk: baseDir + 'sact/saletalk'
+}
 
 export {
     login,
@@ -172,5 +174,6 @@ export {
     phonebooks,
     func,
     quartz,
-    approval
+    approval,
+    speech
 }

@@ -14,7 +14,7 @@ function renderFullPage(html, initialState) {
           <script src="//cdn.bootcss.com/react/0.14.7/react.min.js"></script>
           <script src="//cdn.bootcss.com/react/0.14.7/react-dom.min.js"></script>
           <script src="//cdn.bootcss.com/immutable/3.8.1/immutable.min.js"></script>
-          <script type="text/javascript"  src="http://10.6.254.142:3000/lib/vendor.bundle.js"></script>
+          <script type="text/javascript"  src="http://10.6.230.123:3000/lib/vendor.bundle.js"></script>
         </head>
         <body>
           <div id="root" class="full-height">

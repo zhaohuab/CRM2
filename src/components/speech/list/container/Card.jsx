@@ -16,12 +16,11 @@ import {
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const { TextArea } = Input;
-import Email from "utils/components/emails";
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action";
 import Enum from "utils/components/enums";
-
 
 class EditForm extends React.Component {
     componentDidMount() {
@@ -30,12 +29,14 @@ class EditForm extends React.Component {
 
 
     render() {
-     
         const { getFieldDecorator } = this.props.form;
          let formItemLayout = {
             labelCol: { span: 3 },
             wrapperCol: { span: 17 }
         };
+        let {  
+            enumData,
+        } = this.props.$$state.toJS();
         return (
             <div>
                 <Row className="leadForm-input-recover">
@@ -50,9 +51,19 @@ class EditForm extends React.Component {
                                         label="职位"
                                         {...formItemLayout}
                                     >
-                                        {getFieldDecorator("name", {
+                                        {getFieldDecorator("jobName", {
                         
-                                        })(<Input placeholder="请输入" />)}
+                                        })(
+                                        
+                                            <Enum
+                                            addOptionAll={
+                                                "职位"
+                                            }
+                                            dataSource={
+                                                enumData
+                                            }
+                                        />              
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -60,7 +71,7 @@ class EditForm extends React.Component {
                             <Col span={20}>
                                     {" "}
                                     <FormItem label="痛点" {...formItemLayout}>
-                                        {getFieldDecorator("tel", {
+                                        {getFieldDecorator("saleTalk", {
 
                                         })(<TextArea rows={4}
                                          placeholder="请输入" />)}

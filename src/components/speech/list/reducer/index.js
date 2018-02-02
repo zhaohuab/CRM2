@@ -9,11 +9,12 @@ let $$initialState = {
     selectedRowKeys: [],
     modalVisible: false,
     data: {},
-    editData: {}
+    editData: {},
+    enumData:[]
 };
 
 function pageAdd(page, item) {
-    //////debugger;
+    
     page.total += 1;
     page.data.unshift(item);
     page.page = Math.ceil(page.total / page.pageSize);
@@ -56,9 +57,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 pagination: action.payload.pagination
             });
         case "SPEECH_LIST_GETENUMDATA": //获取查询条件基础显示内容
+        debugger
             return $$state.merge({ enumData: action.payload.enumData });
-
-
         case "SPEECH_LIST_UPDATELIST": //更改一条数据
             let newData = action.data;
 
@@ -88,7 +88,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 selectedRowKeys: []
             });
 
-        case "SPPEECH_LIST_SELECTCLUE": //保存已选择的数据
+        case "SPEECH_LIST_SELECTCLUE": //保存已选择的数据
             return $$state.merge({
                 selectedRows: Immutable.fromJS(action.payload.selectedRows),
                 selectedRowKeys: Immutable.fromJS(
@@ -98,9 +98,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
 
         //点击编辑获取数据
         case "SPEECH_LIST_EDIT":
-            ////debugger
+            //debugger
             let getData = action.edit;
-
             return $$state.merge({
                 editData: getData,
                 modalVisible: true

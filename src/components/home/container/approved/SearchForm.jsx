@@ -98,7 +98,9 @@ class Search extends React.Component {
                 label='单据状态'
                 {...formItemLayout}
               >
-                {getFieldDecorator('status',     
+                {getFieldDecorator('status', {
+                  initialValue:'todo'
+                }    
               )(
                   <RadioGroup size="large " onChange={this.onState}>
                     <RadioButton value="todo">待办</RadioButton>
