@@ -27,17 +27,19 @@ export default class Tags extends React.Component {
 
     render(){
         let value = this.props.value;
-        debugger;
+ 
         return(
             <Row type='flex' gutter={15} align='middle' className='tags-container'>
                 {
                     this.props.value && this.props.value.length?
                     this.props.value.map((item)=>{
+                        debugger;
                         return(
+                            item.enableState==1?
                             <div className={item.checked?'tags-item tags-item-show':'tags-item tags-item-hide'} onClick={this.checkedFn.bind(this,item)}>
                                 {item.name}
                                 <i className="iconfont icon-xuanzhong"/>
-                            </div>
+                            </div>:''
                         )
                     }):''
                 }

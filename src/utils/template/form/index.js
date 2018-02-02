@@ -6,6 +6,7 @@ import Company from 'utils/comp4tpl/company'
 import Enum from 'utils/comp4tpl/enums'
 import RadioGroup from 'utils/comp4tpl/radios'
 import DateTime from 'utils/comp4tpl/datetime'
+import Industry from 'utils/comp4tpl/industry'
 const FormItem = Form.Item;
 
 const getFormItem = (getFieldDecorator,field, layout) => {
@@ -49,6 +50,7 @@ const getFormItem = (getFieldDecorator,field, layout) => {
     }
 }
 const getComponent = (field) => {
+
     if (field.render == "Input") {
         return <Input placeholder='请输入...' />
     }
@@ -73,6 +75,9 @@ const getComponent = (field) => {
     }
     else if (field.render == "Date") {
         return <DateTime />
+    }
+    else if (field.render == "Industry") {
+        return <Industry />
     }
     return undefined;
 }

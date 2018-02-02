@@ -78,6 +78,8 @@ const rootRoutes = {
                                 require('./routes/quartz/routes/list/index').default,
                                 require('./routes/patch/routes/list/index').default,
                                 require('./routes/cusStatus').default,
+
+                                require('./routes/speech/routes/list/index').default,
                                 {
                                     //未开发页面
                                     path: "developing",

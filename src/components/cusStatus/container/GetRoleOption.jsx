@@ -248,16 +248,20 @@ const getData = (data) => {
         cityArr=[],//市区data
         cityLength=0,//cityObj的长度 
         dataObj={};//抛出的数据，包括series中的data、显示的区域标识(国/省/市)、放大倍数，区域名称
-    data.list.forEach(listItem=>{
-        listItem.province.forEach(proItem=>{
-            if(proItem.id!='zero'){
-                proObj[proItem.name]?proObj[proItem.name]+=proItem.num : proObj[proItem.name]=proItem.num;
-                proItem.city.forEach(cityItem=>{
-                    cityObj[cityItem.name]?cityObj[cityItem.name]+=proItem.num : cityObj[cityItem.name]=cityItem.num;
-                }) 
-            }          
-        })
-    })
+        if(data&&data.list){
+            data.list.forEach(listItem=>{
+                if(listItem){
+                    listItem.province.forEach(proItem=>{
+                        if(proItem.id&&proItem.id!='zero'){
+                            proObj[proItem.name]?proObj[proItem.name]+=proItem.num : proObj[proItem.name]=proItem.num;
+                            proItem.city.forEach(cityItem=>{
+                                cityObj[cityItem.name]?cityObj[cityItem.name]+=proItem.num : cityObj[cityItem.name]=cityItem.num;
+                            }) 
+                        }          
+                    })
+                }             
+            })
+        }
     for(let key in proObj) {
         proLength++;
         let obj = {};

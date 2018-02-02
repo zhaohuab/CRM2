@@ -65,7 +65,6 @@ const showForm = (flag, editData = {}, isEdit) => {
 				data: {
 				}
 			}, result => {
-				debugger
 				let roleEnum = []
 				for (let i = 0; i < result.data.length; i++) {
 					let role = {}
@@ -121,7 +120,6 @@ const onSave4Add = (data) => {
 				param: transData(data)
 			}
 		}, result => {
-			debugger
 			dispatch(fetchData('USER_CARD_SAVEADD', { ...result, visible: false }));
 		})
 	}

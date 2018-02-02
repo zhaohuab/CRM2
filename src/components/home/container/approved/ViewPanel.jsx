@@ -216,7 +216,9 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <Popover placement="bottomLeft" content={this.getContent()} trigger="click">
+                                    <Popover
+                                    className="approval-bubble"
+                                    placement="bottomLeft" content={this.getContent()} trigger="click">
                                         <div className="detailList">
                                             <div className="detailStatus">
                                                 已审

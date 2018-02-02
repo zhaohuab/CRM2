@@ -24,6 +24,7 @@ import Card from "./list/Card";
 import ViewPanel from "./panel/ViewPanel";
 import TopSearchForm from "./list/TopSearchForm.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
+import LeadExport from './lead/LeadExport'; //导入导出
 
 
 import "./index.less";
@@ -82,7 +83,7 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
-        debugger
+        //debugger
         this.props.action.showViewForm(true, record.id);
         //获取动态
         this.props.action.getDynamic(record.id)
@@ -160,6 +161,7 @@ class List extends React.Component {
         debugger
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
+        console.log('data=================',page.data)
         let {
             selectedRows,
             selectedRowKeys,
@@ -223,6 +225,7 @@ class List extends React.Component {
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
+                <LeadExport/>
             </div>
          );
     }

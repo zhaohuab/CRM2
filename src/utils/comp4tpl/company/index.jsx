@@ -47,15 +47,17 @@ class yy extends React.Component {
 
     getData = () => {
         let that = this;
+        let param = {
+            type : this.props.type?this.props.type:undefined,
+            orgType:2,
+            fatherorgId:this.props.fatherorgId
+        }
         reqwest(
             {
                 url: url.orgTree,
                 method: "get",
                 data: {
-                    param:{
-                        orgType:2,
-                        fatherorgId:this.props.fatherorgId
-                    }
+                    param:{...param}
                 }
             },
             dataResult => {
