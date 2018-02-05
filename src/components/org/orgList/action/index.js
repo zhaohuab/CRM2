@@ -103,17 +103,19 @@ export function listchange(data) {
                 param: transData(data)
             }
         }, (result) => {
+            debugger
             request({
-                url: url.org,
+                url: url.orgTree,
                 method: 'get',
                 data: {
                     param: {
-                        condMap: typeof (params) == "undefined" ? {} : params
+                        type: 1
                     }
                 }
-            }, (data) => {
-                dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: result }))
-            })
+            }
+                , (data) => {
+                    dispatch(fetchData('ORG_LIST_LISTEDITSUCCESS', { data: result, treeData: data.data }));
+                })
         })
     }
 }

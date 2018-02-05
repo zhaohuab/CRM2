@@ -2,7 +2,8 @@ import Immutable from "immutable";
 
 let $$initialState = {
     data: [], //tabel展示数据
-    enumData: {},//存储查询条件预制数据
+    enumData: [],//存储查询条件预制数据
+    searchPlan:{},//---存储查询方案    赵华冰 2-2
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
     searchMap: {}, //存放实时输入的表单查询查询条件
@@ -125,11 +126,12 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
 
 
 
-        case "CUSTOMERGROUP_LIST_GETDATA": //查询各种table数据
+        case "CUSTOMERGROUP_LIST_GETDATA": //查询各种table数据    添加一个searchPlan   赵华冰 2-2
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
-                selectedRowKeys:[]
+                selectedRowKeys:[],
+                searchPlan:action.payload.searchPlan
             });
         case 'CUSTOMERGROUP_LIST_DETAILENABLESTATE'://详情起停用功能
             let enableState = $$state.get('viewData').toJS()
@@ -271,7 +273,6 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 viewData:clearObject($$state.get('contactsCardData').toJS())
             });
         case "CUSTOMERGROUP_LIST_EDITSAVE": //修改客户
-        console.log('reducer中得到的-------------------------',action.data)
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
@@ -309,8 +310,8 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 selectedRowKeys:[]
             });
 
-        case "CUSTOMERGROUP_LIST_GETENUMDATA": //获取查询条件基础显示内容
-            return $$state.merge({ enumData: action.payload.enumData });
+       /*  case "CUSTOMERGROUP_LIST_GETENUMDATA": //获取查询条件基础显示内容
+            return $$state.merge({ enumData: action.payload.enumData }); */
             
         case 'CUSTOMERGROUP_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
             return $$state.merge({
@@ -375,6 +376,17 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             return $$state.merge({
                 viewDataRelevant:Immutable.fromJS(delContacts)
             });
+        case "CUSTOMERGROUP_GROUPLIST_GETENUMDATA"://------------------获取集团客户查询条件选项及默认初始条件
+            let obj={};
+            action.payload.enumData.forEach(item=>{
+                if(item.isSelected==1){
+                    obj.id=item.id;
+                    obj.defClass=item.defClass;
+                }
+            })
+            debugger;
+            return $$state.merge({ enumData: action.payload.enumData, searchPlan:obj});
+            
         default:
             return $$state;
     }

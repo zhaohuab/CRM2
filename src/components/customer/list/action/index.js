@@ -134,7 +134,35 @@ export function fileFail(filesFail) {
         payload: { filesFail }
     };
 }
-//==============
+
+
+//天赐上传文件
+export function filesSuccess(file) {
+    return {
+        type: "CUSTOMERCOMPANY_LIST_FILESSUCCESS",
+        payload: file,
+    };
+}
+
+//天赐上传文件删除
+export function onDeleteFiles(file) {
+    debugger
+    return (dispatch) => {
+        reqwest(
+            {
+                url: baseDir + `sys/upload/${file.objType}/${file.objId}/${file.name}/${file.id}`,
+                method: "DELETE",
+            },
+            result => {
+                dispatch({
+                    type: "CUSTOMERCOMPANY_LIST_DELETEFILE",
+                    file
+                });
+            }
+        );
+    }
+}
+
 
 //控制查询显隐
 export function changeVisible() {
@@ -595,12 +623,14 @@ export function checkedFn(viewData, select, id, visiable) {
                 }
             },
             result => {
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL",
                     visiable,
-                    verifyFullname: select.companyname
+                    verifyFullname: result.verifyFullname,
+                    verifyId:result.verifyId
                 });
-                debugger
+                
             }
         );
     };
@@ -629,43 +659,46 @@ export function checkedCancelFn(id, visiable) {
     };
 };
 
-export function hasIcbc(name, visiable) {
+export function hasIcbc(name, id , visiable) {
     return dispatch => {
         debugger
-        // reqwest(
-        //     {
-        //         url: baseDir + "cum/customers/identifications/" + verifyId,
-        //         method: "GET"
-        //     },
-        //     result => {
-        //         debugger
-        //         dispatch({
-        //             type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
-        //             visiable,
-        //             data: result.data,
-        //         });
-
-        //     }
-        // );
-        reqwest(
-            {
-                url: baseDir + "cum/customers/identifications/full",
-                method: "GET",
-                data:{
-                    param:{
-                        name:name
+        if(name){
+            reqwest(
+                {
+                    url: baseDir + "cum/customers/identifications/full",
+                    method: "GET",
+                    data:{
+                        param:{
+                            name:name
+                        }
                     }
+                },
+                result => {
+                    debugger
+                    dispatch({
+                        type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
+                        visiable,
+                        data: result.data,
+                    });
                 }
-            },
-            result => {
-                debugger
-                dispatch({
-                    type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
-                    visiable,
-                    data: result.data,
-                });
-            }
-        );
+            );
+        }else{
+            reqwest(
+                {
+                    url: baseDir + "cum/customers/identifications/" + id,
+                    method: "GET"
+                },
+                result => {
+                    debugger
+                    dispatch({
+                        type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
+                        visiable,
+                        data: result.data,
+                    });
+    
+                }
+            );
+        }  
     }
 }
 

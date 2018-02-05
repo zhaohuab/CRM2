@@ -9,7 +9,9 @@ let $$initialState = {
     template:{
         edit:undefined,
     },
-    isEdit:false
+    isEdit:false,
+    //人员类型，1为系统管理员
+    userType:0
 };
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
@@ -52,6 +54,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 current:0,
                 isEdit:true
             })
+        case 'SYSINIT_SAVE_USERTYPE':
+            return $$state.merge({
+                userType:action.content,
+            })
+            
         default: 
             return $$state;
     }

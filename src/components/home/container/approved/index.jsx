@@ -36,8 +36,8 @@ class Appropved extends React.Component {
         if (key == '2') {
             this.props.action.getTodo(pagination)
         } else {
-            this.props.action.getUnfinished(pagination)
-        }
+            this.props.action.getUnfinished(pagination);
+         }
     }
     render() {
          debugger;

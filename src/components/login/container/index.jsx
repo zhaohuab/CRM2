@@ -111,6 +111,7 @@ class LoginCon extends React.Component {
 
     componentDidMount() {}
     render() {
+        debugger
         let { $$state } = this.props;
         let logined = $$state.get("logined");
         if (this.props.params.loginmsg == "sessionover") {

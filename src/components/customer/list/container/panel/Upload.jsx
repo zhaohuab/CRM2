@@ -35,6 +35,7 @@ export default class Upload extends React.Component {
         let formdata=new FormData();
         formdata.append('file', file)
         let {objType,objId} = this.props;
+        debugger
         return reqwest(
             {
                 url:baseDir + `/sys/upload/${objType}/${objId}`,

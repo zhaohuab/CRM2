@@ -190,7 +190,7 @@ const geoCoordMap = {//问题：五个自治区以及港澳台的名字后台怎
         合肥: [117.27, 31.86],
         武汉: [114.31, 30.52],
         大庆: [125.03, 46.58],
-        北京市: [116.410018,39.916319],
+        北京市: [116.410018,39.946319],
         天津市: [117.242496,38.938964],
         山西省: [112.022263,37.318679],
         内蒙古	:[113.953979,43.7799111],
@@ -244,6 +244,7 @@ const convertData = function(data) {//处理data
 };
 
 const getData = (data) => {
+    debugger;
     let proObj={},//当前角色下所有省份名称和客户数量
         proArr=[],//省份data
         proLength=0,//proObj的长度
@@ -253,13 +254,16 @@ const getData = (data) => {
         dataObj={zoom:5,data:[],name:'',flag:'country'};//抛出的数据，包括series中的data、显示的区域标识(国/省/市)、放大倍数，区域名称
         if (data&&data.list){
             data.list.forEach(listItem=>{
-                if (listItem){
+                if (listItem&&listItem.province){
                     listItem.province.forEach(proItem=>{
                         if (proItem.id!='zero'){
                             proObj[proItem.name]?proObj[proItem.name]+=proItem.num : proObj[proItem.name]=proItem.num;
-                            proItem.city.forEach(cityItem=>{
-                                cityObj[cityItem.name]?cityObj[cityItem.name]+=proItem.num : cityObj[cityItem.name]=cityItem.num;
-                            }) 
+                            if(proItem.city){
+                                proItem.city.forEach(cityItem=>{
+                                    cityObj[cityItem.name]?cityObj[cityItem.name]+=proItem.num : cityObj[cityItem.name]=cityItem.num;
+                                }) 
+                            }
+                            
                         }          
                     })
                 }
@@ -318,7 +322,7 @@ const getOption = (data) =>{//这个data是直接从后台获取到的原始数�
             zoom: dataSource.zoom,
             roam: true,
             mapStyle: {
-                 styleJson: [               
+                /*  styleJson: [               
                   
                         {//铁路
                             "featureType": "railway",
@@ -419,8 +423,21 @@ const getOption = (data) =>{//这个data是直接从后台获取到的原始数�
                             "stylers": {
                                  "color": "#bbb"
                             }
-                        }            
-                ]
+                        } ,
+                         {
+                        'featureType': 'label', //调整所有的标签的边缘颜色
+                        'elementType': 'labels.text.stroke',
+                        'stylers': {
+                            'color': '#ddd'
+                        }
+                    }, {
+                        'featureType': 'label', //调整所有标签的填充颜色
+                        'elementType': 'labels.text.fill',
+                        'stylers': {
+                            'color': '#ddd'
+                        }
+                    }           
+                ] */
             }
         },
         visualMap: [
@@ -429,7 +446,12 @@ const getOption = (data) =>{//这个data是直接从后台获取到的原始数�
                 calculable: true,
                 dimension: 2,
                 seriesIndex: [0, 2],
-            
+                inRange: {
+                    symbolSize: [10, 20]
+                },
+                outRange: {
+                    symbolSize: [10, 20]
+                }            
             },
             {
                 show: false,
@@ -437,11 +459,11 @@ const getOption = (data) =>{//这个data是直接从后台获取到的原始数�
                 dimension: 2,//数组的第几列显示在视觉元素上
                 seriesIndex: [1],//指定取哪个系列的数据，即哪个系列的 series.data。
                 inRange: {//在选中范围内 的视觉元素
-                    symbolSize: [40, 60],//图元大小
+                    symbolSize: [30, 40],//图元大小
                     //color:['#f00','#f00']//图元颜色
                 },
                 outRange: {// 在选中范围外 的视觉元素
-                    symbolSize: [20, 40],
+                    symbolSize: [20, 30],
                     //color:['#f00','#f00']
                 }
             }
@@ -457,11 +479,14 @@ const getOption = (data) =>{//这个data是直接从后台获取到的原始数�
                         formatter: "{b}",
                         position: "right",
                         show: true,
-                        color: 'blue',
-                        
-                    },
-                     
+                        color: 'red',                      
+                    },                    
                 },
+                itemStyle: {
+                    normal: {
+                        color: "red"
+                    }
+                }
             },
             {
                 name: "",
@@ -472,6 +497,10 @@ const getOption = (data) =>{//这个data是直接从后台获取到的原始数�
                 label: {
                     normal: {
                         show: true,
+                        textStyle: {
+                            color: "#fff",
+                            fontSize: 9
+                        }
                     }
                 },
                 zlevel: 4,
@@ -491,7 +520,7 @@ const getOption = (data) =>{//这个data是直接从后台获取到的原始数�
                             //debugger;
                             return b.value - a.value;
                         })
-                        .slice(0)
+                        .slice(0,3)
                 ),
                 rippleEffect: {
                     brushType: "stroke"
@@ -502,14 +531,14 @@ const getOption = (data) =>{//这个data是直接从后台获取到的原始数�
                         formatter: "{b}",
                         position: "right",
                         show: true,
-                        color: 'blue',
+                        color: 'red',
                     }
                 },
                 itemStyle: {
                     normal: {
-                        color: "#f4e925",
-                        shadowBlur: 10,
-                        shadowColor: "#b3aa0e"
+                        color: "#f0c",
+                        shadowBlur: 12,
+                        shadowColor: "#f0c"
                     }
                 },
                 zlevel: 1

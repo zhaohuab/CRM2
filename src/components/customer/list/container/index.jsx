@@ -31,7 +31,7 @@ import reqwest from "reqwest";
 import { baseDir } from "api";
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
-import LeadExport from './lead/LeadExport'; //导入导出
+import LeadExport from './lead/LeadExport.jsx'; //导入导出
 class List extends React.Component {
     constructor(props) {
         super(props);
@@ -199,7 +199,11 @@ class List extends React.Component {
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm clearForm = {this.clearForm.bind(this)}/>
+                <TopSearchForm 
+                pagination={pagination}
+                searchMap={searchMap}
+
+                clearForm = {this.clearForm.bind(this)}/>
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}

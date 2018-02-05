@@ -154,7 +154,7 @@ class EditForm extends React.Component {
                                                             )}
                                                         </FormItem>
                                                     </Col>
-                                                    {viewData.verifyFullname && viewData.id ? (
+                                                    {(viewData.verifyFullname || viewData.verifyId )&& viewData.id ? (
                                                         ""
                                                     ) : (
                                                         <Col span={5}>

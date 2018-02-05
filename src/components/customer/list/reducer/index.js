@@ -74,61 +74,61 @@ function clearObject(obj) {
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
     switch (action.type) {
-        //----------- 导入 1.30 余春梅
-        case 'CUSTOMERCOMPANY_LIST_VIEWLEADSHOW':
-        debugger
-            return $$state.merge({
-                viewLeadVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
-            return $$state.merge({
-                leadVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
-            return $$state.merge({
-                leadEndVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
-            return $$state.merge({
-                leadingVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
-            return $$state.merge({
-                leadVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
-            return $$state.merge({
-                leadEndVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
-            return $$state.merge({
-                leadingVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_SAVEFILES':
-            debugger
-            return $$state.merge({
-                leadFiles: action.payload.files,
-            });
-        case 'CUSTOMERCOMPANY_LIST_FILESUCCESS':
-            debugger
-            return $$state.merge({
-                filesSuccess: action.payload.filesSuccess,
-                successResult: action.payload.result,
-                leadEndVisible: action.payload.show,
-                leadFiles: {},
-                leadStep: action.payload.leadStep
-            });
-        case 'CUSTOMERCOMPANY_LIST_FILEFAIL':
-            return $$state.merge({
-                filesFail: action.payload.filesFail,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADENDVIEW':
-            return $$state.merge({
-                leadEndVisible: action.payload.leadVisible,
-                leadStep: action.payload.leadStep
-            });
-        //-----------导入结束
+       //----------- 导入 1.30 余春梅
+       case 'CUSTOMERCOMPANY_LIST_VIEWLEADSHOW':
+       debugger
+           return $$state.merge({
+               viewLeadVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
+           return $$state.merge({
+               leadVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
+           return $$state.merge({
+               leadEndVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
+           return $$state.merge({
+               leadingVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
+           return $$state.merge({
+               leadVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
+           return $$state.merge({
+               leadEndVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
+           return $$state.merge({
+               leadingVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_SAVEFILES':
+           debugger
+           return $$state.merge({
+               leadFiles: action.payload.files,
+           });
+       case 'CUSTOMERCOMPANY_LIST_FILESUCCESS':///???--------
+           debugger
+           return $$state.merge({
+               filesSuccess: action.payload.filesSuccess,
+               successResult: action.payload.result,
+               leadEndVisible: action.payload.show,
+               leadFiles: {},
+               leadStep: action.payload.leadStep
+           });
+       case 'CUSTOMERCOMPANY_LIST_FILEFAIL':
+           return $$state.merge({
+               filesFail: action.payload.filesFail,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADENDVIEW':
+           return $$state.merge({
+               leadEndVisible: action.payload.leadVisible,
+               leadStep: action.payload.leadStep
+           });
 
+           
         //查询各种table数据
         case "CUSTOMERCOMPANY_LIST_GETDATA": 
             return $$state.merge({
@@ -238,6 +238,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case 'CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL':
             let verifyData =  $$state.get('viewData').toJS()
             verifyData.verifyFullname = action.verifyFullname
+            verifyData.verifyId = action.verifyId
             return $$state.merge({
                 icbcVisible2: action.visiable,
                 viewData:verifyData
@@ -344,7 +345,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         case "CUSTOMERCOMPANY_LIST_CLEANVERIFYID":
             let clean = $$state.get("viewData").merge({
-                verifyFullname: ""
+                verifyFullname: "",
+                verifyId:''
             });
             return $$state.merge({
                 icbcVisible2: action.visiable,
@@ -397,13 +399,15 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 viewDataRelevant: addContacts
             });
-        case "CUSTOMER_LIST_FILESUCCESS"://添加附件
+        ////////天赐上传附件    
+        case "CUSTOMERCOMPANY_LIST_FILESSUCCESS"://添加附件
             let viewDataRelevant = $$state.get('viewDataRelevant').toJS()
             viewDataRelevant[3].list.data.unshift(action.payload)
             return $$state.merge({
                 viewDataRelevant: viewDataRelevant
             });
-        case "CUSTOMER_LIST_DELETEFILE"://删除附件
+        ////////天赐删除附件
+        case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
         debugger
             let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
             let fileArr = viewDataRelevant2[3].list.data;
@@ -417,6 +421,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 viewDataRelevant: viewDataRelevant2
             });
+        ////////////////    
         case "CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM":
 
             return $$state.merge({

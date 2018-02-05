@@ -39,8 +39,7 @@ class ToolForm extends React.Component {
     }
 
     //点击停用启用
-    btnSetEnable(enableState) {
-        debugger
+    btnSetEnable(enableState) { 
         let {searchMap,selectedRowKeys,pagination} = this.props.$$state.toJS()
         const ids = selectedRowKeys.join(',');
        
@@ -62,7 +61,6 @@ class ToolForm extends React.Component {
             okType: "danger",
             cancelText: "否",
             onOk() {
-                debugger
                 let {searchMap,selectedRowKeys,pagination} = that.props.$$state.toJS();
                 const ids = selectedRowKeys.join(',');
                 that.props.action.deleteData(
@@ -87,11 +85,6 @@ class ToolForm extends React.Component {
     }
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
-     /*    //此地方产生 bug，注掉后正常
-     debugger
-        if (searchMap.industry) {
-            searchMap.industry = searchMap.industry.id;
-        } */
         //还差城市条件过滤
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS(),
@@ -104,15 +97,25 @@ class ToolForm extends React.Component {
         this.props.action.saveSearchMap(searchMap);
     }
 
-    onMenu(e) {//-----导入导出
-        debugger
-        let { searchMap, pagination } = this.props.$$state.toJS();
+    getList=(value)=>{//-----点击查询方案获取列表   赵华冰 2-2
+        let { enumData, searchMap} = this.props.$$state.toJS();
+        let pagination={page:1,pageSize:10}
+        let obj={};
+        enumData.forEach(item=>{
+            if(item.id==value){
+                obj.id=value;
+                obj.defClass=item.defClass;
+            }
+        })
+        this.props.action.getListData(pagination, searchMap,obj)
+    }
+
+    onMenu(e) {//-----导入导出 赵华冰2-2
+        let { searchMap, pagination, enumData } = this.props.$$state.toJS();
         let page = pagination.page;
-        let pageSize = pagination.pageSize
-        let search = JSON.stringify(searchMap)
-        debugger
+        let pageSize = pagination.pageSize;
+        let search = JSON.stringify(searchMap);
         if (e.key == "1") {
-            debugger
             this.props.action.viewLeadShow(true);
         } else if (e.key == "2") {
             location.href = baseDir + "tpub/excels/2/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 + "}"
@@ -132,6 +135,7 @@ class ToolForm extends React.Component {
                 </Menu.Item>
             </Menu>
         );
+     
         return (
             <Row className="header-warpper">
                 {selectedRowKeys && selectedRowKeys.length >= 1 ? (
@@ -166,11 +170,15 @@ class ToolForm extends React.Component {
                             <Col span={17}>
                                 <Row type="flex" align="middle">
                                     <Col className="select-recover">
-                                        <Select defaultValue="3">
-                                            <Option value="0">全部</Option>
-                                            <Option value="1">我关注</Option>
-                                            <Option value="2">最近创建</Option>
-                                            <Option value="3">最近查看</Option>
+                                        <Select defaultValue={3} onChange={this.getList.bind(this)}>
+                                        {/*// ------循环绑定查询条件  赵华冰 2-2 */}
+                                            {
+                                                enumData.map(item=>{
+                                                    return (
+                                                        <Option value={item.id}>{item.name}</Option>
+                                                    )
+                                                })
+                                            }
                                         </Select>
                                     </Col>
                                     <Col

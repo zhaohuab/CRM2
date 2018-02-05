@@ -73,7 +73,7 @@ class IcbcDetailInfo extends React.Component {
                 let { viewData, icbcInfo1 } = that.props.$$state.toJS();
                 let name
                 name = icbcInfo1.find((item) => {
-                    return item.key == 'name'
+                    return item.key == 'verifyFullname'
                 })
                 viewData.verifyFullname = name.value
                 viewData.fullname = name.value
@@ -126,15 +126,15 @@ class IcbcDetailInfo extends React.Component {
         return (
             <div>
                 <Button onClick={this.onIcbcCancel.bind(this)}>关闭</Button>
-                {viewData.verifyFullname ? (
+                {viewData.verifyFullname || viewData.verifyId? (
                     <Button onClick={this.cancelIdenti.bind(this)}>
                         取消核实
                     </Button>
                 ) : (
-                        <Button onClick={this.icbcConfirm.bind(this)}>
-                            核实
+                    <Button onClick={this.icbcConfirm.bind(this)}>
+                        核实
                     </Button>
-                    )}
+                )}
             </div>
         );
     }
@@ -204,11 +204,11 @@ class IcbcDetailInfo extends React.Component {
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
-                if (viewData.verifyFullname) {//如果已核实
+                if (viewData.verifyFullname ||viewData.verifyId) {//如果已核实
                     debugger
 
                     //再次点击工商核实并没有把值返回给我！！！！！！！！！！！！！！！！！！！1
-                    this.props.action.hasIcbc(viewData.verifyFullname, true)
+                    this.props.action.hasIcbc(viewData.verifyFullname, viewData.verifyId,true)
                 } else {
                     this.getIcbcList(icbcName, result => {
                         debugger
@@ -239,6 +239,7 @@ class IcbcDetailInfo extends React.Component {
 
     //下拉面板点击确定
     onOk() {
+        debugger
         if (!this.state.select) {
             this.setState({
                 visible: false
@@ -328,6 +329,7 @@ class IcbcDetailInfo extends React.Component {
     render() {
         let { viewData, icbcVisible2, icbcInfo1 } = this.props.$$state.toJS()
         let cssCode = this.props.$$menuState.get("cssCode");
+        debugger
         return (
             <div className="icbc-detail-container">
 
@@ -364,7 +366,7 @@ class IcbcDetailInfo extends React.Component {
                 >
                     <div>
                         {
-                            viewData.verifyFullname ?
+                            viewData.verifyFullname || viewData.verifyId?
                             <Row type = 'flex' justify='center'>
                                 <img src={require("assets/images/cum/icbc-true.png")} className='icbc-icon'/>已核实
                             </Row>:

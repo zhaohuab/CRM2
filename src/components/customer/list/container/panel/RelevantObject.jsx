@@ -60,7 +60,13 @@ class RelevantObject extends React.Component {
         //点击某一个文件能下载，是图片类型才能预览
         //IE iframe chorm/firefox a downlond下载文件
         //safiri // window.open('http://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=http%3A%2F%2Fwww.th7.cn%2Fd%2Ffile%2Fp%2F2014%2F07%2F04%2Feb26cd61a6c822839b70e7784fe90685.jpg&thumburl=http%3A%2F%2Fimg3.imgtn.bdimg.com%2Fit%2Fu%3D925173830%2C3059306923%26fm%3D27%26gp%3D0.jpg', '_self');
-        this.props.action.fileSuccess(file);
+        debugger
+        this.props.action.filesSuccess(file);
+    }
+    //删除上传图片
+    onDeleteFile(file) {
+        debugger
+            this.props.action.onDeleteFiles(file);
     }
 
     //遍历折叠表头
@@ -202,11 +208,8 @@ class RelevantObject extends React.Component {
         })
     }
 
-    onDeleteFile(file) {
-        return (e) => {
-            this.props.action.onDeleteFile(file);
-        }
-    }
+   
+
     render(){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
         let tempContacts,tempOpport,tempUpgrade,tempFile;
