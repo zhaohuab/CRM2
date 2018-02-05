@@ -32,17 +32,17 @@ class StatusLine extends React.Component {
                                         {/* <span className="timeline-import"> */}
                                             {item.personlist && item.personlist.length ?
                                                 item.personlist.map(item => {
-                                                    return (<span className="timeline-import">
+                                                    return (<span className="timeline-import" style={{marginRight:'5px'}}>
                                                         {item.name}
                                                     </span>)
                                                 })
                                                 : ''}
                                         {/* </span> */}
 
-                                        <span className="timeline-import">
+                                        <span className="timeline-import" style={{marginRight:'5px'}}>
                                             {item.status}
                                         </span>
-                                        <span>
+                                        <span style={{marginRight:'5px'}}>
                                             {item.comment}
                                         </span>
                                     </p>

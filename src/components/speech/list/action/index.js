@@ -1,6 +1,6 @@
 import reqwest from "utils/reqwest";
 import { message } from "antd";
-//import { speech as url, doc, baseDir } from "api";
+import { speech as url, baseDir } from "api";
 //包装发给redux的对象
 const fetchData = (type, payload) => {
     return {
@@ -17,30 +17,29 @@ export function speechVisible(visible){
             visible
         });
     };
-
-
 }
+
 //获取数据、基础查询数据、扩展查询数据
 export function getListData(pagination, searchMap){
     return dispatch => {
        // dispatch(fetchData("CLUE_LIST_SAVESEARCHMAP", searchMap));
-        //debugger
+        debugger
         reqwest(
             {
-                url: url.lead,
-                method: "get",
+                url: url.saletalk,
+                method: "GET",
                 data: {
                     param: {
                         ...pagination,
-                        searchMap:transData(searchMap)
+                        // searchMap:searchMap
                     }
                 }
             },
             data => {
-               //debugger
+               debugger
                 dispatch(
                     fetchData("SPEECH_LIST_GETDATA", {
-                        //data: transReceiveData(data),
+                        data,
                         pagination
                     })
                 );
@@ -54,17 +53,17 @@ export function getEnumData() {
     return dispatch => {
         reqwest(
             {
-                url: url.doc,
-                method: "get",
+                url: url.saletalk+'/job',
+                method: "GET",
                 data: {
 
                 }
             },
             data => { //level source
-                //debugger
+                debugger
                 dispatch(
                     fetchData("SPEECH_LIST_GETENUMDATA", {
-                        enumData: data.enumData
+                        enumData: data.data
                     })
                 );
             }
@@ -103,25 +102,25 @@ export function edit(edit,show){
 //编辑已选择（确定按钮）
 export function onEdit(values) {
 
-    //debugger
-     return dispatch => {
-         reqwest(
-             {
-                 url:url.lead + "/" + values.id,
-                 method: "PUT",
-                 data: {
-                   param: transData(values)
-                 }
-             },
-             result => {
-                 //debugger
-                 dispatch({
-                     type: "SPEECH_LIST_UPDATELIST",
-                     data: transReceiveDataOne(result)
-                 });
-             }
-         );
-     };
+    debugger
+    //  return dispatch => {
+    //      reqwest(
+    //          {
+    //              url:url.lead + "/" + values.id,
+    //              method: "PUT",
+    //              data: {
+    //                param: transData(values)
+    //              }
+    //          },
+    //          result => {
+    //              //debugger
+    //              dispatch({
+    //                  type: "SPEECH_LIST_UPDATELIST",
+    //                  data: transReceiveDataOne(result)
+    //              });
+    //          }
+    //      );
+    //  };
  }
 
 
@@ -132,21 +131,21 @@ export function onSave(oneData) {
     return dispatch => {
         reqwest(
             {
-                url: url.lead,
+                url: url.saletalk,
                 method: "POST",
                 data: {
                     param: oneData
                 }
             },
             data => {
-                //debugger;
+                debugger;
                 dispatch({
                     type: "SPEECH_CARD_SAVEADD",
-                    data:transReceiveDataOne(data)
+                    data
                 });
             }
         );
-    };
+     };
 
 }
 
@@ -155,27 +154,27 @@ export function onSave(oneData) {
 export function  deleteData(ids, searchMap, pagination) {
     //debugger
     return dispatch => {
-        reqwest(
-            {
-                url: url.lead + "/batch",
-                method: "DELETE",
-                data: {
-                    param: {
-                        ids: ids.join(","),
-                        ...pagination,
-                        searchMap: transData(searchMap)
-                    }
-                }
-            },
-            data => {   //返回的是没有删除的data
-               // //debugger
-                dispatch(
-                    fetchData("SPEECH_LIST_GETLISTUPDATE", {
-                       data:transReceiveData(data)
-                    })
-                );
-            }
-        );
+        // reqwest(
+        //     {
+        //         url: url.lead + "/batch",
+        //         method: "DELETE",
+        //         data: {
+        //             param: {
+        //                 ids: ids.join(","),
+        //                 ...pagination,
+        //                 searchMap: transData(searchMap)
+        //             }
+        //         }
+        //     },
+        //     data => {   //返回的是没有删除的data
+        //        // //debugger
+        //         dispatch(
+        //             fetchData("SPEECH_LIST_GETLISTUPDATE", {
+        //                data:transReceiveData(data)
+        //             })
+        //         );
+        //     }
+        // );
     };
 };
 //往redux中存放编辑新增修改条件

@@ -76,59 +76,61 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
     switch (action.type) {
 
 
-        //----------- 导入 1.30 余春梅
-        case 'CUSTOMERCOMPANY_LIST_VIEWLEADSHOW':
-        debugger
-            return $$state.merge({
-                viewLeadVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
-            return $$state.merge({
-                leadVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
-            return $$state.merge({
-                leadEndVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
-            return $$state.merge({
-                leadingVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
-            return $$state.merge({
-                leadVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
-            return $$state.merge({
-                leadEndVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
-            return $$state.merge({
-                leadingVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERCOMPANY_LIST_SAVEFILES':
-            debugger
-            return $$state.merge({
-                leadFiles: action.payload.files,
-            });
-        case 'CUSTOMERCOMPANY_LIST_FILESUCCESS':///???--------
-            debugger
-            return $$state.merge({
-                filesSuccess: action.payload.filesSuccess,
-                successResult: action.payload.result,
-                leadEndVisible: action.payload.show,
-                leadFiles: {},
-                leadStep: action.payload.leadStep
-            });
-        case 'CUSTOMERCOMPANY_LIST_FILEFAIL':
-            return $$state.merge({
-                filesFail: action.payload.filesFail,
-            });
-        case 'CUSTOMERCOMPANY_LIST_LEADENDVIEW':
-            return $$state.merge({
-                leadEndVisible: action.payload.leadVisible,
-                leadStep: action.payload.leadStep
-            });
+       //----------- 导入 1.30 余春梅
+       case 'CUSTOMERCOMPANY_LIST_VIEWLEADSHOW':
+       debugger
+           return $$state.merge({
+               viewLeadVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
+           return $$state.merge({
+               leadVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
+           return $$state.merge({
+               leadEndVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
+           return $$state.merge({
+               leadingVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
+           return $$state.merge({
+               leadVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
+           return $$state.merge({
+               leadEndVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
+           return $$state.merge({
+               leadingVisible: action.payload.leadVisible,
+           });
+       case 'CUSTOMERCOMPANY_LIST_SAVEFILES':
+           debugger
+           return $$state.merge({
+               leadFiles: action.payload.files,
+           });
+       case 'CUSTOMERCOMPANY_LIST_FILESUCCESS':///???--------
+           debugger
+           return $$state.merge({
+               filesSuccess: action.payload.filesSuccess,
+               successResult: action.payload.result,
+               leadEndVisible: action.payload.show,
+               leadFiles: {},
+               leadStep: action.payload.leadStep
+           });
+       case 'CUSTOMERCOMPANY_LIST_FILEFAIL':
+           return $$state.merge({
+               filesFail: action.payload.filesFail,
+           });
+       case 'CUSTOMERCOMPANY_LIST_LEADENDVIEW':
+           return $$state.merge({
+               leadEndVisible: action.payload.leadVisible,
+               leadStep: action.payload.leadStep
+           });
+           
+//=======
 
         case "CUSTOMERCOMPANY_LIST_GETDATA": //查询各种table数据
             return $$state.merge({
