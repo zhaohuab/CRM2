@@ -52,6 +52,8 @@ class Commit extends React.Component {
   }
   render() {
     // ;
+    // let initstate='unFinish'
+    let {initState1}=this.props.$$state.toJS();
     let { $$state } = this.props;
     let myState = $$state.get('myState');
     let { getFieldDecorator } = this.props.form;
@@ -90,7 +92,8 @@ class Commit extends React.Component {
                 label='单据状态'
                 {...formItemLayout}
               >
-                {getFieldDecorator('status',
+                {getFieldDecorator('statusCommit',
+                  {initialValue:'unFinish'}
               )(
                   <RadioGroup size="large" onChange={this.onState}>
                     <RadioButton value="unFinish">未完成</RadioButton>

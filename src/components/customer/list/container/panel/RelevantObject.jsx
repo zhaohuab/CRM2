@@ -210,7 +210,7 @@ class RelevantObject extends React.Component {
     render(){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
         let tempContacts,tempOpport,tempUpgrade,tempFile;
-        
+        debugger
         if(viewDataRelevant&&viewDataRelevant.length){
             tempContacts = viewDataRelevant[0].list.data
             if(tempContacts.length>=8){

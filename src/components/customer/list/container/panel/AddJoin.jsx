@@ -49,14 +49,14 @@ export default class AddJoin extends React.Component {
         
         let { viewData } = this.props
         let orgId = viewData.orgId
-
+        debugger
         reqwest(
             {
                 url: baseDir+'sys/orgs/orgTree',
                 method: "GET",
                 data:{
                     param:{
-                        orgType:2,
+                        orgType:3,
                         fatherorgId:orgId
                     }
                 }

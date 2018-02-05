@@ -107,8 +107,8 @@ class ToolForm extends React.Component {
     searchMapFn(searchMap) {
         this.props.action.saveSearchMap(searchMap);
     }
-    // 导入导出 余春梅  1.30
-    onMenu(e) {
+     // 导入导出 余春梅  1.30
+     onMenu(e) {
         debugger
         let { searchMap, pagination } = this.props.$$state.toJS();
         let page = pagination.page;
@@ -139,11 +139,11 @@ class ToolForm extends React.Component {
         );
 
         const moreMenu = (
-            <Menu  onClick={this.onMenu.bind(this)}>
-                <Menu.Item className="customer_list_import_customer" key="1">
+            <Menu onClick={this.onMenu.bind(this)}>
+                <Menu.Item key="1">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item className="customer_list_export_customer" key="2">
+                <Menu.Item key="2">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>
@@ -229,7 +229,7 @@ class ToolForm extends React.Component {
                                         </Button>
                                     </Col> */}
                                         <Col>
-                                            <Dropdown.Button
+                                        <Dropdown.Button
                                                 overlay={moreMenu}
                                                 trigger={["click"]}
                                             >

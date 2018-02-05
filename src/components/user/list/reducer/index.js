@@ -25,7 +25,7 @@ let $$initialState = {
 	roleList: [],
 	assignVisible: false,
 	selectedRole: undefined,
-	enumData:{}
+	enumData: {}
 };
 
 function pageAdd(page, item) {
@@ -46,6 +46,15 @@ function pageEdit(page, item) {
 	page.data = data;
 	return page;
 }
+
+function clearObject(obj) {
+	//debugger
+	for (let key in obj) {
+
+		obj[key] = undefined
+	}
+	return obj
+}
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 	switch (action.type) {
 		case 'USER_LIST_TEMPLATE':
@@ -54,8 +63,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				template: {
 					list: action.content.tpl.columns,
 					add: tpl.add,
-					edit:  tpl.edit,
-					view:  tpl.view,
+					edit: tpl.edit,
+					view: tpl.view,
 				},
 			}).merge({
 				loading: false,
@@ -67,14 +76,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRows: [],
 			})
 		case 'USER_ADD_TEMPLATE':
-			let tmpAdd =  $$state.get("template").merge({
+			let tmpAdd = $$state.get("template").merge({
 				add: action.content.fields,
 			})
 			return $$state.merge({
 				template: tmpAdd
 			})
 		case 'USER_EDIT_TEMPLATE':
-			let tmpEdit =  $$state.get("template").merge({
+			let tmpEdit = $$state.get("template").merge({
 				edit: action.content.fields,
 			})
 			return $$state.merge({
@@ -87,21 +96,32 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'USER_LIST_GETLISTSUCCESS':
 			return $$state.merge({
 				loading: false,
-				data:action.content.data,
+				data: action.content.data,
 				formFields: {},
 				formData: {},
 				selectedRowKeys: [],
 				selectedRows: [],
-				pagination:action.content.pagination,
-				searchMap:action.content.searchMap,
+				pagination: action.content.pagination,
+				searchMap: action.content.searchMap,
 			})
 		case 'USER_LIST_SHOWFORM':
-			return $$state.merge({
-				visible: true,
-				formFields: transToFields(action.content.editData),
-				formData: action.content.editData,
-				isEdit: action.content.isEdit,
-			})
+			// editData: clearObject($$state.get('editData').toJS()),
+			if (action.content.editData.id) {
+				return $$state.merge({
+					visible: true,
+					formFields: transToFields(action.content.editData),
+					formData: action.content.editData,
+					isEdit: action.content.isEdit,
+				})
+			} else {
+				return $$state.merge({
+					visible: true,
+					formFields: transToFields(clearObject($$state.get('formFields').toJS())),
+					formData: clearObject($$state.get('formData').toJS()),
+					isEdit: action.content.isEdit,
+				})
+			}
+
 		case 'USER_LIST_CLOSEFORM':
 			return $$state.merge({
 				visible: false,
@@ -165,7 +185,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 
 		case 'USER_LIST_GETENUMDATA':
-debugger
+			debugger
 			return $$state.merge({
 				enumData: Immutable.fromJS(action.content)
 			})

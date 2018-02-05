@@ -30,8 +30,11 @@ class Unfinish extends React.Component {
             labelCol: { span: 2},
             wrapperCol: { span: 22 }
         };
+
+        let comment='同意'
         return (
             <div >
+             
                 <Row>
                     <Form className="detailForm">
                         <Row type="flex" justify="center" gutter={5}>
@@ -116,7 +119,7 @@ class Unfinish extends React.Component {
                         <Row type="flex" justify="center" gutter={5}>
                             <Col span={24}>
                                 <FormItem label="备注" {...formItemLayout1}>
-                                    {getFieldDecorator('time'
+                                    {getFieldDecorator('description'
                                     )(
                                         <Input disabled/>
                                         )}
@@ -127,7 +130,8 @@ class Unfinish extends React.Component {
                         <Row type="flex" justify="center" gutter={5}>
                             <Col span={24}>
                                 <FormItem label="审批意见" {...formItemLayout1}>
-                                    {getFieldDecorator('time'
+                                    {getFieldDecorator('approvalComment',
+                                    // {initialValue:comment}
                                     )(
                                         <Input  disabled />
                                         )}
@@ -147,11 +151,13 @@ const WrapedCard = Form.create({
     mapPropsToFields: (props) => {
         //把redux中的值取出来赋给表单
         // 
+        debugger
         let viewData = props.$$state.toJS().detailData;
         let value = {};
         // 
         for (let key in viewData) {
             value[key] = { value: viewData[key] };
+       // if(key=="approvalComment"&&){}
         }
         // 把字段合成对象
         return {

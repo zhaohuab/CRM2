@@ -27,15 +27,15 @@ class SpeechList extends React.Component {
         this.columns = [
             {
                 title: "序号",
-                dataIndex: "companyName"
+                dataIndex: "id"
             },
             {
                 title: "职位",
-                dataIndex: "sourceName"
+                dataIndex: "jobName"
             },
             {
                 title: "销售话术",
-                dataIndex: "postName"
+                dataIndex: "saleTalk"
             },
         ]
 
@@ -51,7 +51,7 @@ class SpeechList extends React.Component {
     }
 
     deleteSpeech = () => {
-     //点击删除按钮，删除数据
+        //点击删除按钮，删除数据
         let that = this;
         confirm({
             title: "确定要删除吗?",
@@ -80,7 +80,7 @@ class SpeechList extends React.Component {
     }
 
     //modal点击确定按钮
-    onOk() {
+    onOk = () => {
         debugger;
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {//取值
             debugger;
@@ -103,13 +103,13 @@ class SpeechList extends React.Component {
 
     //选中一条数据 点击编辑按钮
     editSpeech() {
-        //debugger
-        // let selectedRowKeys = this.props.$$state.toJS().selectedRowKeys;
-        // let resultNew = this.props.$$state.toJS().data.data;
-        // //debugger
-        // resultNew = resultNew.filter(item => {
-        //     return item.id == selectedRowKeys[0];
-        // });
+        debugger
+        let selectedRowKeys = this.props.$$state.get('selectedRowKeys').toJS();
+        let resultNew = this.props.$$state.get('data').toJS().data;
+        debugger
+        resultNew = resultNew.filter(item => {
+            return item.id == selectedRowKeys[0];
+        });
 
         // this.props.action.edit(resultNew[0], true);
     }
@@ -124,8 +124,9 @@ class SpeechList extends React.Component {
 
 
     render() {
-
+        debugger
         let {
+            data,
             selectedRowKeys,
             selectedRows,
             modalVisible,
@@ -178,23 +179,22 @@ class SpeechList extends React.Component {
                     <Table
                         size="middle"
                         columns={this.columns}
-                        // dataSource={page.data}
+                        dataSource={data.data}
                         rowKey="id"
                         rowSelection={rowSelection}
-                    // pagination={{
-                    //     size: "large",
-                    //     showSizeChanger: true,
-                    //     showQuickJumper: true,
-                    //     total: page.total,
-                    //     showTotal: this.showTotal,
-                    //     onChange: this.onPageChange.bind(this),
-                    //     onShowSizeChange: this.onPageSizeChange.bind(
-                    //         this
-                    //     )
-                    // }}
+                        pagination={{
+                            size: "large",
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            total: data.total,
+                            // showTotal: this.showTotal,
+                            // onChange: this.onPageChange.bind(this),
+                            // onShowSizeChange: this.onPageSizeChange.bind(
+                            //     this
+                            // )
+                        }}
                     />
                 </div>
-
 
                 <Modal
                     className="speech-modal"

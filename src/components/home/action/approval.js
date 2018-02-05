@@ -53,6 +53,14 @@ const transReceiveData = (data) => {
     }
     return data;
 }
+
+const initstate=(initstate)=>{
+    return dispatch => {
+        dispatch(fetchData('APPROVED_INITSTATE', {initstate }))
+    }
+}
+
+
 const approvalHomeVisible = (visible) => {
 
     return dispatch => {
@@ -204,8 +212,6 @@ const savesearchMapApproval = (data) => {
     return fetchData("APPROVE_LIST_SEARCHMAPAPPROVAL", { data });
 }
 const saveDetailData = (data) => {
-
-
     return fetchData("APPROVE_LIST_DETAILDATA", { data });
 };
 const mentionVisible = (visible, action) => {
@@ -517,7 +523,8 @@ export {
     approvalHomeData,
     approvalHomeVisible,
     approvalFlag,
-    onRemind
+    onRemind,
+    initstate
 }
 
 

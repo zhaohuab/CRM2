@@ -49,9 +49,7 @@ class List extends React.Component {
             width: '20%'
         }]
 
-        this.state = {
-            isEdit: false
-        }
+
     }
 
     componentDidMount() {
@@ -73,7 +71,6 @@ class List extends React.Component {
     }
     //点击新增按钮事件
     onAdd() {
-        this.setState({ isEdit: false });
         this.props.action.showRoleForm(true, {}, false);
     }
     //点击删除按钮事件
@@ -107,7 +104,8 @@ class List extends React.Component {
         form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                if (this.state.isEdit) {
+                let isEdit = this.props.$$state.get("isEdit");
+                if (isEdit) {
                     this.props.action.onSaveRole4Edit(values);
                 }
                 else {
@@ -142,15 +140,12 @@ class List extends React.Component {
         }
     }
 
-    getRowClassName = (aaa,record, index) =>{
-        if(record.id == aaa){
+    getRowClassName = (aaa, record, index) => {
+        if (record.id == aaa) {
             return "row_high_light"
         }
         return aaa;
     }
-
-
-
 
     onDispatch = () => {
         let tabIndex = this.props.$$state.get("tabIndex");
@@ -160,7 +155,7 @@ class List extends React.Component {
         let { $$state } = this.props;
         let roleCardVisible = $$state.get("roleCardVisible");
         let selectedRoleId = $$state.get("selectedRoleId");
-        
+        let isEdit = this.props.$$state.get("isEdit");
         let WarpRoleCard = Form.create()(RoleCard)
         let page = $$state.get("data").toJS();
         let funcData = $$state.get("funcData").toJS();
@@ -178,39 +173,44 @@ class List extends React.Component {
         let operations = <Button onClick={this.onDispatch.bind(this)}>分配</Button>
         const tabIndex = this.props.$$state.get("tabIndex");
         return (
-            <div className='list-warpper'>
-                {selectedRowKeys && selectedRowKeys.length >= 1 ?
-                    <HeaderButton
-                        goBack={this.btnBack.bind(this)}
-                        length={selectedRowKeys.length}
-                    >
-                        {selectedRowKeys.length == 1 ?
-                            <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
+            <div className="role-container">
+                <div className='list-warpper'>
+                    {selectedRowKeys && selectedRowKeys.length >= 1 ?
+                        <HeaderButton
+                            goBack={this.btnBack.bind(this)}
+                            length={selectedRowKeys.length}
+                        >
+                            {selectedRowKeys.length == 1 ?
+                                <Button className="default_button" onClick={this.onEdit.bind(this, selectedRows[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
 
-                            : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>
-                        }
+                                : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>
+                            }
 
-                        {selectedRowKeys.length == 1 ?
-                            <Button
-                                className="returnbtn-class"
-                                onClick={this.onDelete.bind(this, selectedRows[0])}
-                            >
-                                <i className="iconfont icon-shanchu" />删除
+                            {selectedRowKeys.length == 1 ?
+                                <Button
+                                    className="returnbtn-class"
+                                    onClick={this.onDelete.bind(this, selectedRows[0])}
+                                >
+                                    <i className="iconfont icon-shanchu" />删除
                         </Button>
 
-                            :
-                            <Button className="default_button" disabled><i className='iconfont icon-shanchu'></i>删除</Button>}
-                    </HeaderButton>
-                    :
+                                :
+                                <Button className="default_button" disabled><i className='iconfont icon-shanchu'></i>删除</Button>}
+                        </HeaderButton>
+                        :
 
-                    <div >
-                        {/* <Button onClick={this.onAdd.bind(this)}>新增角色</Button> */}
-                        <SearchForm />
-                    </div>
-                }
-
-                <Row>
-                    <Col span={12}>
+                        <div >
+                            {/* <Button onClick={this.onAdd.bind(this)}>新增角色</Button> */}
+                            <SearchForm />
+                        </div>
+                    }
+                </div>
+               
+                <Row 
+                type="flex"
+                gutter={30}
+                className="role-content">
+                    <Col span={12} className="role-col">
                         <div className="tabel-recoverd">
                             <Table
                                 size="middle"
@@ -218,12 +218,12 @@ class List extends React.Component {
                                 rowKey="id"
                                 pagination={false}
                                 dataSource={page.data}
-                                rowClassName={this.getRowClassName.bind(this,selectedRoleId)}
+                                rowClassName={this.getRowClassName.bind(this, selectedRoleId)}
                                 rowSelection={rowSelection}
                             />
                         </div>
                     </Col>
-                    <Col span={12}>
+                    <Col span={12} className="role-col">
 
                         <div className='org-tabel'>
                             <Tabs tabPosition={tabIndex} onTabClick={this.onTabClick}>
@@ -240,7 +240,7 @@ class List extends React.Component {
                             </Tabs>
                         </div>
                         <Modal
-                            title={this.state.isEdit ? "编辑角色" : "新增角色"}
+                            title={isEdit ? "编辑角色" : "新增角色"}
                             visible={roleCardVisible}
                             onOk={this.onSave.bind(this)}
                             onCancel={this.onClose.bind(this)}
