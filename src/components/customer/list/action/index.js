@@ -498,7 +498,6 @@ export function showViewForm(visible, id) {
                         method: "GET"
                     },
                     state => {
-                        debugger
                         dispatch({
                             type: "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM",
                             visible,
@@ -662,31 +661,6 @@ export function checkedCancelFn(id, visiable) {
 
 export function hasIcbc(name, id , visiable) {
     return dispatch => {
-<<<<<<< HEAD
-        
-        // reqwest(
-        //     {
-        //         url: baseDir + "cum/customers/identifications/" + verifyId,
-        //         method: "GET"
-        //     },
-        //     result => {
-        //         
-        //         dispatch({
-        //             type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
-        //             visiable,
-        //             data: result.data,
-        //         });
-
-        //     }
-        // );
-        reqwest(
-            {
-                url: baseDir + "cum/customers/identifications/full",
-                method: "GET",
-                data:{
-                    param:{
-                        name:name
-=======
         debugger
         if(name){
             reqwest(
@@ -697,7 +671,6 @@ export function hasIcbc(name, id , visiable) {
                         param:{
                             name:name
                         }
->>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
                     }
                 },
                 result => {
@@ -708,18 +681,6 @@ export function hasIcbc(name, id , visiable) {
                         data: result.data,
                     });
                 }
-<<<<<<< HEAD
-            },
-            result => {
-                
-                dispatch({
-                    type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
-                    visiable,
-                    data: result.data,
-                });
-            }
-        );
-=======
             );
         }else{
             reqwest(
@@ -738,7 +699,6 @@ export function hasIcbc(name, id , visiable) {
                 }
             );
         }  
->>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
     }
 }
 
@@ -766,7 +726,6 @@ export function attentionFn(id, state) {
                 }
             },
             state => {
-                ;
                 dispatch({
                     //followState
                     type: "CUSTOMERCOMPANY_LIST_FOLLOWSTATECHANGE",

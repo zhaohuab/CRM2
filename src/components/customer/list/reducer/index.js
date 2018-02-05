@@ -133,29 +133,19 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 pagination: action.payload.pagination,
                 selectedRowKeys: []
             });
-<<<<<<< HEAD
-        case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE'://详情起停用功能
-            let enableState = $$state.get('viewData').toJS();
-            enableState.enableState = action.state;           
-=======
         //详情起停用功能    
         case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE':
             let enableState = $$state.get('viewData').toJS()
             enableState.enableState = action.state;
             debugger
->>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             return $$state.merge({
                 data: action.data,
                 pagination: action.pagination,
                 viewData: enableState
             });
-<<<<<<< HEAD
-        case "CUSTOMERCOMPANY_LIST_SHOWFORM": //新增、修改编辑菜单显示       
-=======
         //新增、修改编辑菜单显示    
         case "CUSTOMERCOMPANY_LIST_SHOWFORM":
         debugger
->>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             return $$state.merge({
                 formVisitable: action.payload.visible,
             });
@@ -186,26 +176,17 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case "CUSTOMERCOMPANY_LIST_CHANGEVISIBLE": 
             let visit = $$state.get("moreShow");
             return $$state.merge({ moreShow: !visit });
-<<<<<<< HEAD
-
-        case "CUSTOMERCOMPANY_LIST_SELECTROW": //保存table已选择条件      
-=======
         //保存table已选择条件    
         case "CUSTOMERCOMPANY_LIST_SELECTROW": 
         debugger
->>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             return $$state.merge({
                 selectedRowKeys: Immutable.fromJS(
                     action.payload.selectedRowKeys
                 )
             });
-<<<<<<< HEAD
-        case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER": //点击新建按钮时，清空viewPanel数据,增加带过来的值          
-=======
         //点击新建按钮时，清空viewPanel数据,增加带过来的值    
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER": 
             debugger
->>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             return $$state.merge({
                 formVisitable: action.data,
                 newTypeId: action.typeId,
@@ -413,13 +394,9 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 viewDataRelevant: viewDataRelevant
             });
-<<<<<<< HEAD
-        case "CUSTOMER_LIST_DELETEFILE"://删除附件        
-=======
         ////////天赐删除附件
         case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
         debugger
->>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
             let fileArr = viewDataRelevant2[3].list.data;
             let file = action.file;

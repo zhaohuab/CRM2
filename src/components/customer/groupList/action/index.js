@@ -448,29 +448,21 @@ export function showViewForm(visible, id){
                 url: baseDir + "cum/groupcustomers/" + id,
                 method: "GET",
             },
-            data => {
-                
-                dispatch({
-                type: "CUSTOMERGROUP_LIST_SHOWVIEWFORM",
-                visible,
-                data,
-                //state
-            });
-                
-                // reqwest(
-                //     {
-                //         url: baseDir + `cum/customers/${id}/isfollow`,
-                //         method: "GET"
-                //     },
-                //     state => {
-                //         dispatch({
-                //             type: "CUSTOMER_LIST_SHOWVIEWFORM",
-                //             visible,
-                //             data,
-                //             state
-                //         });
-                //     }
-                // );
+            data => {               
+                reqwest(
+                    {
+                        url: baseDir + `cum/groupcustomers/${id}/isfollow`,
+                        method: "GET"
+                    },
+                    state => {
+                        dispatch({
+                            type: "CUSTOMERGROUP_LIST_SHOWVIEWFORM",
+                            visible,
+                            data,
+                            state
+                        })
+                    }
+                );           
             }
         );
     };
@@ -588,6 +580,12 @@ export function checkedFn(viewData,select,id, visiable){
                 }
             },
             result => {
+                dispatch({
+                    type: "CUSTOMERGROUP_LIST_CLOSEDETAILICBCMODOL",
+                    visiable,
+                    verifyFullname: result.verifyFullname,
+                    verifyId:result.verifyId
+                });
                 
                 // reqwest(
                 //     {
@@ -634,7 +632,50 @@ export function checkedCancelFn(id, visiable){
     };
 };
 
-export function hasIcbc(verifyId,visiable){
+export function hasIcbc(name, id , visiable) {
+    return dispatch => {
+        debugger
+        if(name){
+            reqwest(
+                {
+                    url: baseDir + "cum/customers/identifications/full",
+                    method: "GET",
+                    data:{
+                        param:{
+                            name:name
+                        }
+                    }
+                },
+                result => {
+                    debugger
+                    dispatch({
+                        type: "CUSTOMERGROUP_LIST_ICBCDETAILMODAL",
+                        visiable,
+                        data: result.data,
+                    });
+                }
+            );
+        }else{
+            reqwest(
+                {
+                    url: baseDir + "cum/customers/identifications/" + id,
+                    method: "GET"
+                },
+                result => {
+                    debugger
+                    dispatch({
+                        type: "CUSTOMERGROUP_LIST_ICBCDETAILMODAL",
+                        visiable,
+                        data: result.data,
+                    });
+    
+                }
+            );
+        }  
+    }
+}
+
+/* export function hasIcbc(verifyId,visiable){
     return dispatch => {
         
         reqwest(
@@ -653,7 +694,7 @@ export function hasIcbc(verifyId,visiable){
             }
         );
     }
-}
+} */
 
 //详情中工商核实详情modal
 // export function icbcDetailModal(icbcInfo1,visiable){
@@ -670,7 +711,7 @@ export function attentionFn(id, state){
     return dispatch => {
         reqwest(
             {
-                url: baseDir + `cum/customers/${id}/follows`,
+                url: baseDir + `cum/groupcustomers/${id}/follows`,
                 method: "PUT",
                 data: {
                     param: {
@@ -679,7 +720,6 @@ export function attentionFn(id, state){
                 }
             },
             state => {
-                ;
                 dispatch({
                     //followState
                     type: "CUSTOMERGROUP_LIST_FOLLOWSTATECHANGE",

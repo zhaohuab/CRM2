@@ -7,6 +7,8 @@ let $$initialState = {
     defaultId:0, //----刷新页面返回的查询方案默认显示项id
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
+    newCumMenu: [],//点击新增按钮时获取的业务类型
+    newTypeId: '',//保存新增是选中的业务类型字段
     searchMap: {}, //存放实时输入的表单查询查询条件
     viewData: {}, //获取当前客户信息，view面板使用数据
     pagination: {//list列表页table分页信息
@@ -154,7 +156,24 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             });    
         //点击编辑按钮触发的方法
         case 'CUSTOMERGROUP_LIST_SHOWEDITFORM':
-            let editViewData =  $$state.get('viewData').toJS()
+        let EditStreetData =  $$state.get('viewData').toJS()
+        let streetEdit = {
+            address:EditStreetData.street,
+            location:{
+                lng:EditStreetData.longitude,
+                lat:EditStreetData.latitude
+            }
+        }
+        //详细地址
+        if(typeof EditStreetData.street !== 'object') {
+            EditStreetData.street = streetEdit
+        }    
+        return $$state.merge({
+            formVisitable: action.visiable,
+            viewData:EditStreetData
+        }); 
+
+   /*          let editViewData =  $$state.get('viewData').toJS()
             let streetEdit = {
                 address:editViewData.street,
                 location:{
@@ -182,7 +201,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             return $$state.merge({
                 formVisitable: action.visiable,
                 viewData:editViewData
-            });
+            }); */
         case "CUSTOMERGROUP_LIST_CHANGEVISIBLE": //查询功能显示
             let visit = $$state.get("moreShow");
             return $$state.merge({ moreShow: !visit });
@@ -232,11 +251,13 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 icbcVisible2: action.visiable
             });
 
-        case "CUSTOMERGROUP_LIST_CLEANSELECT":
-     
+        case "CUSTOMERGROUP_LIST_CLOSEDETAILICBCMODOL":
+            let verifyData =  $$state.get('viewData').toJS()
+            verifyData.verifyFullname = action.verifyFullname
+            verifyData.verifyId = action.verifyId
             return $$state.merge({
                 icbcVisible2: action.visiable,
-                data: pageEdit($$state.get("data").toJS(), action.data)
+                viewData:verifyData
             });
         case "CUSTOMERGROUP_LIST_CHANGESTATEEDIT":
             return $$state.merge({
@@ -271,22 +292,53 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 data: pageAdd($$state.get("data").toJS(), action.data),
                 icbcInfo:[],
                 addIcbcName:'',
-                viewData:clearObject($$state.get('contactsCardData').toJS())
+                viewData:clearObject($$state.get('contactsCardData').toJS()),
+                newTypeId:''//清空已选择的业务类型id值
             });
         case "CUSTOMERGROUP_LIST_EDITSAVE": //修改客户
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
-                viewData:action.data
+                viewData:action.data,
+                
             });
         //点击一条客户数据时    
         case "CUSTOMERGROUP_LIST_SHOWVIEWFORM":
-            return $$state.merge({
+        let actionData = action.data;
+        
+                    let industry = {
+                        id:actionData.industry,
+                        name:actionData.industryName
+                    }
+                    
+                    let district = [
+                        actionData.province.toString(),
+                        actionData.city.toString(),
+                        actionData.district.toString()
+                    ]
+        
+                    //关注
+                    actionData.followState = action.state.followState;
+        
+                    //行业
+                    actionData.industry = industry
+        
+                    //省市区
+                    actionData.province_city_district = {}
+                    actionData.province_city_district.result= district
+        
+                    return $$state.merge({
+                        viewState: action.visible,
+                        viewData: actionData,
+                        leftJoinPanelKeys: '1',
+                        RightJoinPanelKeys: '1'
+                    });
+         /*    return $$state.merge({
                 viewState: action.visible,
                 viewData: action.data,
                 leftJoinPanelKeys:'1',
                 RightJoinPanelKeys:'1'
-            });
+            }); */
         case "CUSTOMERGROUP_LIST_FOLLOWSTATECHANGE": //更改关注未关注
             return $$state.setIn(
                 ["viewData", "followState"],
