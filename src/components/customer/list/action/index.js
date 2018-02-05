@@ -10,6 +10,7 @@ export function fetchData(type, payload) {
         payload
     };
 };
+
 let trancFn=(data)=>{
     debugger
     for (let key in data) {

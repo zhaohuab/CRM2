@@ -147,6 +147,9 @@ const approval = {
 const speech = {
     saletalk: baseDir + 'sact/saletalk'
 }
+const finishetask ={
+
+}
 
 export {
     login,
@@ -175,5 +178,6 @@ export {
     func,
     quartz,
     approval,
-    speech
+    speech,
+    
 }
