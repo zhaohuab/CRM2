@@ -34,6 +34,7 @@ span {
   overflow-y: auto;
 }
 .customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-item {
+  width: 100%;
   height: 28px;
   line-height: 28px;
   text-align: center;
@@ -44,8 +45,15 @@ span {
   border-radius: 4px;
   cursor: pointer;
 }
+.customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-item .customer-name {
+  padding-left: 10px;
+  text-align: left;
+}
 .customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-item .customer-num {
   color: #3ca4fb;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-role-item {
+  width: 25%;
 }
 .customer-panelMap-wraper .customer-panelMap-left .customer-address {
   width: 100%;

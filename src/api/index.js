@@ -147,6 +147,10 @@ const approval = {
 const speech = {
     saletalk: baseDir + 'sact/saletalk'
 }
+ const cusInquire={//客户所有查询方案接口
+     groupLsit:baseDir+'/cum/groupcustomers/querytemplate',
+ }
+
 
 export {
     login,
@@ -175,5 +179,6 @@ export {
     func,
     quartz,
     approval,
-    speech
+    speech,
+    cusInquire
 }

@@ -147,7 +147,7 @@ class List extends React.Component {
 
         } = this.props.$$state.toJS();
         ;
-
+debugger
         return (
             <Modal title="导入"
                 className="lead-cur-import"

@@ -113,7 +113,7 @@ class GroupAssign extends React.Component {
                     checkedKeys:[],
                     groupList:[]
                 },()=>{
-                    this.props.action.getList(pagination,{},[])
+                    this.props.action.getList(pagination)
                 })
             }
         );
