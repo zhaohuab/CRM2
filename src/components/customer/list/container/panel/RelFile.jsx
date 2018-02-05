@@ -19,7 +19,7 @@ class PicFile extends React.Component {
                 <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
                 <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
             </div>
-            <span className='del' onClick={this.props.onDeleteFile(file)}><i className='iconfont icon-canyuren-shanchu'/></span>
+            <span className='del' onClick={this.props.onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
         </Row>
     }
 }
@@ -39,7 +39,7 @@ class ExcelFile extends React.Component {
                 <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
                 <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
             </div>
-            <span className='del' onClick={this.props.onDeleteFile(file)}><i className='iconfont icon-canyuren-shanchu'/></span>
+            <span className='del' onClick={this.props.onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
         </Row>
     }
 
@@ -57,7 +57,7 @@ class WordFile extends React.Component {
                 <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
                 <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
             </div>
-            <span className='del' onClick={this.props.onDeleteFile(file)}><i className='iconfont icon-canyuren-shanchu'/></span>
+            <span className='del' onClick={this.props.onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
         </Row>
     }
 
@@ -75,7 +75,7 @@ class PPTFile extends React.Component {
                 <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
                 <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
             </div>
-            <span className='del' onClick={this.props.onDeleteFile(file)}><i className='iconfont icon-canyuren-shanchu'/></span>
+            <span className='del' onClick={this.props.onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
         </Row>
     }
 
@@ -88,8 +88,13 @@ class RelFile extends React.Component {
         let picTypes = ["png","jpg","jpeg","gif"];
         let excelTypes = ["xlsx","xls"];
         let wordTypes = ["docx","doc"];
-        
-        let onDeleteFile = this.props.onDeleteFile;
+        debugger
+        let onDeleteFile = (file)=>{
+            debugger
+            this.props.onDeleteFile(file);
+
+        }
+
         if(picTypes.includes(fileType) ) {
             return <PicFile file={file} onDeleteFile={onDeleteFile}/>
         }
@@ -126,7 +131,6 @@ class RelFile extends React.Component {
                         return this.getFileRender(file)
                     }) : '暂无数据'
             }
-
         </div>
     }
 

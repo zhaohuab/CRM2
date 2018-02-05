@@ -74,8 +74,6 @@ function clearObject(obj) {
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
     switch (action.type) {
-
-
        //----------- 导入 1.30 余春梅
        case 'CUSTOMERCOMPANY_LIST_VIEWLEADSHOW':     
            return $$state.merge({
@@ -126,24 +124,38 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                leadEndVisible: action.payload.leadVisible,
                leadStep: action.payload.leadStep
            });
-           
-//=======
 
-        case "CUSTOMERCOMPANY_LIST_GETDATA": //查询各种table数据
+           
+        //查询各种table数据
+        case "CUSTOMERCOMPANY_LIST_GETDATA": 
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
                 selectedRowKeys: []
             });
+<<<<<<< HEAD
         case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE'://详情起停用功能
             let enableState = $$state.get('viewData').toJS();
             enableState.enableState = action.state;           
+=======
+        //详情起停用功能    
+        case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE':
+            let enableState = $$state.get('viewData').toJS()
+            enableState.enableState = action.state;
+            debugger
+>>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             return $$state.merge({
                 data: action.data,
                 pagination: action.pagination,
                 viewData: enableState
             });
+<<<<<<< HEAD
         case "CUSTOMERCOMPANY_LIST_SHOWFORM": //新增、修改编辑菜单显示       
+=======
+        //新增、修改编辑菜单显示    
+        case "CUSTOMERCOMPANY_LIST_SHOWFORM":
+        debugger
+>>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             return $$state.merge({
                 formVisitable: action.payload.visible,
             });
@@ -170,17 +182,30 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 newCumMenu: action.typeItem,
                 viewData:clearObject($$state.get('contactsCardData').toJS())
             });
-        case "CUSTOMERCOMPANY_LIST_CHANGEVISIBLE": //查询功能显示
+        //查询功能显示    
+        case "CUSTOMERCOMPANY_LIST_CHANGEVISIBLE": 
             let visit = $$state.get("moreShow");
             return $$state.merge({ moreShow: !visit });
+<<<<<<< HEAD
 
         case "CUSTOMERCOMPANY_LIST_SELECTROW": //保存table已选择条件      
+=======
+        //保存table已选择条件    
+        case "CUSTOMERCOMPANY_LIST_SELECTROW": 
+        debugger
+>>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             return $$state.merge({
                 selectedRowKeys: Immutable.fromJS(
                     action.payload.selectedRowKeys
                 )
             });
+<<<<<<< HEAD
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER": //点击新建按钮时，清空viewPanel数据,增加带过来的值          
+=======
+        //点击新建按钮时，清空viewPanel数据,增加带过来的值    
+        case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER": 
+            debugger
+>>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             return $$state.merge({
                 formVisitable: action.data,
                 newTypeId: action.typeId,
@@ -223,6 +248,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case 'CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL':
             let verifyData =  $$state.get('viewData').toJS()
             verifyData.verifyFullname = action.verifyFullname
+            verifyData.verifyId = action.verifyId
             return $$state.merge({
                 icbcVisible2: action.visiable,
                 viewData:verifyData
@@ -329,7 +355,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         case "CUSTOMERCOMPANY_LIST_CLEANVERIFYID":
             let clean = $$state.get("viewData").merge({
-                verifyFullname: ""
+                verifyFullname: "",
+                verifyId:''
             });
             return $$state.merge({
                 icbcVisible2: action.visiable,
@@ -358,6 +385,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case 'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_SETLIST'://只能加参与人
             let joinList = $$state.getIn(['viewDataJoinList', 'data'])
             return $$state.setIn(['viewDataJoinList', 'data'], joinList.push(Immutable.fromJS(action.data)))
+            
         case 'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_DELLIST'://删除一条联系人
             let delList = $$state.getIn(['viewDataJoinList', 'data']).toJS();
             delList = delList.filter((item) => {
@@ -378,13 +406,20 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 viewDataRelevant: addContacts
             });
-        case "CUSTOMER_LIST_FILESUCCESS"://添加附件
+        ////////天赐上传附件    
+        case "CUSTOMERCOMPANY_LIST_FILESSUCCESS"://添加附件
             let viewDataRelevant = $$state.get('viewDataRelevant').toJS()
             viewDataRelevant[3].list.data.unshift(action.payload)
             return $$state.merge({
                 viewDataRelevant: viewDataRelevant
             });
+<<<<<<< HEAD
         case "CUSTOMER_LIST_DELETEFILE"://删除附件        
+=======
+        ////////天赐删除附件
+        case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
+        debugger
+>>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
             let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
             let fileArr = viewDataRelevant2[3].list.data;
             let file = action.file;
@@ -397,6 +432,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 viewDataRelevant: viewDataRelevant2
             });
+        ////////////////    
         case "CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_CLEARCONTACTSFORM":
             return $$state.merge({
                 contactsCardData: clearObject($$state.get('contactsCardData').toJS())

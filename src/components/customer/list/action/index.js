@@ -134,7 +134,35 @@ export function fileFail(filesFail) {
         payload: { filesFail }
     };
 }
-//==============
+
+
+//天赐上传文件
+export function filesSuccess(file) {
+    return {
+        type: "CUSTOMERCOMPANY_LIST_FILESSUCCESS",
+        payload: file,
+    };
+}
+
+//天赐上传文件删除
+export function onDeleteFiles(file) {
+    debugger
+    return (dispatch) => {
+        reqwest(
+            {
+                url: baseDir + `sys/upload/${file.objType}/${file.objId}/${file.name}/${file.id}`,
+                method: "DELETE",
+            },
+            result => {
+                dispatch({
+                    type: "CUSTOMERCOMPANY_LIST_DELETEFILE",
+                    file
+                });
+            }
+        );
+    }
+}
+
 
 //控制查询显隐
 export function changeVisible() {
@@ -596,10 +624,12 @@ export function checkedFn(viewData, select, id, visiable) {
                 }
             },
             result => {
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL",
                     visiable,
-                    verifyFullname: select.companyname
+                    verifyFullname: result.verifyFullname,
+                    verifyId:result.verifyId
                 });
                 
             }
@@ -630,8 +660,9 @@ export function checkedCancelFn(id, visiable) {
     };
 };
 
-export function hasIcbc(name, visiable) {
+export function hasIcbc(name, id , visiable) {
     return dispatch => {
+<<<<<<< HEAD
         
         // reqwest(
         //     {
@@ -655,8 +686,29 @@ export function hasIcbc(name, visiable) {
                 data:{
                     param:{
                         name:name
+=======
+        debugger
+        if(name){
+            reqwest(
+                {
+                    url: baseDir + "cum/customers/identifications/full",
+                    method: "GET",
+                    data:{
+                        param:{
+                            name:name
+                        }
+>>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
                     }
+                },
+                result => {
+                    debugger
+                    dispatch({
+                        type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
+                        visiable,
+                        data: result.data,
+                    });
                 }
+<<<<<<< HEAD
             },
             result => {
                 
@@ -667,6 +719,26 @@ export function hasIcbc(name, visiable) {
                 });
             }
         );
+=======
+            );
+        }else{
+            reqwest(
+                {
+                    url: baseDir + "cum/customers/identifications/" + id,
+                    method: "GET"
+                },
+                result => {
+                    debugger
+                    dispatch({
+                        type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
+                        visiable,
+                        data: result.data,
+                    });
+    
+                }
+            );
+        }  
+>>>>>>> a28cf7683752294787e9b7e4e87c40de4123260e
     }
 }
 
