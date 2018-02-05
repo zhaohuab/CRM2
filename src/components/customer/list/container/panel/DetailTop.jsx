@@ -93,7 +93,7 @@ class DetailTop extends React.Component {
                                         className="pointer"
                                     >
                                         <div className="checked-iconfont">
-                                            <IcbcDetailInfo width={450}/>
+                                            <IcbcDetailInfo viewDataProps = {viewData}/>
                                         </div>
                                         <div>
                                             {viewData.followState ==0 ? (
@@ -109,21 +109,27 @@ class DetailTop extends React.Component {
                                     </Row>
                                 </Row>
                                 <Row className="address pointer">
-                                    {viewData.street?<span>{viewData.street}<i className="iconfont icon-shouye-dingwei" /></span>:'暂无地址'}
+                                    {
+                                        viewData.street?
+                                        <span>
+                                            { viewData.street }  <i className="iconfont icon-shouye-dingwei" />
+                                        </span>:
+                                        <span>{ viewData.street }</span>
+                                    }
                                 </Row>
                                 <Row type='flex' align='middle'className="tags">
-                                        {
-                                            viewData.typeName ?
-                                            <span className='tags-item'><span>{viewData.typeName}</span></span>: ''
-                                        }
-                                        {
-                                            viewData.levelName ? 
-                                            <span className='tags-item'><span>{viewData.levelName}</span></span>:''
-                                        }
-                                        {
-                                            viewData.stateName ?
-                                            <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
-                                        }
+                                    {
+                                        viewData.typeName ?
+                                        <span className='tags-item'><span>{viewData.typeName}</span></span>: ''
+                                    }
+                                    {
+                                        viewData.levelName ? 
+                                        <span className='tags-item'><span>{viewData.levelName}</span></span>:''
+                                    }
+                                    {
+                                        viewData.stateName ?
+                                        <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
+                                    }
                                 </Row>
                             </Row>
                         </Col>
