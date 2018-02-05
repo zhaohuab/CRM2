@@ -48,7 +48,7 @@ class PanelMap extends React.Component {
             this.areaMap.setOption(getItemOption(item))
         }else{
             Modal.info({
-                content: '您查看的客户暂无详细地址',
+                content: '您查看的客户暂无经纬度',
             });
         }     
     }
@@ -96,7 +96,7 @@ class PanelMap extends React.Component {
         let { data, customerItem } =  $$state.toJS();
         let itemFlag = $$state.get('itemFlag');
         let departmentName = $$state.get('departmentName');  
-        console.log('customerItem=================',customerItem)    
+        console.log('customerItem=================',customerItem,customerItem.total)    
       // debugger;
         return (
             <Row type="flex" className="customer-panelMap-wraper">
@@ -105,27 +105,25 @@ class PanelMap extends React.Component {
                             <Col span={20} className='customer-detail-total'>{departmentName}当前客户总数：<span className='customer-detail-num'>{data.total}</span></Col>
                             <Col span={4} className='goBack'><Button size="small" onClick={reload.bind(this)}>返回</Button></Col>                   
                         </Row>
-                        <Row type="flex" justify="around" align='top' className='customer-principal'>
+                        <div className='customer-principal'>
                             { 
                                 itemFlag?
                                 data.list.map(item=>{
                                     return (
-                                        <Col span={24} className='customer-principal-item' onClick={getCustomer.bind(this,'deptId',item.id,item.name)}>
-                                            <Row type='flex' align='middle'>
-                                                <Col span={18}>{item.name}</Col>
-                                                <Col span={6}><span className='customer-num'>{item.num}</span>个客户</Col>
-                                            </Row>                                           
-                                        </Col>
+                                        <Row  className='customer-principal-item' onClick={getCustomer.bind(this,'deptId',item.id,item.name)}>                                
+                                                <Col span={18} className='customer-name'>{item.name}</Col>
+                                                <Col span={6}><span className='customer-num'>{item.num}</span>个客户</Col>                                         
+                                        </Row>
                                     )
                                 })
                                 :
                                 data.list.map(item=>{                               
                                     return (
-                                        <Col span={6} className='customer-principal-item' onClick={getCustomer.bind(this,'userId',item.id,item.name)}>{item.name}<span className='customer-num'>({item.num})</span></Col>
+                                        <div  className='customer-principal-item customer-principal-role-item ' onClick={getCustomer.bind(this,'userId',item.id,item.name)}>{item.name}<span className='customer-num'>({item.num})</span></div>
                                     )                               
                                 }) 
                             }                 
-                        </Row>
+                        </div>
                         <div className='customer-address'>
                             {
                                 customerItem.data.map((item,index)=>{

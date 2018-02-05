@@ -18,7 +18,8 @@ import { bindActionCreators } from "redux";
 import * as Actions from "../action";
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
-import Tags from './Tags'
+import Tags from './Tags';
+
 
 class GroupTakeBack extends React.Component {
     constructor(props){
@@ -54,25 +55,27 @@ class GroupTakeBack extends React.Component {
     }
 
     //点击回收方法
-    takeBackFn(){
-        
-        let { selectedRowKeys ,data,pagination} = this.props.$$state.toJS()
-    
-        //拿到已选中table客户
-        let select = this.selectPerson(selectedRowKeys,data);
-        //debugger;
-        let companys = []
+    takeBackFn(){  
+        let { selectedRowKeys ,pagination} = this.props.$$state.toJS()
+        reqwest(
+            {
+                url:baseDir + 'cum/groupcustomers/existorg',
+                method: "GET",
+                data: {
+                    param: {
+                        cumIds:selectedRowKeys.join(',')
+                    }
+                }
+            },
+            result => {             
+                 let companys = []
+     
         //遍历所有客户的销售公司
-        select.forEach((cumItem)=>{
-            //debugger
-            if(cumItem.salesVOs && cumItem.salesVOs.length){//-----------------为了配合enableState的使用，这里自己为companyList中每一项添加enableState属性
-                cumItem.salesVOs.forEach((saleItem)=>{
-                    //debugger;
-                    companys.push({id:saleItem.orgId,name:saleItem.orgName,enableState:saleItem.enableState})
-                })
-            }
-        })
-
+        if(result&&result.data){
+            result.data.forEach(cumItem=>{
+                companys.push({id:cumItem.orgId,name:cumItem.orgName})
+            })
+        }
         //保存去重后的公司id、name
         var showCompany = [];
         var name = {};
@@ -84,11 +87,12 @@ class GroupTakeBack extends React.Component {
 
             }
         }
-        //debugger
         this.setState({
             visible:true,
             companyList:showCompany
         }) 
+            }
+        );    
     }
 
     //收回modal确定

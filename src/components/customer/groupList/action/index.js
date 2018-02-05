@@ -1,6 +1,6 @@
 import reqwest from "utils/reqwest";
 import { message } from "antd";
-import { cum as url, doc, baseDir,oppstage ,opportunity,contacts} from "api";
+import { cum as url, cusInquire, doc, baseDir,oppstage ,opportunity,contacts} from "api";
 
 
 //包装发给redux的对象
@@ -35,7 +35,7 @@ export function showForm (visible){
 
 //点击修改按钮触发的方法
 export function showFormEdit(visiable){
-    debugger
+    //debugger
     return{
         type:'CUSTOMERGROUP_LIST_SHOWEDITFORM',
         visiable
@@ -45,7 +45,7 @@ export function showFormEdit(visiable){
 
 //删除客户
 export function deleteData (ids, searchMap, pagination){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -60,7 +60,7 @@ export function deleteData (ids, searchMap, pagination){
                 }
             },
             data => {
-                debugger
+                //debugger
                 dispatch(
                     fetchData("CUSTOMERGROUP_LIST_DELETE", {
                         data: data
@@ -72,7 +72,7 @@ export function deleteData (ids, searchMap, pagination){
 };
 //启停用功能
 export function setEnableState (ids, state, page, searchMap){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -101,7 +101,7 @@ export function setEnableState (ids, state, page, searchMap){
 
 //详情器停用
 export function setDetailEnableState (ids, state, page, searchMap){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -117,7 +117,7 @@ export function setDetailEnableState (ids, state, page, searchMap){
                 }
             },
             dataResult => {
-                debugger
+                //debugger
                 dispatch({
                     type:"CUSTOMERGROUP_LIST_DETAILENABLESTATE",
                     data: dataResult,
@@ -142,8 +142,8 @@ export function appendAddress(data){
 };
 
 //获取数据、基础查询数据、扩展查询数据
-export function getListData (pagination, searchMap){
-    debugger
+export function getListData (pagination, searchMap,searchPlan){//----赵华冰2-2添加一个searchPlan参数
+    //debugger
     return dispatch => {
         dispatch(fetchData("CUSTOMERGROUP_LIST_SAVESEARCHMAP", searchMap));
         reqwest(
@@ -154,17 +154,18 @@ export function getListData (pagination, searchMap){
                     param: {
                         ...pagination,
                         searchMap: changeSearchData(searchMap),
-                        searchPlan:{}
+                        searchPlanMap:searchPlan//---赵华冰2-2
                     }
                 }
             },
             data => {
-                debugger;
-              
+                //debugger;
+                console.log('进入页面获取到的首页数据============================',data)              
                 dispatch(
                     fetchData("CUSTOMERGROUP_LIST_GETDATA", {
                         data: data,
-                        pagination
+                        pagination,
+                        searchPlan
                     })
                 );
             }
@@ -172,9 +173,65 @@ export function getListData (pagination, searchMap){
     };
 };
 
-//获取查询条件初始值
+//-----------获取查询初始条件值 赵华冰2-2
+export function getInitInquire(){
+    let xx=cusInquire.groupLsit;
+    //debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: cusInquire.groupLsit,
+                method: "get",
+                data: {}
+            },
+            result => {
+                //debugger
+                let searchPlan={};
+                dispatch(
+                    fetchData("CUSTOMERGROUP_GROUPLIST_GETENUMDATA", {
+                        enumData: result.plan
+                    })
+                );
+                if(result&&result.plan){
+                    result.plan.forEach(item=>{
+                        if(item.isSelected==1){
+                            searchPlan.id=item.id;
+                            searchPlan.defClass=item.defClass;
+                        }
+                    })
+                }
+                //debugger
+                reqwest(
+                    {
+                        url: baseDir +'/cum/groupcustomers',
+                        method: "get",
+                        data: {
+                            param: {
+                                page:1,
+                                pageSize:10,
+                                searchPlanMap:searchPlan,
+                            }
+                        }
+                    },
+                    data => {
+                        //debugger;            
+                        dispatch(
+                            fetchData("CUSTOMERGROUP_LIST_GETDATA", {
+                                data: data,
+                                pagination:{page:1,pageSize:10}
+                            })
+                        );
+                    }
+                );
+            }
+        );
+    };
+}
+
+
+/* //获取查询条件初始值
 export function getEnumData(){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -185,7 +242,7 @@ export function getEnumData(){
                 }
             },
             data => {
-                debugger
+                //debugger
                 dispatch(
                     fetchData("CUSTOMERGROUP_LIST_GETENUMDATA", {
                         enumData: data.enumData
@@ -194,11 +251,11 @@ export function getEnumData(){
             }
         );
     };
-};
+}; */
 
 //获取动态信息
 export function getDynamic(id){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -206,7 +263,7 @@ export function getDynamic(id){
                 method: "GET",
             },
             data => {
-                debugger
+                //debugger
 
                 dispatch({
                     type:"CUSTOMERGROUP_LIST_GETDYNAMIC",
@@ -219,6 +276,7 @@ export function getDynamic(id){
 
 //遍历表单更改为可传数据
 let changeSearchData=(data)=>{
+    //debugger;
     for(let key in data){
         if(key == 'cannelType'|| key == 'level'|| key == 'enableState'|| key == 'type'){
             if(data[key] && data[key].key){
@@ -241,7 +299,7 @@ let changeSearchData=(data)=>{
 
  //上传数据时，各种参照的数据转换
  let trancFn=(data)=>{//--------------------
-    debugger
+    //debugger
     //城市
     if (data.province_city_district) {
         let change = data.province_city_district.result;
@@ -263,7 +321,7 @@ let changeSearchData=(data)=>{
     }
 
     data.address = ''
-    debugger
+    //debugger
     return data;
 }
 
@@ -271,7 +329,7 @@ let changeSearchData=(data)=>{
 //根据名称获取行业id,返回promise
 let getIndustry = (industry)=>{
     return new Promise(function(resolve, reject) {
-        debugger
+        //debugger
         reqwest(
             {
                 url: baseDir + 'base/industrys/list',
@@ -285,7 +343,7 @@ let getIndustry = (industry)=>{
                 }
             },
             indastry => {
-                debugger
+                //debugger
                 resolve(indastry)
             }
         );
@@ -295,7 +353,7 @@ let getIndustry = (industry)=>{
 
 //编辑的Request请求
 let sendCumRequest = (data,dispatch)=>{
-debugger
+//debugger
 reqwest(
     {
         url: baseDir + "cum/groupcustomers/" + data.id,
@@ -305,7 +363,7 @@ reqwest(
         }
     },
     data => {
-        debugger
+        //debugger
         dispatch({
             type: "CUSTOMERGROUP_LIST_EDITSAVE",
             data
@@ -316,7 +374,7 @@ reqwest(
 
 //新增的Request请求
 let sendCumNewRequest = (data,dispatch)=>{
-debugger
+//debugger
     reqwest(
         {
             url: baseDir + 'cum/groupcustomers',
@@ -326,7 +384,7 @@ debugger
             }
         },
         data => {
-            debugger
+            //debugger
             dispatch({
                 type: "CUSTOMERGROUP_LIST_ADDSAVE",
                 data
@@ -339,11 +397,11 @@ debugger
 export function listFormSave(data,id) {
     data = trancFn(data);
     
-    debugger
+    //debugger
     return dispatch => {
         if(data.industry && data.industry.name && (!data.industry.id)){
             getIndustry(data.industry.name).then((indastry)=>{
-                debugger
+                //debugger
                 if(indastry && indastry.data.length){
                     data.industry = indastry.data[0].id;
                 }else{
@@ -359,7 +417,7 @@ export function listFormSave(data,id) {
             })
         }else{
             //有行业id没有行业name
-            debugger
+            //debugger
             if( data.industry && (!data.industry.name) && data.industry.id){
                 data.industry = data.industry.id
             //都有的情况下只获取行业id    
@@ -384,7 +442,7 @@ export function listFormSave(data,id) {
 
 //展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -392,14 +450,14 @@ export function showViewForm(visible, id){
                 method: "GET",
             },
             data => {
-                debugger
+                //debugger
                 dispatch({
                 type: "CUSTOMERGROUP_LIST_SHOWVIEWFORM",
                 visible,
                 data,
                 //state
             });
-                debugger
+                //debugger
                 // reqwest(
                 //     {
                 //         url: baseDir + `cum/customers/${id}/isfollow`,
@@ -425,7 +483,7 @@ export function hideViewForm (visiable){
 
 //客户升级
 export function cumUpgrade(id){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -433,7 +491,7 @@ export function cumUpgrade(id){
                 method: "POST"
             },
             data => {
-                debugger
+                //debugger
                 reqwest(
                     {
                         url: baseDir + 'cum/customers/rel',
@@ -449,7 +507,7 @@ export function cumUpgrade(id){
                         }
                     },
                     result => {
-                        debugger
+                        //debugger
                         dispatch({
                             type:'CUSTOMERGROUP_VIEWPANEL_PANELLEFT_LIST',
                             index:2,
@@ -471,7 +529,7 @@ export function cumUpgrade(id){
  */
 
 export function customerListInfo(data,visiable){
-    debugger
+    //debugger
     return {
         type: "CUSTOMERGROUP_LIST_ICBCDETAILINFO",
         data,
@@ -481,7 +539,7 @@ export function customerListInfo(data,visiable){
 
 //在新增时保存客户工商名称，工商详情的时候,保存名字
 export function saveIcbcName(viewData,visiable){
-    debugger
+    //debugger
     return{
         type:'CUSTOMERGROUP_LIST_SAVEICBCNAME',
         viewData,
@@ -499,7 +557,7 @@ export function saveIcbcNameCancel(visiable){
 
 //保存工商核实详情数据
 export function icbcDetailInfo(data,visiable){
-    debugger
+    //debugger
     return {
         type: "CUSTOMERGROUP_LIST_ICBCINFODETAIL",
         data,
@@ -515,7 +573,7 @@ export function changeStateFn(visiable){
 };
 //详情中工商核实
 export function checkedFn(viewData,select,id, visiable){
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -531,7 +589,7 @@ export function checkedFn(viewData,select,id, visiable){
                 }
             },
             result => {
-                debugger
+                //debugger
                 // reqwest(
                 //     {
                 //         url: url.customer + "/" + id,
@@ -541,7 +599,7 @@ export function checkedFn(viewData,select,id, visiable){
                 //         }
                 //     },
                 //     data => {
-                //         debugger
+                //         //debugger
                 //          dispatch({
                 //             type: "CUSTOMER_LIST_CLEANSELECT",
                 //             data,
@@ -567,7 +625,7 @@ export function checkedCancelFn(id, visiable){
                 }
             },
             result => {
-                debugger
+                //debugger
                 dispatch({
                     type: "CUSTOMERGROUP_LIST_CLEANVERIFYID",
                     visiable
@@ -579,14 +637,14 @@ export function checkedCancelFn(id, visiable){
 
 export function hasIcbc(verifyId,visiable){
     return dispatch => {
-        debugger
+        //debugger
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/" + verifyId,
                 method: "GET"
             },
             result => {
-                debugger
+                //debugger
                 dispatch({
                     type: "CUSTOMERGROUP_LIST_ICBCDETAILMODAL",
                     visiable,
@@ -695,7 +753,7 @@ export function saveSearchMap(data){
 
 //往redux中存放编辑新增修改条件
 export function editCardFn(changeData){
-    debugger
+    //debugger
     return {
         type: "CUSTOMERGROUP_LIST_CARDEDITCHANGE",
         data: changeData
@@ -747,7 +805,7 @@ export function changeLeftPanel(index){
 
 //点击获取左侧面板相关list
 export function getLeftPaneltList(id,JoinPagination,index){  
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -763,7 +821,7 @@ export function getLeftPaneltList(id,JoinPagination,index){
                 }
             },
             result => {
-                debugger
+                //debugger
                 dispatch({
                     type:'CUSTOMERGROUP_VIEWPANEL_PANELLEFT_LIST',
                     index,
@@ -892,7 +950,7 @@ export function delContacts(id,pagination){
 
 //-------导入导出
 export function viewLeadShow(leadVisible) {
-    debugger
+    //debugger
     return {
         type: "CUSTOMER_LIST_VIEWLEADSHOW",
         payload: { leadVisible }
@@ -913,7 +971,7 @@ export function leadEndShow(leadVisible) {
     };
 };
 export function leadEndView(leadVisible, leadStep) {
-    debugger
+    //debugger
     return {
         type: "CUSTOMER_LIST_LEADENDVIEW",
         payload: { leadVisible, leadStep }
@@ -928,7 +986,7 @@ export function leadEndIngShow(leadVisible) {
 }
 
 export function saveFiles(files) {
-    debugger
+    //debugger
     return {
         type: "CUSTOMER_LIST_SAVEFILES",
         payload: { files }

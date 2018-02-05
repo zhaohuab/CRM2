@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action";
+import baseDir from "api";
+
 import {
     Select,
     Input,
@@ -137,38 +139,40 @@ class List extends React.Component {
 
     onPageChange(page, pageSize) {
         let pagination = { page: page, pageSize: pageSize };
+        let searchPlan=this.props.$$state.get("searchPlan").toJS();
+        debugger;
         this.props.action.getListData(
             pagination,
-            this.props.$$state.get("searchMap").toJS()
+            this.props.$$state.get("searchMap").toJS(),
+            this.props.$$state.get("searchPlan").toJS()
         );
     }
     onPageSizeChange(current, pageSize) {
         let pagination = { page: current, pageSize: pageSize };
+        let {searchPlan}=this.props.$$state.toJS();
         this.props.action.getListData(
             pagination,
-            this.props.$$state.get("searchMap").toJS()
+            this.props.$$state.get("searchMap").toJS(),
+            this.props.$$state.get("searchPlan").toJS()
         );
     }
 
     componentDidMount() {
-        this.props.action.getListData(
+        /* this.props.action.getListData(
             this.props.$$state.get("pagination").toJS()
-        );
-        this.props.action.getEnumData();
+        ); */
+        this.props.action.getInitInquire()
     }
 
     render() {
-        debugger
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
-        console.log('data=================',page.data)
         let {
             selectedRows,
             selectedRowKeys,
             formVisitable,
             viewState,
             viewData,
-
             tableLoading
         } = this.props.$$state.toJS();
 

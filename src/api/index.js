@@ -143,7 +143,9 @@ const approval={
     notfinishedtotal:baseDir+'bpub/approvals/notfinishedtotal',
     remind:baseDir+'/bpub/approvals/remind'
 }
-
+ const cusInquire={//客户所有查询方案接口
+     groupLsit:baseDir+'/cum/groupcustomers/querytemplate',
+ }
 
 
 export {
@@ -172,5 +174,6 @@ export {
     phonebooks,
     func,
     quartz,
-    approval
+    approval,
+    cusInquire
 }
