@@ -1,8 +1,6 @@
 //import fetchData from 'utils/fetchdata';
 import reqwest from "utils/reqwest";
-//import {baseDir} from 'api';
 import { browserHistory } from 'react-router';
-//import { approved as url } from 'api/zhb'
 
 import { approval as url, doc, baseDir } from "api";
 
@@ -22,7 +20,7 @@ const fetchData = (type, payload) => {
             method: "POST",
         },()=>{
             console.log()
-            location.href = location.href
+            location.href = baseDir
         })
    }
 }
