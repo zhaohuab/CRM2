@@ -3,7 +3,8 @@ import Immutable from "immutable";
 let $$initialState = {
     data: [], //tabel展示数据
     enumData: [],//存储查询条件预制数据
-    searchPlan:{},//---存储查询方案    赵华冰 2-2
+    searchPlan:{id:'',defClass:''},//---存储查询方案    赵华冰 2-2
+    defaultId:0, //----刷新页面返回的查询方案默认显示项id
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
     searchMap: {}, //存放实时输入的表单查询查询条件
@@ -72,66 +73,68 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
     switch (action.type) {
 
 
-             //----------- 导入
-             case 'CUSTOMER_LIST_VIEWLEADSHOW':
-                 return $$state.merge({
-                     viewLeadVisible: action.payload.leadVisible,
-                 });
-             case 'CUSTOMER_LIST_LEADSHOW':
-                 return $$state.merge({
-                     leadVisible: action.payload.leadVisible,
-                 });
-             case 'CUSTOMER_LIST_LEADENDSHOW':
-                 return $$state.merge({
-                     leadEndVisible: action.payload.leadVisible,
-                 });
-             case 'CUSTOMER_LIST_LEADINGSHOW':
-                 return $$state.merge({
-                     leadingVisible: action.payload.leadVisible,
-                 });
-             case 'CUSTOMER_LIST_LEADSHOW':
-                 return $$state.merge({
-                     leadVisible: action.payload.leadVisible,
-                 });
-             case 'CUSTOMER_LIST_LEADENDSHOW':
-                 return $$state.merge({
-                     leadEndVisible: action.payload.leadVisible,
-                 });
-             case 'CUSTOMER_LIST_LEADINGSHOW':
-                 return $$state.merge({
-                     leadingVisible: action.payload.leadVisible,
-                 });
-             case 'CUSTOMER_LIST_SAVEFILES':
-                 return $$state.merge({
-                     leadFiles: action.payload.files,
-                 });
-             case 'CUSTOMER_LIST_FILESUCCESS':///???--------
-                 return $$state.merge({
-                     filesSuccess: action.payload.filesSuccess,
-                     successResult: action.payload.result,
-                     leadEndVisible: action.payload.show,
-                     leadFiles: {},
-                     leadStep: action.payload.leadStep
-                 });
-             case 'CUSTOMER_LIST_FILEFAIL':
-                 return $$state.merge({
-                     filesFail: action.payload.filesFail,
-                 });
-             case 'CUSTOMER_LIST_LEADENDVIEW':
-                 return $$state.merge({
-                     leadEndVisible: action.payload.leadVisible,
-                     leadStep: action.payload.leadStep
-                 });
+        //----------- 导入导出
+        case 'CUSTOMERCOMPANY_LIST_VIEWLEADSHOW':
+        debugger
+            return $$state.merge({
+                viewLeadVisible: action.payload.leadVisible,
+            });
+        case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
+            return $$state.merge({
+                leadVisible: action.payload.leadVisible,
+            });
+        case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+            });
+        case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
+            return $$state.merge({
+                leadingVisible: action.payload.leadVisible,
+            });
+        case 'CUSTOMERCOMPANY_LIST_LEADSHOW':
+            return $$state.merge({
+                leadVisible: action.payload.leadVisible,
+            });
+        case 'CUSTOMERCOMPANY_LIST_LEADENDSHOW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+            });
+        case 'CUSTOMERCOMPANY_LIST_LEADINGSHOW':
+            return $$state.merge({
+                leadingVisible: action.payload.leadVisible,
+            });
+        case 'CUSTOMERCOMPANY_LIST_SAVEFILES':
+            debugger
+            return $$state.merge({
+                leadFiles: action.payload.files,
+            });
+        case 'CUSTOMERCOMPANY_LIST_FILESUCCESS':
+            debugger
+            return $$state.merge({
+                filesSuccess: action.payload.filesSuccess,
+                successResult: action.payload.result,
+                leadEndVisible: action.payload.show,
+                leadFiles: {},
+                leadStep: action.payload.leadStep
+            });
+        case 'CUSTOMERCOMPANY_LIST_FILEFAIL':
+            return $$state.merge({
+                filesFail: action.payload.filesFail,
+            });
+        case 'CUSTOMERCOMPANY_LIST_LEADENDVIEW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+                leadStep: action.payload.leadStep
+            });
             //------------------------     
 
 
 
-        case "CUSTOMERGROUP_LIST_GETDATA": //查询各种table数据    添加一个searchPlan   赵华冰 2-2
+        case "CUSTOMERGROUP_LIST_GETDATA": //查询各种table数据    
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
                 selectedRowKeys:[],
-                searchPlan:action.payload.searchPlan
             });
         case 'CUSTOMERGROUP_LIST_DETAILENABLESTATE'://详情起停用功能
             let enableState = $$state.get('viewData').toJS()
@@ -146,7 +149,6 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 formVisitable: action.payload.visible,
             });
         case "CUSTOMERGROUP_LIST_GETDYNAMIC":
-            debugger
             return $$state.merge({
                 dynamicData: action.data
             });    
@@ -255,7 +257,6 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 searchMap: action.data
             });
         case "CUSTOMERGROUP_LIST_CARDEDITCHANGE": //存放新增修改表单数据
-        debugger
             return $$state.merge({
                 viewData: action.data
             });
@@ -384,8 +385,11 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                     obj.defClass=item.defClass;
                 }
             })
-            debugger;
-            return $$state.merge({ enumData: action.payload.enumData, searchPlan:obj});
+            return $$state.merge({ enumData: action.payload.enumData, searchPlan:obj, defaultId:obj.id});
+        case "CUSTOMERGROUP_SEARCHPLAN_SUCESS"://获取相关对象联系人表单数据
+            return $$state.merge({
+                searchPlan:action.searchPlan,
+            });
             
         default:
             return $$state;
