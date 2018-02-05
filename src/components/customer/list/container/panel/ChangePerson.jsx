@@ -131,6 +131,12 @@ export default class ChangePerson extends React.Component {
                 {
                     url: baseDir+'sys/orgs/orgTree',
                     method: "GET",
+                    data:{
+                        param:{
+                            orgType:3,
+                            fatherorgId:orgId
+                        }
+                    }
                 },
                 result => {
                     debugger

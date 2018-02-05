@@ -86,7 +86,7 @@ class CompanyAssign extends React.Component {
                     method: "GET",
                     data:{
                         param:{
-                            orgType:2
+                            orgType:3
                         }
                     }
                 },

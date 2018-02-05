@@ -40,13 +40,29 @@ export default class PersonChioce extends React.Component {
     //树选中方法
     onSelect(selectedKeys,selectedObj){
         debugger
-        let {page,pageSize} = this.state;
-        this.props.selectList(page,pageSize,selectedKeys)
+        if(selectedKeys && selectedKeys.length){
+            let pageSize = 5;
+            //每次点击树都获取第一页的数据
+            let page = 1
+            this.props.selectList(page,pageSize,[selectedObj.node.props.eventKey])
+        }
     }
 
     //table行选中方法
     onSelectChange(selectedRowKeys, selectedRows){
         this.props.selectedTableList(selectedRowKeys,selectedRows)
+    }
+
+    //点击分页
+    onPageChange(page, pageSize) {
+          debugger
+        let pagination = { page: page, pageSize: pageSize };
+        this.props.pagination(pagination)
+    }
+
+    //分页方法
+    showTotal(total) {
+        return `共 ${total} 条`;
     }
 
     render(){
@@ -77,11 +93,11 @@ export default class PersonChioce extends React.Component {
                                 rowSelection={rowSelection}
                                 pagination={{
                                     size: "small",
-                                    //total: tableData.total,
-                                    //showTotal: this.showTotal,
-                                    //onChange: this.onPageChange.bind(this),
-                                    // pageSize: 5,
-                                    //current: tableData.page
+                                    total: this.props.personList.total,
+                                    showTotal: this.showTotal,
+                                    onChange: this.onPageChange.bind(this),
+                                    pageSize: 5,
+                                    current: this.props.personList.page
                                 }}
                             />
                         </Col>

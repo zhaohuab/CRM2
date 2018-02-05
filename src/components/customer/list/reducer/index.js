@@ -154,6 +154,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //点击编辑按钮
         case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
+            debugger
             let EditStreetData =  $$state.get('viewData').toJS()
             let streetEdit = {
                 address:EditStreetData.street,

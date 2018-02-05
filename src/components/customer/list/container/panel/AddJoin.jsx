@@ -104,6 +104,7 @@ export default class AddJoin extends React.Component {
         let { viewData } = this.props
         let cumId = viewData.id    
         let userId = this.state.result.id
+        debugger
         if(cumId&&userId){
             reqwest(
                 {
@@ -117,6 +118,7 @@ export default class AddJoin extends React.Component {
                     }
                 },
                 data => {
+                    debugger
                     if(data){
                         
                         this.props.changeViewData(data)

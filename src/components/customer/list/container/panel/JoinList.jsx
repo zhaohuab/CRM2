@@ -33,6 +33,7 @@ class JoinList extends React.Component {
         this.props.action.setRightPaneltList(data)
     }
     changeCircleColor(item){
+        debugger
         let name = item.userName;
         let color = ['#3CA4FB','#9FD563','#F7A508','#F7A508','#C9A5FC']
         name = name.substring(item.userName.length-2);

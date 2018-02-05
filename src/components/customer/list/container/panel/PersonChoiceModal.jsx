@@ -235,8 +235,16 @@ export default class PersonChoiceModal extends React.Component {
         })
     }
 
+    //分页方法
+    pagination({page,pageSize}){
+        debugger
+        this.getTableList(page,pageSize,this.state.selectedTreeKeys)
+    }
+
     render(){
         let { viewData } = this.props
+        debugger
+        //ssssssss
         return(
             <div>
                 {
@@ -259,6 +267,7 @@ export default class PersonChoiceModal extends React.Component {
                             selectedTableList = {this.selectedTableList.bind(this)}//table选中
                             selectedRowKeys = {this.state.selectedTableRowKeys}
                             selectedKeys = {this.state.selectedTreeKeys}
+                            pagination = {this.pagination.bind(this)}
                             columns = {columns}
                             height= {300}
                         />

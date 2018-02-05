@@ -59,6 +59,7 @@ export default class OwnUser extends React.Component {
                 }
             },
             result => {
+                debugger
                 this.setState({
                     personList:result,
                     selectedTreeKeys:selectedKeys
@@ -102,6 +103,13 @@ export default class OwnUser extends React.Component {
         })
     }
 
+     //分页方法
+     pagination({page,pageSize}){
+        debugger
+        this.treeSelect(page,pageSize,this.state.selectedTreeKeys)
+    }
+
+
     creatPanel(){
         debugger
         return(
@@ -124,6 +132,7 @@ export default class OwnUser extends React.Component {
                         selectedTableList = {this.selectedTableList.bind(this)}//table选中
                         selectedRowKeys = {this.state.selectedTableRowKeys}
                         selectedKeys = {this.state.selectedTreeKeys}
+                        pagination = {this.pagination.bind(this)}
                         columns = {columns}
                     />
                 </div>
@@ -142,6 +151,11 @@ export default class OwnUser extends React.Component {
                 {
                     url: baseDir+'sys/orgs/orgTree',
                     method: "GET",
+                    data:{
+                        param:{
+                            orgType:3,
+                        }
+                    }
                 },
                 result => {
                     
@@ -168,6 +182,7 @@ export default class OwnUser extends React.Component {
 
     render(){
         debugger
+        /////ddddddd
         const suffix =
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
