@@ -24,7 +24,7 @@ const getOption = (data) =>{//这个data是每一条完整的数据
     dataArr.push(cityObj);
 //debugger;
     let option = {
-        backgroundColor: "#404a59",
+  
         tooltip: {
             trigger: "item",
             formatter:function(params){
@@ -42,23 +42,69 @@ const getOption = (data) =>{//这个data是每一条完整的数据
             {
                 show: false,
                 calculable: true,
+                dimension: 2,
                 seriesIndex: [0, 2],
-            
+                inRange: {
+                    symbolSize: [10, 20]
+                },
+                outRange: {
+                    symbolSize: [10, 20]
+                }            
             },
             {
                 show: false,
                 calculable: true,//是否显示拖拽用的手柄
+                dimension: 2,//数组的第几列显示在视觉元素上
                 seriesIndex: [1],//指定取哪个系列的数据，即哪个系列的 series.data。
                 inRange: {//在选中范围内 的视觉元素
-                    symbolSize: [40, 60],//图元大小
-                    color:['#f00','#f00']//图元颜色
+                    symbolSize: [30, 40],//图元大小
+                    //color:['#f00','#f00']//图元颜色
                 },
                 outRange: {// 在选中范围外 的视觉元素
-                    symbolSize: [20, 40]
+                    symbolSize: [20, 30],
+                    //color:['#f00','#f00']                                                               l.9
                 }
             }
         ],
         series: [
+              {
+                name: "",
+                type: "scatter",
+                coordinateSystem: "bmap",
+                data: convertData(dataArr),
+                label: {
+                    normal: {
+                        formatter: "{b}",
+                        position: "right",
+                        show: true,
+                        color: 'red',                      
+                    },                    
+                },
+                itemStyle: {
+                    normal: {
+                        color: "red"
+                    }
+                }
+            },
+            {
+                name: "",
+                type: "scatter",
+                symbol: "pin",
+                coordinateSystem: "bmap",
+                data: convertData(dataArr),
+                label: {
+                    normal: {
+                        show: true,
+                        formatter:"",
+                    }
+                },
+                zlevel: 4,
+                itemStyle: {
+                    normal: {
+                        color: "#4384de" //标志颜色
+                    }
+                }
+            },
             {
                 name: "",
                 type: "scatter",
@@ -77,29 +123,19 @@ const getOption = (data) =>{//这个data是每一条完整的数据
                     }
                 }
             },
-            {
-                name: "",
-                type: "scatter",
-                symbol: "pin",
-                coordinateSystem: "bmap",
-                data: convertData(dataArr),
-                label: {
-                    normal: {
-                        show: true,
-                        textStyle: {
-                            color: "#fff",
-                            fontSize: 9
-                        }
-                    }
-                },
-                zlevel: 4,
-                itemStyle: {
-                    normal: {
-                        color: "#4384de" //标志颜色
-                    }
-                }
-            },
-            {
+           
+        ]
+    };
+    return option
+}
+    
+export default getOption;
+
+
+
+
+/* 
+        {
                 name: "",
                 type: "effectScatter",
                 coordinateSystem: "bmap",
@@ -131,9 +167,4 @@ const getOption = (data) =>{//这个data是每一条完整的数据
                 },
                 zlevel: 1
             }
-        ]
-    };
-    return option
-}
-    
-export default getOption;
+ */

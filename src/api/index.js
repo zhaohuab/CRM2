@@ -1,7 +1,7 @@
 import cookie from "utils/cookie";
 
 let baseDir = cookie("basedir"); // host:ip/crm_web/
-baseDir = baseDir + '/'
+//baseDir = baseDir+'/'
 
 const login = baseDir + "login";
 
@@ -150,6 +150,10 @@ const speech = {
 const finishetask ={
 
 }
+ const cusInquire={//客户所有查询方案接口
+     groupLsit:baseDir+'/cum/groupcustomers/querytemplate',
+ }
+
 
 export {
     login,
@@ -180,4 +184,5 @@ export {
     approval,
     speech,
     
+    cusInquire
 }

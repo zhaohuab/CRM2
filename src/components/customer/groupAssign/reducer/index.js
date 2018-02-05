@@ -59,6 +59,7 @@ export default function cusGroupAssignReducers($$state = Immutable.fromJS($$init
                 data:action.data,
                 selectedRowKeys:[]
             })
+
         default:
             return $$state
     }

@@ -35,7 +35,7 @@ class IcbcInfo extends React.Component {
             icbcList: [],//保存工商列表
             select: "",//保存选中的某一个工商列表公司
             index: -1,//保存当前点击index，样式用
-            value:'',//下拉面板中input的参数
+            value:props.viewDataProps.name,//下拉面板中input的参数
         };
         this.that = this
     }
@@ -183,7 +183,19 @@ class IcbcInfo extends React.Component {
     }
     //下拉面板中点击搜索
     onSearch(){
-
+        debugger
+        let value = this.state.value;
+        let {viewData} = this.props.$$state.toJS();
+        if(!value){
+            value = viewData.name
+        }
+        this.getIcbcList(value, result => {
+            if (result.data && result.data.length) {
+                this.setState({
+                    icbcList: result.data
+                });
+            }
+        });
     }
     //下拉面板中的input  onchange
     onChange(value){
@@ -285,6 +297,7 @@ class IcbcInfo extends React.Component {
   
     createList() {
         let index = this.state.index;
+        let { viewData } = this.props.$$state.toJS()
         return (
             <DropDownModal 
                 title='工商列表' 

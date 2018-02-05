@@ -16,7 +16,17 @@ function pageAdd(page, item) {
 	page.data.unshift(item)
 	return page;
 }
-
+function pageEdit(page, item) {
+	let { data } = page;
+	for (let i = 0, len = data.length; i < len; i++) {
+		if (data[i].id == item.id) {
+			data[i] = item;
+			break;
+		}
+	}
+	page.data = data;
+	return page;
+}
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
 
 	switch (action.type) {
@@ -62,6 +72,14 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 		case 'ORG_LIST_LISTADDSUCCESS':
 			return $$state.merge({
 				listData: pageAdd($$state.get("listData").toJS(), action.payload.data),
+				formVisitable: false,
+				treeData: action.payload.treeData
+			});
+
+
+			case 'ORG_LIST_LISTEDITSUCCESS':
+			return $$state.merge({
+				listData: pageEdit($$state.get("listData").toJS(), action.payload.data),
 				formVisitable: false,
 				treeData: action.payload.treeData
 			});

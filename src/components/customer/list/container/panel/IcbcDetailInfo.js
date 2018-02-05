@@ -34,7 +34,7 @@ class IcbcDetailInfo extends React.Component {
             icbcList: [],
             select: "",
             index: -1,
-            value: ''
+            value:props.viewDataProps.name,//下拉面板中input的参数
         };
     }
 
@@ -73,7 +73,7 @@ class IcbcDetailInfo extends React.Component {
                 let { viewData, icbcInfo1 } = that.props.$$state.toJS();
                 let name
                 name = icbcInfo1.find((item) => {
-                    return item.key == 'name'
+                    return item.key == 'verifyFullname'
                 })
                 viewData.verifyFullname = name.value
                 viewData.fullname = name.value
@@ -96,7 +96,7 @@ class IcbcDetailInfo extends React.Component {
                     } else if (item.key == "tel") {
                         viewData["tel"] = item.value;
                     } else if (item.key == "taxpayerNo") {
-                        viewData["eaxplayerNo"] = item.value;
+                        viewData["taxpayerNo"] = item.value;
                     } else if (item.key == "remark") {
                         viewData["remark"] = item.value;
                     }
@@ -126,15 +126,15 @@ class IcbcDetailInfo extends React.Component {
         return (
             <div>
                 <Button onClick={this.onIcbcCancel.bind(this)}>关闭</Button>
-                {viewData.verifyFullname ? (
+                {viewData.verifyFullname || viewData.verifyId? (
                     <Button onClick={this.cancelIdenti.bind(this)}>
                         取消核实
                     </Button>
                 ) : (
-                        <Button onClick={this.icbcConfirm.bind(this)}>
-                            核实
+                    <Button onClick={this.icbcConfirm.bind(this)}>
+                        核实
                     </Button>
-                    )}
+                )}
             </div>
         );
     }
@@ -200,15 +200,15 @@ class IcbcDetailInfo extends React.Component {
         let { viewData, icbcInfo1 } = this.props.$$state.toJS()
         let icbcName = viewData.name;
         let verifyId = viewData.verifyId
-
+        debugger
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
-                if (viewData.verifyFullname) {//如果已核实
+                if (viewData.verifyFullname ||viewData.verifyId) {//如果已核实
                     debugger
 
                     //再次点击工商核实并没有把值返回给我！！！！！！！！！！！！！！！！！！！1
-                    this.props.action.hasIcbc(verifyId, true)
+                    this.props.action.hasIcbc(viewData.verifyFullname, viewData.verifyId,true)
                 } else {
                     this.getIcbcList(icbcName, result => {
                         debugger
@@ -239,6 +239,7 @@ class IcbcDetailInfo extends React.Component {
 
     //下拉面板点击确定
     onOk() {
+        debugger
         if (!this.state.select) {
             this.setState({
                 visible: false
@@ -267,11 +268,24 @@ class IcbcDetailInfo extends React.Component {
 
     //下拉面板中搜索
     onSearch() {
-
+        debugger
+        let value = this.state.value;
+        let {viewData} = this.props.$$state.toJS();
+        if(!value){
+            value = viewData.name
+        }
+        this.getIcbcList(value, result => {
+            if (result.data && result.data.length) {
+                this.setState({
+                    icbcList: result.data
+                });
+            }
+        });
     }
 
     //下拉面板中input触发onchange
     onChange(value) {
+        debugger
         this.setState({
             value
         })
@@ -279,7 +293,7 @@ class IcbcDetailInfo extends React.Component {
 
     createList() {
         let index = this.state.index;
-
+        let { viewData } = this.props.$$state.toJS()
         return (
             <DropDownModal
                 title='工商列表'
@@ -315,10 +329,11 @@ class IcbcDetailInfo extends React.Component {
     render() {
         let { viewData, icbcVisible2, icbcInfo1 } = this.props.$$state.toJS()
         let cssCode = this.props.$$menuState.get("cssCode");
+        debugger
         return (
             <div className="icbc-detail-container">
 
-                {cssCode.indexOf("customer_view_verify_customer") ?
+                {/* {cssCode.indexOf("customer_view_verify_customer") ?
                     <Dropdown
                         overlay={this.createList()} //生成下拉结构样式
                         trigger={["click"]}
@@ -341,33 +356,27 @@ class IcbcDetailInfo extends React.Component {
                             <img src={require("assets/images/cum/icbc-true.png")} className='icbc-icon' />已核实
                             </Row> :
                         ""
-                }
-                {cssCode.indexOf("customer_view_cancelverify_customer") ?
-                    <Dropdown
-                        overlay={this.createList()} //生成下拉结构样式
-                        trigger={["click"]}
-                        onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
-                        visible={this.state.visible} //受控面板显示
-                    >
-                        <div>
-                            {
-                                viewData.verifyFullname ?
-                                    "" :
-                                    <Row type='flex' justify='center'>
-                                        <img src={require("assets/images/cum/icbc-false.png")} className='icbc-icon' />未核实
+                } */}
+               
+               <Dropdown
+                    overlay={this.createList()} //生成下拉结构样式
+                    trigger={["click"]}
+                    onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
+                    visible={this.state.visible} //受控面板显示
+                >
+                    <div>
+                        {
+                            viewData.verifyFullname || viewData.verifyId?
+                            <Row type = 'flex' justify='center'>
+                                <img src={require("assets/images/cum/icbc-true.png")} className='icbc-icon'/>已核实
+                            </Row>:
+                            <Row type = 'flex' justify='center'>
+                                 <img src={require("assets/images/cum/icbc-false.png")}  className='icbc-icon'/>未核实
                             </Row>
-                            }
-                        </div>
-                    </Dropdown>
-                    : viewData.verifyFullname ?
-                        "" :
-                        <Row type='flex' justify='center'>
-                            <img src={require("assets/images/cum/icbc-false.png")} className='icbc-icon' />未核实
-                            </Row>
-                }
-
-
-
+                        }
+                    </div>
+                </Dropdown>
+               
                 <Modal
                     title="工商详情"
                     visible={icbcVisible2}

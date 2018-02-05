@@ -50,7 +50,6 @@ const getFormItem = (getFieldDecorator,field, layout) => {
     }
 }
 const getComponent = (field) => {
-
     if (field.render == "Input") {
         return <Input placeholder='请输入...' />
     }

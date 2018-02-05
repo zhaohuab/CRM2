@@ -86,7 +86,13 @@ class DetailTop extends React.Component {
                                     </Row>
                                 </Row>
                                 <Row className="address pointer">
-                                    {viewData.street?<span>{viewData.street}<i className="iconfont icon-shouye-dingwei" /></span>:'暂无地址'}
+                                    {
+                                        viewData.street?
+                                        <span>
+                                            { viewData.street }  <i className="iconfont icon-shouye-dingwei" />
+                                        </span>:
+                                        <span>{ viewData.street }</span>
+                                    }
                                 </Row>
                                 <Row type='flex' align='middle' className="tags">
                                 

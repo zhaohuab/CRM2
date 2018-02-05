@@ -90,7 +90,6 @@ const WrapCard = Form.create({
         //         data.companyCreatedTime.isTrans = true;
         //     }
         // }
-        debugger
         if(data.companyIndustry&&data.companyIndustryName){
             if(!data.companyIndustryName.value.id){
                 data.companyIndustryName = {value:{id:data.companyIndustry.value,name:data.companyIndustryName.value}}

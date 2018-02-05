@@ -135,7 +135,35 @@ export function fileFail(filesFail) {
         payload: { filesFail }
     };
 }
-//==============
+
+
+//天赐上传文件
+export function filesSuccess(file) {
+    return {
+        type: "CUSTOMERCOMPANY_LIST_FILESSUCCESS",
+        payload: file,
+    };
+}
+
+//天赐上传文件删除
+export function onDeleteFiles(file) {
+    debugger
+    return (dispatch) => {
+        reqwest(
+            {
+                url: baseDir + `sys/upload/${file.objType}/${file.objId}/${file.name}/${file.id}`,
+                method: "DELETE",
+            },
+            result => {
+                dispatch({
+                    type: "CUSTOMERCOMPANY_LIST_DELETEFILE",
+                    file
+                });
+            }
+        );
+    }
+}
+
 
 //控制查询显隐
 export function changeVisible() {
@@ -146,6 +174,7 @@ export function changeVisible() {
 
 //保存table已选择行数据
 export function selectedRowKeys(selectedRowKeys) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_SELECTROW",
         payload: { selectedRowKeys }
@@ -406,6 +435,7 @@ let sendCumNewRequest = (data,dispatch)=>{
 
 //新增、修改客户保存
 export function listFormSave(data,newTypeId) {
+    debugger
     data = trancFn(data);
     if(newTypeId){//如果newTypeId存在代表是新增
         data.biztypeId = newTypeId
@@ -595,23 +625,13 @@ export function checkedFn(viewData, select, id, visiable) {
             },
             result => {
                 debugger
-                // reqwest(
-                //     {
-                //         url: url.customer + "/" + id,
-                //         method: "put",
-                //         data: {
-                //             param: viewData
-                //         }
-                //     },
-                //     data => {
-                //         debugger
-                //          dispatch({
-                //             type: "CUSTOMER_LIST_CLEANSELECT",
-                //             data,
-                //             visiable
-                //         });
-                //     }
-                // );
+                dispatch({
+                    type: "CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL",
+                    visiable,
+                    verifyFullname: result.verifyFullname,
+                    verifyId:result.verifyId
+                });
+                
             }
         );
     };
@@ -640,24 +660,46 @@ export function checkedCancelFn(id, visiable) {
     };
 };
 
-export function hasIcbc(verifyId, visiable) {
+export function hasIcbc(name, id , visiable) {
     return dispatch => {
         debugger
-        reqwest(
-            {
-                url: baseDir + "cum/customers/identifications/" + verifyId,
-                method: "GET"
-            },
-            result => {
-                debugger
-                dispatch({
-                    type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
-                    visiable,
-                    data: result.data,
-                });
-
-            }
-        );
+        if(name){
+            reqwest(
+                {
+                    url: baseDir + "cum/customers/identifications/full",
+                    method: "GET",
+                    data:{
+                        param:{
+                            name:name
+                        }
+                    }
+                },
+                result => {
+                    debugger
+                    dispatch({
+                        type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
+                        visiable,
+                        data: result.data,
+                    });
+                }
+            );
+        }else{
+            reqwest(
+                {
+                    url: baseDir + "cum/customers/identifications/" + id,
+                    method: "GET"
+                },
+                result => {
+                    debugger
+                    dispatch({
+                        type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
+                        visiable,
+                        data: result.data,
+                    });
+    
+                }
+            );
+        }  
     }
 }
 

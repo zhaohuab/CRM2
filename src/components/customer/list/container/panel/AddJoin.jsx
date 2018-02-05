@@ -49,14 +49,14 @@ export default class AddJoin extends React.Component {
         
         let { viewData } = this.props
         let orgId = viewData.orgId
-
+        debugger
         reqwest(
             {
                 url: baseDir+'sys/orgs/orgTree',
                 method: "GET",
                 data:{
                     param:{
-                        orgType:2,
+                        orgType:3,
                         fatherorgId:orgId
                     }
                 }
@@ -102,44 +102,49 @@ export default class AddJoin extends React.Component {
     //分配modal确定
     handleOk(){
         let { viewData } = this.props
-        let cumId = viewData.id
-        
+        let cumId = viewData.id    
         let userId = this.state.result.id
-        reqwest(
-            {
-                url: baseDir + 'cum/customer/relusers',
-                method: "POST",
-                data: {
-                    param: {
-                        cumId,
-                        userId
+        if(cumId&&userId){
+            reqwest(
+                {
+                    url: baseDir + 'cum/customer/relusers',
+                    method: "POST",
+                    data: {
+                        param: {
+                            cumId,
+                            userId
+                        }
                     }
-                }
-            },
-            data => {
-                if(data){
+                },
+                data => {
+                    if(data){
+                        
+                        this.props.changeViewData(data)
+                        // let nv = viewData.salesVOs[0]
+                        // if(this.state.result){
+                        //     nv.ownerUserName = this.state.result.value
+                        //     nv.ownerUserId = this.state.result.id
+                        //     viewData.ownerUserId = {id:nv.ownerUserId,name:nv.ownerUserName}    
+                        //     //{id: 60, name: "李天赐"}
+                        //     this.props.changeViewData(viewData)
+                        // }
+                    }
                     
-                    this.props.changeViewData(data)
-                    // let nv = viewData.salesVOs[0]
-                    // if(this.state.result){
-                    //     nv.ownerUserName = this.state.result.value
-                    //     nv.ownerUserId = this.state.result.id
-                    //     viewData.ownerUserId = {id:nv.ownerUserId,name:nv.ownerUserName}    
-                    //     //{id: 60, name: "李天赐"}
-                    //     this.props.changeViewData(viewData)
-                    // }
+                    this.setState({
+                        visible:false,
+                        treeList:[],
+                        personList:[],
+                        selectedTableRowKeys:[],
+                        selectedTreeKeys:[],
+                        result:''
+                    })
                 }
-                
-                this.setState({
-                    visible:false,
-                    treeList:[],
-                    personList:[],
-                    selectedTableRowKeys:[],
-                    selectedTreeKeys:[],
-                    result:''
-                })
-            }
-        );
+            );
+        }else{
+             Modal.info({
+                content: '请选择参与人！',
+            });
+        }      
     }
 
     //分配modal取消

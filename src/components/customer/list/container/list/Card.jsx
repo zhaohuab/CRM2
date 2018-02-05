@@ -98,9 +98,7 @@ class EditForm extends React.Component {
                     <Row>
                         <Form layout="inline" className="login-form">
                             <FormItem
-                                style={{
-                                    display: "none"
-                                }}
+                                style={{display: "none"}}
                                 {...formItemLayout}
                                 label="verifyId"
                             >
@@ -109,9 +107,7 @@ class EditForm extends React.Component {
                                 )}
                             </FormItem>
                             <FormItem
-                                style={{
-                                    display: "none"
-                                }}
+                                style={{display: "none"}}
                                 {...formItemLayout}
                                 label="id"
                             >
@@ -131,19 +127,11 @@ class EditForm extends React.Component {
                                             <Col span={12}>
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <span className="import">
-                                                                *
-                                                            </span>客户名称：
+                                                        <Row type="flex" justify="end">
+                                                            <span className="import">*</span>客户名称：
                                                         </Row>
                                                     </Col>
-                                                    <Col
-                                                        span={12}
-                                                        id="upload-form-item"
-                                                    >
+                                                    <Col span={12} id="upload-form-item">
                                                         <FormItem
                                                             {...formItemLayout}
                                                         >
@@ -166,21 +154,18 @@ class EditForm extends React.Component {
                                                                 )}
                                                         </FormItem>
                                                     </Col>
-                                                    {viewData.verifyFullname ==
-                                                        1 && viewData.id ? (
-                                                            ""
-                                                        ) : (
-                                                            <Col span={5}>
-                                                                <Row
-                                                                    type="flex"
-                                                                    justify="end"
-                                                                >
-                                                                    <IcbcInfo
-                                                                        width={450}
-                                                                    />
-                                                                </Row>
-                                                            </Col>
-                                                        )}
+                                                    {(viewData.verifyFullname || viewData.verifyId )&& viewData.id ? (
+                                                        ""
+                                                    ) : (
+                                                        <Col span={5}>
+                                                            <Row
+                                                                type="flex"
+                                                                justify="end"
+                                                            >
+                                                                <IcbcInfo viewDataProps = {viewData}/>
+                                                            </Row>
+                                                        </Col>
+                                                    )}
                                                 </Row>
                                             </Col>
                                             <Col span={12}>

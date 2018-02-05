@@ -14,6 +14,7 @@ import DropDownModal from '../../../common/DrowdownModal'
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 
+
 const columns = [{
     title: '姓名',
     dataIndex: 'name',
@@ -130,21 +131,26 @@ export default class ChangePerson extends React.Component {
     }
 
     getList(flag){
+        debugger
         if(flag){
             reqwest(
                 {
                     url: baseDir+'sys/orgs/orgTree',
                     method: "GET",
+                    data:{
+                        param:{
+                            orgType: 3
+                        }
+                    }
                 },
                 result => {
-                    ;
+                    debugger
                     this.setState({
                         visible:true,
                         treeList:result.data
                     })
                 }
             );
-            
         }else{
             this.setState({
                 visible:false,
