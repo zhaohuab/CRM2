@@ -148,14 +148,21 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //新增、修改编辑菜单显示    
         case "CUSTOMERCOMPANY_LIST_SHOWFORM":
-        debugger
+            let EditCancelData =  $$state.get('viewData').toJS();
+            if(EditCancelData.street && EditCancelData.street.address){
+                EditCancelData.street = EditCancelData.street.address
+            }else{
+                EditCancelData.street = ''
+            }
+
             return $$state.merge({
                 formVisitable: action.payload.visible,
+                viewData:EditCancelData
             });
         //点击编辑按钮
         case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
-            debugger
             let EditStreetData =  $$state.get('viewData').toJS()
+            
             let streetEdit = {
                 address:EditStreetData.street,
                 location:{
@@ -163,10 +170,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                     lat:EditStreetData.latitude
                 }
             }
-            //详细地址
-            if(typeof EditStreetData.street !== 'object') {
-                EditStreetData.street = streetEdit
-            }
+            EditStreetData.street = streetEdit
     
             return $$state.merge({
                 formVisitable: action.visiable,
