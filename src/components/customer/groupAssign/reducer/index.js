@@ -32,12 +32,16 @@ export default function cusGroupAssignReducers($$state = Immutable.fromJS($$init
                 whitchSearch:'searchMap'
             })
         case 'CUSTOMER_GROUPASSIGNMENT_SEARCHPLAN'://存储已查询的查询案后，更新列表数据
+        let xx= action;
+        debugger
             return $$state.merge({
                 searchPlan:action.searchPlan,
                 data:action.data,
                 whitchSearch:'searchPlan'
             })
         case 'CUSTOMER_GROUPASSIGNMENT_SEARCHMAP'://存储已查询的查询条件，更新列表数据
+        let xx2= action;
+        debugger
             return $$state.merge({
                 data:action.data,
             })  
@@ -51,10 +55,14 @@ export default function cusGroupAssignReducers($$state = Immutable.fromJS($$init
                 preSearchPlan:action.preSearchPlan
             })
         case "CUSTOMER_GROUPASSIGNMENT__GETTABLELIST"://保存table数据   
+        let xx6= action;
+        debugger
             return $$state.merge({
                 data:action.data
             })
         case 'CUSTOMER_GROUPASSIGNMENT__GETTABLELISTAGAIN'://集团分配后，再此从新请求列表，更新list数据，table的keys清空
+        let xx9= action;
+         debugger
             return $$state.merge({
                 data:action.data,
                 selectedRowKeys:[]

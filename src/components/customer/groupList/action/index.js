@@ -176,7 +176,7 @@ export function getListData (pagination, searchMap,searchPlan){//----赵华冰2-
     };
 };
 
-//-----------获取查询初始条件值 赵华冰2-2
+//-----------获取查询方案初始条件值 赵华冰2-2
 export function getInitInquire(){
     let xx=cusInquire.groupLsit;
     return dispatch => {
@@ -190,7 +190,7 @@ export function getInitInquire(){
                 let searchPlan={};
                 dispatch(
                     fetchData("CUSTOMERGROUP_GROUPLIST_GETENUMDATA", {
-                        enumData: result.plan
+                        searchData: result.plan
                     })
                 );
                 if(result&&result.plan){
@@ -228,7 +228,7 @@ export function getInitInquire(){
 }
 
 
-/* //获取查询条件初始值
+//获取查询条件档案初始值
 export function getEnumData(){
     
     return dispatch => {
@@ -250,20 +250,18 @@ export function getEnumData(){
             }
         );
     };
-}; */
+}; 
 
 //获取动态信息
-export function getDynamic(id){
-    
+export function getDynamic(id){  
     return dispatch => {
         reqwest(
             {
-                url: baseDir + `cum/customers/${id}/dynamic`,
+                url: baseDir + `cum/groupcustomers/${id}/dynamic`,
                 method: "GET",
             },
             data => {
-                
-
+                debugger;
                 dispatch({
                     type:"CUSTOMERGROUP_LIST_GETDYNAMIC",
                     data:data && data.dynamiclist?data.dynamiclist:[]
@@ -440,8 +438,8 @@ export function listFormSave(data,id) {
 
 
 //展示面板，把点击某个客户的所有值，放在redux中
-export function showViewForm(visible, id){
-    
+export function showViewForm(visible, id){  
+    debugger;
     return dispatch => {
         reqwest(
             {
@@ -455,6 +453,7 @@ export function showViewForm(visible, id){
                         method: "GET"
                     },
                     state => {
+
                         dispatch({
                             type: "CUSTOMERGROUP_LIST_SHOWVIEWFORM",
                             visible,
@@ -519,7 +518,7 @@ export function cumUpgrade(id){
  * @param {*} visiable 显示modal
  */
 
-export function customerListInfo(data,visiable){
+export function customerListInfo(data, visiable) {
     
     return {
         type: "CUSTOMERGROUP_LIST_ICBCDETAILINFO",
@@ -529,25 +528,25 @@ export function customerListInfo(data,visiable){
 };
 
 //在新增时保存客户工商名称，工商详情的时候,保存名字
-export function saveIcbcName(viewData,visiable){
+export function saveIcbcName(viewData, visiable) {
     
-    return{
-        type:'CUSTOMERGROUP_LIST_SAVEICBCNAME',
+    return {
+        type: 'CUSTOMERGROUP_LIST_SAVEICBCNAME',
         viewData,
         visiable
     }
 }
 //在新增时关闭工商详情
-export function saveIcbcNameCancel(visiable){
-    return{
-        type:'CUSTOMERGROUP_LIST_SAVEICBCNAMECANCEL',
+export function saveIcbcNameCancel(visiable) {
+    return {
+        type: 'CUSTOMERGROUP_LIST_SAVEICBCNAMECANCEL',
         visiable
     }
 }
 
 
 //保存工商核实详情数据
-export function icbcDetailInfo(data,visiable){
+export function icbcDetailInfo(data, visiable) {
     
     return {
         type: "CUSTOMERGROUP_LIST_ICBCINFODETAIL",
@@ -556,14 +555,14 @@ export function icbcDetailInfo(data,visiable){
     };
 };
 
-export function changeStateFn(visiable){
+export function changeStateFn(visiable) {
     return {
         type: "CUSTOMERGROUP_LIST_CHANGESTATEEDIT",
         visiable
     };
 };
 //详情中工商核实
-export function checkedFn(viewData,select,id, visiable){
+export function checkedFn(viewData, select, id, visiable) {
     
     return dispatch => {
         reqwest(
@@ -574,12 +573,13 @@ export function checkedFn(viewData,select,id, visiable){
                     param: {
                         status: "Y",
                         companyid: select.companyid,
-                        verifyFullname:select.companyname,
-                        data:viewData
+                        verifyFullname: select.companyname,
+                        data: viewData
                     }
                 }
             },
             result => {
+                debugger
                 dispatch({
                     type: "CUSTOMERGROUP_LIST_CLOSEDETAILICBCMODOL",
                     visiable,
@@ -587,29 +587,13 @@ export function checkedFn(viewData,select,id, visiable){
                     verifyId:result.verifyId
                 });
                 
-                // reqwest(
-                //     {
-                //         url: url.customer + "/" + id,
-                //         method: "put",
-                //         data: {
-                //             param: viewData
-                //         }
-                //     },
-                //     data => {
-                //         
-                //          dispatch({
-                //             type: "CUSTOMER_LIST_CLEANSELECT",
-                //             data,
-                //             visiable
-                //         });
-                //     }
-                // );
             }
         );
     };
 };
 //详情中取消工商核实
-export function checkedCancelFn(id, visiable){
+export function checkedCancelFn(id, visiable) {
+    debugger;
     return dispatch => {
         reqwest(
             {
@@ -622,7 +606,7 @@ export function checkedCancelFn(id, visiable){
                 }
             },
             result => {
-                
+                debugger;
                 dispatch({
                     type: "CUSTOMERGROUP_LIST_CLEANVERIFYID",
                     visiable
@@ -674,6 +658,7 @@ export function hasIcbc(name, id , visiable) {
         }  
     }
 }
+
 
 /* export function hasIcbc(verifyId,visiable){
     return dispatch => {
@@ -774,6 +759,7 @@ export function closeIcbcVisible1(visible){
 
 //点击新建按钮清空viewPanel面板数据
 export function addCustomer(data){
+    debugger;
     return dispatch => {
         dispatch({
             type: "CUSTOMERGROUP_LIST_ADDCUSTOMER",
@@ -781,6 +767,26 @@ export function addCustomer(data){
         });
     };
 };
+
+//点击新增按钮获取业务类型
+export function addNewType() {
+    return dispatch => {
+        
+        reqwest(
+            {
+                url: baseDir + 'cum/customers/roles/biztypes',
+                method: "GET",
+            },
+            result => {
+                
+                dispatch({
+                    type: "CUSTOMERGROUP_LIST_NEWEDITTYPE",
+                    typeItem: result.biztypeList,
+                });
+            }
+        );
+    };
+}
 
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data){

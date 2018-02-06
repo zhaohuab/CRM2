@@ -134,16 +134,20 @@ class DetailTop extends React.Component {
                 </Col>
                 <Col span={15}>
                     <Row type="flex" align="middle" justify="end" gutter={15} >
-                        <div>
-                            <PersonChoiceModal viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
-                        </div>
                         {
                             viewData.enableState == 1?
-                            <div>
-                                <Button onClick={this.canUse.bind(this,2)} className="customer_view_stop_customer" >
-                                    <i className="iconfont icon-tingyong" />停用
-                                </Button>
-                            </div>:
+                                <div>
+                                    <PersonChoiceModal viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
+                                </div>:''
+                        }                     
+                        {
+                            viewData.enableState == 1?
+                                <div>
+                                    <Button onClick={this.canUse.bind(this,2)} className="customer_view_stop_customer" >
+                                        <i className="iconfont icon-tingyong" />停用
+                                    </Button>
+                                </div>
+                            :
                             <div>
                                 <Button onClick={this.canUse.bind(this,1)} className="customer_view_start_customer">
                                     <i className="iconfont icon-qiyong" />启用

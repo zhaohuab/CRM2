@@ -88,7 +88,8 @@ class List extends React.Component {
         //debugger
         this.props.action.showViewForm(true, record.id);
         //获取动态
-        this.props.action.getDynamic(record.id)
+       // this.props.action.getDynamic(record.id)
+       //----集团客户的动态后台正在添加，这里暂时注掉
     }
     //隐藏面版
     slideHide() {
@@ -140,8 +141,9 @@ class List extends React.Component {
     onPageChange(page, pageSize) {
         debugger;
         let pagination = { page: page, pageSize: pageSize };
+        let xx=this.props.$$state.toJS();
+        debugger
         let searchPlan=this.props.$$state.get("searchPlan").toJS();
-        debugger;
         this.props.action.getListData(
             pagination,
             this.props.$$state.get("searchMap").toJS(),
@@ -158,11 +160,12 @@ class List extends React.Component {
         );
     }
 
-    componentDidMount() {
-        /* this.props.action.getListData(
-            this.props.$$state.get("pagination").toJS()
-        ); */
+    componentDidMount() {  
         this.props.action.getInitInquire()
+        this.props.action.getEnumData();
+       /*  this.props.action.getListData(
+            this.props.$$state.get("pagination").toJS()
+        )  */
     }
 
     render() {
