@@ -186,7 +186,6 @@ class List extends Component {
                                 : "auto"
                         }}
                     >
-                 
                         <ListTree
                             edit={this.treeSelectEditFn.bind(this)}
                             add={this.treeSelectAddFn.bind(this)}
@@ -199,9 +198,7 @@ class List extends Component {
                                 <EditButton
                                     returnFn={this.btnBack.bind(this)}
                                 />
-                                </div>) : (
-                                ""
-                            )}
+                                </div>) : null}
                             
                         
                         <div className="org-tabel tabel-recoverd">

@@ -49,7 +49,6 @@ export default class AddJoin extends React.Component {
         
         let { viewData } = this.props
         let orgId = viewData.orgId
-        debugger
         reqwest(
             {
                 url: baseDir+'sys/orgs/orgTree',
@@ -99,7 +98,7 @@ export default class AddJoin extends React.Component {
         );
     }
 
-    //分配modal确定
+//增加参与人modal确定
     handleOk(){
         let { viewData } = this.props
         let cumId = viewData.id    
@@ -118,9 +117,7 @@ export default class AddJoin extends React.Component {
                     }
                 },
                 data => {
-                    debugger
                     if(data){
-                        
                         this.props.changeViewData(data)
                         // let nv = viewData.salesVOs[0]
                         // if(this.state.result){
@@ -163,7 +160,7 @@ export default class AddJoin extends React.Component {
 
     //选择table某一项方法
     selectedTableList(selectedRowKeys,selectedRows){
-        
+        debugger;
         this.setState({
             result:{id:selectedRowKeys[0],value:selectedRows[0].name},
             selectedTableRowKeys:selectedRowKeys

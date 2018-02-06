@@ -151,7 +151,7 @@ const finishetask ={
 
 }
  const cusInquire={//客户所有查询方案接口
-     groupLsit:baseDir+'/cum/groupcustomers/querytemplate',
+     groupLsit:baseDir+'cum/groupcustomers/querytemplate',
  }
 
 

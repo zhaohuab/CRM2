@@ -10,7 +10,7 @@ export function saveSearchMap (value){
 }
 //点击查询方案进行查询并保存查询方案条件
 export function saveSearchPlan(pagination,searchPlan){
-    debugger
+    
     return dispatch => {
         reqwest(
             {
@@ -26,7 +26,7 @@ export function saveSearchPlan(pagination,searchPlan){
                 }
             },
             data => {
-                debugger
+                
                 dispatch(
                     {
                         type:'CUSTOMER_ASSIGNMENT_SEARCHPLAN',
@@ -41,7 +41,7 @@ export function saveSearchPlan(pagination,searchPlan){
 
 //点击查询条件进行查询并保存查询条件
 export function searchMapSearch(pagination,searchMap){
-    debugger
+    
     return dispatch => {
         reqwest(
             {
@@ -57,7 +57,7 @@ export function searchMapSearch(pagination,searchMap){
                 }
             },
             data => {
-                debugger
+                
                 dispatch(
                     {
                         type:'CUSTOMER_GROUPASSIGNMENT_SEARCHMAP',
@@ -93,7 +93,7 @@ export function getSearchList(pagination){
                 }
             },
             data => {
-                debugger
+                
                 dispatch(
                     {
                         type:"CUSTOMER_ASSIGNMENT_PRESEARCHMAP", 
@@ -107,7 +107,7 @@ export function getSearchList(pagination){
 }
 //获取列表数据，包括根据各种查询信息返回列表数据
 export function getList(pagination,search){
-    debugger
+    debugger;
     return dispatch => {
         reqwest(
             {
@@ -116,12 +116,11 @@ export function getList(pagination,search){
                 data: {
                     param: {
                         ...pagination,
-                        ...search
+                        searchMap: search,
                     }
                 }
             },
             data => {
-                debugger
                 dispatch(
                     {
                         type:"CUSTOMER_ASSIGNMENT__GETTABLELIST", 

@@ -71,7 +71,6 @@ export default class CuperiorCustomer extends React.Component {
                 this.getListData(true, pagination);
             }
         );
-        console.log(page, pageSize);
     }
 
     //获取table选择数据
@@ -134,7 +133,6 @@ export default class CuperiorCustomer extends React.Component {
             select: { name: selectedRows[0].name, id: selectedRows[0].id },
             selectedRowKeys: selectedRowKeys
         });
-        console.log(selectedRowKeys, selectedRows);
     }
 
     //显示分页多少条结构
@@ -175,8 +173,6 @@ export default class CuperiorCustomer extends React.Component {
 
     //搜索框输入方法
     onSearch(value) {
-        console.log(value);
-        ;
         reqwest(
             {
                 url: baseDir + "cum/customers",
