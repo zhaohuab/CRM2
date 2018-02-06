@@ -109,6 +109,14 @@ export function leadEndView(leadVisible, leadStep) {
     };
 
 }
+export function changeStep(leadStep) {
+    debugger
+    return {
+        type: "CUSTOMERCOMPANY_LIST_CHANGESTEP",
+        payload: {leadStep }
+    };
+
+}
 export function leadEndIngShow(leadVisible) {
     return {
         type: "CUSTOMERCOMPANY_LIST_LEADINGSHOW",

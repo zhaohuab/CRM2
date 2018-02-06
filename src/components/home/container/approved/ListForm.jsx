@@ -195,13 +195,13 @@ class Department extends React.Component {
         );
     }
     render() {
-
+        debugger
         let { finishState, searchMap, unfinishedData, finishedData, data } = this.props.$$state.toJS();
         debugger
         return (
             <div>
 
-                {searchMap.status && searchMap.status == 'finish' ?
+                {searchMap.statusCommit && searchMap.statusCommit == 'finish' ?
                     <Table
                         size="middle"
                         columns={this.columnsFinished}
@@ -222,6 +222,7 @@ class Department extends React.Component {
                         }}
                     /> :
                     <Table
+                        
                         size="middle"
                         columns={this.columnsUnfinished}
                         dataSource={unfinishedData.data}

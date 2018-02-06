@@ -71,18 +71,18 @@ class SpeechList extends React.Component {
     newSpeech = () => {
         this.props.action.speechVisible(true)
     }
-    trancFn = (data) => {
-        for (let key in data) {
-            //枚举
-            debugger
-            if (key == 'jobName') {
-                data['job'] = data['jobName']
+    // trancFn = (data) => {
+    //     for (let key in data) {
+    //         //枚举
+    //         debugger
+    //         if (key == 'jobName') {
+    //             data['job'] = data['jobName']
                
-            }
+    //         }
 
-        }
-        return data
-    }
+    //     }
+    //     return data
+    // }
     deleteSpeech = () => {
         //点击删除按钮，删除数据
         let that = this;
@@ -118,7 +118,7 @@ class SpeechList extends React.Component {
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {//取值
             debugger;
             if (!err) {
-                values = this.trancFn(values);
+                // values = this.trancFn(values);
                 if (values.id) {
                     // debugger;
                     this.props.action.onEdit(values);

@@ -1,6 +1,6 @@
 import reqwest from "utils/reqwest";
 import { message } from "antd";
-import { speech as url, baseDir } from "api";
+import { finishtask as url, baseDir } from "api";
 //包装发给redux的对象
 const fetchData = (type, payload) => {
     return {
@@ -9,11 +9,11 @@ const fetchData = (type, payload) => {
     };
 };
 
-export function speechVisible(visible){
+export function workVisible(visible){
     debugger
     return dispatch => {
         dispatch({
-            type: "SPEECH_LIST_EMPTY",
+            type: "WORK_LIST_EMPTY",
             visible
         });
     };
@@ -27,7 +27,7 @@ export function getListData(pagination, searchMap){
         // debugger
         reqwest(
             {
-                url: url.saletalk,
+                url: url.finishtask,
                 method: "GET",
                 data: {
                     param: {
@@ -36,11 +36,11 @@ export function getListData(pagination, searchMap){
                     }
                 }
             },
-            data => {
+            result => {
                debugger
                 dispatch(
-                    fetchData("SPEECH_LIST_GETDATA", {
-                        data,
+                    fetchData("WORK_LIST_GETDATA", {
+                        data:result,
                         pagination
                     })
                 );
@@ -54,7 +54,7 @@ export function getEnumData() {
     return dispatch => {
         reqwest(
             {
-                url: url.saletalk+'/job',
+                url: url.finishtask+'/state',
                 method: "GET",
                 data: {
 
@@ -63,7 +63,7 @@ export function getEnumData() {
             data => { //level source
                 debugger
                 dispatch(
-                    fetchData("SPEECH_LIST_GETENUMDATA", {
+                    fetchData("WORK_LIST_GETENUMDATA", {
                         enumData: data.data
                     })
                 );
@@ -75,15 +75,15 @@ export function getEnumData() {
 //显示modal
 export function showForm(data) {
     return dispatch => {
-        dispatch({ type: "SPEECH_LIST_SHOWFORM", data });
+        dispatch({ type: "WORK_LIST_SHOWFORM", data });
     };
 }
 
 //保存已选择的数据
-export function selectSpeech(selectedRows, selectedRowKeys) {
+export function selectFinishTask(selectedRows, selectedRowKeys) {
     ////debugger;
     return {
-        type: "SPEECH_LIST_SELECTCLUE",
+        type: "WORK_LIST_SELECTCLUE",
         payload: { selectedRows, selectedRowKeys }
     };
 }
@@ -91,14 +91,11 @@ export function selectSpeech(selectedRows, selectedRowKeys) {
 export function edit(edit,show){
     //debugger
     return {
-       type: "SPEECH_LIST_EDIT",
+       type: "WORK_LIST_EDIT",
        edit,
        show
 }
 }
-
-
-
 
 //编辑已选择（确定按钮）
 export function onEdit(values) {
@@ -107,7 +104,7 @@ export function onEdit(values) {
      return dispatch => {
          reqwest(
              {
-                url: url.saletalk,
+                url: url.finishtask,
                  method: "PUT",
                  data: {
                    param:values
@@ -116,7 +113,7 @@ export function onEdit(values) {
              result => {
                 debugger
                  dispatch({
-                     type: "SPEECH_LIST_UPDATELIST",
+                     type: "WORK_LIST_UPDATELIST",
                      data: result
                  });
              }
@@ -132,7 +129,7 @@ export function onSave(oneData) {
     return dispatch => {
         reqwest(
             {
-                url: url.saletalk,
+                url: url.finishtask,
                 method: "POST",
                 data: {
                     param: oneData
@@ -141,7 +138,7 @@ export function onSave(oneData) {
             data => {
                 debugger;
                 dispatch({
-                    type: "SPEECH_CARD_SAVEADD",
+                    type: "WORK_CARD_SAVEADD",
                     data
                 });
             }
@@ -157,7 +154,7 @@ export function  deleteData(ids, pagination) {
     return dispatch => {
         reqwest(
             {
-                url: url.saletalk,
+                url: url.finishtask,
                 method: "DELETE",
                 data: {
                     param: {
@@ -170,7 +167,7 @@ export function  deleteData(ids, pagination) {
             data => {   //返回的是没有删除的data
                // //debugger
                 dispatch(
-                    fetchData("SPEECH_LIST_GETLISTUPDATE", {
+                    fetchData("WORK_LIST_GETLISTUPDATE", {
                        data:data
                     })
                 );
@@ -181,7 +178,7 @@ export function  deleteData(ids, pagination) {
 //往redux中存放编辑新增修改条件
 export function editCardFn(changeData) {
     return {
-        type: "SPEECH_LIST_CARDEDITCHANGE",
+        type: "WORK_LIST_CARDEDITCHANGE",
         changeData
     }
 }

@@ -41,6 +41,8 @@ class List extends React.Component {
         if (files && files.length) {
             this.setState({ importVisible: true })
             this.uploadFiles.call(this);
+
+            this.props.action.changeStep(1);
         }
         // this.props.action.leadEndView(true, 2);
         if (filesSuccess) {
@@ -48,8 +50,8 @@ class List extends React.Component {
             this.props.action.leadEndView(true);
             // setTimeout(() => {
             //     debugger
-            //     this.props.action.leadEndView(true, 2);
-            // }, 1000)
+            //     this.props.action.changeStep(2);
+            // }, 2000)
         }
 
     }
@@ -60,14 +62,14 @@ class List extends React.Component {
         this.props.action.leadEndShow(false);
         // this.props.action.leadEndView(false, 1);
         // this.props.action.fileSuccess(false, {});
-        this.props.action.fileSuccess(false, {}, false, 1);
+        this.props.action.fileSuccess(false, {}, false, 0);
     }
     //关闭导入 余春梅 1.30
     leadEnd() {
         this.setState({ importVisible: false })
         this.props.action.viewLeadShow(false);
         this.props.action.leadEndShow(false);
-        this.props.action.fileSuccess(false, {}, false, 1);
+        this.props.action.fileSuccess(false, {}, false, 0);
         // setTimeout(() => {
         //     debugger
         //     this.props.action.leadEndView(false, 1);
@@ -114,6 +116,10 @@ class List extends React.Component {
             if (result.length && result[0].code == '0') {
                 message.success([result[0].message]);
                 this.props.action.fileSuccess(true, result, true, 2)
+                // setTimeout(() => {
+                //     debugger
+                //     this.props.action.changeStep(2);
+                // }, 1000)
             }
         }, (error) => {
             console.log(34, error)

@@ -34,6 +34,7 @@ class Search extends React.Component {
   }
 
   onState = (e) => {
+    debugger
     let { searchMapApproval, pagination } = this.props.$$state.toJS();
     e.preventDefault();
     if (e.target.value == 'todo') { this.props.action.getTodo(pagination) }
@@ -44,7 +45,7 @@ class Search extends React.Component {
   onChangeDate = (e) => {
     let val = e.target.value;
     let queryDateKey = val;
-     
+     debugger
     let { searchMapApproval, pagination, } = this.props.$$state.toJS();
     if (searchMapApproval.status == 'unFinish') {
        
@@ -136,7 +137,7 @@ const WrapedCard = Form.create({
 
   mapPropsToFields: (props) => {
     //把redux中的值取出来赋给表单
-     
+     debugger
     let viewData = props.$$state.toJS().searchMapApproval;
     let value = {};
      
@@ -150,7 +151,7 @@ const WrapedCard = Form.create({
 
   },
   onFieldsChange: (props, onChangeFild) => {
-     
+     debugger
     //往redux中写值
     let viewData = props.$$state.toJS().searchMapApproval;
 

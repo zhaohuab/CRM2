@@ -144,8 +144,7 @@ const commitColumns = [
         "dataIndex": "approvalUserList",
         render: (text, record) => (
             <div>
-                11111
-                {/* {record.approvalUserList[0].name} */}
+                {record.approvalUserList[0].name}
             </div>
         )
     },
