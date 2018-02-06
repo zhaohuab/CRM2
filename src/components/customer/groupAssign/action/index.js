@@ -107,7 +107,7 @@ export function getSearchList(pagination){
     };
 }
 //获取列表数据，包括根据各种查询信息返回列表数据
-export function getList(pagination,search,keys){
+export function getList(pagination,searchMap,keys){
     return dispatch => {
         reqwest(
             {
@@ -117,7 +117,7 @@ export function getList(pagination,search,keys){
                 data: {
                     param: {
                         ...pagination,
-                        ...search
+                        searchMap: searchMap
                     }
                 }
             },

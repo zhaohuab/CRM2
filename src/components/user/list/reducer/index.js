@@ -8,7 +8,8 @@ let $$initialState = {
 	searchMap: {
 		enableState: 1
 	},
-	loading: false,
+	tableLoading: false,
+	cardLoading:false,
 	formData: {},
 	formFields: {},
 	data: [],
@@ -29,7 +30,6 @@ let $$initialState = {
 };
 
 function pageAdd(page, item) {
-	debugger
 	page.total += 1;
 	page.data.unshift(item)
 	// page.page = Math.ceil(page.total / page.pageSize);
@@ -48,7 +48,6 @@ function pageEdit(page, item) {
 }
 
 function clearObject(obj) {
-	//debugger
 	for (let key in obj) {
 
 		obj[key] = undefined
@@ -67,7 +66,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 					view: tpl.view,
 				},
 			}).merge({
-				loading: false,
+				tableLoading: false,
 				data: action.content.data,
 				visible: action.content.visible,
 				searchMap: action.content.searchMap,
@@ -91,11 +90,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 		case 'USER_LIST_GETLIST':
 			return $$state.merge({
-				loading: true
+				tableLoading: true
 			})
 		case 'USER_LIST_GETLISTSUCCESS':
 			return $$state.merge({
-				loading: false,
+				tableLoading: false,
 				data: action.content.data,
 				formFields: {},
 				formData: {},
@@ -112,6 +111,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 					formFields: transToFields(action.content.editData),
 					formData: action.content.editData,
 					isEdit: action.content.isEdit,
+					cardLoading:true,
 				})
 			} else {
 				return $$state.merge({
@@ -119,6 +119,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 					formFields: transToFields(clearObject($$state.get('formFields').toJS())),
 					formData: clearObject($$state.get('formData').toJS()),
 					isEdit: action.content.isEdit,
+					cardLoading:true
 				})
 			}
 
@@ -142,6 +143,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				data: pageAdd($$state.get("data").toJS(), action.content),
 				formData: {},
 				formFields: {},
+				tableLoading:false,
+				cardLoading:false
 			})
 		case 'USER_CARD_SAVEEDIT':
 			return $$state.merge({
@@ -149,6 +152,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				data: pageEdit($$state.get("data").toJS(), action.content),
 				formData: {},
 				formFields: {},
+				tableLoading:false,
+				cardLoading:false
 			})
 
 		case 'USER_LIST_SHOWASSIGN':
@@ -185,16 +190,30 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 			})
 
 		case 'USER_LIST_GETENUMDATA':
-			debugger
 			return $$state.merge({
-				enumData: Immutable.fromJS(action.content)
+				enumData: Immutable.fromJS(action.content),
+				cardLoading:false
 			})
 
 		case 'USER_LIST_SAVETEMPLATE':
 			return $$state.merge({
 				template: action.content,
 			})
+			case 'USER_LIST_SAVEADDSTART':
+			return $$state.merge({
+				tableLoading: true,
+				cardLoading:true
+			})
+			case 'USER_LIST_SAVEEDITSTART':
+			return $$state.merge({
+				tableLoading: true,
+				cardLoading:true
+			})
 
+			//页面状态重置
+			case 'USER_LIST_RESETSTATE':
+			return $$state.merge($$initialState)
+			
 		default:
 			return $$state;
 	}

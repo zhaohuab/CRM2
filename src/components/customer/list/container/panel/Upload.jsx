@@ -18,20 +18,6 @@ export default class Upload extends React.Component {
         files.forEach((file,index,items) => {
             this.upload(file);
         })
-        // files.forEach((file,index,items)=>{
-        //     let before = this.props.beforeUpload(file,index,items);
-        //     if(typeof before == 'boolean' && before){
-        //         proAry.push(this.upLoad(file))
-        //     }
-        // })
-        // Promise.all(proAry).then((result)=>{
-            
-        //     console.log(12,result)
-        //     this.props.success()
-        // },(error)=>{
-            
-        //     console.log(34,error)
-        // })
     }
 
     upload = (file) => {

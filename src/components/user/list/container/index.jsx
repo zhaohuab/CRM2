@@ -5,7 +5,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Table, Modal, Button, Icon, Row, Col,message } from "antd";
+import { Table, Modal, Button, Icon, Row, Col,message,Spin } from "antd";
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import SearchForm from "./SearchForm.jsx";
 import { Input, Radio, Popconfirm, Form } from "antd";
@@ -27,13 +27,15 @@ class List extends React.Component {
         super(props);
     }
 
+    componentWillMount () {
+        //页面初始化前重置数据
+        this.props.action.resetState();
+    }
+
     componentDidMount() {
         let pagination = this.props.$$state.get("pagination").toJS();
         let searchMap = this.props.$$state.get("searchMap").toJS();
-        // this.props.action.getListTpl(searchMap.enableState);
-        // this.props.action.getListData({ pagination, searchMap });
         this.props.action.getListTpl({ pagination, searchMap });
-        // this.props.action.getEnumData();
     }
 
 
@@ -75,8 +77,9 @@ class List extends React.Component {
         this.props.action.getEditTpl();
     };
     onClose() {
+        let form = this.formRef.props.form;
         this.props.action.showForm(false, {}, false);
-        // form.resetFields();
+        form.resetFields();
     }
     onEnable(enable) {
         return enable => {
@@ -98,11 +101,11 @@ class List extends React.Component {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {
                     this.props.action.onSave4Edit(form.getFieldsValue());
-                    // form.resetFields();
+                    form.resetFields();
                 }
                 else {
                     this.props.action.onSave4Add(form.getFieldsValue());
-                    // form.resetFields();
+                    form.resetFields();
                 }
             }
         });
@@ -128,9 +131,7 @@ class List extends React.Component {
         }else{
             message.error("请选择一个角色")
         }
-        
     }
-
 
     getDateRender = (text, row, index) => {
         let date = new Date(text.time);
@@ -142,7 +143,6 @@ class List extends React.Component {
         var second = date.getSeconds();
         return year + "-" + month + "-" + day + "   " + hour + ":" + minute + ":" + second;
     }
-
 
     onAssignClose = () => {
         this.props.action.closeAssign()
@@ -181,6 +181,7 @@ class List extends React.Component {
         let isEdit = this.props.$$state.get("isEdit");
         let enableState = this.props.$$state.get("searchMap").toJS().enableState;
         let tpl;
+        let tableLoading = this.props.$$state.get("tableLoading");  
         if (isEdit) {
             tpl = template.edit;
         }
@@ -206,8 +207,6 @@ class List extends React.Component {
                         goBack={this.onBack.bind(this)}
                         length={selectedRowKeys.length}
                     >
-                     
-
                         {selectedRowKeys.length == 1&&enableState ==1 ? <Button
                             className="default_button"
                             onClick={this.onEdit}
@@ -256,16 +255,13 @@ class List extends React.Component {
                 }
                 <div className="list-box tabel-recoverd">
                     <Table
-                    
+                        loading={tableLoading}
                         size="middle"
                         columns={listTpl}
                         dataSource={page.data}
                         rowSelection={rowSelection}
                         rowKey="id"
                         pagination={{
-
-              
-
                             current: pagination.page,
                             size: "large",
                             showSizeChanger: true,

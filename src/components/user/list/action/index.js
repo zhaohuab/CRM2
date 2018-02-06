@@ -7,6 +7,7 @@ import { user as url, role } from 'api';
 const getListTpl = (params) => {
 
 	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_GETLIST'))
 		reqwest({
 			url: url.listTpl,
 			method: "GET",
@@ -83,8 +84,9 @@ const showForm = (flag, editData = {}, isEdit) => {
 }
 
 const getListData = (params) => {
-
+	
 	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_GETLIST'))
 		reqwest({
 			url: url.user,
 			method: "GET",
@@ -112,7 +114,7 @@ const transData = (data) => {
 }
 const onSave4Add = (data) => {
 	return (dispatch) => {
-
+		dispatch(fetchData('USER_LIST_SAVEADDSTART'))
 		reqwest({
 			url: url.user,
 			method: "POST",
@@ -127,7 +129,7 @@ const onSave4Add = (data) => {
 
 const onSave4Edit = (data) => {
 	return (dispatch) => {
-
+		dispatch(fetchData('USER_LIST_SAVEEDITSTART'))
 		reqwest({
 			url: `${url.user}/${data.id}`,
 			method: "PUT",
@@ -262,6 +264,12 @@ const saveTpl = (tpl) => {
 	}
 };
 
+const resetState = () => {
+	return (dispatch) => {
+		dispatch(fetchData("USER_LIST_RESETSTATE"))
+	}
+}
+
 //输出 type 与 方法
 export {
 	getListTpl,
@@ -281,4 +289,5 @@ export {
 	selectRole,
 	getEnumData,
 	saveTpl,
+	resetState
 }

@@ -159,6 +159,7 @@ class IcbcDetailInfo extends React.Component {
 
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
+       
         debugger
         reqwest(
             {
@@ -197,21 +198,27 @@ class IcbcDetailInfo extends React.Component {
 
     //点击获取工商核实按钮
     getIcbc(flag) {
+
+        let cssCode = this.props.$$menuState.get("cssCode");
         let { viewData, icbcInfo1 } = this.props.$$state.toJS()
         let icbcName = viewData.name;
         let verifyId = viewData.verifyId
-        debugger
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
                 if (viewData.verifyFullname ||viewData.verifyId) {//如果已核实
-                    debugger
-
+                    //判断是否有取消核实权限
+                    if(cssCode.indexOf("customer_view_cancelverify_customer")!="-1"){
+                        return 
+                    }
                     //再次点击工商核实并没有把值返回给我！！！！！！！！！！！！！！！！！！！1
                     this.props.action.hasIcbc(viewData.verifyFullname, viewData.verifyId,true)
                 } else {
+                    //判断是否有核实权限
+                    if(cssCode.indexOf("customer_view_verify_customer")!="-1"){
+                        return 
+                    }
                     this.getIcbcList(icbcName, result => {
-                        debugger
                         if (result.data && result.data.length) {
                             this.setState({
                                 visible: flag,

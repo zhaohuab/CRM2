@@ -185,6 +185,3 @@ export function editCardFn(changeData) {
         changeData
     }
 }
-
-// let reg=/([^<br/>])+/g
-// str.split('<br/>')

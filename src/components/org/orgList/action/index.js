@@ -12,7 +12,7 @@ const fetchData = (type, payload) => {
 //获取所有数据
 export function getlist(searchMap = {}) {
     return (dispatch, getState) => {
-        dispatch({ type: 'ORG_LIST_GETLISTSTART' })
+        dispatch({ type: 'ORG_LIST_TABLELOADING' })
         request({
             url: url.org,
             method: 'get',
@@ -31,7 +31,7 @@ export function getlist(searchMap = {}) {
 export function getlistByClickSearch(searchMap) {
     return (dispatch, getState) => {
 
-        dispatch({ type: 'ORG_LIST_GETLISTSTART' })
+        dispatch({ type: 'ORG_LIST_TABLELOADING' })
         request({
             url: url.org,
             method: 'get',
@@ -66,6 +66,9 @@ const transData = (data) => {
 export function listadd(list) {
 
     return (dispatch, getState) => {
+        dispatch({ type: 'ORG_LIST_CARDLOADING' })
+        dispatch({ type: 'ORG_LIST_TABLELOADING' })
+        dispatch({ type: 'ORG_LIST_TREELOADING' })
         request({
             url: url.org,
             method: 'post',
@@ -96,6 +99,9 @@ export function listadd(list) {
 export function listchange(data) {
     return (dispatch) => {
         let id = data.id
+        dispatch({ type: 'ORG_LIST_CARDLOADING' })
+        dispatch({ type: 'ORG_LIST_TABLELOADING' })
+        dispatch({ type: 'ORG_LIST_TREELOADING' })
         request({
             url: `${url.org}/${id}`,
             method: 'put',
@@ -103,7 +109,6 @@ export function listchange(data) {
                 param: transData(data)
             }
         }, (result) => {
-            debugger
             request({
                 url: url.orgTree,
                 method: 'get',
@@ -136,6 +141,8 @@ export function listdel(record, treeId, searchFilter) {
     }
     return (dispatch, getState) => {
         let id = record.id
+        dispatch({ type: 'ORG_LIST_TABLELOADING' })
+        dispatch({ type: 'ORG_LIST_TREELOADING' })
         request({
             url: url.org + '/batch',
             method: "DELETE",
@@ -177,6 +184,7 @@ export function setEnablestate(treeId, data, state) {
         ids.push(data[i].id);
     }
     return (dispatch) => {
+        dispatch({ type: 'ORG_LIST_TABLELOADING' })
         request({
             url: url.org + '/enable',
             method: "PUT",
@@ -198,7 +206,7 @@ export function setEnablestate(treeId, data, state) {
 //获取tree数据
 export function getTreeList() {
     return (dispatch, getState) => {
-        dispatch({ type: 'ORG_LIST_GETTREELISTSTART' })
+        dispatch({ type: 'ORG_LIST_TREELOADING' })
         request({
             url: url.orgTree,
             method: 'get',
@@ -218,6 +226,7 @@ export function getTreeList() {
 //获取一个部门tree信息，变换表格数据
 export function listTreeChange(id) {
     return (dispatch, getState) => {
+        dispatch({ type: 'ORG_LIST_TABLELOADING' })
         request({
             url: url.org,
 
@@ -247,4 +256,10 @@ export function setFormData(data) {
     }
 }
 
+
+export function  resetState (){
+	return (dispatch) => {
+		dispatch(fetchData("ORG_LIST_RESETSTATE"))
+	}
+}
 

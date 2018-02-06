@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Table, Icon,Button,Form,Input,Checkbox,Col,Modal,Spin,message} from "antd";
+import { Table, Icon, Button, Form, Input, Checkbox, Col, Modal, Spin, message } from "antd";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action/index.js";
@@ -75,7 +75,7 @@ class List extends Component {
             //         break;
             //     }
             // }
-         
+
             this.props.action.selectData({ selectedRows, selectedRowKeys });
         };
     }
@@ -83,22 +83,25 @@ class List extends Component {
 
     //修改页面取消按钮
     handleCancel() {
-        this.props.action.showForm(false, {},false);
+        this.props.action.showForm(false, {}, false);
     }
 
     //表单页面确定方法
     formHandelOk() {
+        let that = this;
+
         this.formRef.props.form.validateFields((err, values) => {
             if (!err) {
-                debugger
-                let isEdit = this.props.$$state.get("isEdit");
+                let isEdit = that.props.$$state.get("isEdit");
                 if (isEdit) {
-                    this.props.action.listchange(values);
+                    that.props.action.listchange(values);
                 } else {
-                    this.props.action.listadd(values);
-                }
+                    that.props.action.listadd(values);
+                };
+                that.formRef.props.form.resetFields();
             }
         });
+
     }
 
     //显示每行数据后的返回按钮
@@ -117,13 +120,13 @@ class List extends Component {
                 break;
             }
         }
-        this.props.action.showForm(true, rowData,true);
+        this.props.action.showForm(true, rowData, true);
     }
     //点击一个节点数的增加操作
     treeSelectAddFn(item) {
         this.setState({ isEdit: false });
         let rowData = { fatherorgId: item.id, fatherorgName: item.name };
-        this.props.action.showForm(true, rowData,false);
+        this.props.action.showForm(true, rowData, false);
     }
 
     //点击一个节点数的删除操作
@@ -132,7 +135,7 @@ class List extends Component {
         record.push(item);
         this.props.action.listdel(record, item.id);
     }
-  
+
     reSizeFn() {
         let h = document.documentElement.clientHeight;
         this.setState({
@@ -141,7 +144,13 @@ class List extends Component {
     }
 
     //组件渲染完毕获取数据
-    componentDidMount() {
+    componentWillMount() {
+      //页面初始化前重置数据
+      this.props.action.resetState();
+    }
+
+     //组件渲染完毕获取数据
+     componentDidMount() {
         this.props.action.getlist();
         this.props.action.getTreeList();
         this.setState({
@@ -159,6 +168,7 @@ class List extends Component {
         //这获取总的状态  //拿到想要的之后再toJS
         let { $$state } = this.props;
         let tabelLoading = $$state.get("tabelLoading");
+        let cardlLoading = $$state.get("cardlLoading");
         let formVisitable = $$state.get("formVisitable");
         let treeLoading = $$state.get("treeLoading");
         let treeSelect = $$state.get("treeSelect");
@@ -167,12 +177,12 @@ class List extends Component {
         let selectedRowKeys = $$state.get("selectedRowKeys").toJS();
         let isEdit = $$state.get("isEdit");
         let rowSelection = {
-            type:"radio",
-            hideDefaultSelections:true,
+            type: "radio",
+            hideDefaultSelections: true,
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-       // const WrapCard = Form.create()(card);
+        // const WrapCard = Form.create()(card);
         let editData = $$state.get("editData").toJS();
         return (
             <div className="list-warpper">
@@ -186,7 +196,6 @@ class List extends Component {
                                 : "auto"
                         }}
                     >
-                 
                         <ListTree
                             edit={this.treeSelectEditFn.bind(this)}
                             add={this.treeSelectAddFn.bind(this)}
@@ -194,16 +203,12 @@ class List extends Component {
                         />
                     </div>
                     <div className="list-table" ref="listTablePanel">
-                        
-                            {selectedRows.length ? (<div className="table-header">
-                                <EditButton
-                                    returnFn={this.btnBack.bind(this)}
-                                />
-                                </div>) : (
-                                ""
-                            )}
-                            
-                        
+
+                        {selectedRows.length ? (<div className="table-header">
+                            <EditButton
+                                returnFn={this.btnBack.bind(this)}
+                            />
+                        </div>) : null}
                         <div className="org-tabel tabel-recoverd">
                             <Table
                                 columns={this.columns}
@@ -222,17 +227,19 @@ class List extends Component {
                             />
                         </div>
                         <Modal
-                            title={isEdit?"修改组织":"新增组织"}
+                            title={isEdit ? "修改组织" : "新增组织"}
                             visible={formVisitable}
                             onOk={this.formHandelOk.bind(this)}
                             onCancel={this.handleCancel.bind(this)}
                         >
                             <div className="modal-height">
+                            <Spin spinning={treeLoading}>   
                                 <WrapCard
                                     wrappedComponentRef={inst =>
                                         (this.formRef = inst)}
                                     data={editData}
                                 />
+                                </Spin>
                             </div>
                         </Modal>
                     </div>

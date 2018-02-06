@@ -151,7 +151,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                     {(viewData.verifyFullname || viewData.verifyId )&& viewData.id ? (
@@ -188,7 +188,7 @@ class EditForm extends React.Component {
                                                                 "fullname"
                                                             )(
                                                                 <Input placeholder="请输入" />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -219,7 +219,7 @@ class EditForm extends React.Component {
                                                                         precision: 2
                                                                     }}
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -273,7 +273,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -300,7 +300,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -340,7 +340,7 @@ class EditForm extends React.Component {
                                                                             "100%"
                                                                     }}
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -403,7 +403,7 @@ class EditForm extends React.Component {
                                                                     viewData.province_city_district
                                                                 }
                                                             />
-                                                        )}
+                                                            )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -496,7 +496,7 @@ class EditForm extends React.Component {
                                                                     enumData.type
                                                                 }
                                                             />
-                                                        )}
+                                                            )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -526,7 +526,7 @@ class EditForm extends React.Component {
                                                                     enumData.level
                                                                 }
                                                             />
-                                                        )}
+                                                            )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -581,7 +581,7 @@ class EditForm extends React.Component {
                                                                     enumData.cannelType
                                                                 }
                                                             />
-                                                        )}
+                                                            )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -628,7 +628,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -661,7 +661,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -696,7 +696,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
@@ -705,7 +705,7 @@ class EditForm extends React.Component {
                                                                 "taxCertificate"
                                                             )(
                                                                 <UploadImg title="税务登记证" />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -739,7 +739,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
@@ -748,7 +748,7 @@ class EditForm extends React.Component {
                                                                 "bizLicense"
                                                             )(
                                                                 <UploadImg title="工商营业执照" />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -784,7 +784,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                     <Col span={4}>
@@ -793,7 +793,7 @@ class EditForm extends React.Component {
                                                                 "bizLicense"
                                                             )(
                                                                 <UploadImg title="组织机构代码证" />
-                                                            )}
+                                                                )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -813,10 +813,10 @@ class EditForm extends React.Component {
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-
+        debugger
         let viewData = props.$$state.toJS().viewData;
         let value = {};
-    
+
         for (let key in viewData) {
             value[key] = { value: viewData[key] };
         }

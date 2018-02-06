@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Icon, Input, Button, Checkbox, message, Carousel } from "antd";
+import { Form, Icon, Input, Button, Checkbox, message, Carousel, Spin } from "antd";
 import * as Actions from "../action";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -37,56 +37,59 @@ class LoginForm extends React.Component {
             <div className="login-form-warpper">
                 <div className="login-shadow" />
                 <div className="login-form">
-                    <p className="login-form-title">欢迎登录</p>
-                    <div className="login-form-error">{loginError}</div>
-                    <Form onSubmit={this.handleSubmit} width={300}>
-                        <FormItem
-                            validateStatus={userError ? "error" : ""}
-                            help={userError || ""}
-                        >
-                            {getFieldDecorator("user", {
-                                rules: []
-                            })(
-                                <Input
-                                    placeholder="用户名"
-                                    prefix={<Icon type="user" />}
-                                    className="login-imnput"
-                                />
-                            )}
-                        </FormItem>
-                        <FormItem
-                            validateStatus={passwordError ? "error" : ""}
-                            help={passwordError || ""}
-                        >
-                            {getFieldDecorator("password", {
-                                rules: []
-                            })(
-                                <Input
-                                    type="password"
-                                    placeholder="登录密码"
-                                    prefix={<Icon type="lock" />}
-                                    className="login-imnput"
-                                />
-                            )}
-                        </FormItem>
-                        <FormItem>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                disabled={hasErrors(getFieldsError())}
-                                style={{ width: "100%" }}
-                                className="login-btn"
+                    <Spin spinning={this.props.loading}>
+                        <p className="login-form-title">欢迎登录</p>
+                        <div className="login-form-error">{loginError}</div>
+
+                        <Form onSubmit={this.handleSubmit} width={300}>
+                            <FormItem
+                                validateStatus={userError ? "error" : ""}
+                                help={userError || ""}
                             >
-                                登录
+                                {getFieldDecorator("user", {
+                                    rules: []
+                                })(
+                                    <Input
+                                        placeholder="用户名"
+                                        prefix={<Icon type="user" />}
+                                        className="login-imnput"
+                                    />
+                                    )}
+                            </FormItem>
+                            <FormItem
+                                validateStatus={passwordError ? "error" : ""}
+                                help={passwordError || ""}
+                            >
+                                {getFieldDecorator("password", {
+                                    rules: []
+                                })(
+                                    <Input
+                                        type="password"
+                                        placeholder="登录密码"
+                                        prefix={<Icon type="lock" />}
+                                        className="login-imnput"
+                                    />
+                                    )}
+                            </FormItem>
+                            <FormItem>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    disabled={hasErrors(getFieldsError())}
+                                    style={{ width: "100%" }}
+                                    className="login-btn"
+                                >
+                                    登录
                             </Button>
-                            <div className="form-footer">
-                                <span className="fast-experience">快速体验</span>
-                                <a className="forget-pass" href="">
-                                    忘记密码?
+                                <div className="form-footer">
+                                    <span className="fast-experience">快速体验</span>
+                                    <a className="forget-pass" href="">
+                                        忘记密码?
                                 </a>
-                            </div>
-                        </FormItem>
-                    </Form>
+                                </div>
+                            </FormItem>
+                        </Form>
+                    </Spin>
                 </div>
             </div>
         );
@@ -109,9 +112,9 @@ class LoginCon extends React.Component {
         console.log(from, to);
     }
 
-    componentDidMount() {}
+    componentDidMount() { }
     render() {
-        debugger
+
         let { $$state } = this.props;
         let logined = $$state.get("logined");
         if (this.props.params.loginmsg == "sessionover") {
@@ -129,6 +132,7 @@ class LoginCon extends React.Component {
             document.documentElement.clientWidth || document.body.clientWidth;
         let height =
             document.documentElement.clientHeight || document.body.clientHeight;
+        const loading = this.props.$$state.get("loading");
         return (
             <div className="login-warpper">
                 <div className="login-carousel">
@@ -144,19 +148,19 @@ class LoginCon extends React.Component {
                             style={{
                                 width: width + "px",
                                 height:
-                                    height >= 658 ? height + "px" : 658 + "px"
+                                height >= 658 ? height + "px" : 658 + "px"
                             }}
                         >
                             <img
                                 style={{
                                     width:
-                                        width >= 1240
-                                            ? width + "px"
-                                            : 1240 + "px",
+                                    width >= 1240
+                                        ? width + "px"
+                                        : 1240 + "px",
                                     height:
-                                        height >= 658 && width >= 1240
-                                            ? height + "px"
-                                            : 780 + "px"
+                                    height >= 658 && width >= 1240
+                                        ? height + "px"
+                                        : 780 + "px"
                                 }}
                                 ref="loginImg"
                                 className="login-img"
@@ -164,14 +168,14 @@ class LoginCon extends React.Component {
                             />
                             <img
                                 style={{
-                                    position:"absolute",
-                                    top:110,
-                                    left:90,
-                                    width:485,
-                                    height:198,
+                                    position: "absolute",
+                                    top: 110,
+                                    left: 90,
+                                    width: 485,
+                                    height: 198,
                                 }}
                                 ref="loginImg"
-                                
+
                                 src={require("assets/images/login/banner-text1.png")}
                             />
                         </div>
@@ -179,23 +183,23 @@ class LoginCon extends React.Component {
                             ref="loginBg1"
                             style={{
                                 width:
-                                    width >= 1240 ? width + "px" : 1240 + "px",
+                                width >= 1240 ? width + "px" : 1240 + "px",
                                 height:
-                                    height >= 658 && width >= 1240
-                                        ? height + "px"
-                                        : 780 + "px"
+                                height >= 658 && width >= 1240
+                                    ? height + "px"
+                                    : 780 + "px"
                             }}
                         >
                             <img
                                 style={{
                                     width:
-                                        width >= 1240
-                                            ? width + "px"
-                                            : 1240 + "px",
+                                    width >= 1240
+                                        ? width + "px"
+                                        : 1240 + "px",
                                     height:
-                                        height >= 658 && width >= 1240
-                                            ? height + "px"
-                                            : 780 + "px"
+                                    height >= 658 && width >= 1240
+                                        ? height + "px"
+                                        : 780 + "px"
                                 }}
                                 ref="loginImg"
                                 className="login-img"
@@ -203,14 +207,14 @@ class LoginCon extends React.Component {
                             />
                             <img
                                 style={{
-                                    position:"absolute",
-                                    top:20,
-                                    left:20,
-                                    width:685,
-                                    height:281,
+                                    position: "absolute",
+                                    top: 20,
+                                    left: 20,
+                                    width: 685,
+                                    height: 281,
                                 }}
                                 ref="loginImg"
-                                
+
                                 src={require("assets/images/login/banner-text2.png")}
                             />
                         </div>
@@ -219,15 +223,15 @@ class LoginCon extends React.Component {
                             style={{
                                 width: width + "px",
                                 height:
-                                    height >= 658 ? height + "px" : 658 + "px"
+                                height >= 658 ? height + "px" : 658 + "px"
                             }}
                         >
                             <img
                                 style={{
                                     width:
-                                        width >= 1240
-                                            ? width + "px"
-                                            : 1240 + "px",
+                                    width >= 1240
+                                        ? width + "px"
+                                        : 1240 + "px",
                                     height: height >= 658 ? "auto" : 658 + "px"
                                 }}
                                 ref="loginImg"
@@ -236,14 +240,14 @@ class LoginCon extends React.Component {
                             />
                             <img
                                 style={{
-                                    position:"absolute",
-                                    top:20,
-                                    left:20,
-                                    width:685,
-                                    height:281,
+                                    position: "absolute",
+                                    top: 20,
+                                    left: 20,
+                                    width: 685,
+                                    height: 281,
                                 }}
                                 ref="loginImg"
-                                
+
                                 src={require("assets/images/login/banner-text3.png")}
                             />
                         </div>
@@ -265,6 +269,7 @@ class LoginCon extends React.Component {
                             <Login
                                 loginError={errorMessage}
                                 login={this.props.action.login}
+                                loading={loading}
                             />
                         </div>
                         <div className="login-main-footer">

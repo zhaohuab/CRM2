@@ -70,7 +70,7 @@ class DetailTop extends React.Component {
                                         className="pointer"
                                     >
                                         <div className="checked-iconfont">
-                                            <IcbcDetailInfo width={450}/>
+                                            <IcbcDetailInfo viewDataProps = {viewData}/>
                                         </div>
                                         <div>
                                             {viewData.followState ==0 ? (

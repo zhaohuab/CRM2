@@ -1,4 +1,4 @@
-import { Form, Input, Row, Col,DatePicker,Button } from 'antd';
+import { Form, Input, Row, Col,DatePicker,Button,Spin } from 'antd';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import moment from 'moment'
@@ -42,7 +42,6 @@ class Card extends React.Component {
             wrapperCol: { span: 19 },
         };
         
-        
         return tpl.map((field) => {
             return this.tranCol(getFormItem(getFieldDecorator,field,formItemLayout));
         })
@@ -52,12 +51,15 @@ class Card extends React.Component {
         
         const { getFieldDecorator } = this.props.form;
         let { tpl } = this.props;
+        let infoCardLoading = this.props.$$state.get("infoCardLoading")
         return (<div>
+            <Spin  spinning={infoCardLoading}>
         <Form >
             <Row >
                 {tpl ? this.trans(getFieldDecorator,tpl) : ''}
             </Row>
         </Form>
+        </Spin>
         <Button type="primary" style={{ marginLeft: 15 }} onClick={() => this.save()}>保存</Button>
         </div>)
     }

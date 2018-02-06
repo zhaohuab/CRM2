@@ -143,9 +143,9 @@ class AssignList extends React.Component {
     //进入页面请求列表、查询方案数据
     componentDidMount(){
         
-        let {pagination} = this.props.$$state.toJS()
+        let {pagination, searchMap} = this.props.$$state.toJS()
         //获取列表数据
-        this.props.action.getList(pagination)
+        this.props.action.getList(pagination, searchMap)
         //获取查询条件初始条件
         this.props.action.getSearchList()
     }

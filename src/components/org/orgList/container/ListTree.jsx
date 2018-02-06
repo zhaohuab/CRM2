@@ -137,11 +137,14 @@ class ListTree extends Component {
                 );
             });
         let data = this.props.$$state.get("treeData").toJS();
+        let treeLoading = this.props.$$state.get("treeLoading");
+        
         return (
             <div>
                 {data.length ? (
                     <div>
                         <div className="org-tree-main">
+                        <Spin spinning={treeLoading}>
                             <Tree
                                 showLine
                                 defaultExpandedKeys={[String(data[0].id)]}
@@ -149,6 +152,7 @@ class ListTree extends Component {
                             >
                                 {loop(data)}
                             </Tree>
+                            </Spin>
                         </div>
                     </div>
                 ) : (

@@ -73,7 +73,7 @@ import quartz from 'components/quartz/list/reducer'
 //销售话术
 import speech from 'components/speech/list/reducer'
 //客户状态完成的工作
-
+import finishTask from 'components/finishTask/list/reducer'
 
 //客户分布
 import cusDistributed from 'components/cusDistributed/reducer';
@@ -119,7 +119,8 @@ let rootReducer = combineReducers({
     cusAssignReducers,
     approval,
     cusStatus,
-    speech
+    speech,
+    finishTask
 });
 
 export { rootReducer };
