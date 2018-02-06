@@ -16,16 +16,19 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             })
 		case 'LOGIN_MAIN_LOGIN_START_SUCCESS': 
 	        return $$state.merge({
-				logined:true
+				logined:true,
+				loading: false,
 			});
 		case 'LOGIN_MAIN_LOGIN_START_FAIL': 
 	        return $$state.merge({
 				logined:false,
-				errorMessage:action.content
+				errorMessage:action.content,
+				loading: false,
 			});
 		case 'LOGIN_MAIN_SETLOGOUT':
 			return $$state.merge({
-				logined:false
+				logined:false,
+				loading: false,
 			});
 	    default: 
 	        return $$state;

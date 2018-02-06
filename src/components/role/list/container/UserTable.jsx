@@ -124,6 +124,7 @@ class UserTable extends Component {
             selectedRowKeys:selectedUserRowKeys,
             onChange: this.onSelectChange
         };
+        let userLoading = this.props.$$state.get("userLoading");
         return (
             <div>
                 <Row type="flex" align="center" justify="end" className="userpanel-buttonline">
@@ -141,6 +142,7 @@ class UserTable extends Component {
                 <Row>
                     <div className="tabel-recoverd">
                         <Table
+                        loading={userLoading}
                             size="middle"
                             columns={this.columns}
                             rowKey="id"

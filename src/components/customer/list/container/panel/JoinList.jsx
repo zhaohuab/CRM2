@@ -62,7 +62,6 @@ class JoinList extends React.Component {
 
     render(){  
         let {viewData,viewDataJoinList} = this.props.$$state.toJS();
-        debugger
         return(
             <div className='join-warpper'>
                 {
@@ -79,12 +78,12 @@ class JoinList extends React.Component {
                                     />:
                                     this.changeCircleColor(item)
                                 }
-                                <span className='username'>{item.userName}<span className='del'><i className="iconfont icon-canyuren-shanchu" onClick={this.joinDel.bind(this,item.id)}/></span></span>
+                                <span className='username customer_edit_deluser_customer'>{item.userName}<span className='del'><i className="iconfont icon-canyuren-shanchu" onClick={this.joinDel.bind(this,item.id)}/></span></span>
                             </div>
                         )
                     }):''
                 }
-                <div className='join-warpper-item'>
+                <div className='join-warpper-item customer_edit_adduser_customer'>
                     <AddJoin viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
                 </div>
             </div>

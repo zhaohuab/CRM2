@@ -37,7 +37,7 @@ const getMenuData = () => {
 						code = code.substring(0, code.length - 1);
 					}
 					code = code.replace(/\:/g, "\_");
-					code += "{display:none;}"
+					code += "{display:none!important;}"
 					var head = document.head || document.getElementsByTagName('head')[0];
 					var style = document.createElement('style');
 					style.rel = 'stylesheet';
