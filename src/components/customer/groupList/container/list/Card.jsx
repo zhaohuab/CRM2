@@ -174,7 +174,7 @@ class EditForm extends React.Component {
                                                                 type="flex"
                                                                 justify="end"
                                                             >                                   
-                                                                <IcbcInfo width={450}/>
+                                                                <IcbcInfo viewDataProps = {viewData}/>
                                                             </Row>
                                                         </Col>
                                                     }

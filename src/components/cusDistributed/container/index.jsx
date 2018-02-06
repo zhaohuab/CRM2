@@ -97,7 +97,7 @@ class PanelMap extends React.Component {
         let itemFlag = $$state.get('itemFlag');
         let departmentName = $$state.get('departmentName');  
         console.log('customerItem=================',customerItem,customerItem.total)    
-      // debugger;
+      debugger;
         return (
             <Row type="flex" className="customer-panelMap-wraper">
                 <Col span={8} className="customer-panelMap-left">

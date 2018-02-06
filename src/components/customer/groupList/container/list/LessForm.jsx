@@ -40,7 +40,7 @@ class LessForm extends React.Component {
         };
         
         let { enumData } = this.props.$$state.toJS();
-        
+        debugger;
         return (
             <div className="less-form">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>

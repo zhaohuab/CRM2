@@ -51,6 +51,7 @@ class IcbcInfo extends React.Component {
 
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
+        debugger;
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/",
@@ -63,6 +64,7 @@ class IcbcInfo extends React.Component {
                 }
             },
             result => {
+                debugger
                 callback(result);
             }
         );
@@ -121,11 +123,16 @@ class IcbcInfo extends React.Component {
             debugger
             //如果面板是显示状态
             if (icbcName) {
+                debugger
                 if(addIcbcName == icbcName){//如果上一次输入的值等于当前输入的名称则不在此请求公司信息
                     this.props.action.saveIcbcName(viewData,true)
                 }else{
+                    let xx = this.getIcbcList;
+                    debugger
                     this.getIcbcList(icbcName, result => {
+                        debugger
                         if (result.data && result.data.length) {
+                            debugger
                             this.setState({
                                 visible: flag,
                                 icbcList: result.data
@@ -135,6 +142,7 @@ class IcbcInfo extends React.Component {
                 }
             } else {
                 //没输入客户名称，搜索没有查询条件，列表没有数据
+                debugger
                 this.setState({
                     visible: flag,
                     icbcList: []
@@ -142,6 +150,7 @@ class IcbcInfo extends React.Component {
             }
         } else {
             //如果面板是关闭状态
+            debugger
             this.setState({
                 visible: flag
             });
@@ -341,7 +350,7 @@ class IcbcInfo extends React.Component {
                     onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
                     visible={this.state.visible} //受控面板显示
                 >
-                    <span className="icbc-btn" onClick={this.getIcbc.bind(this,true)}>
+                    <span className="icbc-btn" >
                         企业核实
                     </span>
                 </Dropdown>
@@ -375,7 +384,7 @@ class IcbcInfo extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList
+        $$state: state.customerGroupList
     };
 }
 //绑定action到组件props
