@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { Input,Popover, Select, Dropdown, Menu, Table, Button, Icon, Row, Col, Modal, Form, Tabs, Collapse } from "antd";
+import { Popover, Select, Dropdown, Menu, Table, Button, Icon, Row, Col, Modal, Form, Tabs, Collapse } from "antd";
 import './index.less';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
@@ -10,7 +10,7 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 const confirm = Modal.confirm;
 import Immutable from "immutable";
-const { TextArea } = Input;
+
 
 // //编辑，修改信息
 import Card from "./Card.jsx";
@@ -25,6 +25,10 @@ class SpeechList extends React.Component {
             modalVisible: false
         }
         this.columns = [
+            // {
+            //     title: "序号",
+            //     dataIndex: "id"
+            // },
             {
                 title: "职位",
                 dataIndex: "jobName",
@@ -35,7 +39,13 @@ class SpeechList extends React.Component {
                 dataIndex: "saleTalk",
                 width: '80%',
                 render: (text, record) => (
-                    <div>
+                    <div onClick={this.getTalk} >
+
+                        {/* <div>{record.saleTalk.substr(0,20)}
+                        {record.saleTalk.length&&record.saleTalk.length>20?'...':null}
+                
+                        </div> */}
+
                         <Popover content={this.getTalk.call(this, record)} trigger="hover" placement="bottomLeft">
                             <div style={{ width: '800px', cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{record.saleTalk}
 
@@ -53,21 +63,10 @@ class SpeechList extends React.Component {
 
     }
     getTalk = (record) => {
-        debugger
-          let talkString = record.saleTalk.replace(/[\r\n]/g,"<br/>");
-          let talkAry=talkString.split('<br/>') // 字符串拆分 
-         console.log(122,talkAry)
         return (
-             <div>
-               {talkAry&&talkAry.length?talkAry.map((item)=>{
-                return <p>
-                    {item}
-                </p>
-                }):''}
-             </div>
+            <div>{record.saleTalk}</div>
         )
     }
-     
     newSpeech = () => {
         this.props.action.speechVisible(true)
     }
@@ -77,7 +76,9 @@ class SpeechList extends React.Component {
             debugger
             if (key == 'jobName') {
                 data['job'] = data['jobName']
-               
+                // if (data[key] && data[key].key) {
+                //     data[key] = data[key].key
+                // }
             }
 
         }
