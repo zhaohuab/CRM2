@@ -195,7 +195,7 @@ export function showForm(visible) {
     return fetchData("CUSTOMERCOMPANY_LIST_SHOWFORM", { visible });
 };
 
-//
+
 export function showFormEdit(visiable){
     
     return{
@@ -788,12 +788,12 @@ export function closeIcbcVisible1(visible) {
 };
 
 //点击新建按钮清空viewPanel面板数据
-export function addCustomer(data, typeId) {
+export function addCustomer(data, newType) {
     return dispatch => {
         dispatch({
             type: "CUSTOMERCOMPANY_LIST_ADDCUSTOMER",
             data,
-            typeId
+            newType
         });
     };
 };

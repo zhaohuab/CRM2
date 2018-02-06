@@ -267,6 +267,12 @@ class CompanyAssign extends React.Component {
             changeOwnUserValue:value
         })
     }
+
+    //分页方法
+    pagination({page,pageSize}){
+        debugger
+        this.onSelectAssign(page,pageSize,this.state.selectedTreeKeys)
+    }
      
     render(){
         let {selectedRowKeys,data} = this.props.$$state.toJS()
@@ -280,17 +286,20 @@ class CompanyAssign extends React.Component {
                     onCancel={this.handleCancel.bind(this)}
                     width={500}
                     maskClosable={false}
-                >
-                    <PersonChioce 
-                        data={this.state.treeList}  //获取所有部门数据
-                        personList = {this.state.personList}//人员列表数据
-                        selectList={this.onSelectAssign.bind(this)} //点击获取部门人员方法
-                        selectedTableList = {this.selectedTableList.bind(this)}//table选中
-                        selectedRowKeys = {this.state.selectedTableRowKeys}
-                        selectedKeys = {this.state.selectedTreeKeys}
-                        columns = {columns}
-                        height= {300}
-                    />
+                > 
+                    <div className='crm-company-assign-modal'>
+                        <PersonChioce 
+                            data={this.state.treeList}  //获取所有部门数据
+                            personList = {this.state.personList}//人员列表数据
+                            selectList={this.onSelectAssign.bind(this)} //点击获取部门人员方法
+                            selectedTableList = {this.selectedTableList.bind(this)}//table选中
+                            selectedRowKeys = {this.state.selectedTableRowKeys}
+                            selectedKeys = {this.state.selectedTreeKeys}
+                            pagination = {this.pagination.bind(this)}
+                            columns = {columns}
+                            height= {300}
+                        />
+                    </div>
                 </Modal>
                 <Modal
                     title="变更"

@@ -87,8 +87,8 @@ class ToolForm extends React.Component {
     //点击新增的获取的业务类型
     newCumMenuClick(item, key) {
         debugger
-        let typeId = item.key;
-        this.props.action.addCustomer(true, typeId);
+        
+        this.props.action.addCustomer(true, item);
     }
 
     //上下表单控制显隐

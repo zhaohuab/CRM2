@@ -66,48 +66,48 @@ class IcbcDetailInfo extends React.Component {
         let that = this;
 
         confirm({
-            title: '确认覆盖客户信息?',
-            content: '此操作会覆盖现有信息',
-            onOk() {
-                debugger
-                let { viewData, icbcInfo1 } = that.props.$$state.toJS();
-                let name
-                name = icbcInfo1.find((item) => {
-                    return item.key == 'verifyFullname'
-                })
-                viewData.verifyFullname = name.value
-                viewData.fullname = name.value
-                debugger
-                icbcInfo1.forEach(item => {
-                    if (item.key == "street") {
-                        viewData["street"] = item.value;
-                    } else if (item.key == "bizRegno") {
-                        viewData["bizRegno"] = item.value;
-                    } else if (item.key == "orgCode") {
-                        viewData["orgCode"] = item.value;
-                    } else if (item.key == "regCapital") {
-                        viewData["regCapital"] = item.value;
-                    } else if (item.key == "legalRepresent") {
-                        viewData["legalRepresent"] = item.value;
-                    } else if (item.key == "industry") {
-                        viewData["industry"] = { name: item.value };
-                    } else if (item.key == "email") {
-                        viewData["email"] = item.value;
-                    } else if (item.key == "tel") {
-                        viewData["tel"] = item.value;
-                    } else if (item.key == "taxpayerNo") {
-                        viewData["taxpayerNo"] = item.value;
-                    } else if (item.key == "remark") {
-                        viewData["remark"] = item.value;
-                    }
-                });
-                viewData = that.changeCustomer(viewData)
-                //点击覆盖值    获取客户时并没有保存上！！！！！！！！！！！！！！！！！！！！！！！！
-                that.props.action.checkedFn(viewData, that.state.select, viewData.id, false);
-            },
-            onCancel() {
-                that.onIcbcCancel.bind(this)
-            },
+          title: '确认覆盖客户信息?',
+          content: '此操作会覆盖现有信息',
+          onOk(){
+            
+            let { viewData ,icbcInfo1} = that.props.$$state.toJS();
+            let name
+            name = icbcInfo1.find((item)=>{
+                return item.key == 'verifyFullname'
+            })
+            viewData.verifyFullname = name.value
+            viewData.fullname = name.value
+            
+            icbcInfo1.forEach(item => {
+                if (item.key == "street") {
+                    viewData["street"] = item.value;
+                } else if (item.key == "bizRegno") {
+                    viewData["bizRegno"] = item.value;
+                } else if (item.key == "orgCode") {
+                    viewData["orgCode"] = item.value;
+                } else if (item.key == "regCapital") {
+                    viewData["regCapital"] = item.value;
+                } else if (item.key == "legalRepresent") {
+                    viewData["legalRepresent"] = item.value;
+                } else if (item.key == "industry") {
+                    viewData["industry"] = { name: item.value };
+                } else if (item.key == "email") {
+                    viewData["email"] = item.value;
+                } else if (item.key == "tel") {
+                    viewData["tel"] = item.value;
+                } else if (item.key == "taxpayerNo") {
+                    viewData["eaxplayerNo"] = item.value;
+                } else if (item.key == "remark") {
+                    viewData["remark"] = item.value;
+                }
+            });
+            viewData = that.changeCustomer(viewData)
+            //点击覆盖值    获取客户时并没有保存上！！！！！！！！！！！！！！！！！！！！！！！！
+            that.props.action.checkedFn(viewData,that.state.select,viewData.id,false);
+          },
+          onCancel() {
+            that.onIcbcCancel.bind(this)
+          },
         });
     }
 

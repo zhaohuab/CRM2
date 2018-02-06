@@ -209,12 +209,13 @@ class IcbcInfo extends React.Component {
         let {viewData,icbcInfo} = this.props.$$state.toJS();
         let name
         name = icbcInfo.find((item)=>{
-            return item.key == 'name'
+            return item.key == 'verifyFullname'
         })
-        debugger
-        if(!viewData.fullname){
-            viewData.fullname = name.value
+        //如果客户名称不存在 把获取的工商信息名称赋给客户名称
+        if(!viewData.name){
+            viewData.name = name.value
         }
+        //新增保存时，如果进行核实，要把verifyFullname字段发送给后台
         viewData.verifyFullname = name.value
         debugger
         icbcInfo.forEach(item => {
@@ -238,6 +239,8 @@ class IcbcInfo extends React.Component {
                 viewData["taxpayerNo"] = item.value;
             } else if (item.key == "remark") {
                 viewData["remark"] = item.value;
+            } else if (item.key == "remark") {
+                viewData["remark"] = item.value;
             }
         });
         return viewData
@@ -247,7 +250,7 @@ class IcbcInfo extends React.Component {
         let that = this;
         confirm({
           title: '确认覆盖客户信息?',
-          content: '确认后之前填写的客户信息将被覆盖，如已填写客户全称，此操作并不会覆盖客户名称',
+          content: '此操作会覆盖现有信息',
           onOk(){
               debugger
             let viewData = that.verifyFn.call(that)

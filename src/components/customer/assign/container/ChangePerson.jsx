@@ -103,6 +103,12 @@ export default class ChangePerson extends React.Component {
         })
     }
 
+     //分页方法
+     pagination({page,pageSize}){
+        debugger
+        this.treeSelect(page,pageSize,this.state.selectedTreeKeys)
+    }
+
     creatPanel(){
         return(
             <DropDownModal 
@@ -123,6 +129,7 @@ export default class ChangePerson extends React.Component {
                         selectedTableList = {this.selectedTableList.bind(this)}//table选中
                         selectedRowKeys = {this.state.selectedTableRowKeys}
                         selectedKeys = {this.state.selectedTreeKeys}
+                        pagination = {this.pagination.bind(this)}
                         columns = {columns}
                     />
                 </div>

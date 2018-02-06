@@ -218,11 +218,11 @@ class IcbcInfo extends React.Component {
         let {viewData,icbcInfo} = this.props.$$state.toJS();
         let name
         name = icbcInfo.find((item)=>{
-            return item.key == 'name'
+            return item.key == 'verifyFullname'
         })
         debugger
-        if(!viewData.fullname){
-            viewData.fullname = name.value
+        if(!viewData.name){
+            viewData.name = name.value
         }
         viewData.verifyFullname = name.value
         debugger
@@ -256,7 +256,7 @@ class IcbcInfo extends React.Component {
         let that = this;
         confirm({
           title: '确认覆盖客户信息?',
-          content: '确认后之前填写的客户信息将被覆盖，如已填写客户全称，此操作并不会覆盖客户名称',
+          content: '此操作会覆盖现有信息',
           onOk(){
               debugger
             let viewData = that.verifyFn.call(that)
