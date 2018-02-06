@@ -6,7 +6,7 @@ let $$initialState = {
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
     newCumMenu: [],//点击新增按钮时获取的业务类型
-    newTypeId: '',//保存新增是选中的业务类型字段
+    newType: '',//保存新增是选中的业务类型字段
     searchMap: {}, //存放实时输入的表单查询查询条件
     viewData: {}, //获取当前客户信息，view面板使用数据
     pagination: {//list列表页table分页信息
@@ -161,8 +161,10 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //点击编辑按钮
         case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
-            let EditStreetData =  $$state.get('viewData').toJS()
-            
+           let EditStreetData =  $$state.get('viewData').toJS();
+            //EditStreetData = Immutable.fromJS(EditStreetData).toJS()
+     
+            debugger
             let streetEdit = {
                 address:EditStreetData.street,
                 location:{
@@ -171,7 +173,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 }
             }
             EditStreetData.street = streetEdit
-    
+           
             return $$state.merge({
                 formVisitable: action.visiable,
                 viewData:EditStreetData
@@ -199,7 +201,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             debugger
             return $$state.merge({
                 formVisitable: action.data,
-                newTypeId: action.typeId,
+                newType: action.newType,
                 viewData: clearObject($$state.get('contactsCardData').toJS())
             });
         //点击选择公司获取工商信息列表    
@@ -295,6 +297,9 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //修改客户    
         case "CUSTOMERCOMPANY_LIST_EDITSAVE": 
+            let editFollow =  $$state.get('viewData').toJS()
+            action.data.followState = editFollow.followState
+            debugger
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),

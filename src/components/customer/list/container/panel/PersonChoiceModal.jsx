@@ -243,8 +243,7 @@ export default class PersonChoiceModal extends React.Component {
 
     render(){
         let { viewData } = this.props
-        debugger
-        //ssssssss
+       
         return(
             <div>
                 {

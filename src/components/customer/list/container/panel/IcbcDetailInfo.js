@@ -329,7 +329,7 @@ class IcbcDetailInfo extends React.Component {
     render() {
         let { viewData, icbcVisible2, icbcInfo1 } = this.props.$$state.toJS()
         let cssCode = this.props.$$menuState.get("cssCode");
-        debugger
+      
         return (
             <div className="icbc-detail-container">
 

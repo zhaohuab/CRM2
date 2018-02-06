@@ -91,7 +91,7 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-        debugger
+       
         return (
             <div>
                 <Row className="customform-input-recover">
@@ -826,10 +826,8 @@ const cardForm = Form.create({
         };
     },
     onFieldsChange: (props, onChangeFild) => {
-        debugger
         //往redux中写值//把值进行更新改变
         let viewData = props.$$state.toJS().viewData;
-        debugger
         for (let key in onChangeFild) {
             viewData[key] = onChangeFild[key].value;
         }

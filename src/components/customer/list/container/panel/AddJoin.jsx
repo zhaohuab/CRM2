@@ -170,6 +170,12 @@ export default class AddJoin extends React.Component {
         })
     }
 
+     //分页方法
+     pagination({page,pageSize}){
+        debugger
+        this.onSelectAssign(page,pageSize,this.state.selectedTreeKeys)
+    }
+
     render(){
         return(
             <div>
@@ -192,6 +198,7 @@ export default class AddJoin extends React.Component {
                             selectedTableList = {this.selectedTableList.bind(this)}//table选中
                             selectedRowKeys = {this.state.selectedTableRowKeys}
                             selectedKeys = {this.state.selectedTreeKeys}
+                            pagination = {this.pagination.bind(this)}
                             columns = {columns}
                         />
                     </div>

@@ -303,7 +303,7 @@ export default class MultiFunctionMap extends React.Component {
                     placeholder="请输入地址"
                     onSearch={this.showMap.bind(this)}
                     value={this.props.value?this.props.value.address:''}
-                    onChange={this.onChange.bind(this)}
+                    //onChange={this.onChange.bind(this)}
                 />
             {
                 this.state.visible?

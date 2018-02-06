@@ -73,7 +73,7 @@ class IcbcDetailInfo extends React.Component {
             let { viewData ,icbcInfo1} = that.props.$$state.toJS();
             let name
             name = icbcInfo1.find((item)=>{
-                return item.key == 'name'
+                return item.key == 'verifyFullname'
             })
             viewData.verifyFullname = name.value
             viewData.fullname = name.value

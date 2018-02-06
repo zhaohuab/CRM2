@@ -2,8 +2,11 @@ import reqwest from "reqwest";
 
 import { baseDir} from "api";
 
+import {message} from 'antd'
+
 export default class Upload extends React.Component {
     onChange(e){
+        debugger
         let files = e.target.files
         this.uploadFiles(files)
     }
@@ -11,7 +14,7 @@ export default class Upload extends React.Component {
     uploadFiles(files){
          files = Array.from(files);
         let proAry = []
-        
+        debugger
         files.forEach((file,index,items) => {
             this.upload(file);
         })
@@ -32,6 +35,7 @@ export default class Upload extends React.Component {
     }
 
     upload = (file) => {
+        debugger
         let formdata=new FormData();
         formdata.append('file', file)
         let {objType,objId} = this.props;
@@ -46,10 +50,15 @@ export default class Upload extends React.Component {
             }
         )
         .then((result) => {
+            debugger
+            if(result.code == 1){
+                message.error(result.message + '图片不能超过1M');
+                return
+            }
             this.props.success(result.data);
         }) 
         .fail((result) => {
-
+            debugger
         })
     }
     

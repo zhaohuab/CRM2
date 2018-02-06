@@ -224,11 +224,11 @@ class AssignList extends React.Component {
                             </Col>
                             <Col span={4}>
                                 <Row type='flex' align='middle' justify='end' className='top-more'>
-                                    <Dropdown.Button
+                                    {/* <Dropdown.Button
                                         overlay={this.moreMenu}
                                     >
                                         更多
-                                    </Dropdown.Button>
+                                    </Dropdown.Button> */}
                                 </Row>
                             </Col> 
                         </Row>

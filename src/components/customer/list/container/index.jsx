@@ -107,9 +107,9 @@ class List extends React.Component {
 
     //清除表单数据
     clearForm(){
-        // if(this.formRef){
-        //     this.formRef.props.form.resetFields()
-        // }
+        if(this.formRef){
+            this.formRef.props.form.resetFields()
+        }
     }
 
     //隐藏面版
@@ -120,7 +120,7 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData,newTypeId } = this.props.$$state.toJS();
+        let { viewData,newType } = this.props.$$state.toJS();
     
         this.formRef.props.form.validateFields((err, value) => {
             debugger
@@ -128,7 +128,7 @@ class List extends React.Component {
                 if (viewData.id) {//修改
                     this.props.action.listFormSave(viewData);
                 } else {//新增
-                    this.props.action.listFormSave(viewData,newTypeId);
+                    this.props.action.listFormSave(viewData,newType.key);
                 }
             }
         });

@@ -136,7 +136,7 @@ class List extends React.Component {
     }
 
     render() {
-        debugger
+       
         let {
             leadVisible,
             leadEndVisible,

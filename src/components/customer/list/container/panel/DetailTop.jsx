@@ -22,13 +22,13 @@ class DetailTop extends React.Component {
     //打开编辑按钮
     btnEdit() {
         let { viewData } = this.props.$$state.toJS();
-        debugger
+        
         this.props.action.showFormEdit(true);
     }
 
     //点击升级按钮
     upgrade(){
-        debugger
+        
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
         this.props.action.cumUpgrade(id)
@@ -50,7 +50,7 @@ class DetailTop extends React.Component {
     //停启用功能
     canUse(enableState){
         //点击停用启用
-        debugger
+        
         let {searchMap,viewData,pagination} = this.props.$$state.toJS()
         const ids = viewData.id;
         searchMap={}
@@ -64,6 +64,9 @@ class DetailTop extends React.Component {
 
     render(){
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
+        
+        let name = viewData.name
+        console.log(name)
         return(
         <Row className="view-warrper-header">
             <Row className="header-customer">
@@ -82,10 +85,9 @@ class DetailTop extends React.Component {
                                     align="middle"
                                     gutter={25}
                                 >
-                                    <div className="customer-name">
+                                     <div className="customer-name">
                                         {viewData.name}
                                     </div>
-
                                     <Row
                                         type="flex"
                                         align="middle"
