@@ -13,7 +13,8 @@ import {
     Dropdown,
     Timeline,
     Form,
-    Divider
+    Divider,
+    Tooltip
 } from "antd";
 import { browserHistory } from "react-router";
 import { connect } from "react-redux";
@@ -41,23 +42,25 @@ class ViewPanel extends React.Component {
         Modal.success({
             title: '提醒审批成功',
             okText: '确定',
-            onOk(){
+            onOk() {
                 that.onMention()
             }
         });
     }
-    onMention=()=>{
+    onMention = () => {
         let current = this.props.$$state.get('currentRecord').toJS();
-        this.props.action.onRemind(current.approvalUserList, current.djId,current.djType)
+        this.props.action.onRemind(current.approvalUserList, current.djId, current.djType)
     }
     onClick = (item) => {
         debugger
         if (item.action == 'agree') {
-            this.setState({
-                show: true
-            }, () => {
-                this.props.action.mentionVisible(true, 'agree')
-            })
+            // this.setState({
+            //     show: true
+            // }, () => {
+            //     this.props.action.mentionVisible(true, 'agree')
+            // })
+            this.props.action.mentionVisible(true, 'agree')
+            this.props.action.titleFlag(true)
         }
         if (item.action == 'reject') {
             this.props.action.mentionVisible(true, 'reject')
@@ -144,8 +147,19 @@ class ViewPanel extends React.Component {
     render() {
 
         let { mentionVisible, detailData, detailapproval, commit, done, todo, tableState, approvalButtons } = this.props.$$state.toJS();
+
+        const text =
+            todo.length && todo[0].personlist && todo[0].personlist.length ?
+                todo[0].personlist.map((item, index) => {
+                    return (
+                        <span style={{ marginRight: "5px" }}>
+                            {item.name}
+                        </span>
+                    )
+                }) : null
+
         return (
-            <div className="view-warrper">
+            <div className="view-warrper" >
                 <Row className="view-warrper-detail">
                     <Row className="header-detail" >
                         <Col span={10}>
@@ -217,8 +231,8 @@ class ViewPanel extends React.Component {
                                     className="info-title"
                                 >
                                     <Popover
-                                    className="approval-bubble"
-                                    placement="bottomLeft" content={this.getContent()} trigger="click">
+                                        className="approval-bubble"
+                                        placement="bottomLeft" content={this.getContent()} trigger="click">
                                         <div className="detailList">
                                             <div className="detailStatus">
                                                 已审
@@ -239,46 +253,52 @@ class ViewPanel extends React.Component {
                                     </Popover>
                                 </Row>
                             </Col> : null}
-                            {todo.length?
-                            <Col span={8}>
-                                <Row
-                                    type="flex"
-                                    justify="center"
-                                    className="info-title"
-                                >
-                                    <div className="detailList">
-                                        <div className="detailStatus">
-                                            待审
+                            {todo.length ?
+                                <Col span={8}>
+                                    <Row
+                                        type="flex"
+                                        justify="center"
+                                        className="info-title"
+                                    >
+
+
+                                        <Tooltip placement="bottom" title={text}>
+                                            <div className="detailList">
+                                                <div className="detailStatus">
+                                                    待审
                                         </div>
-                                        {/* <div className="detailName">
+                                                {/* <div className="detailName">
                                             {todo.length ? todo[0].personlist[0].name : ''}
                                         </div>
                                         <div className="detailName">
                                             {todo.length ? todo[0].time : ''}
                                         </div> */}
-                                        {todo.length && todo[0].personlist && todo[0].personlist.length > 3 ?
-                                            todo[0].personlist.slice(0, 3).map((item, index) => {
-                                                return (
-                                                    <div className="detailName">
-                                                        {item.name}
-                                                    </div>
-                                                )
 
-                                            })
-                                            :
-                                            todo.length && todo[0].personlist && todo[0].personlist.length <= 3 ?
-                                                todo[0].personlist.map((item, index) => {
-                                                    return (
-                                                        <div className="detailName">
-                                                            {item.name}
-                                                        </div>
-                                                    )
-                                                }) : null}
+                                                {todo.length && todo[0].personlist && todo[0].personlist.length > 3 ?
+                                                    todo[0].personlist.slice(0, 3).map((item, index) => {
+                                                        return (
+                                                            <div className="detailName">
+                                                                {item.name}
+                                                            </div>
+                                                        )
 
-                                        {todo.length && todo[0].personlist && todo[0].personlist.length > 3 ? '...' : null}
-                                    </div>
-                                </Row>
-                            </Col>:null}
+                                                    })
+                                                    :
+                                                    todo.length && todo[0].personlist && todo[0].personlist.length <= 3 ?
+                                                        todo[0].personlist.map((item, index) => {
+                                                            return (
+                                                                <div className="detailName">
+                                                                    {item.name}
+                                                                </div>
+                                                            )
+                                                        }) : null}
+
+                                                {todo.length && todo[0].personlist && todo[0].personlist.length > 3 ? '...' : null}
+
+                                            </div>
+                                        </Tooltip>
+                                    </Row>
+                                </Col> : null}
                         </Row>
                     </Row>
                     {/* --------------- */}

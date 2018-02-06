@@ -80,6 +80,7 @@ const rootRoutes = {
                                 require('./routes/cusStatus').default,
 
                                 require('./routes/speech/routes/list/index').default,
+                                require('./routes/finishTask/routes/list/index').default,
                                 {
                                     //未开发页面
                                     path: "developing",

@@ -98,6 +98,7 @@ class ToolForm extends React.Component {
     }
 
     getList=(value)=>{//-----点击查询方案获取列表   赵华冰 2-2
+        debugger
         let { enumData, searchMap} = this.props.$$state.toJS();
         let pagination={page:1,pageSize:10}
         let obj={};
