@@ -138,6 +138,7 @@ class List extends React.Component {
     }
 
     onPageChange(page, pageSize) {
+        debugger;
         let pagination = { page: page, pageSize: pageSize };
         let searchPlan=this.props.$$state.get("searchPlan").toJS();
         debugger;
@@ -173,7 +174,10 @@ class List extends React.Component {
             formVisitable,
             viewState,
             viewData,
-            tableLoading
+            tableLoading,
+            leadVisible,
+            leadEndVisible,
+            leadingVisible,
         } = this.props.$$state.toJS();
 
         let rowSelection = {

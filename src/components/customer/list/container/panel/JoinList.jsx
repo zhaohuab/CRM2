@@ -30,6 +30,7 @@ import AddJoin from './AddJoin'
 
 class JoinList extends React.Component {
     changeViewData(data){
+        debugger;
         this.props.action.setRightPaneltList(data)
     }
     changeCircleColor(item){
@@ -61,14 +62,15 @@ class JoinList extends React.Component {
 
     render(){  
         let {viewData,viewDataJoinList} = this.props.$$state.toJS();
+        debugger
         return(
             <div className='join-warpper'>
                 {
                     viewDataJoinList && viewDataJoinList.data && viewDataJoinList.data.length?
                     viewDataJoinList.data.map((item,index)=>{
+                        
                         return(
-                            <div className='join-warpper-item' data-id={item.id}>
-                              
+                            <div className='join-warpper-item' data-id={item.id}>                             
                                 {
                                     item.joinImage?
                                     <img

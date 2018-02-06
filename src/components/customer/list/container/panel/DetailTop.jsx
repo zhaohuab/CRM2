@@ -22,13 +22,11 @@ class DetailTop extends React.Component {
     //打开编辑按钮
     btnEdit() {
         let { viewData } = this.props.$$state.toJS();
-        debugger
         this.props.action.showFormEdit(true);
     }
 
     //点击升级按钮
     upgrade(){
-        debugger
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
         this.props.action.cumUpgrade(id)
@@ -50,7 +48,6 @@ class DetailTop extends React.Component {
     //停启用功能
     canUse(enableState){
         //点击停用启用
-        debugger
         let {searchMap,viewData,pagination} = this.props.$$state.toJS()
         const ids = viewData.id;
         searchMap={}

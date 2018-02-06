@@ -107,9 +107,9 @@ class List extends React.Component {
 
     //清除表单数据
     clearForm(){
-        if(this.formRef){
-            this.formRef.props.form.resetFields()
-        }
+        // if(this.formRef){
+        //     this.formRef.props.form.resetFields()
+        // }
     }
 
     //隐藏面版
@@ -151,7 +151,6 @@ class List extends React.Component {
 
     //点击分页
     onPageChange(page, pageSize) {
-
         let pagination = { page: page, pageSize: pageSize };
         this.props.action.getListData(
             pagination,
@@ -250,7 +249,6 @@ class List extends React.Component {
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
                 <LeadExport/>
-               
             </div>
 
         );

@@ -97,8 +97,7 @@ class ToolForm extends React.Component {
         this.props.action.saveSearchMap(searchMap);
     }
 
-    getList=(value)=>{//-----点击查询方案获取列表   赵华冰 2-2
-        debugger
+    getList=(value)=>{//-----切换查询方案获取列表   赵华冰 2-2
         let { enumData, searchMap} = this.props.$$state.toJS();
         let pagination={page:1,pageSize:10}
         let obj={};
@@ -112,20 +111,22 @@ class ToolForm extends React.Component {
     }
 
     onMenu(e) {//-----导入导出 赵华冰2-2
-        let { searchMap, pagination, enumData } = this.props.$$state.toJS();
+        let { searchMap, pagination, searchPlan } = this.props.$$state.toJS();
+        debugger;
         let page = pagination.page;
         let pageSize = pagination.pageSize;
         let search = JSON.stringify(searchMap);
         if (e.key == "1") {
             this.props.action.viewLeadShow(true);
         } else if (e.key == "2") {
-            location.href = baseDir + "tpub/excels/2/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 + "}"
-
+            location.href = baseDir + "tpub/excels/2/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 +",\"searchPlanMap\":"+"{"+"\"id\":" + `${searchPlan.id}`+",\"defClass\":" + "\""+`${searchPlan.defClass}`+"\""+"}}"
         }
     }
 
     render() {
         let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
+        let defaultId = this.props.$$state.get('defaultId');
+        debugger;
         const moreMenu = (
             <Menu onClick={this.onMenu.bind(this)}>
                 <Menu.Item key="1">
@@ -169,19 +170,21 @@ class ToolForm extends React.Component {
                             className="header-top"
                         >
                             <Col span={17}>
-                                <Row type="flex" align="middle">
-                                    <Col className="select-recover">
-                                        <Select defaultValue={3} onChange={this.getList.bind(this)}>
-                                        {/*// ------循环绑定查询条件  赵华冰 2-2 */}
-                                            {
-                                                enumData.map(item=>{
-                                                    return (
-                                                        <Option value={item.id}>{item.name}</Option>
-                                                    )
-                                                })
-                                            }
-                                        </Select>
-                                    </Col>
+                                <Row type="flex" align="middle"> 
+                                    <Col className="select-recover">                                  
+                                        {
+                                            defaultId?
+                                            <Select defaultValue={defaultId.toString()} onChange={this.getList.bind(this)}>
+                                                {
+                                                    enumData.map(item=>{
+                                                        return (
+                                                            <Option value={item.id.toString()}>{item.name}</Option>
+                                                        )
+                                                    })
+                                                }
+                                            </Select> : ''
+                                        }
+                                    </Col>                                  
                                     <Col
                                         span={18}
                                         className={

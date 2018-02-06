@@ -35,7 +35,7 @@ class IcbcInfo extends React.Component {
             icbcList: [],//保存工商列表
             select: "",//保存选中的某一个工商列表公司
             index: -1,//保存当前点击index，样式用
-            value:'',//下拉面板中input的参数
+            value:props.viewDataProps.name,//下拉面板中input的参数
         };
         this.that = this
     }
@@ -183,7 +183,19 @@ class IcbcInfo extends React.Component {
     }
     //下拉面板中点击搜索
     onSearch(){
-
+        debugger
+        let value = this.state.value;
+        let {viewData} = this.props.$$state.toJS();
+        if(!value){
+            value = viewData.name
+        }
+        this.getIcbcList(value, result => {
+            if (result.data && result.data.length) {
+                this.setState({
+                    icbcList: result.data
+                });
+            }
+        });
     }
     //下拉面板中的input  onchange
     onChange(value){
@@ -191,7 +203,7 @@ class IcbcInfo extends React.Component {
             value
         })
     }
-    
+
     //获取公司信息进行核实代码
     verifyFn(){
         let {viewData,icbcInfo} = this.props.$$state.toJS();
@@ -230,8 +242,6 @@ class IcbcInfo extends React.Component {
         });
         return viewData
     }
-
-
      //覆盖表单信息二次确认modal
      icbcConfirm() {
         let that = this;
@@ -240,9 +250,9 @@ class IcbcInfo extends React.Component {
           content: '确认后之前填写的客户信息将被覆盖，如已填写客户全称，此操作并不会覆盖客户名称',
           onOk(){
               debugger
-              let viewData = that.verifyFn.call(that)
-              debugger
-              that.props.action.saveIcbcName(viewData,false)
+            let viewData = that.verifyFn.call(that)
+            debugger
+            that.props.action.saveIcbcName(viewData,false)
           },
           onCancel() {
             that.props.action.saveIcbcNameCancel(false);
@@ -256,8 +266,10 @@ class IcbcInfo extends React.Component {
         //表单点击确定时需要verifyFullname
         this.props.action.saveIcbcNameCancel(false);
     }
+
     //详细信息确定按钮，保存已获取公司的客户名称
     onIcbcOk(){
+        debugger
         let {viewData,icbcSelect,isClose,addIcbcName} = this.props.$$state.toJS();
         debugger
         if(viewData.name == addIcbcName){
@@ -285,6 +297,7 @@ class IcbcInfo extends React.Component {
   
     createList() {
         let index = this.state.index;
+        let { viewData } = this.props.$$state.toJS()
         return (
             <DropDownModal 
                 title='工商列表' 
@@ -362,7 +375,7 @@ class IcbcInfo extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerGroupList
+        $$state: state.customerList
     };
 }
 //绑定action到组件props

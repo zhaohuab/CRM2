@@ -24,7 +24,6 @@ import UploadImg from "../list/UploadImg";
 class DetailObject extends React.Component {
     render(){
         let {viewData} = this.props.$$state.toJS();
-        console.log('viewData============',viewData)
         return(
                 <Collapse
                     defaultActiveKey={["1", "2", "3"]}
