@@ -254,15 +254,15 @@ export function getEnumData(){
 
 //获取动态信息
 export function getDynamic(id){
-    
     return dispatch => {
+        debugger
         reqwest(
             {
-                url: baseDir + `cum/customers/${id}/dynamic`,
+                url: baseDir + `cum/groupcustomers/${id}/dynamic`,
                 method: "GET",
             },
             data => {
-                
+                debugger
 
                 dispatch({
                     type:"CUSTOMERGROUP_LIST_GETDYNAMIC",

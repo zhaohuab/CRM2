@@ -72,6 +72,7 @@ export default class ChangePerson extends React.Component {
         );
     }
     onOk(){
+        debugger
         this.setState({
             visible:false,
             treeList:[],
