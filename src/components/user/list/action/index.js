@@ -7,6 +7,7 @@ import { user as url, role } from 'api';
 const getListTpl = (params) => {
 
 	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_GETLIST'))
 		reqwest({
 			url: url.listTpl,
 			method: "GET",
@@ -83,8 +84,9 @@ const showForm = (flag, editData = {}, isEdit) => {
 }
 
 const getListData = (params) => {
-
+	
 	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_GETLIST'))
 		reqwest({
 			url: url.user,
 			method: "GET",
@@ -112,7 +114,7 @@ const transData = (data) => {
 }
 const onSave4Add = (data) => {
 	return (dispatch) => {
-
+		dispatch(fetchData('USER_LIST_SAVEADDSTART'))
 		reqwest({
 			url: url.user,
 			method: "POST",
@@ -121,13 +123,15 @@ const onSave4Add = (data) => {
 			}
 		}, result => {
 			dispatch(fetchData('USER_CARD_SAVEADD', { ...result, visible: false }));
+		},()=>{
+			dispatch(fetchData('USER_LIST_LOADOVER'));
 		})
 	}
 }
 
 const onSave4Edit = (data) => {
 	return (dispatch) => {
-
+		dispatch(fetchData('USER_LIST_SAVEEDITSTART'))
 		reqwest({
 			url: `${url.user}/${data.id}`,
 			method: "PUT",
@@ -136,6 +140,8 @@ const onSave4Edit = (data) => {
 			}
 		}, result => {
 			dispatch(fetchData('USER_CARD_SAVEEDIT', { ...result, visible: false }));
+		},()=>{
+			dispatch(fetchData('USER_LIST_LOADOVER'));
 		})
 	}
 }
@@ -143,6 +149,7 @@ const onSave4Edit = (data) => {
 const onDelete = (rowKeys, params) => {
 
 	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_GETLIST'))
 		reqwest({
 			url: url.userBatch,
 			method: "DELETE",
@@ -155,12 +162,15 @@ const onDelete = (rowKeys, params) => {
 			}
 		}, result => {
 			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data: result, searchMap: params.searchMap, pagination: params.pagination }));
+		},()=>{
+			dispatch(fetchData('USER_LIST_LOADOVER'));
 		})
 	}
 }
 
 const onEnable = (rowKeys, enable, params) => {
 	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_GETLIST'))
 		reqwest({
 			url: `${url.enable}`,
 			method: "PUT",
@@ -173,8 +183,9 @@ const onEnable = (rowKeys, enable, params) => {
 				},
 			}
 		}, result => {
-
 			dispatch(fetchData('USER_LIST_GETLISTSUCCESS', { data: result, searchMap: params.searchMap, pagination: params.pagination }));
+		},()=>{
+			dispatch(fetchData('USER_LIST_LOADOVER'));
 		})
 	}
 }
@@ -205,6 +216,7 @@ const selectRow = (selectedRows, selectedRowKeys) => {
 
 const AssignRole = (roleId, userIds, pagination, searchMap) => {
 	return (dispatch) => {
+		dispatch(fetchData('USER_LIST_GETLIST'))
 		reqwest({
 			url: url.user + "/allocation",
 			method: "PUT",
@@ -218,6 +230,8 @@ const AssignRole = (roleId, userIds, pagination, searchMap) => {
 			}
 		}, result => {
 			dispatch(fetchData('USER_LIST_ASSIGNROLE', result));
+		},()=>{
+			dispatch(fetchData('USER_LIST_LOADOVER'));
 		})
 	}
 }
@@ -262,6 +276,12 @@ const saveTpl = (tpl) => {
 	}
 };
 
+const resetState = () => {
+	return (dispatch) => {
+		dispatch(fetchData("USER_LIST_RESETSTATE"))
+	}
+}
+
 //输出 type 与 方法
 export {
 	getListTpl,
@@ -281,4 +301,5 @@ export {
 	selectRole,
 	getEnumData,
 	saveTpl,
+	resetState
 }

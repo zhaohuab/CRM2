@@ -27,7 +27,7 @@ export default class OwnUser extends React.Component {
             visible:false,
             treeList:[],
             personList:[],
-            result:{},
+            result:'',
             selectedTableRowKeys:[],
             selectedTreeKeys:[],
             value:'',//保存modal里input中搜索value值
@@ -77,6 +77,7 @@ export default class OwnUser extends React.Component {
             selectedTreeKeys:[],
         },()=>{
             debugger
+            
             this.props.onChange(this.state.result)
         })
     }

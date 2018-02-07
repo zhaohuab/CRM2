@@ -10,7 +10,6 @@ const getMainEditTpl = () => {
 			url: url.mainEditTpl,
 			method: "GET",
 		}, result => {
-
 			dispatch(fetchData('SYSINIT_EDIT_TEMPLATE', { ...result }));
 		})
 	}
@@ -18,6 +17,7 @@ const getMainEditTpl = () => {
 const getSysInitInfo = () => {
 	return (dispatch) => {
 		console.log(url.info)
+		dispatch(fetchData('SYSINIT_PAGE_TABLELOADING'));
 		reqwest({
 			url: url.info,
 			method: "GET",
@@ -43,9 +43,8 @@ const transOrg = (data) => {
 	return data;
 }
 const onOrgSave = (data, index) => {
-	debugger
 	return (dispatch) => {
-
+		dispatch(fetchData('SYSINIT_PAGE_INFOCARDLOADING'));
 		reqwest({
 			url: url.org,
 			method: "PUT",
@@ -87,7 +86,7 @@ const onAdminListChange = (newData) => {
 const onAdminListSave = (data) => {
 
 	return (dispatch) => {
-
+		dispatch(fetchData('SYSINIT_PAGE_TABLELOADING'));
 		reqwest({
 			url: url.adminList,
 			method: "POST",
@@ -101,6 +100,8 @@ const onAdminListSave = (data) => {
 				return item;
 			})
 			dispatch(fetchData('SYSINIT_PAGE_ADMINLISTSAVE', { adminList: adminList }));
+		},() =>{
+			dispatch(fetchData('SYSINIT_PAGE_LOADOVER'));
 		})
 	}
 }
@@ -111,6 +112,13 @@ const onEdit = (data) => {
 	}
 }
 
+const resetState = () => {
+	return (dispatch) => {
+		dispatch(fetchData("SYSINIT_PAGE_RESETSTATE"))
+	}
+}
+
+
 //输出 type 与 方法
 export {
 	getMainEditTpl,
@@ -120,4 +128,5 @@ export {
 	onAdminListChange,
 	onAdminListSave,
 	onEdit,
+	resetState
 }

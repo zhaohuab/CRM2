@@ -34,7 +34,13 @@ let $$initialState = {
 	userCardList: [],
 	enumData: { data: [] },
 	rightData: [],
-	userCardName:''
+	userCardName: '',
+	roleLoading: false,
+	roleCardLoading: false,
+	funcLoading: false,
+	rightLoading: false,
+	userLoading: false,
+	userCardLoading: false,
 };
 
 function pageAdd(page, item) {
@@ -73,13 +79,15 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 		case 'ROLE_LIST_GETROLELISTSUCCESS':
 			return $$state.merge({
 				data: action.content.data,
-				searchMap:action.content.searchMap
+				searchMap: action.content.searchMap,
+				roleLoading: false
 			})
 		case 'ROLE_LIST_SHOWFORM':
 			return $$state.merge({
 				roleCardVisible: action.content.visible,
 				editData: action.content.editData,
 				isEdit: action.content.isEdit,
+				roleCardLoading: false
 			})
 		case 'ROLE_LIST_SELECTROW':
 			return $$state.merge({
@@ -109,6 +117,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRoleId: undefined,
 				selectedRowKeys: [],
 				selectedRows: [],
+				roleLoading: false,
+				roleCardLoading: false
 			})
 		case 'ROLE_CARD_SAVEEDIT':
 			return $$state.merge({
@@ -116,6 +126,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				data: pageEdit($$state.get("data").toJS(), action.content),
 				selectedRowKeys: [],
 				selectedRows: [],
+				roleLoading: false,
+				roleCardLoading: false
 			})
 
 		case 'ROLE_LIST_DELETESUCCESS':
@@ -125,6 +137,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRoleId: undefined,
 				selectedRowKeys: [],
 				selectedRows: [],
+				roleLoading: false
 			})
 
 		case 'ROLE_LIST_GETFUNCTREESUCCESS':
@@ -132,10 +145,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				funcData: action.content.funcData.data,
 				selectedRoleId: action.content.roleId,
 				selectedRoleIsPreseted: action.content.isPreseted,
+				funcLoading: false
 			})
 		case 'ROLE_LIST_SELECTFUNC':
 			return $$state.merge({
 				funcData: action.content,
+				funcLoading: false
 			})
 		case 'ROLE_LIST_GETUSERLISTSUCCESS':
 			return $$state.merge({
@@ -144,11 +159,13 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedRoleId: action.content.roleId,
 				selectedUserRowKeys: [],
 				selectedUserRows: [],
+				userLoading: false
 			})
 		case 'ROLE_LIST_GETUSERCARDLISTSUCCESS':
 			return $$state.merge({
 				userCardList: action.content,
 				userCardVisible: true,
+				userCardLoading: false
 			})
 
 		case 'ROLE_LIST_CLOSEUSERCARD':
@@ -156,21 +173,25 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				userCardVisible: false,
 				selectedUserCardRowKeys: [],
 				selectedUserCardRows: [],
-				userCardName:''
+				userCardName: ''
 			})
 		case 'ROLE_LIST_GETENUMDATA':
 			return $$state.merge({
 				enumData: action.content
 			})
 		case 'ROLE_LIST_GETRIGHTDATA':
+		debugger
 			return $$state.merge({
 				rightData: action.content.data,
+				selectedRoleId: action.content.roleId,
 				selectedRoleIsPreseted: action.content.isPreseted,
+				rightLoading: false
 			})
 
 		case 'ROLE_LIST_SELECTRIGHTDATA':
 			return $$state.merge({
 				rightData: action.content,
+				rightLoading: false
 			})
 
 		case 'ROLE_LIST_SAVEUSERSUCCESS':
@@ -180,6 +201,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedUserRows: [],
 				selectedUserCardRowKeys: [],
 				selectedUserCardRows: [],
+				userLoading: false,
+				userCardLoading: false
 			})
 		case 'ROLE_LIST_DELETEUSERSUCCESS':
 			return $$state.merge({
@@ -188,13 +211,50 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				selectedUserRows: [],
 				selectedUserCardRowKeys: [],
 				selectedUserCardRows: [],
+				userLoading: false
 			})
-			case 'ROLE_LIST_SAVEUSERCARDNAME':
+		case 'ROLE_LIST_SAVEUSERCARDNAME':
 			return $$state.merge({
 				userCardName: action.content,
 			})
+		case 'ROLE_LIST_ROLELOADING':
+			return $$state.merge({
+				roleLoading: true,
+			})
 
-			
+		case 'ROLE_LIST_ROLECARDLOADING':
+			return $$state.merge({
+				roleCardLoading: true,
+			})
+		case 'ROLE_LIST_FUNCLOADING':
+			return $$state.merge({
+				funcLoading: true,
+			})
+		case 'ROLE_LIST_RIGHTLOADING':
+			return $$state.merge({
+				rightLoading: true,
+			})
+		case 'ROLE_LIST_USERLOADING':
+			return $$state.merge({
+				userLoading: true,
+			})
+		case 'ROLE_LIST_USERCARDLOADING':
+			return $$state.merge({
+				userCardLoading: true,
+			})
+
+		case 'ROLE_LIST_RESETSTATE':
+			return $$state.merge($$initialState)
+
+		case 'ROLE_LIST_LOADOVER':
+			return $$state.merge({
+				roleLoading: false,
+				roleCardLoading: false,
+				funcLoading: false,
+				rightLoading: false,
+				userLoading: false,
+				userCardLoading: false,
+			})
 		default:
 			return $$state;
 	}

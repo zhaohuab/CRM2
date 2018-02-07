@@ -34,10 +34,16 @@ class Page extends React.Component {
   }];
   
 
+  componentWillMount() {
+    //页面初始化前重置数据
+    this.props.action.resetState();
+  }
+
   componentDidMount() {
     this.props.action.getMainEditTpl();
     this.props.action.getSysInitInfo();
   }
+
   render() {
     
     let current = this.props.$$state.get("current");

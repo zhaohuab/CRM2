@@ -17,7 +17,7 @@ import Card from "./Card.jsx";
 import "assets/stylesheet/all/iconfont.css";
 import * as Actions from '../action';
 
-class SpeechList extends React.Component {
+class FinishList extends React.Component {
     constructor(props) {
         super(props);
 
@@ -25,66 +25,53 @@ class SpeechList extends React.Component {
             modalVisible: false
         }
         this.columns = [
-            // {
-            //     title: "序号",
-            //     dataIndex: "id"
-            // },
             {
-                title: "职位",
-                dataIndex: "jobName",
+                title: "客户状态",
+                dataIndex: "stateName",
                 width: '20%'
             },
             {
-                title: "销售话术",
-                dataIndex: "saleTalk",
+                title: "完成工作",
+                dataIndex: "work",
                 width: '80%',
                 render: (text, record) => (
-                    <div onClick={this.getTalk} >
-
-                        {/* <div>{record.saleTalk.substr(0,20)}
-                        {record.saleTalk.length&&record.saleTalk.length>20?'...':null}
-                
-                        </div> */}
-
+                    <div>
                         <Popover content={this.getTalk.call(this, record)} trigger="hover" placement="bottomLeft">
-                            <div style={{ width: '800px', cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{record.saleTalk}
+                            <div style={{ width: '800px', cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{record.work}
 
                             </div>
                         </Popover>
                     </div>
                 )
-            },
+            }
         ]
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
             debugger;
-            this.props.action.selectSpeech(selectedRows, selectedRowKeys);
+            this.props.action.selectFinishTask(selectedRows, selectedRowKeys);
         };
 
     }
     getTalk = (record) => {
+        debugger
+          let workString = record.work.replace(/[\r\n]/g,"<br/>");
+          let workAry=workString.split('<br/>') // 字符串拆分 
+        
         return (
-            <div>{record.saleTalk}</div>
+             <div>
+               {workAry&&workAry.length?workAry.map((item)=>{
+                return <p>
+                    {item}
+                </p>
+                }):''}
+             </div>
         )
     }
-    newSpeech = () => {
-        this.props.action.speechVisible(true)
+    newWork = () => {
+        this.props.action.workVisible(true)
     }
-    trancFn = (data) => {
-        for (let key in data) {
-            //枚举
-            debugger
-            if (key == 'jobName') {
-                data['job'] = data['jobName']
-                // if (data[key] && data[key].key) {
-                //     data[key] = data[key].key
-                // }
-            }
-
-        }
-        return data
-    }
-    deleteSpeech = () => {
+   
+    deleteWork = () => {
         //点击删除按钮，删除数据
         let that = this;
         confirm({
@@ -119,7 +106,6 @@ class SpeechList extends React.Component {
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {//取值
             debugger;
             if (!err) {
-                values = this.trancFn(values);
                 if (values.id) {
                     // debugger;
                     this.props.action.onEdit(values);
@@ -132,11 +118,11 @@ class SpeechList extends React.Component {
 
     }
     onCancel = () => {
-        this.props.action.speechVisible(false)
+        this.props.action.workVisible(false)
     }
-
+    
     //选中一条数据 点击编辑按钮
-    editSpeech = () => {
+    editWork= () => {
         debugger
         let selectedRowKeys = this.props.$$state.get('selectedRowKeys').toJS();
         let resultNew = this.props.$$state.get('data').toJS().data;
@@ -195,11 +181,11 @@ class SpeechList extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-
-
+     
+    //  console.log(234,page.data)
         return (
-            <div className="speech-wrapper">
-                <div className="speech-header">销售话术</div>
+            <div className="finishTask-wrapper">
+                <div className="speech-header">客户状态完成工作</div>
                 <Row type="flex" justify="end">
                     <Col span={24}>
                         <Row
@@ -209,7 +195,7 @@ class SpeechList extends React.Component {
                             <div>
                                 <Button
                                     type="primary"
-                                    onClick={this.newSpeech}
+                                    onClick={this.newWork}
                                 >
                                     新建
                                   </Button>
@@ -218,7 +204,7 @@ class SpeechList extends React.Component {
                                 <div>
                                     <Button
                                         type="primary"
-                                        onClick={this.editSpeech}
+                                        onClick={this.editWork}
                                     >
                                         修改
                                                     </Button>
@@ -226,7 +212,7 @@ class SpeechList extends React.Component {
                             <div>
                                 <Button
                                     type="primary"
-                                    onClick={this.deleteSpeech}
+                                    onClick={this.deleteWork}
                                 >
                                     删除
                                  </Button>
@@ -235,7 +221,8 @@ class SpeechList extends React.Component {
                     </Col>
                 </Row>
                 <div className="tabel-bg speech-tabel-recoverd">
-                    <Table
+
+                <Table
                         size="middle"
                         columns={this.columns}
                         dataSource={data.data}
@@ -253,16 +240,17 @@ class SpeechList extends React.Component {
                             )
                         }}
                     />
+
                 </div>
 
                 <Modal
-                    className="speech-modal"
-                    title={editData.id ? "修改话术" : "新建话术"}
+                    className="finishTask-modal"
+                    title={editData.id ? "修改完成工作" : "新建完成工作"}
                     visible={modalVisible}
                     onOk={this.onOk}
                     onCancel={this.onCancel}
                 >
-                    <div className="speech-card-height">
+                    <div className="finishTask-card-height">
                         <Card
                             wrappedComponentRef={inst =>
                                 (this.formRef = inst)}
@@ -277,7 +265,7 @@ class SpeechList extends React.Component {
 
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
-    return { $$state: state.speech };
+    return { $$state: state.finishTask };
 }
 //绑定action到组件props
 function mapDispatchToProps(dispatch) {
@@ -286,4 +274,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 //输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(SpeechList);
+export default connect(mapStateToProps, mapDispatchToProps)(FinishList);

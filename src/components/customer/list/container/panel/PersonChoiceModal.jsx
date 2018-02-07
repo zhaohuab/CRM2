@@ -11,8 +11,10 @@ import {
     Menu,
     Dropdown,
     Tree,
-    Table
+    Table,
+    Checkbox
 } from "antd";
+const CheckboxGroup = Checkbox.Group;
 
 import "assets/stylesheet/all/iconfont.css";
 
@@ -39,14 +41,15 @@ export default class PersonChoiceModal extends React.Component {
             selectedTableRowKeys:[],
             selectedTreeKeys:[],
             visibleModify:false,
-            valueModify:{}
+            valueModify:''
         }
     }
 
     //点击分配方法
     getTreeList(){
+        debugger
         let { viewData } = this.props
-        let ownerUserId = viewData.salesVOs[0].ownerUserId
+        let ownerUserId = viewData.salesVOs[0] && viewData.salesVOs[0].ownerUserId?viewData.salesVOs[0].ownerUserId:''
         let orgId = viewData.orgId
         debugger
         if(ownerUserId){
@@ -240,11 +243,10 @@ export default class PersonChoiceModal extends React.Component {
         debugger
         this.getTableList(page,pageSize,this.state.selectedTreeKeys)
     }
-
+    
     render(){
         let { viewData } = this.props
-        debugger
-        //ssssssss
+        let plainOptions = ['商机', '联系人', '拜访'];
         return(
             <div>
                 {
@@ -278,25 +280,35 @@ export default class PersonChoiceModal extends React.Component {
                     visible={this.state.visibleModify}
                     onOk={this.handleModifyOk.bind(this)}
                     onCancel={this.handleModifyCancel.bind(this)}
-                    width={400}
+                    width={500}
                     maskClosable={false}
                     className='crm-list-panel-change-modal'
                 >   
                    <div className='height'>
                         <Row type='flex' align='middle' className='change-person-item'>
-                            <Col span={6} offset={2}>
+                            <Col span={6}>
                                 <Row type='flex' justify='end'>现负责人：</Row>
                             </Col>
                             <Col span={10}>{viewData.salesVOs && viewData.salesVOs.length?viewData.salesVOs[0].ownerUserName:''}</Col>
                         </Row>
                         <Row type='flex' align='middle' className='change-person-item'>
-                            <Col span={6} offset={2}>
+                            <Col span={6}>
                                 <Row type='flex' justify='end'>调整负责人：</Row>
                             </Col> 
                             <Col span={10}>
                                 <OwnUser viewData={viewData} disabled={false} width={500} height={300} onChange={this.onModifyChange.bind(this)} value={this.state.valueModify}/>
                             </Col>
                         </Row>
+                         <Row type='flex' align='middle' className='change-person-item'>
+                            <Col span={20} offset={4}>
+                                <Row>
+                                    同时将原负责人相关业务调整为现负责人：
+                                </Row>
+                                <Row >
+                                    <CheckboxGroup options={plainOptions} />
+                                </Row>
+                            </Col>
+                        </Row> 
                    </div>
                 </Modal>
             </div>

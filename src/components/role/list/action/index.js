@@ -11,6 +11,7 @@ const showRoleForm = (flag, editData = {}, isEdit) => {
 			dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
 		} else {
 			const orgId = getInfo("orgid");
+			dispatch(fetchData('ROLE_LIST_ROLECARDLOADING'));
 			reqwest({
 				url: org.org + '/'+orgId,
 				method: "GET",
@@ -19,6 +20,8 @@ const showRoleForm = (flag, editData = {}, isEdit) => {
 			}, result => {
 				editData.orgId = { key: result.id, title: result.name }
 				dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
+			},() => {
+				dispatch(fetchData('ROLE_LIST_LOADOVER'));
 			})
 		}
 
@@ -38,6 +41,7 @@ const transData = (data) => {
 const getRoleListData = (searchMap) => {
 
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_ROLELOADING'));
 		reqwest({
 			url: url.role,
 			method: "GET",
@@ -48,6 +52,8 @@ const getRoleListData = (searchMap) => {
 			},
 		}, result => {
 			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', { data: result, searchMap }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -55,6 +61,7 @@ const getRoleListData = (searchMap) => {
 const getFuncTreeData = (roleId, isPreseted) => {
 
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_FUNCLOADING'));
 		reqwest({
 			// `${url.user}/${data.id}`
 			url: url.role + "/" + roleId + "/funcs",
@@ -66,6 +73,8 @@ const getFuncTreeData = (roleId, isPreseted) => {
 			},
 		}, funcData => {
 			dispatch(fetchData("ROLE_LIST_GETFUNCTREESUCCESS", { funcData, roleId, isPreseted }))
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -89,19 +98,6 @@ const selectUserCardRow = (selectedRows, selectedRowKeys) => {
 };
 
 
-const selectRowTab = (rowId, tabIndex) => {
-	return (dispatch) => {
-		reqwest({
-			url: `${url.role}/${rowId}`,
-			method: "GET",
-			data: {
-				tabIndex: tabIndex,
-			},
-		}, result => {
-			// dispatch(fetchData('ROLE_LIST_SELECTROWTAB', { ...result }));
-		})
-	}
-};
 const onTabClick = (tabIndex) => {
 	return (dispatch) => {
 		dispatch(fetchData("ROLE_LIST_TABSELECT", { tabIndex }))
@@ -110,6 +106,7 @@ const onTabClick = (tabIndex) => {
 
 const onSaveRole4Add = (data, index) => {
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_ROLECARDLOADING'));
 		reqwest({
 			url: url.role,
 			method: "POST",
@@ -118,13 +115,15 @@ const onSaveRole4Add = (data, index) => {
 			}
 		}, result => {
 			dispatch(fetchData('ROLE_CARD_SAVEADD', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
 
 const onSaveRole4Edit = (data, index) => {
 	return (dispatch) => {
-
+		dispatch(fetchData('ROLE_LIST_ROLECARDLOADING'));
 		reqwest({
 			url: `${url.role}/${data.id}`,
 			method: "PUT",
@@ -133,12 +132,15 @@ const onSaveRole4Edit = (data, index) => {
 			}
 		}, result => {
 			dispatch(fetchData('ROLE_CARD_SAVEEDIT', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
 
 const onDelete = (id) => {
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_ROLELOADING'));
 		reqwest({
 			url: url.role + "/" + id,
 			method: "DELETE",
@@ -148,7 +150,8 @@ const onDelete = (id) => {
 			if (result.flag) {
 				dispatch(fetchData('ROLE_LIST_DELETESUCCESS', id));
 			}
-
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -157,7 +160,7 @@ const onDelete = (id) => {
 const selectFunc = (roleId, funcIds, checked, funcData) => {
 
 	return (dispatch) => {
-		// dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
+		dispatch(fetchData('ROLE_LIST_FUNCLOADING'));
 		reqwest({
 			url: url.role + "/" + roleId + "/func/assign",
 			method: "POST",
@@ -170,6 +173,8 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 			}
 		}, () => {
 			dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -177,6 +182,7 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 
 const getUserListData = (roleId, pagination, isPreseted) => {
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_USERLOADING'));
 		reqwest({
 			url: url.role + "/" + roleId + "/users",
 			method: "GET",
@@ -188,6 +194,8 @@ const getUserListData = (roleId, pagination, isPreseted) => {
 			},
 		}, result => {
 			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data: result, roleId, isPreseted }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -195,6 +203,7 @@ const getUserListData = (roleId, pagination, isPreseted) => {
 
 const showUserCard = (roleId, name) => {
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_USERCARDLOADING'));
 		reqwest({
 			url: url.role + "/" + roleId + "/add/users",
 			method: "GET",
@@ -206,6 +215,8 @@ const showUserCard = (roleId, name) => {
 			},
 		}, result => {
 			dispatch(fetchData('ROLE_LIST_GETUSERCARDLISTSUCCESS', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -228,6 +239,8 @@ const getEnumData = () => {
 
 const saveUser = (roleId, userIds, pagination) => {
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_USERLOADING'));
+		dispatch(fetchData('ROLE_LIST_USERCARDLOADING'));
 		reqwest({
 			url: url.role + "/" + roleId + "/users/assign",
 			method: "POST",
@@ -242,6 +255,8 @@ const saveUser = (roleId, userIds, pagination) => {
 		}, result => {
 			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
 			dispatch(fetchData('ROLE_LIST_SAVEUSERSUCCESS', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -249,6 +264,7 @@ const saveUser = (roleId, userIds, pagination) => {
 
 const deleteUser = (roleId, userIds, pagination) => {
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_USERLOADING'));
 		reqwest({
 			url: url.role + "/unassign",
 			method: "DELETE",
@@ -263,6 +279,8 @@ const deleteUser = (roleId, userIds, pagination) => {
 		}, result => {
 			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
 			dispatch(fetchData('ROLE_LIST_DELETEUSERSUCCESS', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -278,13 +296,16 @@ const closeUserCard = () => {
 
 const getRightData = (roleId, isPreseted) => {
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_RIGHTLOADING'));
 		reqwest({
 			url: url.role + "/" + roleId + "/right",
 			method: "GET",
 			data: {
 			},
 		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETRIGHTDATA', { data: result.data, isPreseted }));
+			dispatch(fetchData('ROLE_LIST_GETRIGHTDATA', { data: result.data,roleId, isPreseted }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -292,6 +313,7 @@ const getRightData = (roleId, isPreseted) => {
 
 const selectRight = (roleId, rightId, rightData) => {
 	return (dispatch) => {
+		dispatch(fetchData('ROLE_LIST_RIGHTLOADING'));
 		reqwest({
 			url: url.role + "/" + roleId + "/right/assign",
 			method: "POST",
@@ -303,6 +325,8 @@ const selectRight = (roleId, rightId, rightData) => {
 			}
 		}, () => {
 			dispatch(fetchData('ROLE_LIST_SELECTRIGHTDATA', rightData));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -314,6 +338,11 @@ const saveUserCardName = (name) => {
 };
 
 
+const resetState = () => {
+	return (dispatch) => {
+		dispatch(fetchData("ROLE_LIST_RESETSTATE"))
+	}
+};
 //输出 type 与 方法
 export {
 	getRoleListData,
@@ -324,7 +353,6 @@ export {
 	getFuncTreeData,
 	selectRow,
 	onTabClick,
-	selectRowTab,
 	selectFunc,
 	getUserListData,
 	showUserCard,
@@ -336,5 +364,6 @@ export {
 	deleteUser,
 	getRightData,
 	selectRight,
-	saveUserCardName
+	saveUserCardName,
+	resetState
 }

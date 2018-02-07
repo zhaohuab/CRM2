@@ -20,9 +20,9 @@ class Commit extends React.Component {
   handleSearch = (e) => {
     e.preventDefault();
     let { searchMap, pagination } = this.props.$$state.toJS();
-    if (searchMap.status == 'unFinish') {
+    if (searchMap.statusCommit == 'unFinish') {
       this.props.action.getDateUnfinished(pagination, searchMap, searchMap.queryDateKey)
-    } else if (searchMap.status == 'finish') {
+    } else if (searchMap.statusCommit == 'finish') {
       this.props.action.getDateFinish(pagination, searchMap, searchMap.queryDateKey)
     } else {
       this.props.action.getUnfinished(pagination)
@@ -37,16 +37,17 @@ class Commit extends React.Component {
     else if (e.target.value == 'unFinish') { this.props.action.getUnfinished(pagination) }
   }
   onChangeDate = (e) => {
+    debugger
     let val = e.target.value;
     let queryDateKey = val;
      
     let { searchMap, pagination, } = this.props.$$state.toJS();
-    if (searchMap.status == 'unFinish') {
-       
+    if (searchMap.statusCommit == 'unFinish') {
+       debugger
       this.props.action.getDateUnfinished(pagination, searchMap, queryDateKey)
     }
-    else if (searchMap.status = 'finish') {
-       
+    else if (searchMap.statusCommit = 'finish') {
+      debugger
       this.props.action.getDateFinish(pagination, searchMap, queryDateKey)
     }
   }
@@ -128,6 +129,7 @@ class Commit extends React.Component {
 const WrapedCard = Form.create({
   mapPropsToFields: (props) => {
     //把redux中的值取出来赋给表单
+    debugger
     let viewData = props.$$state.toJS().searchMap;
     let value = {};
      
@@ -140,7 +142,7 @@ const WrapedCard = Form.create({
     };
   },
   onFieldsChange: (props, onChangeFild) => {
-     
+     debugger
     //往redux中写值
     let viewData = props.$$state.toJS().searchMap;
 

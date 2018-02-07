@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Form, Input, Table, Row, Col, Radio} from 'antd';
-import './index.less';
+// import './index.less';
 import 'assets/stylesheet/all/iconfont.css';
 import * as Actions from "../../action/approval.js";
 import { queryDataIndex } from 'echarts/lib/util/model';
@@ -31,6 +31,7 @@ class Unfinish extends React.Component {
             wrapperCol: { span: 22 }
         };
 
+        let comment='同意'
         return (
             <div >
              
@@ -63,7 +64,7 @@ class Unfinish extends React.Component {
                                 </FormItem>
                             </Col>
                         </Row>
-                        <Row type="flex" justify="center" gutter={5} >
+                        <Row type="flex" justify="center" gutter={5}>
                             <Col span={8}>
                                 <FormItem label="申请部门" {...formItemLayout}>
                                     {getFieldDecorator('deptName'
@@ -73,10 +74,10 @@ class Unfinish extends React.Component {
                                 </FormItem>
                             </Col>
                             <Col span={8}>
-                                <FormItem label="客户名称" {...formItemLayout}> 
+                                <FormItem label="客户名称" {...formItemLayout}>
                                     {getFieldDecorator('cumName'
-                                    )( 
-                                       <Input disabled />
+                                    )(
+                                        <Input disabled />
                                         )}
                                 </FormItem>
                             </Col>
@@ -110,7 +111,6 @@ class Unfinish extends React.Component {
                                 <FormItem label="最后审批时间" {...formItemLayout}>
                                     {getFieldDecorator('approvalTime'
                                     )(
-                                        
                                         <Input disabled />
                                         )}
                                 </FormItem>

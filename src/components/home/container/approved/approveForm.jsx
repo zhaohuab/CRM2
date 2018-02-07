@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Icon, Tabs, Row, Col, Table, Radio } from "antd";
+import { Icon, Tabs, Row, Col, Table, Radio,Tooltip} from "antd";
 
 import "./index.less";
 import * as Actions from "../../action/approval.js";
@@ -19,11 +19,15 @@ class ApproveForm extends React.Component {
             {
                 "title": "任务主题",
                 "dataIndex": "name",
+                width:'35%',
                 render: (text, record) => (
-                    <div className="table-color"
+                
+                        <div className="table-color" style={{width:'220px',cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
                         onClick={this.slideShow.bind(this, record)}
                     >
+                       <Tooltip placement="bottomLeft" title={record.name}>
                         {record.name}
+                        </Tooltip>
                     </div>
                 )
             },
@@ -52,11 +56,14 @@ class ApproveForm extends React.Component {
             {
                 "title": "任务主题",
                 "dataIndex": "name",
+                width:'35%',
                 render: (text, record) => (
-                    <div className="table-color"
+                        <div className="table-color" style={{width:'220px',cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
                         onClick={this.slideShow.bind(this, record)}
                     >
+                       <Tooltip placement="bottomLeft" title={record.name}>
                         {record.name}
+                        </Tooltip>
                     </div>
                 )
             },
@@ -132,14 +139,15 @@ class ApproveForm extends React.Component {
         );
     }
     render() {
-
-        let { finishState, searchMapApproval, approveData } = this.props.$$state.toJS();
+debugger
+        let { finishState, searchMapApproval, approveData,loadingFlag } = this.props.$$state.toJS();
         let { $$state, action } = this.props;
         let searchState = $$state.get('searchState');
         return (
             <div className="approveForm">
                 {searchMapApproval.status && searchMapApproval.status == 'done' ?
                     <Table
+                    loading={loadingFlag}
                         size="middle"
                         columns={this.columnsDone}
                         dataSource={approveData.data}
@@ -157,6 +165,7 @@ class ApproveForm extends React.Component {
                         }}
                     /> :
                     <Table
+                     loading={loadingFlag}
                         size="middle"
                         columns={this.columnsTodo}
                         dataSource={approveData.data}

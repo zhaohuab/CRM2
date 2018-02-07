@@ -49,7 +49,12 @@ class List extends React.Component {
             width: '20%'
         }]
 
+    }
 
+
+    componentWillMount() {
+      //页面初始化前重置数据
+      this.props.action.resetState();
     }
 
     componentDidMount() {
@@ -96,6 +101,10 @@ class List extends React.Component {
     }
     //点击编辑按钮事件
     onEdit = (row) => {
+        if (row.isPreseted == 1) {
+            message.error("预制角色不允许编辑")
+            return
+        }
         this.props.action.showRoleForm(true, row, true);
     }
     //保存事件
@@ -159,6 +168,7 @@ class List extends React.Component {
         let WarpRoleCard = Form.create()(RoleCard)
         let page = $$state.get("data").toJS();
         let funcData = $$state.get("funcData").toJS();
+        debugger
         //如果没有选中的条数，则选中第一条
         if (page != null && page.data != null && page.data.length > 0 && selectedRoleId == undefined) {
             this.onNameClick(page.data[0]);
@@ -172,6 +182,11 @@ class List extends React.Component {
         };
         let operations = <Button onClick={this.onDispatch.bind(this)}>分配</Button>
         const tabIndex = this.props.$$state.get("tabIndex");
+        const roleLoading = this.props.$$state.get("roleLoading");
+        const roleCardLoading = this.props.$$state.get("roleCardLoading");
+        const funcLoading = this.props.$$state.get("funcLoading");
+        const rightLoading = this.props.$$state.get("rightLoading");
+        const userLoading = this.props.$$state.get("userLoading");
         return (
             <div className="role-container">
                 <div className='list-warpper'>
@@ -200,19 +215,19 @@ class List extends React.Component {
                         :
 
                         <div >
-                            {/* <Button onClick={this.onAdd.bind(this)}>新增角色</Button> */}
                             <SearchForm />
                         </div>
                     }
                 </div>
-               
-                <Row 
-                type="flex"
-                gutter={30}
-                className="role-content">
+
+                <Row
+                    type="flex"
+                    gutter={30}
+                    className="role-content">
                     <Col span={12} className="role-col">
                         <div className="tabel-recoverd">
                             <Table
+                                loading={roleLoading}
                                 size="middle"
                                 columns={this.columns}
                                 rowKey="id"
@@ -228,13 +243,16 @@ class List extends React.Component {
                         <div className='org-tabel'>
                             <Tabs tabPosition={tabIndex} onTabClick={this.onTabClick}>
                                 <TabPane tab="功能" key="1">
-                                    <FuncTree data={funcData} />
+                                    <Spin spinning={funcLoading}>
+                                        <FuncTree data={funcData} />
+                                    </Spin>
                                 </TabPane>
                                 <TabPane tab="数据" key="2">
-                                    <RightPanel />
+                                    <Spin spinning={rightLoading}>
+                                        <RightPanel />
+                                    </Spin>
                                 </TabPane>
                                 <TabPane tab="人员" key="3">
-
                                     <UserTable />
                                 </TabPane>
                             </Tabs>
@@ -247,7 +265,9 @@ class List extends React.Component {
                             width={500}
                             maskClosable={false}
                         >
-                            <WarpRoleCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
+                            <Spin spinning={roleCardLoading}>
+                                <WarpRoleCard dataSource={editData} wrappedComponentRef={(inst) => this.formRef = inst} />
+                            </Spin>
                         </Modal>
 
                     </Col>

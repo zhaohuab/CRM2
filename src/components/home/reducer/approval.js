@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import Mention from 'antd/lib/mention';
 
 let $$initialState = {
-    title: "首页",
+
     data: {},//提交表单数据
     approveData: {},//审批表单数据
 
@@ -26,10 +26,12 @@ let $$initialState = {
         pageSize: 10,
         page: 1
     },
-    searchMap: {}, //存储查询表单数据
-    searchMapApproval: {},
+    searchMap: { statusCommit: 'unFinish' }, //存储查询表单数据
+    searchMapApproval: { status: 'todo' },
     finishState: false,// 完成表头控制完成未完成
     viewState: false,
+
+    viewHomeState: false,
     detailData: {}, //详情form表单数据数据
     detailapproval: {},
     lineState: false, //审批显隐
@@ -41,8 +43,12 @@ let $$initialState = {
     showMention: false,
     showAction: '',
     approvalButtons: [],
-    currentRecord: {}, //详情数据
 
+
+    approvalHomeButtons:[],
+    currentRecord: {}, //详情数据
+    loadingFlag: false,
+    titleFlag: false
 };
 function clearObject(obj) {
     for (let key in obj) {
@@ -53,22 +59,26 @@ function clearObject(obj) {
 
 function clear(obj) {
     for (let key in obj) {
-        if(key=='statusCommit'){
-            obj[key]="unFinish"
+        if (key == 'statusCommit') { //提交
+            obj[key] = "unFinish"
         }
-        else if(key=='status'){
-            obj[key]="todo"
-        }else{
+        else if (key == 'status') {//审批
+            obj[key] = "todo"
+        } else {
             obj[key] = undefined
         }
     }
     return obj
 }
 
-
-
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
     switch (action.type) {
+
+        case 'APPROVAL_LIST_LOADING':
+            debugger
+            return $$state.merge({
+                loadingFlag: action.content
+            })
         case 'HEADER_CHANGE':
             return $$state.merge({
                 title: action.content.title
@@ -83,16 +93,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 approvalFlag: action.content.approvalFlag
             })
 
-
         case 'APPROVED_INITSTATE':
             return $$state.merge({
                 initState1: action.content.initState
             })
-
-
-
-
-
 
         case 'HOME_NOTFINISHED_DATA':
 
@@ -109,16 +113,29 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
         case 'APPROVAL_LIST_SHOWVIEWFORM'://详情展示面板
             debugger
             let appData = action.content.data
-            if (appData.approvalComment == '') {
-                appData.approvalComment = "同意"
-            }
+            // if (appData.approvalComment == '') {
+            //     appData.approvalComment = "同意"
+            // }
             return $$state.merge({
                 viewState: action.content.visible,
                 detailData: appData,
                 currentRecord: action.content.record
             })
-        case 'APPROVE_LIST_MENTIONVISIBLE':
 
+        case 'APPROVAL_LIST_HOMESHOWVIEWFORM':
+            debugger
+            let appHomeData = action.content.data
+            // if (appData.approvalComment == '') {
+            //     appData.approvalComment = "同意"
+            // }
+            return $$state.merge({
+                viewHomeState: action.content.visible,
+                detailData: appHomeData,
+                currentRecord: action.content.record
+            })
+
+
+        case 'APPROVE_LIST_MENTIONVISIBLE':
             return $$state.merge({
                 mentionVisible: action.content.visible,
                 showAction: action.content.action
@@ -129,6 +146,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 mentionVisible: action.content.visible,
                 showAction: ''
             })
+
+        case 'APPROVE_LIST_TITLEFLAG':
+            return $$state.merge({
+                titleFlag: action.content.visible,
+            })
         case 'APPROVAL_LIST_SHOWVIEWAPPROVAL':
             debugger
             return $$state.merge({
@@ -138,10 +160,16 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 done: action.content.data.done
             });
         case 'APPROVAL_LIST_APPROVALBUTTON':
-
+            debugger
             return $$state.merge({
                 approvalButtons: action.content.data.actionlist
             })
+       case 'APPROVAL_LIST_APPROVALHOMEBUTTON':
+       return $$state.merge({
+        approvalHomeButtons: action.content.data.actionlist
+    })
+
+
         case 'APPROVED_VIEWSTATE'://详情展示面板
             return $$state.merge({
                 viewState: action.content.viewState
@@ -165,8 +193,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             return $$state.merge({
                 viewState: action.content.visiable
             })
-        case 'APPROVE_LIST_SEARCHMAP':
 
+
+        case 'APPROVAL_LIST_HOMEHIDEVIEWFORM':
+            return $$state.merge({
+                viewHomeState: action.content.visiable
+            })
+        case 'APPROVE_LIST_SEARCHMAP':
+            debugger
             return $$state.merge({
                 searchMap: action.content.data
             });
@@ -224,11 +258,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 approvalHomeShow: action.content.approvalHomeShow
             })
         case 'HEADER_APPROVED_CHANGE':
+            debugger
             return $$state.merge({
                 myState: action.content.myState,
                 tableState: action.content.tableState,
                 searchMap: clear($$state.get('searchMap').toJS()),
-                searchMapApproval:clear($$state.get('searchMapApproval').toJS())
+                searchMapApproval: clear($$state.get('searchMapApproval').toJS())
             })
         case 'HEADER_NOTFINISHED_SUCCESS':
 
@@ -242,11 +277,16 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 finishedData: action.content.finishedData,
                 data: action.content.finishedData
             })
+
+
         case 'HEADER_TODO_SUCCESS':
             return $$state.merge({
                 todoData: action.content.todoData,
-                approveData: action.content.todoData
+                approveData: action.content.todoData,
+                loadingFlag: false
             })
+
+
         case 'HEADER_DATETODO_SUCCESS':
             return $$state.merge({
                 todoData: action.content.todoData,

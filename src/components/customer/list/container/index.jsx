@@ -107,9 +107,9 @@ class List extends React.Component {
 
     //清除表单数据
     clearForm(){
-        // if(this.formRef){
-        //     this.formRef.props.form.resetFields()
-        // }
+        if(this.formRef){
+            this.formRef.props.form.resetFields()
+        }
     }
 
     //隐藏面版
@@ -120,20 +120,37 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData,newTypeId } = this.props.$$state.toJS();
+        let { viewData,newType ,icbcSele} = this.props.$$state.toJS();
         for(let key in viewData){
             if(key=='ownerUserId'){
                 viewData[key]=viewData[key].id
             }
         }
-        console.log('viewData============',viewData)
+      
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
                 if (viewData.id) {//修改
-                    this.props.action.listFormSave(viewData);
-                } else {//新增
-                    this.props.action.listFormSave(viewData,newTypeId);
+                    if(viewData.isIdentified == 1){
+                        this.props.action.listFormSave(viewData);
+                    }else{
+                        if(viewData.verifyFullname){
+                            //把verifyId发送给后台进行工商认证标识
+                            viewData.verifyId = icbcSele.companyid;
+                            //把已认证信息发动给后台
+                            viewData.isIdentified = 1
+                        }
+                        this.props.action.listFormSave(viewData,newType.key);
+                    }
+                } else {
+                    //新增如果有获取过公司信息就把公司id和认证发送给后台
+                    if(viewData.verifyFullname){
+                        //把verifyId发送给后台进行工商认证标识
+                        viewData.verifyId = icbcSele.companyid;
+                        //把已认证信息发动给后台
+                        viewData.isIdentified = 1
+                    }
+                    this.props.action.listFormSave(viewData,newType.key);
                 }
             }
         });
@@ -203,11 +220,7 @@ class List extends React.Component {
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm 
-                pagination={pagination}
-                searchMap={searchMap}
-
-                clearForm = {this.clearForm.bind(this)}/>
+                <TopSearchForm clearForm = {this.clearForm.bind(this)}/>
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}

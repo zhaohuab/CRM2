@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd';
+import { Form, Input,Spin } from 'antd';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import getFormItem from 'utils/template/form'
@@ -30,6 +30,7 @@ class Card extends React.Component {
     }
     render() {
         const { getFieldDecorator } = this.props.form;
+        let cardLoading = this.props.$$state.get("cardLoading"); 
         let { tpl } = this.props;
         let formData = this.props.$$state.get("formData").toJS()
         if(tpl){
@@ -42,12 +43,13 @@ class Card extends React.Component {
                 }
             }
         }
-       
         return (
+            <Spin spinning={cardLoading}>
             <Form >
                 {tpl ? this.trans(getFieldDecorator, tpl) : ''}
 
-            </Form>)
+            </Form>
+            </Spin>)
     }
 }
 
@@ -67,7 +69,7 @@ function mapDispatchToProps(dispatch) {
 //输出绑定state和action后组件
 const WrapCard = Form.create({
     onFieldsChange(props, changedFields) {
-        if (changedFields.orgName && changedFields.orgName.value.value&&changedFields.orgName.value.value.id == undefined) {
+        if (changedFields.orgName && changedFields.orgName.value&&changedFields.orgName.value.value&&changedFields.orgName.value.value.id == undefined) {
             fieldHandler(changedFields);
             let template = props.$$state.get("template").toJS();
             let isEdit = props.$$state.get("isEdit");

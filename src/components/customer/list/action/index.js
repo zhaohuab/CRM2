@@ -109,6 +109,14 @@ export function leadEndView(leadVisible, leadStep) {
     };
 
 }
+export function changeStep(leadStep) {
+    debugger
+    return {
+        type: "CUSTOMERCOMPANY_LIST_CHANGESTEP",
+        payload: {leadStep }
+    };
+
+}
 export function leadEndIngShow(leadVisible) {
     return {
         type: "CUSTOMERCOMPANY_LIST_LEADINGSHOW",
@@ -187,7 +195,7 @@ export function showForm(visible) {
     return fetchData("CUSTOMERCOMPANY_LIST_SHOWFORM", { visible });
 };
 
-//
+
 export function showFormEdit(visiable){
     
     return{
@@ -393,7 +401,7 @@ let getIndustry = (industry)=>{
 
 //编辑的Request请求
 let sendCumRequest = (data,dispatch)=>{
-    
+    debugger
     reqwest(
         {
             url: url.customer + "/" + data.id,
@@ -403,7 +411,7 @@ let sendCumRequest = (data,dispatch)=>{
             }
         },
         data => {
-            
+            debugger
             dispatch({
                 type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
                 data
@@ -414,7 +422,7 @@ let sendCumRequest = (data,dispatch)=>{
 
 //新增的Request请求
 let sendCumNewRequest = (data,dispatch)=>{
-    
+     debugger
      reqwest(
             {
                 url: url.customer,
@@ -424,7 +432,7 @@ let sendCumNewRequest = (data,dispatch)=>{
                 }
             },
             data => {
-                
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_ADDSAVE",
                     data
@@ -440,9 +448,9 @@ export function listFormSave(data,newTypeId) {
     if(newTypeId){//如果newTypeId存在代表是新增
         data.biztypeId = newTypeId
     }
-    
-    
+ 
     return dispatch => {
+        debugger
         if(data.industry && data.industry.name && (!data.industry.id)){
             getIndustry(data.industry.name).then((indastry)=>{
                 
@@ -461,7 +469,7 @@ export function listFormSave(data,newTypeId) {
             })
         }else{
             //有行业id没有行业name
-            
+            debugger
             if( data.industry && (!data.industry.name) && data.industry.id){
                 data.industry = data.industry.id
             //都有的情况下只获取行业id    
@@ -562,12 +570,13 @@ export function cumUpgrade(id) {
  * @param {*} visiable 显示modal
  */
 
-export function customerListInfo(data, visiable) {
-    
+export function customerListInfo(data, visiable,select) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_ICBCDETAILINFO",
         data,
-        visiable
+        visiable,
+        select
     };
 };
 
@@ -590,12 +599,13 @@ export function saveIcbcNameCancel(visiable) {
 
 
 //保存工商核实详情数据
-export function icbcDetailInfo(data, visiable) {
+export function icbcDetailInfo(data, visiable,select) {
     
     return {
         type: "CUSTOMERCOMPANY_LIST_ICBCINFODETAIL",
         data,
-        visiable
+        visiable,
+        select
     };
 };
 
@@ -607,7 +617,7 @@ export function changeStateFn(visiable) {
 };
 //详情中工商核实
 export function checkedFn(viewData, select, id, visiable) {
-    
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -618,7 +628,7 @@ export function checkedFn(viewData, select, id, visiable) {
                         status: "Y",
                         companyid: select.companyid,
                         verifyFullname: select.companyname,
-                        data: viewData
+                        ...viewData
                     }
                 }
             },
@@ -627,8 +637,10 @@ export function checkedFn(viewData, select, id, visiable) {
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL",
                     visiable,
-                    verifyFullname: result.verifyFullname,
-                    verifyId:result.verifyId
+                    result
+                    // verifyFullname: result.verifyFullname,
+                    // verifyId:result.verifyId,
+                    // isIdentified:result.isIdentified
                 });
                 
             }
@@ -637,6 +649,7 @@ export function checkedFn(viewData, select, id, visiable) {
 };
 //详情中取消工商核实
 export function checkedCancelFn(id, visiable) {
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -649,10 +662,11 @@ export function checkedCancelFn(id, visiable) {
                 }
             },
             result => {
-                
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_CLEANVERIFYID",
-                    visiable
+                    visiable,
+                    isIdentified:result.isIdentified
                 });
             }
         );
@@ -779,12 +793,12 @@ export function closeIcbcVisible1(visible) {
 };
 
 //点击新建按钮清空viewPanel面板数据
-export function addCustomer(data, typeId) {
+export function addCustomer(data, newType) {
     return dispatch => {
         dispatch({
             type: "CUSTOMERCOMPANY_LIST_ADDCUSTOMER",
             data,
-            typeId
+            newType
         });
     };
 };

@@ -50,7 +50,7 @@ class EditForm extends React.Component {
                                         label="职位"
                                         {...formItemLayout}
                                     >
-                                        {getFieldDecorator("jobName", {
+                                        {getFieldDecorator("job", {
                         
                                         })(
                                         

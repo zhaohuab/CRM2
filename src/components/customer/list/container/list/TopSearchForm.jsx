@@ -87,8 +87,8 @@ class ToolForm extends React.Component {
     //点击新增的获取的业务类型
     newCumMenuClick(item, key) {
         debugger
-        let typeId = item.key;
-        this.props.action.addCustomer(true, typeId);
+        
+        this.props.action.addCustomer(true, item);
     }
 
     //上下表单控制显隐
@@ -104,17 +104,41 @@ class ToolForm extends React.Component {
         );
     }
 
+
     //存储建议查询条件
     searchMapFn(searchMap) {
         this.props.action.saveSearchMap(searchMap);
     }
+    // 2.6 余春梅 查询条件导出转化
+    changeSearchData(data){
+        for (let key in data) {
+            if (key == 'isGroup'|| key == 'cannelType'|| key == 'enableState'|| key == 'level'|| key == 'state'|| key == 'type') {
+                if(data[key] && data[key].key){
+                    data[key] = data[key].key
+                }
+            }
+            if (key == 'province_city_district' && data[key]) {
+                data.province = data[key][0];
+                data.city = data[key][1];
+                data.district = data[key][2];
+                delete data.province_city_district;
+            }
+
+            if (key == 'industry' && data[key]) {
+                data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+            }
+        }
+        return data
+    }
+
      // 导入导出 余春梅  1.30
      onMenu(e) {
         debugger
         let { searchMap, pagination } = this.props.$$state.toJS();
         let page = pagination.page;
         let pageSize = pagination.pageSize
-        let search = JSON.stringify(searchMap)
+        let tranSearch=this.changeSearchData.call(this,searchMap);
+        let search = JSON.stringify(tranSearch)
         debugger
         if (e.key == "1") {
             debugger
@@ -141,10 +165,10 @@ class ToolForm extends React.Component {
 
         const moreMenu = (
             <Menu onClick={this.onMenu.bind(this)}>
-                <Menu.Item key="1">
+                <Menu.Item key="1" className="customer_list_import_customer">
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item key="2">
+                <Menu.Item key="2" className="customer_list_export_customer">
                     <span>导出</span>
                 </Menu.Item>
             </Menu>

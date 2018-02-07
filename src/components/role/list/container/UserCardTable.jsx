@@ -39,16 +39,17 @@ class UserCardTable extends Component {
         const page = $$state.get("userCardList").toJS();
         let selectedUserCardRowKeys = $$state.get("selectedUserCardRowKeys").toJS();
         let selectedUserCardRows = $$state.get("selectedUserCardRows").toJS();
-        debugger
         let userCardVisible = $$state.get("userCardVisible");
         let rowSelection = {
             selectedRowKeys:selectedUserCardRowKeys,
             onChange: this.onSelectChange
         };
+        let userCardLoading = this.props.$$state.get("userCardLoading");
         return (
 
             <div className="tabel-recoverd">
                 <Table
+                loading={userCardLoading}
                     size="middle"
                     columns={this.columns}
                     rowKey="id"

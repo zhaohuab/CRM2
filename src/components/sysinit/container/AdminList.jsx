@@ -151,6 +151,8 @@ class List extends React.Component {
       
     ]
     let adminList = this.props.$$state.get("adminList").toJS();
+    let tableLoading = this.props.$$state.get("tableLoading");
+    
     let { selectedRowKeys } = this.state;
     let rowSelection = {
       selectedRowKeys,
@@ -175,7 +177,9 @@ class List extends React.Component {
         <div className="list-box">
           
           {//userType初始化为0，等userType查询后再渲染列表，不会出现org列闪一下的情况
-            userType ==0 ?"":<Table
+            userType ==0 ?"":
+            <Table
+            loading={tableLoading}
             size="middle"
             columns={columns}
             dataSource={adminList}

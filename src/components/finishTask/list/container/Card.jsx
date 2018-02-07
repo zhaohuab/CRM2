@@ -30,8 +30,8 @@ class EditForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
          let formItemLayout = {
-            labelCol: { span: 3 },
-            wrapperCol: { span: 17 }
+            labelCol: { span: 5 },
+            wrapperCol: { span: 15 }
         };
         let {  
             enumData,
@@ -47,16 +47,15 @@ class EditForm extends React.Component {
                                         {getFieldDecorator("id", {})(<Input />)}
                                     </FormItem>
                                     <FormItem
-                                        label="职位"
+                                        label="客户状态"
                                         {...formItemLayout}
                                     >
-                                        {getFieldDecorator("jobName", {
+                                        {getFieldDecorator("state", {
                         
                                         })(
-                                        
                                             <Enum
                                             addOptionAll={
-                                                "职位"
+                                                "客户状态"
                                             }
                                             dataSource={
                                                 enumData
@@ -69,8 +68,8 @@ class EditForm extends React.Component {
                             <Row  type="flex" justify="center">
                             <Col span={20}>
                                     {" "}
-                                    <FormItem label="痛点" {...formItemLayout}>
-                                        {getFieldDecorator("saleTalk", {
+                                    <FormItem label="完成工作" {...formItemLayout}>
+                                        {getFieldDecorator("work", {
 
                                         })(<TextArea rows={4}
                                          placeholder="请输入" />)}
@@ -127,7 +126,7 @@ const CardForm = Form.create({
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.speech
+        $$state: state.finishTask
     };
 }
 //绑定action到组件props

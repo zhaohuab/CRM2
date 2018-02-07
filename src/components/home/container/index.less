@@ -5,6 +5,133 @@
  /*首页样式*/
  .home-layer{
     position: relative;
+
+//审批 详情 
+    .view-warrper-homeApproval {
+        position: relative;
+        height: 100%;
+        background:white;
+
+        .arrow{
+                margin-top:-9px;
+                width: 0px;
+                height: 0px;
+                border-width: 8px;
+                border-style: solid;
+                border-color: transparent transparent #999 transparent;
+        }
+        .arrow-top{
+           margin-top:9px;
+            width: 0px;
+            height: 0px;
+            border-width: 8px;
+            border-style: solid;
+            border-color:#999 transparent transparent  transparent;
+        }
+        .form-input-recover {
+
+        .lastPreson{
+    .ant-col-7.ant-form-item-label{
+     width:35%;
+    }
+    .ant-col-11.ant-form-item-control-wrapper{
+        width:65%;
+    }
+    
+}
+
+   .detailForm .ant-row.ant-form-item {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            .ant-form-item-control-wrapper {
+                width: 70%;
+            }
+            .ant-input-lg {
+                height: 28px;
+                 border:none;
+                 color: #999;
+                 background-color: white;
+            }
+            .import {
+                color: #3ca4fb;
+            }
+            .remark{
+                .ant-form-item-control-wrapper {
+                    width:95%;
+                }
+        }
+        border-top: 10px solid #f2f2f2;
+        width:100%;
+        box-sizing: border-box;
+        min-height: 38px;
+        padding: 10px 10px;
+
+        }
+        .view-warrper-detail-homeApproval{
+            position: relative;
+            min-height: 200px;
+            box-sizing: border-box;
+            .header-detail {
+                width:100%;
+                padding: 10px 22px 10px 15px;
+                box-sizing: border-box;
+                min-height: 38px;
+                // border:1px solid #999;
+                margin:5px 0 0 0;
+                .head-buttom{
+                    display: flex;
+                   .btnReturn{
+                       margin-right:15px;
+                   }
+                    .approval-buttons{
+                        display: flex;
+                        div{margin-left: 15px;}
+                    }
+                    }
+
+            }
+
+            .view-state{
+                width:100%;
+                padding: 10px 15px;
+                box-sizing: border-box;
+                border-top: 10px solid #f2f2f2;
+                margin:0;
+                .info-title {
+                    color: #666666;
+                    height: 40px;
+                    line-height: 40px;
+                }
+                .detailList{
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                    .detailStatus{
+                        font-size: 14px;
+                        width: 40px;
+                        height: 40px;
+                        text-align: center;
+                        height: 40px;
+                        line-height: 40px;
+                        border-radius: 40px;
+                        border: 1px solid #999;
+                    }
+                    .detailName{
+                        margin-left:5px;
+                    }
+                    .detailIcon{
+                        .iconfont.icon-touxiang-jiantou.rouge{
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+//===============================================================
+
 .home-warrper {
    display: flex;
    flex-direction:column;
@@ -47,7 +174,7 @@
     #change-style .ant-table .ant-tree.ant-tree-show-line li:not(:last-child):before{
         border-left:1px solid #ECECEC
     }
-   
+
    /*首页样式*/
    .main-inner{
        padding:15px;
@@ -68,7 +195,7 @@
         font-size:16px;
      }
   }
-  
+
   .clinet-main{
       .chart-title{
           display: flex;
@@ -144,7 +271,7 @@
                 }
             }
         }
-    } 
+    }
     .clinet-main-right{
         .notice-right-padding{
             padding:15px;padding-top:0;
@@ -285,6 +412,7 @@
             }
         }
 
+
         //审批
        .main-right-top{
         background: white;
@@ -312,11 +440,11 @@
              background: #FCFCFC ;
              border-radius:0px;
          }
-     
+
        .ant-table .ant-table table{
              border:none
          }
-    
+
      .ant-table{
              color:#999;
          }
@@ -328,11 +456,12 @@
              box-sizing: border-box;
              text-align: center
          }
-     
+
         .ant-table .ant-tree.ant-tree-show-line li:not(:last-child):before{
              border-left:1px solid #ECECEC
          }
-//==========
+
+//===
 
 
 
@@ -366,7 +495,7 @@
         div{
             font-size: 30px;
             font-weight: 400;
-          
+
         }
     }
        .approval-approvedColor{
@@ -376,11 +505,11 @@
         div{
             font-size: 30px;
             font-weight: 400;
-         
+
         }
        }
        }
-
+//===========================================
 
 
 
@@ -400,7 +529,7 @@
   }
 }
  }
- 
+
 
 //云审批 时间树样式覆盖
  .approval-timeline.approval-timeline-recoverd{
@@ -429,4 +558,4 @@
         }
 
     }
-    //------------
+//===============================================================
