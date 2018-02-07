@@ -91,7 +91,7 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-        viewData.verifyFullname
+        debugger;
      
         return (
             <div>
@@ -142,7 +142,7 @@ class EditForm extends React.Component {
                                                         </Row>
                                                     </Col>
                                                     <Col
-                                                        span={12}
+                                                        span={viewData.verifyId?18:12}
                                                         id="upload-form-item"
                                                     >
                                                         <FormItem
@@ -168,7 +168,7 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                     {
-                                                        viewData.verifyFullname == 1 && viewData.id?'':
+                                                        viewData.verifyId?'':
                                                         <Col span={5}>
                                                             <Row
                                                                 type="flex"
@@ -706,7 +706,6 @@ const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
         let viewData = props.$$state.toJS().viewData;
-        debugger
         let value = {};
     
         for (let key in viewData) {

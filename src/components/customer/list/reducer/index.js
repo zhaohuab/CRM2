@@ -137,7 +137,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE':
             let enableState = $$state.get('viewData').toJS()
             enableState.enableState = action.state;
-            debugger
+            
             return $$state.merge({
                 data: action.data,
                 pagination: action.pagination,
@@ -184,7 +184,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({ moreShow: !visit });
         //保存table已选择条件    
         case "CUSTOMERCOMPANY_LIST_SELECTROW": 
-        debugger
+        
             return $$state.merge({
                 selectedRowKeys: Immutable.fromJS(
                     action.payload.selectedRowKeys
@@ -192,7 +192,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //点击新建按钮时，清空viewPanel数据,增加带过来的值    
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER": 
-            debugger
+            
             return $$state.merge({
                 formVisitable: action.data,
                 newTypeId: action.typeId,
@@ -402,7 +402,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         ////////天赐删除附件
         case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
-        debugger
+        
             let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
             let fileArr = viewDataRelevant2[3].list.data;
             let file = action.file;

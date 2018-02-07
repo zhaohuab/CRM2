@@ -78,7 +78,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
 
         //----------- 导入导出
         case 'CUSTOMERCOMPANY_LIST_VIEWLEADSHOW':
-        debugger
+        
             return $$state.merge({
                 viewLeadVisible: action.payload.leadVisible,
             });
@@ -107,12 +107,12 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 leadingVisible: action.payload.leadVisible,
             });
         case 'CUSTOMERCOMPANY_LIST_SAVEFILES':
-            debugger
+            
             return $$state.merge({
                 leadFiles: action.payload.files,
             });
         case 'CUSTOMERCOMPANY_LIST_FILESUCCESS':
-            debugger
+            
             return $$state.merge({
                 filesSuccess: action.payload.filesSuccess,
                 successResult: action.payload.result,
@@ -340,7 +340,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                     //省市区
                     actionData.province_city_district = {}
                     actionData.province_city_district.result= district
-        debugger;
+        ;
                     return $$state.merge({
                         viewState: action.visible,
                         viewData: actionData,
@@ -444,8 +444,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             return $$state.merge({
                 viewDataRelevant:Immutable.fromJS(delContacts)
             });
-        case "CUSTOMERGROUP_GROUPLIST_GETENUMDATA"://------------------获取集团客户查询条件选项及默认初始条件
-        debugger
+        case "CUSTOMERGROUP_GROUPLIST_GETENUMDATA"://------------------获取集团客户查询条件选项及默认初始条件       
             let obj={};
             action.payload.searchData.forEach(item=>{
                 if(item.isSelected==1){
@@ -453,11 +452,11 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                     obj.defClass=item.defClass;
                 }
             })
-            debugger;
+            ;
             return $$state.merge({ searchData: action.payload.searchData, searchPlan:obj, defaultId:obj.id});
         case "CUSTOMERGROUP_SEARCHPLAN_SUCESS"://获取相关对象联系人表单数据
         let aa = action;
-        debugger
+        
             return $$state.merge({
                 searchPlan:action.payload.searchPlan,
             });

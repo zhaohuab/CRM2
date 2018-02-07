@@ -48,7 +48,7 @@ export default class PersonChoiceModal extends React.Component {
         let { viewData } = this.props
         let ownerUserId = viewData.salesVOs[0].ownerUserId
         let orgId = viewData.orgId
-        debugger
+        
         if(ownerUserId){
             this.setState({
                 visibleModify:true,
@@ -179,7 +179,7 @@ export default class PersonChoiceModal extends React.Component {
     
      //分配变更modal确定
      handleModifyOk(){
-         debugger
+         
         if(!this.state.valueModify){
             this.setState({
                 visibleModify:false,
@@ -190,7 +190,7 @@ export default class PersonChoiceModal extends React.Component {
         let { viewData } = this.props
         let id = viewData.salesVOs[0].id
         let salesVOs = {ownerUserId:this.state.valueModify.id}
-        debugger
+        
         reqwest(
             {
                 url: baseDir + "/cum/customersales/" +id,
@@ -200,7 +200,7 @@ export default class PersonChoiceModal extends React.Component {
                 }
             },
             data => {
-                debugger
+                
                 if(data){
                     let nv = viewData.salesVOs[0]
                     if(this.state.valueModify){

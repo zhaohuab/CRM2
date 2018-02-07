@@ -60,7 +60,8 @@ class DetailTop extends React.Component {
     }
 
     render(){
-        let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
+        let {viewData, icbcSelect2, icbcVisible2, icbcInfo1} = this.props.$$state.toJS();
+        debugger;
         return(
         <Row className="view-warrper-header">
             <Row className="header-customer">

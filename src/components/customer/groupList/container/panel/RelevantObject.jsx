@@ -72,7 +72,7 @@ class RelevantObject extends React.Component {
         }else{
             temp=0
         }
-      debugger
+      
         let  icon = ['icon-canyuren','icon-lianxirenguanxi','icon-xiansuofenpei','icon-shengji','icon-wenjian']
         let fn = [
             [<i className={'iconfont icon-lianxiren'}/>,<ContactsCard/>],
@@ -150,7 +150,7 @@ class RelevantObject extends React.Component {
 
     //展示联系人详情
     contactsDetailModal(item,e){
-        debugger
+        
         e.stopPropagation();
         reqwest(
             {
@@ -175,7 +175,7 @@ class RelevantObject extends React.Component {
 
     //展示商机详情
     oppDetailModal(item,e){
-        debugger
+        
         e.stopPropagation();
         reqwest({
             url: opportunity.opportunity + "/" + item.id,
@@ -200,7 +200,7 @@ class RelevantObject extends React.Component {
     render(){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
         let tempContacts,tempOpport,tempUpgrade
-        debugger
+        
         if(viewDataRelevant&&viewDataRelevant.length){
             tempContacts = viewDataRelevant[0].list.data
             if(tempContacts.length>=8){
@@ -216,7 +216,7 @@ class RelevantObject extends React.Component {
             }
         }
         let type = ['icon-xsl','icon-word','icon-ppt']
-       debugger
+       
         return(
             <div className='relevant-wapper' id='relevant-wapper-item'>
                 <Collapse defaultActiveKey={['1','2','3','4']}>

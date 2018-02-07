@@ -11,6 +11,7 @@ import {
     Button,
     Row,
     Col,
+    Spin,
     Pagination
 } from "antd";
 
@@ -58,15 +59,17 @@ class PanelMap extends React.Component {
     }
 
     pageChange = (num) => {//页码更改
-        let str='',id='';
+        //debugger;
+        let str = this.props.$$state.get('userName');
+        let id = this.props.$$state.get(str);
         this.props.action.getCustomerItem(str,id,num)
     }
 
     getCustomer = (str, id, name) => {
+        //debugger;
         this.props.action.getCustomerList(str, id, name);
         this.props.action.getCustomerItem(str, id, 1)
     }
-
 
     componentDidMount() {  
         this.props.action.getCustomerList();//获取部门及业务员
@@ -95,8 +98,10 @@ class PanelMap extends React.Component {
         let {  $$state, action} = this.props;
         let { data, customerItem } =  $$state.toJS();
         let itemFlag = $$state.get('itemFlag');
-        let departmentName = $$state.get('departmentName');  
-        console.log('customerItem=================',customerItem,customerItem.total)    
+        let departmentName = $$state.get('departmentName'); 
+        let loadingFlag = $$state.get('loadingFlag');
+        let page = $$state.get('page');  
+        //console.log('customerItem=================',customerItem,customerItem.total)    
       debugger;
         return (
             <Row type="flex" className="customer-panelMap-wraper">
@@ -110,7 +115,9 @@ class PanelMap extends React.Component {
                                 itemFlag?
                                 data.list.map(item=>{
                                     return (
-                                        <Row  className='customer-principal-item' onClick={getCustomer.bind(this,'deptId',item.id,item.name)}>                                
+                                        <Row  
+                                          className='customer-principal-item customer-principal-role-department' 
+                                          onClick={getCustomer.bind(this,'deptId',item.id,item.name)}>                 
                                                 <Col span={18} className='customer-name'>{item.name}</Col>
                                                 <Col span={6}><span className='customer-num'>{item.num}</span>个客户</Col>                                         
                                         </Row>
@@ -119,37 +126,50 @@ class PanelMap extends React.Component {
                                 :
                                 data.list.map(item=>{                               
                                     return (
-                                        <div  className='customer-principal-item customer-principal-role-item ' onClick={getCustomer.bind(this,'userId',item.id,item.name)}>{item.name}<span className='customer-num'>({item.num})</span></div>
+                                        <div  
+                                          className='customer-principal-item customer-principal-role-item ' 
+                                          onClick={getCustomer.bind(this,'userId',item.id,item.name)}
+                                        >
+                                            <div className='role-name' title={item.name}>{item.name}</div>
+                                            <div className='customer-num'>({item.num})</div>
+                                        </div>
                                     )                               
                                 }) 
                             }                 
                         </div>
                         <div className='customer-address'>
                             {
-                                customerItem.data.map((item,index)=>{
-                                    let flag = item.latitude&&item.longitude
-                                    return (
-                                        <Row type="flex" align='middle' className='customer-address-item'>
-                                            <Col span={3}>
-                                                <div className={flag ? 'customer-address-item-order1':'customer-address-item-order2'}>
-                                                    <i className="iconfont icon-dingweilan" />
-                                                    <p className='customer-address-item-num'>{index+1}</p>
-                                                </div>                                          
-                                            </Col>
-                                            <Col span={16} className='item-content' onClick={getDetailAdress.bind(this,item)}>
-                                                <div className='item-content-name'>{item.name}
-                                                    <div className='item-content-name-title'>{item.name}</div>
-                                                </div>
-                                                <div className='item-content-adress'>
-                                                <i className="iconfont icon-dingwei" />{item.street?item.street:'该客户暂无地址详情'}</div>
-                                            </Col>
-                                        </Row>
-                                    )
-                                })
+                                loadingFlag ?
+                                <Spin size="large" className='loading'/>
+                                :
+                                <div>
+                                    {
+                                        customerItem.data.map((item,index)=>{
+                                            let flag = item.latitude&&item.longitude
+                                            return (
+                                                <Row type="flex" align='middle' className='customer-address-item'>
+                                                    <Col span={3}>
+                                                        <div className={flag ? 'customer-address-item-order1':'customer-address-item-order2'}>
+                                                            <i className="iconfont icon-dingweilan" />
+                                                            <p className='customer-address-item-num'>{index+1}</p>
+                                                        </div>                                          
+                                                    </Col>
+                                                    <Col span={16} className='item-content' onClick={getDetailAdress.bind(this,item)}>
+                                                        <div className='item-content-name'>{item.name}
+                                                            <div className='item-content-name-title'>{item.name}</div>
+                                                        </div>
+                                                        <div className='item-content-adress'>
+                                                        <i className="iconfont icon-dingwei" />{item.street?item.street:'该客户暂无地址详情'}</div>
+                                                    </Col>
+                                                </Row>
+                                            )
+                                        })
+                                    } 
+                                </div>
                             }
                         </div>
                         <Row type="flex" justify="end" className='page-list'>
-                            <Pagination total={ customerItem.total } onChange={ pageChange.bind(this) } pageSize={ 5 }/>
+                            <Pagination   total={ data.total } onChange={ pageChange.bind(this) } pageSize={ 5 }/>
                         </Row>
                 </Col>
                 <Col span={16} className="customer-panelMap-right">

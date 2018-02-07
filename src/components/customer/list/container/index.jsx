@@ -218,7 +218,7 @@ class List extends React.Component {
                         pagination={{
                             size: "large",
                             showSizeChanger: true,
-                            showQuickJumper: true,
+                             showQuickJumper: true,
                             total: page.total,
                             showTotal: this.showTotal,
                             onChange: this.onPageChange.bind(this),
