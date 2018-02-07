@@ -43,7 +43,6 @@ class Card extends React.Component {
                 }
             }
         }
-       debugger
         return (
             <Spin spinning={cardLoading}>
             <Form >

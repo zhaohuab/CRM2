@@ -26,6 +26,9 @@ const reqwest = (options, success, fail) => {
     })
         .then(result => {
             if (!handle(result)) {
+                if(fail){
+                    fail()
+                }
                 return;
             }
             if (result.response) {
@@ -43,7 +46,6 @@ const reqwest = (options, success, fail) => {
         })
         .fail(result => {
             handle(result);
-
             if (fail) {
                 if (result.code) {
                     fail(result);

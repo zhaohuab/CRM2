@@ -1,7 +1,7 @@
 import cookie from "utils/cookie";
 
 let baseDir = cookie("basedir"); // host:ip/crm_web/
-baseDir = baseDir+'/'
+//baseDir = baseDir+'/'
 
 const login = baseDir + "login";
 

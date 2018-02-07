@@ -100,6 +100,8 @@ const onAdminListSave = (data) => {
 				return item;
 			})
 			dispatch(fetchData('SYSINIT_PAGE_ADMINLISTSAVE', { adminList: adminList }));
+		},() =>{
+			dispatch(fetchData('SYSINIT_PAGE_LOADOVER'));
 		})
 	}
 }

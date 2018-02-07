@@ -31,7 +31,7 @@ function pageEdit(page, item) {
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
 
 	switch (action.type) {
-		
+
 		case 'ORG_LIST_GETLISTSUCCESS':
 			return $$state.merge({
 				listData: action.payload,
@@ -73,20 +73,20 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				listData: pageAdd($$state.get("listData").toJS(), action.payload.data),
 				formVisitable: false,
 				treeData: action.payload.treeData,
-				tabelLoading:false,
-				cardLoading:false,
-				treeLoading:false
+				tabelLoading: false,
+				cardLoading: false,
+				treeLoading: false
 			});
 
 
-			case 'ORG_LIST_LISTEDITSUCCESS':
+		case 'ORG_LIST_LISTEDITSUCCESS':
 			return $$state.merge({
 				listData: pageEdit($$state.get("listData").toJS(), action.payload.data),
 				formVisitable: false,
 				treeData: action.payload.treeData,
-				tabelLoading:false,
-				cardLoading:false,
-				treeLoading:false
+				tabelLoading: false,
+				cardLoading: false,
+				treeLoading: false
 			});
 
 		case 'ORG_LIST_LISTDELSUCCESS':
@@ -95,7 +95,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			})
 			return $$state.set('listData', newAry)
 
-	
+
 		case 'ORG_LIST_GETTREELISTSUCCESS':
 			let treeNew = $$state.set('treeData', Immutable.fromJS(action.data))
 			return treeNew.merge({ treeLoading: false, selectedRows: [] })
@@ -109,19 +109,25 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				editData: action.content
 			})
-				//页面状态重置
-				case 'ORG_LIST_RESETSTATE':
-				return $$state.merge($$initialState)
-				
-				case 'ORG_LIST_TABLELOADING':
-				return $$state.merge({ tabelLoading: true })
-	
-				case 'ORG_LIST_CARDLOADING':
-				return $$state.merge({ cardLoading: true })
-	
-				case 'ORG_LIST_TREELOADING':
-				return $$state.merge({ treeLoading: true })
-	
+		//页面状态重置
+		case 'ORG_LIST_RESETSTATE':
+			return $$state.merge($$initialState)
+
+		case 'ORG_LIST_TABLELOADING':
+			return $$state.merge({ tabelLoading: true })
+
+		case 'ORG_LIST_CARDLOADING':
+			return $$state.merge({ cardLoading: true })
+
+		case 'ORG_LIST_TREELOADING':
+			return $$state.merge({ treeLoading: true })
+
+			case 'ORG_LIST_LOADOVER':
+			return $$state.merge({
+				tabelLoading: false,
+				cardLoading: false,
+				treeLoading: false,
+			})
 		default:
 			return $$state;
 	}
