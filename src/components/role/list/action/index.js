@@ -140,6 +140,8 @@ const onDelete = (id) => {
 			if (result.flag) {
 				dispatch(fetchData('ROLE_LIST_DELETESUCCESS', id));
 			}
+		},()=>{
+			
 		})
 	}
 }

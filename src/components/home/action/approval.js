@@ -127,7 +127,7 @@ const approvalHomeData = () => {
                     }
                 },
                 dataResult => {//我审批--待办
-                    debugger ;
+                    debugger;
                     dispatch(fetchData('HOME_TODO_DATA', { approvalData: dataResult.datalist }))
                 }
             );
@@ -198,7 +198,7 @@ const saveSearchMap = (data) => {
     return fetchData("APPROVE_LIST_SEARCHMAP", { data });
 };
 const savesearchMapApproval = (data) => {
-debugger
+    debugger
     return fetchData("APPROVE_LIST_SEARCHMAPAPPROVAL", { data });
 }
 const saveDetailData = (data) => {
@@ -211,16 +211,17 @@ const mentionVisible = (visible, action) => {
 const mentionVisibleClose = (visible) => {
     return fetchData("APPROVE_LIST_MENTIONCLOSE", { visible });
 }
-const titleFlag=(visible)=>{
+const titleFlag = (visible) => {
     return fetchData("APPROVE_LIST_TITLEFLAG", { visible });
 }
 
-const setSearchMap=(search)=>{
+const setSearchMap = (search) => {
     debugger
-    return fetchData("APPROVE_LIST_SAVESEARCH", {search});
+    return fetchData("APPROVE_LIST_SAVESEARCH", { search });
 }
 //展示面板，把点击某个客户的所有值，放在redux中
 const showViewForm = (visible, djId, djType, instanceId, taskId, record) => {
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -291,9 +292,86 @@ const showViewForm = (visible, djId, djType, instanceId, taskId, record) => {
     };
 };
 
+//展示面板，把点击某个客户的所有值，放在redux中 home 页中的数据 
+const showHomeViewForm = (visible, djId, djType, instanceId, taskId, record) => {
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.details,
+                method: "GET",
+                data: {
+                    param: {
+                        id: djId,
+                        type: djType
+                    }
+                }
+            },
+            data => {
+                dispatch(fetchData(
+                    "APPROVAL_LIST_HOMESHOWVIEWFORM",
+                    {
+                        visible,
+                        data: transReceiveDataOne(data),
+                        record
+                    }
+                ));
+            }
+        );
+        reqwest(
+            {
+                url: url.histories,
+                method: "GET",
+                data: {
+                    param: {
+                        id: djId,
+                        type: djType
+                    }
+                }
+            },
+            data => {
+                dispatch(fetchData(
+                    "APPROVAL_LIST_SHOWVIEWAPPROVAL",
+                    {
+                        data //审批状态数据
+                    }
+                )
+                );
+            }
+        );
+        reqwest(
+            {
+                url: url.actions,
+                method: "GET",
+                data: {
+                    param: {
+                        taskid: taskId,
+                        instanceid: instanceId
+                    }
+                }
+            },
+            data => {
+                debugger
+                dispatch(fetchData(
+                    "APPROVAL_LIST_APPROVALHOMEBUTTON",
+                    {
+                        data //审批状态数据
+                    }
+                ));
+
+            }
+        );
+    };
+};
+
 const hideViewForm = visiable => {
 
     return fetchData("APPROVAL_LIST_HIDEVIEWFORM", { visiable });
+};
+
+const hideHomeViewForm = visiable => {
+
+    return fetchData("APPROVAL_LIST_HOMEHIDEVIEWFORM", { visiable });
 };
 
 const allButtons = (id, type, taskid, instanceid, notes, action) => {
@@ -351,7 +429,7 @@ const getDateUnfinished = (pagination, searchMap, queryDateKey) => {
                     }
                 }
             },
-           
+
             dataResult => {//我提交--未完成
                 debugger
                 dispatch(fetchData('HEADER_DATENOTFINISHED_DATA', { unfinishedData: dataResult.datalist }))
@@ -419,7 +497,7 @@ const getDateTodo = (pagination, searchMap, queryDateKey) => {
                 }
             },
             dataResult => {//我审批--待办
-               debugger
+                debugger
                 dispatch(fetchData('HEADER_DATETODO_SUCCESS', { todoData: transReceiveData(dataResult.datalist) }))
             }
         );
@@ -428,9 +506,9 @@ const getDateTodo = (pagination, searchMap, queryDateKey) => {
 
 
 const getTodo = (data, searchMapApproval) => {
-     debugger 
+    debugger
     return dispatch => {
-        dispatch(fetchData("APPROVAL_LIST_LOADING",true));
+        dispatch(fetchData("APPROVAL_LIST_LOADING", true));
         reqwest(
             {
                 url: url.todo,
@@ -511,6 +589,9 @@ export {
     viewState,
     hideViewForm,
     showViewForm,
+    hideHomeViewForm,
+
+    showHomeViewForm,
     getDateTodo,
     getDateDone,
     getDateFinish,

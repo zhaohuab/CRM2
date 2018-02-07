@@ -13,7 +13,8 @@ import {
     Menu,
     Dropdown,
     Select,
-    Table
+    Table,
+    Tooltip
 } from "antd";
 
 const Search = Input.Search;
@@ -35,6 +36,9 @@ import funnelEcharts from "./funnelEcharts.js";
 import customerEcharts from "./customerEcharts";
 import Approved from "./approved/index.jsx"
 //import * as Actions from "../action/index.js";
+
+import SlidePanel from "./approvalSlider/slidePanel/index.jsx";
+import ViewPanel from './approvalSlider/ViewPanel'
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
 
@@ -127,48 +131,48 @@ const targetTabelData = [
         }
     ]
 ];
-const commitColumns = [
-    {
-        "title": "任务主题",
-        "dataIndex": "name",
-        render: (text, record) => (
-            <div className="table-color"
+// const commitColumns = [
+//     {
+//         "title": "任务主题",
+//         "dataIndex": "name",
+//         render: (text, record) => (
+//             <div className="table-color"
+//                 onClick={this.slideShow.bind(this, record)}
+//             >
+//                 {record.name}
+//             </div>
+//         )
+//     },
+//     // {
+//     //     "title": "待审人",
+//     //     "dataIndex": "approvalUserList",
+//     //     render: (text, record) => (
+//     //         <div>
+//     //             {record.approvalUserList[0].name}
+//     //         </div>
+//     //     )
+//     // },
+//     {
+//         "title": "停留时长",
+//         "dataIndex": "stayTimeLength"
+//     }
+// ]
+// const approvalColumns = [
+//     {
+//         "title": "任务主题",
+//         "dataIndex": "name",
+//         render: (text, record) => (
+//             <div>
+//                 {record.name}
+//             </div>
 
-            >
-                {record.name}
-            </div>
-        )
-    },
-    {
-        "title": "待审人",
-        "dataIndex": "approvalUserList",
-        render: (text, record) => (
-            <div>
-                {record.approvalUserList[0].name}
-            </div>
-        )
-    },
-    {
-        "title": "停留时长",
-        "dataIndex": "stayTimeLength"
-    }
-]
-const approvalColumns = [
-    {
-        "title": "任务主题",
-        "dataIndex": "name",
-        render: (text, record) => (
-            <div>
-                {record.name}
-            </div>
-
-        )
-    },
-    {
-        "title": "停留时长",
-        "dataIndex": "stayTimeLength"
-    }
-]
+//         )
+//     },
+//     {
+//         "title": "停留时长",
+//         "dataIndex": "stayTimeLength"
+//     }
+// ]
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -225,6 +229,56 @@ class Home extends React.Component {
                 dataIndex: "down"
             }
         ];
+       this.commitColumns = [
+            {
+                "title": "任务主题",
+                "dataIndex": "name",
+                width:'50%',
+                render: (text, record) => (
+                    <div className="table-color" style={{width:'120px',cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
+                        onClick={this.slideShow.bind(this, record)}
+                    >
+                       <Tooltip placement="bottomLeft" title={record.name}>
+                        {record.name}
+                        </Tooltip>
+                    </div>
+                )
+            },
+            // {
+            //     "title": "待审人",
+            //     "dataIndex": "approvalUserList",
+            //     render: (text, record) => (
+            //         <div>
+            //             {record.approvalUserList[0].name}
+            //         </div>
+            //     )
+            // },
+            {
+                "title": "停留时长",
+                "dataIndex": "stayTimeLength"
+            }
+        ]
+        this.approvalColumns = [
+            {
+                "title": "任务主题",
+                "dataIndex": "name",
+                width:'50%',
+                render: (text, record) => (
+                    <div className="table-color" style={{ width: '120px', cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
+                        onClick={this.slideShow.bind(this, record)}
+                    >
+                      <Tooltip placement="bottomLeft" title={record.name}>
+                        {record.name}
+                        </Tooltip>
+                    </div>
+        
+                )
+            },
+            {
+                "title": "停留时长",
+                "dataIndex": "stayTimeLength"
+            }
+        ]
     }
 
     onWindowResize() {
@@ -280,6 +334,17 @@ class Home extends React.Component {
         this.props.action.approvedShow();
         this.props.action.getUnfinished(this.props.$$state.get("pagination").toJS());
     }
+
+    //显示面板
+    slideShow = (record) => {
+        debugger
+        this.props.action.showHomeViewForm(true, record.djId, record.djType, record.instanceId, record.taskId, record);
+    }
+
+    slideHide = () => {
+        //关闭面板清空数据
+        this.props.action.hideHomeViewForm(false);
+    }
     render() {
         const events = {
             created: ins => { },
@@ -287,7 +352,7 @@ class Home extends React.Component {
         };
         this.onWindowResize();
 
-        let { commitData, approvalData, approvalHomeVisible, approvalHomeShow, approvalFlag } = this.props.$$state.toJS();
+        let {viewHomeState, commitData, approvalData, approvalHomeVisible, approvalHomeShow, approvalFlag, viewState } = this.props.$$state.toJS();
         return (
             <div className="home-layer">
                 <div className="home-warrper">
@@ -404,14 +469,14 @@ class Home extends React.Component {
                                 {approvalHomeVisible ?
                                     <Table
                                         size="middle"
-                                        columns={commitColumns}
+                                        columns={this.commitColumns}
                                         dataSource={commitData.data}
                                         rowKey="id"
                                     />
 
                                     : <Table
                                         size="middle"
-                                        columns={approvalColumns}
+                                        columns={this.approvalColumns}
                                         dataSource={approvalData.data}
                                         rowKey="id"
                                     />}
@@ -434,15 +499,6 @@ class Home extends React.Component {
                                     </ul>
                                 </div> */}
                             </div>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -605,6 +661,14 @@ class Home extends React.Component {
                 </div>
 
                 {approvalHomeShow ? <Approved /> : null}
+                <SlidePanel
+                    viewState={viewHomeState}
+                    onClose={this.slideHide}
+                    className='tab-viewPanelHome-recoverd'
+                >
+                    <ViewPanel
+                        ref="panelHeight" />
+                </SlidePanel>
             </div>
         );
     }
