@@ -67,10 +67,11 @@ class ViewPanel extends React.Component {
     //详情面板右侧tab列表获取数据
     panelTabRightFn(index){
         let { viewData } = this.props.$$state.toJS();
-        //if(index == 2){
             let id = viewData.id
             this.props.action.getRightPaneltList(id,this.state.JoinPagination,index)
-       // }
+            if(index==1){
+                this.props.action.getDynamic(viewData.id)
+            }
     }
 
     render() {

@@ -8,13 +8,13 @@ let $$initialState = {
     selectedRows: [],
     selectedRowKeys: [],
     modalVisible: false,
-    data: {},
+    data: [],
     editData: {},
     enumData: []
 };
 
 function pageAdd(page, item) {
-
+    
     page.total += 1;
     page.data.unshift(item);
     page.page = Math.ceil(page.total / page.pageSize);
@@ -44,21 +44,21 @@ function clearObject(obj) {
 export default function reducer($$state = Immutable.fromJS($$initialState),
     action) {
     switch (action.type) {
-        case "SPEECH_LIST_VISIBLE": //查询各种table数据
+        case "WORK_LIST_VISIBLE": //查询各种table数据
             ////debugger
             return $$state.merge({
                 modalVisible: action.visible,
             });
-        case "SPEECH_LIST_GETDATA": //查询各种table数据
-            ////debugger
+        case "WORK_LIST_GETDATA": //查询各种table数据
+            debugger
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination
             });
-        case "SPEECH_LIST_GETENUMDATA": //获取查询条件基础显示内容
+        case "WORK_LIST_GETENUMDATA": //获取查询条件基础显示内容
             debugger
             return $$state.merge({ enumData: action.payload.enumData });
-        case "SPEECH_LIST_UPDATELIST": //更改一条数据
+        case "WORK_LIST_UPDATELIST": //更改一条数据
             debugger
             let newData = action.data;
             return $$state.merge({
@@ -68,26 +68,27 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         //点击新建，清空数据
-        case "SPEECH_LIST_EMPTY":
+        case "WORK_LIST_EMPTY":
             debugger
             return $$state.merge({
                 editData: clearObject($$state.get('editData').toJS()),
                 modalVisible: action.visible,
             });
 
-        case "SPEECH_CARD_SAVEADD": //新增一条数据
+        case "WORK_CARD_SAVEADD": //新增一条数据
+
             return $$state.merge({
                 modalVisible: false,
                 data: pageAdd($$state.get("data").toJS(), action.data)
             });
-        case "SPEECH_LIST_GETLISTUPDATE": //删除一到多条数据
+        case "WORK_LIST_GETLISTUPDATE": //删除一到多条数据
             return $$state.merge({
                 data: action.payload.data,
                 selectedRows: [],
                 selectedRowKeys: []
             });
 
-        case "SPEECH_LIST_SELECTCLUE": //保存已选择的数据
+        case "WORK_LIST_SELECTCLUE": //保存已选择的数据
             return $$state.merge({
                 selectedRows: Immutable.fromJS(action.payload.selectedRows),
                 selectedRowKeys: Immutable.fromJS(
@@ -96,14 +97,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         //点击编辑获取数据
-        case "SPEECH_LIST_EDIT":
+        case "WORK_LIST_EDIT":
             //debugger
             let getData = action.edit;
             return $$state.merge({
                 editData: getData,
                 modalVisible: true
             });
-        case "SPEECH_LIST_CARDEDITCHANGE": //存放新增修改表单数据
+        case "WORK_LIST_CARDEDITCHANGE": //存放新增修改表单数据
             return $$state.merge({
                 editData: action.changeData,
             });

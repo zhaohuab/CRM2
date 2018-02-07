@@ -45,7 +45,7 @@ export function searchMapSearch(pagination,searchMap){
     return dispatch => {
         reqwest(
             {
-                url:baseDir + 'cum/customersales',
+                url:baseDir + 'cum/groupcustomers',
                 method: "GET",
                 data: {
                     param: {
@@ -57,7 +57,7 @@ export function searchMapSearch(pagination,searchMap){
                 }
             },
             data => {
-                //debugger
+                debugger
                 dispatch(
                     {
                         type:'CUSTOMER_GROUPASSIGNMENT_SEARCHMAP',
@@ -71,7 +71,7 @@ export function searchMapSearch(pagination,searchMap){
 
 //保存table选中keys值
 export function saveTableKeys(keys){
-    debugger
+    //debugger
     return {
         type:'CUSTOMER_GROUPASSIGNMENT_SAVETABLEKEYS',
         keys
@@ -80,7 +80,7 @@ export function saveTableKeys(keys){
 
 //获取查询条件，查询方案的前置条件
 export function getSearchList(pagination){
-    debugger;
+   // debugger;
     return dispatch => {
         reqwest(
             {

@@ -126,7 +126,7 @@ class IcbcDetailInfo extends React.Component {
         return (
             <div>
                 <Button onClick={this.onIcbcCancel.bind(this)}>关闭</Button>
-                {viewData.verifyFullname || viewData.verifyId? (
+                { viewData.verifyId? (
                     <Button onClick={this.cancelIdenti.bind(this)}>
                         取消核实
                     </Button>
@@ -197,22 +197,26 @@ class IcbcDetailInfo extends React.Component {
 
     //点击获取工商核实按钮
     getIcbc(flag) {
+        debugger
         let { viewData, icbcInfo1 } = this.props.$$state.toJS()
         let icbcName = viewData.name;
         let verifyId = viewData.verifyId
         debugger
         if (flag) {
+            debugger
             //如果面板是显示状态
             if (icbcName) {
-                if (viewData.verifyFullname ||viewData.verifyId) {//如果已核实
+                debugger;
+                if (viewData.verifyId) {//如果已核实
                     debugger
-
                     //再次点击工商核实并没有把值返回给我！！！！！！！！！！！！！！！！！！！1
                     this.props.action.hasIcbc(viewData.verifyFullname, viewData.verifyId,true)
                 } else {
+                    debugger
                     this.getIcbcList(icbcName, result => {
                         debugger
                         if (result.data && result.data.length) {
+                            debugger
                             this.setState({
                                 visible: flag,
                                 icbcList: result.data
@@ -222,6 +226,7 @@ class IcbcDetailInfo extends React.Component {
                 }
             }
         } else {
+            debugger
             //如果面板是关闭状态
             this.setState({
                 visible: flag
@@ -292,6 +297,7 @@ class IcbcDetailInfo extends React.Component {
     } 
 
     createList() {
+        debugger;
         let index = this.state.index;
         let { viewData } = this.props.$$state.toJS()
         return (
@@ -328,6 +334,7 @@ class IcbcDetailInfo extends React.Component {
 
     render() {
         let { viewData, icbcVisible2, icbcInfo1 } = this.props.$$state.toJS()
+        debugger;
         let cssCode = this.props.$$menuState.get("cssCode");
         debugger
         return (
@@ -366,7 +373,7 @@ class IcbcDetailInfo extends React.Component {
                 >
                     <div>
                         {
-                            viewData.verifyFullname || viewData.verifyId?
+                            viewData.verifyId?
                             <Row type = 'flex' justify='center'>
                                 <img src={require("assets/images/cum/icbc-true.png")} className='icbc-icon'/>已核实
                             </Row>:
@@ -407,7 +414,7 @@ class IcbcDetailInfo extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList,
+        $$state: state.customerGroupList,
         $$menuState: state.commonMenu
     };
 }

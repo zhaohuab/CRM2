@@ -79,6 +79,17 @@ class ToolForm extends React.Component {
         this.props.clearForm()
         this.props.action.addCustomer(true);
     }
+  /*   btnNew() {
+        this.props.clearForm()
+        this.props.action.addNewType();
+    } */
+    newCumMenuClick(item, key) {
+        debugger
+        this.props.clearForm()
+        let typeId = item.key;
+        this.props.action.addCustomer(true, typeId);
+    }
+
     //上下表单控制显隐
     changeVisible() {
         this.props.action.changeVisible();
@@ -86,9 +97,11 @@ class ToolForm extends React.Component {
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
         //还差城市条件过滤
+        debugger;
         this.props.action.getListData(
             this.props.$$state.get("pagination").toJS(),
-            searchMap
+            searchMap,
+            this.props.$$state.get("searchPlan").toJS(),
         );
     }
 
@@ -98,16 +111,16 @@ class ToolForm extends React.Component {
     }
 
     getList=(value)=>{//-----切换查询方案获取列表   赵华冰 2-2
-        let { enumData, searchMap} = this.props.$$state.toJS();
+        let { searchData, searchMap} = this.props.$$state.toJS();
         let pagination={page:1,pageSize:10}
         let obj={};
-        enumData.forEach(item=>{
+        searchData.forEach(item=>{
             if(item.id==value){
                 obj.id=value;
                 obj.defClass=item.defClass;
             }
         })
-        this.props.action.getListData(pagination, searchMap,obj)
+        this.props.action.getListData( pagination, searchMap, obj )
     }
 
     onMenu(e) {//-----导入导出 赵华冰2-2
@@ -124,9 +137,18 @@ class ToolForm extends React.Component {
     }
 
     render() {
-        let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
+        let { searchData, moreShow, selectedRowKeys,newCumMenu } = this.props.$$state.toJS();
         let defaultId = this.props.$$state.get('defaultId');
         debugger;
+      /*   const loop = data => data.map((item, index) => {
+            return <Menu.Item key={item.key} >{item.title}</Menu.Item>
+        });
+        const newBtnMenu = (
+            <Menu onClick={this.newCumMenuClick.bind(this)}>
+                {loop(newCumMenu)}
+            </Menu>
+        ); */
+
         const moreMenu = (
             <Menu onClick={this.onMenu.bind(this)}>
                 <Menu.Item key="1">
@@ -176,7 +198,7 @@ class ToolForm extends React.Component {
                                             defaultId?
                                             <Select defaultValue={defaultId.toString()} onChange={this.getList.bind(this)}>
                                                 {
-                                                    enumData.map(item=>{
+                                                    searchData.map(item=>{
                                                         return (
                                                             <Option value={item.id.toString()}>{item.name}</Option>
                                                         )
@@ -210,7 +232,7 @@ class ToolForm extends React.Component {
 
                             <Col span={7}>
                                 <Row type="flex" gutter={15} justify="end">
-                                    <Col>
+                                      <Col>
                                         <Button
                                             type="primary"
                                             onClick={this.btnNew.bind(this)}
@@ -218,11 +240,12 @@ class ToolForm extends React.Component {
                                             <i className="iconfont icon-xinjian" />新建
                                         </Button>
                                     </Col>
-                                    {/* <Col>
-                                        <Button>
-                                            <i className="iconfont icon-shuaxin" />刷新
-                                        </Button>
-                                    </Col> */}
+                                      {  /*   <Button
+                                            type="primary"
+                                            onClick={this.btnNew.bind(this)}
+                                        >
+                                            <i className="iconfont icon-xinjian" />新建
+                                        </Button> */}
                                     <Col>
                                         <Dropdown.Button
                                             overlay={moreMenu}

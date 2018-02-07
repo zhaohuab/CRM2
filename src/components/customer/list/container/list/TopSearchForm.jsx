@@ -103,17 +103,41 @@ class ToolForm extends React.Component {
         );
     }
 
+
     //存储建议查询条件
     searchMapFn(searchMap) {
         this.props.action.saveSearchMap(searchMap);
     }
+    // 2.6 余春梅 查询条件导出转化
+    changeSearchData(data){
+        for (let key in data) {
+            if (key == 'isGroup'|| key == 'cannelType'|| key == 'enableState'|| key == 'level'|| key == 'state'|| key == 'type') {
+                if(data[key] && data[key].key){
+                    data[key] = data[key].key
+                }
+            }
+            if (key == 'province_city_district' && data[key]) {
+                data.province = data[key][0];
+                data.city = data[key][1];
+                data.district = data[key][2];
+                delete data.province_city_district;
+            }
+
+            if (key == 'industry' && data[key]) {
+                data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+            }
+        }
+        return data
+    }
+
      // 导入导出 余春梅  1.30
      onMenu(e) {
         debugger
         let { searchMap, pagination } = this.props.$$state.toJS();
         let page = pagination.page;
         let pageSize = pagination.pageSize
-        let search = JSON.stringify(searchMap)
+        let tranSearch=this.changeSearchData.call(this,searchMap);
+        let search = JSON.stringify(tranSearch)
         debugger
         if (e.key == "1") {
             debugger

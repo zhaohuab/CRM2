@@ -40,7 +40,7 @@ class Unfinish extends React.Component {
                         <Row type="flex" justify="center" gutter={5}>
                             <Col span={8}>
                                 <FormItem label="申请时间"  {...formItemLayout}>
-                                    {getFieldDecorator('approvalTime'
+                                    {getFieldDecorator('commitTime'
                                     )(
                                         <Input  disabled/>
                                         )}

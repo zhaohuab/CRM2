@@ -3,6 +3,7 @@ import Immutable from "immutable";
 let $$initialState = {
     data: [], //tabel展示数据
     enumData: [],//存储查询条件预制数据
+    searchData:[],//储存查询方案数据
     searchPlan:{id:'',defClass:''},//---存储查询方案    赵华冰 2-2
     defaultId:0, //----刷新页面返回的查询方案默认显示项id
     selectedRowKeys: [],//存储table已选择keys
@@ -146,32 +147,40 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 pagination: action.pagination,
                 viewData:enableState
             });
-        case "CUSTOMERGROUP_LIST_SHOWFORM": //新增显示
+        case "CUSTOMERGROUP_LIST_SHOWFORM": //新增、修改编辑显示
+            let EditCancelData =  $$state.get('viewData').toJS();
+            if(EditCancelData.street && EditCancelData.street.address){
+                EditCancelData.street = EditCancelData.street.address
+            }else{
+                EditCancelData.street = ''
+            }
+
             return $$state.merge({
                 formVisitable: action.payload.visible,
+                viewData:EditCancelData
             });
+        //存放动态信息
         case "CUSTOMERGROUP_LIST_GETDYNAMIC":
-            return $$state.merge({
-                dynamicData: action.data
-            });    
+                return $$state.merge({
+                    dynamicData: action.data
+                });    
         //点击编辑按钮触发的方法
         case 'CUSTOMERGROUP_LIST_SHOWEDITFORM':
-        let EditStreetData =  $$state.get('viewData').toJS()
-        let streetEdit = {
-            address:EditStreetData.street,
-            location:{
-                lng:EditStreetData.longitude,
-                lat:EditStreetData.latitude
+            let EditStreetData =  $$state.get('viewData').toJS()
+            
+            let streetEdit = {
+                address:EditStreetData.street,
+                location:{
+                    lng:EditStreetData.longitude,
+                    lat:EditStreetData.latitude
+                }
             }
-        }
-        //详细地址
-        if(typeof EditStreetData.street !== 'object') {
             EditStreetData.street = streetEdit
-        }    
-        return $$state.merge({
-            formVisitable: action.visiable,
-            viewData:EditStreetData
-        }); 
+
+            return $$state.merge({
+                formVisitable: action.visiable,
+                viewData:EditStreetData
+            });    
 
    /*          let editViewData =  $$state.get('viewData').toJS()
             let streetEdit = {
@@ -202,6 +211,11 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 formVisitable: action.visiable,
                 viewData:editViewData
             }); */
+        case "CUSTOMERGROUP_LIST_NEWEDITTYPE":           
+            return $$state.merge({
+                newCumMenu: action.typeItem,
+                viewData:clearObject($$state.get('contactsCardData').toJS())
+            });
         case "CUSTOMERGROUP_LIST_CHANGEVISIBLE": //查询功能显示
             let visit = $$state.get("moreShow");
             return $$state.merge({ moreShow: !visit });
@@ -326,7 +340,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                     //省市区
                     actionData.province_city_district = {}
                     actionData.province_city_district.result= district
-        
+        debugger;
                     return $$state.merge({
                         viewState: action.visible,
                         viewData: actionData,
@@ -349,9 +363,10 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 viewState: action.payload.visiable,
                 icbcInfo1: []
             });
-        case "CUSTOMERGROUPLIST_CLEANVERIFYID":
+        case "CUSTOMERGROUP_LIST_CLEANVERIFYID":
             let clean = $$state.get("viewData").merge({
-                verifyFullname: ""
+                verifyFullname: "",
+                verifyId:'',
             });
             return $$state.merge({
                 icbcVisible2: action.visiable,
@@ -363,8 +378,8 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 selectedRowKeys:[]
             });
 
-       /*  case "CUSTOMERGROUP_LIST_GETENUMDATA": //获取查询条件基础显示内容
-            return $$state.merge({ enumData: action.payload.enumData }); */
+       case "CUSTOMERGROUP_LIST_GETENUMDATA": //获取查询条件基础显示内容
+            return $$state.merge({ enumData: action.payload.enumData }); 
             
         case 'CUSTOMERGROUP_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
             return $$state.merge({
@@ -430,15 +445,19 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 viewDataRelevant:Immutable.fromJS(delContacts)
             });
         case "CUSTOMERGROUP_GROUPLIST_GETENUMDATA"://------------------获取集团客户查询条件选项及默认初始条件
+        debugger
             let obj={};
-            action.payload.enumData.forEach(item=>{
+            action.payload.searchData.forEach(item=>{
                 if(item.isSelected==1){
                     obj.id=item.id;
                     obj.defClass=item.defClass;
                 }
             })
-            return $$state.merge({ enumData: action.payload.enumData, searchPlan:obj, defaultId:obj.id});
+            debugger;
+            return $$state.merge({ searchData: action.payload.searchData, searchPlan:obj, defaultId:obj.id});
         case "CUSTOMERGROUP_SEARCHPLAN_SUCESS"://获取相关对象联系人表单数据
+        let aa = action;
+        debugger
             return $$state.merge({
                 searchPlan:action.payload.searchPlan,
             });

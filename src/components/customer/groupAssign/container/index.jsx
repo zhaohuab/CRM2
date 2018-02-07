@@ -95,7 +95,7 @@ class GroupAssignList extends React.Component {
                 searchMap[key] = searchMap[key].result.join('_')
             }
         }
-        
+        debugger
         return searchMap
     }
 
@@ -109,6 +109,7 @@ class GroupAssignList extends React.Component {
         
         let { searchMap,pagination} = this.props.$$state.toJS();
         searchMap = this.mapFilter(searchMap)
+        debugger;
         this.props.action.searchMapSearch(pagination,searchMap)
     }
 
@@ -186,7 +187,8 @@ class GroupAssignList extends React.Component {
     }
 
     render(){
-        let {selectedRowKeys,data,preSearchPlan} = this.props.$$state.toJS()
+        let {selectedRowKeys,data,preSearchPlan} = this.props.$$state.toJS();
+debugger
         this.rowSelection={
             selectedRowKeys,
             onChange: this.onSelectChange.bind(this)

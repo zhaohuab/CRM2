@@ -97,7 +97,7 @@ class PanelMap extends React.Component {
         let itemFlag = $$state.get('itemFlag');
         let departmentName = $$state.get('departmentName');  
         console.log('customerItem=================',customerItem,customerItem.total)    
-      // debugger;
+      debugger;
         return (
             <Row type="flex" className="customer-panelMap-wraper">
                 <Col span={8} className="customer-panelMap-left">
@@ -127,10 +127,11 @@ class PanelMap extends React.Component {
                         <div className='customer-address'>
                             {
                                 customerItem.data.map((item,index)=>{
+                                    let flag = item.latitude&&item.longitude
                                     return (
                                         <Row type="flex" align='middle' className='customer-address-item'>
                                             <Col span={3}>
-                                                <div className='customer-address-item-order'>
+                                                <div className={flag ? 'customer-address-item-order1':'customer-address-item-order2'}>
                                                     <i className="iconfont icon-dingweilan" />
                                                     <p className='customer-address-item-num'>{index+1}</p>
                                                 </div>                                          

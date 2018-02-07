@@ -132,14 +132,15 @@ class ApproveForm extends React.Component {
         );
     }
     render() {
-
-        let { finishState, searchMapApproval, approveData } = this.props.$$state.toJS();
+debugger
+        let { finishState, searchMapApproval, approveData,loadingFlag } = this.props.$$state.toJS();
         let { $$state, action } = this.props;
         let searchState = $$state.get('searchState');
         return (
             <div className="approveForm">
                 {searchMapApproval.status && searchMapApproval.status == 'done' ?
                     <Table
+                 
                         size="middle"
                         columns={this.columnsDone}
                         dataSource={approveData.data}
@@ -157,6 +158,7 @@ class ApproveForm extends React.Component {
                         }}
                     /> :
                     <Table
+                    // loading={loadingFlag}
                         size="middle"
                         columns={this.columnsTodo}
                         dataSource={approveData.data}
