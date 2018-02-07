@@ -51,6 +51,12 @@ class IcbcInfo extends React.Component {
 
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
+
+        // let cssCode = this.props.$$menuState.get("cssCode");
+        // //判断是否有核实权限
+        // if(cssCode.indexOf("customer_view_verify_customer")!="-1"){
+        //     return 
+        // }
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/",
@@ -349,7 +355,7 @@ class IcbcInfo extends React.Component {
                     onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
                     visible={this.state.visible} //受控面板显示
                 >
-                    <span className="icbc-btn" onClick={this.getIcbc.bind(this,true)}>
+                    <span className="icbc-btn customer_view_verify_customer" onClick={this.getIcbc.bind(this,true)}>
                         企业核实
                     </span>
                 </Dropdown>

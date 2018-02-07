@@ -66,7 +66,6 @@ class DetailTop extends React.Component {
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
         
         let name = viewData.name
-        debugger
 
         return(
         <Row className="view-warrper-header">
