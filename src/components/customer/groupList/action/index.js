@@ -438,20 +438,23 @@ export function listFormSave(data,id) {
 
 //展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id){  
+    //xxxxxxxxxxxxxxxxxxxxxxxxx
+    debugger;
     return dispatch => {
         reqwest(
             {
                 url: baseDir + "cum/groupcustomers/" + id,
                 method: "GET",
             },
-            data => {               
+            data => {  
+                debugger;             
                 reqwest(
                     {
                         url: baseDir + `cum/groupcustomers/${id}/isfollow`,
                         method: "GET"
                     },
                     state => {
-
+                        debugger;
                         dispatch({
                             type: "CUSTOMERGROUP_LIST_SHOWVIEWFORM",
                             visible,

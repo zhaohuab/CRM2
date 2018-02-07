@@ -484,7 +484,6 @@ export function listFormSave(data,newTypeId) {
 
 //展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id) {
-    
     return dispatch => {
         reqwest(
             {
