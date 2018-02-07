@@ -66,7 +66,8 @@ class DetailTop extends React.Component {
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
         
         let name = viewData.name
-        console.log(name)
+        debugger
+
         return(
         <Row className="view-warrper-header">
             <Row className="header-customer">
@@ -121,8 +122,8 @@ class DetailTop extends React.Component {
                                 </Row>
                                 <Row type='flex' align='middle'className="tags">
                                     {
-                                        viewData.typeName ?
-                                        <span className='tags-item'><span>{viewData.typeName}</span></span>: ''
+                                        viewData.biztypeName ?
+                                        <span className='tags-item'><span>{viewData.biztypeName}</span></span>: ''
                                     }
                                     {
                                         viewData.levelName ? 

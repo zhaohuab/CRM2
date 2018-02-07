@@ -38,12 +38,37 @@ class IcbcDetailInfo extends React.Component {
         };
     }
 
+
+    getIndustry(industry){
+        return new Promise(function(resolve, reject) {
+            
+            reqwest(
+                {
+                    url: baseDir + 'base/industrys/list',
+                    method: "GET",
+                    data: {
+                        param: {
+                            searchMap:{
+                                searchKey:industry
+                            }
+                        }
+                    }
+                },
+                indastry => {
+                    
+                    resolve(indastry)
+                }
+            );
+        });
+    }
+
     //遍历更改客户数据
     changeCustomer(viewData) {
         //industry  ownerUserId  province_city_district
         debugger
+        let that = this
         for (let key in viewData) {
-            if (key == 'industry' || key == 'ownerUserId') {
+            if ( key == 'ownerUserId') {
                 if (viewData[key].id) {
                     viewData[key] = viewData[key].id
                 } else {
@@ -55,9 +80,29 @@ class IcbcDetailInfo extends React.Component {
                     viewData[key] = viewData[key].result.join('_')
                 }
             }
+
+            if (key == 'industry') {
+                debugger
+                if(viewData[key].name){
+                    //如果获取的工商信息有行业名称，就用行业名称查询行业id
+                    this.getIndustry(viewData[key].name).then((result)=>{
+                        debugger
+                        //如果查到行业id了行业的值就等于id，如果没有获取到，整个行业值为undefined
+                        if(result && result.data.length){
+                            viewData[key] = result.data[0].id;
+                            that.props.action.checkedFn(viewData, that.state.select, viewData.id, false);
+                        }else{
+                            viewData[key] = 'undefined'
+                            that.props.action.checkedFn(viewData, that.state.select, viewData.id, false);
+                        }
+                    })
+                }else {
+                    debugger
+                    viewData[key] = 'undefined'
+                    this.props.action.checkedFn(viewData, this.state.select, viewData.id, false);
+                }
+            }
         }
-        debugger
-        return viewData
     }
 
 
@@ -70,13 +115,15 @@ class IcbcDetailInfo extends React.Component {
             content: '此操作会覆盖现有信息',
             onOk() {
                 debugger
-                let { viewData, icbcInfo1 } = that.props.$$state.toJS();
+                let { viewData, icbcInfo1,icbcSeleDetail } = that.props.$$state.toJS();
                 let name
                 name = icbcInfo1.find((item) => {
                     return item.key == 'verifyFullname'
                 })
-                viewData.verifyFullname = name.value
-                viewData.fullname = name.value
+
+                viewData.verifyFullname = name.value;
+                viewData.fullname = name.value;
+
                 debugger
                 icbcInfo1.forEach(item => {
                     if (item.key == "street") {
@@ -102,8 +149,6 @@ class IcbcDetailInfo extends React.Component {
                     }
                 });
                 viewData = that.changeCustomer(viewData)
-                //点击覆盖值    获取客户时并没有保存上！！！！！！！！！！！！！！！！！！！！！！！！
-                that.props.action.checkedFn(viewData, that.state.select, viewData.id, false);
             },
             onCancel() {
                 that.onIcbcCancel.bind(this)
@@ -126,7 +171,7 @@ class IcbcDetailInfo extends React.Component {
         return (
             <div>
                 <Button onClick={this.onIcbcCancel.bind(this)}>关闭</Button>
-                {viewData.verifyFullname || viewData.verifyId? (
+                {viewData.isIdentified == 1? (
                     <Button onClick={this.cancelIdenti.bind(this)}>
                         取消核实
                     </Button>
@@ -152,9 +197,9 @@ class IcbcDetailInfo extends React.Component {
     }
 
     //选择列表获取工商信息详情,获取的详情，已选择的公司名称，显示modal
-    customerListInfo(data, visiable) {
+    customerListInfo(data, visiable,select) {
         debugger
-        this.props.action.icbcDetailInfo(data, visiable);
+        this.props.action.icbcDetailInfo(data, visiable,select);
     }
 
     //根据客户名称，获取搜索工商核实列表
@@ -189,7 +234,7 @@ class IcbcDetailInfo extends React.Component {
             },
             result => {
                 debugger
-                this.customerListInfo(result.data, visiable);
+                this.customerListInfo(result.data, visiable,select);
             }
         );
     }
@@ -206,7 +251,8 @@ class IcbcDetailInfo extends React.Component {
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
-                if (viewData.verifyFullname ||viewData.verifyId) {//如果已核实
+                //如果已核实
+                if (viewData.isIdentified == 1) {
                     //判断是否有取消核实权限
                     if(cssCode.indexOf("customer_view_cancelverify_customer")!="-1"){
                         return 
@@ -373,7 +419,7 @@ class IcbcDetailInfo extends React.Component {
                 >
                     <div>
                         {
-                            viewData.verifyFullname || viewData.verifyId?
+                            viewData.isIdentified == 1?
                             <Row type = 'flex' justify='center'>
                                 <img src={require("assets/images/cum/icbc-true.png")} className='icbc-icon'/>已核实
                             </Row>:

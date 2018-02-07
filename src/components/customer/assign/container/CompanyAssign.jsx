@@ -40,7 +40,7 @@ class CompanyAssign extends React.Component {
             result:'',
             selectedTableRowKeys:[],
             selectedTreeKeys:[],
-            changeOwnUserValue:{},//变更所需value
+            changeOwnUserValue:'',//变更所需value
             changeVisiable:false,
             isChange:[],//保存有负责人的客户列表
         }

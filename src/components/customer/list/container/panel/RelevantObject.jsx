@@ -63,6 +63,7 @@ class RelevantObject extends React.Component {
         debugger
         this.props.action.filesSuccess(file);
     }
+    
     //删除上传图片
     onDeleteFile(file) {
         debugger

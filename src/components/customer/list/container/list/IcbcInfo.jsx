@@ -43,9 +43,9 @@ class IcbcInfo extends React.Component {
     data:获取的公司详细信息
     visiable:控制显示详细信息的modal的显隐
     */
-    customerListInfo(data,visiable) {
+    customerListInfo(data,visiable,select) {
         debugger
-        this.props.action.customerListInfo(data,visiable);
+        this.props.action.customerListInfo(data,visiable,select);
     }
 
 
@@ -84,6 +84,7 @@ class IcbcInfo extends React.Component {
                 }
             },
             result => {
+                debugger
                 //唯一性通过才能通过选中的公司名称获取公司信息
                 reqwest(
                     {
@@ -96,8 +97,9 @@ class IcbcInfo extends React.Component {
                         }
                     },
                     result => {
+                        debugger
                         //把获取到的工商信息放在redux中，让modal显示
-                        that.customerListInfo(result.data,visiable);
+                        that.customerListInfo(result.data,visiable,select);
                     }
                 );
             }
@@ -206,7 +208,7 @@ class IcbcInfo extends React.Component {
 
     //获取公司信息进行核实代码
     verifyFn(){
-        let {viewData,icbcInfo} = this.props.$$state.toJS();
+        let {viewData,icbcInfo,icbcSele} = this.props.$$state.toJS();
         let name
         name = icbcInfo.find((item)=>{
             return item.key == 'verifyFullname'
@@ -217,6 +219,9 @@ class IcbcInfo extends React.Component {
         }
         //新增保存时，如果进行核实，要把verifyFullname字段发送给后台
         viewData.verifyFullname = name.value
+       
+        //保存客户全称
+        viewData.fullname = name.value;
         debugger
         icbcInfo.forEach(item => {
             if (item.key == "street") {
@@ -278,7 +283,7 @@ class IcbcInfo extends React.Component {
         if(viewData.name == addIcbcName){
             this.props.action.saveIcbcName(viewData,false)
         }else{
-            if(!viewData.verifyFullname){
+            if(!viewData.verifyId){
                 let viewData = this.verifyFn()
                 this.props.action.saveIcbcName(viewData,false)
             }else{

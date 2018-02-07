@@ -151,7 +151,7 @@ class RelFile extends React.Component {
                     <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
                     <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
                 </div>
-                <span className='del'><i className='iconfont icon-canyuren-shanchu' onClick={this.props.onDeleteFile(file)}/></span>
+                <span className='del'><i className='iconfont icon-canyuren-shanchu' onClick={this.props.onDeleteFile.bind(this,file)}/></span>
             </Row>
         )
     }
