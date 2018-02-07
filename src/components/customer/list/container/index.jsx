@@ -120,7 +120,7 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData,newTypeId } = this.props.$$state.toJS();
+        let { viewData,newType } = this.props.$$state.toJS();
         for(let key in viewData){
             if(key=='ownerUserId'){
                 viewData[key]=viewData[key].id
