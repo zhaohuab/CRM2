@@ -18,14 +18,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
         let ss = action;
         let name = action.content.name ? action.content.name+'|' : '';
         let flag = action.content.flag=='user'? false : true;   
-        debugger
+        //debugger
             return $$state.merge({
                 data: action.content,
                 itemFlag: flag,
                 departmentName: name,
             });
         case "CUSTOMER_ITEM_LIST_GETLISTSUCCESS": //获取到左侧下半部分详情地址数据
-        debugger        
+        //debugger
             return $$state.merge({
                 customerItem: action.content,          
             });	
