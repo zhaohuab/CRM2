@@ -20,8 +20,7 @@ import ChangePerson from './ChangePerson'
 class DetailTop extends React.Component {
 
     //打开编辑按钮
-    btnEdit(){
-        debugger
+    btnEdit(){   
         this.props.action.showFormEdit(true);
     }
     //点击关注触发的方法
@@ -38,7 +37,8 @@ class DetailTop extends React.Component {
 
     render(){
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
-
+        //-----------------
+        debugger
         return(
         <Row className="view-warrper-header">
             <Row className="header-customer">

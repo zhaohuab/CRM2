@@ -12,6 +12,27 @@ span {
 .customer-status-wraper .customer-panelMap-left {
   background-color: #fff;
   padding: 0 14px 0 16px;
+  /*         .customer-principal {
+            width:100%;
+            height:210px;
+            box-sizing: border-box;
+            padding: 15px 15px 5px 15px;
+            overflow-y:auto;
+           .customer-principal-item {
+               height: 28px;
+               line-height: 28px;
+               text-align: center;
+               color: #666;
+               font-size:12px;
+               margin:0 10px 10px 0;
+               border:1px solid #ddd;
+               border-radius: 4px;
+               cursor: pointer;
+               .customer-num {
+                   color:rgb(60,164,251);
+               }
+           }
+        } */
 }
 .customer-status-wraper .customer-panelMap-left .customer-detail-title {
   width: 100%;
@@ -34,8 +55,9 @@ span {
   overflow-y: auto;
 }
 .customer-status-wraper .customer-panelMap-left .customer-principal .customer-principal-item {
+  box-sizing: border-box;
+  width: 100%;
   height: 28px;
-  line-height: 28px;
   text-align: center;
   color: #666;
   font-size: 12px;
@@ -44,11 +66,49 @@ span {
   border-radius: 4px;
   cursor: pointer;
 }
+.customer-status-wraper .customer-panelMap-left .customer-principal .customer-principal-item .customer-name {
+  padding-left: 10px;
+  text-align: left;
+}
 .customer-status-wraper .customer-panelMap-left .customer-principal .customer-principal-item .customer-num {
+  color: #3ca4fb;
+}
+.customer-status-wraper .customer-panelMap-left .customer-principal .customer-principal-role-department {
+  line-height: 28px;
+}
+.customer-status-wraper .customer-panelMap-left .customer-principal .customer-principal-role-item {
+  display: inline-block;
+  vertical-align: middle;
+  width: 23%;
+  margin: 0 2% 2% 0;
+  padding: 0 5px;
+}
+.customer-status-wraper .customer-panelMap-left .customer-principal .customer-principal-role-item .role-name {
+  display: inline-block;
+  vertical-align: middle;
+  width: 70%;
+  height: 100%;
+  line-height: 28px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.customer-status-wraper .customer-panelMap-left .customer-principal .customer-principal-role-item .customer-num {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30%;
+  height: 100%;
+  line-height: 28px;
+  text-align: right;
   color: #3ca4fb;
 }
 .customer-status-wraper .customer-panelMap-left .customer-address {
   width: 100%;
+  height: 442px;
+}
+.customer-status-wraper .customer-panelMap-left .customer-address .loading {
+  margin: 100px 0 0 150px;
 }
 .customer-status-wraper .customer-panelMap-left .customer-address .customer-address-item {
   box-sizing: border-box;

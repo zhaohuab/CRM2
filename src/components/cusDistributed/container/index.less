@@ -27,9 +27,9 @@ Row,Col,div,Button,span{
             padding: 15px 15px 5px 15px;
             overflow-y:auto;
            .customer-principal-item {
+               box-sizing: border-box;
                width: 100%;
                height: 28px;
-               line-height: 28px;
                text-align: center;
                color: #666;
                font-size:12px;
@@ -45,14 +45,45 @@ Row,Col,div,Button,span{
                    color:rgb(60,164,251);
                }
            }
+           .customer-principal-role-department {
+                line-height: 28px;
+           }
            .customer-principal-role-item {
-                width: 25%;
+                display:inline-block;
+                vertical-align: middle;
+                width: 23%;
+                margin: 0 2% 2% 0;
+                padding:0 5px;
+                .role-name {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 70%;
+                    height: 100%;
+                    line-height: 28px;
+                    text-align: center;
+                    overflow: hidden;
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                }
+                .customer-num {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width:30%;
+                    height: 100%;
+                    line-height: 28px;
+                    text-align: right;
+                    color:rgb(60,164,251);
+                }
+                
            }
         }
         .customer-address {
             width:100%;
             height: 350px;
             overflow-y: auto;
+            .loading {
+                margin: 100px 0 0 150px;
+            }
             .customer-address-item {
                 box-sizing:border-box;
                 width:100%;

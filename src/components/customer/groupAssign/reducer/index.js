@@ -39,7 +39,7 @@ export default function cusGroupAssignReducers($$state = Immutable.fromJS($$init
                 data:action.data,
                 whitchSearch:'searchPlan'
             })
-        case 'CUSTOMER_GROUPASSIGNMENT_SEARCHMAP'://存储已查询的查询条件，更新列表数据
+        case 'CUSTOMER_GROUPASSIGNMENT_LIST'://存储已查询的查询条件，更新列表数据
         let xx2= action;
         debugger
             return $$state.merge({

@@ -96,9 +96,10 @@ class ToolForm extends React.Component {
         this.props.action.changeVisible();
     }
     //扩展条件、基础条件查询
-    handleSearch(searchMap) {
+    handleSearch(searchMap) {   
+        let pagination = {page:1, pageSize:10};
         this.props.action.getListData(
-            this.props.$$state.get("pagination").toJS(),
+            pagination,
             searchMap
         );
     }

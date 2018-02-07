@@ -60,7 +60,7 @@ export function searchMapSearch(pagination,searchMap){
                 debugger
                 dispatch(
                     {
-                        type:'CUSTOMER_GROUPASSIGNMENT_SEARCHMAP',
+                        type:'CUSTOMER_GROUPASSIGNMENT_LIST',
                         data: data,//获取查询后的列表数据
                     }
                 );

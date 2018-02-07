@@ -28,7 +28,7 @@ const getOption = (data) =>{//这个data是每一条完整的数据
         tooltip: {
             trigger: "item",
             formatter:function(params){
-                debugger;
+                //debugger;
                 return '客户名称'+'：'+params.name+'<br/>'+'详细地址'+'：'+params.value[2]
             }
         },
@@ -44,24 +44,26 @@ const getOption = (data) =>{//这个data是每一条完整的数据
                 calculable: true,
                 dimension: 2,
                 seriesIndex: [0, 2],
+                symbolSize: 30,
                 inRange: {
-                    symbolSize: [10, 20]
+                    symbolSize: [40, 60]
                 },
                 outRange: {
-                    symbolSize: [10, 20]
+                    symbolSize: [40, 60]
                 }            
             },
             {
                 show: false,
                 calculable: true,//是否显示拖拽用的手柄
                 dimension: 2,//数组的第几列显示在视觉元素上
-                seriesIndex: [1],//指定取哪个系列的数据，即哪个系列的 series.data。
+                seriesIndex: [2],//指定取哪个系列的数据，即哪个系列的 series.data。
+                symbolSize: 30,
                 inRange: {//在选中范围内 的视觉元素
-                    symbolSize: [30, 40],//图元大小
+                    symbolSize: [40, 60],//图元大小
                     //color:['#f00','#f00']//图元颜色
                 },
                 outRange: {// 在选中范围外 的视觉元素
-                    symbolSize: [20, 30],
+                    symbolSize: [40, 60],
                     //color:['#f00','#f00']                                                               l.9
                 }
             }

@@ -8,6 +8,7 @@ const getCustomerList = (str,id,name) => {//获取左侧上半部分客户数据
     if(str){
         search[str]=id
     } 
+    debugger;
     return dispatch => {
         reqwest({
             url: url.department,
@@ -17,7 +18,7 @@ const getCustomerList = (str,id,name) => {//获取左侧上半部分客户数据
             }
         }, result=>{      
             console.log('左上角部门人员详情==========',result)
-            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result, name }));
+            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result, str, search, name }));
         })
     }
 }
@@ -27,7 +28,9 @@ const getCustomerItem = (str,id,num) => {//获取左侧下半部分公司部门�
     if(str){
         search[str]=id
     } 
+    debugger;
     return (dispatch) => {
+        dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLIST', {}));
         reqwest({
 			url: url.customer,
 			method: "GET",
@@ -38,9 +41,13 @@ const getCustomerItem = (str,id,num) => {//获取左侧下半部分公司部门�
                 }
             }
 		},result => {
-            console.log('左下角地址详情----------------',result)
-			dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { ...result }));
-        });
+            //console.log('左下角地址详情----------------',result)
+			dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { ...result,num }));
+        },
+        ()=>{
+            dispatch(fetchData('CUSTOMER_ITEM_LIST_FAIL', {})); 
+        }
+    );
 	}
 }
 
