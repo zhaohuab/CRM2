@@ -230,8 +230,9 @@ class List extends React.Component {
                         size="middle"
                         pagination={{
                             size: "large",
+                            
                             showSizeChanger: true,
-                             showQuickJumper: true,
+                            showQuickJumper: true,
                             total: page.total,
                             showTotal: this.showTotal,
                             onChange: this.onPageChange.bind(this),

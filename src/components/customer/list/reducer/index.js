@@ -78,7 +78,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
     switch (action.type) {
         //----------- 导入 1.30 余春梅
         case 'CUSTOMERCOMPANY_LIST_VIEWLEADSHOW':
-            debugger
+            //debugger
             return $$state.merge({
                 viewLeadVisible: action.payload.leadVisible,
             });
@@ -107,12 +107,12 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 leadingVisible: action.payload.leadVisible,
             });
         case 'CUSTOMERCOMPANY_LIST_SAVEFILES':
-            debugger
+            //debugger
             return $$state.merge({
                 leadFiles: action.payload.files,
             });
         case 'CUSTOMERCOMPANY_LIST_FILESUCCESS':///???--------
-            debugger
+            //debugger
             return $$state.merge({
                 filesSuccess: action.payload.filesSuccess,
                 successResult: action.payload.result,
@@ -136,6 +136,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
         //查询各种table数据
         case "CUSTOMERCOMPANY_LIST_GETDATA":
+        let nn = action;
+        debugger;
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
@@ -176,7 +178,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
            let EditStreetData =  $$state.get('viewData').toJS();
             let ccccc = Immutable.fromJS(EditStreetData).toJS()
-            debugger
+            //debugger
             let streetEdit = {
                 address: EditStreetData.street,
                 location: {
@@ -192,7 +194,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
             ccccc.street = streetEdit
             ccccc.industry = industry
-            debugger
+            //debugger
             return $$state.merge({
                 formVisitable: action.visiable,
                 viewData:ccccc
@@ -216,7 +218,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //点击新建按钮时，清空viewPanel数据,增加带过来的值    
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER":
-            debugger
+            //debugger
             return $$state.merge({
                 formVisitable: action.data,
                 newType: action.newType,
@@ -227,7 +229,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         //点击选择公司获取工商信息列表    
         case "CUSTOMERCOMPANY_LIST_ICBCDETAILINFO":    
         
-        debugger
+        //debugger
 
             return $$state.merge({
                 icbcInfo: action.data,
@@ -322,7 +324,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case "CUSTOMERCOMPANY_LIST_EDITSAVE": 
             let editFollow =  $$state.get('viewData').toJS()
             action.data.followState = editFollow.followState
-            debugger
+            //debugger
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
@@ -441,7 +443,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         ////////天赐删除附件
         case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
-            debugger
+            //debugger
             let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
             let fileArr = viewDataRelevant2[3].list.data;
             let file = action.file;

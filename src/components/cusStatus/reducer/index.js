@@ -35,7 +35,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             return $$state.merge({
                 customerItem: action.content,
                 loadingFlag: false,  
-                page: action.num            
+                page: action.content.num,            
             });	
         case "CUSTOMER_ITEM_LIST_GETLIST2": //左侧下半部分详情地址数据获取到之前先展示加载画面
             return $$state.merge({

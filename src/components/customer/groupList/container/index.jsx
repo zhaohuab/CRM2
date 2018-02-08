@@ -34,8 +34,7 @@ import "assets/stylesheet/all/iconfont.css";
 
 class List extends React.Component {
     constructor(props) {
-        super(props);
-        
+        super(props);        
         this.columns = [
             {
                 title: "客户名称",
@@ -77,6 +76,10 @@ class List extends React.Component {
         this.onSelectChange = (selectedRowKeys) => {
             this.props.action.selectedRowKeys(selectedRowKeys);
         };
+
+         this.state={//-------公司客户中新增控制状态  2-8
+            importVisible:false
+        }
     }
     //改变编辑状态
     changeState(visiable) {
@@ -88,31 +91,65 @@ class List extends React.Component {
         this.props.action.showViewForm(true, record.id);
         //获取动态
        // this.props.action.getDynamic(record.id)
-       //----集团客户的动态后台正在添加，这里暂时注掉
+       //----集团客户的动态后台正在添加，这里暂时注掉 2-8
     }
+
+    //清除表单数据  
+    clearForm(){//-------公司客户中新增 2-8
+        if(this.formRef){
+            this.formRef.props.form.resetFields()
+        }
+    }
+
     //隐藏面版
     slideHide() {
         //关闭面板清空数据
         this.props.action.hideViewForm(false);
     }
 
-    //form新增、或者修改
-    formHandleOk() {
-        let { viewData } = this.props.$$state.toJS();
 
+        //form新增、或者修改
+    formHandleOk() {//-----------公司客户中修改过的form表单操作，拷过来
+        let { viewData ,icbcSele} = this.props.$$state.toJS();
+        for(let key in viewData){
+            if(key=='ownerUserId'){
+                viewData[key]=viewData[key].id
+            }
+        }
+      debugger;
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
-                let id = viewData.id
+                if (viewData.id) {//修改
                 debugger
-                if (id) {//修改
-                    this.props.action.listFormSave(viewData,id);
-                } else {//新增
+                    if(viewData.isIdentified == 1){
+                        this.props.action.listFormSave(viewData);
+                    }else{
+                        if(viewData.verifyFullname){
+                            //把verifyId发送给后台进行工商认证标识
+                            viewData.verifyId = icbcSele.companyid;
+                            //把已认证信息发动给后台
+                            viewData.isIdentified = 1
+                        }
+                        this.props.action.listFormSave(viewData);
+                    }
+                } else {
+                    debugger
+                    //新增如果有获取过公司信息就把公司id和认证发送给后台
+                    if(viewData.verifyFullname){
+                        //把verifyId发送给后台进行工商认证标识
+                        viewData.verifyId = icbcSele.companyid;
+                        //把已认证信息发动给后台
+                        viewData.isIdentified = 1
+                    }
+                    debugger;
                     this.props.action.listFormSave(viewData);
                 }
             }
         });
     }
+
+
 
     //清除表单数据
     clearForm(){
@@ -128,7 +165,6 @@ class List extends React.Component {
 
     //保存修改、编辑等动作后，把修改的值保存在redux中
     editCardFn(changeData) {
-        debugger
         this.props.action.editCardFn(changeData);
     }
 
@@ -139,7 +175,6 @@ class List extends React.Component {
 
     onPageChange(page, pageSize) {
         let pagination = { page: page, pageSize: pageSize };
-        let xx=this.props.$$state.toJS();
         let searchPlan=this.props.$$state.get("searchPlan").toJS();
         this.props.action.getListData(
             pagination,
@@ -178,6 +213,10 @@ class List extends React.Component {
             leadVisible,
             leadEndVisible,
             leadingVisible,
+            //-----以下三项为公司客户中新增的 2-8
+            viewLeadVisible,
+            pagination,
+            searchMap
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -252,3 +291,22 @@ function mapDispatchToProps(dispatch) {
 }
 //输出绑定state和action后组件
 export default connect(mapStateToProps, mapDispatchToProps)(List);
+
+
+/* //form新增、或者修改   //-------旧的form表单操作，暂时注掉  2-8
+    formHandleOk() {
+        let { viewData } = this.props.$$state.toJS();
+
+        this.formRef.props.form.validateFields((err, value) => {
+            debugger
+            if (!err) {
+                let id = viewData.id
+                debugger
+                if (id) {//修改
+                    this.props.action.listFormSave(viewData,id);
+                } else {//新增
+                    this.props.action.listFormSave(viewData);
+                }
+            }
+        });
+    } */

@@ -322,7 +322,7 @@ class IcbcInfo extends React.Component {
                 onChange = {this.onChange.bind(this)}
                 width = {400}
                 height= {380}
-                
+               
             >  
                <div className="crm-list-card-icbc">
                {this.state.icbcList &&
@@ -355,7 +355,7 @@ class IcbcInfo extends React.Component {
                     onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
                     visible={this.state.visible} //受控面板显示
                 >
-                    <span className="icbc-btn customer_view_verify_customer" onClick={this.getIcbc.bind(this,true)}>
+                    <span className="icbc-btn customer_view_verify_customer">
                         企业核实
                     </span>
                 </Dropdown>

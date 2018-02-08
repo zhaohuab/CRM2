@@ -43,15 +43,20 @@ class IcbcInfo extends React.Component {
     data:获取的公司详细信息
     visiable:控制显示详细信息的modal的显隐
     */
-    customerListInfo(data,visiable) {
+    customerListInfo(data,visiable,select) {
         debugger
-        this.props.action.customerListInfo(data,visiable);
+        this.props.action.customerListInfo(data,visiable,select);
     }
 
 
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
-        debugger;
+
+        // let cssCode = this.props.$$menuState.get("cssCode");
+        // //判断是否有核实权限
+        // if(cssCode.indexOf("customer_view_verify_customer")!="-1"){
+        //     return 
+        // }
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/",
@@ -64,7 +69,6 @@ class IcbcInfo extends React.Component {
                 }
             },
             result => {
-                debugger
                 callback(result);
             }
         );
@@ -86,6 +90,7 @@ class IcbcInfo extends React.Component {
                 }
             },
             result => {
+                debugger
                 //唯一性通过才能通过选中的公司名称获取公司信息
                 reqwest(
                     {
@@ -98,8 +103,9 @@ class IcbcInfo extends React.Component {
                         }
                     },
                     result => {
+                        debugger
                         //把获取到的工商信息放在redux中，让modal显示
-                        that.customerListInfo(result.data,visiable);
+                        that.customerListInfo(result.data,visiable,select);
                     }
                 );
             }
@@ -123,16 +129,11 @@ class IcbcInfo extends React.Component {
             debugger
             //如果面板是显示状态
             if (icbcName) {
-                debugger
                 if(addIcbcName == icbcName){//如果上一次输入的值等于当前输入的名称则不在此请求公司信息
                     this.props.action.saveIcbcName(viewData,true)
                 }else{
-                    let xx = this.getIcbcList;
-                    debugger
                     this.getIcbcList(icbcName, result => {
-                        debugger
                         if (result.data && result.data.length) {
-                            debugger
                             this.setState({
                                 visible: flag,
                                 icbcList: result.data
@@ -142,7 +143,6 @@ class IcbcInfo extends React.Component {
                 }
             } else {
                 //没输入客户名称，搜索没有查询条件，列表没有数据
-                debugger
                 this.setState({
                     visible: flag,
                     icbcList: []
@@ -150,7 +150,6 @@ class IcbcInfo extends React.Component {
             }
         } else {
             //如果面板是关闭状态
-            debugger
             this.setState({
                 visible: flag
             });
@@ -215,16 +214,20 @@ class IcbcInfo extends React.Component {
 
     //获取公司信息进行核实代码
     verifyFn(){
-        let {viewData,icbcInfo} = this.props.$$state.toJS();
+        let {viewData,icbcInfo,icbcSele} = this.props.$$state.toJS();
         let name
         name = icbcInfo.find((item)=>{
             return item.key == 'verifyFullname'
         })
-        debugger
+        //如果客户名称不存在 把获取的工商信息名称赋给客户名称
         if(!viewData.name){
             viewData.name = name.value
         }
+        //新增保存时，如果进行核实，要把verifyFullname字段发送给后台
         viewData.verifyFullname = name.value
+       
+        //保存客户全称
+        viewData.fullname = name.value;
         debugger
         icbcInfo.forEach(item => {
             if (item.key == "street") {
@@ -245,6 +248,8 @@ class IcbcInfo extends React.Component {
                 viewData["tel"] = item.value;
             } else if (item.key == "taxpayerNo") {
                 viewData["taxpayerNo"] = item.value;
+            } else if (item.key == "remark") {
+                viewData["remark"] = item.value;
             } else if (item.key == "remark") {
                 viewData["remark"] = item.value;
             }
@@ -284,7 +289,7 @@ class IcbcInfo extends React.Component {
         if(viewData.name == addIcbcName){
             this.props.action.saveIcbcName(viewData,false)
         }else{
-            if(!viewData.verifyFullname){
+            if(!viewData.verifyId){
                 let viewData = this.verifyFn()
                 this.props.action.saveIcbcName(viewData,false)
             }else{
@@ -317,7 +322,7 @@ class IcbcInfo extends React.Component {
                 onChange = {this.onChange.bind(this)}
                 width = {400}
                 height= {380}
-                
+               
             >  
                <div className="crm-list-card-icbc">
                {this.state.icbcList &&
@@ -350,7 +355,7 @@ class IcbcInfo extends React.Component {
                     onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
                     visible={this.state.visible} //受控面板显示
                 >
-                    <span className="icbc-btn" >
+                    <span className="icbc-btn customer_view_verify_customer">
                         企业核实
                     </span>
                 </Dropdown>

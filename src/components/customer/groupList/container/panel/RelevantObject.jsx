@@ -64,9 +64,10 @@ class RelevantObject extends React.Component {
     headerFn(obj){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
 
-        let temp
-        if(obj.index==3){
-            temp = viewDataRelevant[4].list.data.length
+        let temp;
+        debugger;
+        if(obj.index==4){
+            temp = viewDataRelevant[1].list.data.length
         }else if(viewDataRelevant[obj.index-1].list){
             temp = viewDataRelevant[obj.index-1].list.data.length
         }else{
@@ -199,8 +200,7 @@ class RelevantObject extends React.Component {
 
     render(){
         let {viewData,viewDataRelevant} = this.props.$$state.toJS();
-        let tempContacts,tempOpport,tempUpgrade
-        
+        let tempContacts,tempOpport,tempUpgrade;
         if(viewDataRelevant&&viewDataRelevant.length){
             tempContacts = viewDataRelevant[0].list.data
             if(tempContacts.length>=8){
@@ -210,7 +210,7 @@ class RelevantObject extends React.Component {
             if(tempOpport.length>=6){
                 tempOpport = tempOpport.slice(0,5)
             }
-            tempUpgrade = viewDataRelevant[4].list.data;
+            tempUpgrade = viewDataRelevant[1].list.data;
             if(tempUpgrade.length>=8){
                 tempUpgrade = tempUpgrade.slice(0,7)
             }
@@ -335,7 +335,7 @@ class RelevantObject extends React.Component {
                                 }):'暂无数据'
                             }
                             {
-                                viewDataRelevant && viewDataRelevant.length && viewDataRelevant[4].list.data.length>7?
+                                viewDataRelevant && viewDataRelevant.length && viewDataRelevant[1].list.data.length>7?
                                 <div className='business-chance-item upgrade-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
                             }
                         </div>
