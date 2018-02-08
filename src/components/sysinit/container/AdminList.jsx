@@ -14,7 +14,8 @@ class List extends React.Component {
       //dataSource : [],
     }
     this.enableColumns = [
-      "code", "name", "phone", "email", "orgId",
+      // "code",
+       "name", "phone", "email", "orgId",
     ];
     
   }
@@ -109,12 +110,12 @@ class List extends React.Component {
   render() {
     let userType = this.props.$$state.get("userType"); 
     let columns = [
-      {
-        title: '编码',
-        dataIndex: 'code',
-        width: "200px",
-        render: (text, record, index) => this.renderColumn('code', text, record, index),
-      },
+      // {
+      //   title: '编码',
+      //   dataIndex: 'code',
+      //   width: "200px",
+      //   render: (text, record, index) => this.renderColumn('code', text, record, index),
+      // },
       {
         title: '姓名',
         dataIndex: 'name',
