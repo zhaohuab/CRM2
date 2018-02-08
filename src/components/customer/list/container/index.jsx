@@ -40,16 +40,34 @@ class List extends React.Component {
             {
                 title: "客户名称",
                 dataIndex: "name",
-                render: (text, record) => {//isGroup
+                render: (text, record) => {
                     return (
                         <div
                             onClick={this.slideShow.bind(this, record)}
-                            className="crm-pointer"
+                            className="crm-table-name"
                         >
                             {
                                 record.enableState == 1 ?
-                                    <span className='cum-color-blue'>{record.name}</span> :
-                                    <span className='cum-color-red'>{record.name}</span>
+                                <span className='cum-color-blue'>
+                                    {
+                                        record.isGroup == 2? 
+                                        <span>
+                                            {record.name}
+                                            <i className="iconfont icon-jituan-icon-" />
+                                        </span>:
+                                        record.name
+                                    }
+                                </span> :
+                                <span className='cum-color-red'>
+                                     {
+                                        record.isGroup == 2? 
+                                        <span>
+                                            {record.name}
+                                            <i className="iconfont icon-jituan-icon-" />
+                                        </span>:
+                                        record.name
+                                    }
+                                </span>
                             }
                         </div>
                     )
@@ -120,7 +138,7 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData,newType ,icbcSele} = this.props.$$state.toJS();
+        let { viewData,icbcSele} = this.props.$$state.toJS();
         for(let key in viewData){
             if(key=='ownerUserId'){
                 viewData[key]=viewData[key].id
@@ -140,7 +158,7 @@ class List extends React.Component {
                             //把已认证信息发动给后台
                             viewData.isIdentified = 1
                         }
-                        this.props.action.listFormSave(viewData,newType.key);
+                        this.props.action.listFormSave(viewData);
                     }
                 } else {
                     //新增如果有获取过公司信息就把公司id和认证发送给后台
@@ -150,7 +168,7 @@ class List extends React.Component {
                         //把已认证信息发动给后台
                         viewData.isIdentified = 1
                     }
-                    this.props.action.listFormSave(viewData,newType.key);
+                    this.props.action.listFormSave(viewData);
                 }
             }
         });

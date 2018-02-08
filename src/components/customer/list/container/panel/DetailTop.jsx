@@ -132,6 +132,20 @@ class DetailTop extends React.Component {
                                         viewData.stateName ?
                                         <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
                                     }
+                                    {
+                                        viewData.industryName ?
+                                        <span className='tags-item'><span>{viewData.industryName}</span> </span>:''
+                                    }
+                                    {
+                                        viewData.cannelTypeName ?
+                                        <span className='tags-item'><span>{viewData.cannelTypeName}</span> </span>:''
+                                    }
+                                    {
+                                        viewData.isGroup == 2?
+                                            viewData.isGroupName ?
+                                            <span className='tags-item'><span>{viewData.isGroupName}</span> </span>:''
+                                        :''
+                                    }
                                 </Row>
                             </Row>
                         </Col>

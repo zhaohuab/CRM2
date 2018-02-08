@@ -11,11 +11,12 @@ const Search = Input.Search;
 import "assets/stylesheet/all/iconfont.css";
 
 
-export default class ResponseDepart extends React.Component {
+export default class InputDisable extends React.Component {
     render(){
+        debugger
         return(
             <div>
-                <Input value = {this.props.viewData && this.props.viewData.ownerUserId? this.props.viewData.ownerUserId.deptName:'暂无部门'} disabled/>  
+                <Input value = {this.props.value? this.props.value.name:''} disabled = {this.props.disabled?true:false}/>  
             </div>
         )
     }

@@ -42,7 +42,6 @@ class RelevantObject extends React.Component {
     }
     //上传图片之前的操作
     beforeUpload(file,index,items){
-        
         let type = ['.bmp', '.gif','.jpeg' ,'.html','.txt' ,'.vsd' ,'.ppt' ,'.doc' ,'.xml','.jpg' ,'.png' ,'.xlsx']
         let pos = file.name.lastIndexOf('.')
         let end = file.name.slice(pos)
@@ -226,10 +225,11 @@ class RelevantObject extends React.Component {
             }
             tempFile = viewDataRelevant[3].list.data;
             tempUpgrade = viewDataRelevant[4].list.data;
-            if(tempUpgrade.length>=8){
-                tempUpgrade = tempUpgrade.slice(0,7)
+            if(tempUpgrade.length>=6){
+                tempUpgrade = tempUpgrade.slice(0,5)
             }
         }
+
         let type = ['icon-xsl','icon-word','icon-ppt']
        
         return(
