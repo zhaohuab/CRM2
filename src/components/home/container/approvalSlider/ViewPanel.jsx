@@ -92,13 +92,13 @@ class ViewPanel extends React.Component {
         });
     }
     onValChange = (val) => {
-      
+        // console.log(2222222, val)
     }
     onArrow = () => {
         this.setState({ flag: !this.state.flag })
     }
     goBack = () => {
-        this.props.action.hideViewForm(false);
+        this.props.action.hideHomeViewForm(false);
     }
     getContent = () => {
         let done = this.props.$$state.get("done").toJS();
@@ -127,8 +127,8 @@ class ViewPanel extends React.Component {
             </div>)
     }
     mapButtons = () => {
-
-        let buttons = this.props.$$state.get("approvalButtons").toJS().reverse();
+        debugger
+        let buttons = this.props.$$state.get("approvalHomeButtons").toJS().reverse();
         return (
             <div className="approval-buttons">
                 {buttons && buttons.length ? buttons.map((item, index) => {
@@ -146,7 +146,7 @@ class ViewPanel extends React.Component {
     }
     render() {
 
-        let { mentionVisible, detailData, detailapproval, commit, done, todo, tableState, approvalButtons } = this.props.$$state.toJS();
+        let { approvalHomeVisible,mentionVisible, detailData, detailapproval, commit, done, todo, tableState, approvalHomeButtons } = this.props.$$state.toJS();
 
         const text =
             todo.length && todo[0].personlist && todo[0].personlist.length ?
@@ -159,8 +159,8 @@ class ViewPanel extends React.Component {
                 }) : null
 
         return (
-            <div className="view-warrper" >
-                <Row className="view-warrper-detail">
+            <div className="view-warrper-homeApproval" >
+                <Row className="view-warrper-detail-homeApproval">
                     <Row className="header-detail" >
                         <Col span={10}>
                             <Row type="flex" align="middle">
@@ -176,9 +176,9 @@ class ViewPanel extends React.Component {
                                 justify="end"
                                 gutter={15}
                             >
-                                {tableState && tableState == '1' ? (
+                                {approvalHomeVisible ? (
                                     <div className="head-buttom">
-                                        {approvalButtons && approvalButtons.length ? (<div className="btnReturn" onClick={this.returnApproval}>
+                                        {approvalHomeButtons && approvalHomeButtons.length ? (<div className="btnReturn" onClick={this.returnApproval}>
                                             <Button>
                                                 撤回
 </Button>

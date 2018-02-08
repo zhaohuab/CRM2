@@ -85,7 +85,6 @@ class List extends React.Component {
 
     //显示面板
     slideShow(record) {
-        //debugger
         this.props.action.showViewForm(true, record.id);
         //获取动态
         this.props.action.getDynamic(record.id)
@@ -139,10 +138,8 @@ class List extends React.Component {
     }
 
     onPageChange(page, pageSize) {
-        debugger;
         let pagination = { page: page, pageSize: pageSize };
         let xx=this.props.$$state.toJS();
-        debugger
         let searchPlan=this.props.$$state.get("searchPlan").toJS();
         this.props.action.getListData(
             pagination,

@@ -2,7 +2,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Icon, Tabs, Row, Col, Table, Radio } from "antd";
+import { Icon, Tabs, Row, Col, Table, Radio, Tooltip, Popover } from "antd";
 import { phonebooks as url } from "api";
 import "./index.less";
 import * as Actions from "../../action/approval.js";
@@ -19,11 +19,15 @@ class Department extends React.Component {
             {
                 "title": "任务主题",
                 "dataIndex": "name",
+                width:'25%',
                 render: (text, record) => (
-                    <div className="table-color"
+                    
+                        <div className="table-color" style={{width:'200px',cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
                         onClick={this.slideShow.bind(this, record)}
                     >
+                       <Tooltip placement="bottomLeft" title={record.name}>
                         {record.name}
+                        </Tooltip>
                     </div>
                 )
             },
@@ -33,27 +37,28 @@ class Department extends React.Component {
                 render: (text, record) => (
                     <div
                     >
-                        {record.approvalUserList.length && record.approvalUserList.length > 3 ?
-                            record.approvalUserList.slice(0, 3).map((item, index) => {
-                                return (
-                                    <span style={{ marginRight: '2px' }}>
-                                        {item.name}
-                                    </span>
-                                )
-
-                            })
-                            :
-                            record.approvalUserList.length && record.approvalUserList.length <= 3 ?
-                                record.approvalUserList.map((item, index) => {
+                        <Tooltip title={this.getText.call(this, record)}  placement="bottomLeft">
+                            {record.approvalUserList.length && record.approvalUserList.length > 3 ?
+                                record.approvalUserList.slice(0, 3).map((item, index) => {
                                     return (
                                         <span style={{ marginRight: '2px' }}>
                                             {item.name}
                                         </span>
                                     )
-                                }) : ''}
 
-                        {record.approvalUserList.length && record.approvalUserList.length > 3 ? '...' : null}
+                                })
+                                :
+                                record.approvalUserList.length && record.approvalUserList.length <= 3 ?
+                                    record.approvalUserList.map((item, index) => {
+                                        return (
+                                            <span style={{ marginRight: '2px' }}>
+                                                {item.name}
+                                            </span>
+                                        )
+                                    }) : ''}
 
+                            {record.approvalUserList.length && record.approvalUserList.length > 3 ? '...' : null}
+                        </Tooltip>
                     </div>
                 )
             },
@@ -98,11 +103,15 @@ class Department extends React.Component {
             {
                 "title": "任务主题",
                 "dataIndex": "name",
+                width:'25%',
                 render: (text, record) => (
-                    <div className="table-color"
+                
+                        <div className="table-color" style={{width:'200px',cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
                         onClick={this.slideShow.bind(this, record)}
                     >
+                       <Tooltip placement="bottomLeft" title={record.name}>
                         {record.name}
+                        </Tooltip>
                     </div>
                 )
             },
@@ -140,6 +149,21 @@ class Department extends React.Component {
                 )
             }
         ]
+    }
+    getText = (record) => {
+        debugger
+        return (
+            <div>
+                {record.approvalUserList&& record.approvalUserList.length ?
+            record.approvalUserList.map((item, index) => {
+                return (
+                    <span style={{ marginRight: "5px" }}>
+                    {item.name}
+                    </span>
+                )
+            }) : null}
+             </div>
+        )
     }
 
     onRemind = (record) => {
@@ -222,7 +246,7 @@ class Department extends React.Component {
                         }}
                     /> :
                     <Table
-                        
+
                         size="middle"
                         columns={this.columnsUnfinished}
                         dataSource={unfinishedData.data}

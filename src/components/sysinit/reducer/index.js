@@ -76,6 +76,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             return $$state.merge({
                 infoCardLoading: true,
             })
+
+            case 'SYSINIT_PAGE_LOADOVER':
+            return $$state.merge({
+                tableLoading: false,
+                infoCardLoading: false
+            })
         default:
             return $$state;
     }

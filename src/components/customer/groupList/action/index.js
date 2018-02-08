@@ -352,7 +352,7 @@ let getIndustry = (industry)=>{
 
 //编辑的Request请求
 let sendCumRequest = (data,dispatch)=>{
-
+debugger
 reqwest(
     {
         url: baseDir + "cum/groupcustomers/" + data.id,
@@ -362,7 +362,7 @@ reqwest(
         }
     },
     data => {
-        
+        debugger
         dispatch({
             type: "CUSTOMERGROUP_LIST_EDITSAVE",
             data
@@ -373,7 +373,6 @@ reqwest(
 
 //新增的Request请求
 let sendCumNewRequest = (data,dispatch)=>{
-
     reqwest(
         {
             url: baseDir + 'cum/groupcustomers',
@@ -383,7 +382,6 @@ let sendCumNewRequest = (data,dispatch)=>{
             }
         },
         data => {
-            
             dispatch({
                 type: "CUSTOMERGROUP_LIST_ADDSAVE",
                 data
@@ -394,6 +392,7 @@ let sendCumNewRequest = (data,dispatch)=>{
 
 //新增、编辑表单
 export function listFormSave(data,id) {
+    debugger
     data = trancFn(data);
     
     
@@ -441,7 +440,6 @@ export function listFormSave(data,id) {
 
 //展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id){  
-    debugger;
     return dispatch => {
         reqwest(
             {
@@ -581,7 +579,7 @@ export function checkedFn(viewData, select, id, visiable) {
                 }
             },
             result => {
-                debugger
+                //debugger
                 dispatch({
                     type: "CUSTOMERGROUP_LIST_CLOSEDETAILICBCMODOL",
                     visiable,
@@ -595,7 +593,7 @@ export function checkedFn(viewData, select, id, visiable) {
 };
 //详情中取消工商核实
 export function checkedCancelFn(id, visiable) {
-    debugger;
+    //debugger;
     return dispatch => {
         reqwest(
             {
@@ -608,7 +606,7 @@ export function checkedCancelFn(id, visiable) {
                 }
             },
             result => {
-                debugger;
+               // debugger;
                 dispatch({
                     type: "CUSTOMERGROUP_LIST_CLEANVERIFYID",
                     visiable
@@ -620,7 +618,7 @@ export function checkedCancelFn(id, visiable) {
 
 export function hasIcbc(name, id , visiable) {
     return dispatch => {
-        debugger
+        //debugger
         if(name){
             reqwest(
                 {
@@ -633,7 +631,7 @@ export function hasIcbc(name, id , visiable) {
                     }
                 },
                 result => {
-                    debugger
+                    //debugger
                     dispatch({
                         type: "CUSTOMERGROUP_LIST_ICBCDETAILMODAL",
                         visiable,
@@ -648,7 +646,7 @@ export function hasIcbc(name, id , visiable) {
                     method: "GET"
                 },
                 result => {
-                    debugger
+                   // debugger
                     dispatch({
                         type: "CUSTOMERGROUP_LIST_ICBCDETAILMODAL",
                         visiable,
@@ -761,7 +759,7 @@ export function closeIcbcVisible1(visible){
 
 //点击新建按钮清空viewPanel面板数据
 export function addCustomer(data){
-    debugger;
+    //debugger;
     return dispatch => {
         dispatch({
             type: "CUSTOMERGROUP_LIST_ADDCUSTOMER",
@@ -998,7 +996,7 @@ export function delContacts(id,pagination){
 
 //-------导入导出 1.30号 余春梅
 export function viewLeadShow(leadVisible) {
-    debugger
+    //debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_VIEWLEADSHOW",
         payload: { leadVisible }
@@ -1019,7 +1017,7 @@ export function leadEndShow(leadVisible) {
     };
 };
 export function leadEndView(leadVisible, leadStep) {
-    debugger
+    //debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_LEADENDVIEW",
         payload: { leadVisible, leadStep }
@@ -1034,7 +1032,7 @@ export function leadEndIngShow(leadVisible) {
 }
 
 export function saveFiles(files) {
-    debugger
+    //debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_SAVEFILES",
         payload: { files }

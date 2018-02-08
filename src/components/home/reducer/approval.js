@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import Mention from 'antd/lib/mention';
 
 let $$initialState = {
-    title: "首页",
+
     data: {},//提交表单数据
     approveData: {},//审批表单数据
 
@@ -27,9 +27,11 @@ let $$initialState = {
         page: 1
     },
     searchMap: { statusCommit: 'unFinish' }, //存储查询表单数据
-    searchMapApproval: {status:'todo'},
+    searchMapApproval: { status: 'todo' },
     finishState: false,// 完成表头控制完成未完成
     viewState: false,
+
+    viewHomeState: false,
     detailData: {}, //详情form表单数据数据
     detailapproval: {},
     lineState: false, //审批显隐
@@ -41,9 +43,12 @@ let $$initialState = {
     showMention: false,
     showAction: '',
     approvalButtons: [],
+
+
+    approvalHomeButtons:[],
     currentRecord: {}, //详情数据
     loadingFlag: false,
-    titleFlag:false
+    titleFlag: false
 };
 function clearObject(obj) {
     for (let key in obj) {
@@ -68,9 +73,9 @@ function clear(obj) {
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
     switch (action.type) {
-       
+
         case 'APPROVAL_LIST_LOADING':
-        debugger
+            debugger
             return $$state.merge({
                 loadingFlag: action.content
             })
@@ -116,8 +121,21 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 detailData: appData,
                 currentRecord: action.content.record
             })
-        case 'APPROVE_LIST_MENTIONVISIBLE':
 
+        case 'APPROVAL_LIST_HOMESHOWVIEWFORM':
+            debugger
+            let appHomeData = action.content.data
+            // if (appData.approvalComment == '') {
+            //     appData.approvalComment = "同意"
+            // }
+            return $$state.merge({
+                viewHomeState: action.content.visible,
+                detailData: appHomeData,
+                currentRecord: action.content.record
+            })
+
+
+        case 'APPROVE_LIST_MENTIONVISIBLE':
             return $$state.merge({
                 mentionVisible: action.content.visible,
                 showAction: action.content.action
@@ -129,10 +147,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 showAction: ''
             })
 
-    case 'APPROVE_LIST_TITLEFLAG':
-    return $$state.merge({
-        titleFlag: action.content.visible,
-    })
+        case 'APPROVE_LIST_TITLEFLAG':
+            return $$state.merge({
+                titleFlag: action.content.visible,
+            })
         case 'APPROVAL_LIST_SHOWVIEWAPPROVAL':
             debugger
             return $$state.merge({
@@ -142,10 +160,16 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 done: action.content.data.done
             });
         case 'APPROVAL_LIST_APPROVALBUTTON':
-
+            debugger
             return $$state.merge({
                 approvalButtons: action.content.data.actionlist
             })
+       case 'APPROVAL_LIST_APPROVALHOMEBUTTON':
+       return $$state.merge({
+        approvalHomeButtons: action.content.data.actionlist
+    })
+
+
         case 'APPROVED_VIEWSTATE'://详情展示面板
             return $$state.merge({
                 viewState: action.content.viewState
@@ -168,6 +192,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 
             return $$state.merge({
                 viewState: action.content.visiable
+            })
+
+
+        case 'APPROVAL_LIST_HOMEHIDEVIEWFORM':
+            return $$state.merge({
+                viewHomeState: action.content.visiable
             })
         case 'APPROVE_LIST_SEARCHMAP':
             debugger
@@ -228,7 +258,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 approvalHomeShow: action.content.approvalHomeShow
             })
         case 'HEADER_APPROVED_CHANGE':
-        debugger
+            debugger
             return $$state.merge({
                 myState: action.content.myState,
                 tableState: action.content.tableState,

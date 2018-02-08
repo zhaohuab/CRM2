@@ -146,7 +146,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE':
             let enableState = $$state.get('viewData').toJS()
             enableState.enableState = action.state;
-            debugger
+            
             return $$state.merge({
                 data: action.data,
                 pagination: action.pagination,

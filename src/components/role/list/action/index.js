@@ -20,6 +20,8 @@ const showRoleForm = (flag, editData = {}, isEdit) => {
 			}, result => {
 				editData.orgId = { key: result.id, title: result.name }
 				dispatch(fetchData('ROLE_LIST_SHOWFORM', { visible: flag, editData, isEdit }));
+			},() => {
+				dispatch(fetchData('ROLE_LIST_LOADOVER'));
 			})
 		}
 
@@ -50,6 +52,8 @@ const getRoleListData = (searchMap) => {
 			},
 		}, result => {
 			dispatch(fetchData('ROLE_LIST_GETROLELISTSUCCESS', { data: result, searchMap }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -69,6 +73,8 @@ const getFuncTreeData = (roleId, isPreseted) => {
 			},
 		}, funcData => {
 			dispatch(fetchData("ROLE_LIST_GETFUNCTREESUCCESS", { funcData, roleId, isPreseted }))
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -109,6 +115,8 @@ const onSaveRole4Add = (data, index) => {
 			}
 		}, result => {
 			dispatch(fetchData('ROLE_CARD_SAVEADD', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -124,6 +132,8 @@ const onSaveRole4Edit = (data, index) => {
 			}
 		}, result => {
 			dispatch(fetchData('ROLE_CARD_SAVEEDIT', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -140,6 +150,8 @@ const onDelete = (id) => {
 			if (result.flag) {
 				dispatch(fetchData('ROLE_LIST_DELETESUCCESS', id));
 			}
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -161,6 +173,8 @@ const selectFunc = (roleId, funcIds, checked, funcData) => {
 			}
 		}, () => {
 			dispatch(fetchData('ROLE_LIST_SELECTFUNC', funcData));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -180,6 +194,8 @@ const getUserListData = (roleId, pagination, isPreseted) => {
 			},
 		}, result => {
 			dispatch(fetchData('ROLE_LIST_GETUSERLISTSUCCESS', { data: result, roleId, isPreseted }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -199,6 +215,8 @@ const showUserCard = (roleId, name) => {
 			},
 		}, result => {
 			dispatch(fetchData('ROLE_LIST_GETUSERCARDLISTSUCCESS', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -237,6 +255,8 @@ const saveUser = (roleId, userIds, pagination) => {
 		}, result => {
 			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
 			dispatch(fetchData('ROLE_LIST_SAVEUSERSUCCESS', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -259,6 +279,8 @@ const deleteUser = (roleId, userIds, pagination) => {
 		}, result => {
 			// dispatch(fetchData('ROLE_LIST_CLOSEUSERCARD', { ...result }));
 			dispatch(fetchData('ROLE_LIST_DELETEUSERSUCCESS', { ...result }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -281,7 +303,9 @@ const getRightData = (roleId, isPreseted) => {
 			data: {
 			},
 		}, result => {
-			dispatch(fetchData('ROLE_LIST_GETRIGHTDATA', { data: result.data, isPreseted }));
+			dispatch(fetchData('ROLE_LIST_GETRIGHTDATA', { data: result.data,roleId, isPreseted }));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }
@@ -301,6 +325,8 @@ const selectRight = (roleId, rightId, rightData) => {
 			}
 		}, () => {
 			dispatch(fetchData('ROLE_LIST_SELECTRIGHTDATA', rightData));
+		},() => {
+			dispatch(fetchData('ROLE_LIST_LOADOVER'));
 		})
 	}
 }

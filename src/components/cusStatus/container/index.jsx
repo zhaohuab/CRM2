@@ -14,6 +14,7 @@ import {
     Icon,
     Row,
     Col,
+    Spin,
     Pagination
 } from "antd";
 
@@ -45,28 +46,20 @@ class PanelMap extends React.Component {
         }, 500);
     }
 
-    getDetailAdress = (item) => {//点击地址定位到具体部位
-        if(item.longitude&&item.latitude) {
-            this.areaMap.setOption(getItemOption(item))
-        }else{
-            Modal.info({
-                content: '您查看的客户暂无详细地址',
-            });
-        }     
-    }
-
     reload = () => {//返回按钮，重新加载页面
         window.location.reload();
     }
 
     pageChange = (num) => {//页码更改
-        let str='',id='';
+        let str = this.props.$$state.get('userName');
+        let id = this.props.$$state.get(str);
         this.props.action.getCustomerItem(str,id,num)
     }
 
-    getCustomerList = (str, id, name) => {
+    getCustomer = (str, id, name) => {
         this.props.action.getCustomerList(str, id, name);
         this.props.action.getCustomerItem(str, id, 1)
+        this.props.action.getStatusData(str, id)
     }
 
     componentDidMount() {  
@@ -85,13 +78,14 @@ class PanelMap extends React.Component {
     render() {     
         let reload = this.reload;
         let pageChange = this.pageChange;
-        let getDetailAdress = this.getDetailAdress;
-        let getCustomerList = this.getCustomerList;
+        let getCustomer = this.getCustomer;
         let {  $$state, action} = this.props;
         let { data, customerItem, statusData } =  $$state.toJS();
         let itemFlag = $$state.get('itemFlag');
-        let departmentName = $$state.get('departmentName');    
-        console.log('customerItem=========',customerItem)  
+        let departmentName = $$state.get('departmentName'); 
+        let loadingFlag = $$state.get('loadingFlag');
+        let page = $$state.get('page');     
+        //console.log('客户状态客户总数=========',data,customerItem)  
         return (
             <Row type="flex" className="customer-status-wraper">
                 <Col span={8} className="customer-panelMap-left">
@@ -99,96 +93,111 @@ class PanelMap extends React.Component {
                             <Col span={20} className='customer-detail-total'>{departmentName}当前客户总数：<span className='customer-detail-num'>{data.total}</span></Col>
                             <Col span={4} className='goBack'><Button size="small" onClick={reload.bind(this)}>返回</Button></Col>                   
                         </Row>
-                        <Row type="flex" justify="around" align='top' className='customer-principal'>
+                            <div className='customer-principal'>
                             { 
                                 itemFlag?
                                 data.list.map(item=>{
                                     return (
-                                        <Col span={24} className='customer-principal-item' onClick={getCustomerList.bind(this,'deptId',item.id,item.name)}>
-                                            <Row type='flex' align='middle'>
-                                                <Col span={18} style={{textAlign:'left'}}>{item.name}</Col>
-                                                <Col span={6}><span className='customer-num'>{item.num}</span>个客户</Col>
-                                            </Row>                                           
-                                        </Col>
+                                        <Row  className='customer-principal-item customer-principal-role-department' onClick={getCustomer.bind(this,'deptId',item.id,item.name)}>                                
+                                                <Col span={18} className='customer-name'>{item.name}</Col>
+                                                <Col span={6}><span className='customer-num'>{item.num}</span>个客户</Col>                                         
+                                        </Row>
                                     )
                                 })
                                 :
                                 data.list.map(item=>{                               
                                     return (
-                                        <Col span={6} className='customer-principal-item' onClick={getCustomerList.bind(this,'userId',item.id,item.name)}>{item.name}<span className='customer-num'>({item.num})</span></Col>
+                                        <div  
+                                          className='customer-principal-item customer-principal-role-item ' 
+                                          onClick={getCustomer.bind(this,'userId',item.id,item.name)}
+                                        >
+                                            <div className='role-name' title={item.name}>{item.name}</div>
+                                            <div className='customer-num'>({item.num})</div>
+                                        </div>
                                     )                               
                                 }) 
                             }                 
-                        </Row>
+                        </div>
+                   
                         <div className='customer-address'>
-                            {
-                                customerItem.data.map((item,index)=>{
-                                    return (
-                                        <Row type="flex" align='middle' className='customer-address-item'>
-                                            <Col span={4}>
-                                                <div className='customer-address-item-order'>
-                                                    <p className='customer-address-item-num'>{index+1}</p>
-                                                </div>                                          
-                                            </Col>
-                                            <Col span={20} className='item-content' onClick={getDetailAdress.bind(this,item)}>
-                                                <div className='item-content-name'>{item.name}
-                                                   
-                                                </div>
-                                                <div className='item-content-adress'>
-                                                    <Row type='flex' align='middle' gutter={10}>
-                                                        <Col span={8}>
-                                                            <Row type='flex' align='top' >
-                                                                <Col span={4}><i className="iconfont icon-chuangjianshijian icon-time" /></Col>
-                                                                <Col span={20} className='item-time'>
-                                                                    <div className='time-name'>创建时间</div>
-                                                                    <div className='time-value'>
-                                                                        {moment(item.createdTime.time).format('YYYY-MM-DD')}
-                                                                    </div>                                                               
+                            {   
+                                loadingFlag?
+                                <Spin size="large" className='loading'/>
+                                :
+                                <div>
+                                    {
+                                        customerItem.data.map((item,index)=>{
+                                            return (
+                                                <Row type="flex" align='middle' className='customer-address-item'>
+                                                    <Col span={4}>
+                                                        <div className='customer-address-item-order'>
+                                                            <p className='customer-address-item-num'>{index+1}</p>
+                                                        </div>                                          
+                                                    </Col>
+                                                    <Col span={20} className='item-content'>
+                                                        <div className='item-content-name'>{item.name}</div>
+                                                        <div className='item-content-adress'>
+                                                            <Row type='flex' align='middle' gutter={10}>
+                                                                <Col span={8}>
+                                                                    <Row type='flex' align='top' >
+                                                                        <Col span={4}>
+                                                                            <i className="iconfont icon-chuangjianshijian icon-time" />
+                                                                        </Col>
+                                                                        <Col span={20} className='item-time'>
+                                                                            <div className='time-name'>创建时间</div>
+                                                                            <div className='time-value'>
+                                                                                {moment(item.createdTime.time).format('YYYY-MM-DD')}
+                                                                            </div>                                                               
+                                                                        </Col>
+                                                                    </Row>
+                                                                </Col>
+                                                                <Col span={8}>
+                                                                    <Row type='flex' align='top' gutter={8} >
+                                                                        <Col span={4}>
+                                                                            <i className="iconfont icon-shoucigenjin icon-time" />
+                                                                        </Col>
+                                                                        <Col span={20} className='item-time'>
+                                                                            <div className='time-name'>首次跟进</div>
+                                                                            <div className='time-value'>
+                                                                                {
+                                                                                    item.firstFollowTime?
+                                                                                    moment(item.firstFollowTime).format('YYYY-MM-DD')
+                                                                                    :
+                                                                                    '暂无'
+                                                                                }
+                                                                            </div>                                                               
+                                                                        </Col>
+                                                                    </Row>
+                                                                </Col>
+                                                                <Col span={8}>
+                                                                    <Row type='flex' align='top' >
+                                                                        <Col span={4}><i className="iconfont icon-zuijingenjin icon-time" /></Col>
+                                                                        <Col span={20} className='item-time'>
+                                                                            <div className='time-name'>最近跟进</div>
+                                                                            <div className='time-value'>
+                                                                                {
+                                                                                    item.followTime ?
+                                                                                    moment(item.followTime).format('YYYY-MM-DD')
+                                                                                    :
+                                                                                    '暂无'
+                                                                                }
+                                                                            </div>                                                               
+                                                                        </Col>
+                                                                    </Row>
                                                                 </Col>
                                                             </Row>
-                                                        </Col>
-                                                        <Col span={8}>
-                                                            <Row type='flex' align='top' gutter={8} >
-                                                                <Col span={4}><i className="iconfont icon-shoucigenjin icon-time" /></Col>
-                                                                <Col span={20} className='item-time'>
-                                                                    <div className='time-name'>首次跟进</div>
-                                                                    <div className='time-value'>
-                                                                        {
-                                                                            item.firstFollowTime?
-                                                                            moment(item.firstFollowTime).format('YYYY-MM-DD')
-                                                                            :
-                                                                            '暂无'
-                                                                        }
-                                                                    </div>                                                               
-                                                                </Col>
-                                                            </Row>
-                                                        </Col>
-                                                        <Col span={8}>
-                                                            <Row type='flex' align='top' >
-                                                                <Col span={4}><i className="iconfont icon-zuijingenjin icon-time" /></Col>
-                                                                <Col span={20} className='item-time'>
-                                                                    <div className='time-name'>最近跟进</div>
-                                                                    <div className='time-value'>
-                                                                        {
-                                                                            item.followTime ?
-                                                                            moment(item.followTime).format('YYYY-MM-DD')
-                                                                            :
-                                                                            '暂无'
-                                                                        }
-                                                                    </div>                                                               
-                                                                </Col>
-                                                            </Row>
-                                                        </Col>
-                                                    </Row>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    )
-                                })
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            )
+                                        })
+                                    }
+                                </div>
+                               
                             }
                         </div>
                         <Row type="flex" justify="end" className='page-list'>
-                            <Pagination total={customerItem.total} onChange={pageChange.bind(this)} pageSize={5}/>
+                            <Pagination total={data.total} onChange={pageChange.bind(this)} pageSize={5}/>
                         </Row>
                 </Col>
                 <Col span={16} className="customer-panelMap-right">
@@ -220,3 +229,25 @@ export default  connect( mapStateToProps, mapDispatchToProps)(PanelMap);
 /* 
 item.createdTime?item.createdTime.time.moment.format('YYYY-MM-DD'):''
  */
+
+    /* <Row type="flex" justify="around" align='top' className='customer-principal'>
+            { 
+                itemFlag?
+                data.list.map(item=>{
+                    return (
+                        <Col span={24} className='customer-principal-item' onClick={getCustomerList.bind(this,'deptId',item.id,item.name)}>
+                            <Row type='flex' align='middle'>
+                                <Col span={18} style={{textAlign:'left'}}>{item.name}</Col>
+                                <Col span={6}><span className='customer-num'>{item.num}</span>个客户</Col>
+                            </Row>                                           
+                        </Col>
+                    )
+                })
+                :
+                data.list.map(item=>{                               
+                    return (
+                        <Col span={6} className='customer-principal-item' onClick={getCustomerList.bind(this,'userId',item.id,item.name)}>{item.name}<span className='customer-num'>({item.num})</span></Col>
+                    )                               
+                }) 
+            }                 
+        </Row> */
