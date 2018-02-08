@@ -88,9 +88,9 @@ class List extends React.Component {
         //debugger
         this.props.action.showViewForm(true, record.id);
         //获取动态
-       // this.props.action.getDynamic(record.id)
-       //----集团客户的动态后台正在添加，这里暂时注掉
+        this.props.action.getDynamic(record.id)
     }
+    
     //隐藏面版
     slideHide() {
         //关闭面板清空数据

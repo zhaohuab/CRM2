@@ -34,6 +34,7 @@ import IcbcInfo from "./IcbcInfo";
 import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
 import CityChioce from "../../../../common/cityChioce/CityChioce";
+import InputDisable from './InputDisable'
 //import OwnUser from './OwnUser'
 //import ResponseDepart from './ResponseDepart'
 
@@ -486,17 +487,10 @@ class EditForm extends React.Component {
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "type"
+                                                            "biztype"
                                                         )(
-                                                            <Enum
-                                                                addOptionAll={
-                                                                    "客户类型"
-                                                                }
-                                                                dataSource={
-                                                                    enumData.type
-                                                                }
-                                                            />
-                                                            )}
+                                                           <InputDisable disabled = {true}/>
+                                                        )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
