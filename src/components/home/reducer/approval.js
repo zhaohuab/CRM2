@@ -2,6 +2,7 @@ import Immutable from 'immutable'
 import Mention from 'antd/lib/mention';
 
 let $$initialState = {
+    userType: '',//角色类型，redux 中暂未使用
 
     data: {},//提交表单数据
     approveData: {},//审批表单数据
@@ -45,7 +46,7 @@ let $$initialState = {
     approvalButtons: [],
 
 
-    approvalHomeButtons:[],
+    approvalHomeButtons: [],
     currentRecord: {}, //详情数据
     loadingFlag: false,
     titleFlag: false
@@ -73,6 +74,11 @@ function clear(obj) {
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
     switch (action.type) {
+        case 'SYSINIT_SAVE_USERTYPE':
+        debugger
+            return $$state.merge({
+                userType: action.content
+            })
 
         case 'APPROVAL_LIST_LOADING':
             debugger
@@ -164,10 +170,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             return $$state.merge({
                 approvalButtons: action.content.data.actionlist
             })
-       case 'APPROVAL_LIST_APPROVALHOMEBUTTON':
-       return $$state.merge({
-        approvalHomeButtons: action.content.data.actionlist
-    })
+        case 'APPROVAL_LIST_APPROVALHOMEBUTTON':
+            return $$state.merge({
+                approvalHomeButtons: action.content.data.actionlist
+            })
 
 
         case 'APPROVED_VIEWSTATE'://详情展示面板

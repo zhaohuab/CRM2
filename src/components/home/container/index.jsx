@@ -131,48 +131,7 @@ const targetTabelData = [
         }
     ]
 ];
-// const commitColumns = [
-//     {
-//         "title": "任务主题",
-//         "dataIndex": "name",
-//         render: (text, record) => (
-//             <div className="table-color"
-//                 onClick={this.slideShow.bind(this, record)}
-//             >
-//                 {record.name}
-//             </div>
-//         )
-//     },
-//     // {
-//     //     "title": "待审人",
-//     //     "dataIndex": "approvalUserList",
-//     //     render: (text, record) => (
-//     //         <div>
-//     //             {record.approvalUserList[0].name}
-//     //         </div>
-//     //     )
-//     // },
-//     {
-//         "title": "停留时长",
-//         "dataIndex": "stayTimeLength"
-//     }
-// ]
-// const approvalColumns = [
-//     {
-//         "title": "任务主题",
-//         "dataIndex": "name",
-//         render: (text, record) => (
-//             <div>
-//                 {record.name}
-//             </div>
 
-//         )
-//     },
-//     {
-//         "title": "停留时长",
-//         "dataIndex": "stayTimeLength"
-//     }
-// ]
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -229,17 +188,17 @@ class Home extends React.Component {
                 dataIndex: "down"
             }
         ];
-       this.commitColumns = [
+        this.commitColumns = [
             {
                 "title": "任务主题",
                 "dataIndex": "name",
-                width:'50%',
+                width: '50%',
                 render: (text, record) => (
-                    <div className="table-color" style={{width:'120px',cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
+                    <div className="table-color" style={{ width: '120px', cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
                         onClick={this.slideShow.bind(this, record)}
                     >
-                       <Tooltip placement="bottomLeft" title={record.name}>
-                        {record.name}
+                        <Tooltip placement="bottomLeft" title={record.name}>
+                            {record.name}
                         </Tooltip>
                     </div>
                 )
@@ -262,16 +221,16 @@ class Home extends React.Component {
             {
                 "title": "任务主题",
                 "dataIndex": "name",
-                width:'50%',
+                width: '50%',
                 render: (text, record) => (
                     <div className="table-color" style={{ width: '120px', cursor: 'pointer', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}
                         onClick={this.slideShow.bind(this, record)}
                     >
-                      <Tooltip placement="bottomLeft" title={record.name}>
-                        {record.name}
+                        <Tooltip placement="bottomLeft" title={record.name}>
+                            {record.name}
                         </Tooltip>
                     </div>
-        
+
                 )
             },
             {
@@ -304,21 +263,37 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        this.targetEchar = echarts.init(this.refs.target);
-        this.targetEchar.setOption(this.targetOption);
+        let usertype = this.getCookie('usertype')
+        if (usertype !== "1") {
+            this.targetEchar = echarts.init(this.refs.target);
+            this.targetEchar.setOption(this.targetOption);
 
-        this.moneyEchar = echarts.init(this.refs.money);
-        this.moneyEchar.setOption(this.moneyOption);
+            this.moneyEchar = echarts.init(this.refs.money);
+            this.moneyEchar.setOption(this.moneyOption);
 
-        this.funnelEchar = echarts.init(this.refs.funnel);
-        this.funnelEchar.setOption(this.funnelOption);
+            this.funnelEchar = echarts.init(this.refs.funnel);
+            this.funnelEchar.setOption(this.funnelOption);
 
-        this.areaMap = echarts.init(this.refs.areaMap);
-        this.areaMap.setOption(this.customerOption);
+            this.areaMap = echarts.init(this.refs.areaMap);
+            this.areaMap.setOption(this.customerOption);
+            //this.props.action.userType();//判断角色类型
 
-        this.props.action.approvalHomeData();//审批数据
+            this.props.action.approvalHomeData();//审批数据
+
+        }
 
         window.addEventListener("resize", this.onWindowResize.bind(this));
+    }
+
+    getCookie(name) {
+        debugger
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)"); //正则匹配
+        if (arr = document.cookie.match(reg)) {
+            return unescape(arr[2]);
+        }
+        else {
+            return null;
+        }
     }
 
     commit = () => {
@@ -346,142 +321,152 @@ class Home extends React.Component {
         this.props.action.hideHomeViewForm(false);
     }
     render() {
+        debugger
         const events = {
             created: ins => { },
             click: () => { }
         };
         this.onWindowResize();
 
-        let {viewHomeState, commitData, approvalData, approvalHomeVisible, approvalHomeShow, approvalFlag, viewState } = this.props.$$state.toJS();
+        let { viewHomeState, commitData, approvalData, approvalHomeVisible, approvalHomeShow, approvalFlag, viewState } = this.props.$$state.toJS();
+        //    {userType=="1"?return(<div className="home-userType">1</div>):
+        let userType = this.getCookie('usertype')
         return (
-            <div className="home-layer">
-                <div className="home-warrper">
-                    <Row className="clinet-main" id="recover-select">
-                        <Col span={9} className="clinet-main-left">
-                            <div className="main-left-top">
-                                <h3 className="chart-title">
-                                    <span>销售回款</span>
-                                    <div>
-                                        <Select
-                                            defaultValue="本年"
-                                            onChange={this.changeTargetData}
-                                        >
-                                            <Option value="0">本年</Option>
-                                            <Option value="1">本季</Option>
-                                            <Option value="2">本月</Option>
-                                            <Option value="3">本周</Option>
-                                        </Select>
-                                    </div>
-                                </h3>
-                                <div className="main-inner" id="change-style">
-                                    <Table
-                                        columns={this.columns}
-                                        dataSource={this.state.targetTabelData}
-                                        pagination={false}
-                                    />
-                                    <div
-                                        ref="target"
-                                        className="target-charts"
-                                    />
-                                </div>
-                            </div>
+            <div className="home-show-wrapper">
+              
 
-                            <div className="main-left-bottom">
-                                <h3 className="chart-title">
-                                    <span>回款排行榜</span>
-                                </h3>
-                                <div className="main-inner">
-                                    <div ref="money" className="money-charts" />
-                                </div>
-                            </div>
-                        </Col>
-                        <Col span={9} className="clinet-main-middle">
-                            <div className="main-middle-top">
-                                <h3 className="chart-title">
-                                    <span>销售区域</span>
-                                    <div>
-                                        <Select defaultValue="本年">
-                                            <Option value="0">本年</Option>
-                                            <Option value="1">本季</Option>
-                                            <Option value="2">本月</Option>
-                                            <Option value="3">本周</Option>
-                                        </Select>
-                                    </div>
-                                </h3>
-                                <div className="main-inner">
-                                    <div
-                                        ref="areaMap"
-                                        style={{ width: "100%", height: 300 }}
-                                    />
-                                </div>
-                            </div>
+                {userType !== "" &&
+                    userType == '1' ?
+                    <div className="home-userType"></div> :
+                    <div className="home-layer">
 
-                            <div className="main-middle-bottom">
-                                <h3 className="chart-title">
-                                    <span>销售漏斗</span>
-                                    <div>
-                                        <Select
-                                            defaultValue="本年"
-                                            onChange={this.changeFunnelData}
-                                        >
-                                            <Option value="0">本年</Option>
-                                            <Option value="1">本季</Option>
-                                            <Option value="2">本月</Option>
-                                            <Option value="3">本周</Option>
-                                        </Select>
-                                    </div>
-                                </h3>
-                                <div>
-                                    <div
-                                        ref="funnel"
-                                        className="funnel-chrats"
-                                    />
-                                </div>
-                            </div>
-                        </Col>
-                        <Col span={6} className="clinet-main-right">
-                            <div className="main-right-top">
-                                <h3 className="chart-title">
-                                    <span className="chart-title-more"
-                                        onClick={this.approvalShow}
-                                    >审批</span>
-                                </h3>
-                                <Row type='flex' justify="center" gutter={15}>
-                                    <Col span={10}>
-                                        <div onClick={this.commit}
-                                            className={approvalFlag ? 'approval-commit' : 'approval-commitColor'}
-
-                                        >
-                                            <div>{commitData.total}</div>
-                                            <p>我提交</p>
+                        <div className="home-warrper">
+                            <Row className="clinet-main" id="recover-select">
+                                <Col span={9} className="clinet-main-left">
+                                    <div className="main-left-top">
+                                        <h3 className="chart-title">
+                                            <span>销售回款</span>
+                                            <div>
+                                                <Select
+                                                    defaultValue="本年"
+                                                    onChange={this.changeTargetData}
+                                                >
+                                                    <Option value="0">本年</Option>
+                                                    <Option value="1">本季</Option>
+                                                    <Option value="2">本月</Option>
+                                                    <Option value="3">本周</Option>
+                                                </Select>
+                                            </div>
+                                        </h3>
+                                        <div className="main-inner" id="change-style">
+                                            <Table
+                                                columns={this.columns}
+                                                dataSource={this.state.targetTabelData}
+                                                pagination={false}
+                                            />
+                                            <div
+                                                ref="target"
+                                                className="target-charts"
+                                            />
                                         </div>
+                                    </div>
 
-                                    </Col>
-                                    <Col span={10} onClick={this.approval}>
-                                        <div
-                                            className={approvalFlag ? 'approval-approvedColor' : 'approval-approved'}
-                                        >
-                                            <div >{approvalData.total}</div>
-                                            <p>我审批</p>
+                                    <div className="main-left-bottom">
+                                        <h3 className="chart-title">
+                                            <span>回款排行榜</span>
+                                        </h3>
+                                        <div className="main-inner">
+                                            <div ref="money" className="money-charts" />
                                         </div>
-                                    </Col>
-                                </Row>
-                                {approvalHomeVisible ?
-                                    <Table
-                                        size="middle"
-                                        columns={this.commitColumns}
-                                        dataSource={commitData.data}
-                                        rowKey="id"
-                                    />
+                                    </div>
+                                </Col>
+                                <Col span={9} className="clinet-main-middle">
+                                    <div className="main-middle-top">
+                                        <h3 className="chart-title">
+                                            <span>销售区域</span>
+                                            <div>
+                                                <Select defaultValue="本年">
+                                                    <Option value="0">本年</Option>
+                                                    <Option value="1">本季</Option>
+                                                    <Option value="2">本月</Option>
+                                                    <Option value="3">本周</Option>
+                                                </Select>
+                                            </div>
+                                        </h3>
+                                        <div className="main-inner">
+                                            <div
+                                                ref="areaMap"
+                                                style={{ width: "100%", height: 300 }}
+                                            />
+                                        </div>
+                                    </div>
 
-                                    : <Table
-                                        size="middle"
-                                        columns={this.approvalColumns}
-                                        dataSource={approvalData.data}
-                                        rowKey="id"
-                                    />}
+                                    <div className="main-middle-bottom">
+                                        <h3 className="chart-title">
+                                            <span>销售漏斗</span>
+                                            <div>
+                                                <Select
+                                                    defaultValue="本年"
+                                                    onChange={this.changeFunnelData}
+                                                >
+                                                    <Option value="0">本年</Option>
+                                                    <Option value="1">本季</Option>
+                                                    <Option value="2">本月</Option>
+                                                    <Option value="3">本周</Option>
+                                                </Select>
+                                            </div>
+                                        </h3>
+                                        <div>
+                                            <div
+                                                ref="funnel"
+                                                className="funnel-chrats"
+                                            />
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col span={6} className="clinet-main-right">
+                                    <div className="main-right-top">
+                                        <h3 className="chart-title">
+                                            <span className="chart-title-more"
+                                                onClick={this.approvalShow}
+                                            >审批</span>
+                                        </h3>
+                                        <Row type='flex' justify="center" gutter={15}>
+                                            <Col span={10}>
+                                                <div onClick={this.commit}
+                                                    className={approvalFlag ? 'approval-commit' : 'approval-commitColor'}
 
-                                {/*                                 
+                                                >
+                                                    <div>{commitData.total}</div>
+                                                    <p>我提交</p>
+                                                </div>
+
+                                            </Col>
+                                            <Col span={10} onClick={this.approval}>
+                                                <div
+                                                    className={approvalFlag ? 'approval-approvedColor' : 'approval-approved'}
+                                                >
+                                                    <div >{approvalData.total}</div>
+                                                    <p>我审批</p>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                        {approvalHomeVisible ?
+                                            <Table
+                                                size="middle"
+                                                columns={this.commitColumns}
+                                                dataSource={commitData.data}
+                                                rowKey="id"
+                                            />
+
+                                            : <Table
+                                                size="middle"
+                                                columns={this.approvalColumns}
+                                                dataSource={approvalData.data}
+                                                rowKey="id"
+                                            />}
+
+                                        {/*                                 
                                 <div className="notice-right-padding">
                                     <ul>
                                         <li>
@@ -498,179 +483,181 @@ class Home extends React.Component {
                                         </li>
                                     </ul>
                                 </div> */}
-                            </div>
+                                    </div>
 
 
 
 
 
 
-                            <div className="main-right-bottom">
-                                <h3 className="chart-title">
-                                    <span>日程</span>
-                                    <span className="chart-title-more">
-                                        更多
+                                    <div className="main-right-bottom">
+                                        <h3 className="chart-title">
+                                            <span>日程</span>
+                                            <span className="chart-title-more">
+                                                更多
                                     </span>
-                                </h3>
-                                <div className="notice-right-padding">
-                                    <div className="schedule-weather">
-                                        <p>2017-7-7</p>
-                                        <p>
-                                            <i className="iconfont icon-dingwei" />北京市
+                                        </h3>
+                                        <div className="notice-right-padding">
+                                            <div className="schedule-weather">
+                                                <p>2017-7-7</p>
+                                                <p>
+                                                    <i className="iconfont icon-dingwei" />北京市
                                         </p>
-                                        <p>
-                                            <i className="iconfont icon-duoyun" />多云
+                                                <p>
+                                                    <i className="iconfont icon-duoyun" />多云
                                             29/19
                                         </p>
-                                    </div>
-                                    <div className=" schedule-date">
-                                        <div>
-                                            <ul className="schedule-fix">
-                                                <li>一</li>
-                                                <li>二</li>
-                                                <li className="day-active">
-                                                    三
+                                            </div>
+                                            <div className=" schedule-date">
+                                                <div>
+                                                    <ul className="schedule-fix">
+                                                        <li>一</li>
+                                                        <li>二</li>
+                                                        <li className="day-active">
+                                                            三
                                                 </li>
-                                                <li>四</li>
-                                                <li>五</li>
-                                                <li>六</li>
-                                                <li>七</li>
-                                            </ul>
+                                                        <li>四</li>
+                                                        <li>五</li>
+                                                        <li>六</li>
+                                                        <li>七</li>
+                                                    </ul>
 
-                                            <ul className="schedule-active">
-                                                <li>11</li>
-                                                <li>12</li>
-                                                <li>
-                                                    <span className="date-active">
-                                                        13
+                                                    <ul className="schedule-active">
+                                                        <li>11</li>
+                                                        <li>12</li>
+                                                        <li>
+                                                            <span className="date-active">
+                                                                13
                                                     </span>
-                                                </li>
-                                                <li>14</li>
-                                                <li>15</li>
-                                                <li>16</li>
-                                                <li>17</li>
-                                            </ul>
+                                                        </li>
+                                                        <li>14</li>
+                                                        <li>15</li>
+                                                        <li>16</li>
+                                                        <li>17</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div className=" schedule-mission">
+                                                <div className="mission-list">
+                                                    <p>
+                                                        今日拜访：<span className="mission-blue">
+                                                            0
+                                                </span>
+                                                    </p>
+                                                    <p>
+                                                        已完成：<span className="mission-green">
+                                                            0
+                                                </span>
+                                                    </p>
+                                                    <p>
+                                                        未完成：<span className="mission-red">
+                                                            0
+                                                </span>
+                                                    </p>
+                                                </div>
+                                                <div className="mission-main">
+                                                    <ul className="mission-main-list">
+                                                        <li>
+                                                            <div className="list-main">
+                                                                <p>百度科技有限公司</p>
+                                                                <p>
+                                                                    <Icon type="environment-o" />北京市海淀区西北旺后场村108号
+                                                        </p>
+                                                                <p>
+                                                                    <span>
+                                                                        销售一部
+                                                            </span>><span>
+                                                                        周杰
+                                                            </span>
+                                                                </p>
+                                                            </div>
+                                                            <div className="list-bg red">
+                                                                <i className="iconfont icon-daibaifang" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div className="list-main">
+                                                                <p>百度科技有限公司</p>
+                                                                <p>
+                                                                    <Icon type="environment-o" />北京市海淀区西北旺后场村108号
+                                                        </p>
+                                                                <p>
+                                                                    <span>
+                                                                        销售一部
+                                                            </span>><span>
+                                                                        周杰
+                                                            </span>
+                                                                </p>
+                                                            </div>
+                                                            <div className="list-bg green">
+                                                                <i className="iconfont icon-yiwancheng" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div className="list-main">
+                                                                <p>百度科技有限公司</p>
+                                                                <p>
+                                                                    <Icon type="environment-o" />北京市海淀区西北旺后场村108号
+                                                        </p>
+                                                                <p>
+                                                                    <span>
+                                                                        销售一部
+                                                            </span>><span>
+                                                                        周杰
+                                                            </span>
+                                                                </p>
+                                                            </div>
+                                                            <div className="list-bg blue">
+                                                                <i className="iconfont icon-jinribaifang" />
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div className="list-main">
+                                                                <p>百度科技有限公司</p>
+                                                                <p>
+                                                                    <Icon type="environment-o" />北京市海淀区西北旺后场村108号
+                                                        </p>
+                                                                <p>
+                                                                    <span>
+                                                                        销售一部
+                                                            </span>><span>
+                                                                        周杰
+                                                            </span>
+                                                                </p>
+                                                            </div>
+                                                            <div className="list-bg red">
+                                                                <i className="iconfont icon-daibaifang" />
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className=" schedule-mission">
-                                        <div className="mission-list">
-                                            <p>
-                                                今日拜访：<span className="mission-blue">
-                                                    0
-                                                </span>
-                                            </p>
-                                            <p>
-                                                已完成：<span className="mission-green">
-                                                    0
-                                                </span>
-                                            </p>
-                                            <p>
-                                                未完成：<span className="mission-red">
-                                                    0
-                                                </span>
-                                            </p>
-                                        </div>
-                                        <div className="mission-main">
-                                            <ul className="mission-main-list">
-                                                <li>
-                                                    <div className="list-main">
-                                                        <p>百度科技有限公司</p>
-                                                        <p>
-                                                            <Icon type="environment-o" />北京市海淀区西北旺后场村108号
-                                                        </p>
-                                                        <p>
-                                                            <span>
-                                                                销售一部
-                                                            </span>><span>
-                                                                周杰
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="list-bg red">
-                                                        <i className="iconfont icon-daibaifang" />
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div className="list-main">
-                                                        <p>百度科技有限公司</p>
-                                                        <p>
-                                                            <Icon type="environment-o" />北京市海淀区西北旺后场村108号
-                                                        </p>
-                                                        <p>
-                                                            <span>
-                                                                销售一部
-                                                            </span>><span>
-                                                                周杰
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="list-bg green">
-                                                        <i className="iconfont icon-yiwancheng" />
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div className="list-main">
-                                                        <p>百度科技有限公司</p>
-                                                        <p>
-                                                            <Icon type="environment-o" />北京市海淀区西北旺后场村108号
-                                                        </p>
-                                                        <p>
-                                                            <span>
-                                                                销售一部
-                                                            </span>><span>
-                                                                周杰
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="list-bg blue">
-                                                        <i className="iconfont icon-jinribaifang" />
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div className="list-main">
-                                                        <p>百度科技有限公司</p>
-                                                        <p>
-                                                            <Icon type="environment-o" />北京市海淀区西北旺后场村108号
-                                                        </p>
-                                                        <p>
-                                                            <span>
-                                                                销售一部
-                                                            </span>><span>
-                                                                周杰
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                    <div className="list-bg red">
-                                                        <i className="iconfont icon-daibaifang" />
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
+                                </Col>
 
 
 
-                    </Row>
+                            </Row>
+
+                        </div>
 
 
 
+                        {approvalHomeShow ? <Approved /> : null}
+                        <SlidePanel
+                            viewState={viewHomeState}
+                            onClose={this.slideHide}
+                            className='tab-viewPanelHome-recoverd'
+                        >
+                            <ViewPanel
+                                ref="panelHeight" />
+                        </SlidePanel>
+                    </div>}
 
-                </div>
-
-                {approvalHomeShow ? <Approved /> : null}
-                <SlidePanel
-                    viewState={viewHomeState}
-                    onClose={this.slideHide}
-                    className='tab-viewPanelHome-recoverd'
-                >
-                    <ViewPanel
-                        ref="panelHeight" />
-                </SlidePanel>
+          
             </div>
-        );
+        )
     }
 }
 
