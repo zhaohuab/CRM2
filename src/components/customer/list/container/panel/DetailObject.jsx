@@ -50,7 +50,7 @@ class DetailObject extends React.Component {
                                     >
                                         <span>
                                             {
-                                                viewData.typeName
+                                                viewData.biztypeName
                                             }
                                         </span>
                                     </Col>

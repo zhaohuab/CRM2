@@ -6,8 +6,7 @@ import {Timeline} from "antd";
 
 class DynamicState extends React.Component {
     render(){
-        let { dynamicData } = this.props.$$state.toJS()
-        debugger
+        let { dynamicData } = this.props.$$state.toJS()      
         return(
             <div className="main-right-timeline timeline-recoverd">
                 {

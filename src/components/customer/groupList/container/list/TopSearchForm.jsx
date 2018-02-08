@@ -84,7 +84,7 @@ class ToolForm extends React.Component {
         this.props.action.addNewType();
     } */
     newCumMenuClick(item, key) {
-        debugger
+       // debugger
         this.props.clearForm()
         let typeId = item.key;
         this.props.action.addCustomer(true, typeId);
@@ -98,8 +98,9 @@ class ToolForm extends React.Component {
     handleSearch(searchMap) {
         //还差城市条件过滤
         debugger;
+        let pagination = {page:1, pageSize:10}
         this.props.action.getListData(
-            this.props.$$state.get("pagination").toJS(),
+            pagination,
             searchMap,
             this.props.$$state.get("searchPlan").toJS(),
         );
@@ -124,22 +125,25 @@ class ToolForm extends React.Component {
     }
 
     onMenu(e) {//-----导入导出 赵华冰2-2
-        let { searchMap, pagination, searchPlan } = this.props.$$state.toJS();
-        debugger;
+        let { searchMap, pagination, searchPlan } = this.props.$$state.toJS();      
         let page = pagination.page;
         let pageSize = pagination.pageSize;
         let search = JSON.stringify(searchMap);
         if (e.key == "1") {
             this.props.action.viewLeadShow(true);
         } else if (e.key == "2") {
-            location.href = baseDir + "tpub/excels/2/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 +",\"searchPlanMap\":"+"{"+"\"id\":" + `${searchPlan.id}`+",\"defClass\":" + "\""+`${searchPlan.defClass}`+"\""+"}}"
+            if(searchPlan.id&&searchPlan.defClass){
+                location.href = baseDir + "tpub/excels/2/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 +",\"searchPlanMap\":"+"{"+"\"id\":" + `${searchPlan.id}`+",\"defClass\":" + "\""+`${searchPlan.defClass}`+"\""+"}}"                 
+            }else{
+                location.href = baseDir + "tpub/excels/2/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 +"}"
+            }       
         }
     }
 
     render() {
         let { searchData, moreShow, selectedRowKeys,newCumMenu } = this.props.$$state.toJS();
         let defaultId = this.props.$$state.get('defaultId');
-        debugger;
+        //debugger;
       /*   const loop = data => data.map((item, index) => {
             return <Menu.Item key={item.key} >{item.title}</Menu.Item>
         });

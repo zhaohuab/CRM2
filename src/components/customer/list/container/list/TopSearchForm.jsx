@@ -78,7 +78,7 @@ class ToolForm extends React.Component {
             }
         });
     }
-    //点击新增按钮先请求查询条件 再弹出modal-card
+    //点击新增按钮先请求查询条件 再弹出modal-card,并且保存客户类型在redux中
     btnNew() {
         this.props.clearForm()
         this.props.action.addNewType();
@@ -87,8 +87,7 @@ class ToolForm extends React.Component {
     //点击新增的获取的业务类型
     newCumMenuClick(item, key) {
         debugger
-        
-        this.props.action.addCustomer(true, item);
+        this.props.action.addCustomer(true, {key:item.key,name:item.item.props.children});
     }
 
     //上下表单控制显隐
@@ -96,9 +95,10 @@ class ToolForm extends React.Component {
         this.props.action.changeVisible();
     }
     //扩展条件、基础条件查询
-    handleSearch(searchMap) {
+    handleSearch(searchMap) {   
+        let pagination = {page:1, pageSize:10};
         this.props.action.getListData(
-            this.props.$$state.get("pagination").toJS(),
+            pagination,
             searchMap
         );
     }
@@ -153,6 +153,7 @@ class ToolForm extends React.Component {
         let { enumData, moreShow, selectedRowKeys, newCumMenu } = this.props.$$state.toJS();
 
         const loop = data => data.map((item, index) => {
+            debugger
             return <Menu.Item key={item.key} >{item.title}</Menu.Item>
         });
 

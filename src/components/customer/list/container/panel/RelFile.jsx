@@ -17,7 +17,7 @@ class PicFile extends React.Component {
             </div>
             <div className='detail' onClick = {this.props.download.bind(this,file.url)}>
                 <p className='detail-name' title = {file.name}>{file.name}</p>
-                <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
+                <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserName}</span></p>
                 <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
             </div>
             <span className='del' onClick={this.props.onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
@@ -25,45 +25,68 @@ class PicFile extends React.Component {
     }
 }
 
-class ExcelFile extends React.Component {
-    
+class OfficeFile extends React.Component {
+
+    changeType(type,icons){
+        let officeTypes = ["xlsx","xls","docx","doc","txt","html","xml","vsd","vsdx",'ppt',"pptx"];
+        if(type == 'xlsx' || type == 'xls'){
+            return (
+                <i className='iconfont icon-xsl' />
+            )
+        }else if(type == 'docx' || type == 'doc'){
+            return (
+                <i className='iconfont icon-word' />
+            )
+        }else if(type == 'ppt' || type == 'pptx'){
+            return (
+                <i className='iconfont icon-ppt' />
+            )
+        }else if(type == 'ppt' || type == 'pptx'){
+            return (
+                <i className='iconfont icon-ppt' />
+            )
+        }else if(type == 'txt'){
+            return (
+                <i className='iconfont icon-txt' />
+            )
+        }else if(type == 'html'){
+            return (
+                <i className='iconfont icon-html' />
+            )
+        }else if(type == 'xml'){
+            return (
+                <i className='iconfont icon-xml'/>
+            )
+        }else if(type == 'vsd' || type == 'vsdx'){
+            return (
+                <i className='iconfont icon-vsd'/>
+            )
+        }
+    }
+
     render() {
-        let file = this.props.file;
+        let {file,download,onDeleteFile} = this.props;
+      
+        debugger
         return <Row className='file-warpper-item' type='flex' align='middle'>
             <div className='img-mark'>
-                <i className='iconfont icon-xsl' />
+                {
+                    this.changeType(file.type)
+                }
                 {/* <span className='cover'><Icon type="loading" /></span> */}
             </div>
-            <div className='detail'  onClick = {this.props.download.bind(this,file.url)}>
+            <div className='detail'  onClick = {download.bind(this,file.url)}>
                 <p className='detail-name' title = {file.name}>{file.name}</p>
-                <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
+                <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserName}</span></p>
                 <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
             </div>
-            <span className='del' onClick={this.props.onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
+            <span className='del' onClick={onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
         </Row>
     }
 
 }
 
-class WordFile extends React.Component {
-    render() {
-        let file = this.props.file;
-        return <Row className='file-warpper-item' type='flex' align='middle'>
-            <div className='img-mark'>
-                <i className='iconfont icon-word' />
-            </div>
-            <div className='detail' onClick = {this.props.download.bind(this,file.url)}>
-                <p className='detail-name' title = {file.name}>{file.name}</p>
-                <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
-                <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
-            </div>
-            <span className='del' onClick={this.props.onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
-        </Row>
-    }
-
-}
-
-class PPTFile extends React.Component {
+class MediaFile extends React.Component {
     render() {
         let file = this.props.file;
         return <Row className='file-warpper-item' type='flex' align='middle'>
@@ -72,14 +95,14 @@ class PPTFile extends React.Component {
             </div>
             <div className='detail' onClick = {this.props.download.bind(this,file.url)}>
                 <p className='detail-name' title = {file.name}>{file.name}</p>
-                <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
+                <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserName}</span></p>
                 <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
             </div>
             <span className='del' onClick={this.props.onDeleteFile.bind(this,file)}><i className='iconfont icon-canyuren-shanchu'/></span>
         </Row>
     }
-
 }
+
 class RelFile extends React.Component {
 
     constructor(props){
@@ -118,40 +141,41 @@ class RelFile extends React.Component {
 
     //根据文件类型生成对应的文件布局
     getFileRender(file) {
+        debugger
         let fileType = file.type;
-        let picTypes = ["png","jpg","jpeg","gif"];
-        let excelTypes = ["xlsx","xls"];
-        let wordTypes = ["docx","doc"];
+        let picTypes = ["png","jpg","jpeg","gif",'bmp'];
+        let officeTypes = ["xlsx","xls","docx","doc","txt","html","xml","vsd","vsdx",'ppt',"pptx"];
+        let mediaTypes = ["mp3",'mp4',"avi"];
         
         //删除方法
         let onDeleteFile = (file)=>{
             debugger
             this.props.onDeleteFile(file);
         }
-
+        //图片
         if(picTypes.includes(fileType) ) {
             return <PicFile file={file} onDeleteFile={onDeleteFile} preview = {this.preview.bind(this)} download = {this.download.bind(this)}/>
         }
-        else if(excelTypes.includes(fileType)) {
-            return <ExcelFile file={file} onDeleteFile={onDeleteFile} download = {this.download.bind(this)}/>
+        //办公
+        else if(officeTypes.includes(fileType)) {
+            return <OfficeFile file={file} onDeleteFile={onDeleteFile} download = {this.download.bind(this)} />
         }
-        else if(wordTypes.includes(fileType)) {
-            return <WordFile file={file} onDeleteFile={onDeleteFile} download = {this.download.bind(this)}/>
+        //媒体
+        else if(mediaTypes.includes(fileType)){
+            return <MediaFile file={file} onDeleteFile={onDeleteFile} download = {this.download.bind(this)} />
         }
-        else if(fileType == "ppt") {
-            return <PPTFile file={file} onDeleteFile={onDeleteFile} download = {this.download.bind(this)}/>
-        }
+        //未知
         return (
             <Row className='file-warpper-item' type='flex' align='middle'>
                 <div className='img-mark'>
                     <i className='iconfont icon-xsl' />
                 </div>
-                <div className='detail'>
+                <div className='detail' onClick = {this.download.bind(this,file.url)}>
                     <p className='detail-name'>{file.name}</p>
-                    <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserId}</span></p>
+                    <p className='detail-remark'><span>上传人:</span><span>{file.uploadUserName}</span></p>
                     <p className='detail-remark'><span>上传时间:</span><span>{moment(file.uploadTime.time).format("YYYY-MM-DD")}</span></p>
                 </div>
-                <span className='del'><i className='iconfont icon-canyuren-shanchu' onClick={this.props.onDeleteFile(file)}/></span>
+                <span className='del'><i className='iconfont icon-canyuren-shanchu' onClick={this.props.onDeleteFile.bind(this,file)}/></span>
             </Row>
         )
     }

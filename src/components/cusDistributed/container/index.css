@@ -34,9 +34,9 @@ span {
   overflow-y: auto;
 }
 .customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-item {
+  box-sizing: border-box;
   width: 100%;
   height: 28px;
-  line-height: 28px;
   text-align: center;
   color: #666;
   font-size: 12px;
@@ -52,13 +52,53 @@ span {
 .customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-item .customer-num {
   color: #3ca4fb;
 }
+.customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-role-department {
+  line-height: 28px;
+}
 .customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-role-item {
-  width: 25%;
+  display: inline-block;
+  vertical-align: middle;
+  width: 23%;
+  margin: 0 2% 2% 0;
+  padding: 0 5px;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-role-item .role-name {
+  display: inline-block;
+  vertical-align: middle;
+  width: 70%;
+  height: 100%;
+  line-height: 28px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-principal .customer-principal-role-item .customer-num {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30%;
+  height: 100%;
+  line-height: 28px;
+  text-align: right;
+  color: #3ca4fb;
 }
 .customer-panelMap-wraper .customer-panelMap-left .customer-address {
   width: 100%;
   height: 350px;
   overflow-y: auto;
+  /*      .customer-address-item:nth-child(odd){
+                .icon-dingweilan{
+                    color: #3385FF;
+                }
+            }
+            .customer-address-item:nth-child(even){
+                .icon-dingweilan{
+                    color: #E64026;
+                }
+            } */
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .loading {
+  margin: 100px 0 0 150px;
 }
 .customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item {
   box-sizing: border-box;
@@ -68,22 +108,23 @@ span {
   margin-bottom: -1px;
   padding: 14px 0;
 }
-.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order {
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order1 {
   width: 100%;
   height: 100%;
   position: relative;
 }
-.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order .icon-dingweilan {
-  width: 16px;
-  height: 20px;
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order1 .icon-dingweilan {
+  width: 24px;
+  height: 24px;
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -10px;
-  margin-left: -8px;
-  font-size: 16px;
+  margin-top: -12px;
+  margin-left: -12px;
+  font-size: 24px;
+  color: #3385FF;
 }
-.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order .customer-address-item-num {
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order1 .customer-address-item-num {
   width: 12px;
   height: 12px;
   font-size: 12px;
@@ -93,7 +134,36 @@ span {
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-top: -6px;
+  margin-top: -3px;
+  margin-left: -6px;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order2 {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order2 .icon-dingweilan {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -12px;
+  margin-left: -12px;
+  font-size: 24px;
+  color: #E64026;
+}
+.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .customer-address-item-order2 .customer-address-item-num {
+  width: 12px;
+  height: 12px;
+  font-size: 12px;
+  line-height: 12px;
+  text-align: center;
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -3px;
   margin-left: -6px;
 }
 .customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .item-content {
@@ -139,12 +209,6 @@ span {
 .customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item .item-content .item-content-adress .icon-dingwei {
   margin-right: 5px;
   vertical-align: middle;
-}
-.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item:nth-child(odd) .icon-dingweilan {
-  color: #3385FF;
-}
-.customer-panelMap-wraper .customer-panelMap-left .customer-address .customer-address-item:nth-child(even) .icon-dingweilan {
-  color: #E64026;
 }
 .customer-panelMap-wraper .customer-panelMap-left .page-list {
   margin-top: 20px;

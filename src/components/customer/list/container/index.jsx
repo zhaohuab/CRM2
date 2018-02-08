@@ -40,16 +40,34 @@ class List extends React.Component {
             {
                 title: "客户名称",
                 dataIndex: "name",
-                render: (text, record) => {//isGroup
+                render: (text, record) => {
                     return (
                         <div
                             onClick={this.slideShow.bind(this, record)}
-                            className="crm-pointer"
+                            className="crm-table-name"
                         >
                             {
                                 record.enableState == 1 ?
-                                    <span className='cum-color-blue'>{record.name}</span> :
-                                    <span className='cum-color-red'>{record.name}</span>
+                                <span className='cum-color-blue'>
+                                    {
+                                        record.isGroup == 2? 
+                                        <span>
+                                            {record.name}
+                                            <i className="iconfont icon-jituan-icon-" />
+                                        </span>:
+                                        record.name
+                                    }
+                                </span> :
+                                <span className='cum-color-red'>
+                                     {
+                                        record.isGroup == 2? 
+                                        <span>
+                                            {record.name}
+                                            <i className="iconfont icon-jituan-icon-" />
+                                        </span>:
+                                        record.name
+                                    }
+                                </span>
                             }
                         </div>
                     )
@@ -120,20 +138,37 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData,newTypeId } = this.props.$$state.toJS();
+        let { viewData,icbcSele} = this.props.$$state.toJS();
         for(let key in viewData){
             if(key=='ownerUserId'){
                 viewData[key]=viewData[key].id
             }
         }
-        console.log('viewData============',viewData)
+      
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
                 if (viewData.id) {//修改
+                    if(viewData.isIdentified == 1){
+                        this.props.action.listFormSave(viewData);
+                    }else{
+                        if(viewData.verifyFullname){
+                            //把verifyId发送给后台进行工商认证标识
+                            viewData.verifyId = icbcSele.companyid;
+                            //把已认证信息发动给后台
+                            viewData.isIdentified = 1
+                        }
+                        this.props.action.listFormSave(viewData);
+                    }
+                } else {
+                    //新增如果有获取过公司信息就把公司id和认证发送给后台
+                    if(viewData.verifyFullname){
+                        //把verifyId发送给后台进行工商认证标识
+                        viewData.verifyId = icbcSele.companyid;
+                        //把已认证信息发动给后台
+                        viewData.isIdentified = 1
+                    }
                     this.props.action.listFormSave(viewData);
-                } else {//新增
-                    this.props.action.listFormSave(viewData,newType.key);
                 }
             }
         });
@@ -203,11 +238,7 @@ class List extends React.Component {
         };
         return (
             <div className="custom-warpper ">
-                <TopSearchForm 
-                pagination={pagination}
-                searchMap={searchMap}
-
-                clearForm = {this.clearForm.bind(this)}/>
+                <TopSearchForm clearForm = {this.clearForm.bind(this)}/>
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
@@ -218,7 +249,7 @@ class List extends React.Component {
                         pagination={{
                             size: "large",
                             showSizeChanger: true,
-                            showQuickJumper: true,
+                             showQuickJumper: true,
                             total: page.total,
                             showTotal: this.showTotal,
                             onChange: this.onPageChange.bind(this),

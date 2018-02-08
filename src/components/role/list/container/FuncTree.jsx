@@ -76,7 +76,10 @@ class FuncTree extends Component {
     }
 
     selectFunc(funcId, checked) {
-
+        const funcLoading = this.props.$$state.get("funcLoading");
+        if (funcLoading) {
+            return
+        }
         if (checked == "T") {
             checked = "F"
         } else {
@@ -94,9 +97,9 @@ class FuncTree extends Component {
                 if (child[j].id == funcId) {
                     funcData[i].child[j].checked = checked;
                     flag = true;
-                  
+
                     //如果所选项所在分组的浏览没有选中，则添加到选中数组中
-                    if(funcData[i].child[0].checked == 'F'){
+                    if (funcData[i].child[0].checked == 'F') {
                         funcData[i].child[0].checked = checked;
                         funcIds.push(funcData[i].child[0].id);
                     }
@@ -107,13 +110,17 @@ class FuncTree extends Component {
                 break;
             }
         }
-      
+
         funcIds.push(funcId);
         this.props.action.selectFunc(roleId, funcIds, checked, funcData)
     }
 
     selectAllFunc(groupId, checked, e) {
         e.stopPropagation();
+        const funcLoading = this.props.$$state.get("funcLoading");
+        if (funcLoading) {
+            return
+        }
         const roleId = this.props.$$state.get("selectedRoleId");
         const funcData = this.props.$$state.get("funcData").toJS();
         const funcIds = [];
@@ -159,7 +166,7 @@ class FuncTree extends Component {
                     if (item.child[i].checked == 'F') {
                         flag = false;
                     }
-                    if(item.child[i].checked == 'T'&&i!=0){
+                    if (item.child[i].checked == 'T' && i != 0) {
                         item.child[0].readOnly = true;
                     }
                 }
@@ -191,7 +198,7 @@ class FuncTree extends Component {
         const showChild = data => data.map((item) => {
             return (
                 <div>
-                    {selectedRoleIsPreseted == 1 ||item.readOnly ?
+                    {selectedRoleIsPreseted == 1 || item.readOnly ?
                         <div  >
                             <Col span={6}>
                                 <Col span={4}><Checkbox disabled checked={item.checked == 'T' ? true : false} /></Col>
@@ -199,14 +206,14 @@ class FuncTree extends Component {
                             </Col>
                         </div>
                         :
-                        
-                            <Col span={6}>
-                            <span  onClick={this.selectFunc.bind(this, item.id, item.checked)}>
+
+                        <Col span={6}>
+                            <span onClick={this.selectFunc.bind(this, item.id, item.checked)}>
                                 <Col span={4}><Checkbox checked={item.checked == 'T' ? true : false} /></Col>
                                 {item.name}
-                                </span>
-                            </Col>
-                        
+                            </span>
+                        </Col>
+
                     }
                 </div>
             );

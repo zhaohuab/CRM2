@@ -89,19 +89,23 @@ class List extends Component {
     //表单页面确定方法
     formHandelOk() {
         let that = this;
-
-        this.formRef.props.form.validateFields((err, values) => {
-            if (!err) {
-                let isEdit = that.props.$$state.get("isEdit");
-                if (isEdit) {
-                    that.props.action.listchange(values);
-                } else {
-                    that.props.action.listadd(values);
-                };
-                that.formRef.props.form.resetFields();
-            }
-        });
-
+        const { $$state } = this.props;
+        let formVisitable = $$state.get("formVisitable");
+        if (!formVisitable) {
+            return;
+        } else {
+            this.formRef.props.form.validateFields((err, values) => {
+                if (!err) {
+                    let isEdit = that.props.$$state.get("isEdit");
+                    if (isEdit) {
+                        that.props.action.listchange(values);
+                    } else {
+                        that.props.action.listadd(values);
+                    };
+                    that.formRef.props.form.resetFields();
+                }
+            });
+        };
     }
 
     //显示每行数据后的返回按钮
@@ -145,12 +149,12 @@ class List extends Component {
 
     //组件渲染完毕获取数据
     componentWillMount() {
-      //页面初始化前重置数据
-      this.props.action.resetState();
+        //页面初始化前重置数据
+        this.props.action.resetState();
     }
 
-     //组件渲染完毕获取数据
-     componentDidMount() {
+    //组件渲染完毕获取数据
+    componentDidMount() {
         this.props.action.getlist();
         this.props.action.getTreeList();
         this.setState({
@@ -233,12 +237,12 @@ class List extends Component {
                             onCancel={this.handleCancel.bind(this)}
                         >
                             <div className="modal-height">
-                            <Spin spinning={treeLoading}>   
-                                <WrapCard
-                                    wrappedComponentRef={inst =>
-                                        (this.formRef = inst)}
-                                    data={editData}
-                                />
+                                <Spin spinning={treeLoading}>
+                                    <WrapCard
+                                        wrappedComponentRef={inst =>
+                                            (this.formRef = inst)}
+                                        data={editData}
+                                    />
                                 </Spin>
                             </div>
                         </Modal>

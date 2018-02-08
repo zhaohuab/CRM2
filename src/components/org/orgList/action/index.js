@@ -23,6 +23,8 @@ export function getlist(searchMap = {}) {
             }
         }, (data) => {
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: data.data }));
+        }, () => {
+            dispatch(fetchData('ORG_LIST_LOADOVER'));
         })
     }
 }
@@ -40,6 +42,8 @@ export function getlistByClickSearch(searchMap) {
             }
         }, (data) => {
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKSEARCH', { data: data.data, searchFilter: searchMap.searchKey }));
+        }, () => {
+            dispatch(fetchData('ORG_LIST_LOADOVER'));
         })
     }
 }
@@ -89,7 +93,11 @@ export function listadd(list) {
             }
                 , (data) => {
                     dispatch(fetchData('ORG_LIST_LISTADDSUCCESS', { data: result, treeData: data.data }));
+                }, () => {
+                    dispatch(fetchData('ORG_LIST_LOADOVER'));
                 })
+        }, () => {
+            dispatch(fetchData('ORG_LIST_LOADOVER'));
         })
     }
 }
@@ -120,7 +128,11 @@ export function listchange(data) {
             }
                 , (data) => {
                     dispatch(fetchData('ORG_LIST_LISTEDITSUCCESS', { data: result, treeData: data.data }));
+                }, () => {
+                    dispatch(fetchData('ORG_LIST_LOADOVER'));
                 })
+        }, () => {
+            dispatch(fetchData('ORG_LIST_LOADOVER'));
         })
     }
 }
@@ -167,7 +179,11 @@ export function listdel(record, treeId, searchFilter) {
                     , (data) => {
                         dispatch({ type: 'ORG_LIST_GETTREELISTSUCCESS', data: data.data })
                         dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: listData.data }));
+                    }, () => {
+                        dispatch(fetchData('ORG_LIST_LOADOVER'));
                     })
+            }, () => {
+                dispatch(fetchData('ORG_LIST_LOADOVER'));
             })
     }
 }
@@ -198,6 +214,8 @@ export function setEnablestate(treeId, data, state) {
         }, (dataResult) => {
             const listData = dataResult;
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESS', { data: listData.data }));
+        }, () => {
+            dispatch(fetchData('ORG_LIST_LOADOVER'));
         })
 
     }
@@ -217,8 +235,9 @@ export function getTreeList() {
             }
         }, (data) => {
             dispatch({ type: 'ORG_LIST_GETTREELISTSUCCESS', data: data.data })
+        }, () => {
+            dispatch(fetchData('ORG_LIST_LOADOVER'));
         })
-
     }
 }
 
@@ -238,6 +257,8 @@ export function listTreeChange(id) {
             }
         }, (data) => {
             dispatch(fetchData('ORG_LIST_GETLISTSUCCESSBYCLICKTREE', { data: data.data, treeSelect: id }));
+        }, () => {
+            dispatch(fetchData('ORG_LIST_LOADOVER'));
         })
 
     }

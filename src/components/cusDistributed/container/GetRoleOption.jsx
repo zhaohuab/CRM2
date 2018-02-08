@@ -239,12 +239,12 @@ const convertData = function(data) {//处理data
             });
         }
     }
-    debugger;
+    //debugger;
     return res;
 };
 
 const getData = (data) => {
-    debugger;
+   // debugger;
     let proObj={},//当前角色下所有省份名称和客户数量
         proArr=[],//省份data
         proLength=0,//proObj的长度
@@ -307,6 +307,7 @@ const getData = (data) => {
 
 const getOption = (data) =>{//这个data是直接从后台获取到的原始数据结构，没有在index.jsx中做任何处理
     let dataSource=getData(data);
+    console.log('转换后的客户地址信息=================',dataSource);
     let center = dataSource.flag=='country'?[104.114129, 37.550339]:geoCoordMap[dataSource.name];//地图展示的经纬度中心;
     //***********注意：获取center时，仅仅是geoCoordMap中含有的省市才可以，如果没有就会报错，现在市不全面，县区一个都没有
     let option = {

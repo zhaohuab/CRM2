@@ -28,7 +28,7 @@ export default class ChangePerson extends React.Component {
             visible:false,
             treeList:[],
             personList:[],
-            result:{},
+            result:'',
             selectedTableRowKeys:[],
             selectedTreeKeys:[],
             value:''
@@ -72,6 +72,7 @@ export default class ChangePerson extends React.Component {
         );
     }
     onOk(){
+        debugger
         this.setState({
             visible:false,
             treeList:[],

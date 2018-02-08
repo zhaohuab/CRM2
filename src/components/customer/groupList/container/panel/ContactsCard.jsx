@@ -90,7 +90,7 @@ class ContactsCard extends React.Component {
         };
         const { getFieldDecorator } = this.props.form;
         let {contactsCardData,viewData} = this.props.$$state.toJS();
-        debugger
+        
         return (
             <div>
                 <i className={'iconfont icon-tianjia'} onClick={this.cardShow.bind(this)}/>
