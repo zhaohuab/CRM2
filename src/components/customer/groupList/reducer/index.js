@@ -449,14 +449,14 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 viewDataRelevant:addContacts
            });
                    ////////天赐上传附件    
-        case "CUSTOMERCOMPANY_LIST_FILESSUCCESS"://添加附件
+        case "CUSTOMERGROUP_LIST_FILESSUCCESS"://添加附件
         let viewDataRelevant = $$state.get('viewDataRelevant').toJS()
         viewDataRelevant[3].list.data.unshift(action.payload)
         return $$state.merge({
             viewDataRelevant: viewDataRelevant
         });
     ////////天赐删除附件
-    case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
+    case "CUSTOMERGROUP_LIST_DELETEFILE"://删除附件
         debugger
         let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
         let fileArr = viewDataRelevant2[3].list.data;

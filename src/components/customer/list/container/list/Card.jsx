@@ -416,7 +416,7 @@ class EditForm extends React.Component {
                                 <Row>
                                     <Col span={2}>
                                         <div className="form-title">
-                                            负责人信息:
+                                            管理信息:
                                         </div>
                                     </Col>
                                 </Row>
@@ -772,6 +772,7 @@ const cardForm = Form.create({
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
         let viewData = props.$$state.toJS().viewData;
+        debugger
         for (let key in onChangeFild) {
             viewData[key] = onChangeFild[key].value;
         }

@@ -245,7 +245,7 @@ export default class PersonChoiceModal extends React.Component {
     
     render(){
         let { viewData } = this.props
-        let plainOptions = ['商机', '联系人', '拜访'];
+        let plainOptions = ['商机', '联系人'];
         return(
             <div>
                 {
