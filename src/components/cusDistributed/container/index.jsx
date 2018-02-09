@@ -12,7 +12,7 @@ import {
     Row,
     Col,
     Spin,
-    Pagination
+    Pagination 
 } from "antd";
 
 import echarts from "echarts";
@@ -60,6 +60,7 @@ class PanelMap extends React.Component {
 
     pageChange = (num) => {//页码更改
         //debugger;
+        let {total}=this.props.$$state.get('data').toJS();
         let str = this.props.$$state.get('userName');
         let id = this.props.$$state.get(str);
         this.props.action.getCustomerItem(str,id,num)
@@ -102,7 +103,7 @@ class PanelMap extends React.Component {
         let loadingFlag = $$state.get('loadingFlag');
         let page = $$state.get('page');  
         //console.log('customerItem=================',customerItem,customerItem.total)    
-      debugger;
+      //debugger;
         return (
             <Row type="flex" className="customer-panelMap-wraper">
                 <Col span={8} className="customer-panelMap-left">
@@ -169,7 +170,7 @@ class PanelMap extends React.Component {
                             }
                         </div>
                         <Row type="flex" justify="end" className='page-list'>
-                            <Pagination   total={ data.total } onChange={ pageChange.bind(this) } pageSize={ 5 }/>
+                            <Pagination   current={page} total={ data.total } onChange={ pageChange.bind(this) } pageSize={ 5 }/>
                         </Row>
                 </Col>
                 <Col span={16} className="customer-panelMap-right">

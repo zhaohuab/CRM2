@@ -27,7 +27,7 @@ export default class OwnUser extends React.Component {
             visible:false,
             treeList:[],
             personList:[],
-            result:{},
+            result:'',
             selectedTableRowKeys:[],
             selectedTreeKeys:[],
             value:'',//保存modal里input中搜索value值
@@ -59,6 +59,7 @@ export default class OwnUser extends React.Component {
                 }
             },
             result => {
+                debugger
                 this.setState({
                     personList:result,
                     selectedTreeKeys:selectedKeys
@@ -67,6 +68,7 @@ export default class OwnUser extends React.Component {
         );
     }
     onOk(){
+        
         this.setState({
             visible:false,
             treeList:[],
@@ -74,6 +76,7 @@ export default class OwnUser extends React.Component {
             selectedTableRowKeys:[],
             selectedTreeKeys:[],
         },()=>{
+            debugger
             
             this.props.onChange(this.state.result)
         })
@@ -101,7 +104,15 @@ export default class OwnUser extends React.Component {
         })
     }
 
+     //分页方法
+     pagination({page,pageSize}){
+        debugger
+        this.treeSelect(page,pageSize,this.state.selectedTreeKeys)
+    }
+
+
     creatPanel(){
+        debugger
         return(
             <DropDownModal 
                 title='负责人' 
@@ -122,6 +133,7 @@ export default class OwnUser extends React.Component {
                         selectedTableList = {this.selectedTableList.bind(this)}//table选中
                         selectedRowKeys = {this.state.selectedTableRowKeys}
                         selectedKeys = {this.state.selectedTreeKeys}
+                        pagination = {this.pagination.bind(this)}
                         columns = {columns}
                     />
                 </div>
@@ -140,8 +152,10 @@ export default class OwnUser extends React.Component {
                 {
                     url: baseDir+'sys/orgs/orgTree',
                     method: "GET",
-                    param:{
-                        orgType:2
+                    data:{
+                        param:{
+                            orgType:3,
+                        }
                     }
                 },
                 result => {
@@ -168,6 +182,8 @@ export default class OwnUser extends React.Component {
     }
 
     render(){
+        debugger
+        /////ddddddd
         const suffix =
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />

@@ -168,17 +168,17 @@ class GroupAssignList extends React.Component {
 
         pagination.page = page;
         pagination.pageSize = pageSize;
-
-        if(whitchSearch == 'searchPlan'){
+       
+        if(whitchSearch == 'searchPlan'){//这个地方上是用作查询方案的，现在查询方案没有做，这里先注掉
             
-            this.props.action.getList(pagination,{searchPlan})
+            this.props.action.getList(pagination,searchPlan)
         }else if(whitchSearch == 'searchMap'){
             
-            this.props.action.getList(pagination,{searchMap})
+            this.props.action.getList(pagination,searchMap)
         }else{
             
             this.props.action.getList(pagination,{})
-        }
+        } 
     }
     
     //分页跳页面查询

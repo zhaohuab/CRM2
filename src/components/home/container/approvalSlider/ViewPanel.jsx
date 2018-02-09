@@ -21,7 +21,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 //导入action方法
 import * as Actions from "../../action/approval.js";
-import UnfinishForm from './UnfinishForm';
+
+import DetailForm from './DetailForm';
 import MentionModal from './MentionModal'
 import "assets/stylesheet/all/iconfont.css";
 const TabPane = Tabs.TabPane;
@@ -146,7 +147,7 @@ class ViewPanel extends React.Component {
     }
     render() {
 
-        let { approvalHomeVisible,mentionVisible, detailData, detailapproval, commit, done, todo, tableState, approvalHomeButtons } = this.props.$$state.toJS();
+        let { approvalHomeVisible, mentionVisible, detailData, detailapproval, commit, done, todo, tableState, approvalHomeButtons } = this.props.$$state.toJS();
 
         const text =
             todo.length && todo[0].personlist && todo[0].personlist.length ?
@@ -304,7 +305,7 @@ class ViewPanel extends React.Component {
                     {/* --------------- */}
                     {/* 表单 */}
                     <Row className="form-input-recover">
-                        <UnfinishForm />
+                        <DetailForm />
                     </Row>
                     {/* ---------- */}
                 </Row>

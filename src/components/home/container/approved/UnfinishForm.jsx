@@ -11,7 +11,7 @@ import { queryDataIndex } from 'echarts/lib/util/model';
 const FormItem = Form.Item;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-
+const { TextArea } = Input;
 class Unfinish extends React.Component {
     constructor(props) {
         super(props)
