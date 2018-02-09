@@ -155,7 +155,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //新增、修改编辑菜单显示    
         case "CUSTOMERCOMPANY_LIST_SHOWFORM":
-            let EditCancelData =  $$state.get('viewData').toJS();
+            let EditCancelData =  $$state.get('editTempData').toJS();
             if(EditCancelData.street && EditCancelData.street.address){
                 EditCancelData.street = EditCancelData.street.address
             }else{
@@ -197,7 +197,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             debugger
             return $$state.merge({
                 formVisitable: action.visiable,
-                viewData:ccccc
+                viewData:ccccc,
+                editTempData:EditStreetData
             });    
         case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE": 
             debugger

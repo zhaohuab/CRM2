@@ -22,13 +22,11 @@ class DetailTop extends React.Component {
     //打开编辑按钮
     btnEdit() {
         let { viewData } = this.props.$$state.toJS();
-        
         this.props.action.showFormEdit(true);
     }
 
     //点击升级按钮
     upgrade(){
-        
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
         this.props.action.cumUpgrade(id)
