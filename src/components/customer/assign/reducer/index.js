@@ -10,7 +10,7 @@ let $$initialState = {
         pageSize: 10,
         page: 1
     },
-    searchMap:{enableState:1},//存放头部查询条件
+    searchMap:{},//存放头部查询条件
     searchPlan:{},//保存查询方案条件
     preSearchMap:{},//存放头部查询条件预存参数
     preSearchPlan:[],//存放头部查询方案

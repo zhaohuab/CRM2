@@ -8,7 +8,7 @@ const getCustomerList = (str,id,name) => {//获取左侧上半部分客户数据
     if(str){
         search[str]=id
     } 
-    debugger;
+    //debugger;
     return dispatch => {
         reqwest({
             url: url.department,
@@ -28,7 +28,7 @@ const getCustomerItem = (str,id,num) => {//获取左侧下半部分公司部门�
     if(str){
         search[str]=id
     } 
-    debugger;
+    //debugger;
     return (dispatch) => {
         dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLIST', {}));
         reqwest({

@@ -1,7 +1,7 @@
 import reqwest from "utils/reqwest";
 import { message } from "antd";
 import { cum as url, doc, baseDir, oppstage, opportunity, contacts } from "api";
-
+import Immutable from "immutable";
 
 //包装发给redux的对象
 export function fetchData(type, payload) {
@@ -12,7 +12,8 @@ export function fetchData(type, payload) {
 };
 
 let trancFn=(data)=>{
-    
+    data = Immutable.fromJS(data).toJS()
+    debugger
     for (let key in data) {
         //枚举
         if ( key == 'cannelType' || key == 'level'|| key == 'type'|| key == 'biztype') {
@@ -110,7 +111,7 @@ export function leadEndView(leadVisible, leadStep) {
 
 }
 export function changeStep(leadStep) {
-    debugger
+   // debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_CHANGESTEP",
         payload: {leadStep }
@@ -155,7 +156,7 @@ export function filesSuccess(file) {
 
 //天赐上传文件删除
 export function onDeleteFiles(file) {
-    debugger
+   // debugger
     return (dispatch) => {
         reqwest(
             {
@@ -197,7 +198,6 @@ export function showForm(visible) {
 
 
 export function showFormEdit(visiable){
-    
     return{
         type:'CUSTOMERCOMPANY_LIST_SHOWEDITFORM',
         visiable
@@ -401,7 +401,7 @@ let getIndustry = (industry)=>{
 
 //编辑的Request请求
 let sendCumRequest = (data,dispatch)=>{
-    debugger
+    //debugger
     reqwest(
         {
             url: url.customer + "/" + data.id,
@@ -411,7 +411,7 @@ let sendCumRequest = (data,dispatch)=>{
             }
         },
         data => {
-            debugger
+            //debugger
             dispatch({
                 type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
                 data
@@ -422,7 +422,7 @@ let sendCumRequest = (data,dispatch)=>{
 
 //新增的Request请求
 let sendCumNewRequest = (data,dispatch)=>{
-     debugger
+     //debugger
      reqwest(
             {
                 url: url.customer,
@@ -432,7 +432,7 @@ let sendCumNewRequest = (data,dispatch)=>{
                 }
             },
             data => {
-                debugger
+                //debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_ADDSAVE",
                     data
@@ -447,7 +447,7 @@ export function listFormSave(data) {
     data = trancFn(data);
  
     return dispatch => {
-        debugger
+       // debugger
         if(data.industry && data.industry.name && (!data.industry.id)){
             getIndustry(data.industry.name).then((indastry)=>{
                 
@@ -467,7 +467,7 @@ export function listFormSave(data) {
             })
         }else{
             //有行业id没有行业name
-            debugger
+            //debugger
             if( data.industry && (!data.industry.name) && data.industry.id){
                 data.industry = data.industry.id
             //都有的情况下只获取行业id    
@@ -571,7 +571,7 @@ export function cumUpgrade(id) {
  */
 
 export function customerListInfo(data, visiable,select) {
-    debugger
+    //debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_ICBCDETAILINFO",
         data,
@@ -617,7 +617,7 @@ export function changeStateFn(visiable) {
 };
 //详情中工商核实
 export function checkedFn(viewData, select, id, visiable) {
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -633,7 +633,7 @@ export function checkedFn(viewData, select, id, visiable) {
                 }
             },
             result => {
-                debugger
+               // debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL",
                     visiable,
@@ -649,7 +649,7 @@ export function checkedFn(viewData, select, id, visiable) {
 };
 //详情中取消工商核实
 export function checkedCancelFn(id, visiable) {
-    debugger
+    //debugger
     return dispatch => {
         reqwest(
             {
@@ -662,7 +662,7 @@ export function checkedCancelFn(id, visiable) {
                 }
             },
             result => {
-                debugger
+               // debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_CLEANVERIFYID",
                     visiable,
@@ -675,7 +675,7 @@ export function checkedCancelFn(id, visiable) {
 
 export function hasIcbc(name, id , visiable) {
     return dispatch => {
-        debugger
+        //debugger
         if(name){
             reqwest(
                 {
@@ -688,7 +688,7 @@ export function hasIcbc(name, id , visiable) {
                     }
                 },
                 result => {
-                    debugger
+                   // debugger
                     dispatch({
                         type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
                         visiable,
@@ -703,7 +703,7 @@ export function hasIcbc(name, id , visiable) {
                     method: "GET"
                 },
                 result => {
-                    debugger
+                  //  debugger
                     dispatch({
                         type: "CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL",
                         visiable,
@@ -912,7 +912,7 @@ export function getLeftPaneltList(id, JoinPagination, index) {
 
 //添加参与人
 export function setRightPaneltList(data) {
-    debugger;
+   // debugger;
     return {
         type: 'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_SETLIST',
         data

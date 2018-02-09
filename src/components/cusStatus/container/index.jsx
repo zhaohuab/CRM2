@@ -85,7 +85,6 @@ class PanelMap extends React.Component {
         let departmentName = $$state.get('departmentName'); 
         let loadingFlag = $$state.get('loadingFlag');
         let page = $$state.get('page');     
-        //console.log('客户状态客户总数=========',data,customerItem)  
         return (
             <Row type="flex" className="customer-status-wraper">
                 <Col span={8} className="customer-panelMap-left">
@@ -197,7 +196,12 @@ class PanelMap extends React.Component {
                             }
                         </div>
                         <Row type="flex" justify="end" className='page-list'>
-                            <Pagination total={data.total} onChange={pageChange.bind(this)} pageSize={5}/>
+                            <Pagination                            
+                              pageSize={5}
+                              current={page}
+                              total={data.total} 
+                              onChange={pageChange.bind(this)} 
+                            />
                         </Row>
                 </Col>
                 <Col span={16} className="customer-panelMap-right">

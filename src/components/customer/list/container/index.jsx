@@ -75,7 +75,7 @@ class List extends React.Component {
             },
             {
                 title: "客户类型",
-                dataIndex: "typeName"
+                dataIndex: "biztypeName"
             },
 
             {
@@ -139,12 +139,7 @@ class List extends React.Component {
     //form新增、或者修改
     formHandleOk() {
         let { viewData,icbcSele} = this.props.$$state.toJS();
-        for(let key in viewData){
-            if(key=='ownerUserId'){
-                viewData[key]=viewData[key].id
-            }
-        }
-      
+       
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
@@ -177,6 +172,7 @@ class List extends React.Component {
     //form取消
     formHandleCancel() {
         this.props.action.showForm(false);
+       // this.clearForm()
     }
 
     //保存修改、编辑等动作后，把修改的值保存在redux中
@@ -248,8 +244,9 @@ class List extends React.Component {
                         size="middle"
                         pagination={{
                             size: "large",
+                            
                             showSizeChanger: true,
-                             showQuickJumper: true,
+                            showQuickJumper: true,
                             total: page.total,
                             showTotal: this.showTotal,
                             onChange: this.onPageChange.bind(this),

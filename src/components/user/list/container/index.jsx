@@ -33,8 +33,9 @@ class List extends React.Component {
     }
 
     componentDidMount() {
+        debugger
         let pagination = this.props.$$state.get("pagination").toJS();
-        let searchMap = this.props.$$state.get("searchMap").toJS();
+        let searchMap = {};
         this.props.action.getListTpl({ pagination, searchMap });
     }
 
@@ -93,6 +94,10 @@ class List extends React.Component {
         };
     }
     onSave(e) {
+        let cardLoading = this.props.$$state.get("cardLoading");  
+        if(cardLoading){
+            return
+        }
         let form = this.formRef.props.form;
         e.preventDefault();
         form.validateFields((err, values) => {

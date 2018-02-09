@@ -18,7 +18,7 @@ import "./index.less";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action/index.js";
-
+import "assets/stylesheet/all/iconfont.css";
 class ListTree extends Component {
     constructor(props) {
         super(props);
@@ -88,7 +88,7 @@ class ListTree extends Component {
                     className="show-edit-title"
                     onClick={this.showEdit.bind(this, item)}
                 >
-                    {item.name}
+                {item.orgType==2?<i className="iconfont icon-zuzhijiegougongsi" />:<i className="iconfont icon-zuzhijiegoubumen" />} {item.name}
                 </span>
                 <span
                     className={
