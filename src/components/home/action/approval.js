@@ -3,7 +3,8 @@ import reqwest from "utils/reqwest";
 
 import { browserHistory } from 'react-router';
 
-import { approval as url, doc, baseDir } from "api";
+import { approval as url, doc, baseDir,user } from "api";
+import getInfo from 'utils/cookie';
 
 function transDate(date) {
     var year = date.getFullYear();
@@ -374,7 +375,7 @@ const hideHomeViewForm = visiable => {
     return fetchData("APPROVAL_LIST_HOMEHIDEVIEWFORM", { visiable });
 };
 
-const allButtons = (id, type, taskid, instanceid, notes, action) => {
+const allButtons = (id, type, taskid, instanceid, comment, action) => {
 
     return dispatch => {
         reqwest(
@@ -383,7 +384,7 @@ const allButtons = (id, type, taskid, instanceid, notes, action) => {
                 method: "POST",
                 data: {
                     param: {
-                        id, type, taskid, instanceid, notes, action
+                        id, type, taskid, instanceid, comment, action
                     }
                 }
             },
@@ -574,7 +575,28 @@ const getDateDone = (pagination, searchMap, queryDateKey) => {
 
 }
 
+const userType = () => {
+	return (dispatch) => {
+	
+            let userId = getInfo("id");
+            console.log(33,userId)
+			reqwest({
+				url: user.user+"/"+userId,
+				method: "GET",
+			}, user => {
+                debugger
+				if(user){
+					dispatch(fetchData('SYSINIT_SAVE_USERTYPE', user.type));
+				}
+			
+			})
+		
+	}
+}
+
+
 export {
+    userType,
     approvedClosed,
     approvedChange,
     getUnfinished,
