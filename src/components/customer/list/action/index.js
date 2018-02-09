@@ -1,7 +1,7 @@
 import reqwest from "utils/reqwest";
 import { message } from "antd";
 import { cum as url, doc, baseDir, oppstage, opportunity, contacts } from "api";
-
+import Immutable from "immutable";
 
 //包装发给redux的对象
 export function fetchData(type, payload) {
@@ -12,7 +12,8 @@ export function fetchData(type, payload) {
 };
 
 let trancFn=(data)=>{
-    
+    data = Immutable.fromJS(data).toJS()
+    debugger
     for (let key in data) {
         //枚举
         if ( key == 'cannelType' || key == 'level'|| key == 'type'|| key == 'biztype') {
@@ -197,7 +198,6 @@ export function showForm(visible) {
 
 
 export function showFormEdit(visiable){
-    
     return{
         type:'CUSTOMERCOMPANY_LIST_SHOWEDITFORM',
         visiable

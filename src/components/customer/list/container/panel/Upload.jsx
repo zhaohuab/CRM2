@@ -42,6 +42,8 @@ export default class Upload extends React.Component {
                 return
             }
             this.props.success(result.data);
+            let file = this.refs.file
+            file.value = ''
         }) 
         .fail((result) => {
             debugger
