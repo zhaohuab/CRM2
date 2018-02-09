@@ -3,15 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9abb4f60-414c-428b-8530-062e40f53772" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/action/approval.js" afterPath="$PROJECT_DIR$/src/components/home/action/approval.js" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/container/approvalSlider/UnfinishForm.jsx" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/container/approvalSlider/ViewPanel.jsx" afterPath="$PROJECT_DIR$/src/components/home/container/approvalSlider/ViewPanel.jsx" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/container/approved/UnfinishForm.jsx" afterPath="$PROJECT_DIR$/src/components/home/container/approved/UnfinishForm.jsx" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/container/approved/ViewPanel.jsx" afterPath="$PROJECT_DIR$/src/components/home/container/approved/ViewPanel.jsx" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/container/approved/index.less" afterPath="$PROJECT_DIR$/src/components/home/container/approved/index.less" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/container/index.jsx" afterPath="$PROJECT_DIR$/src/components/home/container/index.jsx" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/container/index.less" afterPath="$PROJECT_DIR$/src/components/home/container/index.less" />
-      <change beforePath="$PROJECT_DIR$/src/components/home/reducer/approval.js" afterPath="$PROJECT_DIR$/src/components/home/reducer/approval.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,8 +19,8 @@
       <file leaf-file-name="index.less" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/home/container/index.less">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="43" column="18" lean-forward="false" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
+            <state relative-caret-position="165">
+              <caret line="5" column="15" lean-forward="false" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -54,8 +45,8 @@
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
-                <marker date="1518066783352" expanded="true" signature="27555:27602" ph="{&quot;$$state&quot;: state.approval...}" />
-                <marker date="1518066783352" expanded="true" signature="27644:27713" ph="{...}" />
+                <marker date="1518074340843" expanded="true" signature="29300:29347" ph="{&quot;$$state&quot;: state.approval...}" />
+                <marker date="1518074340843" expanded="true" signature="29389:29458" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -112,9 +103,6 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="NodeModulesDirectoryManager">
-    <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="8" />
@@ -243,16 +231,15 @@
       <option name="presentableId" value="Default" />
       <updated>1517986878589</updated>
       <workItem from="1517986883467" duration="8221000" />
-      <workItem from="1518054940443" duration="1646000" />
+      <workItem from="1518054940443" duration="1652000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9867000" />
+    <option name="totallyTimeSpent" value="9873000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2001488" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -309,8 +296,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
-            <marker date="1518066783352" expanded="true" signature="27555:27602" ph="{&quot;$$state&quot;: state.approval...}" />
-            <marker date="1518066783352" expanded="true" signature="27644:27713" ph="{...}" />
+            <marker date="1518074340843" expanded="true" signature="29300:29347" ph="{&quot;$$state&quot;: state.approval...}" />
+            <marker date="1518074340843" expanded="true" signature="29389:29458" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -351,8 +338,8 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
-            <marker date="1518066783352" expanded="true" signature="27555:27602" ph="{&quot;$$state&quot;: state.approval...}" />
-            <marker date="1518066783352" expanded="true" signature="27644:27713" ph="{...}" />
+            <marker date="1518074340843" expanded="true" signature="29300:29347" ph="{&quot;$$state&quot;: state.approval...}" />
+            <marker date="1518074340843" expanded="true" signature="29389:29458" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -379,8 +366,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/home/container/index.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="43" column="18" lean-forward="false" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
+        <state relative-caret-position="165">
+          <caret line="5" column="15" lean-forward="false" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
           <folding />
         </state>
       </provider>
