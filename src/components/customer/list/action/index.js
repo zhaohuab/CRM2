@@ -39,7 +39,6 @@ let trancFn=(data)=>{
     }
 
     data.address = ''
-    
     return data;
 }
 
