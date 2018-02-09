@@ -11,7 +11,8 @@ import {
     Menu,
     Dropdown,
     Tree,
-    message
+    message,
+    Spin
 } from "antd";
 const Search = Input.Search;
 const confirm = Modal.confirm;
@@ -36,6 +37,7 @@ class IcbcInfo extends React.Component {
             select: "",//保存选中的某一个工商列表公司
             index: -1,//保存当前点击index，样式用
             value:props.viewDataProps.name,//下拉面板中input的参数
+            downSpin:false,//点击工商核实按钮的spinging
         };
         this.that = this
     }
@@ -48,10 +50,8 @@ class IcbcInfo extends React.Component {
         this.props.action.customerListInfo(data,visiable,select);
     }
 
-
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
-
         // let cssCode = this.props.$$menuState.get("cssCode");
         // //判断是否有核实权限
         // if(cssCode.indexOf("customer_view_verify_customer")!="-1"){
@@ -70,7 +70,7 @@ class IcbcInfo extends React.Component {
             },
             result => {
                 callback(result);
-            }
+            },
         );
     }
 
@@ -124,34 +124,31 @@ class IcbcInfo extends React.Component {
         //把收尾空格去掉
         addIcbcName = addIcbcName?addIcbcName.replace(reSpace,'$1'):addIcbcName;
         icbcName = icbcName?icbcName.replace(reSpace,'$1'):icbcName;
-
-        if (flag) {
+        this.setState({
+            downSpin:true
+        })
+        if (flag && icbcName) {
             debugger
             //如果面板是显示状态
-            if (icbcName) {
-                if(addIcbcName == icbcName){//如果上一次输入的值等于当前输入的名称则不在此请求公司信息
-                    this.props.action.saveIcbcName(viewData,true)
-                }else{
-                    this.getIcbcList(icbcName, result => {
-                        if (result.data && result.data.length) {
-                            this.setState({
-                                visible: flag,
-                                icbcList: result.data
-                            });
-                        }
-                    });
-                }
-            } else {
-                //没输入客户名称，搜索没有查询条件，列表没有数据
-                this.setState({
-                    visible: flag,
-                    icbcList: []
+            if(addIcbcName == icbcName){//如果上一次输入的值等于当前输入的名称则不在此请求公司信息
+                this.props.action.saveIcbcName(viewData,true)
+            }else{
+                this.getIcbcList(icbcName, result => {
+                    if (result.data && result.data.length) {
+                        this.setState({
+                            visible: flag,
+                            icbcList: result.data,
+                            downSpin:false
+                        });
+                    }
                 });
             }
         } else {
+            if(!icbcName) message.error('请输入名称')
             //如果面板是关闭状态
             this.setState({
-                visible: flag
+                visible: flag,
+                downSpin:false
             });
         }
     }   
@@ -349,16 +346,18 @@ class IcbcInfo extends React.Component {
         let {viewData,icbcVisible,icbcInfo,icbcSelect,isClose,} = this.props.$$state.toJS();
         return (
             <div>
-                <Dropdown
-                    overlay={this.createList()} //生成下拉结构样式
-                    trigger={["click"]}
-                    onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
-                    visible={this.state.visible} //受控面板显示
-                >
-                    <span className="icbc-btn customer_view_verify_customer" onClick={this.getIcbc.bind(this,true)}>
-                        企业核实
-                    </span>
-                </Dropdown>
+                <Spin spinning = {this.state.downSpin}>
+                    <Dropdown
+                        overlay={this.createList()} //生成下拉结构样式
+                        trigger={["click"]}
+                        onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
+                        visible={this.state.visible} //受控面板显示
+                    >
+                        <span className="icbc-btn customer_view_verify_customer">
+                            企业核实
+                        </span>
+                    </Dropdown>
+                </Spin>
                 <Modal
                     title="工商核实"
                     visible={icbcVisible}
