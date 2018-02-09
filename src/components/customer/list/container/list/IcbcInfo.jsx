@@ -319,7 +319,7 @@ class IcbcInfo extends React.Component {
                 onChange = {this.onChange.bind(this)}
                 width = {400}
                 height= {380}
-                
+               
             >  
                <div className="crm-list-card-icbc">
                {this.state.icbcList &&
@@ -346,18 +346,16 @@ class IcbcInfo extends React.Component {
         let {viewData,icbcVisible,icbcInfo,icbcSelect,isClose,} = this.props.$$state.toJS();
         return (
             <div>
-                <Spin spinning = {this.state.downSpin}>
-                    <Dropdown
-                        overlay={this.createList()} //生成下拉结构样式
-                        trigger={["click"]}
-                        onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
-                        visible={this.state.visible} //受控面板显示
-                    >
-                        <span className="icbc-btn customer_view_verify_customer">
-                            企业核实
-                        </span>
-                    </Dropdown>
-                </Spin>
+                <Dropdown
+                    overlay={this.createList()} //生成下拉结构样式
+                    trigger={["click"]}
+                    onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
+                    visible={this.state.visible} //受控面板显示
+                >
+                    <span className="icbc-btn customer_view_verify_customer">
+                        企业核实
+                    </span>
+                </Dropdown>
                 <Modal
                     title="工商核实"
                     visible={icbcVisible}

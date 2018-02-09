@@ -111,9 +111,6 @@ class ViewPanel extends React.Component {
                                 <TabPane tab="动态" key="1">
                                     <DynamicState/>
                                 </TabPane>
-                                <TabPane tab="参与人" key="2">
-                                    <JoinList/>
-                                </TabPane>
                             </Tabs>
                         </Col>
                     </div>

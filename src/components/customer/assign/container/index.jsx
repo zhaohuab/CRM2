@@ -164,14 +164,14 @@ class AssignList extends React.Component {
 
         if(whitchSearch == 'searchPlan'){
             
-            this.props.action.getList(pagination,{searchPlan})
+            this.props.action.getList(pagination,searchPlan)
         }else if(whitchSearch == 'searchMap'){
             
-            this.props.action.getList(pagination,{searchMap})
+            this.props.action.getList(pagination,searchMap)
         }else{
             
             this.props.action.getList(pagination,{})
-        }
+        } 
     }
     //分页跳页面查询
     onPageJump(current, pageSize){

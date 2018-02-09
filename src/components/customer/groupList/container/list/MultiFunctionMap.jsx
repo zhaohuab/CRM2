@@ -55,6 +55,7 @@ export default class MultiFunctionMap extends React.Component {
             click: event => {
                 let clickMarker = event.lnglat;
                 this.getSingleAddress(clickMarker,(result)=>{
+                    debugger
                     this.setState({
                         clickMarkerPosition:clickMarker,
                         infoPosition:clickMarker,
@@ -81,7 +82,7 @@ export default class MultiFunctionMap extends React.Component {
         //点击搜索出来的坐标点时
         this.markerEvents1 = {
             click:(e) => {
-                
+                debugger
                 this.getSingleAddress(e.lnglat,(result)=>{
                     this.setState({
                         infoPosition:e.lnglat,
@@ -101,8 +102,9 @@ export default class MultiFunctionMap extends React.Component {
     //通过value值获取精确地理坐标
     getSingleValueLocation(value){
         return  new Promise((resolve, reject) => {
+            debugger
             this.Geocoder.getLocation(value, (status, mapResult) => {
-                
+                debugger
                 if (status === "complete" && mapResult.info === "OK") {
                     let result = mapResult.geocodes[0]
                     
@@ -117,11 +119,11 @@ export default class MultiFunctionMap extends React.Component {
     //第一次地图实例查询位置
     showHistory(e){
         let value = this.props.value?this.props.value.address:'北京'
-        
+        debugger
         let location = this.props.value?this.props.value.location:''
         if(location){//根据坐标点查地图
             this.getSingleAddress(location,(result)=>{
-                
+                debugger
                 this.setState({
                     infoPosition:location,
                     result: {
@@ -137,7 +139,7 @@ export default class MultiFunctionMap extends React.Component {
             })
         }else{//根据名称查地图
             this.getSingleLocation(value,(result)=>{
-                
+                debugger
                 this.setState({
                     clickMarkerPosition:result.location,
                     infoPosition:result.location,
@@ -160,12 +162,12 @@ export default class MultiFunctionMap extends React.Component {
     //显示地图，点击定位中心点还是对
     showMap(flag){
         if(this.state.flag){
-            
+            debugger
             let value = this.props.value?this.props.value.address:'北京'
             let location = this.props.value?this.props.value.location:''
             if(location){//根据坐标点查地图
                 this.getSingleAddress(location,(result)=>{
-                    
+                    debugger 
                     this.setState({
                         infoPosition:location,
                         result: {
@@ -181,7 +183,7 @@ export default class MultiFunctionMap extends React.Component {
                 })
             }else{
                 this.getSingleLocation(value,(result)=>{
-                    
+                    debugger
                     this.setState({
                         clickMarkerPosition:result.location,
                         infoPosition:result.location,
@@ -270,8 +272,9 @@ export default class MultiFunctionMap extends React.Component {
     }
 
     getSingleLocation(value,callback){
+        debugger
         this.Geocoder.getLocation(value, (status, mapResult) => {
-            
+            debugger
             if (status === "complete" && mapResult.info === "OK") {
                 let result = mapResult.geocodes[0];
                 callback(result,result.adcode)
@@ -280,7 +283,9 @@ export default class MultiFunctionMap extends React.Component {
     }
 
     getSingleAddress(lngLat,callback){
+        debugger
         this.Geocoder.getAddress(lngLat, (status, mapResult) => {
+            debugger
             if (status === "complete" && mapResult.info === "OK") {
                 let result = mapResult.regeocode
                 
@@ -298,7 +303,7 @@ export default class MultiFunctionMap extends React.Component {
                     placeholder="请输入地址"
                     onSearch={this.showMap.bind(this)}
                     value={this.props.value?this.props.value.address:''}
-                    onChange={this.onChange.bind(this)}
+                    //onChange={this.onChange.bind(this)}
                 />
             {
                 this.state.visible?
@@ -371,39 +376,3 @@ export default class MultiFunctionMap extends React.Component {
 
 
 
-
-
-// adcode:"110000"
-// addressComponent:{neighborhood: "", neighborhoodType: "", building: "", buildingType: "", province: "北京市", …}
-// formattedAddress:"北京市"
-// level:"省"
-// location:c {O: 39.90403, M: 116.40752600000002, lng: 116.407526, lat: 39.90403}
-
-
-
-
-// {info: "OK", resultNum: "1", geocodes: Array(1)}
-// geocodes:Array(1)
-// 0:
-// adcode:"120114"
-// addressComponent:
-// building:""
-// buildingType:""
-// city:"天津市"
-// citycode:"022"
-// district:"武清区"
-// neighborhood:""
-// neighborhoodType:""
-// province:"天津市"
-// street:""
-// streetNumber:""
-// township:""
-// __proto__:Object
-// formattedAddress:"天津市武清区"
-// level:"区县"
-// location:c {O: 39.384119, M: 117.04438800000003, lng: 117.044388, lat: 39.384119}
-// __proto__:Object
-// length:1
-// __proto__:Array(0)
-// info:"OK"
-// resultNum:"1"

@@ -31,10 +31,12 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
                 userId:action.content.search.userId,
             });
         case "CUSTOMER_ITEM_LIST_GETLISTSUCCESS": //获取到左侧下半部分详情地址数据
+        let cc=action;
+        debugger;
             return $$state.merge({
                 customerItem: action.content,  
                 loadingFlag: false,  
-                page: action.num   
+                page: action.content.num   
             });	
         case "CUSTOMER_ITEM_LIST_GETLIST": //左侧下半部分详情地址数据获取到之前先展示加载画面
             return $$state.merge({

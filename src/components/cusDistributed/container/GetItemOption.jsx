@@ -10,11 +10,11 @@ const convertData = function(data) {
             });
         }
     }
+    debugger;
     return res;
 };
 var geoCoordMap = {北京: [116.46, 39.92],}
 const getOption = (data) =>{//这个data是每一条完整的数据
-//debugger;
     let center=[], dataArr=[], cityObj={}, zoom=12, cityName=data.name;
     center.push(data.longitude);
     center.push(data.latitude);
@@ -170,3 +170,11 @@ export default getOption;
                 zlevel: 1
             }
  */
+
+
+
+ /* 
+ 问题：
+ 1、如果具体的街道没有，图元会变的比较大，这时候data数组的第三项也就是index为[2]位置数据为空时。这个还需要研究/2
+ 2、点击分页时，地图上图元中数字会消失，需解决
+  */
