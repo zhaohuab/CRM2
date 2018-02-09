@@ -37,7 +37,7 @@ class LoginForm extends React.Component {
             <div className="login-form-warpper">
                 <div className="login-shadow" />
                 <div className="login-form">
-                    <Spin spinning={this.props.loading}>
+                <Spin className="loading-spin" spinning={this.props.loading}>
                         <p className="login-form-title">欢迎登录</p>
                         <div className="login-form-error">{loginError}</div>
 
@@ -56,6 +56,7 @@ class LoginForm extends React.Component {
                                     />
                                     )}
                             </FormItem>
+                          
                             <FormItem
                                 validateStatus={passwordError ? "error" : ""}
                                 help={passwordError || ""}
@@ -89,7 +90,7 @@ class LoginForm extends React.Component {
                                 </div>
                             </FormItem>
                         </Form>
-                    </Spin>
+                        </Spin>
                 </div>
             </div>
         );

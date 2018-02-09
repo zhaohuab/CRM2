@@ -38,10 +38,12 @@ export default class Upload extends React.Component {
         .then((result) => {
             debugger
             if(result.code == 1){
-                message.error(result.message + '图片不能超过1M');
+                message.error(result.message);
                 return
             }
             this.props.success(result.data);
+            let file = this.refs.file
+            file.value = ''
         }) 
         .fail((result) => {
             debugger

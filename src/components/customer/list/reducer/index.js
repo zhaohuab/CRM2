@@ -6,9 +6,10 @@ let $$initialState = {
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
     newCumMenu: [],//点击新增按钮时获取的业务类型
-    newType: '',//保存新增是选中的业务类型字段
+
     searchMap: {}, //存放实时输入的表单查询查询条件
     viewData: {}, //获取当前客户信息，view面板使用数据
+    editTempData:'',
     pagination: {//list列表页table分页信息
         pageSize: 10,
         page: 1
@@ -32,6 +33,7 @@ let $$initialState = {
     leftJoinPanelKeys: '1',//保存详情面板右侧面板选项卡选中值
     RightJoinPanelKeys: '1',//保存详情面板左侧面板选项卡选中值,
     contactsCardData: {},//保存联系人相关对象输入值
+
     clueCardList: {},//保存商机新增表单数据
     clueTableList: {},//保存商机新增表单table数据
 
@@ -201,11 +203,12 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 formVisitable: action.visiable,
                 viewData:ccccc
             });    
-        case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE":           
+        case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE": 
+            debugger
             return $$state.merge({
-                newCumMenu: action.typeItem,
-                viewData: clearObject($$state.get('contactsCardData').toJS())
+                newCumMenu: action.typeItem
             });
+
         //查询功能显示    
         case "CUSTOMERCOMPANY_LIST_CHANGEVISIBLE":
             let visit = $$state.get("moreShow");
@@ -218,21 +221,22 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                     action.payload.selectedRowKeys
                 )
             });
-        //点击新建按钮时，清空viewPanel数据,增加带过来的值    
+        //点击新建按钮的业务类型项，清空viewPanel数据,把业务类型赋到 viewData中   
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER":
-            //debugger
+            debugger
+            let biztype = action.newType;
+            let bizData = $$state.get('viewData').toJS()
+            bizData.biztype = action.newType
             return $$state.merge({
                 formVisitable: action.data,
-                newType: action.newType,
-                viewData: clearObject($$state.get('contactsCardData').toJS()),
+                viewData: bizData,
                 //每次新建把上一次保存的工商核实名称清零
                 addIcbcName:''
             });
+
         //点击选择公司获取工商信息列表    
         case "CUSTOMERCOMPANY_LIST_ICBCDETAILINFO":    
-        
-        //debugger
-
+   
             return $$state.merge({
                 icbcInfo: action.data,
                 icbcVisible: action.visiable,
@@ -320,7 +324,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 addIcbcName:'',
                 icbcSele:'',
                 viewData:clearObject($$state.get('contactsCardData').toJS()),
-                newType:''//清空已选择的业务类型id值
             });
         //修改客户    
         case "CUSTOMERCOMPANY_LIST_EDITSAVE": 

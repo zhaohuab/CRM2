@@ -50,13 +50,14 @@ export default class PersonChoiceModal extends React.Component {
         debugger
         let { viewData } = this.props
         let ownerUserId = viewData.salesVOs[0] && viewData.salesVOs[0].ownerUserId?viewData.salesVOs[0].ownerUserId:''
-        let orgId = viewData.orgId
+        //let orgId = viewData.orgId
         debugger
         if(ownerUserId){
             this.setState({
                 visibleModify:true,
             })
         }else{
+            debugger
             reqwest(
                 {
                     url: baseDir+'sys/orgs/orgTree',
@@ -64,7 +65,7 @@ export default class PersonChoiceModal extends React.Component {
                     data:{
                         param:{
                             orgType:3,
-                            fatherorgId:orgId
+                            //fatherorgId:orgId
                         }
                     }
                 },
@@ -148,10 +149,9 @@ export default class PersonChoiceModal extends React.Component {
                     if(this.state.result){
                         nv.ownerUserName = this.state.result.value
                         nv.ownerUserId = this.state.result.id
-                        viewData.ownerUserId = {id:nv.ownerUserId,name:nv.ownerUserName}    
-                        //{id: 60, name: "李天赐"}
                         this.props.changeViewData(viewData)
                     }
+                    
                 }
                 
                 this.setState({
@@ -211,7 +211,6 @@ export default class PersonChoiceModal extends React.Component {
                     if(this.state.valueModify){
                         nv.ownerUserName = this.state.valueModify.name
                         nv.ownerUserId = this.state.valueModify.id
-                        viewData.ownerUserId = {id:nv.ownerUserId,name:nv.ownerUserName}  
                         this.props.changeViewData(viewData)
                     }
                 }

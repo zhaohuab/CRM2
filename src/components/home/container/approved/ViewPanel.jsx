@@ -22,7 +22,8 @@ import { bindActionCreators } from "redux";
 //导入action方法
 import * as Actions from "../../action/approval.js";
 import UnfinishForm from './UnfinishForm';
-import MentionModal from './MentionModal'
+import MentionModal from './MentionModal';
+import DetailForm from './DetailForm';
 import "assets/stylesheet/all/iconfont.css";
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
@@ -303,8 +304,14 @@ class ViewPanel extends React.Component {
                     </Row>
                     {/* --------------- */}
                     {/* 表单 */}
-                    <Row className="form-input-recover">
+
+                    {/* <Row className="form-input-recover">
                         <UnfinishForm />
+
+                    </Row> */}
+
+                    <Row className="form-input-recover">  
+                        <DetailForm/>
                     </Row>
                     {/* ---------- */}
                 </Row>

@@ -1,7 +1,7 @@
 import reqwest from "utils/reqwest";
 import { message } from "antd";
 import { cum as url, doc, baseDir, oppstage, opportunity, contacts } from "api";
-
+import Immutable from "immutable";
 
 //包装发给redux的对象
 export function fetchData(type, payload) {
@@ -12,10 +12,11 @@ export function fetchData(type, payload) {
 };
 
 let trancFn=(data)=>{
-    
+    data = Immutable.fromJS(data).toJS()
+    debugger
     for (let key in data) {
         //枚举
-        if ( key == 'cannelType' || key == 'level'|| key == 'type') {
+        if ( key == 'cannelType' || key == 'level'|| key == 'type'|| key == 'biztype') {
             if(data[key] && data[key].key){
                 data[key] = data[key].key
             }
@@ -196,7 +197,6 @@ export function showForm(visible) {
 
 
 export function showFormEdit(visiable){
-    
     return{
         type:'CUSTOMERCOMPANY_LIST_SHOWEDITFORM',
         visiable
@@ -441,12 +441,9 @@ let sendCumNewRequest = (data,dispatch)=>{
 }
 
 //新增、修改客户保存
-export function listFormSave(data,newTypeId) {
+export function listFormSave(data) {
     
     data = trancFn(data);
-    if(newTypeId){//如果newTypeId存在代表是新增
-        data.biztypeId = newTypeId
-    }
  
     return dispatch => {
        // debugger
@@ -459,8 +456,9 @@ export function listFormSave(data,newTypeId) {
                     data.industry = 'undefined'
                 }
                 //然后再发送编辑Request请求
-                //如果newTypeId存在代表是新增
-                if(newTypeId){
+                //如果!data.id存在代表是新增
+                debugger
+                if(!data.id){
                     sendCumNewRequest(data,dispatch)
                 }else{
                     sendCumRequest(data,dispatch)
@@ -479,8 +477,9 @@ export function listFormSave(data,newTypeId) {
                 data.industry = 'undefined'
             }
             //然后再发送编辑Request请求
-            //如果newTypeId存在代表是新增
-            if(newTypeId){
+            //如果!data.id存在代表是新增
+            debugger
+            if(!data.id){
                 sendCumNewRequest(data,dispatch)
             }else{
                 sendCumRequest(data,dispatch)
@@ -492,13 +491,14 @@ export function listFormSave(data,newTypeId) {
 //展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id) {
     return dispatch => {
+        debugger
         reqwest(
             {
                 url: url.customer + "/" + id,
                 method: "GET"
             },
             data => {
-                
+                debugger
                 reqwest(
                     {
                         url: baseDir + `cum/customers/${id}/isfollow`,
@@ -791,7 +791,7 @@ export function closeIcbcVisible1(visible) {
     };
 };
 
-//点击新建按钮清空viewPanel面板数据
+//点击新增按钮的取业务类型项
 export function addCustomer(data, newType) {
     return dispatch => {
         dispatch({
@@ -806,14 +806,13 @@ export function addCustomer(data, newType) {
 //点击新增按钮获取业务类型
 export function addNewType() {
     return dispatch => {
-        
         reqwest(
             {
                 url: baseDir + 'cum/customers/roles/biztypes',
                 method: "GET",
             },
             result => {
-                
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_NEWEDITTYPE",
                     typeItem: result.biztypeList,

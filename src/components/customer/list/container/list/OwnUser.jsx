@@ -112,7 +112,6 @@ export default class OwnUser extends React.Component {
 
 
     creatPanel(){
-        debugger
         return(
             <DropDownModal 
                 title='负责人' 
@@ -182,8 +181,6 @@ export default class OwnUser extends React.Component {
     }
 
     render(){
-        debugger
-        /////ddddddd
         const suffix =
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />

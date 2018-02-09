@@ -90,17 +90,9 @@ class List extends React.Component {
     slideShow(record) {
         this.props.action.showViewForm(true, record.id);
         //获取动态
-       // this.props.action.getDynamic(record.id)
-       //----集团客户的动态后台正在添加，这里暂时注掉 2-8
+        this.props.action.getDynamic(record.id)
     }
-
-    //清除表单数据  
-    clearForm(){//-------公司客户中新增 2-8
-        if(this.formRef){
-            this.formRef.props.form.resetFields()
-        }
-    }
-
+    
     //隐藏面版
     slideHide() {
         //关闭面板清空数据
