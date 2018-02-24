@@ -62,6 +62,7 @@ class ToolForm extends React.Component {
             cancelText: "否",
             onOk() {
                 let {searchMap,selectedRowKeys,pagination} = that.props.$$state.toJS();
+                debugger;
                 const ids = selectedRowKeys.join(',');
                 that.props.action.deleteData(
                     ids,
@@ -97,7 +98,7 @@ class ToolForm extends React.Component {
     //扩展条件、基础条件查询
     handleSearch(searchMap) {
         //还差城市条件过滤
-        debugger;
+        //debugger;
         let pagination = {page:1, pageSize:10}
         this.props.action.getListData(
             pagination,
@@ -143,7 +144,6 @@ class ToolForm extends React.Component {
     render() {
         let { searchData, moreShow, selectedRowKeys,newCumMenu } = this.props.$$state.toJS();
         let defaultId = this.props.$$state.get('defaultId');
-        //debugger;
       /*   const loop = data => data.map((item, index) => {
             return <Menu.Item key={item.key} >{item.title}</Menu.Item>
         });

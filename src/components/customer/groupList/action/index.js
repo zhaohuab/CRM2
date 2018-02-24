@@ -97,15 +97,15 @@ let changeSearchData = (data) => {
 
 //删除客户
 export function deleteData(ids, searchMap, pagination) {
-    
+    debugger;   
     return dispatch => {
         reqwest(
             {
-                url: url.customer + "/batch",
+                url: baseDir +'/cum/groupcustomers/batch',
                 method: "DELETE",
                 data: {
                     param: {
-                        ids: ids.join(","),
+                        ids: ids,
                         ...pagination,
                         searchMap: changeSearchData(searchMap)
                     }
@@ -127,7 +127,7 @@ export function setEnableState(ids, state, page, searchMap) {
     return dispatch => {
         reqwest(
             {
-                url: url.customer + "/state",
+                url: baseDir +'/cum/groupcustomers/state',
                 method: "PUT",
                 data: {
                     param: {
@@ -156,7 +156,7 @@ export function setDetailEnableState(ids, state, page, searchMap) {
     return dispatch => {
         reqwest(
             {
-                url: url.customer + "/state",
+                url: baseDir +'/cum/groupcustomers/state',
                 method: "PUT",
                 data: {
                     param: {
@@ -1069,7 +1069,7 @@ export function delContacts(id,pagination){
 
 //-------导入导出 1.30号 余春梅
 export function viewLeadShow(leadVisible) {
-    ////debugger
+    debugger
     return {
         type: "CUSTOMERGROUP_LIST_VIEWLEADSHOW",
         payload: { leadVisible }
@@ -1077,6 +1077,7 @@ export function viewLeadShow(leadVisible) {
 }
 
 export function leadShow(leadVisible) {
+    debugger;
     return {
         type: "CUSTOMERGROUP_LIST_LEADSHOW",
         payload: { leadVisible }

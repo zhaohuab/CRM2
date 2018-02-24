@@ -136,7 +136,6 @@ class List extends React.Component {
     }
 
     render() {
-        debugger
         let {
             leadVisible,
             leadEndVisible,
@@ -146,8 +145,6 @@ class List extends React.Component {
             searchMap
 
         } = this.props.$$state.toJS();
-        ;
-debugger
         return (
             <Modal title="导入"
                 className="lead-cur-import"
@@ -195,7 +192,7 @@ debugger
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList,
+        $$state: state.customerGroupList,
     };
 }
 //绑定action到组件props

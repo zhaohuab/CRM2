@@ -340,75 +340,6 @@ class RelevantObject extends React.Component {
                             }
                         </div>
                     </Panel>
-                    <Panel header={this.headerFn({title:'文件',index:4})}  key="4" >
-                        <div className='file-warpper'>
-                            <Row className='file-warpper-item' type='flex' align='middle'>
-                                <div className='img-mark'>
-                                    {/* <img
-                                        src={require("../../images/bg.png")}
-                                        className="top-img"
-                                    /> */}
-                                    <i className='iconfont icon-xsl'/>
-                                    <span className='cover'><Icon type="loading" /></span>
-                                    
-                                </div>
-                                <div className='detail'>
-                                    <p className='detail-name'>发发发水电费</p>
-                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
-                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
-                                </div>
-                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
-                            </Row>
-                            <Row className='file-warpper-item' type='flex' align='middle'>
-                                <div className='img-mark'>
-                                    {/* <img
-                                        src={require("../../images/bg.png")}
-                                        className="top-img"
-                                    /> */}
-                                    <i className='iconfont icon-word'/>
-                                   
-                                </div>
-                                <div className='detail'>
-                                    <p className='detail-name wrong'>发发发水电费</p>
-                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
-                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
-                                </div>
-                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
-                            </Row>
-                            <Row className='file-warpper-item' type='flex' align='middle'>
-                                <div className='img-mark'>
-                                    {/* <img
-                                        src={require("../../images/bg.png")}
-                                        className="top-img"
-                                    /> */}
-                                    <i className='iconfont icon-ppt'/>
-                                </div>
-                                <div className='detail'>
-                                    <p className='detail-name'>发发发水电费</p>
-                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
-                                    <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
-                                </div>
-                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
-                            </Row>
-                            <Row className='file-warpper-item' type='flex' align='middle'>
-                                <div className='img-mark'>
-                                    <img
-                                        src={require("../../images/bg.png")}
-                                        className="top-img"
-                                    />
-                                    {/* <i className='iconfont icon-ppt'/> */}
-                                    <span className='show-img'><Icon type="eye-o" /></span>
-                                </div>
-                                <div className='detail'>
-                                    <p className='detail-name'>发发发水电费</p>
-                                    <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
-                                    <p className='detail-remark'><span>上传时间:</span><span>2010-12-12</span></p>
-                                </div>
-                                <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
-                            </Row>
-                            
-                        </div>
-                    </Panel>
             </Collapse>
             <ContactsModal visiable={this.state.visiable} data={this.state.contactsData} cancel={this.cancelContacts.bind(this)}/>
             <OppModal visiable={this.state.oppvisiable} data={this.state.oppData} cancel={this.cancelOpp.bind(this)}/>
@@ -431,3 +362,74 @@ function mapDispatchToProps(dispatch) {
 }
 //输出绑定state和action后组件
 export default connect(mapStateToProps, mapDispatchToProps)(RelevantObject);
+
+
+//  <Panel header={this.headerFn({title:'文件',index:4})}  key="4" >
+//                         <div className='file-warpper'>
+//                             <Row className='file-warpper-item' type='flex' align='middle'>
+//                                 <div className='img-mark'>
+//                                     {/* <img
+//                                         src={require("../../images/bg.png")}
+//                                         className="top-img"
+//                                     /> */}
+//                                     <i className='iconfont icon-xsl'/>
+//                                     <span className='cover'><Icon type="loading" /></span>
+                                    
+//                                 </div>
+//                                 <div className='detail'>
+//                                     <p className='detail-name'>发发发水电费</p>
+//                                     <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
+//                                     <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
+//                                 </div>
+//                                 <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
+//                             </Row>
+//                             <Row className='file-warpper-item' type='flex' align='middle'>
+//                                 <div className='img-mark'>
+//                                     {/* <img
+//                                         src={require("../../images/bg.png")}
+//                                         className="top-img"
+//                                     /> */}
+//                                     <i className='iconfont icon-word'/>
+                                   
+//                                 </div>
+//                                 <div className='detail'>
+//                                     <p className='detail-name wrong'>发发发水电费</p>
+//                                     <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
+//                                     <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
+//                                 </div>
+//                                 <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
+//                             </Row>
+//                             <Row className='file-warpper-item' type='flex' align='middle'>
+//                                 <div className='img-mark'>
+//                                     {/* <img
+//                                         src={require("../../images/bg.png")}
+//                                         className="top-img"
+//                                     /> */}
+//                                     <i className='iconfont icon-ppt'/>
+//                                 </div>
+//                                 <div className='detail'>
+//                                     <p className='detail-name'>发发发水电费</p>
+//                                     <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
+//                                     <p className='detail-remark'><span>上传时间:</span><span>发的发的是发的发的是</span></p>
+//                                 </div>
+//                                 <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
+//                             </Row>
+//                             <Row className='file-warpper-item' type='flex' align='middle'>
+//                                 <div className='img-mark'>
+//                                     <img
+//                                         src={require("../../images/bg.png")}
+//                                         className="top-img"
+//                                     />
+//                                     {/* <i className='iconfont icon-ppt'/> */}
+//                                     <span className='show-img'><Icon type="eye-o" /></span>
+//                                 </div>
+//                                 <div className='detail'>
+//                                     <p className='detail-name'>发发发水电费</p>
+//                                     <p className='detail-remark'><span>上传人:</span><span>发的发的是发的发的是</span></p>
+//                                     <p className='detail-remark'><span>上传时间:</span><span>2010-12-12</span></p>
+//                                 </div>
+//                                 <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span>
+//                             </Row>
+                            
+//                         </div>
+//                     </Panel>
