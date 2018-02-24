@@ -147,6 +147,7 @@ export function fileFail(filesFail) {
 
 //天赐上传文件
 export function filesSuccess(file) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_FILESSUCCESS",
         payload: file,
@@ -155,7 +156,7 @@ export function filesSuccess(file) {
 
 //天赐上传文件删除
 export function onDeleteFiles(file) {
-   // debugger
+    debugger
     return (dispatch) => {
         reqwest(
             {
