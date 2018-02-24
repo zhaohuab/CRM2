@@ -26,6 +26,7 @@ export default function reducer(
                 return true;
             });
         case "CONTACTS_LIST_GETLIST": //获取查询的数据，关闭table加载动画
+        debugger
             $$state = $$state.update("loading", val => {
                 return false;
             });

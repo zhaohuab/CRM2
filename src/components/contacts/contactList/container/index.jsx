@@ -22,7 +22,7 @@ const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
-
+const confirm = Modal.confirm;
 import * as Actions from "../action/index.js";
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import Card from "./card.jsx";
@@ -33,6 +33,7 @@ import PanelView from "./panel.jsx";
 
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
+import data from "../../../role/list/container/data";
 
 class Contacts extends React.Component {
     constructor(props) {
@@ -54,11 +55,11 @@ class Contacts extends React.Component {
             },
             {
                 title: "客户",
-                dataIndex: "customer"
+                dataIndex: "customerName"
             },
             {
                 title: "部门",
-                dataIndex: "deptId"
+                dataIndex: "deptName"
             },
             {
                 title: "角色",
@@ -118,7 +119,7 @@ class Contacts extends React.Component {
     //modal点击确定按钮
     handleOk() {
         let { pagination, searchMap } = this.state; //获取分页信息
-       debugger;
+        debugger;
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {
             debugger;
             if (!err) {
@@ -145,11 +146,23 @@ class Contacts extends React.Component {
 
     //删除按钮
     onDelete() {
-        let selectedRowKeys = this.props.$$state.toJS().rowKeys[
-            "selectedRowKeys"
-        ];
-        let { pagination, searchMap } = this.state; //获取分页信息
-        this.props.action.onDelete(selectedRowKeys, pagination, searchMap);
+        let that = this;
+        confirm({
+            title: "确定要删除吗?",
+            content: "此操作不可逆",
+            okText: "是",
+            cancelText: "否",
+            onOk() {
+                let selectedRowKeys = that.props.$$state.toJS().rowKeys[
+                    "selectedRowKeys"
+                ];
+                let { pagination, searchMap } = that.state; //获取分页信息
+                that.props.action.onDelete(selectedRowKeys, pagination, searchMap);
+            },
+            onCancel() {
+                console.log("Cancel");
+            }
+        });
     }
 
     //分页器显示条数
@@ -205,10 +218,13 @@ class Contacts extends React.Component {
                     obj.id = item[key];
                 } else if (key == "name") {
                     obj.name = item[key];
-                } else if (key == "customer") {
-                    obj.customer = item[key];
-                } else if (key == "deptId") {
-                    obj.deptId = item[key];
+                } else if (key == "customerInfo") {
+                    if(item["customerInfo"]!=null)
+                        obj.customerName = item["customerInfo"].name;
+                    else
+                        obj.customerName = "";
+                } else if (key == "deptName") {
+                    obj.deptName = item[key];
                 } else if (key == "role") {
                     obj.role = item[key];
                 } else if (key == "attitude") {
@@ -273,9 +289,6 @@ class Contacts extends React.Component {
                             <Button onClick={this.onDelete.bind(this)}>
                                 <i className="iconfont icon-shanchu" />删除
                             </Button>
-                            <Button>
-                                <i className="iconfont "></i>
-                                线索分配</Button>
                             {selectedRowKeys.length == 1 ? (
                                 <Button onClick={this.onEdit.bind(this)}>
                                     <i className="iconfont icon-bianji" />编辑
@@ -283,7 +296,6 @@ class Contacts extends React.Component {
                             ) : (
                                 ""
                             )}
-                            <Button>刷新</Button>
                         </HeaderButton>
                     ) : (
                         <div className="crm-container-header">
