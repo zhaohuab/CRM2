@@ -10,6 +10,7 @@ export function getCollaps() {
 //获取联系人信息
 export function getContactList(pagination, searchMap) {
     return dispatch => {
+        debugger
         dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
         reqwest(
             {
@@ -50,10 +51,10 @@ export function cardSaved(data, pagination, searchMap) {
                     }
                 }
             },
-            
+
             result => {
                 debugger;
-                console.log(2,result);
+                console.log(2, result);
                 dispatch({ type: "CONTACTS_CARD_SAVEADD", data: result });
             }
         );
@@ -118,9 +119,37 @@ export function onEdit(values, pagination, searchMa) {
 }
 
 export function edit(edit, show) {
+    if (isEmpty(edit)) {
+        return dispatch => {
+            reqwest(
+                {
+                    url: contacts.ref,
+                    method: "get",
+                    // data: {
+                    //     param: {
+                    //         ...values
+                    //     }
+                    // }
+                },
+                result => {
+                    dispatch({
+                        type: "CONTACTS_LIST_EDIT",
+                        edit:{userList:result.userList},
+                        show
+                    });
+                }
+            );
+        };
+    }
     return {
         type: "CONTACTS_LIST_EDIT",
         edit,
         show
     };
 }
+function isEmpty(obj) {
+    for (var name in obj) {
+        return false;
+    }
+    return true;
+}; 

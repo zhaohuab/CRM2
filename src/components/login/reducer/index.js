@@ -30,6 +30,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
 				logined:false,
 				loading: false,
 			});
+		case 'LOGIN_MAIN_SESSIONOVER':
+			return $$state.merge({
+				logined:false,
+			});
 	    default: 
 	        return $$state;
 	}

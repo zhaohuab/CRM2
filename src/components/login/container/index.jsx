@@ -118,7 +118,9 @@ class LoginCon extends React.Component {
 
         let { $$state } = this.props;
         let logined = $$state.get("logined");
+
         if (this.props.params.loginmsg == "sessionover") {
+            this.props.action.loginSessionOver();
             browserHistory.push("/crm_web/login");
         } else {
             if (logined) {
