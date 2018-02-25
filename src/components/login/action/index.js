@@ -26,6 +26,13 @@ const login = (params) => {
 	}
 }
 
+const loginSessionOver = (params) => {
+	return (dispatch) => {
+
+		dispatch(fetchData('LOGIN_MAIN_SESSIONOVER',{}))
+	}
+}
+
 const setLogout = () => {
 	return dispatch => {
 		dispatch(fetchData("LOGIN_MAIN_SETLOGOUT", {}));
@@ -33,4 +40,4 @@ const setLogout = () => {
 };
 
 //输出 type 与 方法
-export { login, setLogout };
+export { login, setLogout,loginSessionOver };

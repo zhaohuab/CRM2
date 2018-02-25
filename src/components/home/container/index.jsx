@@ -286,7 +286,7 @@ class Home extends React.Component {
     }
 
     getCookie(name) {
-        debugger
+        
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)"); //正则匹配
         if (arr = document.cookie.match(reg)) {
             return unescape(arr[2]);
@@ -312,7 +312,7 @@ class Home extends React.Component {
 
     //显示面板
     slideShow = (record) => {
-        debugger
+        
         this.props.action.showHomeViewForm(true, record.djId, record.djType, record.instanceId, record.taskId, record);
     }
 
@@ -321,7 +321,7 @@ class Home extends React.Component {
         this.props.action.hideHomeViewForm(false);
     }
     render() {
-        debugger
+        
         const events = {
             created: ins => { },
             click: () => { }
