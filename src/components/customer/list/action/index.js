@@ -319,7 +319,7 @@ export function getListData(pagination, searchMap) {
                 }
             },
             data => {
-                
+                console.log('获取列表==============',data)
                 dispatch(
                     fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
                         data: data,
@@ -500,12 +500,15 @@ export function showViewForm(visible, id) {
             },
             data => {
                 debugger
+                console.log('点击详情时返回数据1==========',data)
                 reqwest(
                     {
                         url: baseDir + `cum/customers/${id}/isfollow`,
                         method: "GET"
                     },
                     state => {
+                        console.log('点击详情时返回数据2==========',state)
+                        debugger;
                         dispatch({
                             type: "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM",
                             visible,

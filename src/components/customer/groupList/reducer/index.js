@@ -78,8 +78,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
 
 
         //----------- 导入导出
-        case 'CUSTOMERGROUP_LIST_VIEWLEADSHOW':
-        
+        case 'CUSTOMERGROUP_LIST_VIEWLEADSHOW':     
             return $$state.merge({
                 viewLeadVisible: action.payload.leadVisible,
             });
@@ -87,25 +86,13 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             return $$state.merge({
                 leadVisible: action.payload.leadVisible,
             });
-        case 'CUSTOMERGROUP_LIST_LEADENDSHOW':
-            return $$state.merge({
-                leadEndVisible: action.payload.leadVisible,
-            });
         case 'CUSTOMERGROUP_LIST_LEADINGSHOW':
             return $$state.merge({
                 leadingVisible: action.payload.leadVisible,
             });
-        case 'CUSTOMERGROUP_LIST_LEADSHOW':
-            return $$state.merge({
-                leadVisible: action.payload.leadVisible,
-            });
         case 'CUSTOMERGROUP_LIST_LEADENDSHOW':
             return $$state.merge({
                 leadEndVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERGROUP_LIST_LEADINGSHOW':
-            return $$state.merge({
-                leadingVisible: action.payload.leadVisible,
             });
         case 'CUSTOMERGROUP_LIST_SAVEFILES':           
             return $$state.merge({
@@ -501,6 +488,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                     obj.defClass=item.defClass;
                 }
             })
+            debugger;
             return $$state.merge({ searchData: action.payload.searchData, searchPlan:obj, defaultId:obj.id});
         case "CUSTOMERGROUP_SEARCHPLAN_SUCESS"://获取相关对象联系人表单数据      
             return $$state.merge({

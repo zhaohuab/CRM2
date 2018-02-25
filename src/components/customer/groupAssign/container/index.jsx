@@ -83,7 +83,6 @@ class GroupAssignList extends React.Component {
     }
     //过滤查询条件中的值
     mapFilter(searchMap){
-        //debugger;
         let searchMapCopy={};
         for(let key in searchMap){
             if(key=='cannelType' && searchMap[key] || key=='level' && searchMap[key]|| key=='type'&& searchMap[key]){
@@ -93,27 +92,30 @@ class GroupAssignList extends React.Component {
                 searchMapCopy[key] = searchMap[key].id
             }
             if(key == 'province_city_district'&& searchMap[key]){
-                searchMapCopy[key] = searchMap[key].result.join('_')
+                if(searchMap[key].custom.length&&searchMap[key].result.length){
+                    searchMapCopy[key] = searchMap[key].result.join('_')
+                }              
             }
             if(key=='org' && searchMap[key]){
                 searchMapCopy['orgId'] = searchMap[key].id
             }
+            if(key=='name' && searchMap[key]){
+                searchMapCopy[key] = searchMap[key]
+            }
         }
-        //debugger
         return searchMapCopy
     }
 
     //两个查询表单输入存值
     formRedux(value){
+        debugger;
         this.props.action.saveSearchMap(value)
     }
 
     //头部表单查询，每次查询时都把whitchSearch变为当前查询方案
-    searchMapForm(){
-        
+    searchMapForm(){    
         let { searchMap,pagination} = this.props.$$state.toJS();
         searchMap = this.mapFilter(searchMap);
-       debugger;
         this.props.action.searchMapSearch(pagination,searchMap)
     }
 

@@ -100,9 +100,9 @@ class ViewPanel extends React.Component {
                                     <TabPane tab="相关" key="2">
                                         <RelevantObject JoinPagination={this.state.JoinPagination}/>
                                     </TabPane>
-                                    <TabPane tab="交易" key="3">
+                                {/* <TabPane tab="交易" key="3">
                                         <DealObject/>
-                                    </TabPane>
+                                    </TabPane> */}
                                 </Tabs>
                             </div>
                         </Col>
