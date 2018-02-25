@@ -48,7 +48,7 @@ export default class AddJoin extends React.Component {
         e.stopPropagation()
         
         let { viewData } = this.props
-        let orgId = viewData.orgId
+        let orgId = viewData.salesVOs[0].orgId
 
         reqwest(
             {

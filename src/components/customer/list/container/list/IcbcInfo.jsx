@@ -269,7 +269,7 @@ class IcbcInfo extends React.Component {
             that.props.action.saveIcbcNameCancel(false);
           },
         });
-      }
+    }
 
     //详细信息modal取消按钮
     onInbcCancel() {
