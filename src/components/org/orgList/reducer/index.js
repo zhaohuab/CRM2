@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
 	isEdit: false,
@@ -13,21 +14,7 @@ let $$initialState = {
 	cardLoading: false,
 	treeLoading: false,
 };
-function pageAdd(page, item) {
-	page.data.unshift(item)
-	return page;
-}
-function pageEdit(page, item) {
-	let { data } = page;
-	for (let i = 0, len = data.length; i < len; i++) {
-		if (data[i].id == item.id) {
-			data[i] = item;
-			break;
-		}
-	}
-	page.data = data;
-	return page;
-}
+
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
 
 	switch (action.type) {
