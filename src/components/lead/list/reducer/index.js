@@ -1,4 +1,5 @@
 import Immutable from "immutable";
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     pagination: {//分页信息
@@ -21,26 +22,6 @@ let $$initialState = {
     },
     colseVisible:true
 };
-
-function pageAdd(page, item) {
-    //////debugger;
-    page.total += 1;
-    page.data.unshift(item);
-    page.page = Math.ceil(page.total / page.pageSize);
-    return page;
-    console.log(22, page)
-}
-function pageEdit(page, item) {
-    let { data } = page;
-    for (let i = 0, len = data.length; i < len; i++) {
-        if (data[i].id == item.id) {
-            data[i] = item;
-            break;
-        }
-    }
-    page.data = data;
-    return page;
-}
 
 function clearObject(obj){
     //debugger

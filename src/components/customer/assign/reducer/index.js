@@ -1,5 +1,5 @@
 import Immutable from "immutable";
-
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     loading: false,//存放
@@ -17,12 +17,6 @@ let $$initialState = {
     whitchSearch:'',//保存上次查询的是哪一个查询方式
 };
 
-function pageAdd(page, item){
-    page.total += 1;
-    page.data.unshift(item);
-    page.page = Math.ceil(page.total / page.pageSize);
-    return page;
-}
 
 export default function cusAssignReducers($$state = Immutable.fromJS($$initialState),action) {
     switch (action.type){

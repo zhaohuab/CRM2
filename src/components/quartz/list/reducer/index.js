@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
 	taskVisible: false,
@@ -14,11 +15,7 @@ let $$initialState = {
 	viewData: {}
 };
 
-function pageAdd(page, item) {
-	debugger;
-	page.unshift(item);
-	return page;
-}
+
 function listAdd(page, item) {
 	debugger;
 	page.total += 1;
@@ -28,17 +25,6 @@ function listAdd(page, item) {
 		page.data = [item]
 	}
 	page.page = Math.ceil(page.total / page.pageSize);
-	return page;
-}
-function pageEdit(page, item) {
-	let { data } = page;
-	for (let i = 0, len = data.length; i < len; i++) {
-		if (data[i].id == item.id) {
-			data[i] = item;
-			break;
-		}
-	}
-	page.data = data;
 	return page;
 }
 function clearObject(obj) {

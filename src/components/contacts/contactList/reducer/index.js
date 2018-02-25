@@ -1,4 +1,5 @@
 import Immutable from "immutable";
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     loading: false,
@@ -9,12 +10,7 @@ let $$initialState = {
     editData: {}
 };
 
-function pageAdd(page, item) {
-    page.total += 1;
-    page.data.unshift(item);
-    page.page = Math.ceil(page.total / page.pageSize);
-    return page;
-}
+
 
 export default function reducer(
     $$state = Immutable.fromJS($$initialState),

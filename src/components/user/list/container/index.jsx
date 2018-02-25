@@ -171,6 +171,7 @@ class List extends React.Component {
     }
     render() {
         let page = this.props.$$state.get("data").toJS();
+        debugger
         let visible = this.props.$$state.get("visible");
         let assignVisible = this.props.$$state.get("assignVisible");
         let selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();
