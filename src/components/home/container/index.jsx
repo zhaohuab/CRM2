@@ -263,7 +263,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        let usertype = this.getCookie('usertype')
+        let usertype = this.getCookie('usertype') //根据角色类型发请求 
         if (usertype !== "1") {
             this.targetEchar = echarts.init(this.refs.target);
             this.targetEchar.setOption(this.targetOption);
@@ -286,7 +286,7 @@ class Home extends React.Component {
     }
 
     getCookie(name) {
-        debugger
+        
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)"); //正则匹配
         if (arr = document.cookie.match(reg)) {
             return unescape(arr[2]);
@@ -312,7 +312,7 @@ class Home extends React.Component {
 
     //显示面板
     slideShow = (record) => {
-        debugger
+        
         this.props.action.showHomeViewForm(true, record.djId, record.djType, record.instanceId, record.taskId, record);
     }
 
@@ -321,7 +321,7 @@ class Home extends React.Component {
         this.props.action.hideHomeViewForm(false);
     }
     render() {
-        debugger
+        
         const events = {
             created: ins => { },
             click: () => { }
@@ -334,8 +334,7 @@ class Home extends React.Component {
         return (
             <div className="home-show-wrapper">
               
-
-                {userType !== "" &&
+                {userType !== '' &&
                     userType == '1' ?
                     <div className="home-userType"></div> :
                     <div className="home-layer">
@@ -655,7 +654,6 @@ class Home extends React.Component {
                         </SlidePanel>
                     </div>}
 
-          
             </div>
         )
     }

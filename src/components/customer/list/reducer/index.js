@@ -46,6 +46,7 @@ let $$initialState = {
     filesSuccess: false,
     filesFail: false,
     successResult: {},//导入成功后返回结果
+    pageSize:1,//---列表页页码受控  赵华冰 2-9
 };
 
 function pageAdd(page, item) {
@@ -143,7 +144,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
-                selectedRowKeys: []
+                selectedRowKeys: [],
+                pageSize:action.payload.pagination.page,
             });
         //详情起停用功能    
         case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE':

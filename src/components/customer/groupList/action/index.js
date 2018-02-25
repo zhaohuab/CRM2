@@ -231,7 +231,6 @@ export function getListData (pagination, searchMap,searchPlan){//----赵华冰2-
 
 //-----------获取查询方案初始条件值 赵华冰2-2
 export function getInitInquire(){
-    let xx=cusInquire.groupLsit;
     return dispatch => {
         reqwest(
             {

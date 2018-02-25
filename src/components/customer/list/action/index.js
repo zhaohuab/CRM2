@@ -68,7 +68,6 @@ let trancFn=(data)=>{
     }
 debugger
     data.address = ''
-    
     return data;
 }
 
