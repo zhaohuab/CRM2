@@ -22,11 +22,14 @@ const environments = {
 
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
-
+if (process.env.npm_lifecycle_event == "common") {
+	//使用common命令，使用传递的参数变更地址
+	productionEnv = SERVER_IP_PORT;
+}
 const publicPath = productionEnv + '/lib/';
 
 //打包之前先清理lib
-if (process.env.npm_lifecycle_event == "btest" || process.env.npm_lifecycle_event == "bup") {
+if (process.env.npm_lifecycle_event == "btest" || process.env.npm_lifecycle_event == "bup" || process.env.npm_lifecycle_event == "bupip") {
 	require('./before.build.script');
 }
 
