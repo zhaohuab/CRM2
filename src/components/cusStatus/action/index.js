@@ -3,7 +3,8 @@ import reqwest from 'utils/reqwest';
 import { message } from "antd";
 import { cusStatus as url } from 'api/zhb';
 
-const getCustomerList = (str,id,name) => {//获取左侧上半部分客户数据
+const getCustomerList = (str,id,name,back) => {//获取左侧上半部分客户数据
+    debugger;
    
     let search = { deptId: '', userId: '' };
     if(str){
@@ -16,13 +17,15 @@ const getCustomerList = (str,id,name) => {//获取左侧上半部分客户数据
             data: {
                 param: search
             }
-        }, result=>{      
-            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result, str, search, name }));
+        }, result=>{   
+            debugger   
+            dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result, str, id, search, name, back }));
         })
     }
 }
 
-const getCustomerItem = (str,id,num) => {//获取左侧下半部分公司部门或者业务员数据
+const getCustomerItem = (str,id,num,back) => {//获取左侧下半部分公司部门或者业务员数据
+    debugger
     let page={ pageSize: 5, page: num}, search={  deptId :'', userId :''  }
     if(str){
         search[str]=id
@@ -39,7 +42,8 @@ const getCustomerItem = (str,id,num) => {//获取左侧下半部分公司部门�
                 }
             }
 		},result => {
-			dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { ...result, num }));
+            debugger;
+			dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { ...result, str, id, num, back }));
         },()=>{
             dispatch(fetchData('CUSTOMER_ITEM_LIST_FAIL', {}));
         }
@@ -48,7 +52,7 @@ const getCustomerItem = (str,id,num) => {//获取左侧下半部分公司部门�
 }
 
 const getStatusData = (str, id) => {
-   
+   debugger;
     let search = { deptId: '', userId: '' };
     if(str){
         search[str]=id
@@ -67,9 +71,16 @@ const getStatusData = (str, id) => {
     }
 }
 
+const listPop = () => {//点击返回按钮时删除 customerListBack和customerItemBack中的最后一项
+    debugger;
+    return dispatch => {
+        dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_POP', {}));
+    }
+}
 
 export {
     getCustomerList,
     getCustomerItem,
     getStatusData,
+    listPop
 };

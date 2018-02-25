@@ -240,6 +240,7 @@ export function getInitInquire(){
             },
             result => {
                 let searchPlan={};
+                debugger;
                 dispatch(
                     fetchData("CUSTOMERGROUP_GROUPLIST_GETENUMDATA", {
                         searchData: result.plan

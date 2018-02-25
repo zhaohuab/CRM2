@@ -144,6 +144,7 @@ class ToolForm extends React.Component {
     render() {
         let { searchData, moreShow, selectedRowKeys,newCumMenu } = this.props.$$state.toJS();
         let defaultId = this.props.$$state.get('defaultId');
+        debugger;
       /*   const loop = data => data.map((item, index) => {
             return <Menu.Item key={item.key} >{item.title}</Menu.Item>
         });

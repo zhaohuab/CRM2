@@ -54,7 +54,6 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
         
         case "CUSTOMER_ITEM_LIST_GETLISTSUCCESS": //获取到左侧下半部分详情地址数据
         debugger
-            let cc=action;
             if(action.content.back){
                 return $$state.merge({
                     customerItem: action.content,  
@@ -84,7 +83,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             return $$state.merge({
                 loadingFlag: false,          
             });	
-        case "CUSTOMER_DEPARTMENT_LIST_POP": //
+        case "CUSTOMER_DEPARTMENT_LIST_POP": //点击返回按钮后删除 customerListBack和customerItemBack中的最后一项
         debugger
             let customerList = $$state.get('customerListBack').toJS();
             let customerItem = $$state.get('customerItemBack').toJS();

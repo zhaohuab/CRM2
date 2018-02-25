@@ -54,11 +54,11 @@ class PanelMap extends React.Component {
         }     
     }
 
-    reload = () => {//返回按钮，重新加载页面
+    reload = () => {//返回按钮，返回上级请求页面
         let customerListBack = this.props.$$state.get('customerListBack').toJS();
         let customerItemBack = this.props.$$state.get('customerItemBack').toJS();
-        let arr1 = this.props.$$state.get('customerListBack').toJS().pop();
-        let arr2 = this.props.$$state.get('customerItemBack').toJS().pop();
+        let arr1 = customerListBack[customerListBack.length-2];
+        let arr2 = customerItemBack[customerItemBack.length-2]
         debugger;
         if(customerListBack.length>1){
             this.props.action.getCustomerList(...arr1, true);
@@ -78,7 +78,7 @@ class PanelMap extends React.Component {
     getCustomer = (str, id, name) => {
         debugger;
         let arr = this.props.$$state.get('customerListBack').toJS().pop();
-        if(id!=arr[1]){
+        if(id!=arr[1]){//如果已经是最后一级了，就不在发请求
             this.props.action.getCustomerList(str, id, name);
             this.props.action.getCustomerItem(str, id, 1)
         }

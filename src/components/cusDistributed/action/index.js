@@ -18,7 +18,6 @@ const getCustomerList = (str,id,name,back) => {//获取左侧上半部分客户�
                 param: search
             }
         }, result=>{      
-            console.log('左上角部门人员详情==========',result)
             dispatch(fetchData('CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS', { ...result, str, id, search, name, back }));
         })
     }
@@ -43,7 +42,6 @@ const getCustomerItem = (str,id,num,back) => {//获取左侧下半部分公司�
                 }
             }
 		},result => {
-            //console.log('左下角地址详情----------------',result)
 			dispatch(fetchData('CUSTOMER_ITEM_LIST_GETLISTSUCCESS', { ...result,str, id, num, back }));
         },
         ()=>{

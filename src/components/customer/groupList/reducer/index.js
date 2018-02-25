@@ -488,6 +488,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                     obj.defClass=item.defClass;
                 }
             })
+            debugger;
             return $$state.merge({ searchData: action.payload.searchData, searchPlan:obj, defaultId:obj.id});
         case "CUSTOMERGROUP_SEARCHPLAN_SUCESS"://获取相关对象联系人表单数据      
             return $$state.merge({
