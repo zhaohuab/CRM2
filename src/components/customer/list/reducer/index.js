@@ -159,19 +159,26 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //新增、修改编辑菜单显示    
         case "CUSTOMERCOMPANY_LIST_SHOWFORM":
-            let EditCancelData =  $$state.get('viewData').toJS();
+            debugger
+            let EditCancelData 
+            //如果是编辑取消modal显示的时候，才使用原始数据，新增使用已编辑的数据
+            EditCancelData =  $$state.get('viewData').toJS();
+            if(EditCancelData.id){
+                EditCancelData =  $$state.get('editTempData').toJS();
+            }
+           
             if(EditCancelData.street && EditCancelData.street.address){
                 EditCancelData.street = EditCancelData.street.address
             }else{
                 EditCancelData.street = ''
             }
+
             //industry
             if(EditCancelData.industry && EditCancelData.industry.id){
                 EditCancelData.industry = EditCancelData.industry.id
             }else{
                 EditCancelData.industry = ''
             }
-
 
             return $$state.merge({
                 formVisitable: action.payload.visible,
@@ -201,7 +208,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             //debugger
             return $$state.merge({
                 formVisitable: action.visiable,
-                viewData:ccccc
+                viewData:ccccc,
+                editTempData:EditStreetData
             });    
         case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE": 
             debugger
@@ -441,6 +449,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         ////////天赐上传附件    
         case "CUSTOMERCOMPANY_LIST_FILESSUCCESS"://添加附件
+            debugger
             let viewDataRelevant = $$state.get('viewDataRelevant').toJS()
             viewDataRelevant[3].list.data.unshift(action.payload)
             return $$state.merge({
@@ -448,9 +457,10 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         ////////天赐删除附件
         case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
-            //debugger
+            debugger
             let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
             let fileArr = viewDataRelevant2[3].list.data;
+            debugger
             let file = action.file;
             for (let i = 0, len = fileArr.length; i < len; i++) {
                 if (fileArr[i].id == file.id) {

@@ -416,60 +416,10 @@ class EditForm extends React.Component {
                                 <Row>
                                     <Col span={2}>
                                         <div className="form-title">
-                                            负责人信息:
+                                            管理信息:
                                         </div>
                                     </Col>
                                 </Row>
-                                {/* <Row className="row-bottom">
-                                    <Col offset={1}>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>负责人：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "ownerUserId"
-                                                        )(
-                                                            <OwnUser viewData={viewData} disabled={true} width={650} height={300}/>
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>负责部门：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "ownerDeptName"
-                                                        )(
-                                                            <ResponseDepart viewData={viewData}/>
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    </Col>
-                                </Row> */}
                                 <Row className="row-bottom">
                                     <Col offset={1}>
                                         <Col span={12}>
@@ -822,6 +772,7 @@ const cardForm = Form.create({
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
         let viewData = props.$$state.toJS().viewData;
+        debugger
         for (let key in onChangeFild) {
             viewData[key] = onChangeFild[key].value;
         }

@@ -263,7 +263,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        let usertype = this.getCookie('usertype')
+        let usertype = this.getCookie('usertype') //根据角色类型发请求 
         if (usertype !== "1") {
             this.targetEchar = echarts.init(this.refs.target);
             this.targetEchar.setOption(this.targetOption);
@@ -334,8 +334,7 @@ class Home extends React.Component {
         return (
             <div className="home-show-wrapper">
               
-
-                {userType !== "" &&
+                {userType !== '' &&
                     userType == '1' ?
                     <div className="home-userType"></div> :
                     <div className="home-layer">
@@ -655,7 +654,6 @@ class Home extends React.Component {
                         </SlidePanel>
                     </div>}
 
-          
             </div>
         )
     }

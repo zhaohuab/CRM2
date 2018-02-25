@@ -4,7 +4,7 @@ import * as Actions from "../../action";
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
 import UpLoad from './UpLoad';
-import AntInput from './AntInput'
+// import AntInput from './AntInput'
 import {
     Steps,
     Cascader,
@@ -20,6 +20,8 @@ import {
     Modal,
     Upload
 } from 'antd';
+
+import "assets/stylesheet/all/iconfont.css";
 const Step = Steps.Step;
 class LeadIn extends React.Component {
     constructor(props) {

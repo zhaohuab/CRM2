@@ -84,9 +84,14 @@ export default class PersonChoiceModal extends React.Component {
      getTableList(page,pageSize,selectedKeys){
         debugger
         let { viewData } = this.props
-        let orgId = viewData.orgId;//组织id
+
+       // let orgId = viewData.orgId;//组织id  2.9
+
         let deptId = selectedKeys[0];//部门id
-        let searchMap = {orgId,deptId}
+
+       // let searchMap = {orgId,deptId}  2.9 
+
+        let searchMap = {deptId}
         reqwest(
             {
                 url: baseDir+'sys/users/ref',
@@ -245,7 +250,7 @@ export default class PersonChoiceModal extends React.Component {
     
     render(){
         let { viewData } = this.props
-        let plainOptions = ['商机', '联系人', '拜访'];
+        let plainOptions = ['商机', '联系人'];
         return(
             <div>
                 {

@@ -42,6 +42,7 @@ class List extends React.Component {
             this.setState({ importVisible: true })
             this.uploadFiles.call(this);
         }
+        
         // this.props.action.leadEndView(true, 2);
         if (filesSuccess) {
             debugger
