@@ -12,6 +12,12 @@ class Card extends React.Component {
         super(props)
     }
 
+    // componentDidMount() {
+    //     let isEdit = this.props.$$state.get("isEdit");
+    //     debugger
+    //     this.props.form.setFieldsValue({gender:"1",genderName:"1"})
+    // }
+
     trans(getFieldDecorator, tpl) {
         let formItemLayout = {
             labelCol: {
@@ -124,6 +130,13 @@ const WrapCard = Form.create({
             if(formFields.roleId!=undefined&&formFields.roleId.value==0){
                 formFields.roleId = undefined;
             }
+            if(formFields.gender!=undefined&&formFields.gender.value==undefined){
+                formFields.gender.value = '1'
+            }
+            if(formFields.genderName!=undefined&&formFields.genderName.value==undefined){
+                formFields.genderName.value = '男'
+            }
+         
         }
         return {
             ...formFields,

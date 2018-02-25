@@ -33,9 +33,8 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-        debugger
         let pagination = this.props.$$state.get("pagination").toJS();
-        let searchMap = {};
+        let searchMap = this.props.$$state.get("searchMap").toJS()
         this.props.action.getListTpl({ pagination, searchMap });
     }
 
