@@ -123,7 +123,7 @@ export function edit(edit, show) {
         return dispatch => {
             reqwest(
                 {
-                    url: contacts.refvalues,
+                    url: contacts.ref,
                     method: "get",
                     // data: {
                     //     param: {
