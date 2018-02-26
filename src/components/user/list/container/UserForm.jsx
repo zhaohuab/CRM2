@@ -118,6 +118,7 @@ const WrapCard = Form.create({
                 props.action.saveTpl(template)
             }
         }
+        debugger
         props.onChange(changedFields);
     },
     mapPropsToFields(props) {
@@ -138,6 +139,7 @@ const WrapCard = Form.create({
             }
          
         }
+        debugger
         return {
             ...formFields,
         }

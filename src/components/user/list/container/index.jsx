@@ -101,6 +101,7 @@ class List extends React.Component {
         e.preventDefault();
         form.validateFields((err, values) => {
             console.info(err);
+            debugger
             if (!err) {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {

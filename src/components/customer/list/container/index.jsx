@@ -125,6 +125,7 @@ class List extends React.Component {
 
     //清除表单数据
     clearForm(){
+        debugger
         if(this.formRef){
             this.formRef.props.form.resetFields()
         }
