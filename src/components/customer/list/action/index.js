@@ -20,8 +20,11 @@ let trancFn=(data)=>{
             debugger
             if(data[key] && data[key].value){
                 data[key] = data[key].value.key
-            }else{
+            }else if(data[key]){
+               
                 data[key] = data[key].key
+            }else{
+                data[key] = undefined
             }
         }
 

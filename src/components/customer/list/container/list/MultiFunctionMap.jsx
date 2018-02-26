@@ -121,6 +121,7 @@ export default class MultiFunctionMap extends React.Component {
         let value = this.props.value?this.props.value.address:'北京'
         debugger
         let location = this.props.value?this.props.value.location:''
+        this.map.clearMap( )
         if(location){//根据坐标点查地图
             this.getSingleAddress(location,(result)=>{
                 debugger
@@ -161,8 +162,10 @@ export default class MultiFunctionMap extends React.Component {
 
     //显示地图，点击定位中心点还是对
     showMap(flag){
+        debugger
         if(this.state.flag){
             debugger
+            this.map.clearMap( )
             let value = this.props.value?this.props.value.address:'北京'
             let location = this.props.value?this.props.value.location:''
             if(location){//根据坐标点查地图
@@ -295,7 +298,7 @@ export default class MultiFunctionMap extends React.Component {
     }
    
     render(){
-        
+        debugger
         return(
             <div>
                 <Search

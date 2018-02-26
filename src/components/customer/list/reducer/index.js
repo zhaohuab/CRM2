@@ -69,13 +69,19 @@ function pageEdit(page, item) {
 }
 
 function clearObject(obj) {
-    
     for (let key in obj) {
         
         obj[key] = undefined
     }
     debugger
     return obj
+}
+
+function stateAdd(data,add){
+    debugger
+   let clearData =  clearObject(data);
+   clearData.biztype = {value:add}
+   return clearData
 }
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
@@ -140,7 +146,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
         //查询各种table数据
         case "CUSTOMERCOMPANY_LIST_GETDATA":
-        let nn = action;
         debugger;
             return $$state.merge({
                 data: action.payload.data,
@@ -158,7 +163,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 pagination: action.pagination,
                 viewData: enableState
             });
-        //新增、修改编辑菜单显示    
+        //新增、修改取消显示    
         case "CUSTOMERCOMPANY_LIST_SHOWFORM":
             debugger
             let EditCancelData 
@@ -190,40 +195,39 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
         //点击编辑按钮
         case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
-            let EditStreetData =  $$state.get('viewData').toJS();
-            let editData = Immutable.fromJS(EditStreetData).toJS()
+            let editTempData =  $$state.get('viewData').toJS();
+            let editData = Immutable.fromJS(editTempData).toJS()
             debugger
             //详细地址
             let streetEdit = {
-                address: EditStreetData.street,
+                address: editTempData.street,
                 location: {
-                    lng: EditStreetData.longitude,
-                    lat: EditStreetData.latitude
+                    lng: editTempData.longitude,
+                    lat: editTempData.latitude
                 }
             }
             //行业
             let industry = {
-                id:EditStreetData.industry,
-                name:EditStreetData.industryName
+                id:editTempData.industry,
+                name:editTempData.industryName
             }
 
             // 省市区
-            // let district = [
-            //     EditStreetData.province.toString(),
-            //     EditStreetData.city.toString(),
-            //     EditStreetData.district.toString()
-            // ]
+            let district = [
+                editTempData.province.toString(),
+                editTempData.city.toString(),
+                editTempData.district.toString()
+            ]
 
-            // editData.province_city_district = {}
-            // editData.province_city_district.result = district
-
+            editData.province_city_district = {}
+            editData.province_city_district.result = district
             editData.street = streetEdit
             editData.industry = industry
             //debugger
             return $$state.merge({
                 formVisitable: action.visiable,
                 viewData:editData,
-                editTempData:EditStreetData
+                editTempData:editTempData
             });    
         case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE": 
             debugger
@@ -246,12 +250,9 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         //点击新建按钮的业务类型项，清空viewPanel数据,把业务类型赋到 viewData中   
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER":
             debugger
-            // let biztype = action.newType;
-            // let bizData = $$state.get('viewData').toJS()
-            // bizData.biztype = action.newType
             return $$state.merge({
                 formVisitable: action.visiable,
-                viewData: clearObject($$state.get('viewData').toJS()),
+                viewData: stateAdd($$state.get('viewData').toJS(),action.newType),
                 //每次新建把上一次保存的工商核实名称清零
                 addIcbcName:''
             });
@@ -365,19 +366,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         //显示面板时，根据客户id查客户数据，改变“关注”值    
         case "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM":
             let actionData = action.data;
-            
-            let district = [
-                actionData.province.toString(),
-                actionData.city.toString(),
-                actionData.district.toString()
-            ]
-
             //关注
             actionData.followState = action.state.followState;
-
-            //省市区
-            actionData.province_city_district = {}
-            actionData.province_city_district.result = district
 
             return $$state.merge({
                 viewState: action.visible,

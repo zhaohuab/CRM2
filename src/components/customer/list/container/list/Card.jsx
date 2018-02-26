@@ -791,7 +791,7 @@ const cardForm = Form.create({
         let viewData = props.$$state.toJS().viewData;
         debugger
         for (let key in onChangeFild) {
-            if(onChangeFild[key].value){
+            if(onChangeFild[key].hasOwnProperty('value')){
                 viewData[key] = onChangeFild[key];
             }
         }
