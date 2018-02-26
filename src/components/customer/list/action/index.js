@@ -825,6 +825,7 @@ export function addNewType() {
 
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_SEARCHMAP",
         data
@@ -833,6 +834,7 @@ export function saveSearchMap(data) {
 
 //往redux中存放编辑新增修改条件
 export function editCardFn(changeData) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_CARDEDITCHANGE",
         data: changeData

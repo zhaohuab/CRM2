@@ -21,6 +21,7 @@ class DetailTop extends React.Component {
 
     //打开编辑按钮
     btnEdit() {
+        debugger
         let { viewData } = this.props.$$state.toJS();
         
         this.props.action.showFormEdit(true);

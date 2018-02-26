@@ -25,10 +25,6 @@ function transData(searchMap) {
         searchMap.followTimeEnd = searchMap.signTime[1].format('YYYY-MM-DD HH:mm:ss');
         searchMap.signTime = undefined;
     }
-    if (searchMap.industryId) {
-        debugger
-        searchMap.industryId= searchMap.industryId.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
-    }
     return searchMap;
 }
 
@@ -52,9 +48,6 @@ const transReceiveData = (data) => {
         if (data.data[i].followTime) {
             data.data[i].followTime = transDate(new Date(data.data[i].followTime.time))
         }
-        if (data.data[i].assignTime) {
-            data.data[i].assignTime = transDate(new Date(data.data[i].assignTime.time))
-        }
     }
     return data;
 }
@@ -67,36 +60,23 @@ const transReceiveDataOne = (data) => {
     if (data.followTime) {
         data.followTime = transDate(new Date(data.followTime.time))
     }
-    if (data.assignTime) {
-        data.followTime = transDate(new Date(data.assignTime.time))
-    }
     return data;
 }
 //拼接省市县
 const appendAddress = data => {
     ////debugger
-    let province = data.provinceName;
-    let city = data.cityName;
-    let distric = data.districtName;
-    data.addCity = province + city + distric
+    let province=data.provinceName;
+    let city=data.cityName;
+    let distric=data.districtName;
+   data.addCity =province+city+distric  
     return data;
 };
 
-export function closeLeadShow(visible) {
-    return {
-        type: "CLUE_LIST_CLOSELEADSHOW",
-        visible
-    };
-}
-
-
-
-
 //获取数据、基础查询数据、扩展查询数据
-export function getListData(pagination, searchMap) {
+export function getListData(pagination, searchMap){
     return dispatch => {
         dispatch(fetchData("CLUE_LIST_SAVESEARCHMAP", searchMap));
-        debugger
+        //debugger
         reqwest(
             {
                 url: url.lead,
@@ -104,12 +84,12 @@ export function getListData(pagination, searchMap) {
                 data: {
                     param: {
                         ...pagination,
-                        searchMap: transData(searchMap),
+                        searchMap:transData(searchMap)
                     }
                 }
             },
             data => {
-                debugger
+               //debugger
                 dispatch(
                     fetchData("CLUE_LIST_GETDATA", {
                         data: transReceiveData(data),
@@ -133,7 +113,7 @@ export function getEnumData() {
                 }
             },
             data => { //level source
-                debugger
+                //debugger
                 dispatch(
                     fetchData("CLUE_LIST_GETENUMDATA", {
                         enumData: data.enumData
@@ -146,7 +126,7 @@ export function getEnumData() {
 
 
 //往redux中存基础、扩展查询条件
-export function saveSearchMap(data) {
+export function saveSearchMap(data){
     return {
         type: "CLUE_LIST_SEARCHMAP",
         data
@@ -163,7 +143,7 @@ export function selectClue(selectedRows, selectedRowKeys) {
 }
 
 //删除已选择的线索
-export function deleteData(ids, searchMap, pagination) {
+export function  deleteData(ids, searchMap, pagination) {
     //debugger
     return dispatch => {
         reqwest(
@@ -179,10 +159,10 @@ export function deleteData(ids, searchMap, pagination) {
                 }
             },
             data => {   //返回的是没有删除的data
-                // //debugger
+               // //debugger
                 dispatch(
                     fetchData("CLUE_LIST_GETLISTUPDATE", {
-                        data: transReceiveData(data)
+                       data:transReceiveData(data)
                     })
                 );
             }
@@ -191,7 +171,7 @@ export function deleteData(ids, searchMap, pagination) {
 };
 
 //控制查询显隐
-export function formMore() {
+export function formMore(){
     return {
         type: "CLUE_LIST_CHANGEVISIBLE"
     };
@@ -205,43 +185,43 @@ export function showForm(data) {
 }
 
 //点击编辑获取数据
-export function edit(edit, show) {
-    debugger
+export function edit(edit,show){
+    //debugger
     return {
-        type: "CLUE_LIST_EDIT",
-        edit,
-        show
-    }
+       type: "CLUE_LIST_EDIT",
+       edit,
+       show
+}
 }
 
 
 //编辑已选择（确定按钮）
-let onEdit=(values,dispatch)=>{
+export function onEdit(values) {
 
-    debugger
-   
+   //debugger
+    return dispatch => {
         reqwest(
             {
-                url: url.lead + "/" + values.id,
+                url:url.lead + "/" + values.id,
                 method: "PUT",
                 data: {
-                    param: transData(values)
+                  param: transData(values)
                 }
             },
             result => {
-                debugger
+                //debugger
                 dispatch({
                     type: "CLUE_LIST_UPDATELIST",
                     data: transReceiveDataOne(result)
                 });
             }
         );
-
+    };
 }
 
 //点击新建按钮清空数据
-export function addClue(data) {
-    // //debugger
+export function addClue(data){
+   // //debugger
     return dispatch => {
         dispatch({
             type: "CLUE_LIST_EMPTY",
@@ -251,10 +231,9 @@ export function addClue(data) {
 };
 
 //保存新增联系人
-let onSave=(oneData,dispatch)=>{
-    debugger;
-   
-        debugger
+export function onSave(oneData) {
+    //debugger;
+    return dispatch => {
         reqwest(
             {
                 url: url.lead,
@@ -264,17 +243,18 @@ let onSave=(oneData,dispatch)=>{
                 }
             },
             data => {
-                debugger;
+                //debugger;
                 dispatch({
                     type: "CLUE_CARD_SAVEADD",
-                    data: transReceiveDataOne(data)
+                    data:transReceiveDataOne(data)
                 });
             }
         );
+    };
+
 }
 //往redux中存放编辑新增修改条件
 export function editCardFn(changeData) {
-    debugger
     return {
         type: "CLUE_LIST_CARDEDITCHANGE",
         changeData
@@ -282,9 +262,9 @@ export function editCardFn(changeData) {
 }
 
 //展示面板，把点击某个客户的所有值，放在redux中
-export function showViewForm(visible, id) {
+export function showViewForm(visible, id){
     return dispatch => {
-        //debugger
+         //debugger
         reqwest(
             {
                 url: url.lead + "/" + id,
@@ -294,101 +274,17 @@ export function showViewForm(visible, id) {
             },
             data => {
                 //debugger
-                dispatch({
-                    type: "CLUE_LIST_SHOWVIEWFORM",
-                    visible,
-                    data: transReceiveDataOne(appendAddress(data))
-                });
-
+                        dispatch({
+                            type: "CLUE_LIST_SHOWVIEWFORM",
+                            visible,
+                            data:transReceiveDataOne(appendAddress(data))
+                        });
+       
             }
         );
     };
 };
-
-//详情页编辑 
-export function showFormEdit(visible){
-    return{
-        type:'CUSTOMERCOMPANY_LIST_SHOWEDITFORM',
-        visible
-    }
-}
-
-
 
 export function hideViewForm(visible) {
-    return fetchData("CLUE_LIST_HIDEVIEWFORM", { visible });
-};
-
-
-//根据名称获取行业id,返回promise
-let getIndustry = (industry)=>{
-    return new Promise(function(resolve, reject) {
-        
-        reqwest(
-            {
-                url: baseDir + 'base/industrys/list',
-                method: "GET",
-                data: {
-                    param: {
-                        searchMap:{
-                            searchKey:industry
-                        }
-                    }
-                }
-            },
-            indastry => {
-                
-                resolve(indastry)
-            }
-        );
-    });
-}
-
-//新增、修改客户保存
-export function listFormSave(data) {
-    
-  //  data = trancFn(data);
- 
-    return dispatch => {
-       debugger
-        if(data.industryId && data.industryId.name && (!data.industryId.id)){
-            getIndustry(data.industryId.name).then((industryId)=>{
-                
-                if(industryId && industryId.data.length){
-                    data.industryId = industryId.data[0].id;
-                }else{
-                    data.industryId = 'undefined'
-                }
-                //然后再发送编辑Request请求
-                //如果!data.id存在代表是新增
-                debugger
-                if(!data.id){
-                    onSave(data,dispatch)
-                }else{
-                    onEdit(data,dispatch)
-                } 
-            })
-        }else{
-            //有行业id没有行业name
-            //debugger
-            if( data.industryId&& (!data.industryId.name) && data.industryId.id){
-                data.industryId = data.industryId.id
-            //都有的情况下只获取行业id    
-            }else if(data.industryId&& data.industryId.name && data.industryId.id){
-                data.industryId = data.industryId.id
-            //都没有获取undefined    
-            }else{
-                data.industryId= 'undefined'
-            }
-            //然后再发送编辑Request请求
-            //如果!data.id存在代表是新增
-            // debugger
-            if(!data.id){
-                debugger
-                onSave(data,dispatch)
-            }else{
-                onEdit(data,dispatch)
-            }
-        }
-    };
+    return fetchData("CLUE_LIST_HIDEVIEWFORM", {visible});
 };

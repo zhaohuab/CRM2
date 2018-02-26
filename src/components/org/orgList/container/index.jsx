@@ -53,6 +53,7 @@ class List extends Component {
         let that = this;
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            debugger
             let rowKeys = this.props.$$state.get("selectedRowKeys").toJS();
             let rows = this.props.$$state.get("selectedRows").toJS();
             // if(selectedRowKeys.length>2||selectedRows.length>2){
