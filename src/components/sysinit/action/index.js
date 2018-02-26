@@ -23,7 +23,7 @@ const getSysInitInfo = () => {
 			method: "GET",
 		}, result => {
 			
-			dispatch(fetchData('SYSINIT_PAGE_INFO', { ...result }));
+			dispatch(fetchData('SYSINIT_PAGE_INFO', { ...result }));debugger
 			let userId = getInfo("id");
 			reqwest({
 				url: user.user+"/"+userId,

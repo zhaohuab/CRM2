@@ -25,7 +25,11 @@ import { bindActionCreators } from "redux";
 import * as Actions from "../action";
 import Enum from "utils/components/enums";
 import * as enumDataFake from "./enumdata.jsx";
- class MoreForm extends React.Component {
+import OwnUser from './OwnUser'
+import ResponseDepart from './ResponseDepart'
+import Department from './changeLead/Industry'
+import Industry from "../../../common/industry";
+class MoreForm extends React.Component {
     handleSearch(e) {
         e.preventDefault();
         //debugger
@@ -51,46 +55,66 @@ import * as enumDataFake from "./enumdata.jsx";
                         align="middle"
                         className="formitem-width"
                     >
-                        <Col span={6}>
+                        {/* <Col span={6}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("level")(
-                                   <Enum
-                                   addOptionAll={"线索等级"}
-                                   dataSource={enumData.level}
-                               />
+                                    <Enum
+                                        addOptionAll={"线索等级"}
+                                        dataSource={enumData.level}
+                                    />
                                 )}
                             </FormItem>
-                        </Col>
-                        <Col span={6}>
+                        </Col> */}
+                        <Col span={4}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("source")(
                                     <Enum
-                                    addOptionAll={"线索来源"}
-                                    dataSource={enumData.source}
-                                />
+                                        addOptionAll={"线索来源"}
+                                        dataSource={enumData.source}
+                                    />
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={4}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("state")(
                                     <Enum
-                                    addOptionAll={"线索状态"}
-                                    dataSource={enumDataFake.state}
-                                />
+                                        addOptionAll={"线索状态"}
+                                        dataSource={enumDataFake.state}
+                                    />
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
-                        
+                        <Col span={4}>
+                            {/* <FormItem  {...formItemLayout}>
+                                {getFieldDecorator("deptId")(
+                                    <Input placeholder="部门" />
+                                )}
+                            </FormItem> */}
+                            <FormItem>
+                                {getFieldDecorator(
+                                    "ownerDeptName"
+                                )(
+                                    <Department/>
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={4}>
                             <FormItem  {...formItemLayout}>
-                                {getFieldDecorator("signTime")(
-                                    <RangePicker/>
+                                {getFieldDecorator(
+                                    "ownerUserId"
+                                )(
+                                    <OwnUser width={650} height={300}/>
+                                    )}
+                            </FormItem>
+                        </Col>
+                        <Col span={4}>
+                            <FormItem  {...formItemLayout}>
+                                {getFieldDecorator("industryId", {})(
+                                    <Industry />
                                 )}
                             </FormItem>
-                           
                         </Col>
-                      
                     </Row>
 
                     <Row
@@ -98,43 +122,32 @@ import * as enumDataFake from "./enumdata.jsx";
                         align="middle"
                         className="formitem-width"
                     >
-                      <Col span={6}>
+                        {/* <Col span={6}>
                             <FormItem  {...formItemLayout}>
-                            {getFieldDecorator("province_city_district")(
+                                {getFieldDecorator("province_city_district")(
                                     <Cascader
                                         options={cityData}
                                         placeholder="省/市/县"
                                     />
                                 )}
                             </FormItem>
-                        </Col>
-                        {/* <Col span={6}>
-                            <FormItem  {...formItemLayout}>
-                                {getFieldDecorator("industryId")(
-                                    <Input placeholder="行业" />
-                                )}
-                            </FormItem>
                         </Col> */}
-                        {/* <Col span={4}>
-                            <FormItem>
-                                {getFieldDecorator("deptId")(
-                                    <Input placeholder="部门" />
-                                )}
-                            </FormItem>
-                        </Col>
                         <Col span={4}>
-                            <FormItem>
-                                {getFieldDecorator("name")(
-                                    <Input placeholder="负责人" />
+
+                            <FormItem  {...formItemLayout}>
+                                {getFieldDecorator("signTime")(
+                                    <RangePicker />
                                 )}
                             </FormItem>
-                        </Col> */}
+
+                        </Col>
+
                         <Col span={4}>
                             <FormItem>
                                 <div className="more-btn">
                                     <Button htmlType="submit">查询</Button>
-                                    <span  className="more-up"
-                                     onClick={this.moreFn.bind(this)}>
+                                    <span className="more-up"
+                                        onClick={this.moreFn.bind(this)}>
                                         收起<Icon type="up" />
                                     </span>
                                 </div>
@@ -161,7 +174,7 @@ const More = Form.create({
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-debugger
+        debugger
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {
             if (onChangeFild[key].value.key) {

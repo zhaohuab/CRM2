@@ -118,7 +118,7 @@ export function onEdit(values, pagination, searchMa) {
     };
 }
 
-export function edit(edit, show) {
+export function edit(edit, show) {//
     if (isEmpty(edit)) {
         return dispatch => {
             reqwest(
@@ -141,11 +141,6 @@ export function edit(edit, show) {
             );
         };
     }
-    return {
-        type: "CONTACTS_LIST_EDIT",
-        edit,
-        show
-    };
 }
 function isEmpty(obj) {
     for (var name in obj) {

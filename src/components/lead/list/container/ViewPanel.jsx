@@ -19,7 +19,8 @@ import { bindActionCreators } from "redux";
 //导入action方法
 import * as Actions from "../action";
 
-import DetailObject from './DetailObject'
+import DetailObject from './DetailObject';
+import CloseClue from './CloseClue';
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
@@ -39,8 +40,48 @@ class ViewPanel extends React.Component {
         );
     }
     handleMenuClick(e) {
-        
+        debugger
+        if(e.key=='1'){
+        this.props.action.closeLeadShow(true);
+        }
+        else if(e.key=='2'){
+           this.btnDelete()
+        }
     }
+
+    btnDelete=()=>{
+        let that = this;
+        confirm({
+            title: "确定启用此线索?",
+            content: "请谨慎操作",
+            okText: "确定",
+            okType: "danger",
+            cancelText: "取消",
+            onOk() {
+                alert('ok')
+                // debugger
+                // const searchMap = that.props.$$state.get("searchMap").toJS();
+                // const ids = that.props.$$state.get("selectedRowKeys").toJS();
+
+                // that.props.action.deleteData(
+                //     ids,
+                //     searchMap,
+                //     that.props.$$state.get("pagination").toJS()
+                // );
+            },
+            onCancel() {
+                console.log("Cancel");
+            }
+        });
+    }
+ //打开编辑按钮
+ btnEdit=()=>{
+    debugger
+    //let { viewData } = this.props.$$state.toJS();
+    
+    this.props.action.showFormEdit(true);
+}
+
 
     render() {
         debugger;
@@ -138,7 +179,7 @@ class ViewPanel extends React.Component {
                                 gutter={15}
                             >
                                 <div>
-                                    <Button>
+                                    <Button onClick={this.btnEdit}>
                                         <i className="iconfont icon-bianji" />编辑
                                     </Button>
                                 </div>
@@ -311,6 +352,9 @@ class ViewPanel extends React.Component {
                     </div>
                 </Row>
 
+
+
+                <CloseClue/>
             </div>
         );
     }

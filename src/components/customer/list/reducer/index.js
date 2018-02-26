@@ -56,6 +56,7 @@ function clearObject(obj) {
         
         obj[key] = undefined
     }
+    debugger
     return obj
 }
 
@@ -148,14 +149,16 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             if(EditCancelData.id){
                 EditCancelData =  $$state.get('editTempData').toJS();
             }
-           
+            //详细地址
             if(EditCancelData.street && EditCancelData.street.address){
                 EditCancelData.street = EditCancelData.street.address
+            }else if(EditCancelData.street && typeof EditCancelData.street == 'string'){
+                EditCancelData.street = EditCancelData.street
             }else{
                 EditCancelData.street = ''
             }
 
-            //industry
+            //行业
             if(EditCancelData.industry && EditCancelData.industry.id){
                 EditCancelData.industry = EditCancelData.industry.id
             }else{
@@ -169,9 +172,10 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
         //点击编辑按钮
         case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
-           let EditStreetData =  $$state.get('viewData').toJS();
-            let ccccc = Immutable.fromJS(EditStreetData).toJS()
-            //debugger
+            let EditStreetData =  $$state.get('viewData').toJS();
+            let editData = Immutable.fromJS(EditStreetData).toJS()
+            debugger
+            //详细地址
             let streetEdit = {
                 address: EditStreetData.street,
                 location: {
@@ -179,18 +183,28 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                     lat: EditStreetData.latitude
                 }
             }
-            
+            //行业
             let industry = {
                 id:EditStreetData.industry,
                 name:EditStreetData.industryName
             }
 
-            ccccc.street = streetEdit
-            ccccc.industry = industry
+            // 省市区
+            // let district = [
+            //     EditStreetData.province.toString(),
+            //     EditStreetData.city.toString(),
+            //     EditStreetData.district.toString()
+            // ]
+
+            // editData.province_city_district = {}
+            // editData.province_city_district.result = district
+
+            editData.street = streetEdit
+            editData.industry = industry
             //debugger
             return $$state.merge({
                 formVisitable: action.visiable,
-                viewData:ccccc,
+                viewData:editData,
                 editTempData:EditStreetData
             });    
         case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE": 
@@ -214,12 +228,12 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         //点击新建按钮的业务类型项，清空viewPanel数据,把业务类型赋到 viewData中   
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER":
             debugger
-            let biztype = action.newType;
-            let bizData = $$state.get('viewData').toJS()
-            bizData.biztype = action.newType
+            // let biztype = action.newType;
+            // let bizData = $$state.get('viewData').toJS()
+            // bizData.biztype = action.newType
             return $$state.merge({
-                formVisitable: action.data,
-                viewData: bizData,
+                formVisitable: action.visiable,
+                viewData: clearObject($$state.get('viewData').toJS()),
                 //每次新建把上一次保存的工商核实名称清零
                 addIcbcName:''
             });
@@ -262,10 +276,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //详情确认核实关闭modal    
         case 'CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL':
-            // let verifyData =  $$state.get('viewData').toJS()
-            // verifyData.verifyFullname = action.verifyFullname
-            // verifyData.verifyId = action.verifyId
-            // verifyData.isIdentified = action.isIdentified
             return $$state.merge({
                 icbcVisible2: action.visiable,
                 viewData:action.result
@@ -296,6 +306,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //存放新增修改表单数据      
         case "CUSTOMERCOMPANY_LIST_CARDEDITCHANGE":
+        debugger
             return $$state.merge({
                 viewData: action.data
             });
@@ -306,7 +317,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //增加客户，增加一条新数据，清空工商详情，和保存的客户名称
         case "CUSTOMERCOMPANY_LIST_ADDSAVE":
-            
+            debugger
             return $$state.merge({
                 formVisitable: false,
                 data: pageAdd($$state.get("data").toJS(), action.data),
@@ -319,7 +330,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case "CUSTOMERCOMPANY_LIST_EDITSAVE": 
             let editFollow =  $$state.get('viewData').toJS()
             action.data.followState = editFollow.followState
-            //debugger
+            debugger
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
@@ -337,11 +348,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         //显示面板时，根据客户id查客户数据，改变“关注”值    
         case "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM":
             let actionData = action.data;
-
-            // let industry = {
-            //     id:actionData.industry,
-            //     name:actionData.industryName
-            // }
             
             let district = [
                 actionData.province.toString(),
@@ -351,9 +357,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
             //关注
             actionData.followState = action.state.followState;
-
-            //行业
-            //actionData.industry = industry
 
             //省市区
             actionData.province_city_district = {}

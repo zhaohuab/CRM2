@@ -289,7 +289,7 @@ class Home extends React.Component {
         
         var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)"); //正则匹配
         if (arr = document.cookie.match(reg)) {
-            return unescape(arr[2]);
+            return unescape(arr[2]);//解码
         }
         else {
             return null;

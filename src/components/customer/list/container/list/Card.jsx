@@ -92,7 +92,7 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-       
+       debugger
         return (
             <div>
                 <Row className="customform-input-recover">
@@ -439,7 +439,7 @@ class EditForm extends React.Component {
                                                         {getFieldDecorator(
                                                             "biztype"
                                                         )(
-                                                           <InputDisable disabled = {true}/>
+                                                           <InputDisable disabled = {true} viewData = {viewData}/>
                                                         )}
                                                     </FormItem>
                                                 </Col>
@@ -754,19 +754,36 @@ class EditForm extends React.Component {
     }
 }
 
+
+
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-        debugger
+      
         let viewData = props.$$state.toJS().viewData;
-        let value = {};
-
-        for (let key in viewData) {
-            value[key] = { value: viewData[key] };
+        let value = {}
+        let changeFieldData = (viewData,key)=>{
+            if(key == 'biztype') debugger
+            if(viewData[key] && viewData[key].hasOwnProperty('value')){//带验证信息的值
+                return viewData[key].value
+            }else if(viewData[key] && !viewData[key].hasOwnProperty('value')){//值为编辑时附上值，而不是带验证信息的值
+                return viewData[key]
+            }else{
+                return undefined
+            }
         }
-        //address  把字段合成对象
+
+        if(viewData.id){//如果是编辑挨个赋值
+            for (let key in viewData) {
+              value[key] = { value: changeFieldData(viewData,key)};
+            }
+            return {
+                ...value
+            }
+        }
+        debugger
         return {
-            ...value
+            ...viewData
         };
     },
     onFieldsChange: (props, onChangeFild) => {
@@ -774,7 +791,9 @@ const cardForm = Form.create({
         let viewData = props.$$state.toJS().viewData;
         debugger
         for (let key in onChangeFild) {
-            viewData[key] = onChangeFild[key].value;
+            if(onChangeFild[key].value){
+                viewData[key] = onChangeFild[key];
+            }
         }
         props.editCardFn(viewData);
     }

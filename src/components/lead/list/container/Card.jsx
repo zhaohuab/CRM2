@@ -22,6 +22,7 @@ import { bindActionCreators } from "redux";
 import * as Actions from "../action";
 import Enum from "utils/components/enums";
 import * as enumDataFake from "./enumdata.jsx";
+import Industry from "../../../common/industry";
 //省市县
 import CityChioce from "./CityChioce";
 class EditForm extends React.Component {
@@ -36,7 +37,7 @@ class EditForm extends React.Component {
         };
         let formItemLayout1 = {
             labelCol: { span: 5 },
-            wrapperCol: { span:24 }
+            wrapperCol: { span: 24 }
         };
         const { getFieldDecorator } = this.props.form;
         let {
@@ -53,14 +54,14 @@ class EditForm extends React.Component {
                                         {getFieldDecorator("id", {})(<Input />)}
                                     </FormItem>
                                     <FormItem
-                                        label="姓名"
+                                        label="主题"
                                         {...formItemLayout}
                                     >
-                                        {getFieldDecorator("name", {
+                                        {getFieldDecorator("title", {
                                             rules: [
                                                 {
                                                     required: true,
-                                                    message: "请输入姓名"
+                                                    message: "请输入主题"
                                                 }
                                             ]
                                         })(<Input placeholder="请输入" />)}
@@ -68,8 +69,27 @@ class EditForm extends React.Component {
                                 </Col>
                                 <Col span={11}>
                                     {" "}
-                                    <FormItem label="电话" {...formItemLayout}>
-                                        {getFieldDecorator("tel", {
+                                    <FormItem label="联系人" {...formItemLayout}>
+                                        {getFieldDecorator("name", {
+
+                                        })(<Input placeholder="请输入" />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row type="flex" justify="center">
+                                <Col span={11}>
+                                    <FormItem label="职务" {...formItemLayout}>
+                                        {getFieldDecorator("post")(
+                                            <Enum
+                                                addOptionAll={"职务"}
+                                                dataSource={enumData.post}
+                                            />
+                                        )}
+                                    </FormItem>
+                                </Col>
+                                <Col span={11}>
+                                    <FormItem label="手机" {...formItemLayout}>
+                                        {getFieldDecorator("mobile", {
 
                                         })(<Input placeholder="请输入" />)}
                                     </FormItem>
@@ -89,6 +109,15 @@ class EditForm extends React.Component {
                                     </FormItem>
                                 </Col>
                                 <Col span={11}>
+                                    <FormItem label="客户规模" {...formItemLayout}>
+                                        {getFieldDecorator("mobile", {
+
+                                        })(<Input placeholder="请输入" />)}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row type="flex" justify="center">
+                                <Col span={11}>
                                     <FormItem label="线索来源" {...formItemLayout}>
                                         {getFieldDecorator("source", {
                                             rules: [
@@ -103,33 +132,36 @@ class EditForm extends React.Component {
                                         />)}
                                     </FormItem>
                                 </Col>
+                                <Col span={11}>
+                                    <FormItem label="行业" {...formItemLayout}>
+                                        {getFieldDecorator("industryId")(
+                                            <Industry />
+                                        )}
+                                    </FormItem>
+                                </Col>
+
                             </Row>
                             <Row type="flex" justify="center">
                                 <Col span={11}>
-                                    <FormItem label="行业" {...formItemLayout}>
-                                        {getFieldDecorator("industryName")(
+                                    <FormItem label="QQ" {...formItemLayout}>
+                                        {getFieldDecorator("qq")(
                                             <Input placeholder="请输入..." />
                                         )}
                                     </FormItem>
                                 </Col>
                                 <Col span={11}>
-                                    <FormItem label="线索等级" {...formItemLayout}>
-                                        {getFieldDecorator("level", {
-                                        })(<Enum
-                                            addOptionAll={"线索等级"}
-                                            dataSource={enumData.level}
-                                        />)}
+                                    <FormItem label="微信" {...formItemLayout}>
+                                        {getFieldDecorator("wechat", {
+
+                                        })(<Input placeholder="请输入..." />)}
                                     </FormItem>
                                 </Col>
                             </Row>
                             <Row type="flex" justify="center">
                                 <Col span={11}>
-                                    <FormItem label="性别" {...formItemLayout}>
-                                        {getFieldDecorator("genderName")(
-                                            <Enum
-                                                addOptionAll={"性别"}
-                                                dataSource={enumDataFake.genderName}
-                                            />
+                                    <FormItem label="固定电话" {...formItemLayout}>
+                                        {getFieldDecorator("tel")(
+                                            <Input placeholder="请输入..." />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -142,37 +174,9 @@ class EditForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row type="flex" justify="center">
-                                <Col span={11}>
-                                    <FormItem label="职务" {...formItemLayout}>
-                                        {getFieldDecorator("post")(
-                                            <Enum
-                                                addOptionAll={"职务"}
-                                                dataSource={enumData.post}
-                                            />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                                <Col span={11}>
+                                <Col span={11} pull={5}>
                                     <FormItem label="网址" {...formItemLayout}>
                                         {getFieldDecorator("website", {
-
-                                        })(<Input placeholder="请输入..." />)}
-                                    </FormItem>
-                                </Col>
-                            </Row>
-                            <Row type="flex" justify="center">
-                                <Col span={11}>
-                                    <FormItem label="省/市/区"
-                                        {...formItemLayout}
-                                    >
-                                        {getFieldDecorator(
-                                            "province_city_district"
-                                        )(<CityChioce />)}
-                                    </FormItem>
-                                </Col>
-                                <Col span={11}>
-                                    <FormItem label="地址" {...formItemLayout}>
-                                        {getFieldDecorator("address", {
 
                                         })(<Input placeholder="请输入..." />)}
                                     </FormItem>
@@ -190,7 +194,7 @@ class EditForm extends React.Component {
                                                 <div>备注：</div>
                                             </Row>
                                         </Col>
-                                        <Col span={20} className='remark'>
+                                        <Col span={20} className='remarks'>
                                             <FormItem
                                                 {...formItemLayout1}
                                             >
@@ -250,16 +254,17 @@ const CardForm = Form.create({
             if (onChangeFild[key].value && onChangeFild[key].value.key) {
                 viewData[key] = onChangeFild[key].value.key;
             } else {
-                if (key == "address") {
-                    viewData[key] = onChangeFild[key].value;
-                    // let value = onChangeFild[key].value;
-                    // viewData["address"] = value.address;
-                } else if (key == "province_city_district") {
-                    viewData[key] = onChangeFild[key].value.result;
-                    viewData["cityMyself"] = onChangeFild[key].value.custom;
-                } else {
-                    viewData[key] = onChangeFild[key].value;
-                } //把对像拆成字段  
+                viewData[key] = onChangeFild[key].value;
+                // if (key == "address") {
+                //     viewData[key] = onChangeFild[key].value;
+                //     // let value = onChangeFild[key].value;
+                //     // viewData["address"] = value.address;
+                // } else if (key == "province_city_district") {
+                //     viewData[key] = onChangeFild[key].value.result;
+                //     viewData["cityMyself"] = onChangeFild[key].value.custom;
+                // } else {
+                //     viewData[key] = onChangeFild[key].value;
+                // } //把对像拆成字段  
             }
         }
         props.action.editCardFn(viewData);

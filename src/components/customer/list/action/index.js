@@ -10,21 +10,37 @@ export function fetchData(type, payload) {
         payload
     };
 };
-
+//新增保存时组装成后台所需数据
 let trancFn=(data)=>{
     data = Immutable.fromJS(data).toJS()
     debugger
     for (let key in data) {
         //枚举
-        if ( key == 'cannelType' || key == 'level'|| key == 'type'|| key == 'biztype') {
-            if(data[key] && data[key].key){
+        if ( key == 'cannelType' || key == 'level'|| key == 'type') {
+            debugger
+            if(data[key] && data[key].value){
+                data[key] = data[key].value.key
+            }else{
                 data[key] = data[key].key
+            }
+        }
+
+        if (key == 'biztype') {
+            debugger
+            if(data[key] && data[key].value){
+                data[key] = data[key].value.key
             }
         }
 
         //城市
         if (data.province_city_district) {
-            let change = data.province_city_district.result;
+            debugger
+            let change
+            if(data.province_city_district.value){
+                change = data.province_city_district.value.result;
+            }else{
+                change = data.province_city_district.result;
+            }
             data.province = change[0];
             data.city = change[1];
             data.district = change[2];
@@ -32,13 +48,25 @@ let trancFn=(data)=>{
         }
 
         //详细地址
-        if (data.street && data.street.location) {
-            data.longitude = data.street.location.lng
-            data.latitude = data.street.location.lat
-            data.street = data.street.address
+        if (data.street && data.street.value) {
+            data.longitude = data.street.value.location.lng
+            data.latitude = data.street.value.location.lat
+            data.street = data.street.value.address
+        }else{
+            //如果不是带验证的值，就是编辑时付的值
+            if(data.street && typeof data.street == 'object'){
+                data.longitude = data.street.location.lng
+                data.latitude = data.street.location.lat
+                data.street = data.street.address
+            }
+        }
+
+        //其他
+        if(data[key]&& data[key].value){
+            data[key] = data[key].value
         }
     }
-
+debugger
     data.address = ''
     return data;
 }
@@ -319,7 +347,7 @@ export function getListData(pagination, searchMap) {
                 }
             },
             data => {
-                
+                console.log('获取列表==============',data)
                 dispatch(
                     fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
                         data: data,
@@ -411,7 +439,7 @@ let sendCumRequest = (data,dispatch)=>{
             }
         },
         data => {
-            //debugger
+            debugger
             dispatch({
                 type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
                 data
@@ -422,7 +450,7 @@ let sendCumRequest = (data,dispatch)=>{
 
 //新增的Request请求
 let sendCumNewRequest = (data,dispatch)=>{
-     //debugger
+     debugger
      reqwest(
             {
                 url: url.customer,
@@ -432,7 +460,7 @@ let sendCumNewRequest = (data,dispatch)=>{
                 }
             },
             data => {
-                //debugger
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_ADDSAVE",
                     data
@@ -500,12 +528,15 @@ export function showViewForm(visible, id) {
             },
             data => {
                 debugger
+                console.log('点击详情时返回数据1==========',data)
                 reqwest(
                     {
                         url: baseDir + `cum/customers/${id}/isfollow`,
                         method: "GET"
                     },
                     state => {
+                        console.log('点击详情时返回数据2==========',state)
+                        debugger;
                         dispatch({
                             type: "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM",
                             visible,
@@ -793,11 +824,12 @@ export function closeIcbcVisible1(visible) {
 };
 
 //点击新增按钮的取业务类型项
-export function addCustomer(data, newType) {
+export function addCustomer(visiable, newType) {
+    debugger
     return dispatch => {
         dispatch({
             type: "CUSTOMERCOMPANY_LIST_ADDCUSTOMER",
-            data,
+            visiable,
             newType
         });
     };
@@ -825,6 +857,7 @@ export function addNewType() {
 
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_SEARCHMAP",
         data
@@ -833,6 +866,7 @@ export function saveSearchMap(data) {
 
 //往redux中存放编辑新增修改条件
 export function editCardFn(changeData) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_CARDEDITCHANGE",
         data: changeData

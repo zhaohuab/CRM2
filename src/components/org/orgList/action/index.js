@@ -266,6 +266,7 @@ export function listTreeChange(id) {
 
 
 export function selectData(data) {
+    debugger
     return (dispatch) => {
         dispatch(fetchData('ORG_LIST_SELECTDATA', data))
     }

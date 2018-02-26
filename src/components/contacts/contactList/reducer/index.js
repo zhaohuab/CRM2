@@ -2,12 +2,12 @@ import Immutable from "immutable";
 import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
-    loading: false,
-    rowKeys: {},
-    data: {},
-    visible: false,
-    tags: {},
-    editData: {}
+    loading: false,//列表页加载动画
+    rowKeys: {},//选择
+    data: {},//列表数据
+    visible: false,//
+    tags: {},//
+    editData: {}//
 };
 
 

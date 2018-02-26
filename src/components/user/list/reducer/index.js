@@ -41,7 +41,6 @@ function clearObject(obj) {
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 	switch (action.type) {
 		case 'USER_LIST_TEMPLATE':
-		debugger
 			let tpl = $$state.get("template").toJS()
 			return $$state.merge({
 				template: {
