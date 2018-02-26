@@ -12,31 +12,17 @@ import {
     Modal,
     Form,
 } from "antd";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as Actions from "../action";
-import CloseLeadCard from './CloseLeadCard';
-
-//const FormItem = Form.Item;
+const FormItem = Form.Item;
 class CloseClue extends React.Component{
-   
-    handleCancel=()=>{
-        this.props.action.closeLeadShow(false);
-    }
     handleOk=()=>{
-        debugger
-        let card = this.formRef.props.form;
-        let value = card.getFieldsValue();
-        // this.setState({
-        //   taskGroupVisible: false,
-        // }, () => {
-        //   this.props.action.onAddTaskGroup(value);
-        // });
+
     }
+    handleCancel=()=>{
+    
+    }
+
     render() {
-        debugger
         let {colseVisible}=this.props.$$state.toJS();
-        const CloseLeadForm = Form.create({})(CloseLeadCard);
         return (
           <div>
             <Modal title="线索关闭"
@@ -44,10 +30,6 @@ class CloseClue extends React.Component{
               onOk={this.handleOk}
               onCancel={this.handleCancel}
             >
-           <CloseLeadForm
-            wrappedComponentRef={inst =>
-                                (this.formRef = inst)}
-           />
         
             </Modal>
           </div>

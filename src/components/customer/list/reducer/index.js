@@ -296,6 +296,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //存放新增修改表单数据      
         case "CUSTOMERCOMPANY_LIST_CARDEDITCHANGE":
+        debugger
             return $$state.merge({
                 viewData: action.data
             });
@@ -319,7 +320,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case "CUSTOMERCOMPANY_LIST_EDITSAVE": 
             let editFollow =  $$state.get('viewData').toJS()
             action.data.followState = editFollow.followState
-            //debugger
+            debugger
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),

@@ -210,8 +210,7 @@ class AssignList extends React.Component {
                                             )
                                         }):''
                                     }
-                                        
-                                      
+                                             
                                     </Select>
                                 </Col>
                                 {

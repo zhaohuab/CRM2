@@ -29,19 +29,15 @@ class Clue extends React.Component {
 
         this.columns = [
             {
-                title: "主题",
-                dataIndex: "title",
+                title: "姓名",
+                dataIndex: "name",
                 render: (text, record) => (
                     <div className="crm-pointer"
                         onClick={this.slideShow.bind(this, record)}
                     >
-                        {record.title}
+                        {record.name}
                     </div>
                 )
-            },
-            {
-                title: "联系人",
-                dataIndex: "name"
             },
             {
                 title: "公司名称",
@@ -56,42 +52,33 @@ class Clue extends React.Component {
                 dataIndex: "postName"
             },
             {
-                title: "手机",
-                dataIndex: "mobile"
+                title: "电话",
+                dataIndex: "tel"
             },
             {
-                title: "客户规模",
-                dataIndex: "cumSizeSum",
-                 render: (text, record) => (
-                    <div>
-                        {record.cumSizeSum+'人'}
-                    </div>
-                )
+                title: "电子邮件",
+                dataIndex: "mail"
             },
             {
                 title: "线索状态",
                 dataIndex: "stateName"
             },
             {
-                title: "分派时间",
-                dataIndex: "assignTime"
+                title: "线索等级",
+                dataIndex: "levelName"
             },
             {
-                title: "反馈结果",
-                dataIndex: "feedback"
+                title: "最后跟进时间",
+                dataIndex: "followTime"
             },
             {
                 title: "负责人",
-                dataIndex: "ownerUserName",
-                // render: (text, record) => (
-                //     <div>
-                //         {/* {record.ownerUserInfo.name} */}
-                //     </div>
-                // )
-            },
-            {
-                title: "部门",
-                dataIndex: "ownerDeptName",
+                dataIndex: "ownerUserInfo",
+                render: (text, record) => (
+                    <div>
+                        {record.ownerUserInfo.name}
+                    </div>
+                )
             }
         ]
         const that = this;
@@ -213,19 +200,34 @@ class Clue extends React.Component {
             debugger;
             if (!err) {
                 values = this.trancFn(values);
-                this.props.action.listFormSave(values);
-                // if (values.id) {
-                //     // debugger;
-                //     this.props.action.onEdit(values);
-                // } else {
-                //     debugger;
-                //     this.props.action.onSave(values);
-                // }
+                if (values.id) {
+                    // debugger;
+                    this.props.action.onEdit(values);
+                } else {
+                    debugger;
+                    this.props.action.onSave(values);
+                }
+            }
+        });
+
+    } //modal点击确定按钮
+    onOk() {
+        debugger;
+        this.formRef.props.form.validateFieldsAndScroll((err, values) => {//取值
+            debugger;
+            if (!err) {
+                values = this.trancFn(values);
+                if (values.id) {
+                    // debugger;
+                    this.props.action.onEdit(values);
+                } else {
+                    debugger;
+                    this.props.action.onSave(values);
+                }
             }
         });
 
     }
-    
     //modal 点击取消
     onCancel() {
         //debugger
