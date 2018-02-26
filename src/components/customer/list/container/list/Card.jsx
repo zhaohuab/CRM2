@@ -791,7 +791,9 @@ const cardForm = Form.create({
         let viewData = props.$$state.toJS().viewData;
         debugger
         for (let key in onChangeFild) {
-            viewData[key] = onChangeFild[key];
+            if(onChangeFild[key].value){
+                viewData[key] = onChangeFild[key];
+            }
         }
         props.editCardFn(viewData);
     }

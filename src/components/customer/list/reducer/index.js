@@ -74,6 +74,7 @@ function clearObject(obj) {
         
         obj[key] = undefined
     }
+    debugger
     return obj
 }
 
@@ -250,7 +251,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             // bizData.biztype = action.newType
             return $$state.merge({
                 formVisitable: action.visiable,
-                viewData: {biztype:{value:action.newType}},
+                viewData: clearObject($$state.get('viewData').toJS()),
                 //每次新建把上一次保存的工商核实名称清零
                 addIcbcName:''
             });
