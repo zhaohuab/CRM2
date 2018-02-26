@@ -22,7 +22,7 @@ const environments = {
 
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
-if (process.env.npm_lifecycle_event == "common") {
+if (process.env.npm_lifecycle_event == "bupip") {
 	//使用common命令，使用传递的参数变更地址
 	productionEnv = SERVER_IP_PORT;
 }
