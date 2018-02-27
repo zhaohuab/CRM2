@@ -18,7 +18,7 @@ import reqwest from "utils/reqwest";
 
 const Search = Input.Search;
 
-export default class CuperiorCustomer extends React.Component {
+export default class SuperiorCustomer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -282,8 +282,8 @@ export default class CuperiorCustomer extends React.Component {
             <div>
                 <div className="reference-warpper">
                     {
-                        this.props.viewData?
-                        <Input disabled value={this.props.viewData.name}/>:
+                        this.props.disabled?
+                        <Input disabled value={this.props.value ? this.props.value.name : ""}/>:
                         <Dropdown
                             overlay={this.choiceIndustry()} //生成下拉结构样式
                             trigger={["click"]}
@@ -291,22 +291,14 @@ export default class CuperiorCustomer extends React.Component {
                             visible={this.state.visible} //受控面板显示
                             placement={this.props.placement}
                         >
-                            <Input
+                            <Search
                                 placeholder="上级客户"
-                                value={
-                                    this.props.value ? this.props.value.name : ""
-                                }
+                                //onSearch={this.getIndustry.bind(this, true)}   只要包含在dropdown里的只要出发都会执行onVisibleChange方法不必单写
+                                value={this.props.value ? this.props.value.name : ""}
                                 suffix={suffix}
-                                addonAfter={
-                                    <Icon
-                                        type="search"
-                                        onClick={this.getIndustry.bind(this, true)}
-                                    />
-                                }
                             />
                         </Dropdown>
                     }
-                    
                 </div>
             </div>
         );

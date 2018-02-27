@@ -201,10 +201,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             //详细地址
             let streetEdit = {
                 address: editTempData.street,
-                location: {
-                    lng: editTempData.longitude,
-                    lat: editTempData.latitude
-                }
+                location: [editTempData.longitude,editTempData.latitude]
             }
             //行业
             let industry = {
@@ -218,6 +215,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 editTempData.city.toString(),
                 editTempData.district.toString()
             ]
+            //上级客户 parentId
+            
 
             editData.province_city_district = {}
             editData.province_city_district.result = district
