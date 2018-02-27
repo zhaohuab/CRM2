@@ -20,8 +20,7 @@ const environments = {
 	// 上线环境，参数指定地址
 	"bupip": process.env.SERVER_IP_PORT,
 };
-
-
+console.log("ip_port:"+process.env.SERVER_IP_PORT);
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
 const publicPath = productionEnv + '/lib/';
