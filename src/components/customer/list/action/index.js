@@ -350,7 +350,7 @@ export function getListData(pagination, searchMap) {
                 }
             },
             data => {
-                
+                console.log('获取列表==============',data)
                 dispatch(
                     fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
                         data: data,
@@ -531,12 +531,15 @@ export function showViewForm(visible, id) {
             },
             data => {
                 debugger
+                console.log('点击详情时返回数据1==========',data)
                 reqwest(
                     {
                         url: baseDir + `cum/customers/${id}/isfollow`,
                         method: "GET"
                     },
                     state => {
+                        console.log('点击详情时返回数据2==========',state)
+                        debugger;
                         dispatch({
                             type: "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM",
                             visible,
@@ -857,6 +860,7 @@ export function addNewType() {
 
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_SEARCHMAP",
         data
@@ -865,6 +869,7 @@ export function saveSearchMap(data) {
 
 //往redux中存放编辑新增修改条件
 export function editCardFn(changeData) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_CARDEDITCHANGE",
         data: changeData

@@ -1,20 +1,16 @@
 import Immutable from "immutable";
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
-    loading: false,
-    rowKeys: {},
-    data: {},
-    visible: false,
-    tags: {},
-    editData: {}
+    loading: false,//列表页加载动画
+    rowKeys: {},//选择
+    data: {},//列表数据
+    visible: false,//
+    tags: {},//
+    editData: {}//
 };
 
-function pageAdd(page, item) {
-    page.total += 1;
-    page.data.unshift(item);
-    page.page = Math.ceil(page.total / page.pageSize);
-    return page;
-}
+
 
 export default function reducer(
     $$state = Immutable.fromJS($$initialState),

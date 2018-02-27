@@ -16,6 +16,9 @@ let $$initialState = {
 function pageAdd(page, item) {
 	page.total+=1;
 	page.voList.unshift(item)
+	if(page.voList.length == page.pageSize + 1) {
+		page.voList.splice(page.pageSize,1);
+	}
 	page.page = Math.ceil(page.total / page.pageSize);
 	return page;
 }

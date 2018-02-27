@@ -12,10 +12,6 @@ let $$initialState = {
         }
     ]
 };
-function pageAdd(page, item) {
-	page.data.unshift(item)
-	return page;
-}
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 

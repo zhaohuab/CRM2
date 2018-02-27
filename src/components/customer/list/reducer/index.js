@@ -1,4 +1,5 @@
 import Immutable from "immutable";
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     data: [], //tabel展示数据
@@ -48,25 +49,6 @@ let $$initialState = {
     successResult: {},//导入成功后返回结果
     pageSize:1,//---列表页页码受控  赵华冰 2-9
 };
-
-function pageAdd(page, item) {
-    page.total += 1;
-    page.data.unshift(item);
-    page.page = Math.ceil(page.total / page.pageSize);
-    return page;
-}
-
-function pageEdit(page, item) {
-    let { data } = page;
-    for (let i = 0, len = data.length; i < len; i++) {
-        if (data[i].id == item.id) {
-            data[i] = item;
-            break;
-        }
-    }
-    page.data = data;
-    return page;
-}
 
 function clearObject(obj) {
     for (let key in obj) {
@@ -324,6 +306,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //存放新增修改表单数据      
         case "CUSTOMERCOMPANY_LIST_CARDEDITCHANGE":
+        debugger
             return $$state.merge({
                 viewData: action.data
             });
@@ -347,7 +330,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case "CUSTOMERCOMPANY_LIST_EDITSAVE": 
             let editFollow =  $$state.get('viewData').toJS()
             action.data.followState = editFollow.followState
-            //debugger
+            debugger
             return $$state.merge({
                 formVisitable: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
