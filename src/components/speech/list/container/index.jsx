@@ -56,7 +56,7 @@ class SpeechList extends React.Component {
         debugger
           let talkString = record.saleTalk.replace(/[\r\n]/g,"<br/>");
           let talkAry=talkString.split('<br/>') // 字符串拆分 
-         console.log(122,talkAry)
+         //console.log(122,talkAry)
         return (
              <div>
                {talkAry&&talkAry.length?talkAry.map((item)=>{

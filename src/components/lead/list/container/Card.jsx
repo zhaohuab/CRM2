@@ -53,6 +53,9 @@ class EditForm extends React.Component {
                                     <FormItem style={{ display: "none" }}>
                                         {getFieldDecorator("id", {})(<Input />)}
                                     </FormItem>
+                                    <FormItem style={{ display: "none" }}>
+                                        {getFieldDecorator("state", {})(<Input />)}
+                                    </FormItem>
                                     <FormItem
                                         label="主题"
                                         {...formItemLayout}

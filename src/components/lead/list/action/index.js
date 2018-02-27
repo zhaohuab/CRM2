@@ -26,7 +26,7 @@ function transData(searchMap) {
         searchMap.signTime = undefined;
     }
     if (searchMap.industryId) {
-        debugger
+        //debugger
         searchMap.industryId= searchMap.industryId.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
     }
     return searchMap;
@@ -89,7 +89,117 @@ export function closeLeadShow(visible) {
     };
 }
 
+export function assiginLead(visible){
+    return {
+        type: "CLUE_LIST_ASSIGNLEADSHOW",
+        visible
+    };
 
+}
+export function saveUserCardName(name){
+    debugger
+	return (dispatch) => {
+		dispatch(fetchData("CLUE_LIST_SAVEUSERCARDNAME", name))
+	}
+};
+export function closeUserCard () {
+	return (dispatch) => {
+		dispatch(fetchData("CLUE_LIST_CLOSEUSERCARD", ))
+	}
+};
+
+export function assignPeople(ids,selectedUserRows){
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.lead + "/assigngroup",
+                method: "PUT",
+                data: {
+                    param: {
+                        ids:ids.join(","),
+                       
+                    }
+                }
+            },
+            data => {  
+                debugger
+                dispatch(
+                    fetchData("CLUE_LIST_ASSIGNLISTDATE", {
+                        data: data
+                    })
+                );
+            }
+        );
+    };
+}
+//选中人员列表
+export function selectUserRow (selectedRows, selectedRowKeys){
+
+	return (dispatch) => {
+        debugger
+        
+		dispatch(fetchData("CLUE_LIST_SELECTUSERROW", { selectedRows, selectedRowKeys }))
+	}
+};
+
+// 线索分配数据 列表数据
+export function assignListData(pagination,name) {
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.lead + "/user/list",
+                method: "GET",
+                data: {
+                    param: {
+                        ...pagination,
+                     name     
+                    }
+                }
+            },
+            data => {  
+                debugger
+                dispatch(
+                    fetchData("CLUE_LIST_ASSIGNLISTDATE", {
+                        data: data
+                    })
+                );
+            }
+        );
+    };
+};
+
+
+
+//启停用功能 暂时不做
+export function setEnableState(ids, state, page, searchMap) {
+    return dispatch => {
+        reqwest(
+            {
+                url: url.lead + "/state",
+                method: "PUT",
+                data: {
+                    param: {
+                        ids,
+                        ...page,
+                        searchMap:transData(searchMap),
+                        enableState: String(state)
+                    }
+                }
+            },
+            dataResult => {
+                debugger
+                dispatch(
+                    fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
+                        data: dataResult,
+                        pagination: page
+                    })
+                );
+            }
+        );
+    };
+};
 
 
 //获取数据、基础查询数据、扩展查询数据
@@ -217,15 +327,13 @@ export function edit(edit, show) {
 
 //编辑已选择（确定按钮）
 let onEdit=(values,dispatch)=>{
-
     debugger
-   
         reqwest(
             {
                 url: url.lead + "/" + values.id,
                 method: "PUT",
                 data: {
-                    param: transData(values)
+                    param: values
                 }
             },
             result => {
@@ -236,7 +344,6 @@ let onEdit=(values,dispatch)=>{
                 });
             }
         );
-
 }
 
 //点击新建按钮清空数据
@@ -252,9 +359,7 @@ export function addClue(data) {
 
 //保存新增联系人
 let onSave=(oneData,dispatch)=>{
-    debugger;
-   
-        debugger
+    
         reqwest(
             {
                 url: url.lead,
@@ -293,7 +398,7 @@ export function showViewForm(visible, id) {
                 }
             },
             data => {
-                //debugger
+                debugger
                 dispatch({
                     type: "CLUE_LIST_SHOWVIEWFORM",
                     visible,

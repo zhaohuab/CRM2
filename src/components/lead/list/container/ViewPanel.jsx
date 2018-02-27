@@ -21,6 +21,7 @@ import * as Actions from "../action";
 
 import DetailObject from './DetailObject';
 import CloseClue from './CloseClue';
+import RelativeObject from "./RelativeObject";
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
@@ -117,7 +118,7 @@ class ViewPanel extends React.Component {
                                                 className="pointer"
                                             >
 
-                                                <div className="checked-iconfont">
+                                                {/* <div className="checked-iconfont">
                                                     {viewData.followFlag ==
                                                         0 ? (
                                                             <span
@@ -145,7 +146,7 @@ class ViewPanel extends React.Component {
                                                     <span className="blue">
                                                         <i className="iconfont icon-taolun1">讨论</i>
                                                     </span>
-                                                </div>
+                                                </div> */}
                                             </Row>
                                         </Row>
 
@@ -207,7 +208,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <i className="iconfont icon-dianhua" />公司名称:
+                                    <i className="iconfont icon-dianhua" />线索来源:
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -216,7 +217,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <i className="iconfont icon-dingwei" />最后跟进时间:
+                                    <i className="iconfont icon-dingwei" />线索状态:
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -225,7 +226,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <i className="iconfont icon-fuzeren" />线索状态:
+                                    <i className="iconfont icon-fuzeren" />分派时间:
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -234,7 +235,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <i className="iconfont icon-fuzeren" />负责人:
+                                    <i className="iconfont icon-fuzeren" />反馈结果:
                                 </Row>
                             </Col>
                         </Row>
@@ -245,7 +246,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {viewData.companyName}
+                                    {/* {viewData.sourceName} */}
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -254,7 +255,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {viewData.followTime}
+                                    {/* {viewData.stateName} */}
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -263,7 +264,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {viewData.stateName}
+                                    {/* {viewData.assignTime} */}
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -272,7 +273,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                 {viewData.ownerUserInfo?viewData.ownerUserInfo.name:'无'}
+                                 {viewData.feedback}
 
                                 </Row>
                             </Col>
@@ -289,7 +290,7 @@ class ViewPanel extends React.Component {
                                         <DetailObject />
                                     </TabPane>
                                     <TabPane tab="相关" key="2">
-                                        111
+                                       <RelativeObject/>
                                     </TabPane>
                                 </Tabs>
                             </div>

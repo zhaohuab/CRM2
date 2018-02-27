@@ -22,6 +22,7 @@ import SlidePanel from "../../../common/slidePanel/index.jsx";
 import ViewPanel from "./ViewPanel";
 import "assets/stylesheet/all/iconfont.css";
 import * as Actions from '../action';
+import AssignLead from './AssignLead'
 
 class Clue extends React.Component {
     constructor(props) {
@@ -62,9 +63,9 @@ class Clue extends React.Component {
             {
                 title: "客户规模",
                 dataIndex: "cumSizeSum",
-                 render: (text, record) => (
+                render: (text, record) => (
                     <div>
-                        {record.cumSizeSum+'人'}
+                        {record.cumSizeSum?record.cumSizeSum + '人':''}
                     </div>
                 )
             },
@@ -114,7 +115,7 @@ class Clue extends React.Component {
     }
     //显示面板
     slideShow(record) {
-       // debugger
+        debugger
         this.props.action.showViewForm(true, record.id);
     }
     //隐藏面版
@@ -225,7 +226,7 @@ class Clue extends React.Component {
         });
 
     }
-    
+
     //modal 点击取消
     onCancel() {
         //debugger
@@ -261,8 +262,28 @@ class Clue extends React.Component {
         this.props.action.getEnumData();
     }
 
+    //点击停用启用
+    btnSetEnable(enableState) {
+        debugger
+        let { searchMap, selectedRowKeys, pagination } = this.props.$$state.toJS()
+        const ids = selectedRowKeys.join(',');
+
+        this.props.action.setEnableState(
+            ids,
+            enableState, //获取起停用数字
+            pagination,
+            searchMap //查询条件
+        );
+    }
+    assigin() {
+       this.props.action.assiginLead(true)
+       this.props.action.assignListData(
+        this.props.$$state.get("assignPagination").toJS(), 
+        '');
+    }
+
     render() {
-        //debugger;
+        debugger;
         const page = this.props.$$state.get("data").toJS();
         let {
             editData,
@@ -291,7 +312,6 @@ class Clue extends React.Component {
                             length={selectedRowKeys.length}
                             goBack={this.headerBack.bind(this)}
                         >
-
                             {selectedRowKeys.length == 1 ? (
                                 <Button onClick={this.onEdit.bind(this)}>
                                     <i className="iconfont icon-bianji" />编辑
@@ -300,12 +320,20 @@ class Clue extends React.Component {
                                     ""
                                 )}
 
-                            <Button>
+                            <Button onClick={this.assigin.bind(this)}>
                                 <i className="iconfont icon-xiansuofenpei" />线索分配
                         </Button>
                             <Button onClick={this.onDelete.bind(this)}>
                                 <i className="iconfont icon-shanchu" />删除
                         </Button>
+                            <ButtonGroup className="returnbtn-class">
+                                <Button onClick={this.btnSetEnable.bind(this, 1)} className="customer_list_start_customer">
+                                    <i className="iconfont icon-qiyong" />启用
+                            </Button>
+                                <Button onClick={this.btnSetEnable.bind(this, 2)} className="customer_list_stop_customer">
+                                    <i className="iconfont icon-tingyong" />停用
+                            </Button>
+                            </ButtonGroup>
                         </HeaderButton>
                     ) : (
                             <Row>
@@ -451,6 +479,7 @@ class Clue extends React.Component {
                 >
                     <ViewPanel />
                 </SlidePanel>
+                <AssignLead />
             </div>
         );
     }

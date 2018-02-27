@@ -26,7 +26,7 @@ import * as enumDataFake from "./enumdata.jsx";
 import CityChioce from "./CityChioce";
 class NewForm extends React.Component {
     componentDidMount() {
-     
+
     }
 
     render() {
@@ -36,7 +36,7 @@ class NewForm extends React.Component {
         };
         let formItemLayout1 = {
             labelCol: { span: 4 },
-            wrapperCol: { span:20 }
+            wrapperCol: { span: 20 }
         };
         const { getFieldDecorator } = this.props.form;
         let {
@@ -144,7 +144,7 @@ class NewForm extends React.Component {
                             <Row type="flex" justify="center">
                                 <Col span={11}>
                                     <FormItem label="固定电话" {...formItemLayout}>
-                                    {getFieldDecorator("mobile", {
+                                        {getFieldDecorator("mobile", {
 
                                         })(<Input placeholder="请输入..." />)}
                                     </FormItem>
@@ -214,21 +214,21 @@ class NewForm extends React.Component {
 const EditForm = Form.create({
     mapPropsToFields: (props) => {
         //把redux中的值取出来赋给表单
-        debugger
+       // debugger
         let viewdata = props.$$state.toJS().editData;
         let value = {};
         debugger
         for (let key in viewData) {
-                value[key] = { value: viewData[key] }
+            value[key] = { value: viewData[key] }
         }
-        
+
         return {
             ...value
         };
     },
 
     onFieldsChange: (props, onChangeFild) => {
-debugger
+       // debugger
         //往redux中写值
         let viewData = props.$$state.toJS().editData;
 
