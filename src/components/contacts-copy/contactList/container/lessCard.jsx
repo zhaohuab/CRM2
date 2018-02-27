@@ -43,7 +43,6 @@ export default class LessCard extends React.Component {
                             </FormItem>
                         </Col>
                         <Col span={6}>
-                            {" "}
                             <FormItem>
                                 {getFieldDecorator("customer")(
                                     <Input placeholder="客户" />
@@ -54,9 +53,7 @@ export default class LessCard extends React.Component {
                             <FormItem>
                                 <div className="more-btn">
                                     <Button htmlType="submit">查询</Button>
-                                    <span onClick={this.showFn.bind(this)}>
-                                        展开<Icon type="down" />
-                                    </span>
+                                   
                                 </div>
                             </FormItem>
                         </Col>
