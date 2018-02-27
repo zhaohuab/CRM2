@@ -170,6 +170,13 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 EditCancelData.industry = ''
             }
 
+            //上级客户
+            if(EditCancelData.parentId && EditCancelData.parentId.id){
+                EditCancelData.parentId = EditCancelData.parentId.id
+            }else{
+                EditCancelData.parentId = ''
+            }
+
             return $$state.merge({
                 formVisitable: action.payload.visible,
                 viewData:EditCancelData
@@ -183,7 +190,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             //详细地址
             let streetEdit = {
                 address: editTempData.street,
-                location: [editTempData.longitude,editTempData.latitude]
+                location: editTempData.longitude && editTempData.latitude?[editTempData.longitude,editTempData.latitude]:''
             }
             //行业
             let industry = {
@@ -198,12 +205,16 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 editTempData.district.toString()
             ]
             //上级客户 parentId
-            
+            let parentId = {
+                name:editTempData.parentName,
+                id:editTempData.parentId
+            }
 
             editData.province_city_district = {}
             editData.province_city_district.result = district
             editData.street = streetEdit
             editData.industry = industry
+            editData.parentId = parentId
             //debugger
             return $$state.merge({
                 formVisitable: action.visiable,

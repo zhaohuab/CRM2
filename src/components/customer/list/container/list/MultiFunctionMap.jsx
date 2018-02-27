@@ -115,7 +115,6 @@ export default class MultiFunctionMap extends React.Component {
                 debugger
                 if (status === "complete" && mapResult.info === "OK") {
                     let result = mapResult.geocodes[0]
-                    
                     resolve(result)
                 }else{
                     reject()
@@ -126,7 +125,7 @@ export default class MultiFunctionMap extends React.Component {
 
     //第一次地图实例查询位置
     showHistory(e){
-        let value = this.props.value?this.props.value.address:'北京'
+        let value = this.props.value && this.props.value.address?this.props.value.address:'北京'
         debugger
         let location = this.props.value?this.props.value.location:''
         this.map.clearMap( )
@@ -179,7 +178,7 @@ export default class MultiFunctionMap extends React.Component {
         if(this.state.flag){
             debugger
             this.map.clearMap( )
-            let value = this.props.value?this.props.value.address:'北京'
+            let value = this.props.value && this.props.value.address?this.props.value.address:'北京'
             let location = this.props.value?this.props.value.location:''
             if(location){//根据坐标点查地图
                 this.getSingleAddress(location,(result)=>{
@@ -382,23 +381,32 @@ export default class MultiFunctionMap extends React.Component {
 
     getSingleLocation(value,callback){
         debugger
+        let that = this
         this.Geocoder.getLocation(value, (status, mapResult) => {
             debugger
             if (status === "complete" && mapResult.info === "OK") {
                 let result = mapResult.geocodes[0];
                 callback(result,result.adcode)
+            }else{
+                that.setState({
+                    visible:true,
+                })
             }
         });
     }
 
     getSingleAddress(lngLat,callback){
         debugger
+        let that = this
         this.Geocoder.getAddress(lngLat, (status, mapResult) => {
             debugger
             if (status === "complete" && mapResult.info === "OK") {
                 let result = mapResult.regeocode
-                
                 callback(result)
+            }else{//如果报错只是把地图显示出来，没有组标点，信息框
+                that.setState({
+                    visible:true,
+                })
             }
         });
     }
