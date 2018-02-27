@@ -20,11 +20,15 @@ let trancFn=(data)=>{
             debugger
             if(data[key] && data[key].value){
                 data[key] = data[key].value.key
-            }else{
+            }else if(data[key]){
+               
                 data[key] = data[key].key
+            }else{
+                data[key] = undefined
             }
         }
 
+        //业务类型
         if (key == 'biztype') {
             debugger
             if(data[key] && data[key].value){
@@ -47,14 +51,38 @@ let trancFn=(data)=>{
             data.province_city_district = "";
         }
 
+        //上级客户
+        if(data.parentId){
+            debugger
+            if(data.parentId && data.parentId.hasOwnProperty('value')&& data.parentId.value.id){
+                data.parentId = data.parentId.value.id
+            }else if(data.parentId && !data.parentId.hasOwnProperty('value') && data.parentId.id){
+                data.parentId = data.parentId.id
+            }else{
+                data.parentId = undefined
+            }
+        }
+
         //详细地址
-        if (data.street && data.street.value) {
-            data.longitude = data.street.value.location.lng
-            data.latitude = data.street.value.location.lat
-            data.street = data.street.value.address
-        }else{
-            //如果不是带验证的值，就是编辑时付的值
-            if(data.street && typeof data.street == 'object'){
+        // if (data.street && data.street.value) {
+        //     data.longitude = data.street.value.location.lng
+        //     data.latitude = data.street.value.location.lat
+        //     data.street = data.street.value.address
+        // }else{
+        //     //如果不是带验证的值，就是编辑时付的值
+        //     if(data.street && typeof data.street == 'object'){
+        //         data.longitude = data.street.location.lng
+        //         data.latitude = data.street.location.lat
+        //         data.street = data.street.address
+        //     }
+        // }
+        if (data.street && typeof data.street == 'object') {
+            debugger
+            if(data.street.hasOwnProperty('value')){
+                data.longitude = data.street.value.location.lng
+                data.latitude = data.street.value.location.lat
+                data.street = data.street.value.address
+            }else{
                 data.longitude = data.street.location.lng
                 data.latitude = data.street.location.lat
                 data.street = data.street.address
