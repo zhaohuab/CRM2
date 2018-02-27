@@ -79,10 +79,10 @@ class ToolForm extends React.Component {
         });
     }
     //点击新增按钮先请求查询条件 再弹出modal-card,并且保存客户类型在redux中
-    btnNew() {//----去掉新建时的档案处理
+    btnNew() {
         this.props.clearForm()
-        this.props.action.addCustomer(true);
         //this.props.action.addNewType();
+        this.props.action.addCustomer(true);
     }
 
     //点击新增的获取的业务类型
@@ -92,16 +92,17 @@ class ToolForm extends React.Component {
     }
 
     //上下表单控制显隐
-    changeVisible() {
-        this.props.action.changeVisible();
-    }
+    changeVisible() {//------注掉控制查询条件控制显隐方法
+        /* this.props.action.changeVisible(); */
+    } 
     //扩展条件、基础条件查询
-    handleSearch(searchMap) {   
+    handleSearch(searchMap) { 
+        debugger  
         let pagination = {page:1, pageSize:10};
         this.props.action.getListData(
             pagination,
             searchMap
-        );
+        ); 
     }
 
 
@@ -152,7 +153,7 @@ class ToolForm extends React.Component {
 
 
     render() {
-        let { enumData, moreShow, selectedRowKeys, newCumMenu } = this.props.$$state.toJS();
+        let { enumData, moreShow, selectedRowKeys } = this.props.$$state.toJS();
 
         const moreMenu = (
             <Menu onClick={this.onMenu.bind(this)}>
@@ -185,9 +186,8 @@ class ToolForm extends React.Component {
                         >
                             <i className="iconfont icon-bianji" />编辑
                         </Button>
-
-                {   //---------注掉停启用
-                 /*     <ButtonGroup className="returnbtn-class">
+                        {//-------注掉停启用
+                        /* <ButtonGroup className="returnbtn-class">
                             <Button onClick={this.btnSetEnable.bind(this, 1)} className="customer_list_start_customer">
                                 <i className="iconfont icon-qiyong" />启用
                             </Button>
@@ -213,8 +213,8 @@ class ToolForm extends React.Component {
                             >
                                 <Col span={17}>
                                     <Row type="flex" align="middle">
-                                     { //----------注掉查询方案
-                                          /*  <Col className="select-recover">
+                                   { //---------注掉查询方案
+                                       /*     <Col className="select-recover">
                                             <Select defaultValue="3">
                                                 <Option value="0">全部</Option>
                                                 <Option value="1">我关注</Option>
@@ -245,14 +245,14 @@ class ToolForm extends React.Component {
                                     </Row>
                                 </Col>
 
-                            <Col span={7}>
-                                <Row type="flex" gutter={15} justify="end">
-                                    <Col>             
-                                        <Button className="customer_list_add_customer" type="primary" onClick = {this.btnNew.bind(this)}>
-                                            <i className="iconfont icon-xinjian" />新建
-                                        </Button>
-                                    </Col>
-                                        {//------------注掉刷新和导入导出
+                                <Col span={7}>
+                                    <Row type="flex" gutter={15} justify="end">
+                                        <Col>
+                                            <Button className="customer_list_add_customer" type="primary" onClick = {this.btnNew.bind(this)}>
+                                                <i className="iconfont icon-xinjian" />新建
+                                            </Button>
+                                        </Col>
+                                        {//--------注掉导入导出
                                             /* <Col>
                                         <Button>
                                             <i className="iconfont icon-shuaxin" />刷新

@@ -95,14 +95,14 @@ class ViewPanel extends React.Component {
                         <Col span={18} className="warrper-main-left">
                             <div className="main-left-inner collapse-recover tab-recoverd">
                                 <Tabs defaultActiveKey="1" activeKey = {leftJoinPanelKeys} onTabClick={this.panelTabLeftFn.bind(this)} >
-                                    <TabPane tab="资料" key="1">
+                                    <TabPane tab="详情" key="1">
                                         <DetailObject/>
                                     </TabPane>
-                                   {//------------注掉相关
+                                   {//-----------先注掉相关
                                        /*  <TabPane tab="相关" key="2">
                                         <RelevantObject JoinPagination={this.state.JoinPagination}/>
-                                    </TabPane>
-                                    <TabPane tab="交易" key="3">
+                                    </TabPane> */}
+                                    {/* <TabPane tab="交易" key="3">
                                         <DealObject/>
                                     </TabPane> */}
                                 </Tabs>
@@ -113,8 +113,8 @@ class ViewPanel extends React.Component {
                                 <TabPane tab="动态" key="1">
                                     <DynamicState/>
                                 </TabPane>
-                               {//----------注掉参与人
-                                /* <TabPane tab="参与人" key="2">
+                              {//----先注掉参与人
+                                  /*   <TabPane tab="参与人" key="2">
                                     <JoinList/>
                                 </TabPane> */}
                             </Tabs>

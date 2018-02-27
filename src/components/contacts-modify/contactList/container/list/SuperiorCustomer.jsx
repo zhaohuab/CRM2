@@ -15,11 +15,10 @@ import "assets/stylesheet/all/iconfont.css";
 import debounce from "lodash.debounce";
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
-import DropDownModal from '../../../../common/DrowdownModal'
 
 const Search = Input.Search;
 
-export default class SuperiorCustomer extends React.Component {
+export default class CuperiorCustomer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,8 +33,7 @@ export default class SuperiorCustomer extends React.Component {
                 pageSize: 5,
                 page: 1,
                 current: 1
-            },//分页信息
-            value:''
+            } //分页信息
         };
         this.columns = [
             {
@@ -144,15 +142,18 @@ export default class SuperiorCustomer extends React.Component {
 
     //点击确定
     onOk() {
-        debugger
+        
         if (this.props.onChange) {
             debugger
-            this.props.onChange(this.state.select);
+            if(this.props.cusId){
+                this.props.onChange({id:this.props.cusId.id,name:this.props.cusId.name});
+            }else{
+                this.props.onChange(this.state.select);
+            }
             this.setState(
                 {
                     visible: false,
-                    selectedRowKeys: [],
-                    select:''
+                    selectedRowKeys: []
                 }
             );
         }
@@ -160,11 +161,9 @@ export default class SuperiorCustomer extends React.Component {
 
     //点击取消
     onCancel() {
-        debugger
         this.setState({
             visible: false,
             selectedRowKeys: [],
-            select:'',
             pagination: {
                 pageSize: 5,
                 page: 1
@@ -173,15 +172,14 @@ export default class SuperiorCustomer extends React.Component {
     }
 
     //搜索框输入方法
-    onSearch() {
-        let {value,pagination} = this.state
+    onSearch(value) {
         reqwest(
             {
                 url: baseDir + "cum/customers",
                 method: "GET",
                 data: {
                     param: {
-                        ...pagination,
+                        ...this.state.pagination,
                         searchMap: {
                             name: value
                         }
@@ -189,6 +187,7 @@ export default class SuperiorCustomer extends React.Component {
                 }
             },
             result => {
+                ;
                 this.setState({
                     industryData: result
                 });
@@ -196,15 +195,9 @@ export default class SuperiorCustomer extends React.Component {
         );
     }
 
-    //设置手输查询value值
-    onDropDownChange(value){
-        this.setState({
-            value
-        })
-    }
-
     //下拉时显示的面板布局
     choiceIndustry() {
+        
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
             type: "radio",
@@ -212,34 +205,71 @@ export default class SuperiorCustomer extends React.Component {
         };
         let tableData = this.state.industryData;
         return (
-            <DropDownModal 
-                title='上级客户' 
-                onCancel={this.onCancel.bind(this)}  
-                onOk={this.onOk.bind(this)} 
-                onSearch = {this.onSearch.bind(this)}
-                value = {this.state.value}
-                onChange = {this.onDropDownChange.bind(this)}
-                width = {450}
-                height= {280}
-            >
-               <div className='crm-list-card-super-model tabel-recoverd'>
-                    <Table
-                        columns={this.columns}
-                        dataSource={tableData.data}
-                        rowKey="id"
-                        size="small"
-                        rowSelection={rowSelection}
-                        pagination={{
-                            size: "small",
-                            total: tableData.total,
-                            showTotal: this.showTotal,
-                            onChange: this.onPageChange.bind(this),
-                            pageSize: 5,
-                            current: tableData.page
-                        }}
-                    />
+            <div className="reference">
+                <div
+                    className="reference-main"
+                    style={{ width: this.props.width + "px" }}
+                >
+                    <Row
+                        type="flex"
+                        justify="space-between"
+                        className="reference-main-header"
+                    >
+                        <div className="title">上级客户</div>
+                        <div>
+                            <Search
+                                placeholder="搜索上级客户"
+                                style={{ width: 200 }}
+                                onSearch={this.onSearch.bind(this)}
+                            />
+                        </div>
+                    </Row>
+                    <Row className="tabel-recoverd reference-main-choice ">
+                        <Table
+                            columns={this.columns}
+                            dataSource={tableData.data}
+                            rowKey="id"
+                            size="small"
+                            rowSelection={rowSelection}
+                            pagination={{
+                                size: "small",
+                                total: tableData.total,
+                                showTotal: this.showTotal,
+                                onChange: this.onPageChange.bind(this),
+                                pageSize: 5,
+                                current: tableData.page
+                            }}
+                        />
+                    </Row>
+                    <Row
+                        type="flex"
+                        justify="end"
+                        align="middle"
+                        className="reference-main-footer"
+                    >
+                        <Row
+                            type="flex"
+                            justify="end"
+                            align="middle"
+                            gutter={15}
+                        >
+                            <div>
+                                <Button onClick={this.onCancel.bind(this)}>
+                                    取消
+                                </Button>
+                            </div>
+                            <div>
+                                <Button
+                                    type="primary"
+                                    onClick={this.onOk.bind(this)}
+                                >
+                                    确定
+                                </Button>
+                            </div>
+                        </Row>
+                    </Row>
                 </div>
-            </DropDownModal>
+            </div>
         );
     }
 
@@ -252,8 +282,8 @@ export default class SuperiorCustomer extends React.Component {
             <div>
                 <div className="reference-warpper">
                     {
-                        this.props.disabled?
-                        <Input disabled value={this.props.value ? this.props.value.name : ""}/>:
+                        this.props.viewData?
+                        <Input disabled value={this.props.viewData.name}/>:
                         <Dropdown
                             overlay={this.choiceIndustry()} //生成下拉结构样式
                             trigger={["click"]}
@@ -261,14 +291,22 @@ export default class SuperiorCustomer extends React.Component {
                             visible={this.state.visible} //受控面板显示
                             placement={this.props.placement}
                         >
-                            <Search
+                            <Input
                                 placeholder="上级客户"
-                                onSearch={this.getIndustry.bind(this, true)}   //只要包含在dropdown里的只要出发都会执行onVisibleChange方法不必单写
-                                value={this.props.value ? this.props.value.name : ""}
+                                value={
+                                    this.props.value ? this.props.value.name : ""
+                                }
                                 suffix={suffix}
+                                addonAfter={
+                                    <Icon
+                                        type="search"
+                                        onClick={this.getIndustry.bind(this, true)}
+                                    />
+                                }
                             />
                         </Dropdown>
                     }
+                    
                 </div>
             </div>
         );

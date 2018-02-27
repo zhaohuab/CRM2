@@ -35,8 +35,8 @@ import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
 import CityChioce from "../../../../common/cityChioce/CityChioce";
 import InputDisable from './InputDisable'
-import SuperiorCustomer from './SuperiorCustomer'
 import OwnUser from './OwnUser'
+//import ResponseDepart from './ResponseDepart'
 
 import Int from "utils/components/int";
 import Float from "utils/components/float/index.jsx";
@@ -48,28 +48,6 @@ const RadioGroup = Radio.Group;
 class EditForm extends React.Component {
     constructor(props) {
         super(props);
-    }
-
-    //取消认证
-    cancelIdenti() {
-        let { viewData } = this.props.$$state.toJS();
-        let id = viewData.id;
-
-        reqwest(
-            {
-                url: baseDir + `cum/customers/${id}/identifications`,
-                method: "PUT",
-                data: {
-                    param: {
-                        status: "N"
-                    }
-                }
-            },
-            data => {
-                this.props.action.closeIcbcVisible1(false);
-            }
-        );
-        //发Request请求
     }
 
     render() {
@@ -117,10 +95,9 @@ class EditForm extends React.Component {
                                 )}
                             </FormItem>
                             <Row className="form-bottom">
-                               {//------------注掉分组
-                               /*  <Row>
+                             {  /*  <Row>
                                     <Col span={2} className="form-title">
-                                        客户信息:
+                                        基本信息:
                                     </Col>
                                 </Row> */}
                                 <Row>
@@ -130,7 +107,7 @@ class EditForm extends React.Component {
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row type="flex" justify="end">
-                                                            <span className="import">*</span>客户名称：
+                                                            <span className="import">*</span>姓名：
                                                         </Row>
                                                     </Col>
                                                     <Col span={18} id="upload-form-item">
@@ -144,7 +121,7 @@ class EditForm extends React.Component {
                                                                         {
                                                                             required: true,
                                                                             message:
-                                                                                "请输入姓名!"
+                                                                                "请输入姓名"
                                                                         }
                                                                     ]
                                                                 }
@@ -189,8 +166,8 @@ class EditForm extends React.Component {
                                                 </Row>
                                             </Col>
                                         </Row>
-                                    {   /*  <Row className="row-bottom">
-                                            <Col span={12}>
+                                        <Row className="row-bottom">
+                                           <Col span={12}>
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -243,7 +220,7 @@ class EditForm extends React.Component {
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                        </Row> */}
+                                        </Row>
                                         <Row className="row-bottom">
                                             <Col span={12}>
                                                 <Row type="flex" align="middle">
@@ -322,7 +299,7 @@ class EditForm extends React.Component {
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                           { /* <Col span={12}>
+                                            <Col span={12}>
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -347,10 +324,10 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
-                                            </Col> */}
+                                            </Col>
                                         </Row>
                                         <Row className="row-bottom">
-                                         {  /*  <Col span={12}>
+                                            <Col span={12}>
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -382,7 +359,7 @@ class EditForm extends React.Component {
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
-                                            </Col> */}
+                                            </Col>
                                             <Col span={12}>
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
@@ -465,7 +442,7 @@ const cardForm = Form.create({
         let viewData = props.$$state.toJS().viewData;
         debugger
         for (let key in onChangeFild) {
-            if(onChangeFild[key].hasOwnProperty('value')){
+            if(onChangeFild[key].value){
                 viewData[key] = onChangeFild[key];
             }
         }

@@ -20,15 +20,11 @@ let trancFn=(data)=>{
             debugger
             if(data[key] && data[key].value){
                 data[key] = data[key].value.key
-            }else if(data[key]){
-               
-                data[key] = data[key].key
             }else{
-                data[key] = undefined
+                data[key] = data[key].key
             }
         }
 
-        //业务类型
         if (key == 'biztype') {
             debugger
             if(data[key] && data[key].value){
@@ -51,38 +47,14 @@ let trancFn=(data)=>{
             data.province_city_district = "";
         }
 
-        //上级客户
-        if(data.parentId){
-            debugger
-            if(data.parentId && data.parentId.hasOwnProperty('value')&& data.parentId.value.id){
-                data.parentId = data.parentId.value.id
-            }else if(data.parentId && !data.parentId.hasOwnProperty('value') && data.parentId.id){
-                data.parentId = data.parentId.id
-            }else{
-                data.parentId = undefined
-            }
-        }
-
         //详细地址
-        // if (data.street && data.street.value) {
-        //     data.longitude = data.street.value.location.lng
-        //     data.latitude = data.street.value.location.lat
-        //     data.street = data.street.value.address
-        // }else{
-        //     //如果不是带验证的值，就是编辑时付的值
-        //     if(data.street && typeof data.street == 'object'){
-        //         data.longitude = data.street.location.lng
-        //         data.latitude = data.street.location.lat
-        //         data.street = data.street.address
-        //     }
-        // }
-        if (data.street && typeof data.street == 'object') {
-            debugger
-            if(data.street.hasOwnProperty('value')){
-                data.longitude = data.street.value.location.lng
-                data.latitude = data.street.value.location.lat
-                data.street = data.street.value.address
-            }else{
+        if (data.street && data.street.value) {
+            data.longitude = data.street.value.location.lng
+            data.latitude = data.street.value.location.lat
+            data.street = data.street.value.address
+        }else{
+            //如果不是带验证的值，就是编辑时付的值
+            if(data.street && typeof data.street == 'object'){
                 data.longitude = data.street.location.lng
                 data.latitude = data.street.location.lat
                 data.street = data.street.address
@@ -852,19 +824,18 @@ export function closeIcbcVisible1(visible) {
 };
 
 //点击新增按钮的取业务类型项
-export function addCustomer(visiable, newType) {
+export function addCustomer(visiable) {
     debugger
     return dispatch => {
         dispatch({
             type: "CONTACTS_LIST_ADDCUSTOMER",
             visiable,
-            newType
         });
     };
 };
 
 
-//点击新增按钮获取业务类型
+/* //点击新增按钮获取业务类型
 export function addNewType() {
     return dispatch => {
         reqwest(
@@ -882,7 +853,7 @@ export function addNewType() {
         );
     };
 }
-
+ */
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data) {
     debugger

@@ -66,8 +66,8 @@ class List extends React.Component {
             },
             {
                 title: "态度",
-                dataIndex: "street"
-            }
+                dataIndex: "industryName"
+            },
         ];
         const that = this;
 
@@ -253,7 +253,7 @@ class List extends React.Component {
                 >
                     <ViewPanel ref="panelHeight" />
                 </SlidePanel>
-                {//------注掉导入导出
+                {//注掉导入导出
                     /* <LeadExport/> */}
             </div>
 

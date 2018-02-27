@@ -75,6 +75,7 @@
   color: #666;
   font-weight: 400;
   margin-right: 14px;
+  /* border-right: 1px solid #ccc; */
   border-radius: 0;
   height: 16px;
   line-height: 16px;
@@ -804,6 +805,7 @@
   color: #666;
   font-weight: 400;
   margin-right: 14px;
+  border-right: 1px solid #ccc;
   border-radius: 0;
   height: 16px;
   line-height: 16px;
@@ -816,16 +818,6 @@
   padding: 15px;
   padding-top: 0;
   box-sizing: border-box;
-}
-.custom-warpper .table-bg .cum-color-blue {
-  color: #3CA4FB;
-  display: flex;
-  align-items: center;
-}
-.custom-warpper .table-bg .cum-color-red {
-  color: #E64026;
-  display: flex;
-  align-items: center;
 }
 .custom-warpper .table-bg .iconfont {
   margin-left: 10px;
@@ -1183,10 +1175,12 @@
   position: relative;
 }
 .crm-list-card-map-modal .search-map {
+  width: 100%;
+  height: 50px;
   position: absolute;
   top: 10px;
   left: 10px;
-  z-index: 1000;
+  z-index: 10;
 }
 .crm-list-card-map-modal .cum-amap-infowindow {
   width: 250px;
@@ -1213,35 +1207,6 @@
 }
 .crm-list-card-map-modal .ant-input {
   border: 1px solid #3385FF;
-}
-.crm-list-card-map-modal .map-list {
-  position: relative;
-  background: white;
-  height: 350px;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-  overflow-y: auto;
-}
-.crm-list-card-map-modal .map-list ul {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-.crm-list-card-map-modal .map-list ul li {
-  width: 100%;
-  height: 70px;
-  cursor: pointer;
-}
-.crm-list-card-map-modal .map-list ul li .item {
-  height: 70px;
-  border-bottom: 1px solid #eeeeee;
-}
-.crm-list-card-map-modal .map-list ul li .item .import {
-  color: #1C7FEB;
-  font-size: 14px;
-}
-.crm-list-card-map-modal .map-list ul li .item .simple {
-  color: #999;
 }
 /*客户详情分配modal中样式*/
 .crm-list-panel-ownerUser-modal .height {
@@ -1271,8 +1236,4 @@
 .crm-list-panel-upload-modal img {
   width: 100%;
   height: auto;
-}
-/*上级客户modal样式*/
-.crm-list-card-super-model {
-  width: 100%;
 }

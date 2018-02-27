@@ -107,8 +107,7 @@ debugger
                                      <div className="customer-name">
                                         {viewData.name && viewData.name.value?viewData.name.value:viewData.name}
                                     </div>
-                             {//------------注掉关注/已关注
-                                 /*        <Row
+                                   {/*  <Row
                                         type="flex"
                                         align="middle"
                                         gutter={15}
@@ -116,7 +115,7 @@ debugger
                                     >
                                         <div className="checked-iconfont">
                                             <IcbcDetailInfo viewDataProps = {viewData}/>
-                                        </div>
+                                        </div> 
                                         <div>
                                             {viewData.followState ==0 ? (
                                                 <span className="red" onClick={this.attentionFn.bind(this,0)}>
@@ -128,13 +127,15 @@ debugger
                                                 </span>
                                             )}
                                         </div>
-                                    </Row> */}
+                                       
+                                    </Row>
+                                     */}
                                 </Row>
-                                {/* <Row className="address pointer">
+                            {  /*   <Row className="address pointer">
                                    {
                                        this.createAddress(viewData)
                                    }
-                                </Row>
+                                </Row> 
                                 <Row type='flex' align='middle'className="tags">
                                     {
                                         viewData.biztypeName ?
@@ -162,15 +163,16 @@ debugger
                                             <span className='tags-item'><span>{viewData.isGroupName}</span> </span>:''
                                         :''
                                     }
-                                </Row> */}
+                                </Row>
+                                */}
                             </Row>
                         </Col>
                     </Row>
                 </Col>
                 <Col span={15}>
-                    <Row type="flex" align="middle" justify="end" gutter={15} >
-                      {
-                          /*   {
+                   <Row type="flex" align="middle" justify="end" gutter={15} >
+                   { /* 
+                        {
                             viewData.enableState == 1?
                                 <div>
                                     <PersonChoiceModal viewData={viewData} changeViewData = {this.changeViewData.bind(this)}/>
@@ -194,16 +196,17 @@ debugger
                             <Button onClick={this.upgrade.bind(this)} className="customer_view_upgrade_customer">
                                 <i className="iconfont icon-shengji" />升级
                             </Button>
-                        </div> */}
+                        </div>
+                        */}
                         <div>
                             <Button onClick={this.btnEdit.bind(this)} className="customer_view_edit_customer">
                                 <i className="iconfont icon-bianji" />编辑
                             </Button>
                         </div>
-                    </Row>
+                    </Row> 
                 </Col>
             </Row>
-             <Row>
+            <Row>
                 <Row>
                     <Col span={4}>
                         <Row

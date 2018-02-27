@@ -26,9 +26,9 @@ class DetailObject extends React.Component {
         let {viewData} = this.props.$$state.toJS();
         return(
                 <Collapse
-                    defaultActiveKey={["1", "2", "3"]}
+                    defaultActiveKey={["1"]}
                 >
-                    <Panel key="1" header ='客户信息' >
+                    <Panel key="1" header ='联系人信息' >
                         <Row className="custom-info">
                             <Col span={12}>
                                 <Row
@@ -41,7 +41,7 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            客户类型:
+                                            部门:
                                         </span>
                                     </Col>
                                     <Col
@@ -67,7 +67,7 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            行业:
+                                            职务:
                                         </span>
                                     </Col>
                                     <Col
@@ -95,7 +95,7 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            客户等级:
+                                            手机:
                                         </span>
                                     </Col>
                                     <Col
@@ -121,7 +121,7 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            渠道类型:
+                                            办公电话:
                                         </span>
                                     </Col>
                                     <Col
@@ -149,7 +149,33 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            客户状态:
+                                            邮箱:
+                                        </span>
+                                    </Col>
+                                    <Col
+                                        span={16}
+                                        className="custom-info-content"
+                                    >
+                                        <span>
+                                            {
+                                                viewData.stateName
+                                            }
+                                        </span>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col span={12}>
+                                <Row
+                                    type="flex"
+                                    gutter={10}
+                                    align="middle"
+                                >
+                                    <Col
+                                        span={8}
+                                        className="custom-info-title"
+                                    >
+                                        <span>
+                                            爱好:
                                         </span>
                                     </Col>
                                     <Col
@@ -165,117 +191,7 @@ class DetailObject extends React.Component {
                                 </Row>
                             </Col>
                         </Row>
-                    </Panel>
-                    <Panel key="2" header="&nbsp;" header='联系方式'>
-                        <Row className="custom-info">
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            电话:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.tel
-                                            }
-                                        </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            邮箱:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.email
-                                            }
-                                        </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className="custom-info">
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            营业额(万元):
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.turnover
-                                            }
-                                        </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            员工数:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.employeeNum
-                                            }
-                                        </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className="custom-info">
+                         <Row className="custom-info">
                             <Col span={12}>
                                 <Row
                                     type="flex"
@@ -296,185 +212,9 @@ class DetailObject extends React.Component {
                                     >
                                         <span>
                                             {
-                                                viewData.remark
+                                                viewData.stateName
                                             }
                                         </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Panel>
-                    <Panel key="3" header="&nbsp;" header='客户身份'>
-                        <Row className="custom-info">
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            客户全称:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.fullname
-                                            }
-                                        </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            注册资本:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.regCapital
-                                            }
-                                        </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className="custom-info">
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                    style={{
-                                        height: "55px"
-                                    }}
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            法定代表人:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={16}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.legalRepresent
-                                            }
-                                        </span>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            纳税人识别号:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={12}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.taxpayerNo
-                                            }
-                                        </span>
-                                    </Col>
-                                    <Col span={4}>
-                                        <UploadImg/>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        </Row>
-                        <Row className="custom-info">
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            工商注册号:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={12}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.bizRegno
-                                            }
-                                        </span>
-                                    </Col>
-                                    <Col span={4}>
-                                        <UploadImg/>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col span={12}>
-                                <Row
-                                    type="flex"
-                                    gutter={10}
-                                    align="middle"
-                                >
-                                    <Col
-                                        span={8}
-                                        className="custom-info-title"
-                                    >
-                                        <span>
-                                            组织机构代码:
-                                        </span>
-                                    </Col>
-                                    <Col
-                                        span={12}
-                                        className="custom-info-content"
-                                    >
-                                        <span>
-                                            {
-                                                viewData.orgCode
-                                            }
-                                        </span>
-                                    </Col>
-                                    <Col span={4}>
-                                        <UploadImg/>
                                     </Col>
                                 </Row>
                             </Col>

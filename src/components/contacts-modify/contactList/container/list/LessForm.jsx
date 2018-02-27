@@ -55,7 +55,7 @@ class LessForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("phone")(
-                                 <Input type="text" placeholder="电话" />
+                                     <Input type="text" placeholder="电话" />
                                 )}
                             </FormItem>
                         </Col>
@@ -73,8 +73,8 @@ class LessForm extends React.Component {
                         <Col span={6}>
                             <div className="more-btn">
                                 <Button htmlType="submit">查询</Button>
-                              {//--------注掉扩展查询条件
-                                  /*   <span
+                             {  //----------注掉更多按钮
+                                 /*  <span
                                     onClick={this.moreFn.bind(this)}
                                     className="more-up"
                                 >
