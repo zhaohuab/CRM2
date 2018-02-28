@@ -89,7 +89,8 @@ class Funnel extends React.Component {
                         <Col span={16}>
                             销售漏斗
                         </Col>
-                        <Col span={8}>
+                         {/* 项目第一版移除  */}
+                        {/* <Col span={8}>
                             <Row>
                                 {
                                     enumData.biztypeList && enumData.biztypeList.length > 0 ?
@@ -99,7 +100,7 @@ class Funnel extends React.Component {
                                 }
 
                             </Row>
-                        </Col>
+                        </Col> */}
                     </Row>
                 }>
                     <div>

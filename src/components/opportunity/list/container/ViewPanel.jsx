@@ -10,7 +10,7 @@ import * as Actions from "../action";
 import SaleStage from './SaleStage';
 import WinCard from './WinCard';
 import LostCard from './LostCard';
-
+import RelObject from './RelObject';
 class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -130,10 +130,11 @@ class ViewPanel extends React.Component {
                                     <span>{this.props.data.name}</span>
                                     <span>
                                     </span>
-                                    <span>
+                                     {/* 项目第一版移除  */}
+                                    {/* <span>
                                         <i className="iconfont icon-guanzhu" />
                                         <span>关注</span>
-                                    </span>
+                                    </span> */}
 
                                 </div>
                                 <div className="project-label-group">
@@ -150,41 +151,48 @@ class ViewPanel extends React.Component {
                                 <div>
                                     <Row type="flex"
                                         gutter={5}>
-                                        <Col>
+                                        {/* 项目第一版移除  */}
+                                        {/* <Col>
                                             <Button
                                                 onClick={this.btnEdit.bind(this, editData.id)}
                                             >
                                                 <i className="iconfont icon-bianji" />编辑
-                            </Button>
+                                            </Button>
                                         </Col>
                                         <Col>
                                             <Button
                                                 onClick={this.btnEdit.bind(this)}
                                             >
                                                 <i className="iconfont icon-bianji" />变更负责人
-                            </Button>
-                                        </Col><Col>
+                                            </Button>
+                                        </Col> */}
+
+                                        <Col>
                                             <Button
                                                 onClick={this.props.action.showLostCard.bind(true)}
                                             >
                                                 <i className="iconfont icon-bianji" />丢单
-                            </Button>
-                                        </Col><Col>
+                                            </Button>
+                                        </Col>
+                                        <Col>
                                             <Button
                                                 onClick={this.props.action.showWinCard.bind(true)}
                                             >
                                                 <i className="iconfont icon-bianji" />赢单
-                            </Button>
+                                            </Button>
+                                        </Col>
+                                        <Col>
+                                            <Button
+                                                onClick={this.props.btnClosePanel.bind(this)}
+                                            >
+                                                X
+                                            </Button>
                                         </Col>
                                     </Row>
                                 </div>
                             }
 
-                            <Button
-                                onClick={this.props.btnClosePanel.bind(this)}
-                            >
-                                X
-                            </Button>
+                            
 
                         </Col>
                     </Row>
@@ -265,7 +273,7 @@ class ViewPanel extends React.Component {
                                                         <Row className="detail-msg-line">
                                                             <Col className="detail-msg-line-left" span={12}>赢单原因：</Col><Col span={12}>{editData.winReasonName}</Col>
                                                         </Row>
-                                                        
+
                                                     </Col>
                                                     <Col span={12}>
                                                         <Row className="detail-msg-line">
@@ -286,12 +294,14 @@ class ViewPanel extends React.Component {
                                                         <Row className="detail-msg-line">
                                                             <Col className="detail-msg-line-left" span={12}>丢单原因：</Col><Col span={12}>{editData.failReasonName}</Col>
                                                         </Row>
-                                                       
+
                                                     </Col>
                                                 </Row>
                                             </Card>
                                         </TabPane>
-                                        <TabPane tab="相关" key="2">Content of Tab Pane 2</TabPane>
+                                        <TabPane tab="相关" key="2">
+                                        <RelObject JoinPagination={this.state.JoinPagination}/>
+                                        </TabPane>
                                         <TabPane tab="产品" key="3">
                                             <Table
                                                 size="middle"
