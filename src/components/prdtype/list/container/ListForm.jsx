@@ -18,17 +18,17 @@ class PrdClassForm extends React.Component {
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
-                sm: { span: 6 },
+                sm: { span: 8 },
             },
             wrapperCol: {
                 xs: { span: 24 },
-                sm: { span: 14 },
+                sm: { span: 10 },
             },
         };
         const { getFieldDecorator } = this.props.form;
         return (
             <div>               
-                <Form {...formItemLayout}  className="login-form home-form" >
+                <Form {...formItemLayout} className="prdtype-form" >
                     <div>
                         { getFieldDecorator('path', {
                         })(
@@ -39,14 +39,14 @@ class PrdClassForm extends React.Component {
                         {getFieldDecorator('code', {
                             rules: [{ required: true, message: '' }],
                         })(
-                             <Input  type="text" placeholder=" "/>
+                            <Input  type="text" placeholder=" "/>
                         )}
                     </FormItem>
                     <FormItem {...formItemLayout} label='名称'>
                         {getFieldDecorator('name', {
                             rules: [{ required: true, message: '' }],
                         })(
-                            <CuperiorCustomer width={500} />
+                            <Input  type="text" placeholder=" "/>
                         )}
                     </FormItem>
                     <FormItem
@@ -57,13 +57,6 @@ class PrdClassForm extends React.Component {
                             rules: [],
                         })(
                             <FatherClassInput/>
-                        )}
-                    </FormItem>
-                    <FormItem  { ...formItemLayout } label='属性组'>
-                        { getFieldDecorator('attrGroupId', {
-                            rules: [],
-                        })(
-                            <AttrsGrpRef />
                         )}
                     </FormItem>
                     <FormItem  { ...formItemLayout } label='对应ERP'>
