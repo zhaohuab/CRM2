@@ -35,8 +35,8 @@ import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
 import CityChioce from "../../../../common/cityChioce/CityChioce";
 import InputDisable from './InputDisable'
+import SuperiorCustomer from './SuperiorCustomer'
 //import OwnUser from './OwnUser'
-//import ResponseDepart from './ResponseDepart'
 
 import Int from "utils/components/int";
 import Float from "utils/components/float/index.jsx";
@@ -532,6 +532,31 @@ class EditForm extends React.Component {
                                         </Col>
                                     </Col>
                                 </Row>
+                                <Row className="row-bottom">
+                                    <Col offset={1}>
+                                        <Col span={12}>
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>上级客户：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "parentId"
+                                                        )(<SuperiorCustomer/>)}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Col>
+                                </Row>
                             </Row>
                             <Row className="form-bottom">
                                 <Row>
@@ -791,7 +816,7 @@ const cardForm = Form.create({
         let viewData = props.$$state.toJS().viewData;
         debugger
         for (let key in onChangeFild) {
-            if(onChangeFild[key].value){
+            if(onChangeFild[key].hasOwnProperty('value')){
                 viewData[key] = onChangeFild[key];
             }
         }
