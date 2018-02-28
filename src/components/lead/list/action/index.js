@@ -8,6 +8,26 @@ const fetchData = (type, payload) => {
         payload
     };
 };
+let changeSearchData = (data) => {
+    for (let key in data) {
+        if (key == 'isGroup'|| key == 'cannelType'|| key == 'enableState'|| key == 'level'|| key == 'state'|| key == 'type') {
+            if(data[key] && data[key].key){
+                data[key] = data[key].key
+            }
+        }
+        if (key == 'province_city_district' && data[key]) {
+            data.province = data[key][0];
+            data.city = data[key][1];
+            data.district = data[key][2];
+            delete data.province_city_district;
+        }
+
+        if (key == 'industry' && data[key]) {
+            data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+        }
+    }
+    return data
+}
 
 function transData(searchMap) {
     if (searchMap == null) {
@@ -49,8 +69,8 @@ const transReceiveData = (data) => {
         if (data.data[i].createdTime) {
             data.data[i].createdTime = transDate(new Date(data.data[i].createdTime.time))
         }
-        if (data.data[i].followTime) {
-            data.data[i].followTime = transDate(new Date(data.data[i].followTime.time))
+        if (data.data[i].modifiedTime) {
+            data.data[i].modifiedTime = transDate(new Date(data.data[i].modifiedTime.time))
         }
         if (data.data[i].assignTime) {
             data.data[i].assignTime = transDate(new Date(data.data[i].assignTime.time))
@@ -69,6 +89,9 @@ const transReceiveDataOne = (data) => {
     }
     if (data.assignTime) {
         data.followTime = transDate(new Date(data.assignTime.time))
+    }
+    if(data.modifiedTime){
+        data.modifiedTime = transDate(new Date(data.modifiedTime.time))
     }
     return data;
 }
@@ -108,26 +131,45 @@ export function closeUserCard () {
 	}
 };
 
-export function assignPeople(ids,selectedUserRows){
+
+export function assignPeople(pagination,ids,selectedUserRows,searchMap){
+
     debugger
     return dispatch => {
         reqwest(
             {
-                url: url.lead + "/assigngroup",
-                method: "PUT",
+                url: url.lead + "/assign",
+                method: "POST",
                 data: {
                     param: {
                         ids:ids.join(","),
-                       
+                        id:selectedUserRows[0].id,
+                        orgId:selectedUserRows[0].orgId,
+                        deptId:selectedUserRows[0].deptId
                     }
                 }
             },
             data => {  
-                debugger
-                dispatch(
-                    fetchData("CLUE_LIST_ASSIGNLISTDATE", {
-                        data: data
-                    })
+                reqwest(
+                    {
+                        url: url.lead,
+                        method: "get",
+                        data: {
+                            param: {
+                                ...pagination,
+                                searchMap: transData(searchMap),
+                            }
+                        }
+                    },
+                    data => {
+                        debugger
+                        dispatch(
+                            fetchData("CLUE_LIST_GETDATA", {
+                                data: transReceiveData(data),
+                                pagination
+                            })
+                        );
+                    }
                 );
             }
         );
@@ -203,9 +245,11 @@ export function setEnableState(ids, state, page, searchMap) {
 
 
 //获取数据、基础查询数据、扩展查询数据
-export function getListData(pagination, searchMap) {
+export function getListData(pagination, searchMap,option) {
+    debugger
     return dispatch => {
         dispatch(fetchData("CLUE_LIST_SAVESEARCHMAP", searchMap));
+       // dispatch(fetchData("CLUE_LIST_SAVESOPTION", option))
         debugger
         reqwest(
             {
@@ -215,6 +259,7 @@ export function getListData(pagination, searchMap) {
                     param: {
                         ...pagination,
                         searchMap: transData(searchMap),
+                        option
                     }
                 }
             },
@@ -257,6 +302,7 @@ export function getEnumData() {
 
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data) {
+    debugger
     return {
         type: "CLUE_LIST_SEARCHMAP",
         data
@@ -385,8 +431,29 @@ export function editCardFn(changeData) {
         changeData
     }
 }
+export function getDynamic(id) {
+    return dispatch => {
+        debugger
+        reqwest(
+            {
+                url: url.lead + "/" + id+'/dynamics',
+                method: "GET",
+                data: {
+                }
+            },
+            data => {
+                debugger
+                dispatch({
+                    type: "CLUE_LIST_GETDYNAMIC",
+                    data: transReceiveDataOne(data)
+                });
 
-//展示面板，把点击某个客户的所有值，放在redux中
+            }
+        );
+    };
+
+}
+//详情展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id) {
     return dispatch => {
         //debugger
@@ -402,7 +469,7 @@ export function showViewForm(visible, id) {
                 dispatch({
                     type: "CLUE_LIST_SHOWVIEWFORM",
                     visible,
-                    data: transReceiveDataOne(appendAddress(data))
+                    data: transReceiveDataOne(data)
                 });
 
             }
@@ -413,7 +480,7 @@ export function showViewForm(visible, id) {
 //详情页编辑 
 export function showFormEdit(visible){
     return{
-        type:'CUSTOMERCOMPANY_LIST_SHOWEDITFORM',
+        type:'CLUE_DETAILLIST_SHOWEDITFORM',
         visible
     }
 }
@@ -449,7 +516,7 @@ let getIndustry = (industry)=>{
     });
 }
 
-//新增、修改客户保存
+//新增、修改客户保存,行业处理 
 export function listFormSave(data) {
     
   //  data = trancFn(data);

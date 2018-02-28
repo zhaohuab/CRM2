@@ -242,7 +242,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.email
+                                            viewData.cumSize
                                         }
                                     </span>
                                 </Col>
@@ -270,7 +270,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.website
+                                            viewData.sourceName
                                         }
                                     </span>
                                 </Col>
@@ -296,7 +296,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.postName
+                                            viewData.industryName
                                         }
                                     </span>
                                 </Col>
@@ -324,7 +324,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.addCity
+                                            viewData.qq
                                         }
                                     </span>
                                 </Col>
@@ -350,7 +350,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.address
+                                            viewData.wechat
                                         }
                                     </span>
                                 </Col>
@@ -378,7 +378,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.stateName
+                                            viewData.tel
                                         }
                                     </span>
                                 </Col>
@@ -404,7 +404,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.closeReasonName
+                                            viewData.email
                                         }
                                     </span>
                                 </Col>
@@ -432,7 +432,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.followTime
+                                            viewData.website
                                         }
                                     </span>
                                 </Col>
@@ -458,7 +458,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.remarks
+                                            viewData.postName
                                         }
                                     </span>
                                 </Col>
@@ -486,7 +486,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.ownerUserInfo ? viewData.ownerUserInfo.name : ''
+                                            viewData.ownerUserName ? viewData.ownerUserName: ''
                                         }
                                     </span>
                                 </Col>
@@ -512,7 +512,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.ownerUserInfo ? viewData.ownerUserInfo.deptName : ''
+                                            viewData.ownerDeptName ? viewData.ownerDeptName : ''
                                         }
                                     </span>
                                 </Col>
@@ -540,7 +540,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.ownerUserInfo ? viewData.ownerUserInfo.name : ''
+                                          viewData.ownerUserName ? viewData.ownerUserName: ''
                                         }
                                     </span>
                                 </Col>
@@ -566,7 +566,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.ownerUserInfo ? viewData.ownerUserInfo.deptName : ''
+                                           viewData.createdTime ? viewData.createdTime : ''
                                         }
                                     </span>
                                 </Col>
@@ -594,7 +594,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.ownerUserInfo ? viewData.ownerUserInfo.name : ''
+                                          viewData. assignTime? viewData. assignTime : ''
                                         }
                                     </span>
                                 </Col>
@@ -620,7 +620,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.ownerUserInfo ? viewData.ownerUserInfo.deptName : ''
+                                            viewData.modifiedTime ? viewData.modifiedTime : ''
                                         }
                                     </span>
                                 </Col>
@@ -648,7 +648,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.ownerUserInfo ? viewData.ownerUserInfo.name : ''
+                                           // viewData.feedback ? viewData.feedback : ''
                                         }
                                     </span>
                                 </Col>
@@ -674,7 +674,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.ownerUserInfo ? viewData.ownerUserInfo.deptName : ''
+                                           // viewData.ownerUserInfo ? viewData.ownerUserInfo.deptName : ''
                                         }
                                     </span>
                                 </Col>

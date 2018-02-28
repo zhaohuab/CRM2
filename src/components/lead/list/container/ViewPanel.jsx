@@ -153,14 +153,14 @@ class ViewPanel extends React.Component {
                                         <Row className="tags">
                                             <div className="tag-group">
                                                 {viewData.sourceName ? (
-                                                    <span>
+                                                    <span className='tags-item'>
                                                         {viewData.sourceName}
                                                     </span>
                                                 ) : (
                                                         <div />
                                                     )}
                                                 {viewData.stateName ? (
-                                                    <span>
+                                                    <span className='tags-item'>
                                                         {viewData.stateName}
                                                     </span>
                                                 ) : (
@@ -246,7 +246,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {/* {viewData.sourceName} */}
+                                    {viewData.sourceName}
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -255,7 +255,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {/* {viewData.stateName} */}
+                                    {viewData.stateName}
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -264,7 +264,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                    {/* {viewData.assignTime} */}
+                                    {viewData.assignTime}
                                 </Row>
                             </Col>
                             <Col span={6}>

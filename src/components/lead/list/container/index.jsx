@@ -33,7 +33,7 @@ class Clue extends React.Component {
                 title: "主题",
                 dataIndex: "title",
                 render: (text, record) => (
-                    <div className="crm-pointer"
+                    <div className="crm-pointer title-color"
                         onClick={this.slideShow.bind(this, record)}
                     >
                         {record.title}
@@ -65,7 +65,7 @@ class Clue extends React.Component {
                 dataIndex: "cumSizeSum",
                 render: (text, record) => (
                     <div>
-                        {record.cumSizeSum?record.cumSizeSum + '人':''}
+                        {record.cumSizeSum ? record.cumSizeSum + '人' : ''}
                     </div>
                 )
             },
@@ -117,6 +117,7 @@ class Clue extends React.Component {
     slideShow(record) {
         debugger
         this.props.action.showViewForm(true, record.id);
+        this.props.action.getDynamic(record.id)
     }
     //隐藏面版
     slideHide() {
@@ -275,13 +276,21 @@ class Clue extends React.Component {
             searchMap //查询条件
         );
     }
+    //分配按钮
     assigin() {
-       this.props.action.assiginLead(true)
-       this.props.action.assignListData(
-        this.props.$$state.get("assignPagination").toJS(), 
-        '');
+        this.props.action.assiginLead(true)
+        this.props.action.assignListData(
+            this.props.$$state.get("assignPagination").toJS(),
+            '');
     }
-
+    // 头部筛选我负责查询
+    onHandleChange(value) {
+        let {searchMap}=this.props.$$state.toJS();
+        searchMap.option=value;
+        this.props.action.getListData(
+            this.props.$$state.get("pagination").toJS(),searchMap
+        );
+    }
     render() {
         debugger;
         const page = this.props.$$state.get("data").toJS();
@@ -346,13 +355,13 @@ class Clue extends React.Component {
                                     <Col span={18}>
                                         <Row type="flex" align="middle">
                                             <Col className="select-recover">
-                                                <Select defaultValue="我负责" >
-                                                    <Option value="1">全部</Option>
-                                                    <Option value="2">我负责</Option>
-                                                    <Option value="3">我参与</Option>
-                                                    <Option value="4">我关注</Option>
-                                                    <Option value="5">成功转化</Option>
-                                                    <Option value="6">失败关闭</Option>
+                                                <Select defaultValue="我负责" onChange={this.onHandleChange.bind(this)}>
+                                                    <Option value="0">全部</Option>
+                                                    <Option value="1">待分配线索</Option>
+                                                    <Option value="2">已分配线索</Option>
+                                                    <Option value="3">成功转化</Option>
+                                                    <Option value="4">我负责</Option>
+                                                    <Option value="5">失败关闭</Option>
                                                 </Select>
                                             </Col>
                                             <Col span="21">
@@ -457,11 +466,11 @@ class Clue extends React.Component {
                     onCancel={this.onCancel.bind(this)}
                     width={900}
                     maskClosable={false}
-                    footer={[
-                        <Button key="back" onClick={this.onOk.bind(this)}>保存</Button>,
-                        <Button key="submit" onClick={this.onCancel.bind(this)}>取消</Button>,
-                        // <Button key="submit1" onClick={this.handleOk.bind(this)}>保存并新建</Button>
-                    ]}
+                // footer={[
+                //     <Button key="back" onClick={this.onOk.bind(this)}>保存</Button>,
+                //     <Button key="submit" onClick={this.onCancel.bind(this)}>取消</Button>,
+                //     // <Button key="submit1" onClick={this.handleOk.bind(this)}>保存并新建</Button>
+                // ]}
                 >
                     <div className="modal-height">
                         <Card

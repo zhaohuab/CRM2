@@ -29,6 +29,7 @@ import OwnUser from './OwnUser'
 import ResponseDepart from './ResponseDepart'
 import Department from './changeLead/Industry'
 import Industry from "../../../common/industry";
+import Departments from '../../../refs/departments'
 class MoreForm extends React.Component {
     handleSearch(e) {
         e.preventDefault();
@@ -95,7 +96,7 @@ class MoreForm extends React.Component {
                                 {getFieldDecorator(
                                     "ownerDeptName"
                                 )(
-                                    <Department/>
+                                    <Departments/>
                                     )}
                             </FormItem>
                         </Col>
@@ -177,11 +178,12 @@ const More = Form.create({
         debugger
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {
-            if (onChangeFild[key].value.key) {
-                searchMap[key] = onChangeFild[key].value.key;
-            } else {
-                searchMap[key] = onChangeFild[key].value;
-            }
+            searchMap[key] = onChangeFild[key].value;
+            // if (onChangeFild[key].value.key) {
+            //     searchMap[key] = onChangeFild[key].value.key;
+            // } else {
+            //     searchMap[key] = onChangeFild[key].value;
+            // }
         }
         props.searchMapFn(searchMap);
     }

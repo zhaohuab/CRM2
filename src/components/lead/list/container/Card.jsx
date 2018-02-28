@@ -177,7 +177,7 @@ class EditForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row type="flex" justify="center">
-                                <Col span={11} pull={5}>
+                                <Col span={11} pull={5}  style={{marginRight:"34px"}}>
                                     <FormItem label="网址" {...formItemLayout}>
                                         {getFieldDecorator("website", {
 
@@ -187,9 +187,9 @@ class EditForm extends React.Component {
                             </Row>
                             <Row type="flex" justify="center">
 
-                                <Col span={24} >
+                                <Col span={22} >
                                     <Row type="flex">
-                                        <Col span={4}>
+                                        <Col span={3} style={{marginLeft:"13px"}}>
                                             <Row
                                                 type="flex"
                                                 justify="end"
@@ -197,9 +197,8 @@ class EditForm extends React.Component {
                                                 <div>备注：</div>
                                             </Row>
                                         </Col>
-                                        <Col span={20} className='remarks'>
+                                        <Col span={20} className='remarks' style={{width:'85%'}}>
                                             <FormItem
-                                                {...formItemLayout1}
                                             >
                                                 {getFieldDecorator(
                                                     "remarks",
@@ -230,7 +229,7 @@ class EditForm extends React.Component {
 const CardForm = Form.create({
     mapPropsToFields: (props) => {
         //把redux中的值取出来赋给表单
-        //debugger
+    debugger
         let viewData = props.$$state.toJS().editData;
 
         let value = {};
@@ -248,7 +247,7 @@ const CardForm = Form.create({
     },
 
     onFieldsChange: (props, onChangeFild) => {
-        //debugger
+        debugger
         //往redux中写值
         let viewData = props.$$state.toJS().editData;
 
@@ -258,16 +257,7 @@ const CardForm = Form.create({
                 viewData[key] = onChangeFild[key].value.key;
             } else {
                 viewData[key] = onChangeFild[key].value;
-                // if (key == "address") {
-                //     viewData[key] = onChangeFild[key].value;
-                //     // let value = onChangeFild[key].value;
-                //     // viewData["address"] = value.address;
-                // } else if (key == "province_city_district") {
-                //     viewData[key] = onChangeFild[key].value.result;
-                //     viewData["cityMyself"] = onChangeFild[key].value.custom;
-                // } else {
-                //     viewData[key] = onChangeFild[key].value;
-                // } //把对像拆成字段  
+                 
             }
         }
         props.action.editCardFn(viewData);

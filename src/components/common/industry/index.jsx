@@ -39,7 +39,7 @@ export default class Industry extends React.Component {
 
     //获取树的数据
     getIndustry(flag) {
-        
+        debugger
         //这里需要Request请求
         if (!flag) {
             this.setState(
@@ -134,11 +134,12 @@ export default class Industry extends React.Component {
 
     //下拉面板onSearch
     onDropDownSearch(){
-        
+        this.getIndustry()
         this.state.value
     }
     
     onDropDownChange(value){
+        debugger
         this.setState({
             value
         })

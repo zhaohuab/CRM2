@@ -57,16 +57,18 @@ class UserTable extends Component {
 
     //点击保存按钮
     onSaveUser() {
-        debugger
+       debugger
         const ids = this.props.$$state.get("selectedRowKeys").toJS();
-        let selectedUserRows = this.props.$$state.get("selectedUserRows").toJS();
-        if (selectedUserRowKeys.length == 0) {
+        let selected = this.props.$$state.get("selectedUserRows").toJS();
+
+        if (selected.length == 0) {
             message.error('至少选择一条数据')
             return
         }
+        
         // const userPagination = this.props.$$state.get("userPagination").toJS();
-         this.props.action.assignPeople(ids, selectedUserRows);
-        // this.props.action.closeUserCard();
+         this.props.action.assignPeople(this.props.$$state.get("pagination").toJS(),ids, selected);
+         this.props.action.closeUserCard();
     }
 
     onCloseUserCard() {

@@ -10,6 +10,7 @@ let $$initialState = {
         page: 1
     },
     searchMap: {}, //存放查询条件
+    option:'',
     selectedRows: [],
     selectedRowKeys: [],
 
@@ -23,7 +24,7 @@ let $$initialState = {
     viewState: false,//获取view面板详细信息
     data: {}, //table展示的数据 
 
-    assignData:{},
+    assignData: {},
     moreShow: false,//查询表单的显隐
     enumData: {//查询条件数据
         level: [],
@@ -33,7 +34,9 @@ let $$initialState = {
     },
     colseVisible: false, //线索关闭表单显示
     assginCardVisible: false,// 分派显示
-    userCardName:'' //分配值显示
+    userCardName: '' ,//分配值显示
+    dynamicData:[]// 动态数据
+
 };
 
 function pageAdd(page, item) {
@@ -75,28 +78,33 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 colseVisible: action.visible,
             });
 
-            case 'CLUE_LIST_SAVEUSERCARDNAME':
-        debugger
-			return $$state.merge({
-				userCardName: action.payload,
-			})
-        //分配选择
-        case 'CLUE_LIST_SELECTUSERROW':
-        let xxx=action;
-        console.log(1111,action)
+        case 'CLUE_LIST_SAVEUSERCARDNAME':
             debugger
             return $$state.merge({
-               selectedUserRowKeys: action.payload.selectedRowKeys,
+                userCardName: action.payload,
+            })
+            //动态
+            case 'CLUE_LIST_GETDYNAMIC':
+            return $$state.merge({
+                dynamicData: action.data
+            });
+        //分配选择
+        case 'CLUE_LIST_SELECTUSERROW':
+            let xxx = action;
+            console.log(1111, action)
+            debugger
+            return $$state.merge({
+                selectedUserRowKeys: action.payload.selectedRowKeys,
                 selectedUserRows: action.payload.selectedRows
             })
-       //分配关闭
-            case 'CLUE_LIST_CLOSEUSERCARD':
-			return $$state.merge({
-				assginCardVisible: false,
-				selectedUserCardRowKeys: [],
-				selectedUserCardRows: [],
-				userCardName: ''
-			})
+        //分配关闭
+        case 'CLUE_LIST_CLOSEUSERCARD':
+            return $$state.merge({
+                assginCardVisible: false,
+                selectedUserCardRowKeys: [],
+                selectedUserCardRows: [],
+                userCardName: ''
+            })
         //查询各种table数据 停启用
         case "CUSTOMERCOMPANY_LIST_GETDATA":
             let nn = action;
@@ -111,13 +119,13 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({
                 assginCardVisible: action.visible
             });
-            //分配人员数据
-       case 'CLUE_LIST_ASSIGNLISTDATE':
-       debugger
-       return $$state.merge({
-           assignData: action.payload.data,
-        
-       });
+        //分配人员数据
+        case 'CLUE_LIST_ASSIGNLISTDATE':
+            debugger
+            return $$state.merge({
+                assignData: action.payload.data,
+
+            });
 
         case "CLUE_LIST_GETDATA": //查询各种table数据
             debugger
@@ -129,7 +137,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({
                 searchMap: action.payload == undefined ? {} : action.payload
             });
-
+        case 'CLUE_LIST_SAVESOPTION':
+        debugger
+            return $$state.merge({
+                option: action.payload == undefined ? '' : action.payload
+            });
         case "CLUE_LIST_SELECTCLUE": //保存已选择的数据
             return $$state.merge({
                 selectedRows: Immutable.fromJS(action.payload.selectedRows),
@@ -154,7 +166,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({ moreShow: !visit });
 
         case "CLUE_LIST_SEARCHMAP": //存放扩展、基础查询条件
-            //debugger
+            debugger
             return $$state.merge({
                 searchMap: action.data
             });
@@ -231,7 +243,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 newData.district.toString()
             ];
             newData.industryId = {
-                id:newData.industryId,
+                id: newData.industryId,
                 name: newData.industryName
             };
             return $$state.merge({
@@ -246,7 +258,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         //点击编辑按钮
-        case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
+        case 'CLUE_DETAILLIST_SHOWEDITFORM':
             let EditStreetData = $$state.get('editData').toJS();
             let ccccc = Immutable.fromJS(EditStreetData).toJS()
 
@@ -274,11 +286,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             //     name: actionData.parentName
             // };
             //actionData.followState = action.state.followState;
-            actionData.province_city_district = [
-                actionData.province.toString(),
-                actionData.city.toString(),
-                actionData.district.toString()
-            ];
+            // actionData.province_city_district = [
+            //     actionData.province.toString(),
+            //     actionData.city.toString(),
+            //     actionData.district.toString()
+            // ];
 
             // actionData.ownerUserId = { id: actionData.salesVOs[0].ownerUserId, name: actionData.salesVOs[0].ownerUserName }
             return $$state.merge({
