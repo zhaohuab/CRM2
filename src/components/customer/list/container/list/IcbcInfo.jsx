@@ -117,6 +117,7 @@ class IcbcInfo extends React.Component {
 
         let reSpace=/^\s*(.*?)\s*$/;
         //把收尾空格去掉
+        addIcbcName = addIcbcName.hasOwnProperty('value')?addIcbcName.value:addIcbcName
         addIcbcName = addIcbcName?addIcbcName.replace(reSpace,'$1'):addIcbcName;
         icbcName = icbcName?icbcName.replace(reSpace,'$1'):icbcName;
         this.setState({
