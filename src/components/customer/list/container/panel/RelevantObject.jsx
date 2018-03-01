@@ -308,7 +308,7 @@ class RelevantObject extends React.Component {
                                 }
                         </div>
                     </Panel>
-                    <Panel header={this.headerFn({title:'升级申请',index:3})}  key="3" >
+                    {/* <Panel header={this.headerFn({title:'升级申请',index:3})}  key="3" >
                         <div className='business-chance'>
                             {
                                 tempUpgrade && tempUpgrade.length?
@@ -343,7 +343,7 @@ class RelevantObject extends React.Component {
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                            {/* <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span> */}
+                                           <span className='del'><i className='iconfont icon-canyuren-shanchu'/></span> 
                                         </Row>
                                     )
                                 }):'暂无数据'
@@ -353,7 +353,7 @@ class RelevantObject extends React.Component {
                                 <div className='business-chance-item upgrade-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
                             }
                         </div>
-                    </Panel>
+                    </Panel> */}
                     <Panel header={this.headerFn({title:'文件',index:4})}  key="4" >
                         <RelFile files={tempFile} onDeleteFile={this.onDeleteFile.bind(this)}/>
                     </Panel>

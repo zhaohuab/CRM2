@@ -44,8 +44,7 @@ export default class OwnUser extends React.Component {
     }
 
     //树选中方法
-    treeSelect(page,pageSize,selectedKeys){
-        
+    treeSelect(page,pageSize,selectedKeys){        
         let deptId = selectedKeys[0]//部门id
         let searchMap = {deptId}
         reqwest(
@@ -141,7 +140,6 @@ export default class OwnUser extends React.Component {
     }
 
     getList(flag){
-        
         if(this.props.disabled && this.props.viewData.id){
             return
         }
@@ -154,6 +152,7 @@ export default class OwnUser extends React.Component {
                     data:{
                         param:{
                             orgType:3,
+                            type:1
                         }
                     }
                 },

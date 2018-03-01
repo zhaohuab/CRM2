@@ -146,6 +146,8 @@ class IcbcDetailInfo extends React.Component {
                         viewData["taxpayerNo"] = item.value;
                     } else if (item.key == "remark") {
                         viewData["remark"] = item.value;
+                    } else if (item.key == "website") {
+                        viewData["website"] = item.value;
                     }
                 });
                 viewData = that.changeCustomer(viewData)
@@ -246,7 +248,7 @@ class IcbcDetailInfo extends React.Component {
 
         let cssCode = this.props.$$menuState.get("cssCode");
         let { viewData, icbcInfo1 } = this.props.$$state.toJS()
-        let icbcName = viewData.name;
+        let icbcName = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name;
         let verifyId = viewData.verifyId
         if (flag) {
             //如果面板是显示状态
@@ -265,7 +267,7 @@ class IcbcDetailInfo extends React.Component {
                         return 
                     }
                     this.getIcbcList(icbcName, result => {
-                        if (result.data && result.data.length) {
+                        if (result.data && result.data.length){
                             this.setState({
                                 visible: flag,
                                 icbcList: result.data
@@ -325,7 +327,7 @@ class IcbcDetailInfo extends React.Component {
         let value = this.state.value;
         let {viewData} = this.props.$$state.toJS();
         if(!value){
-            value = viewData.name
+            value = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name
         }
         this.getIcbcList(value, result => {
             if (result.data && result.data.length) {

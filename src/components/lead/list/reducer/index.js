@@ -1,18 +1,31 @@
 import Immutable from "immutable";
-import { pageAdd, pageEdit } from 'utils/busipub'
+//import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     pagination: {//分页信息
         pageSize: 20,
         page: 1
     },
+    assignPagination: {//分页信息
+        pageSize: 20,
+        page: 1
+    },
     searchMap: {}, //存放查询条件
+    option: '',
     selectedRows: [],
     selectedRowKeys: [],
+    selectedDept:'' ,//查询条件中选中的部门
+
+    //分配人员列表
+    selectedUserRowKeys: [],
+    selectedUserRows: [],
+
     visible: false,
     editData: {},
     viewState: false,//获取view面板详细信息
     data: {}, //table展示的数据 
+
+    assignData: {},
     moreShow: false,//查询表单的显隐
     enumData: {//查询条件数据
         level: [],
@@ -20,10 +33,44 @@ let $$initialState = {
         state: [],
         post: []
     },
-    colseVisible: false //线索关闭表单显示
+    colseVisible: false, //线索关闭表单显示
+    assginCardVisible: false,// 分派显示
+    userCardName: '',//分配值显示
+    dynamicData: [],// 动态数据
+//--------------
+    viewLeadVisible: false,
+    leadVisible: false,//导入显隐
+    leadEndVisible: false,//导入完成
+    leadingVisible: false,//导入中
+    leadStep: 0,//导入步骤
+    leadFiles: {},//导入文件内容
+    filesSuccess: false,
+    filesFail: false,
+    successResult: {}//导入成功后返回结果
 };
 
-function clearObject(obj){
+function pageAdd(page, item) {
+    //////debugger;
+    page.total += 1;
+    page.data.unshift(item);
+    page.page = Math.ceil(page.total / page.pageSize);
+    return page;
+    console.log(22, page)
+}
+function pageEdit(page, item) {
+    let { data } = page;
+    for (let i = 0, len = data.length; i < len; i++) {
+        if (data[i].id == item.id) {
+            data[i] = item;
+            break;
+        }
+    }
+    page.data = data;
+    debugger
+    return page;
+}
+
+function clearObject(obj) {
     //debugger
     for (let key in obj) {
 
@@ -35,13 +82,127 @@ function clearObject(obj){
 export default function reducer($$state = Immutable.fromJS($$initialState),
     action) {
     switch (action.type) {
+        //----------- 导入 1.30 余春梅
+        case 'CLUE_LIST_VIEWLEADSHOW':
+            debugger
+            return $$state.merge({
+                viewLeadVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADSHOW':
+            return $$state.merge({
+                leadVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADENDSHOW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADINGSHOW':
+            return $$state.merge({
+                leadingVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADSHOW':
+            return $$state.merge({
+                leadVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADENDSHOW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADINGSHOW':
+            return $$state.merge({
+                leadingVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_SAVEFILES':
+            //debugger
+            return $$state.merge({
+                leadFiles: action.payload.files,
+            });
+        case 'CLUE_LIST_FILESUCCESS':///???--------
+            //debugger
+            return $$state.merge({
+                filesSuccess: action.payload.filesSuccess,
+                successResult: action.payload.result,
+                leadEndVisible: action.payload.show,
+                leadFiles: {},
+                leadStep: action.payload.leadStep
+            });
+        case 'CLUE_LIST_FILEFAIL':
+            return $$state.merge({
+                filesFail: action.payload.filesFail,
+            });
+        case 'CLUE_LIST_LEADENDVIEW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+                leadStep: action.payload.leadStep
+            });
+        case 'CLUE_LIST_CHANGESTEP':
+            return $$state.merge({
+                leadStep: action.payload.leadStep
+            });
+
+        //==========
+
+        // case 'CLUE_LIST_SAVESELECTEDDEPT':
+        // return $$state.merge({
+        //     selectedDept: action.payload.deptId,
+        //})
+
+
 
         case 'CLUE_LIST_CLOSELEADSHOW':
             return $$state.merge({
                 colseVisible: action.visible,
             });
 
+        case 'CLUE_LIST_SAVEUSERCARDNAME':
+            debugger
+            return $$state.merge({
+                userCardName: action.payload,
+            })
+        //动态
+        case 'CLUE_LIST_GETDYNAMIC':
+            debugger
+            return $$state.merge({
+                dynamicData: action.data
+            });
+        //分配选择
+        case 'CLUE_LIST_SELECTUSERROW':
+            let xxx = action;
+            console.log(1111, action)
+            debugger
+            return $$state.merge({
+                selectedUserRowKeys: action.payload.selectedRowKeys,
+                selectedUserRows: action.payload.selectedRows
+            })
+        //分配关闭
+        case 'CLUE_LIST_CLOSEUSERCARD':
+            return $$state.merge({
+                assginCardVisible: false,
+                selectedUserCardRowKeys: [],
+                selectedUserCardRows: [],
+                userCardName: ''
+            })
+        //查询各种table数据 停启用
+        case "CLUE_LIST_GETDATA":
+            let nn = action;
+            debugger;
+            return $$state.merge({
+                data: action.payload.data,
+                pagination: action.payload.pagination,
+                selectedRowKeys: []
+            });
 
+        case 'CLUE_LIST_ASSIGNLEADSHOW':
+            return $$state.merge({
+                assginCardVisible: action.visible
+            });
+        //分配人员数据
+        case 'CLUE_LIST_ASSIGNLISTDATE':
+            debugger
+            return $$state.merge({
+                assignData: action.payload.data,
+
+            });
 
         case "CLUE_LIST_GETDATA": //查询各种table数据
             debugger
@@ -53,7 +214,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({
                 searchMap: action.payload == undefined ? {} : action.payload
             });
-
+        case 'CLUE_LIST_SAVESOPTION':
+            debugger
+            return $$state.merge({
+                option: action.payload == undefined ? '' : action.payload
+            });
         case "CLUE_LIST_SELECTCLUE": //保存已选择的数据
             return $$state.merge({
                 selectedRows: Immutable.fromJS(action.payload.selectedRows),
@@ -78,9 +243,19 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({ moreShow: !visit });
 
         case "CLUE_LIST_SEARCHMAP": //存放扩展、基础查询条件
-            //debugger
+            debugger
+            let ser=action.data;
+            let depatId;
+            if(ser.deptId){
+                //let aaa=ser.deptId;
+                 depatId=ser.deptId.key;
+            }else{
+                 depatId='';
+            }
             return $$state.merge({
-                searchMap: action.data
+                searchMap: action.data,
+                selectedDept:depatId
+
             });
         case "CLUE_LIST_GETENUMDATA": //获取查询条件基础显示内容
             return $$state.merge({ enumData: action.payload.enumData });
@@ -117,11 +292,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
 
             debugger
             let getData = action.edit;
-            getData.province_city_district = [
-                getData.province.toString(),
-                getData.city.toString(),
-                getData.district.toString()
-            ];
+            // getData.province_city_district = [
+            //     getData.province.toString(),
+            //     getData.city.toString(),
+            //     getData.district.toString()
+            // ];
             getData.insudtryId = {
                 id: getData.industryId,
                 name: getData.industryName
@@ -154,6 +329,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 newData.city.toString(),
                 newData.district.toString()
             ];
+            newData.industryId = {
+                id: newData.industryId,
+                name: newData.industryName
+            };
             return $$state.merge({
                 visible: false,
                 data: pageEdit($$state.get("data").toJS(), action.data),
@@ -166,10 +345,10 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         //点击编辑按钮
-        case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
+        case 'CLUE_DETAILLIST_SHOWEDITFORM':
             let EditStreetData = $$state.get('editData').toJS();
             let ccccc = Immutable.fromJS(EditStreetData).toJS()
-            
+
             let industryId = {
                 id: EditStreetData.industryId,
                 name: EditStreetData.industryName
@@ -183,7 +362,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         case "CLUE_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
-            //debugger
+            debugger
             let actionData = action.data;
             // actionData.industry = {
             //     id: actionData.industry,
@@ -194,11 +373,11 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             //     name: actionData.parentName
             // };
             //actionData.followState = action.state.followState;
-            actionData.province_city_district = [
-                actionData.province.toString(),
-                actionData.city.toString(),
-                actionData.district.toString()
-            ];
+            // actionData.province_city_district = [
+            //     actionData.province.toString(),
+            //     actionData.city.toString(),
+            //     actionData.district.toString()
+            // ];
 
             // actionData.ownerUserId = { id: actionData.salesVOs[0].ownerUserId, name: actionData.salesVOs[0].ownerUserName }
             return $$state.merge({

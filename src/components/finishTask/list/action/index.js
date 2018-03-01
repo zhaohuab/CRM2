@@ -54,7 +54,7 @@ export function getEnumData() {
     return dispatch => {
         reqwest(
             {
-                url: url.finishtask+'/state',
+                url: url.finishtask+'/docs',
                 method: "GET",
                 data: {
 
@@ -64,7 +64,7 @@ export function getEnumData() {
                 debugger
                 dispatch(
                     fetchData("WORK_LIST_GETENUMDATA", {
-                        enumData: data.data
+                        enumData: data.enumData.state
                     })
                 );
             }

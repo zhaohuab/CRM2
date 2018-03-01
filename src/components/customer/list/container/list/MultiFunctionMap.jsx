@@ -44,9 +44,6 @@ export default class MultiFunctionMap extends React.Component {
                         pageSize: 10,
                         pageIndex: 1,
                         page:1,
-                        // city: that.props.cityCode
-                        //     ? that.props.cityCode[0]
-                        //     : "021",
                         extensions:'all'
                     });
                 });
@@ -130,44 +127,10 @@ export default class MultiFunctionMap extends React.Component {
         let location = this.props.value?this.props.value.location:''
         this.map.clearMap( )
         if(location){//根据坐标点查地图
-            this.getSingleAddress(location,(result)=>{
-                debugger
-                let crosses = result.crosses
-                let aois = result.aois
-                this.setState({
-                    infoPosition:crosses && crosses.length?crosses[0].location:aois[0].location,
-                    clickMarkerPosition:crosses && crosses.length?crosses[0].location:aois[0].location,
-                    result: {
-                        citycode:result.addressComponent.citycode,
-                        adcode:result.addressComponent.adcode,
-                        address:result.formattedAddress,
-                        location:crosses && crosses.length?crosses[0].location:aois[0].location
-                    },
-                    InfoVisible: true,
-                    visible:true,
-                },()=>{
-                    this.map.setCenter(crosses && crosses.length?crosses[0].location:aois[0].location)
-                });
-            })
+            this.getLocationState(location)
+            
         }else{//根据名称查地图
-            this.getSingleLocation(value,(result)=>{
-                debugger
-                this.setState({
-                    clickMarkerPosition:result.location,
-                    infoPosition:result.location,
-                    InfoVisible: true,
-                    flag:true,
-                    visible:true,
-                    result: {
-                        citycode:result.addressComponent.citycode,
-                        adcode:result.addressComponent.adcode,
-                        address:result.formattedAddress,
-                        location:result.location
-                    }
-                },()=>{
-                    this.map.setCenter(result.location)
-                });
-            })
+            this.getValueState(value)
         }  
     }
 
@@ -181,51 +144,17 @@ export default class MultiFunctionMap extends React.Component {
             let value = this.props.value && this.props.value.address?this.props.value.address:'北京'
             let location = this.props.value?this.props.value.location:''
             if(location){//根据坐标点查地图
-                this.getSingleAddress(location,(result)=>{
-                    let crosses = result.crosses
-                    let aois = result.aois
-                    debugger 
-                    this.setState({
-                        infoPosition:crosses && crosses.length?crosses[0].location:aois[0].location,
-                        clickMarkerPosition:crosses && crosses.length?crosses[0].location:aois[0].location,
-                        result: {
-                            citycode:result.addressComponent.citycode,
-                            adcode:result.addressComponent.adcode,
-                            address:result.formattedAddress,
-                            location:crosses && crosses.length?crosses[0].location:aois[0].location
-                        },
-                        InfoVisible: true,
-                        visible:true,
-                    },()=>{
-                        this.map.setCenter(crosses && crosses.length?crosses[0].location:aois[0].location)
-                    });
-                })
+                this.getLocationState(location)
+                
             }else{
-                this.getSingleLocation(value,(result)=>{
-                    debugger
-                    this.setState({
-                        clickMarkerPosition:result.location,
-                        infoPosition:result.location,
-                        InfoVisible: true,
-                        result: {
-                            citycode:result.addressComponent.citycode,
-                            adcode:result.addressComponent.adcode,
-                            address:result.formattedAddress,
-                            location:result.location
-                        },
-                        visible:true, 
-                    },()=>{
-                        this.map.setCenter(result.location)
-                    });
-                })
+                this.getValueState(value)
             }
         }else{
             this.setState({
                 visible:true,
                 flag:true
             })
-        }
-        
+        }  
     }
 
     //input输入地址
@@ -286,53 +215,13 @@ export default class MultiFunctionMap extends React.Component {
         
         debugger
         if(typeof searchResult == 'string' ){
-            this.getSingleLocation(searchResult,(result)=>{
-                debugger
-                this.setState({
-                    clickMarkerPosition:result.location,
-                    infoPosition:result.location,
-                    InfoVisible: true,
-                    flag:true,
-                    visible:true,
-                    result: {
-                        citycode:result.addressComponent.citycode,
-                        adcode:result.addressComponent.adcode,
-                        address:result.formattedAddress,
-                        location:result.location
-                    },
-                    searchInputVisiable:false
-                },()=>{
-                    this.map.setCenter(result.location)
-                });
-            })
-
+            let that = this
+            this.getValueState(searchResult)
         }else if(typeof searchResult == 'object' && searchResult){
-            this.getSingleAddress(searchResult,(result)=>{
-                debugger
-                let crosses = result.crosses
-                let aois = result.aois
-                this.setState({
-                    infoPosition:crosses && crosses.length?crosses[0].location:aois[0].location,
-                    clickMarkerPosition:crosses && crosses.length?crosses[0].location:aois[0].location,
-                    result: {
-                        citycode:result.addressComponent.citycode,
-                        adcode:result.addressComponent.adcode,
-                        address:result.formattedAddress,
-                        location:crosses && crosses.length?crosses[0].location:aois[0].location,
-                    },
-                    InfoVisible: true,
-                    visible:true,
-                    searchInputVisiable:false
-                },()=>{
-                    this.map.setCenter(crosses && crosses.length?crosses[0].location:aois[0].location)
-                });
-            })
+            this.getLocationState(searchResult)
         }else{
             message.error('查询条件不正确，请重新选择')
         }
-
-
-        
     }
 
     //点击查询出来的搜索结果
@@ -379,6 +268,58 @@ export default class MultiFunctionMap extends React.Component {
         })  
     }
 
+    //使用值获取高德经纬度后，设置state
+    getValueState(value){
+        this.getSingleLocation(value,(result)=>{
+            debugger
+            this.setState({
+                clickMarkerPosition:result.location,
+                infoPosition:result.location,
+                InfoVisible: true,
+                flag:true,
+                visible:true,
+                result: {
+                    citycode:result.addressComponent.citycode,
+                    adcode:result.addressComponent.adcode,
+                    address:result.formattedAddress,
+                    location:result.location
+                },
+                searchInputVisiable:false
+            },()=>{
+                this.map.setCenter(result.location)
+            });
+        })
+    }
+
+    //使用经纬度获取高德经纬度后，设置state
+    getLocationState(location){
+        this.getSingleAddress(location,(result)=>{
+            debugger
+            let crosses = result.crosses
+            let aois = result.aois;
+            if((crosses && crosses.length) || (aois && aois.length)){
+                this.setState({
+                    infoPosition:crosses && crosses.length?crosses[0].location:aois[0].location,
+                    clickMarkerPosition:crosses && crosses.length?crosses[0].location:aois[0].location,
+                    result: {
+                        citycode:result.addressComponent.citycode,
+                        adcode:result.addressComponent.adcode,
+                        address:result.formattedAddress,
+                        location:crosses && crosses.length?crosses[0].location:aois[0].location
+                    },
+                    InfoVisible: true,
+                    visible:true,
+                    searchInputVisiable:false
+                },()=>{
+                    this.map.setCenter(crosses && crosses.length?crosses[0].location:aois[0].location)
+                });
+            }else{
+                this.getValueState(result.formattedAddress)
+            }
+        })
+    }
+      
+    //根据名称使用高德定位查询坐标
     getSingleLocation(value,callback){
         debugger
         let that = this
@@ -390,11 +331,16 @@ export default class MultiFunctionMap extends React.Component {
             }else{
                 that.setState({
                     visible:true,
+                    searchInputVisiable:false
+                },()=>{
+                    message.error('查询条件不正确，请重新选择')
                 })
             }
         });
-    }
 
+        
+    }
+    //根据经纬度使用高德查询经纬度
     getSingleAddress(lngLat,callback){
         debugger
         let that = this
@@ -406,22 +352,15 @@ export default class MultiFunctionMap extends React.Component {
             }else{//如果报错只是把地图显示出来，没有组标点，信息框
                 that.setState({
                     visible:true,
+                    searchInputVisiable:false
+                },()=>{
+                    message.error('查询条件不正确，请重新选择')
                 })
+                
             }
         });
     }
-    
-    componentDidMount(){
-        // let that = this
-        // document.body.onclick=function(){
-           
-        //     that.setState({
-               
-        //         searchInputVisiable:false
-        //     })
-        // }
-    }
-   
+       
     render(){
         return(
             <div>

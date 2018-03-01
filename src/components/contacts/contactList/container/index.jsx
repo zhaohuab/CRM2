@@ -16,7 +16,8 @@ import {
     Form,
     Select,
     Tabs,
-    Timeline
+    Timeline,
+    Spin 
 } from "antd";
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
@@ -27,9 +28,9 @@ import * as Actions from "../action/index.js";
 import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
 import Card from "./card.jsx";
 import LessCard from "./lessCard.jsx";
-import MoreCard from "./moreCard.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
 import PanelView from "./panel.jsx";
+import getCookie from 'utils/cookie'
 
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
@@ -42,16 +43,20 @@ class Contacts extends React.Component {
             {
                 title: "姓名",
                 dataIndex: "name",
-                render: text=> {
+                render: (text, record)=> {
                     return (
                         <div
-                            onClick={this.slideShow.bind(this)}
+                            onClick={this.slideShow.bind(this, record)}
                             className="crm-pointer"
                         >
                             {text}
                         </div>
                     );
                 }
+            },
+            {
+                title: "职务",
+                dataIndex: "postName"
             },
             {
                 title: "客户",
@@ -61,50 +66,38 @@ class Contacts extends React.Component {
                 title: "部门",
                 dataIndex: "deptName"
             },
-            {
-                title: "角色",
-                dataIndex: "role"
+             {
+                title: "电话",
+                dataIndex: "mobile"
             },
-            {
-                title: "态度",
-                dataIndex: "attitude"
-            }
+             {
+                title: "邮箱",
+                dataIndex: "email"
+            },
         ];
         let that = this;
 
         this.state = {
-            pagination: {
-                pageSize: 10,
-                page: 1
-            },
-            searchMap: {
-                enableState: 1
-            },
             //上方条件选择保存更多状态
             more: false,
             viewState: false
         };
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
-            debugger;
+           // debugger;
             this.setState({
                 more: false
             });
             this.props.action.selectData({ selectedRows, selectedRowKeys });
         };
-        this.menu = (
-            <Menu>
-                <Menu.Item key="1">导入</Menu.Item>
-                <Menu.Item key="2">导出</Menu.Item>
-            </Menu>
-        );
     }
 
     //点击姓名出侧滑面板
-    slideShow() {
+    slideShow(record) {
         this.setState({
             viewState: true
         });
+        this.props.action.slideShow(record)
     }
     slideHide() {
         this.setState({
@@ -115,20 +108,42 @@ class Contacts extends React.Component {
     headerBack() {
         this.props.action.selectData([]);
     }
-
+    modalTranslate(obj) {//保存时转换表单数据格式
+        for(let key in obj){
+            if(key=='post'){
+               // debugger;
+                if(obj[key]){
+                    obj.postName=obj[key].name;
+                    obj[key]=obj[key].id; 
+                }          
+            }
+            if(key=='customer'){
+               // debugger;
+                if(obj[key]){
+                    obj.customerName=obj[key].name;
+                    obj[key]=obj[key].id;
+                }               
+            }
+        }
+        return obj
+    }
     //modal点击确定按钮
     handleOk() {
-        let { pagination, searchMap } = this.state; //获取分页信息
-        debugger;
+        let { pagination, searchMap, modalData } = this.props.$$state.toJS(); //获取分页信息 
+        let data =this.modalTranslate(modalData);    
+        let role = getCookie();
+        data.ownerUserId=Number(role.id);
+        data.deptid=Number(role.deptid)
+       // debugger;
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {
-            debugger;
+           debugger;
             if (!err) {
                 if (values.id) {
-                    debugger;
-                    this.props.action.onEdit(values, pagination, searchMap);
+                  //  debugger;
+                    this.props.action.onEdit(data, pagination, searchMap);
                 } else {
-                    debugger;
-                    this.props.action.cardSaved(values, pagination, searchMap);
+                   // debugger;
+                    this.props.action.cardSaved(data, pagination, searchMap);
                 }
             }
         });
@@ -156,7 +171,7 @@ class Contacts extends React.Component {
                 let selectedRowKeys = that.props.$$state.toJS().rowKeys[
                     "selectedRowKeys"
                 ];
-                let { pagination, searchMap } = that.state; //获取分页信息
+                let { pagination, searchMap } = that.props.$$state.toJS(); //获取分页信息
                 that.props.action.onDelete(selectedRowKeys, pagination, searchMap);
             },
             onCancel() {
@@ -172,40 +187,46 @@ class Contacts extends React.Component {
 
     //点击分页器页数
     onPageChange(page, pageSize) {
-        let { pagination, searchMap } = this.state; //获取分页信息
+       // debugger;
+        let { pagination,searchMap } = this.props.$$state.toJS(); //获取分页信息
         pagination = {
             pageSize,
             page
         };
-        this.setState({ pagination });
         this.props.action.getContactList(pagination, searchMap);
     }
     //点击分页器跳转
     onPageSizeChange(current, size) {
-        let { pagination, searchMap } = this.state; //获取分页信息
+        let { pagination, searchMap } = this.props.$$state.toJS(); //获取分页信息
         pagination = {
             pageSize: size,
             page: current
         };
-        this.setState({ pagination });
+       
         this.props.action.getContactList(pagination, searchMap);
     }
 
     //点击编辑按钮
-    onEdit() {
-        let selectedRowKeys = this.props.$$state.toJS().rowKeys[
+    onEdit(flag,slideShowData,e) {
+        debugger;
+        if(flag){//如果是详情中的编辑
+            this.props.action.edit(slideShowData, true, 'edit');
+        }else{//如果是选择中的编辑
+            let selectedRowKeys = this.props.$$state.toJS().rowKeys[
             "selectedRowKeys"
-        ];
-        let resultNew = this.props.$$state.toJS().data.data;
-        resultNew = resultNew.filter(item => {
-            return item.id == selectedRowKeys[0];
-        });
-
-        let newObj = {};
-        for (var key in resultNew[0]) {
-            newObj[key] = resultNew[0][key];
-        }
-        this.props.action.edit(newObj, true);
+            ];
+            let resultNew = this.props.$$state.toJS().data.data;
+            resultNew = resultNew.filter(item => {
+                return item.id == selectedRowKeys[0];
+            });
+        
+            let newObj = {};
+            for (var key in resultNew[0]) {
+                newObj[key] = resultNew[0][key];
+            }
+        // debugger;
+            this.props.action.edit(newObj, true, 'edit');
+        }     
     }
 
     //获取列表所需展示字段
@@ -213,6 +234,7 @@ class Contacts extends React.Component {
         let newDate = [];
         data.forEach(item => {
             let obj = {};
+            //debugger;
             for (var key in item) {
                 if (key == "id") {
                     obj.id = item[key];
@@ -223,27 +245,31 @@ class Contacts extends React.Component {
                         obj.customerName = item["customerInfo"].name;
                     else
                         obj.customerName = "";
-                } else if (key == "deptName") {
-                    obj.deptName = item[key];
+                } else if (key == "ownerUserInfo") {
+                    if(item["ownerUserInfo"]){
+                        obj.deptName = item["ownerUserInfo"].deptName;
+                    }else{
+                        obj.deptName = "";
+                    }
                 } else if (key == "role") {
                     obj.role = item[key];
-                } else if (key == "attitude") {
-                    obj.attitude = item[key];
+                } else if (key == "postName") {
+                    obj.postName = item[key];
+                }else if(key=='mobile'){
+                    obj.mobile=item[key]
+                }else if(key=='email'){
+                    obj.email=item[key]
                 }
             }
             newDate.push(obj);
         });
+        debugger;
         return newDate;
     }
-    //展开收起搜索条件
-    showFn() {
-        this.setState({
-            more: !this.state.more
-        });
-    }
+  
     //页面刚挂在组件方法
     componentDidMount() {
-        let { pagination, searchMap } = this.state; //获取分页信息
+        let { pagination, searchMap } = this.props.$$state.toJS(); //获取分页信息
         this.props.action.getContactList(pagination, searchMap);
     }
 
@@ -253,7 +279,8 @@ class Contacts extends React.Component {
             visible,
             loading,
             tags,
-            editData
+            editData,
+            slideShowData,
         } = this.props.$$state.toJS();
 
         //获取列表所需字段
@@ -262,11 +289,9 @@ class Contacts extends React.Component {
             newData = this.changeValue.call(this, data.data);
         }
         //新建表单
-        const ContactsForm = Form.create({})(Card);
+       //debugger;
         //查询列表头部简单搜索表单
-        const ContactLessForm = Form.create({})(LessCard);
-        //查询列表头部负载搜索表单
-        const ContactMoreFrom = Form.create({})(MoreCard);
+ 
 
         let {
             selectedRowKeys,
@@ -302,14 +327,7 @@ class Contacts extends React.Component {
                             <Row>
                                 <Col span={18}>
                                     <Row type="flex" gutter={15} align="middle">
-                                        <div>
-                                            <Select defaultValue="全部">
-                                                <Option value="1">我关注</Option>
-                                                <Option value="2">最近创建</Option>
-                                                <Option value="3">最近查看</Option>
-                                                <Option value="4">一周末跟进</Option>
-                                            </Select>
-                                        </div>
+                                     
                                         <Col span="21">
                                             <div
                                                 className={
@@ -318,10 +336,8 @@ class Contacts extends React.Component {
                                                         : "less-show-height"
                                                 }
                                             >
-                                                <ContactLessForm
-                                                    showFn={this.showFn.bind(
-                                                        this
-                                                    )}
+                                                <LessCard 
+                                                saveSearchMap={this.props.action.saveSearchMap.bind(this)}
                                                 />
                                             </div>
                                         </Col>
@@ -346,32 +362,10 @@ class Contacts extends React.Component {
                                                         <i className="iconfont icon-xinjian" />新建
                                                     </Button>
                                                 </div>
-                                                <div>
-                                                    <Dropdown
-                                                        overlay={this.menu}
-                                                        trigger={["click"]}
-                                                    >
-                                                        <Button>
-                                                            更多
-                                                            <Icon type="down" />
-                                                        </Button>
-                                                    </Dropdown>
-                                                </div>
                                             </Row>
                                         </Col>
                                     </Row>
                                 </Col>
-                            </Row>
-                            <Row
-                                className={
-                                    this.state.more
-                                        ? "more-show-height"
-                                        : "less-hide-height"
-                                }
-                            >
-                                <ContactMoreFrom
-                                    showFn={this.showFn.bind(this)}
-                                />
                             </Row>
                         </div>
                     )}
@@ -382,7 +376,6 @@ class Contacts extends React.Component {
                             dataSource={newData}
                             rowKey="id"
                             rowSelection={rowSelection}
-                            loading={loading}
                             pagination={{
                                 size: "large",
                                 showSizeChanger: true,
@@ -398,18 +391,18 @@ class Contacts extends React.Component {
                     </div>
 
                     <Modal
-                        title={editData.id ? "修改联系人" : "增加联系人"}
+                        title={editData.id ? "编辑" : "新建"}
                         visible={visible}
                         onOk={this.handleOk.bind(this)}
                         onCancel={this.handleCancel.bind(this)}
-                        width={900}
+                        width={750}
                         maskClosable={false}
+                        className='crm-list-card-modal'
                     >
                         <div className="modal-height">
-                            <ContactsForm
+                            <Card
                                 dataSource={editData}
-                                wrappedComponentRef={inst =>
-                                    (this.formRef = inst)}
+                                wrappedComponentRef={inst =>this.formRef = inst}
                             />
                         </div>
                     </Modal>
@@ -418,8 +411,12 @@ class Contacts extends React.Component {
                         viewState={this.state.viewState}
                         onClose={this.slideHide.bind(this)}
                     >
-                        <PanelView />
+                        <PanelView slideShowData={slideShowData} onEdit={this.onEdit.bind(this)}/>
                     </SlidePanel>
+                    {
+                        loading?
+                        <Spin className='loading' size='large'/>:''
+                    }
                 </div>
             </div>
         );
@@ -439,4 +436,4 @@ export default connect(
     }
 )(Contacts);
 
-//<Tags dataSource={tagData} />
+

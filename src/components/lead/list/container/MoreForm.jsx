@@ -25,10 +25,13 @@ import { bindActionCreators } from "redux";
 import * as Actions from "../action";
 import Enum from "utils/components/enums";
 import * as enumDataFake from "./enumdata.jsx";
-import OwnUser from './OwnUser'
+import OwnerUser from "../../../common/ownerUser";
 import ResponseDepart from './ResponseDepart'
 import Department from './changeLead/Industry'
 import Industry from "../../../common/industry";
+import Departments from '../../../refs/departments';
+
+import getInfo from 'utils/cookie'
 class MoreForm extends React.Component {
     handleSearch(e) {
         e.preventDefault();
@@ -41,12 +44,15 @@ class MoreForm extends React.Component {
 
 
     render() {
+      
+        debugger
         const formItemLayout = {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
         const { getFieldDecorator, getFieldsValue } = this.props.form;
-        let { enumData } = this.props.$$state.toJS();
+        let { enumData,selectedDept } = this.props.$$state.toJS();
+        let deptid = getInfo("deptid")
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -65,7 +71,7 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col> */}
-                        <Col span={4}>
+                        <Col span={6}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("source")(
                                     <Enum
@@ -75,7 +81,7 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
+                        <Col span={6}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("state")(
                                     <Enum
@@ -85,36 +91,26 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
-                            {/* <FormItem  {...formItemLayout}>
-                                {getFieldDecorator("deptId")(
-                                    <Input placeholder="部门" />
-                                )}
-                            </FormItem> */}
-                            <FormItem>
+                        <Col span={6}>
+
+                            <FormItem {...formItemLayout}>
                                 {getFieldDecorator(
-                                    "ownerDeptName"
+                                    "deptId"
                                 )(
-                                    <Department/>
+                                    <Departments orgType = {3}  fatherorgId={deptid} />
                                     )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
+                        <Col span={6}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator(
                                     "ownerUserId"
                                 )(
-                                    <OwnUser width={650} height={300}/>
+                                    <OwnerUser deptId={selectedDept} />
                                     )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
-                            <FormItem  {...formItemLayout}>
-                                {getFieldDecorator("industryId", {})(
-                                    <Industry />
-                                )}
-                            </FormItem>
-                        </Col>
+
                     </Row>
 
                     <Row
@@ -132,10 +128,18 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col> */}
-                        <Col span={4}>
+
+                        <Col span={6}>
+                            <FormItem  {...formItemLayout}>
+                                {getFieldDecorator("industryId", {})(
+                                    <Industry />
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
 
                             <FormItem  {...formItemLayout}>
-                                {getFieldDecorator("signTime")(
+                                {getFieldDecorator("assignTime")(
                                     <RangePicker />
                                 )}
                             </FormItem>
@@ -177,11 +181,12 @@ const More = Form.create({
         debugger
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {
-            if (onChangeFild[key].value.key) {
-                searchMap[key] = onChangeFild[key].value.key;
-            } else {
-                searchMap[key] = onChangeFild[key].value;
-            }
+            searchMap[key] = onChangeFild[key].value;
+            // if (onChangeFild[key].value.key) {
+            //     searchMap[key] = onChangeFild[key].value.key;
+            // } else {
+            //     searchMap[key] = onChangeFild[key].value;
+            // }
         }
         props.searchMapFn(searchMap);
     }

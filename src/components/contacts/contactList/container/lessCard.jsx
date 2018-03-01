@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from "react";
-
+import * as Actions from "../action";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Enum from "utils/components/enums";
 import {
     Icon,
     Button,
@@ -17,13 +20,10 @@ import {
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-export default class LessCard extends React.Component {
-    showFn() {
-        this.props.showFn();
-    }
+class LessCard extends React.Component {
     render() {
         const { getFieldDecorator, getFieldsValue } = this.props.form;
-
+        const {pagination, searchMap} = this.props.$$state.toJS();
         return (
             <div id="btn-recover">
                 <Form layout="inline" onSubmit={this.handleSubmit}>
@@ -42,21 +42,17 @@ export default class LessCard extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
-                            {" "}
+                   {  /*    <Col span={6}>
                             <FormItem>
                                 {getFieldDecorator("customer")(
                                     <Input placeholder="客户" />
                                 )}
                             </FormItem>
-                        </Col>
+                        </Col> */}
                         <Col span={6}>
                             <FormItem>
                                 <div className="more-btn">
-                                    <Button htmlType="submit">查询</Button>
-                                    <span onClick={this.showFn.bind(this)}>
-                                        展开<Icon type="down" />
-                                    </span>
+                                    <Button htmlType="submit" onClick={this.props.action.getContactList.bind(this,pagination, searchMap)}>查询</Button>                                 
                                 </div>
                             </FormItem>
                         </Col>
@@ -66,3 +62,39 @@ export default class LessCard extends React.Component {
         );
     }
 }
+
+const SearchForm = Form.create({
+    mapPropsToFields: props => {
+        //把redux中的值取出来赋给表单
+        let searchMap = props.$$state.toJS().searchMap;
+        let value = {};
+        for (let key in searchMap) {
+            value[key] = { value: searchMap[key] };
+        }
+        return {
+            ...value
+        };
+    },
+    onFieldsChange: (props, onChangeFild) => {
+        //往redux中写值//把值进行更新改变
+        let searchMap = props.$$state.toJS().searchMap;
+        for (let key in onChangeFild) {         
+            searchMap[key] = onChangeFild[key].value;
+        }
+        props.saveSearchMap(searchMap);
+    }
+})(LessCard);
+
+export default connect(
+    state => {
+        return {
+            $$stateComponent: state.componentReducer,
+            $$state: state.contacts
+        };
+    },
+    dispatch => {
+        return {
+            action: bindActionCreators(Actions, dispatch)
+        };
+    }
+)(SearchForm);

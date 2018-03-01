@@ -10,7 +10,7 @@ export function getCollaps() {
 //获取联系人信息
 export function getContactList(pagination, searchMap) {
     return dispatch => {
-        debugger
+       // debugger
         dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
         reqwest(
             {
@@ -20,13 +20,14 @@ export function getContactList(pagination, searchMap) {
                     param: {
                         ...pagination,
                         searchMap: {
-                            enableState: searchMap.enableState
+                            ...searchMap
                         }
                     }
                 }
             },
             result => {
-                dispatch({ type: "CONTACTS_LIST_GETLIST", data: result });
+               //debugger;
+                dispatch({ type: "CONTACTS_LIST_GETLIST", data: result, pagination });
             }
         );
     };
@@ -41,6 +42,7 @@ export function showForm(data) {
 //保存新增联系人
 export function cardSaved(data, pagination, searchMap) {
     return dispatch => {
+        //dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
         reqwest(
             {
                 url: contacts.contacts,
@@ -51,18 +53,16 @@ export function cardSaved(data, pagination, searchMap) {
                     }
                 }
             },
-
-            result => {
-                debugger;
-                console.log(2, result);
-                dispatch({ type: "CONTACTS_CARD_SAVEADD", data: result });
+            result => {  
+               debugger         
+                dispatch({ type: "CONTACTS_CARD_SAVEADD", data: result});
             }
         );
     };
 }
 //保存已选择的数据
 export function selectData(data) {
-    debugger;
+    //debugger;
     return {
         type: "CONTACTS_LIST_SELECTDATA",
         data
@@ -71,6 +71,7 @@ export function selectData(data) {
 //删除已选择的数据
 export function onDelete(delKey, pagination, searchMap, fn) {
     return (dispatch, getState) => {
+       // dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
         reqwest(
             {
                 url: `${contacts.contacts}/batch`,
@@ -95,8 +96,9 @@ export function onDelete(delKey, pagination, searchMap, fn) {
         );
     };
 }
-//编辑已选择
+//保存编辑
 export function onEdit(values, pagination, searchMa) {
+    dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
     return dispatch => {
         reqwest(
             {
@@ -109,18 +111,23 @@ export function onEdit(values, pagination, searchMa) {
                 }
             },
             result => {
+               // debugger
                 dispatch({
                     type: "CONTACTS_LIST_UPDATELIST",
-                    data: result
+                    data: values
                 });
             }
         );
     };
 }
 
-export function edit(edit, show) {//
-    if (isEmpty(edit)) {
+
+//新增/编辑按钮
+export function edit(data, show, name) {
+    //debugger;
+    /* if (isEmpty(edit)) { */
         return dispatch => {
+            dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
             reqwest(
                 {
                     url: contacts.ref,
@@ -132,19 +139,68 @@ export function edit(edit, show) {//
                     // }
                 },
                 result => {
+                   // debugger;
                     dispatch({
                         type: "CONTACTS_LIST_EDIT",
-                        edit:{userList:result.userList},
-                        show
+                        result,
+                        data,
+                        show,
+                        name
                     });
-                }
+                },
+              /*   ()=>{
+                    dispatch({
+                        type: "CONTACTS_LIST_FAIL"
+                    });
+                } */
             );
         };
-    }
+   
 }
 function isEmpty(obj) {
+    //debugger
     for (var name in obj) {
+       // debugger
         return false;
     }
     return true;
 }; 
+
+
+//往redux中存基础、扩展查询条件
+export function saveSearchMap(data){
+   // debugger;
+    return {
+        type: "CONTACTS_LIST_SEARCHMAP",
+        data
+    };
+};
+
+//往redux中储存弹框值
+export function saveAddCard(data){
+    return {
+        type: "CONTACTS_ADD_CARD",
+        data
+    }
+}
+
+//往redux中储存客户/职务
+export function choosed(name,data){
+    //debugger;
+    return {
+        type: "CONTACTS_CHOOSED_CARD",
+        name,
+        data
+    }
+}
+
+//展开详情
+export function slideShow(data){
+    //debugger;
+    return {
+        type: "CONTACTS_SLIDESHOW_CARD",
+        data
+    }
+}
+
+

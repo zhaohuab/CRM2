@@ -1,4 +1,8 @@
 import React, { Component, PropTypes } from "react";
+import * as Actions from "../action";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import "assets/stylesheet/all/iconfont.css";
 import {
     Icon,
     Button,
@@ -14,8 +18,10 @@ const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
-export default class PanelView extends React.Component {
+class PanelView extends React.Component {
     render() {
+        let slideShowData = this.props.$$state.get('slideShowData').toJS();
+        debugger
         return (
             <div>
                 <Row className="panel-header">
@@ -33,18 +39,17 @@ export default class PanelView extends React.Component {
                                             src={require("assets/images/header/photo.png")}
                                         />
                                         <span className="contacts-name">
-                                            李梅
+                                            {slideShowData.name}
                                         </span>
                                     </Row>
                                 </Col>
-                                <Col span={4}>
-                                    <Row type="flex" gutter={5} align="middle">
-                                        <i className="iconfont icon-guanzhu icon-blue" />关注
-                                    </Row>
-                                </Col>
-                                <Col span={5}>
-                                    <Row type="flex" gutter={5} align="middle">
-                                        <i className="iconfont icon-shenfenrenzheng icon-blue" />主联系人
+                                <Col span={16}>
+                                    <Row type="flex" gutter={10} align="middle">
+                                       <span className="contacts-name">                                           
+                                            <Button onClick={this.props.onEdit.bind(this,true,slideShowData)} >
+                                                <i className="iconfont icon-bianji" />编辑
+                                            </Button>
+                                        </span>
                                     </Row>
                                 </Col>
                             </Row>
@@ -55,13 +60,13 @@ export default class PanelView extends React.Component {
                             <div className="contact-single-title">
                                 <i className="iconfont icon-bianji" />职务
                             </div>
-                            <div className="contact-single-info">产品经理</div>
+                            <div className="contact-single-info">{slideShowData.postName}</div>
                         </div>
                         <div>
                             <div className="contact-single-title">
                                 <i className="iconfont icon-bianji" />客户
                             </div>
-                            <div className="contact-single-info">A客户</div>
+                            <div className="contact-single-info">{slideShowData.customerInfo.name}</div>
                         </div>
                         <div>
                             <div className="contact-single-title">
@@ -69,7 +74,7 @@ export default class PanelView extends React.Component {
                                 手机号
                             </div>
                             <div className="contact-single-info">
-                                134454345455
+                                {slideShowData.mobile}
                             </div>
                         </div>
                         <div>
@@ -84,7 +89,7 @@ export default class PanelView extends React.Component {
                                 <img
                                     src={require("assets/images/header/photo.png")}
                                 />
-                                <span>A客户</span>
+                                <span>{slideShowData.ownerUserInfo.name}</span>
                             </Row>
                         </div>
                         <div>
@@ -92,7 +97,7 @@ export default class PanelView extends React.Component {
                                 <i className="iconfont icon-bianji" />
                                 负责部门
                             </div>
-                            <div className="contact-single-info">开发部</div>
+                            <div className="contact-single-info">{slideShowData.ownerUserInfo.deptName}</div>
                         </div>
                     </Row>
                 </Row>
@@ -105,63 +110,41 @@ export default class PanelView extends React.Component {
                     <Col span={18} className="panel-main-left">
                         <div className="inner tab-recoverd">
                             <Tabs defaultActiveKey="1">
-                                <TabPane tab="相关" key="1">
+                                <TabPane tab="资料" key="1">
                                     <div className="collapse-recover">
                                         <Collapse defaultActiveKey={["1", "2"]}>
                                             <Panel header="联系人信息" key="1">
                                                 <ul className="contacts-info-ul">
                                                     <li>
                                                         <span>部门:</span>
-                                                        <span>产品管理部</span>
+                                                        <span>{slideShowData.ownerUserInfo.deptName}</span>
                                                     </li>
                                                     <li>
                                                         <span>职务:</span>
-                                                        <span>产品经理</span>
+                                                        <span>{slideShowData.postName}</span>
                                                     </li>
                                                     <li>
                                                         <span>手机:</span>
-                                                        <span>12332434343</span>
+                                                        <span>{slideShowData.mobile}</span>
                                                     </li>
                                                     <li>
                                                         <span>办公室电话:</span>
-                                                        <span>010-4343244</span>
+                                                        <span>{slideShowData.officePhone}</span>
                                                     </li>
                                                     <li>
                                                         <span>邮箱:</span>
                                                         <span>
-                                                            12344@qq.com
+                                                            {slideShowData.email}
                                                         </span>
                                                     </li>
                                                     <li>
                                                         <span>备注:</span>
-                                                        <span>无</span>
+                                                        <span>{slideShowData.remarks}</span>
                                                     </li>
                                                 </ul>
                                             </Panel>
-                                            <Panel header="标签" key="2">
-                                                <div className="tab-warpper">
-                                                    <div>
-                                                        <span>角色:</span>
-                                                        <p>决策人</p>
-                                                        <p>商务决策人</p>
-                                                        <p>技术决策人</p>
-                                                    </div>
-                                                    <div>
-                                                        <span>态度:</span>
-                                                        <p>支持</p>
-                                                    </div>
-                                                    <div>
-                                                        <span>兴趣爱好:</span>
-                                                        <p>唱歌</p>
-                                                        <p>跳舞</p>
-                                                    </div>
-                                                </div>
-                                            </Panel>
                                         </Collapse>
                                     </div>
-                                </TabPane>
-                                <TabPane tab="资料" key="2">
-                                    2
                                 </TabPane>
                             </Tabs>
                         </div>
@@ -248,3 +231,17 @@ export default class PanelView extends React.Component {
         );
     }
 }
+
+export default connect(
+    state => {
+        return {
+            $$stateComponent: state.componentReducer,
+            $$state: state.contacts
+        };
+    },
+    dispatch => {
+        return {
+            action: bindActionCreators(Actions, dispatch)
+        };
+    }
+)(PanelView);

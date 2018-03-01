@@ -97,11 +97,12 @@ const Less = Form.create({
 
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {
-            if (onChangeFild[key].value.key) {
-                searchMap[key] = onChangeFild[key].value.key;
-            } else {
-                searchMap[key] = onChangeFild[key].value;
-            }
+            searchMap[key] = onChangeFild[key].value;
+            // if (onChangeFild[key].value.key) {
+            //     searchMap[key] = onChangeFild[key].value.key;
+            // } else {
+            //     searchMap[key] = onChangeFild[key].value;
+            // }
         }
         props.searchMapFn(searchMap);
     }
