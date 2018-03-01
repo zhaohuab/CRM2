@@ -190,7 +190,7 @@ class ViewPanel extends React.Component {
                                 gutter={15}
                             >
                                 <div>
-                                    <Button onClick={this.btnEdit}>
+                                    <Button onClick={this.btnEdit} className='lead_view_edit_lead'>
                                         <i className="iconfont icon-bianji" />编辑
                                     </Button>
                                 </div>

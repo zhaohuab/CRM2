@@ -25,11 +25,13 @@ import { bindActionCreators } from "redux";
 import * as Actions from "../action";
 import Enum from "utils/components/enums";
 import * as enumDataFake from "./enumdata.jsx";
-import OwnUser from './OwnUser'
+import OwnerUser from "../../../common/ownerUser";
 import ResponseDepart from './ResponseDepart'
 import Department from './changeLead/Industry'
 import Industry from "../../../common/industry";
-import Departments from '../../../refs/departments'
+import Departments from '../../../refs/departments';
+
+import getInfo from 'utils/cookie'
 class MoreForm extends React.Component {
     handleSearch(e) {
         e.preventDefault();
@@ -42,12 +44,15 @@ class MoreForm extends React.Component {
 
 
     render() {
+        console.log(33,enumDataFake.state)
+        debugger
         const formItemLayout = {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
         const { getFieldDecorator, getFieldsValue } = this.props.form;
-        let { enumData } = this.props.$$state.toJS();
+        let { enumData,selectedDept } = this.props.$$state.toJS();
+        let deptid = getInfo("deptid")
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -90,9 +95,9 @@ class MoreForm extends React.Component {
 
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator(
-                                    "ownerDeptName"
+                                    "ownerDeptId"
                                 )(
-                                    <Departments />
+                                    <Departments orgType = {3}  fatherorgId={deptid} />
                                     )}
                             </FormItem>
                         </Col>
@@ -101,7 +106,7 @@ class MoreForm extends React.Component {
                                 {getFieldDecorator(
                                     "ownerUserId"
                                 )(
-                                    <OwnUser width={650} height={300} />
+                                    <OwnerUser deptId={selectedDept} />
                                     )}
                             </FormItem>
                         </Col>

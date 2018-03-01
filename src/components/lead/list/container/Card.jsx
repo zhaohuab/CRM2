@@ -102,25 +102,26 @@ class EditForm extends React.Component {
                             <Row type="flex" justify="center">
                                 <Col span={11}>
                                     <FormItem label="公司名称" {...formItemLayout}>
-                                        {getFieldDecorator("companyName", {
-                                            rules: [
-                                                {
-                                                    required: true,
-                                                    message: "请输入公司名称"
-                                                }
-                                            ]
-                                        })(<Input placeholder="请输入..." />)}
+                                        {getFieldDecorator("companyName", {})
+                                            (<Input placeholder="请输入..." />)}
                                     </FormItem>
                                 </Col>
                                 <Col span={11}>
                                     <FormItem label="客户规模" {...formItemLayout}>
-                                        {getFieldDecorator("cumSize")(
+                                        {getFieldDecorator("cumSize", {
+                                            rules: [
+                                                {
+                                                    required: true,
+                                                    message: "请输入客户规模"
+                                                }
+                                            ]
+                                        })(
                                             <Enum
                                                 addOptionAll={"客户规模"}
                                                 dataSource={enumData.cumSize}
-                                                
+
                                             />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -131,7 +132,7 @@ class EditForm extends React.Component {
                                             rules: [
                                                 {
                                                     required: true,
-                                                    message: "请输入..."
+                                                    message: "请输入线索来源"
                                                 }
                                             ]
                                         })(<Enum
@@ -142,7 +143,15 @@ class EditForm extends React.Component {
                                 </Col>
                                 <Col span={11}>
                                     <FormItem label="行业" {...formItemLayout}>
-                                        {getFieldDecorator("industryId")(
+                                        {getFieldDecorator("industryId"
+                                        , {
+                                            rules: [
+                                                {
+                                                    required: true,
+                                                    message: "请输入行业"
+                                                }
+                                            ]
+                                        })(
                                             <Industry />
                                         )}
                                     </FormItem>
@@ -182,7 +191,7 @@ class EditForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row type="flex" justify="center">
-                                <Col span={11} pull={5}  style={{marginRight:"34px"}}>
+                                <Col span={11} pull={5} style={{ marginRight: "34px" }}>
                                     <FormItem label="网址" {...formItemLayout}>
                                         {getFieldDecorator("website", {
 
@@ -194,7 +203,7 @@ class EditForm extends React.Component {
 
                                 <Col span={22} >
                                     <Row type="flex">
-                                        <Col span={3} style={{marginLeft:"13px"}}>
+                                        <Col span={3} style={{ marginLeft: "13px" }}>
                                             <Row
                                                 type="flex"
                                                 justify="end"
@@ -202,7 +211,7 @@ class EditForm extends React.Component {
                                                 <div>备注：</div>
                                             </Row>
                                         </Col>
-                                        <Col span={20} className='remarks' style={{width:'85%'}}>
+                                        <Col span={20} className='remarks' style={{ width: '85%' }}>
                                             <FormItem
                                             >
                                                 {getFieldDecorator(
@@ -234,7 +243,7 @@ class EditForm extends React.Component {
 const CardForm = Form.create({
     mapPropsToFields: (props) => {
         //把redux中的值取出来赋给表单
-    debugger
+        debugger
         let viewData = props.$$state.toJS().editData;
 
         let value = {};
@@ -262,7 +271,7 @@ const CardForm = Form.create({
                 viewData[key] = onChangeFild[key].value.key;
             } else {
                 viewData[key] = onChangeFild[key].value;
-                 
+
             }
         }
         props.action.editCardFn(viewData);

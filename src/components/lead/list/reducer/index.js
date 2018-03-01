@@ -14,7 +14,7 @@ let $$initialState = {
     option: '',
     selectedRows: [],
     selectedRowKeys: [],
-
+    selectedDept:'' ,//查询条件中选中的部门
 
     //分配人员列表
     selectedUserRowKeys: [],
@@ -140,14 +140,15 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 leadStep: action.payload.leadStep
             });
 
-
-
-
-
-
-
-
         //==========
+
+        // case 'CLUE_LIST_SAVESELECTEDDEPT':
+        // return $$state.merge({
+        //     selectedDept: action.payload.deptId,
+        //})
+
+
+
         case 'CLUE_LIST_CLOSELEADSHOW':
             return $$state.merge({
                 colseVisible: action.visible,
@@ -243,8 +244,18 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
 
         case "CLUE_LIST_SEARCHMAP": //存放扩展、基础查询条件
             debugger
+            let ser=action.data;
+            let depatId;
+            if(ser.ownerDeptId){
+                let aaa=ser.ownerDeptId;
+                 depatId=aaa.key;
+            }else{
+                 depatId='';
+            }
             return $$state.merge({
-                searchMap: action.data
+                searchMap: action.data,
+                selectedDept:depatId
+
             });
         case "CLUE_LIST_GETENUMDATA": //获取查询条件基础显示内容
             return $$state.merge({ enumData: action.payload.enumData });

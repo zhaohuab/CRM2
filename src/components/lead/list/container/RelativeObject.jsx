@@ -51,7 +51,16 @@ class RelevantObject extends React.Component {
         debugger
         let { editData } = this.props.$$state.toJS();
         let relData = editData.related;
-        let { bizopps, contacts, customers } = relData;
+        if(relData&&relData.bizopps){
+            let { bizopps} = relData;
+        }
+        if(relData&&relData.contacts){
+            let { contacts} = relData;
+        }
+        if(relData&&relData.customers){
+            let {customers} = relData;
+        }
+      
          bizopps=this.transTime(bizopps);
         if (customers && customers.salesVOs) {
             let ownerUserName = customers.salesVOs;

@@ -49,6 +49,12 @@ function transData(searchMap) {
         //debugger
         searchMap.industryId= searchMap.industryId.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
     }
+    if(searchMap.ownerDeptId){
+        searchMap.ownerDeptId=searchMap.ownerDeptId.key;
+    }
+    if(searchMap.ownerUserId){
+        searchMap.ownerUserId=searchMap.ownerUserId.id;
+    }
     return searchMap;
 }
 

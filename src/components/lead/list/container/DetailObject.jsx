@@ -19,8 +19,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as Actions from "../action";
 
-
-
 class DetailObject extends React.Component {
     render() {
         debugger

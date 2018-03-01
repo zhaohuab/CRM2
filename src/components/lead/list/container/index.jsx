@@ -66,7 +66,7 @@ class Clue extends React.Component {
                 dataIndex: "cumSizeSum",
                 render: (text, record) => (
                     <div>
-                        {record.cumSizeSum ? record.cumSizeSum + '人' : ''}
+                        {record.cumSizeSum ? record.cumSizeSum : ''}
                     </div>
                 )
             },
@@ -330,12 +330,12 @@ class Clue extends React.Component {
         };
         const moreMenu = (
             <Menu onClick={this.onMenu.bind(this)}>
-                <Menu.Item key="1">
+                <Menu.Item key="1" className='lead_list_import_lead'>
                     <span>导入</span>
                 </Menu.Item>
-                {/* <Menu.Item key="2">
+                <Menu.Item key="2"className='lead_list_export_lead'>
                     <span>导出</span>
-                </Menu.Item> */}
+                </Menu.Item>
             </Menu>
         );
 
@@ -349,17 +349,17 @@ class Clue extends React.Component {
                             goBack={this.headerBack.bind(this)}
                         >
                             {selectedRowKeys.length == 1 ? (
-                                <Button onClick={this.onEdit.bind(this)}>
+                                <Button onClick={this.onEdit.bind(this)} className='lead_list_edit_lead'>
                                     <i className="iconfont icon-bianji" />编辑
                                 </Button>
                             ) : (
                                     ""
                                 )}
 
-                            <Button onClick={this.assigin.bind(this)}>
+                            <Button onClick={this.assigin.bind(this)} className='lead_list_distribute_p_lead'>
                                 <i className="iconfont icon-xiansuofenpei" />线索分配
                         </Button>
-                            <Button onClick={this.onDelete.bind(this)}>
+                            <Button onClick={this.onDelete.bind(this)} className='lead_list_delete_lead'>
                                 <i className="iconfont icon-shanchu" />删除
                         </Button>
                             {/* <ButtonGroup className="returnbtn-class">
@@ -426,6 +426,7 @@ class Clue extends React.Component {
                                                 >
                                                     <div>
                                                         <Button
+                                                        className='lead_list_add_lead'
                                                             type="primary"
                                                             onClick={this.newClue.bind(
                                                                 this
