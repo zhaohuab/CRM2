@@ -66,6 +66,17 @@ let trancFn=(data)=>{
             }
         }
 
+        if(key == 'productLine'){
+            debugger
+            if(data[key] && data[key].value){
+                data[key] = data[key].value.id
+            }else if(data[key]){
+                data[key] = data[key].id
+            }else{
+                data[key] = undefined
+            }
+        }
+
         //详细地址
         if (key == 'street' && typeof data[key] == 'object') {
             debugger
@@ -86,14 +97,15 @@ let trancFn=(data)=>{
         }
     }
 debugger
-    if(!data.salesVOs){
-        data.salesVOs = []
-        data.salesVOs.push({state:data.state})
-    }else if(data.salesVOs && data.salesVOs.length){
-        data.salesVOs[0].state = data.state
-    }else{
-        data.salesVOs = []
-    }
+    //客户状态
+    // if(!data.salesVOs){
+    //     data.salesVOs = []
+    //     data.salesVOs.push({state:data.state})
+    // }else if(data.salesVOs && data.salesVOs.length){
+    //     data.salesVOs[0].state = data.state
+    // }else{
+    //     data.salesVOs = []
+    // }
     
     return data;
 }

@@ -65,6 +65,7 @@ export default class PersonChoiceModal extends React.Component {
                     data:{
                         param:{
                             orgType:3,
+                            type:1
                             //fatherorgId:orgId
                         }
                     }
@@ -303,7 +304,7 @@ export default class PersonChoiceModal extends React.Component {
                                 <OwnUser viewData={viewData} disabled={false} width={500} height={300} onChange={this.onModifyChange.bind(this)} value={this.state.valueModify}/>
                             </Col>
                         </Row>
-                         <Row type='flex' align='middle' className='change-person-item'>
+                         {/* <Row type='flex' align='middle' className='change-person-item'>
                             <Col span={20} offset={4}>
                                 <Row>
                                     同时将原负责人相关业务调整为现负责人：
@@ -312,7 +313,7 @@ export default class PersonChoiceModal extends React.Component {
                                     <CheckboxGroup options={plainOptions} />
                                 </Row>
                             </Col>
-                        </Row> 
+                        </Row>  */}
                    </div>
                 </Modal>
             </div>

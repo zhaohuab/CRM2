@@ -36,7 +36,7 @@ import UploadImg from "./UploadImg";
 import CityChioce from "../../../../common/cityChioce/CityChioce";
 import InputDisable from './InputDisable'
 import SuperiorCustomer from './SuperiorCustomer'
-import TableDropdownModal from '../panel/TableDropdownModal'
+import ProductLine from '../panel/ProductLine'
 //import OwnUser from './OwnUser'
 
 import Int from "utils/components/int";
@@ -324,58 +324,7 @@ class EditForm extends React.Component {
                                                 </Row>
                                             </Col>
                                         </Row>
-                                      {/* <Col span={12} className="cum-from-row-bottom">
-                                                <Row type="flex" align="middle">
-                                                    <Col span={6}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <div>
-                                                                客户全称：
-                                                            </div>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col span={18}>
-                                                        <FormItem
-                                                            {...formItemLayout}
-                                                        >
-                                                            {getFieldDecorator(
-                                                                "fullname"
-                                                            )(
-                                                                <Input placeholder="请输入" />
-                                                            )}
-                                                        </FormItem>
-                                                    </Col>
-                                                </Row>
-                                        </Col> */}
-                                        {/* <Row className="cum-from-row-bottom">
-                                            <Col span={24}>
-                                                <Row type="flex">
-                                                    <Col span={3}>
-                                                        <Row
-                                                            type="flex"
-                                                            justify="end"
-                                                        >
-                                                            <div>备注：</div>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col span={21} className="remark">
-                                                        <FormItem {...formItemLayout1}>
-                                                            {getFieldDecorator(
-                                                                "remark",
-                                                            )(
-                                                                <TextArea
-                                                                    autosize={{minRows: 3,maxRows: 8}}
-                                                                    placeholder="请输入"
-                                                                    style={{width:"100%"}}
-                                                                />
-                                                            )}
-                                                        </FormItem>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                        </Row> */}
+                                  
                                         <Row className="cum-from-row-bottom">
                                             <Col span={24}>
                                                 <Row type="flex">
@@ -570,7 +519,7 @@ class EditForm extends React.Component {
                                                         type="flex"
                                                         justify="end"
                                                     >
-                                                        <div>客户状态：</div>
+                                                        <div>云产品线：</div>
                                                     </Row>
                                                 </Col>
                                                 <Col span={18}>
@@ -578,21 +527,15 @@ class EditForm extends React.Component {
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "state"
+                                                            "productLine"
                                                         )(
-                                                            <Enum
-                                                                addOptionAll={
-                                                                    "客户状态"
-                                                                }
-                                                                dataSource={
-                                                                    enumData.state
-                                                                }
-                                                            />
+                                                            <ProductLine/>
                                                         )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
                                         </Col>
+                                        
                                         <Col span={12}  className="cum-from-row-bottom">
                                             <Row type="flex" align="middle">
                                                 <Col span={6}>
@@ -614,91 +557,7 @@ class EditForm extends React.Component {
                                                 </Col>
                                             </Row>
                                         </Col>
-                                        {/* <Col span={12}  className="cum-from-row-bottom">
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>客户类型：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "biztype"
-                                                        )(
-                                                           <InputDisable disabled = {true}/>
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col> */}
                                         
-                                        {/* <Col span={12}  className="cum-from-row-bottom">
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>客户等级：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "level"
-                                                        )(
-                                                            <Enum
-                                                                addOptionAll={
-                                                                    "客户等级"
-                                                                }
-                                                                dataSource={
-                                                                    enumData.level
-                                                                }
-                                                            />
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col> */}
-                                        
-                                        {/* <Col span={12} className="cum-from-row-bottom">
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>渠道类型：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "cannelType"
-                                                        )(
-                                                            <Enum
-                                                                addOptionAll={
-                                                                    "渠道类型"
-                                                                }
-                                                                dataSource={
-                                                                    enumData.cannelType
-                                                                }
-                                                            />
-                                                            )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col> */}
                                         <Col span={12} className="cum-from-row-bottom">
                                             <Row type="flex" align="middle">
                                                 <Col span={6}>
@@ -748,29 +607,7 @@ class EditForm extends React.Component {
                                                 </Col>
                                             </Row>
                                         </Col>
-                                        <Col span={12}  className="cum-from-row-bottom">
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>云产品线：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "productLine"
-                                                        )(
-                                                            <TableDropdownModal/>
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
+                                        
                                     </Col>
                                 </Row>
                             </Row>
@@ -1050,3 +887,171 @@ function mapDispatchToProps(dispatch) {
 }
 //输出绑定state和action后组件
 export default connect(mapStateToProps, mapDispatchToProps)(cardForm);
+
+    {/* <Col span={12} className="cum-from-row-bottom">
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>
+                                                                客户全称：
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={18}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "fullname"
+                                                            )(
+                                                                <Input placeholder="请输入" />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                        </Col> */}
+                                        {/* <Row className="cum-from-row-bottom">
+                                            <Col span={24}>
+                                                <Row type="flex">
+                                                    <Col span={3}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>备注：</div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={21} className="remark">
+                                                        <FormItem {...formItemLayout1}>
+                                                            {getFieldDecorator(
+                                                                "remark",
+                                                            )(
+                                                                <TextArea
+                                                                    autosize={{minRows: 3,maxRows: 8}}
+                                                                    placeholder="请输入"
+                                                                    style={{width:"100%"}}
+                                                                />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                        </Row> */}
+                                        {/* <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>客户状态：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "state"
+                                                        )(
+                                                            <Enum
+                                                                addOptionAll={
+                                                                    "客户状态"
+                                                                }
+                                                                dataSource={
+                                                                    enumData.state
+                                                                }
+                                                            />
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col> */}
+                                        {/* <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>客户类型：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "biztype"
+                                                        )(
+                                                           <InputDisable disabled = {true}/>
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col> */}
+                                        
+                                        {/* <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>客户等级：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "level"
+                                                        )(
+                                                            <Enum
+                                                                addOptionAll={
+                                                                    "客户等级"
+                                                                }
+                                                                dataSource={
+                                                                    enumData.level
+                                                                }
+                                                            />
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col> */}
+                                        
+                                        {/* <Col span={12} className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>渠道类型：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "cannelType"
+                                                        )(
+                                                            <Enum
+                                                                addOptionAll={
+                                                                    "渠道类型"
+                                                                }
+                                                                dataSource={
+                                                                    enumData.cannelType
+                                                                }
+                                                            />
+                                                            )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col> */}

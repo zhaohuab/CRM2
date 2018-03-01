@@ -154,6 +154,7 @@ export default class OwnUser extends React.Component {
                     data:{
                         param:{
                             orgType:3,
+                            type:1
                         }
                     }
                 },

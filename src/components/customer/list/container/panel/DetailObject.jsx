@@ -261,7 +261,7 @@ class DetailObject extends React.Component {
                                         <span>
                                             {
                                                  viewData.salesVOs && viewData.salesVOs.length?viewData.salesVOs[0].stateName:'无'
-                                             }
+                                            }
                                         </span>
                                     </Col>
                                 </Row>
