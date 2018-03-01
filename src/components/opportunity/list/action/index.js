@@ -1,7 +1,7 @@
 import reqwest from 'utils/reqwest'
 import { message } from 'antd';
 import moment from 'moment'
-import { opportunity as url, product, oppflow, oppstage } from 'api';
+import { opportunity as url, product, oppflow, oppstage,upload } from 'api';
 
 
 const fetchData = (type, payload) => {
@@ -458,6 +458,185 @@ const lostOpp = (id, data) => {
     }
 }
 
+//查询条件中，选择部门后，存储选择的部门，用以筛选负责人的查询条件列表
+const saveSelectedDept = (deptId)=>{
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_SAVESELECTEDDEPT', { deptId }));
+    }
+}
+
+//联系人参照列表
+const getContactListData = (id) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id + "/contacts",
+            method: 'get',
+            data: {
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETCONTACTLISTDATA', { data:result.data }));
+        })
+    }
+}
+
+//选择联系人列表(卡片页面)
+const showContactView = (id, customerId) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id + "/cumContacts",
+            method: 'get',
+            data: {
+                param: {
+                    customerId
+                }
+            }
+        }, (result) => {
+            let data = result.data;
+            let selectedKeys = []
+            let selectedRows = []
+            for( let i=0;i<data.length;i++){
+                if(data[i].isChecked == 'Y'){
+                    selectedKeys.push(data[i].id)
+                    selectedRows.push(data[i])
+                }
+            }
+            dispatch(fetchData('OPPORTUNITY_LIST_SHOWCONTACTVIEW', { data,selectedKeys,selectedRows }));
+        })
+    }
+}
+
+
+
+//保存联系人参照table已选择行数据
+const selectContactRow = (selectedRows, selectedRowKeys) => {
+    return {
+        type: "OPPORTUNITY_LIST_SELECTCONTACTROW",
+        payload: { selectedRows, selectedRowKeys }
+    };
+};
+
+//保存联系人卡片页面table已选择行数据
+const selectContactCardRow = (selectedRows, selectedRowKeys) => {
+    return {
+        type: "OPPORTUNITY_LIST_SELECTCONTACTCARDROW",
+        payload: { selectedRows, selectedRowKeys }
+    };
+};
+
+//保存联系人
+const saveContact =(id,contactIds)=>{
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id+"/contacts",
+            method: 'post',
+            data: {
+                param: {
+                    contactIds:contactIds.join(",")
+                }
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_SAVECONTACT', { data:result.data }));
+        })
+    }
+}
+
+//关闭联系人卡片
+const closeContactView =(id,contactIds)=>{
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_CLOSECONTACTVIEW'));
+    }
+}
+
+//删除联系人
+const delContact =(id,contactIds)=>{
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id+"/contacts",
+            method: 'delete',
+            data: {
+                param: {
+                    ids:contactIds.join(",")
+                }
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_DELCONTACT', { data:result.data }));
+        })
+    }
+}
+
+//新增参与人
+export function saveRelUserSuccess(data) {
+    return {
+        type: 'OPPORTUNITY_LIST_SAVERELUSERSUCCESS',
+        payload:data
+    }
+}
+
+
+//删除参与人
+export function delRelUserData(relUserId) {
+    return {
+        type: 'OPPORTUNITY_LIST_DELRELUSERLIST',
+        payload:relUserId
+    }
+}
+
+
+//参与人数据获取
+const getRelUserListData = (id) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id + "/relusers",
+            method: 'get',
+            data: {
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETRELUSERLISTDATA', { data:result.data }));
+        })
+    }
+}
+
+//获取附件
+const getAttachFile = (id,objType) => {
+    return (dispatch) => {
+        reqwest({
+            url: upload.upload + "/" + objType+"/"+id,
+            method: 'get',
+            data: {
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETATTACHFILE', { data:result.data }));
+        })
+    }
+}
+
+//天赐上传文件删除
+export function onDeleteFiles(file) {
+    return (dispatch) => {
+        reqwest(
+            {
+                url: upload.upload + `/${file.objType}/${file.objId}/${file.name}/${file.id}`,
+                method: "DELETE",
+            },
+            result => {
+                dispatch({
+                    type: "OPPORTUNITY_LIST_DELETEFILE",
+                    file
+                });
+            }
+        );
+    }
+}
+
+//天赐上传文件
+export function filesSuccess(file) {
+    return {
+        type: "OPPORTUNITY_LIST_FILESSUCCESS",
+        payload: file,
+    };
+}
+
+
 //输出 type 与 方法
 export {
     getListData,
@@ -488,5 +667,15 @@ export {
     showRadarCard,
     winOpp,
     lostOpp,
-    closeForm
+    closeForm,
+    saveSelectedDept,
+    getContactListData,
+    getRelUserListData,
+    showContactView,
+    selectContactRow,
+    selectContactCardRow,
+    saveContact,
+    closeContactView,
+    delContact,
+    getAttachFile
 }

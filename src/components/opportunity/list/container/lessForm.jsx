@@ -40,12 +40,13 @@ class LessForm extends React.Component {
             wrapperCol: { span: 22 }
         };
         let { enumData } = this.props.$$state.toJS();
-       
+        enumData.stageList = enumData.biztypeList.length>0?enumData.biztypeList[0].stageList:[]
         return (
             <div className="less-form">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
                     <Row type="flex" align="middle" style={{ height: "54px" }}>
-                        <Col span={8}>
+                    {/* 项目第一版移除  */}
+                        {/* <Col span={8}>
 
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("type", {})(
@@ -55,13 +56,13 @@ class LessForm extends React.Component {
                                     />
                                 )}
                             </FormItem>
-                        </Col>
+                        </Col> */}
                         <Col span={8}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("saleStage", {})(
                                     <Enum
                                         addOptionAll={"商机阶段"}
-                                        dataSource={enumData.stageList?enumData.stageList:[]}
+                                        dataSource={enumData.stageList}
                                     />
                                 )}
                             </FormItem>
@@ -89,18 +90,18 @@ const WarpMilForm = Form.create({
 
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-        let { enumData } = props.$$state.toJS();
-        for (let key in onChangeFild) {
-            if (key == 'type' ) {
-                for(let i=0;i<enumData.biztypeList.length;i++){
-                    if(onChangeFild[key].value.key == enumData.biztypeList[i].key){
-                        enumData.stageList = enumData.biztypeList[i].stageList;
-                    }
+        // let { enumData } = props.$$state.toJS();
+        // for (let key in onChangeFild) {
+        //     if (key == 'type' ) {
+        //         for(let i=0;i<enumData.biztypeList.length;i++){
+        //             if(onChangeFild[key].value.key == enumData.biztypeList[i].key){
+        //                 enumData.stageList = enumData.biztypeList[i].stageList;
+        //             }
                     
-                }
-            }
-        }
-        props.action.saveEnum(enumData);
+        //         }
+        //     }
+        // }
+        // props.action.saveEnum(enumData);
     }
 })(LessForm);
 
