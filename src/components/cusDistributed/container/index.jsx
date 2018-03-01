@@ -54,8 +54,17 @@ class PanelMap extends React.Component {
         }     
     }
 
-    reload = () => {//返回按钮，重新加载页面
-        window.location.reload();
+    reload = () => {//返回按钮，返回上级请求页面
+        let customerListBack = this.props.$$state.get('customerListBack').toJS();
+        let customerItemBack = this.props.$$state.get('customerItemBack').toJS();
+        let arr1 = customerListBack[customerListBack.length-2];
+        let arr2 = customerItemBack[customerItemBack.length-2]
+        debugger;
+        if(customerListBack.length>1){
+            this.props.action.getCustomerList(...arr1, true);
+            this.props.action.getCustomerItem(...arr2, true);
+            this.props.action.listPop();
+        }     
     }
 
     pageChange = (num) => {//页码更改
@@ -63,17 +72,21 @@ class PanelMap extends React.Component {
         let {total}=this.props.$$state.get('data').toJS();
         let str = this.props.$$state.get('userName');
         let id = this.props.$$state.get(str);
-        this.props.action.getCustomerItem(str,id,num)
+        this.props.action.getCustomerItem(str,id,num,true)
     }
 
     getCustomer = (str, id, name) => {
-        //debugger;
-        this.props.action.getCustomerList(str, id, name);
-        this.props.action.getCustomerItem(str, id, 1)
+        debugger;
+        let arr = this.props.$$state.get('customerListBack').toJS().pop();
+        if(id!=arr[1]){//如果已经是最后一级了，就不在发请求
+            this.props.action.getCustomerList(str, id, name);
+            this.props.action.getCustomerItem(str, id, 1)
+        }
+    
     }
 
     componentDidMount() {  
-        this.props.action.getCustomerList();//获取部门及业务员
+        this.props.action.getCustomerList('','','');//获取部门及业务员
         this.props.action.getCustomerItem('','',1);//获取具体客户信息
         this.areaMap = echarts.init(this.refs.areaMap);//初始化echarts   
         this.areaMap.on("mouseover", function (params){  //给地图添加鼠标划过事件
@@ -102,8 +115,6 @@ class PanelMap extends React.Component {
         let departmentName = $$state.get('departmentName'); 
         let loadingFlag = $$state.get('loadingFlag');
         let page = $$state.get('page');  
-        //console.log('customerItem=================',customerItem,customerItem.total)    
-      //debugger;
         return (
             <Row type="flex" className="customer-panelMap-wraper">
                 <Col span={8} className="customer-panelMap-left">

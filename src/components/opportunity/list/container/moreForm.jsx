@@ -10,10 +10,15 @@ import "assets/stylesheet/all/iconfont.css";
 import * as Actions from "../action";
 import * as enumDataFake from "./enumdata";
 const { RangePicker } = DatePicker;
+import Department from 'components/refs/departments'
+import OwnerUser from "../../../common/ownerUser";
 
 class MoreForm extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            deptId:""
+        }
     }
 
     handleSearch(e) {
@@ -39,13 +44,13 @@ class MoreForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        let { enumData } = this.props.$$state.toJS();
+        let { enumData,selectedDept } = this.props.$$state.toJS();
+        enumData.stageList = enumData.biztypeList.length > 0 ? enumData.biztypeList[0].stageList : []
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
                     <Row>
-                        <Col span={6}>
-
+                        {/* <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("type", {})(
                                     <Enum
@@ -54,13 +59,13 @@ class MoreForm extends React.Component {
                                     />
                                 )}
                             </FormItem>
-                        </Col>
+                        </Col> */}
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("saleStage", {})(
                                     <Enum
                                         addOptionAll={"商机阶段"}
-                                        dataSource={enumData.stageList ? enumData.stageList : []}
+                                        dataSource={enumData.stageList}
                                     />
                                 )}
                             </FormItem>
@@ -82,20 +87,20 @@ class MoreForm extends React.Component {
                                         addOptionAll={"商机来源"}
                                         dataSource={enumData.oppSourceList ? enumData.oppSourceList : []}
                                     />
-                                    )}
+                                )}
                             </FormItem>
                         </Col>
                     </Row>
 
                     <Row>
                         <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator(
-                                    "deptId",
-                                    {}
-                                )(
-                                    <Input placeholder="部门" />
-                                    )}
+                            <FormItem
+                                {...formItemLayout}
+                            >
+                                {getFieldDecorator('deptId', {
+                                })(
+                                    <Department orgType = {3}/>
+                                )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
@@ -104,8 +109,8 @@ class MoreForm extends React.Component {
                                     "ownerUserId",
                                     {}
                                 )(
-                                    <Input placeholder="负责人" />
-                                    )}
+                                    <OwnerUser deptId={selectedDept} />
+                                )}
                             </FormItem>
                         </Col>
 
@@ -132,18 +137,26 @@ const WarpMilForm = Form.create({
 
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
-        let { enumData } = props.$$state.toJS();
-        for (let key in onChangeFild) {
-            if (key == 'type') {
-                for (let i = 0; i < enumData.biztypeList.length; i++) {
-                    if (onChangeFild[key].value.key == enumData.biztypeList[i].key) {
-                        enumData.stageList = enumData.biztypeList[i].stageList;
-                    }
+        // let { enumData } = props.$$state.toJS();
+        // for (let key in onChangeFild) {
+        //     if (key == 'type') {
+        //         for (let i = 0; i < enumData.biztypeList.length; i++) {
+        //             if (onChangeFild[key].value.key == enumData.biztypeList[i].key) {
+        //                 enumData.stageList = enumData.biztypeList[i].stageList;
+        //             }
 
-                }
+        //         }
+        //     }
+        // }
+        // props.action.saveEnum(enumData);
+         for (let key in onChangeFild) {
+            if (key == 'deptId') {
+                debugger
+                let deptId = onChangeFild.deptId.value.key;
+                // this.setState({deptId})
+                props.action.saveSelectedDept(deptId);
             }
         }
-        props.action.saveEnum(enumData);
     }
 })(MoreForm);
 

@@ -125,6 +125,7 @@ class List extends React.Component {
 
     //清除表单数据
     clearForm(){
+        debugger
         if(this.formRef){
             this.formRef.props.form.resetFields()
         }
@@ -214,6 +215,7 @@ class List extends React.Component {
     render() {
         const { $$state } = this.props;
         const page = $$state.get("data").toJS();
+        const pageSize = $$state.get("pageSize");      
         let {
             selectedRowKeys,
             formVisitable,
@@ -244,7 +246,7 @@ class List extends React.Component {
                         size="middle"
                         pagination={{
                             size: "large",
-                            
+                            current:pageSize,
                             showSizeChanger: true,
                             showQuickJumper: true,
                             total: page.total,

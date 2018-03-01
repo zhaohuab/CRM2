@@ -66,7 +66,7 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col> */}
-                        <Col span={4}>
+                        <Col span={6}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("source")(
                                     <Enum
@@ -76,7 +76,7 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
+                        <Col span={6}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("state")(
                                     <Enum
@@ -86,36 +86,26 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
-                            {/* <FormItem  {...formItemLayout}>
-                                {getFieldDecorator("deptId")(
-                                    <Input placeholder="部门" />
-                                )}
-                            </FormItem> */}
-                            <FormItem>
+                        <Col span={6}>
+
+                            <FormItem {...formItemLayout}>
                                 {getFieldDecorator(
                                     "ownerDeptName"
                                 )(
-                                    <Departments/>
+                                    <Departments />
                                     )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
+                        <Col span={6}>
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator(
                                     "ownerUserId"
                                 )(
-                                    <OwnUser width={650} height={300}/>
+                                    <OwnUser width={650} height={300} />
                                     )}
                             </FormItem>
                         </Col>
-                        <Col span={4}>
-                            <FormItem  {...formItemLayout}>
-                                {getFieldDecorator("industryId", {})(
-                                    <Industry />
-                                )}
-                            </FormItem>
-                        </Col>
+
                     </Row>
 
                     <Row
@@ -133,7 +123,15 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col> */}
-                        <Col span={4}>
+
+                        <Col span={6}>
+                            <FormItem  {...formItemLayout}>
+                                {getFieldDecorator("industryId", {})(
+                                    <Industry />
+                                )}
+                            </FormItem>
+                        </Col>
+                        <Col span={6}>
 
                             <FormItem  {...formItemLayout}>
                                 {getFieldDecorator("signTime")(

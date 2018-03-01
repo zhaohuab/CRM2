@@ -13,7 +13,6 @@ import "assets/stylesheet/all/iconfont.css";
 
 export default class InputDisable extends React.Component {
     render(){
-        debugger
         return(
             <div>
                 <Input value = {this.props.value? this.props.value.name:''} disabled = {this.props.disabled?true:false}/>  

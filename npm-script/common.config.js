@@ -17,16 +17,16 @@ const environments = {
 	'btest': '//172.20.18.154',
 	// 正式环境
 	'bup': '//172.20.18.155',
+	// 上线环境，参数指定地址
+	"bupip": process.env.SERVER_IP_PORT,
 };
-
-
+console.log("ip_port:"+process.env.SERVER_IP_PORT);
 
 const productionEnv = environments[process.env.npm_lifecycle_event];
-
 const publicPath = productionEnv + '/lib/';
 
 //打包之前先清理lib
-if (process.env.npm_lifecycle_event == "btest" || process.env.npm_lifecycle_event == "bup") {
+if (process.env.npm_lifecycle_event == "btest" || process.env.npm_lifecycle_event == "bup" || process.env.npm_lifecycle_event == "bupip") {
 	require('./before.build.script');
 }
 

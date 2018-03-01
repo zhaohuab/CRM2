@@ -23,13 +23,11 @@ class DetailTop extends React.Component {
     btnEdit() {
         debugger
         let { viewData } = this.props.$$state.toJS();
-        
         this.props.action.showFormEdit(true);
     }
 
     //点击升级按钮
     upgrade(){
-        
         let { viewData } = this.props.$$state.toJS();
         let id = viewData.id;
         this.props.action.cumUpgrade(id)
@@ -63,11 +61,31 @@ class DetailTop extends React.Component {
         );
     }
 
+    //生成地址方法
+    createAddress(viewData){
+        debugger
+        if(viewData.street && viewData.street.address){
+             return(
+                <span>
+                    { viewData.street.address }  <i className="iconfont icon-shouye-dingwei" />
+                </span>
+             )
+        }else if(viewData.street && typeof viewData.street == 'string'){
+            return(
+                <span>{ viewData.street }  <i className="iconfont icon-shouye-dingwei" /></span>
+            )
+        }else{
+            return(
+                <span></span>
+            )
+        }
+    }
+
     render(){
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
         
         let name = viewData.name
-
+debugger
         return(
         <Row className="view-warrper-header">
             <Row className="header-customer">
@@ -87,7 +105,7 @@ class DetailTop extends React.Component {
                                     gutter={25}
                                 >
                                      <div className="customer-name">
-                                        {viewData.name}
+                                        {viewData.name && viewData.name.value?viewData.name.value:viewData.name}
                                     </div>
                                     <Row
                                         type="flex"
@@ -112,15 +130,11 @@ class DetailTop extends React.Component {
                                     </Row>
                                 </Row>
                                 <Row className="address pointer">
-                                    {
-                                        viewData.street?
-                                        <span>
-                                            { viewData.street }  <i className="iconfont icon-shouye-dingwei" />
-                                        </span>:
-                                        <span>{ viewData.street }</span>
-                                    }
+                                   {
+                                       this.createAddress(viewData)
+                                   }
                                 </Row>
-                                <Row type='flex' align='middle'className="tags">
+                                <Row type='flex' align='middle' className="tags">
                                     {
                                         viewData.biztypeName ?
                                         <span className='tags-item'><span>{viewData.biztypeName}</span></span>: ''

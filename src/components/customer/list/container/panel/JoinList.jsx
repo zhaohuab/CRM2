@@ -78,7 +78,7 @@ class JoinList extends React.Component {
                                     />:
                                     this.changeCircleColor(item)
                                 }
-                                <span className='username customer_edit_deluser_customer'>{item.userName}<span className='del'><i className="iconfont icon-canyuren-shanchu" onClick={this.joinDel.bind(this,item.id)}/></span></span>
+                                <span className='username'>{item.userName}<span className='del'><i className="iconfont icon-canyuren-shanchu customer_edit_deluser_customer" onClick={this.joinDel.bind(this,item.id)}/></span></span>
                             </div>
                         )
                     }):''

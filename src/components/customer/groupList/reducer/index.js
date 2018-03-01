@@ -1,4 +1,5 @@
 import Immutable from "immutable";
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     data: [], //tabel展示数据
@@ -47,25 +48,6 @@ let $$initialState = {
     successResult: {} //导入成功后返回结果
 };
 
-function pageAdd(page, item) {
-    page.total += 1;
-    page.data.unshift(item);
-    page.page = Math.ceil(page.total / page.pageSize);
-    return page;
-}
-
-function pageEdit(page, item) {
-    let { data } = page;
-    for (let i = 0, len = data.length; i < len; i++) {
-        if (data[i].id == item.id) {
-            data[i] = item;
-            break;
-        }
-    }
-    page.data = data;
-    return page;
-}
-
 function clearObject(obj){
     for(let key in obj){
         obj[key] = undefined
@@ -78,8 +60,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
 
 
         //----------- 导入导出
-        case 'CUSTOMERGROUP_LIST_VIEWLEADSHOW':
-        
+        case 'CUSTOMERGROUP_LIST_VIEWLEADSHOW':     
             return $$state.merge({
                 viewLeadVisible: action.payload.leadVisible,
             });
@@ -87,25 +68,13 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             return $$state.merge({
                 leadVisible: action.payload.leadVisible,
             });
-        case 'CUSTOMERGROUP_LIST_LEADENDSHOW':
-            return $$state.merge({
-                leadEndVisible: action.payload.leadVisible,
-            });
         case 'CUSTOMERGROUP_LIST_LEADINGSHOW':
             return $$state.merge({
                 leadingVisible: action.payload.leadVisible,
             });
-        case 'CUSTOMERGROUP_LIST_LEADSHOW':
-            return $$state.merge({
-                leadVisible: action.payload.leadVisible,
-            });
         case 'CUSTOMERGROUP_LIST_LEADENDSHOW':
             return $$state.merge({
                 leadEndVisible: action.payload.leadVisible,
-            });
-        case 'CUSTOMERGROUP_LIST_LEADINGSHOW':
-            return $$state.merge({
-                leadingVisible: action.payload.leadVisible,
             });
         case 'CUSTOMERGROUP_LIST_SAVEFILES':           
             return $$state.merge({
@@ -170,6 +139,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             });
         //存放动态信息
         case "CUSTOMERGROUP_LIST_GETDYNAMIC":
+        debugger
                 return $$state.merge({
                     dynamicData: action.data
                 });    
@@ -449,14 +419,14 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                 viewDataRelevant:addContacts
            });
                    ////////天赐上传附件    
-        case "CUSTOMERCOMPANY_LIST_FILESSUCCESS"://添加附件
+        case "CUSTOMERGROUP_LIST_FILESSUCCESS"://添加附件
         let viewDataRelevant = $$state.get('viewDataRelevant').toJS()
         viewDataRelevant[3].list.data.unshift(action.payload)
         return $$state.merge({
             viewDataRelevant: viewDataRelevant
         });
     ////////天赐删除附件
-    case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
+    case "CUSTOMERGROUP_LIST_DELETEFILE"://删除附件
         debugger
         let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
         let fileArr = viewDataRelevant2[3].list.data;
@@ -501,6 +471,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
                     obj.defClass=item.defClass;
                 }
             })
+            debugger;
             return $$state.merge({ searchData: action.payload.searchData, searchPlan:obj, defaultId:obj.id});
         case "CUSTOMERGROUP_SEARCHPLAN_SUCESS"://获取相关对象联系人表单数据      
             return $$state.merge({

@@ -1,4 +1,5 @@
 import Immutable from "immutable";
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     data: [], //tabel展示数据
@@ -46,34 +47,23 @@ let $$initialState = {
     filesSuccess: false,
     filesFail: false,
     successResult: {},//导入成功后返回结果
+    pageSize:1,//---列表页页码受控  赵华冰 2-9
 };
 
-function pageAdd(page, item) {
-    page.total += 1;
-    page.data.unshift(item);
-    page.page = Math.ceil(page.total / page.pageSize);
-    return page;
-}
-
-function pageEdit(page, item) {
-    let { data } = page;
-    for (let i = 0, len = data.length; i < len; i++) {
-        if (data[i].id == item.id) {
-            data[i] = item;
-            break;
-        }
-    }
-    page.data = data;
-    return page;
-}
-
 function clearObject(obj) {
-    
     for (let key in obj) {
         
         obj[key] = undefined
     }
+    debugger
     return obj
+}
+
+function stateAdd(data,add){
+    debugger
+   let clearData =  clearObject(data);
+   clearData.biztype = {value:add}
+   return clearData
 }
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
@@ -138,12 +128,12 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
         //查询各种table数据
         case "CUSTOMERCOMPANY_LIST_GETDATA":
-        let nn = action;
         debugger;
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
-                selectedRowKeys: []
+                selectedRowKeys: [],
+                pageSize:action.payload.pagination.page,
             });
         //详情起停用功能    
         case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE':
@@ -155,21 +145,37 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 pagination: action.pagination,
                 viewData: enableState
             });
-        //新增、修改编辑菜单显示    
+        //新增、修改取消显示    
         case "CUSTOMERCOMPANY_LIST_SHOWFORM":
-            let EditCancelData =  $$state.get('viewData').toJS();
+            debugger
+            let EditCancelData 
+            //如果是编辑取消modal显示的时候，才使用原始数据，新增使用已编辑的数据
+            EditCancelData =  $$state.get('viewData').toJS();
+            if(EditCancelData.id){
+                EditCancelData =  $$state.get('editTempData').toJS();
+            }
+            //详细地址
             if(EditCancelData.street && EditCancelData.street.address){
                 EditCancelData.street = EditCancelData.street.address
+            }else if(EditCancelData.street && typeof EditCancelData.street == 'string'){
+                EditCancelData.street = EditCancelData.street
             }else{
                 EditCancelData.street = ''
             }
-            //industry
+
+            //行业
             if(EditCancelData.industry && EditCancelData.industry.id){
                 EditCancelData.industry = EditCancelData.industry.id
             }else{
                 EditCancelData.industry = ''
             }
 
+            //上级客户
+            if(EditCancelData.parentId && EditCancelData.parentId.id){
+                EditCancelData.parentId = EditCancelData.parentId.id
+            }else{
+                EditCancelData.parentId = ''
+            }
 
             return $$state.merge({
                 formVisitable: action.payload.visible,
@@ -178,28 +184,42 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
         //点击编辑按钮
         case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
-           let EditStreetData =  $$state.get('viewData').toJS();
-            let ccccc = Immutable.fromJS(EditStreetData).toJS()
-            //debugger
+            let editTempData =  $$state.get('viewData').toJS();
+            let editData = Immutable.fromJS(editTempData).toJS()
+            debugger
+            //详细地址
             let streetEdit = {
-                address: EditStreetData.street,
-                location: {
-                    lng: EditStreetData.longitude,
-                    lat: EditStreetData.latitude
-                }
+                address: editTempData.street,
+                location: editTempData.longitude && editTempData.latitude?[editTempData.longitude,editTempData.latitude]:''
             }
-            
+            //行业
             let industry = {
-                id:EditStreetData.industry,
-                name:EditStreetData.industryName
+                id:editTempData.industry,
+                name:editTempData.industryName
             }
 
-            ccccc.street = streetEdit
-            ccccc.industry = industry
+            // 省市区
+            let district = [
+                editTempData.province.toString(),
+                editTempData.city.toString(),
+                editTempData.district.toString()
+            ]
+            //上级客户 parentId
+            let parentId = {
+                name:editTempData.parentName,
+                id:editTempData.parentId
+            }
+
+            editData.province_city_district = {}
+            editData.province_city_district.result = district
+            editData.street = streetEdit
+            editData.industry = industry
+            editData.parentId = parentId
             //debugger
             return $$state.merge({
                 formVisitable: action.visiable,
-                viewData:ccccc
+                viewData:editData,
+                editTempData:editTempData
             });    
         case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE": 
             debugger
@@ -222,12 +242,9 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         //点击新建按钮的业务类型项，清空viewPanel数据,把业务类型赋到 viewData中   
         case "CUSTOMERCOMPANY_LIST_ADDCUSTOMER":
             debugger
-            let biztype = action.newType;
-            let bizData = $$state.get('viewData').toJS()
-            bizData.biztype = action.newType
             return $$state.merge({
-                formVisitable: action.data,
-                viewData: bizData,
+                formVisitable: action.visiable,
+                viewData: stateAdd($$state.get('viewData').toJS(),action.newType),
                 //每次新建把上一次保存的工商核实名称清零
                 addIcbcName:''
             });
@@ -270,10 +287,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //详情确认核实关闭modal    
         case 'CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL':
-            // let verifyData =  $$state.get('viewData').toJS()
-            // verifyData.verifyFullname = action.verifyFullname
-            // verifyData.verifyId = action.verifyId
-            // verifyData.isIdentified = action.isIdentified
             return $$state.merge({
                 icbcVisible2: action.visiable,
                 viewData:action.result
@@ -299,6 +312,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //存放动态信息
         case "CUSTOMERCOMPANY_LIST_GETDYNAMIC":
+        debugger
             return $$state.merge({
                 dynamicData: action.data
             });
@@ -315,7 +329,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //增加客户，增加一条新数据，清空工商详情，和保存的客户名称
         case "CUSTOMERCOMPANY_LIST_ADDSAVE":
-            
+            debugger
             return $$state.merge({
                 formVisitable: false,
                 data: pageAdd($$state.get("data").toJS(), action.data),
@@ -346,27 +360,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         //显示面板时，根据客户id查客户数据，改变“关注”值    
         case "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM":
             let actionData = action.data;
-
-            // let industry = {
-            //     id:actionData.industry,
-            //     name:actionData.industryName
-            // }
-            
-            let district = [
-                actionData.province.toString(),
-                actionData.city.toString(),
-                actionData.district.toString()
-            ]
-
             //关注
             actionData.followState = action.state.followState;
-
-            //行业
-            //actionData.industry = industry
-
-            //省市区
-            actionData.province_city_district = {}
-            actionData.province_city_district.result = district
 
             return $$state.merge({
                 viewState: action.visible,
@@ -440,6 +435,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         ////////天赐上传附件    
         case "CUSTOMERCOMPANY_LIST_FILESSUCCESS"://添加附件
+            debugger
             let viewDataRelevant = $$state.get('viewDataRelevant').toJS()
             viewDataRelevant[3].list.data.unshift(action.payload)
             return $$state.merge({
@@ -447,9 +443,10 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         ////////天赐删除附件
         case "CUSTOMERCOMPANY_LIST_DELETEFILE"://删除附件
-            //debugger
+            debugger
             let viewDataRelevant2 = $$state.get('viewDataRelevant').toJS()
             let fileArr = viewDataRelevant2[3].list.data;
+            debugger
             let file = action.file;
             for (let i = 0, len = fileArr.length; i < len; i++) {
                 if (fileArr[i].id == file.id) {

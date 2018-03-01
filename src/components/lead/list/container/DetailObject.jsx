@@ -648,7 +648,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                           // viewData.feedback ? viewData.feedback : ''
+                                            viewData.feedback ? viewData.feedback : ''
                                         }
                                     </span>
                                 </Col>

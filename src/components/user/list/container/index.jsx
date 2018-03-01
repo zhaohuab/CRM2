@@ -33,9 +33,8 @@ class List extends React.Component {
     }
 
     componentDidMount() {
-        debugger
         let pagination = this.props.$$state.get("pagination").toJS();
-        let searchMap = {};
+        let searchMap = this.props.$$state.get("searchMap").toJS()
         this.props.action.getListTpl({ pagination, searchMap });
     }
 
@@ -102,6 +101,7 @@ class List extends React.Component {
         e.preventDefault();
         form.validateFields((err, values) => {
             console.info(err);
+            debugger
             if (!err) {
                 let isEdit = this.props.$$state.get("isEdit");
                 if (isEdit) {
@@ -171,6 +171,7 @@ class List extends React.Component {
     }
     render() {
         let page = this.props.$$state.get("data").toJS();
+        debugger
         let visible = this.props.$$state.get("visible");
         let assignVisible = this.props.$$state.get("assignVisible");
         let selectedRowKeys = this.props.$$state.get("selectedRowKeys").toJS();

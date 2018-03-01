@@ -1,5 +1,6 @@
 import Immutable from 'immutable'
 import { transToFields, transToValues } from 'utils/template/form/Transfer.js'
+import { pageAdd, pageEdit } from 'utils/busipub'
 let $$initialState = {
 	pagination: {
 		pageSize: 10,
@@ -29,23 +30,6 @@ let $$initialState = {
 	enumData: {}
 };
 
-function pageAdd(page, item) {
-	page.total += 1;
-	page.data.unshift(item)
-	// page.page = Math.ceil(page.total / page.pageSize);
-	return page;
-}
-function pageEdit(page, item) {
-	let { data } = page;
-	for (let i = 0, len = data.length; i < len; i++) {
-		if (data[i].id == item.id) {
-			data[i] = item;
-			break;
-		}
-	}
-	page.data = data;
-	return page;
-}
 
 function clearObject(obj) {
 	for (let key in obj) {
@@ -57,7 +41,6 @@ function clearObject(obj) {
 export default function reducer($$state = Immutable.fromJS($$initialState), action) {
 	switch (action.type) {
 		case 'USER_LIST_TEMPLATE':
-		debugger
 			let tpl = $$state.get("template").toJS()
 			return $$state.merge({
 				template: {

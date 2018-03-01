@@ -86,6 +86,7 @@ class EditForm extends React.Component {
                                             <Enum
                                                 addOptionAll={"职务"}
                                                 dataSource={enumData.post}
+
                                             />
                                         )}
                                     </FormItem>
@@ -113,9 +114,13 @@ class EditForm extends React.Component {
                                 </Col>
                                 <Col span={11}>
                                     <FormItem label="客户规模" {...formItemLayout}>
-                                        {getFieldDecorator("mobile", {
-
-                                        })(<Input placeholder="请输入" />)}
+                                        {getFieldDecorator("cumSize")(
+                                            <Enum
+                                                addOptionAll={"客户规模"}
+                                                dataSource={enumData.cumSize}
+                                                
+                                            />
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>

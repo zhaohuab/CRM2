@@ -458,6 +458,124 @@ const lostOpp = (id, data) => {
     }
 }
 
+//查询条件中，选择部门后，存储选择的部门，用以筛选负责人的查询条件列表
+const saveSelectedDept = (deptId)=>{
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_SAVESELECTEDDEPT', { deptId }));
+    }
+}
+
+//联系人参照列表
+const getContactListData = (id) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id + "/contacts",
+            method: 'get',
+            data: {
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETCONTACTLISTDATA', { data:result.data }));
+        })
+    }
+}
+
+//选择联系人列表(卡片页面)
+const showContactView = (id, customerId) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id + "/cumContacts",
+            method: 'get',
+            data: {
+                param: {
+                    customerId
+                }
+            }
+        }, (result) => {
+            let data = result.data;
+            let selectedKeys = []
+            let selectedRows = []
+            for( let i=0;i<data.length;i++){
+                if(data[i].isChecked == 'Y'){
+                    selectedKeys.push(data[i].id)
+                    selectedRows.push(data[i])
+                }
+            }
+            dispatch(fetchData('OPPORTUNITY_LIST_SHOWCONTACTVIEW', { data,selectedKeys,selectedRows }));
+        })
+    }
+}
+
+//参与人数据获取
+const getRelUserListData = (id) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id + "/relusers",
+            method: 'get',
+            data: {
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETRELUSERLISTDATA', { data:result }));
+        })
+    }
+}
+
+//保存联系人参照table已选择行数据
+const selectContactRow = (selectedRows, selectedRowKeys) => {
+    return {
+        type: "OPPORTUNITY_LIST_SELECTCONTACTROW",
+        payload: { selectedRows, selectedRowKeys }
+    };
+};
+
+//保存联系人卡片页面table已选择行数据
+const selectContactCardRow = (selectedRows, selectedRowKeys) => {
+    return {
+        type: "OPPORTUNITY_LIST_SELECTCONTACTCARDROW",
+        payload: { selectedRows, selectedRowKeys }
+    };
+};
+
+//保存联系人
+const saveContact =(id,contactIds)=>{
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id+"/contacts",
+            method: 'post',
+            data: {
+                param: {
+                    contactIds:contactIds.join(",")
+                }
+            }
+        }, () => {
+            dispatch(fetchData('OPPORTUNITY_LIST_SAVECONTACT'));
+        })
+    }
+}
+
+//关闭
+const closeContactView =(id,contactIds)=>{
+    return (dispatch) => {
+        dispatch(fetchData('OPPORTUNITY_LIST_CLOSECONTACTVIEW'));
+    }
+}
+
+//保存联系人
+const delContact =(id,contactIds)=>{
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id+"/contacts",
+            method: 'delete',
+            data: {
+                param: {
+                    ids:contactIds.join(",")
+                }
+            }
+        }, () => {
+            dispatch(fetchData('OPPORTUNITY_LIST_SAVECONTACT'));
+        })
+    }
+}
+
 //输出 type 与 方法
 export {
     getListData,
@@ -488,5 +606,14 @@ export {
     showRadarCard,
     winOpp,
     lostOpp,
-    closeForm
+    closeForm,
+    saveSelectedDept,
+    getContactListData,
+    getRelUserListData,
+    showContactView,
+    selectContactRow,
+    selectContactCardRow,
+    saveContact,
+    closeContactView,
+    delContact
 }

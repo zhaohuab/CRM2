@@ -22,7 +22,8 @@ import SlidePanel from "../../../common/slidePanel/index.jsx";
 import ViewPanel from "./ViewPanel";
 import "assets/stylesheet/all/iconfont.css";
 import * as Actions from '../action';
-import AssignLead from './AssignLead'
+import AssignLead from './AssignLead';
+import LeadExport from './lead/LeadExport.jsx'; //导入导出
 
 class Clue extends React.Component {
     constructor(props) {
@@ -84,11 +85,7 @@ class Clue extends React.Component {
             {
                 title: "负责人",
                 dataIndex: "ownerUserName",
-                // render: (text, record) => (
-                //     <div>
-                //         {/* {record.ownerUserInfo.name} */}
-                //     </div>
-                // )
+               
             },
             {
                 title: "部门",
@@ -103,7 +100,7 @@ class Clue extends React.Component {
         this.menu = (
             <Menu>
                 <Menu.Item key="1">导入</Menu.Item>
-                <Menu.Item key="2">导出</Menu.Item>
+                {/* <Menu.Item key="2">导出</Menu.Item> */}
             </Menu>
         );
         this.state = {
@@ -117,7 +114,7 @@ class Clue extends React.Component {
     slideShow(record) {
         debugger
         this.props.action.showViewForm(true, record.id);
-        this.props.action.getDynamic(record.id)
+       this.props.action.getDynamic(record.id)
     }
     //隐藏面版
     slideHide() {
@@ -291,6 +288,26 @@ class Clue extends React.Component {
             this.props.$$state.get("pagination").toJS(),searchMap
         );
     }
+
+ // 导入导出 余春梅  1.30
+ onMenu(e) {
+    
+    // let { searchMap, pagination } = this.props.$$state.toJS();
+    // let page = pagination.page;
+    // let pageSize = pagination.pageSize
+    // let tranSearch=this.changeSearchData.call(this,searchMap);
+    // let search = JSON.stringify(tranSearch)
+    debugger
+    if (e.key == "1") {
+        debugger
+        this.props.action.viewLeadShow(true);
+    } else if (e.key == "2") {
+      //  location.href = baseDir + "tpub/excels/1/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 + "}"
+
+    }
+}
+
+
     render() {
         debugger;
         const page = this.props.$$state.get("data").toJS();
@@ -311,6 +328,16 @@ class Clue extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+        const moreMenu = (
+            <Menu onClick={this.onMenu.bind(this)}>
+                <Menu.Item key="1">
+                    <span>导入</span>
+                </Menu.Item>
+                {/* <Menu.Item key="2">
+                    <span>导出</span>
+                </Menu.Item> */}
+            </Menu>
+        );
 
         return (
             <div className="clue-warpper">
@@ -335,14 +362,14 @@ class Clue extends React.Component {
                             <Button onClick={this.onDelete.bind(this)}>
                                 <i className="iconfont icon-shanchu" />删除
                         </Button>
-                            <ButtonGroup className="returnbtn-class">
+                            {/* <ButtonGroup className="returnbtn-class">
                                 <Button onClick={this.btnSetEnable.bind(this, 1)} className="customer_list_start_customer">
                                     <i className="iconfont icon-qiyong" />启用
                             </Button>
                                 <Button onClick={this.btnSetEnable.bind(this, 2)} className="customer_list_stop_customer">
                                     <i className="iconfont icon-tingyong" />停用
                             </Button>
-                            </ButtonGroup>
+                            </ButtonGroup> */}
                         </HeaderButton>
                     ) : (
                             <Row>
@@ -409,7 +436,7 @@ class Clue extends React.Component {
                                                     </div>
                                                     <div>
                                                         <Dropdown.Button
-                                                            overlay={this.menu}
+                                                            overlay={moreMenu}
                                                             trigger={["click"]}
                                                         >
                                                             更多
@@ -489,6 +516,7 @@ class Clue extends React.Component {
                     <ViewPanel />
                 </SlidePanel>
                 <AssignLead />
+                <LeadExport/>
             </div>
         );
     }

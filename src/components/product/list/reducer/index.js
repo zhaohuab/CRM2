@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let initialState = {   
   data:{}, //table数据
@@ -23,25 +24,6 @@ let initialState = {
 	//isDelete:false,
 	isRefered:2,//产品是否被引用 1被引用 2未被引用
 };
-
-function pageAdd(page,item) {
-	page.total+=1;
-	page.data.unshift(item)
-	page.page = Math.ceil(page.total / page.pageSize);
-	return page;
-}
-
-function pageEdit(page,item) {	
-	let {data} = page;
-	for(let i=0,len=data.length;i<len;i++) {
-		if(data[i].id == item.id) {
-			Object.assign(data[i] , item);
-			break;
-		}
-	}
-	page.data = data;
-	return page;
-}
 
 function addRow (salesunitTable, item) {
 	salesunitTable.push(item);

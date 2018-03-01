@@ -18,15 +18,18 @@ class UserTable extends Component {
             {
                 title: "人员",
                 dataIndex: "name",
+                width: '33%',
 
             },
             {
                 title: "部门",
-                dataIndex: "deptName"
+                dataIndex: "deptName",
+                width: '33%',
             },
             {
                 title: "组织",
-                dataIndex: "orgName"
+                dataIndex: "orgName",
+                width: '33%',
             },
 
         ]
@@ -115,7 +118,7 @@ class UserTable extends Component {
                     width={500}
                 >
 
-                    <div className="tabel-recoverd">
+                    <div className="tabel-recoverd assign-table">
                         <Table
                             size="middle"
                             columns={this.columns}

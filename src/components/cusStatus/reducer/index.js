@@ -15,28 +15,65 @@ let $$initialState = {
     userName:'',//切换页码时确定当前请求的左下角数据是哪个角色下客户；包括部门和人员两种情况
     loadingFlag: false,//左侧下半部分加载画面控制
     page: 1,//当前选中页码
+    customerListBack:[],//返回时左上部分请求参数
+    customerItemBack:[],//返回时左下部分请求参数
 };
 
 
 export default function reducer($$state = Immutable.fromJS($$initialState), action){
 	switch (action.type) {		
         case "CUSTOMER_DEPARTMENT_LIST_GETLISTSUCCESS": //获取到左侧上半部分详情地址数据   
-        let name = action.content.name ? action.content.name+'|' : '';
-        let flag = action.content.flag=='user'? false : true;   
-            return $$state.merge({
-                data: action.content,
-                itemFlag: flag,
-                departmentName: name,
-                userName:action.content.str,
-                deptId:action.content.search.deptId,
-                userId:action.content.search.userId,
-            });
-        case "CUSTOMER_ITEM_LIST_GETLISTSUCCESS": //获取到左侧下半部分详情地址数据        
-            return $$state.merge({
-                customerItem: action.content,
-                loadingFlag: false,  
-                page: action.content.num,            
-            });	
+            let name = action.content.name ? action.content.name+'|' : '';
+            let flag = action.content.flag=='user'? false : true;  
+            if(action.content.back){
+                return $$state.merge({
+                    data: action.content,
+                    itemFlag: flag,
+                    departmentName: name,
+                    userName:action.content.str,
+                    deptId:action.content.search.deptId,
+                    userId:action.content.search.userId,
+                });
+            } else{
+                let backArr=[];
+                backArr.push(action.content.str);
+                backArr.push(action.content.id);
+                backArr.push(action.content.name);
+                let customerListArr = $$state.get('customerListBack').toJS();
+                    customerListArr.push(backArr);
+                return $$state.merge({
+                    data: action.content,
+                    itemFlag: flag,
+                    departmentName: name,
+                    userName:action.content.str,
+                    deptId:action.content.search.deptId,
+                    userId:action.content.search.userId,
+                    customerListBack: customerListArr,
+                });
+            }
+          
+        case "CUSTOMER_ITEM_LIST_GETLISTSUCCESS": //获取到左侧下半部分详情地址数据  
+            if(action.content.back){
+                return $$state.merge({
+                    customerItem: action.content,
+                    loadingFlag: false,  
+                    page: action.content.num,            
+                });	
+            } else{
+                let backArr1=[];
+                backArr1.push(action.content.str);
+                backArr1.push(action.content.id);
+                backArr1.push(action.content.num);
+                let customerItemArr = $$state.get('customerItemBack').toJS();
+                    customerItemArr.push(backArr1);
+                return $$state.merge({
+                    customerItem: action.content,
+                    loadingFlag: false,  
+                    page: action.content.num,  
+                    customerItemBack: customerItemArr,          
+                });	
+            }     
+            
         case "CUSTOMER_ITEM_LIST_GETLIST2": //左侧下半部分详情地址数据获取到之前先展示加载画面
             return $$state.merge({
                 loadingFlag: true,          
@@ -49,6 +86,16 @@ export default function reducer($$state = Immutable.fromJS($$initialState), acti
             return $$state.merge({
                 statusData: action.content,          
             });	
+            case "CUSTOMER_DEPARTMENT_LIST_POP": //点击返回按钮后删除 customerListBack和customerItemBack中的最后一项
+            debugger
+                let customerList = $$state.get('customerListBack').toJS();
+                let customerItem = $$state.get('customerItemBack').toJS();
+                    customerList.length>1 ? customerList.pop():null;
+                    customerItem.length>1 ? customerItem.pop():null;
+                return $$state.merge({
+                    customerListBack: customerList, 
+                    customerItemBack: customerItem,       
+                });	
             					
 	  default: 
 	    return $$state;

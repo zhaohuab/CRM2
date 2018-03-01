@@ -11,26 +11,41 @@ import {
     Table,
     Modal,
     Form,
-    Radio
+    Radio,
+    Select
 } from "antd";
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const Option = Select.Option;
+const childrenUser = [];
+const childrenResp = [];
 import Email from "utils/components/emails";
 import Tags from "../../../common/tags/tags.jsx";
 import CustomTags from "../../../common/tags/custom-tags.jsx";
-
+import Department from 'components/refs/departments'
 export default class Card extends React.Component {
     componentDidMount() {
         this.props.form.setFieldsValue(this.props.dataSource);
     }
-
+    onChangeUser(){
+        let {userList } = this.props.dataSource;
+        for (let i = 0, len = userList.length; i < len; i++) {
+            childrenUser.push(<Option key={userList[i].id}>{userList[i].name}</Option>);
+        }
+    }
+    onChangeResp(){
+        let {userList } = this.props.dataSource;
+        for (let i = 0, len = userList.length; i < len; i++) {
+            childrenResp.push(<Option key={userList[i].id}>{userList[i].name}</Option>);
+        }
+    }
     render() {
         let formItemLayout = {
             labelCol: { span: 7 },
             wrapperCol: { span: 14 }
         };
         let formItemLayout1 = {
-            labelCol: { span:4 },
+            labelCol: { span: 4 },
             wrapperCol: { span: 19 }
         };
         const { getFieldDecorator } = this.props.form;
@@ -56,13 +71,13 @@ export default class Card extends React.Component {
                             <FormItem
                                 label="姓名"
                                 {...formItemLayout}
-                                //hasFeedback={true}
+                            //hasFeedback={true}
                             >
                                 {getFieldDecorator("name", {
                                     rules: [
                                         {
                                             required: true,
-                                            message: "请输出姓名"
+                                            message: "请输入姓名"
                                         }
                                     ]
                                 })(<Input placeholder="请输入..." />)}
@@ -75,10 +90,19 @@ export default class Card extends React.Component {
                                     rules: [
                                         {
                                             required: true,
-                                            message: "请输入客户"
+                                            message: "请选择客户"
                                         }
                                     ]
-                                })(<Input placeholder="请输入..." />)}
+                                })(<Select
+                                    showSearch
+                                    style={{ width: 200 }}
+                                    placeholder="请选择客户"
+                                    optionFilterProp="children"
+                                    onChange={this.onChangeUser()}
+                                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
+                                    {childrenUser}
+                                </Select>)}
                             </FormItem>
                         </Col>
                     </Row>
@@ -86,7 +110,16 @@ export default class Card extends React.Component {
                         <Col span={11}>
                             <FormItem label="负责人" {...formItemLayout}>
                                 {getFieldDecorator("ownerUserId")(
-                                    <Input placeholder="请输入..." />
+                                    <Select
+                                        showSearch
+                                        style={{ width: 200 }}
+                                        placeholder="请选择负责人"
+                                        optionFilterProp="children"
+                                        onChange={this.onChangeResp()}
+                                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                    >
+                                        {childrenResp}
+                                    </Select>
                                 )}
                             </FormItem>
                         </Col>
@@ -101,27 +134,41 @@ export default class Card extends React.Component {
                                         }
                                     ]
                                 })(
-                                    <RadioGroup>
+                                    <RadioGroup value={1}>
                                         <Radio value={1}>是</Radio>
                                         <Radio value={2}>否</Radio>
                                     </RadioGroup>
-                                )}
+                                    )}
                             </FormItem>
                         </Col>
                     </Row>
                     <Row type="flex" justify="center">
                         <Col span={11}>
                             <FormItem label="部门" {...formItemLayout}>
-                                {getFieldDecorator("deptId")(
-                                    <Input placeholder="请输入..." />
-                                )}
+                                {getFieldDecorator('deptId', {
+                                    rules: [{
+                                        required: true, message: '请选择部门',
+                                    }],
+                                })(
+                                    <Department />
+                                    )}
                             </FormItem>
                         </Col>
                         <Col span={11}>
                             {" "}
                             <FormItem label="职务" {...formItemLayout}>
                                 {getFieldDecorator("post")(
-                                    <Input placeholder="请输入..." />
+                                    <Select
+                                        showSearch
+                                        style={{ width: 200 }}
+                                        placeholder="请选择职务"
+                                        optionFilterProp="children"
+                                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                    >
+                                        <Option value="jack" selected>Jack</Option>
+                                        <Option value="lucy">Lucy</Option>
+                                        <Option value="tom">Tom</Option>
+                                    </Select>
                                 )}
                             </FormItem>
                         </Col>
@@ -148,7 +195,7 @@ export default class Card extends React.Component {
                             <FormItem
                                 label="备注"
                                 {...formItemLayout}
-                                //hasFeedback={true}
+                            //hasFeedback={true}
                             >
                                 {getFieldDecorator(
                                     "remarks"
@@ -168,7 +215,7 @@ export default class Card extends React.Component {
                                         type="textarea"
                                         rows={3}
                                     />
-                                )}
+                                    )}
                             </FormItem>
                         </Col>
                         <Col span={11}>

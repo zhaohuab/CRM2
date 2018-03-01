@@ -81,6 +81,8 @@ const transReceiveData = (data) => {
 
 //转换时间对象为字符串格式
 const transReceiveDataOne = (data) => {
+    
+    debugger
     if (data.createdTime) {
         data.createdTime = transDate(new Date(data.createdTime.time))
     }
@@ -88,11 +90,20 @@ const transReceiveDataOne = (data) => {
         data.followTime = transDate(new Date(data.followTime.time))
     }
     if (data.assignTime) {
-        data.followTime = transDate(new Date(data.assignTime.time))
+        data.assignTime = transDate(new Date(data.assignTime.time))
     }
     if(data.modifiedTime){
         data.modifiedTime = transDate(new Date(data.modifiedTime.time))
     }
+    // if(data.related){
+    //     let relate=data.related;
+    //     if(relate.bizopps){
+    //         let bizopps=relate.bizopps;
+    //        if(bizopps.expectSignTime){
+
+    //        }
+    //     }
+    // }
     return data;
 }
 //拼接省市县
@@ -233,7 +244,7 @@ export function setEnableState(ids, state, page, searchMap) {
             dataResult => {
                 debugger
                 dispatch(
-                    fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
+                    fetchData("CLUE_LIST_GETDATA", {
                         data: dataResult,
                         pagination: page
                     })
@@ -431,12 +442,13 @@ export function editCardFn(changeData) {
         changeData
     }
 }
+//动态数据
 export function getDynamic(id) {
     return dispatch => {
         debugger
         reqwest(
             {
-                url: url.lead + "/" + id+'/dynamics',
+                url: url.lead + "/" + id+'/dynamic',
                 method: "GET",
                 data: {
                 }
@@ -445,7 +457,7 @@ export function getDynamic(id) {
                 debugger
                 dispatch({
                     type: "CLUE_LIST_GETDYNAMIC",
-                    data: transReceiveDataOne(data)
+                    data: data && data.dynamiclist?data.dynamiclist:[]
                 });
 
             }
@@ -464,12 +476,12 @@ export function showViewForm(visible, id) {
                 data: {
                 }
             },
-            data => {
+            result => {
                 debugger
                 dispatch({
                     type: "CLUE_LIST_SHOWVIEWFORM",
                     visible,
-                    data: transReceiveDataOne(data)
+                    data: transReceiveDataOne(result.data)
                 });
 
             }
@@ -564,3 +576,69 @@ export function listFormSave(data) {
         }
     };
 };
+
+
+//-------导入导出 1.30号 余春梅
+export function viewLeadShow(leadVisible) {
+    debugger
+    return {
+        type: "CLUE_LIST_VIEWLEADSHOW",
+        payload: { leadVisible }
+    };
+}
+
+export function leadShow(leadVisible) {
+    return {
+        type: "CLUE_LIST_LEADSHOW",
+        payload: { leadVisible }
+    };
+};
+
+export function leadEndShow(leadVisible) {
+    return {
+        type: "CLUE_LIST_LEADENDSHOW",
+        payload: { leadVisible }
+    };
+};
+export function leadEndView(leadVisible, leadStep) {
+    
+    return {
+        type: "CLUE_LIST_LEADENDVIEW",
+        payload: { leadVisible, leadStep }
+    };
+
+}
+export function changeStep(leadStep) {
+   // debugger
+    return {
+        type: "CLUE_LIST_CHANGESTEP",
+        payload: {leadStep }
+    };
+
+}
+export function leadEndIngShow(leadVisible) {
+    return {
+        type: "CLUE_LIST_LEADINGSHOW",
+        payload: { leadVisible }
+    };
+}
+
+export function saveFiles(files) {
+    
+    return {
+        type: "CLUE_LIST_SAVEFILES",
+        payload: { files }
+    };
+}
+export function fileSuccess(filesSuccess, result, show, leadStep) {
+    return {
+        type: "CLUE_LIST_FILESUCCESS",
+        payload: { filesSuccess, result, show, leadStep }
+    };
+}
+export function fileFail(filesFail) {
+    return {
+        type: "CLUE_LIST_FILEFAIL",
+        payload: { filesFail }
+    };
+}

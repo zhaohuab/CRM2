@@ -22,6 +22,7 @@ import * as Actions from "../action";
 import DetailObject from './DetailObject';
 import CloseClue from './CloseClue';
 import RelativeObject from "./RelativeObject";
+import DynamicState from './DynamicState';
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 const confirm = Modal.confirm;
@@ -42,15 +43,15 @@ class ViewPanel extends React.Component {
     }
     handleMenuClick(e) {
         debugger
-        if(e.key=='1'){
-        this.props.action.closeLeadShow(true);
+        if (e.key == '1') {
+            this.props.action.closeLeadShow(true);
         }
-        else if(e.key=='2'){
-           this.btnDelete()
+        else if (e.key == '2') {
+            this.btnDelete()
         }
     }
 
-    btnDelete=()=>{
+    btnDelete = () => {
         let that = this;
         confirm({
             title: "确定启用此线索?",
@@ -75,13 +76,13 @@ class ViewPanel extends React.Component {
             }
         });
     }
- //打开编辑按钮
- btnEdit=()=>{
-    debugger
-    //let { viewData } = this.props.$$state.toJS();
-    
-    this.props.action.showFormEdit(true);
-}
+    //打开编辑按钮
+    btnEdit = () => {
+        debugger
+        //let { viewData } = this.props.$$state.toJS();
+
+        this.props.action.showFormEdit(true);
+    }
 
 
     render() {
@@ -150,8 +151,17 @@ class ViewPanel extends React.Component {
                                             </Row>
                                         </Row>
 
-                                        <Row className="tags">
-                                            <div className="tag-group">
+                                        <Row className="tags" type='flex' align='middle'>
+                                            {/* {
+                                                viewData.sourceName ?
+                                                    <span className='tags-item'><span>{viewData.sourceName}</span></span> : ''
+                                            }
+                                            {
+                                                viewData.sourceName?
+                                                    <span className='tags-item'><span>{viewData.sourceName}</span></span> : ''
+                                            } */}
+
+                                            {/* <div className="tag-group">
                                                 {viewData.sourceName ? (
                                                     <span className='tags-item'>
                                                         {viewData.sourceName}
@@ -166,7 +176,7 @@ class ViewPanel extends React.Component {
                                                 ) : (
                                                         <div />
                                                     )}
-                                            </div>
+                                            </div> */}
                                         </Row>
                                     </Row>
                                 </Col>
@@ -184,7 +194,7 @@ class ViewPanel extends React.Component {
                                         <i className="iconfont icon-bianji" />编辑
                                     </Button>
                                 </div>
-                                <div>
+                                {/* <div>
                                     <Button >
                                         <i className="iconfont icon-bianji" />线索转化
                                     </Button>
@@ -196,7 +206,7 @@ class ViewPanel extends React.Component {
                                     >
                                         更多
                             </Dropdown.Button>
-                                </div>
+                                </div> */}
                             </Row>
                         </Col>
                     </Row>
@@ -208,7 +218,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <i className="iconfont icon-dianhua" />线索来源:
+                                    <i className="iconfont icon-zuzhijiegougongsi" />线索来源:
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -217,7 +227,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <i className="iconfont icon-dingwei" />线索状态:
+                                    <i className="iconfont icon-xiansuozhuangtai" />线索状态:
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -226,7 +236,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <i className="iconfont icon-fuzeren" />分派时间:
+                                    <i className="iconfont icon-shijian4" />分派时间:
                                 </Row>
                             </Col>
                             <Col span={6}>
@@ -273,7 +283,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-content"
                                 >
-                                 {viewData.feedback}
+                                    {viewData.feedback}
 
                                 </Row>
                             </Col>
@@ -290,15 +300,17 @@ class ViewPanel extends React.Component {
                                         <DetailObject />
                                     </TabPane>
                                     <TabPane tab="相关" key="2">
-                                       <RelativeObject/>
+                                        <RelativeObject />
                                     </TabPane>
                                 </Tabs>
                             </div>
                         </Col>
                         <Col span={6} className="warrper-main-right">
-                            <div className="main-right-state">动态</div>
-                            <div className="main-right-timeline timeline-recoverd">
-                                <Timeline>
+                            <div className="clue-right-state">动态</div>
+                           
+                               <DynamicState/>
+                            
+                                {/* <Timeline>
                                     <Timeline.Item>
                                         <p>
                                             <span className="timeline-import">
@@ -347,15 +359,15 @@ class ViewPanel extends React.Component {
                                             2017-08-18 14:30
                                         </p>
                                     </Timeline.Item>
-                                </Timeline>
-                            </div>
+                                </Timeline> */}
+                          
                         </Col>
                     </div>
                 </Row>
 
 
 
-                <CloseClue/>
+                <CloseClue />
             </div>
         );
     }

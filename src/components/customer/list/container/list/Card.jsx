@@ -35,8 +35,8 @@ import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
 import CityChioce from "../../../../common/cityChioce/CityChioce";
 import InputDisable from './InputDisable'
+import SuperiorCustomer from './SuperiorCustomer'
 //import OwnUser from './OwnUser'
-//import ResponseDepart from './ResponseDepart'
 
 import Int from "utils/components/int";
 import Float from "utils/components/float/index.jsx";
@@ -92,7 +92,7 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-       
+       debugger
         return (
             <div>
                 <Row className="customform-input-recover">
@@ -416,60 +416,10 @@ class EditForm extends React.Component {
                                 <Row>
                                     <Col span={2}>
                                         <div className="form-title">
-                                            负责人信息:
+                                            管理信息:
                                         </div>
                                     </Col>
                                 </Row>
-                                {/* <Row className="row-bottom">
-                                    <Col offset={1}>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>负责人：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "ownerUserId"
-                                                        )(
-                                                            <OwnUser viewData={viewData} disabled={true} width={650} height={300}/>
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>负责部门：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "ownerDeptName"
-                                                        )(
-                                                            <ResponseDepart viewData={viewData}/>
-                                                        )}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    </Col>
-                                </Row> */}
                                 <Row className="row-bottom">
                                     <Col offset={1}>
                                         <Col span={12}>
@@ -489,7 +439,7 @@ class EditForm extends React.Component {
                                                         {getFieldDecorator(
                                                             "biztype"
                                                         )(
-                                                           <InputDisable disabled = {true}/>
+                                                           <InputDisable disabled = {true} viewData = {viewData}/>
                                                         )}
                                                     </FormItem>
                                                 </Col>
@@ -576,6 +526,31 @@ class EditForm extends React.Component {
                                                                 }
                                                             />
                                                             )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                    </Col>
+                                </Row>
+                                <Row className="row-bottom">
+                                    <Col offset={1}>
+                                        <Col span={12}>
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>上级客户：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "parentId"
+                                                        )(<SuperiorCustomer/>)}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -804,27 +779,47 @@ class EditForm extends React.Component {
     }
 }
 
+
+
 const cardForm = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-        debugger
+      
         let viewData = props.$$state.toJS().viewData;
-        let value = {};
-
-        for (let key in viewData) {
-            value[key] = { value: viewData[key] };
+        let value = {}
+        let changeFieldData = (viewData,key)=>{
+            if(key == 'biztype') debugger
+            if(viewData[key] && viewData[key].hasOwnProperty('value')){//带验证信息的值
+                return viewData[key].value
+            }else if(viewData[key] && !viewData[key].hasOwnProperty('value')){//值为编辑时附上值，而不是带验证信息的值
+                return viewData[key]
+            }else{
+                return undefined
+            }
         }
-        //address  把字段合成对象
+
+        if(viewData.id){//如果是编辑挨个赋值
+            for (let key in viewData) {
+              value[key] = { value: changeFieldData(viewData,key)};
+            }
+            return {
+                ...value
+            }
+        }
+        debugger
         return {
-            ...value
+            ...viewData
         };
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
         debugger
         let viewData = props.$$state.toJS().viewData;
+        debugger
         for (let key in onChangeFild) {
-            viewData[key] = onChangeFild[key].value;
+            if(onChangeFild[key].hasOwnProperty('value')){
+                viewData[key] = onChangeFild[key];
+            }
         }
         props.editCardFn(viewData);
     }

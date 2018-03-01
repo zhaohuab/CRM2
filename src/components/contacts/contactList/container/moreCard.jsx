@@ -21,6 +21,9 @@ export default class MoreCard extends React.Component {
     showFn() {
         this.props.showFn();
     }
+    handleSubmit(){
+    
+    }
     render() {
         const { getFieldDecorator, getFieldsValue } = this.props.form;
         return (
@@ -53,13 +56,7 @@ export default class MoreCard extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
-                            <FormItem>
-                                {getFieldDecorator("customer")(
-                                    <Input placeholder="客户" />
-                                )}
-                            </FormItem>
-                        </Col>
+
                     </Row>
 
                     <Row
@@ -71,32 +68,33 @@ export default class MoreCard extends React.Component {
                     >
                         <Col span={6}>
                             <FormItem>
-                                {getFieldDecorator("customer")(
+                                {getFieldDecorator("officePhone")(
                                     <Input placeholder="办公室电话" />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem>
-                                {getFieldDecorator("customer")(
+                                {getFieldDecorator("homePhone")(
                                     <Input placeholder="家庭电话" />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem>
-                                {getFieldDecorator("customer")(
+                                {getFieldDecorator("email")(
                                     <Input placeholder="邮箱" />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem>
-                                {getFieldDecorator("customer")(
+                                {getFieldDecorator("role")(
                                     <Input placeholder="角色" />
                                 )}
                             </FormItem>
                         </Col>
+
                     </Row>
                     <Row
                         type="flex"
@@ -107,21 +105,21 @@ export default class MoreCard extends React.Component {
                     >
                         <Col span={6}>
                             <FormItem>
-                                {getFieldDecorator("customer")(
-                                    <Input placeholder="行业" />
+                                {getFieldDecorator("attitude")(
+                                    <Input placeholder="态度" />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem>
-                                {getFieldDecorator("customer")(
-                                    <Input placeholder="部门" />
+                                {getFieldDecorator("mainContactName")(
+                                    <Input placeholder="主联系人" />
                                 )}
                             </FormItem>
                         </Col>
                         <Col span={6}>
                             <FormItem>
-                                {getFieldDecorator("customer")(
+                                {getFieldDecorator("ownerUserId")(
                                     <Input placeholder="负责人" />
                                 )}
                             </FormItem>

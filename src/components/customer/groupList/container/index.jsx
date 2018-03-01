@@ -108,12 +108,12 @@ class List extends React.Component {
                 viewData[key]=viewData[key].id
             }
         }
-      debugger;
+      //debugger;
         this.formRef.props.form.validateFields((err, value) => {
-            debugger
+            //debugger
             if (!err) {
                 if (viewData.id) {//修改
-                debugger
+                //debugger
                     if(viewData.isIdentified == 1){
                         this.props.action.listFormSave(viewData);
                     }else{
@@ -126,7 +126,7 @@ class List extends React.Component {
                         this.props.action.listFormSave(viewData);
                     }
                 } else {
-                    debugger
+                    //debugger
                     //新增如果有获取过公司信息就把公司id和认证发送给后台
                     if(viewData.verifyFullname){
                         //把verifyId发送给后台进行工商认证标识
@@ -134,7 +134,7 @@ class List extends React.Component {
                         //把已认证信息发动给后台
                         viewData.isIdentified = 1
                     }
-                    debugger;
+                    //debugger;
                     this.props.action.listFormSave(viewData);
                 }
             }
@@ -263,8 +263,8 @@ class List extends React.Component {
                     className='tab-viewPanel-recoverd'
                 >
                     <ViewPanel ref="panelHeight" />
-                </SlidePanel>
-                <LeadExport/>
+                </SlidePanel>              
+                <LeadExport/>               
             </div>
          );
     }
@@ -290,10 +290,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(List);
         let { viewData } = this.props.$$state.toJS();
 
         this.formRef.props.form.validateFields((err, value) => {
-            debugger
+            //debugger
             if (!err) {
                 let id = viewData.id
-                debugger
+                //debugger
                 if (id) {//修改
                     this.props.action.listFormSave(viewData,id);
                 } else {//新增

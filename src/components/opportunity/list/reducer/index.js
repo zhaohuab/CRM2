@@ -1,4 +1,5 @@
 import Immutable from 'immutable'
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
 
@@ -40,27 +41,26 @@ let $$initialState = {
 	lostCardVisible: false,
 	radarCardVisible: false,
 	winReason: [],
-	lostReason: []
+	lostReason: [],
+
+	//查询条件中已选择的部门
+	selectedDept: "",
+	//联系人相关对象数据
+	contactData: [],
+	//联系人相关对象卡片页面数据
+	contactCardData: [],
+	//联系人弹框显隐
+	contactCardVisible: false,
+	//参与人相关对象数据
+	relUserData: [],
+	//联系人参照选中行
+	contactSelectedRows: [],
+	contactSelectedRowKeys: [],
+	//联系人参照卡片页面选中行
+	contactCardSelectedRows: [],
+	contactCardSelectedRowKeys: [],
 };
 
-function pageAdd(page, item) {
-	page.total += 1;
-	page.data.unshift(item)
-	page.page = Math.ceil(page.total / page.pageSize);
-	return page;
-}
-
-function pageEdit(page, item) {
-	let { data } = page;
-	for (let i = 0, len = data.length; i < len; i++) {
-		if (data[i].id == item.id) {
-			data[i] = item;
-			break;
-		}
-	}
-	page.data = data;
-	return page;
-}
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
 
 	switch (action.type) {
@@ -229,14 +229,68 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				winCardVisible: action.payload.visible,
 				winReason: [],
-				editData:action.payload.data
+				editData: action.payload.data
 			})
 		case 'OPPORTUNITY_LIST_LOSTOPP':
 			return $$state.merge({
 				lostCardVisible: action.payload.visible,
 				lostReason: [],
-				editData:action.payload.data
+				editData: action.payload.data
 			})
+
+		case 'OPPORTUNITY_LIST_SAVESELECTEDDEPT':
+			return $$state.merge({
+				selectedDept: action.payload.deptId,
+			})
+
+
+
+		case 'OPPORTUNITY_LIST_GETCONTACTLISTDATA':
+			return $$state.merge({
+				contactData: action.payload.data,
+			})
+
+		case 'OPPORTUNITY_LIST_SHOWCONTACTVIEW':
+			return $$state.merge({
+				contactCardVisible: true,
+				contactCardData: action.payload.data,
+				contactCardSelectedRows:action.payload.selectedRows,
+				contactCardSelectedRowKeys:action.payload.selectedKeys
+			})
+
+
+
+		case "OPPORTUNITY_LIST_SELECTCONTACTROW": //保存table已选择条件
+			return $$state.merge({
+				contactSelectedRows: Immutable.fromJS(action.payload.selectedRows),
+				contactSelectedRowKeys: Immutable.fromJS(action.payload.selectedRowKeys)
+			});
+		case "OPPORTUNITY_LIST_SELECTCONTACTCARDROW": //保存table已选择条件
+			return $$state.merge({
+				contactCardSelectedRows: Immutable.fromJS(action.payload.selectedRows),
+				contactCardSelectedRowKeys: Immutable.fromJS(action.payload.selectedRowKeys)
+			});
+
+		//添加联系人保存
+		case 'OPPORTUNITY_LIST_SAVECONTACT':
+			return $$state.merge({
+				contactCardVisible: false,
+				contactSelectedRows: [],
+				contactSelectedRowKeys: [],
+				contactCardSelectedRows: [],
+				contactCardSelectedRowKeys: []
+			})
+				case 'OPPORTUNITY_LIST_CLOSECONTACTVIEW':
+				return $$state.merge({
+					contactCardVisible: false,
+					contactSelectedRows: [],
+					contactSelectedRowKeys: [],
+					contactCardSelectedRows: [],
+					contactCardSelectedRowKeys: []
+				})
+
+			
+
 		default:
 			return $$state;
 	}

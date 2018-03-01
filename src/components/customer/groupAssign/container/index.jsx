@@ -83,33 +83,39 @@ class GroupAssignList extends React.Component {
     }
     //过滤查询条件中的值
     mapFilter(searchMap){
-        
+        let searchMapCopy={};
         for(let key in searchMap){
             if(key=='cannelType' && searchMap[key] || key=='level' && searchMap[key]|| key=='type'&& searchMap[key]){
-                searchMap[key] = searchMap[key].key
+                searchMapCopy[key] = searchMap[key].key
             }
-            if(key == 'industry'&& searchMap[key] || key=='org' && searchMap[key]){
-                searchMap[key] = searchMap[key].id
+            if(key == 'industry'&& searchMap[key] ){
+                searchMapCopy[key] = searchMap[key].id
             }
             if(key == 'province_city_district'&& searchMap[key]){
-                searchMap[key] = searchMap[key].result.join('_')
+                if(searchMap[key].custom.length&&searchMap[key].result.length){
+                    searchMapCopy[key] = searchMap[key].result.join('_')
+                }              
+            }
+            if(key=='org' && searchMap[key]){
+                searchMapCopy['orgId'] = searchMap[key].id
+            }
+            if(key=='name' && searchMap[key]){
+                searchMapCopy[key] = searchMap[key]
             }
         }
-        debugger
-        return searchMap
+        return searchMapCopy
     }
 
     //两个查询表单输入存值
     formRedux(value){
+        debugger;
         this.props.action.saveSearchMap(value)
     }
 
     //头部表单查询，每次查询时都把whitchSearch变为当前查询方案
-    searchMapForm(){
-        
+    searchMapForm(){    
         let { searchMap,pagination} = this.props.$$state.toJS();
-        searchMap = this.mapFilter(searchMap)
-        debugger;
+        searchMap = this.mapFilter(searchMap);
         this.props.action.searchMapSearch(pagination,searchMap)
     }
 
@@ -147,15 +153,19 @@ class GroupAssignList extends React.Component {
         this.props.action.saveTableKeys([])
     }
 
+    componentWillMount(){//--reducer初始化
+        this.props.action.reducerReset()
+    }
+
     //进入页面请求列表、查询方案数据
     componentDidMount(){
-        let {pagination,searchMap} = this.props.$$state.toJS()
+        let {pagination} = this.props.$$state.toJS()
         //获取列表数据
-        this.props.action.getList(pagination,searchMap)
+        this.props.action.getList(pagination,{})
         //获取查询条件初始条件
         this.props.action.getSearchList()
     }
-
+  
     //展现table总数量
     showTotal(total) {
         return `共 ${total} 条`;
@@ -168,7 +178,7 @@ class GroupAssignList extends React.Component {
 
         pagination.page = page;
         pagination.pageSize = pageSize;
-       
+        searchMap = this.mapFilter(searchMap);
         if(whitchSearch == 'searchPlan'){//这个地方上是用作查询方案的，现在查询方案没有做，这里先注掉
             
             this.props.action.getList(pagination,searchPlan)

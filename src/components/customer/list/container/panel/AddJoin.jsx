@@ -46,9 +46,9 @@ export default class AddJoin extends React.Component {
     //点击分配方法
      assignFn(e){
         e.stopPropagation()
-        
+        debugger
         let { viewData } = this.props
-        let orgId = viewData.orgId
+        let orgId = viewData.salesVOs[0].orgId
         reqwest(
             {
                 url: baseDir+'sys/orgs/orgTree',
@@ -61,7 +61,6 @@ export default class AddJoin extends React.Component {
                 }
             },
             result => {
-                ;
                 this.setState({
                     visible:true,
                     treeList:result.data

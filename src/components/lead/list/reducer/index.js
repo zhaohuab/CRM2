@@ -1,4 +1,5 @@
 import Immutable from "immutable";
+//import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     pagination: {//分页信息
@@ -10,7 +11,7 @@ let $$initialState = {
         page: 1
     },
     searchMap: {}, //存放查询条件
-    option:'',
+    option: '',
     selectedRows: [],
     selectedRowKeys: [],
 
@@ -34,9 +35,18 @@ let $$initialState = {
     },
     colseVisible: false, //线索关闭表单显示
     assginCardVisible: false,// 分派显示
-    userCardName: '' ,//分配值显示
-    dynamicData:[]// 动态数据
-
+    userCardName: '',//分配值显示
+    dynamicData: [],// 动态数据
+//--------------
+    viewLeadVisible: false,
+    leadVisible: false,//导入显隐
+    leadEndVisible: false,//导入完成
+    leadingVisible: false,//导入中
+    leadStep: 0,//导入步骤
+    leadFiles: {},//导入文件内容
+    filesSuccess: false,
+    filesFail: false,
+    successResult: {}//导入成功后返回结果
 };
 
 function pageAdd(page, item) {
@@ -72,7 +82,72 @@ function clearObject(obj) {
 export default function reducer($$state = Immutable.fromJS($$initialState),
     action) {
     switch (action.type) {
+        //----------- 导入 1.30 余春梅
+        case 'CLUE_LIST_VIEWLEADSHOW':
+            debugger
+            return $$state.merge({
+                viewLeadVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADSHOW':
+            return $$state.merge({
+                leadVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADENDSHOW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADINGSHOW':
+            return $$state.merge({
+                leadingVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADSHOW':
+            return $$state.merge({
+                leadVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADENDSHOW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_LEADINGSHOW':
+            return $$state.merge({
+                leadingVisible: action.payload.leadVisible,
+            });
+        case 'CLUE_LIST_SAVEFILES':
+            //debugger
+            return $$state.merge({
+                leadFiles: action.payload.files,
+            });
+        case 'CLUE_LIST_FILESUCCESS':///???--------
+            //debugger
+            return $$state.merge({
+                filesSuccess: action.payload.filesSuccess,
+                successResult: action.payload.result,
+                leadEndVisible: action.payload.show,
+                leadFiles: {},
+                leadStep: action.payload.leadStep
+            });
+        case 'CLUE_LIST_FILEFAIL':
+            return $$state.merge({
+                filesFail: action.payload.filesFail,
+            });
+        case 'CLUE_LIST_LEADENDVIEW':
+            return $$state.merge({
+                leadEndVisible: action.payload.leadVisible,
+                leadStep: action.payload.leadStep
+            });
+        case 'CLUE_LIST_CHANGESTEP':
+            return $$state.merge({
+                leadStep: action.payload.leadStep
+            });
 
+
+
+
+
+
+
+
+        //==========
         case 'CLUE_LIST_CLOSELEADSHOW':
             return $$state.merge({
                 colseVisible: action.visible,
@@ -83,8 +158,9 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({
                 userCardName: action.payload,
             })
-            //动态
-            case 'CLUE_LIST_GETDYNAMIC':
+        //动态
+        case 'CLUE_LIST_GETDYNAMIC':
+            debugger
             return $$state.merge({
                 dynamicData: action.data
             });
@@ -106,7 +182,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 userCardName: ''
             })
         //查询各种table数据 停启用
-        case "CUSTOMERCOMPANY_LIST_GETDATA":
+        case "CLUE_LIST_GETDATA":
             let nn = action;
             debugger;
             return $$state.merge({
@@ -138,7 +214,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
                 searchMap: action.payload == undefined ? {} : action.payload
             });
         case 'CLUE_LIST_SAVESOPTION':
-        debugger
+            debugger
             return $$state.merge({
                 option: action.payload == undefined ? '' : action.payload
             });
@@ -275,7 +351,7 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             });
 
         case "CLUE_LIST_SHOWVIEWFORM": //显示面板时，根据客户id查客户数据，上级客户，行业参照改成{id,name}形式
-            //debugger
+            debugger
             let actionData = action.data;
             // actionData.industry = {
             //     id: actionData.industry,

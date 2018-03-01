@@ -1,5 +1,5 @@
 import Immutable from "immutable";
-
+import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     loading: false,//存放
@@ -17,31 +17,22 @@ let $$initialState = {
     whitchSearch:'',//保存上次查询的是哪一个查询方式
 };
 
-function pageAdd(page, item){
-    page.total += 1;
-    page.data.unshift(item);
-    page.page = Math.ceil(page.total / page.pageSize);
-    return page;
-}
 
 export default function cusGroupAssignReducers($$state = Immutable.fromJS($$initialState),action) {
     switch (action.type){
-        case 'CUSTOMER_GROUPASSIGNMENT_SEARCHMAP'://存储查询条件
+        case 'CUSTOMER_GROUPASSIGNMENT_SEARCHMAP'://存储查询条件、
+        debugger;
             return $$state.merge({
                 searchMap:action.value,
                 whitchSearch:'searchMap'
             })
         case 'CUSTOMER_GROUPASSIGNMENT_SEARCHPLAN'://存储已查询的查询案后，更新列表数据
-        let xx= action;
-        debugger
             return $$state.merge({
                 searchPlan:action.searchPlan,
                 data:action.data,
                 whitchSearch:'searchPlan'
             })
         case 'CUSTOMER_GROUPASSIGNMENT_LIST'://存储已查询的查询条件，更新列表数据
-        let xx2= action;
-        debugger
             return $$state.merge({
                 data:action.data,
             })  
@@ -55,19 +46,17 @@ export default function cusGroupAssignReducers($$state = Immutable.fromJS($$init
                 preSearchPlan:action.preSearchPlan
             })
         case "CUSTOMER_GROUPASSIGNMENT__GETTABLELIST"://保存table数据   
-        let xx6= action;
-        debugger
             return $$state.merge({
                 data:action.data
             })
         case 'CUSTOMER_GROUPASSIGNMENT__GETTABLELISTAGAIN'://集团分配后，再此从新请求列表，更新list数据，table的keys清空
-        let xx9= action;
-         debugger
             return $$state.merge({
                 data:action.data,
                 selectedRowKeys:[]
             })
-
+        case 'CUSTOMER_GROUPASSIGNMENT_LIST_RESETSTATE':
+        debugger
+			return $$state.merge($$initialState)
         default:
             return $$state
     }

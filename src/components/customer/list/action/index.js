@@ -10,37 +10,92 @@ export function fetchData(type, payload) {
         payload
     };
 };
-
+//新增保存时组装成后台所需数据
 let trancFn=(data)=>{
     data = Immutable.fromJS(data).toJS()
     debugger
     for (let key in data) {
         //枚举
-        if ( key == 'cannelType' || key == 'level'|| key == 'type'|| key == 'biztype') {
-            if(data[key] && data[key].key){
+        if ( key == 'cannelType' || key == 'level'|| key == 'type') {
+            debugger
+            if(data[key] && data[key].value){
+                data[key] = data[key].value.key
+            }else if(data[key]){
+               
                 data[key] = data[key].key
+            }else{
+                data[key] = undefined
+            }
+        }
+
+        //业务类型
+        if (key == 'biztype') {
+            debugger
+            if(data[key] && data[key].value){
+                data[key] = data[key].value.key
             }
         }
 
         //城市
         if (data.province_city_district) {
-            let change = data.province_city_district.result;
+            debugger
+            let change
+            if(data.province_city_district.value){
+                change = data.province_city_district.value.result;
+            }else{
+                change = data.province_city_district.result;
+            }
             data.province = change[0];
             data.city = change[1];
             data.district = change[2];
             data.province_city_district = "";
         }
 
+        //上级客户
+        if(data.parentId){
+            debugger
+            if(data.parentId && data.parentId.hasOwnProperty('value')&& data.parentId.value.id){
+                data.parentId = data.parentId.value.id
+            }else if(data.parentId && !data.parentId.hasOwnProperty('value') && data.parentId.id){
+                data.parentId = data.parentId.id
+            }else{
+                data.parentId = undefined
+            }
+        }
+
         //详细地址
-        if (data.street && data.street.location) {
-            data.longitude = data.street.location.lng
-            data.latitude = data.street.location.lat
-            data.street = data.street.address
+        // if (data.street && data.street.value) {
+        //     data.longitude = data.street.value.location.lng
+        //     data.latitude = data.street.value.location.lat
+        //     data.street = data.street.value.address
+        // }else{
+        //     //如果不是带验证的值，就是编辑时付的值
+        //     if(data.street && typeof data.street == 'object'){
+        //         data.longitude = data.street.location.lng
+        //         data.latitude = data.street.location.lat
+        //         data.street = data.street.address
+        //     }
+        // }
+        if (data.street && typeof data.street == 'object') {
+            debugger
+            if(data.street.hasOwnProperty('value')){
+                data.longitude = data.street.value.location.lng
+                data.latitude = data.street.value.location.lat
+                data.street = data.street.value.address
+            }else{
+                data.longitude = data.street.location.lng
+                data.latitude = data.street.location.lat
+                data.street = data.street.address
+            }
+        }
+
+        //其他
+        if(data[key]&& data[key].value){
+            data[key] = data[key].value
         }
     }
-
+debugger
     data.address = ''
-    
     return data;
 }
 
@@ -148,6 +203,7 @@ export function fileFail(filesFail) {
 
 //天赐上传文件
 export function filesSuccess(file) {
+    debugger
     return {
         type: "CUSTOMERCOMPANY_LIST_FILESSUCCESS",
         payload: file,
@@ -156,7 +212,7 @@ export function filesSuccess(file) {
 
 //天赐上传文件删除
 export function onDeleteFiles(file) {
-   // debugger
+    debugger
     return (dispatch) => {
         reqwest(
             {
@@ -319,7 +375,7 @@ export function getListData(pagination, searchMap) {
                 }
             },
             data => {
-                
+                console.log('获取列表==============',data)
                 dispatch(
                     fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
                         data: data,
@@ -365,7 +421,7 @@ export function getDynamic(id){
                 method: "GET",
             },
             data => {
-                
+                debugger
                 dispatch({
                     type:"CUSTOMERCOMPANY_LIST_GETDYNAMIC",
                     data:data && data.dynamiclist?data.dynamiclist:[]
@@ -411,7 +467,7 @@ let sendCumRequest = (data,dispatch)=>{
             }
         },
         data => {
-            //debugger
+            debugger
             dispatch({
                 type: "CUSTOMERCOMPANY_LIST_EDITSAVE",
                 data
@@ -422,7 +478,7 @@ let sendCumRequest = (data,dispatch)=>{
 
 //新增的Request请求
 let sendCumNewRequest = (data,dispatch)=>{
-     //debugger
+     debugger
      reqwest(
             {
                 url: url.customer,
@@ -432,7 +488,7 @@ let sendCumNewRequest = (data,dispatch)=>{
                 }
             },
             data => {
-                //debugger
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_ADDSAVE",
                     data
@@ -500,12 +556,15 @@ export function showViewForm(visible, id) {
             },
             data => {
                 debugger
+                console.log('点击详情时返回数据1==========',data)
                 reqwest(
                     {
                         url: baseDir + `cum/customers/${id}/isfollow`,
                         method: "GET"
                     },
                     state => {
+                        console.log('点击详情时返回数据2==========',state)
+                        debugger;
                         dispatch({
                             type: "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM",
                             visible,
@@ -793,11 +852,12 @@ export function closeIcbcVisible1(visible) {
 };
 
 //点击新增按钮的取业务类型项
-export function addCustomer(data, newType) {
+export function addCustomer(visiable, newType) {
+    debugger
     return dispatch => {
         dispatch({
             type: "CUSTOMERCOMPANY_LIST_ADDCUSTOMER",
-            data,
+            visiable,
             newType
         });
     };
