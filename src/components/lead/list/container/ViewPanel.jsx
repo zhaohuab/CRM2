@@ -236,7 +236,7 @@ class ViewPanel extends React.Component {
                                     justify="center"
                                     className="info-title"
                                 >
-                                    <i className="iconfont icon-shijian4" />分派时间:
+                                    <i className="iconfont icon-chuangjianshijian" />分派时间:
                                 </Row>
                             </Col>
                             <Col span={6}>

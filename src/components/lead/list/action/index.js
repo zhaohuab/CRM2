@@ -40,20 +40,30 @@ function transData(searchMap) {
         searchMap.district = change[2];
         delete searchMap.province_city_district;
     }
-    if (searchMap.signTime) {
-        searchMap.followTimeStart = searchMap.signTime[0].format('YYYY-MM-DD HH:mm:ss');
-        searchMap.followTimeEnd = searchMap.signTime[1].format('YYYY-MM-DD HH:mm:ss');
-        searchMap.signTime = undefined;
+    if (searchMap.assignTime) {
+        searchMap.followTimeStart = searchMap.assignTime[0].format('YYYY-MM-DD HH:mm:ss');
+        searchMap.followTimeEnd = searchMap.assignTime[1].format('YYYY-MM-DD HH:mm:ss');
+        searchMap.assignTime = undefined;
     }
     if (searchMap.industryId) {
         //debugger
         searchMap.industryId= searchMap.industryId.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
     }
-    if(searchMap.ownerDeptId){
-        searchMap.ownerDeptId=searchMap.ownerDeptId.key;
+    if(searchMap.deptId){
+         debugger
+        searchMap.deptId=searchMap.deptId.key;
     }
     if(searchMap.ownerUserId){
         searchMap.ownerUserId=searchMap.ownerUserId.id;
+    }
+    if(searchMap.state){
+        searchMap.state=searchMap.state.key;
+    }
+    if(searchMap.level){
+        searchMap.level=searchMap.level.key;
+    }
+    if(searchMap.source){
+        searchMap.source=searchMap.source.key;
     }
     return searchMap;
 }
@@ -101,15 +111,7 @@ const transReceiveDataOne = (data) => {
     if(data.modifiedTime){
         data.modifiedTime = transDate(new Date(data.modifiedTime.time))
     }
-    // if(data.related){
-    //     let relate=data.related;
-    //     if(relate.bizopps){
-    //         let bizopps=relate.bizopps;
-    //        if(bizopps.expectSignTime){
-
-    //        }
-    //     }
-    // }
+   
     return data;
 }
 //拼接省市县

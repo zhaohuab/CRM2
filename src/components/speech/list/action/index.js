@@ -51,10 +51,11 @@ export function getListData(pagination, searchMap){
 
 //获取查询条件初始值
 export function getEnumData() {
+    debugger
     return dispatch => {
         reqwest(
             {
-                url: url.saletalk+'/job',
+                url: url.saletalk+'/'+'docs',
                 method: "GET",
                 data: {
 
@@ -64,7 +65,7 @@ export function getEnumData() {
                 debugger
                 dispatch(
                     fetchData("SPEECH_LIST_GETENUMDATA", {
-                        enumData: data.data
+                        enumData: data.enumData.post
                     })
                 );
             }
