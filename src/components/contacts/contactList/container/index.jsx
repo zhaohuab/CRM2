@@ -1,276 +1,439 @@
-import React from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as Actions from "../action";
+import { browserHistory } from "react-router";
 import {
-    Select,
-    Input,
-    Form,
-    Table,
-    Modal,
-    Button,
     Icon,
+    Button,
+    Dropdown,
+    Menu,
+    Collapse,
+    Input,
     Row,
     Col,
+    Table,
+    Modal,
+    Form,
+    Select,
     Tabs,
-    message,
-    Spin
+    Timeline,
+    Spin 
 } from "antd";
-
-let Search = Input.Search;
-const FormItem = Form.Item;
+const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
+const Option = Select.Option;
 const TabPane = Tabs.TabPane;
-
-import Card from "./list/Card";
-import ViewPanel from "./panel/ViewPanel";
-import TopSearchForm from "./list/TopSearchForm.jsx";
+const confirm = Modal.confirm;
+import * as Actions from "../action/index.js";
+import HeaderButton from "../../../common/headerButtons/headerButtons.jsx";
+import Card from "./card.jsx";
+import LessCard from "./lessCard.jsx";
 import SlidePanel from "../../../common/slidePanel/index.jsx";
-import LeadStart from "./lead/LeadStart"
-import reqwest from "reqwest";
-import { baseDir } from "api";
+import PanelView from "./panel.jsx";
+import getCookie from 'utils/cookie'
+
 import "./index.less";
 import "assets/stylesheet/all/iconfont.css";
-import LeadExport from './lead/LeadExport.jsx'; //导入导出
-class List extends React.Component {
+import data from "../../../role/list/container/data";
+
+class Contacts extends React.Component {
     constructor(props) {
         super(props);
-
         this.columns = [
             {
                 title: "姓名",
                 dataIndex: "name",
-                render: (text, record) => {
+                render: (text, record)=> {
                     return (
                         <div
                             onClick={this.slideShow.bind(this, record)}
-                            className="crm-table-name"
-                        >                             
-                            {record.name}                                  
+                            className="crm-pointer"
+                        >
+                            {text}
                         </div>
-                    )
+                    );
                 }
             },
             {
-                title: "客户",
-                dataIndex: "biztypeName"
+                title: "职务",
+                dataIndex: "postName"
             },
-
+            {
+                title: "客户",
+                dataIndex: "customerName"
+            },
             {
                 title: "部门",
-                dataIndex: "levelName"
+                dataIndex: "deptName"
             },
-            {
-                title: "角色",
-                dataIndex: "stateName"
+             {
+                title: "电话",
+                dataIndex: "mobile"
             },
-            {
-                title: "态度",
-                dataIndex: "street"
-            }
+             {
+                title: "邮箱",
+                dataIndex: "email"
+            },
         ];
-        const that = this;
+        let that = this;
 
-        this.onSelectChange = (selectedRowKeys) => {
-            debugger
-            this.props.action.selectedRowKeys(selectedRowKeys);
+        this.state = {
+            //上方条件选择保存更多状态
+            more: false,
+            viewState: false
         };
-        this.state={
-            importVisible:false
-        }
+
+        this.onSelectChange = (selectedRowKeys, selectedRows) => {
+           // debugger;
+            this.setState({
+                more: false
+            });
+            this.props.action.selectData({ selectedRows, selectedRowKeys });
+        };
     }
 
-    //改变编辑状态
-    changeState(visiable) {
-        this.props.action.changeStateFn(visiable);
-    }
-
-    //显示面板
+    //点击姓名出侧滑面板
     slideShow(record) {
-        //显示侧滑面板，获取选中客户信息
-        this.props.action.showViewForm(true, record.id);
-        //获取动态
-        this.props.action.getDynamic(record.id)
+        this.setState({
+            viewState: true
+        });
+        this.props.action.slideShow(record)
     }
-
-    //清除表单数据
-    clearForm(){
-        debugger
-        if(this.formRef){
-            this.formRef.props.form.resetFields()
-        }
-    }
-
-    //隐藏面版
     slideHide() {
-        //关闭面板清空数据
-        this.props.action.hideViewForm(false);
+        this.setState({
+            viewState: false
+        });
     }
-
-    //form新增、或者修改
-    formHandleOk() {
-        let { viewData,icbcSele} = this.props.$$state.toJS();
-       
-        this.formRef.props.form.validateFields((err, value) => {
-            debugger
+    //头部按钮层返回按钮方法
+    headerBack() {
+        this.props.action.selectData([]);
+    }
+    modalTranslate(obj) {//保存时转换表单数据格式
+        for(let key in obj){
+            if(key=='post'){
+               // debugger;
+                if(obj[key]){
+                    obj.postName=obj[key].name;
+                    obj[key]=obj[key].id; 
+                }          
+            }
+            if(key=='customer'){
+               // debugger;
+                if(obj[key]){
+                    obj.customerName=obj[key].name;
+                    obj[key]=obj[key].id;
+                }               
+            }
+        }
+        return obj
+    }
+    //modal点击确定按钮
+    handleOk() {
+        let { pagination, searchMap, modalData } = this.props.$$state.toJS(); //获取分页信息 
+        let data =this.modalTranslate(modalData);    
+        let role = getCookie();
+        data.ownerUserId=Number(role.id);
+        data.deptid=Number(role.deptid)
+       // debugger;
+        this.formRef.props.form.validateFieldsAndScroll((err, values) => {
+           debugger;
             if (!err) {
-                if (viewData.id) {//修改
-                    if(viewData.isIdentified == 1){
-                        this.props.action.listFormSave(viewData);
-                    }else{
-                        if(viewData.verifyFullname){
-                            //把verifyId发送给后台进行工商认证标识
-                            viewData.verifyId = icbcSele.companyid;
-                            //把已认证信息发动给后台
-                            viewData.isIdentified = 1
-                        }
-                        this.props.action.listFormSave(viewData);
-                    }
+                if (values.id) {
+                  //  debugger;
+                    this.props.action.onEdit(data, pagination, searchMap);
                 } else {
-                    //新增如果有获取过公司信息就把公司id和认证发送给后台
-                    if(viewData.verifyFullname){
-                        //把verifyId发送给后台进行工商认证标识
-                        viewData.verifyId = icbcSele.companyid;
-                        //把已认证信息发动给后台
-                        viewData.isIdentified = 1
-                    }
-                    this.props.action.listFormSave(viewData);
+                   // debugger;
+                    this.props.action.cardSaved(data, pagination, searchMap);
                 }
             }
         });
     }
 
-    //form取消
-    formHandleCancel() {
+    //modal点击取消按钮
+    handleCancel() {
         this.props.action.showForm(false);
-       // this.clearForm()
     }
 
-    //保存修改、编辑等动作后，把修改的值保存在redux中
-    editCardFn(changeData) {
-        this.props.action.editCardFn(changeData);
+    //新增按钮
+    addContacts() {
+        this.props.action.edit({}, true);
     }
 
-    //分页方法
+    //删除按钮
+    onDelete() {
+        let that = this;
+        confirm({
+            title: "确定要删除吗?",
+            content: "此操作不可逆",
+            okText: "是",
+            cancelText: "否",
+            onOk() {
+                let selectedRowKeys = that.props.$$state.toJS().rowKeys[
+                    "selectedRowKeys"
+                ];
+                let { pagination, searchMap } = that.props.$$state.toJS(); //获取分页信息
+                that.props.action.onDelete(selectedRowKeys, pagination, searchMap);
+            },
+            onCancel() {
+                console.log("Cancel");
+            }
+        });
+    }
+
+    //分页器显示条数
     showTotal(total) {
         return `共 ${total} 条`;
     }
 
-    //点击分页
+    //点击分页器页数
     onPageChange(page, pageSize) {
-        let pagination = { page: page, pageSize: pageSize };
-        this.props.action.getListData(
-            pagination,
-            this.props.$$state.get("searchMap").toJS()
-        );
+       // debugger;
+        let { pagination,searchMap } = this.props.$$state.toJS(); //获取分页信息
+        pagination = {
+            pageSize,
+            page
+        };
+        this.props.action.getContactList(pagination, searchMap);
+    }
+    //点击分页器跳转
+    onPageSizeChange(current, size) {
+        let { pagination, searchMap } = this.props.$$state.toJS(); //获取分页信息
+        pagination = {
+            pageSize: size,
+            page: current
+        };
+       
+        this.props.action.getContactList(pagination, searchMap);
     }
 
-    //点击分页跳转
-    onPageSizeChange(current, pageSize) {
-        let pagination = { page: current, pageSize: pageSize };
-        this.props.action.getListData(
-            pagination,
-            this.props.$$state.get("searchMap").toJS()
-        );
+    //点击编辑按钮
+    onEdit(flag,slideShowData,e) {
+        debugger;
+        if(flag){//如果是详情中的编辑
+            this.props.action.edit(slideShowData, true, 'edit');
+        }else{//如果是选择中的编辑
+            let selectedRowKeys = this.props.$$state.toJS().rowKeys[
+            "selectedRowKeys"
+            ];
+            let resultNew = this.props.$$state.toJS().data.data;
+            resultNew = resultNew.filter(item => {
+                return item.id == selectedRowKeys[0];
+            });
+        
+            let newObj = {};
+            for (var key in resultNew[0]) {
+                newObj[key] = resultNew[0][key];
+            }
+        // debugger;
+            this.props.action.edit(newObj, true, 'edit');
+        }     
     }
 
+    //获取列表所需展示字段
+    changeValue(data) {
+        let newDate = [];
+        data.forEach(item => {
+            let obj = {};
+            //debugger;
+            for (var key in item) {
+                if (key == "id") {
+                    obj.id = item[key];
+                } else if (key == "name") {
+                    obj.name = item[key];
+                } else if (key == "customerInfo") {
+                    if(item["customerInfo"]!=null)
+                        obj.customerName = item["customerInfo"].name;
+                    else
+                        obj.customerName = "";
+                } else if (key == "ownerUserInfo") {
+                    if(item["ownerUserInfo"]){
+                        obj.deptName = item["ownerUserInfo"].deptName;
+                    }else{
+                        obj.deptName = "";
+                    }
+                } else if (key == "role") {
+                    obj.role = item[key];
+                } else if (key == "postName") {
+                    obj.postName = item[key];
+                }else if(key=='mobile'){
+                    obj.mobile=item[key]
+                }else if(key=='email'){
+                    obj.email=item[key]
+                }
+            }
+            newDate.push(obj);
+        });
+        debugger;
+        return newDate;
+    }
+  
+    //页面刚挂在组件方法
     componentDidMount() {
-        let {pagination} =  this.props.$$state.toJS()
-        //获取列表数据
-        this.props.action.getListData( pagination );
-        //获取查询条件、查询方案预置信息
-        this.props.action.getEnumData();
+        let { pagination, searchMap } = this.props.$$state.toJS(); //获取分页信息
+        this.props.action.getContactList(pagination, searchMap);
     }
 
     render() {
-        const { $$state } = this.props;
-        const page = $$state.get("data").toJS();
-        const pageSize = $$state.get("pageSize");      
+        let {
+            data,
+            visible,
+            loading,
+            tags,
+            editData,
+            slideShowData,
+        } = this.props.$$state.toJS();
+
+        //获取列表所需字段
+        let newData;
+        if (data.data) {
+            newData = this.changeValue.call(this, data.data);
+        }
+        //新建表单
+       //debugger;
+        //查询列表头部简单搜索表单
+ 
+
         let {
             selectedRowKeys,
-            formVisitable,
-            viewState,
-            viewData,
-            tableLoading,
-            leadVisible,
-            leadEndVisible,
-            leadingVisible,
-            viewLeadVisible,
-            pagination,
-            searchMap
+            selectedRows
+        } = this.props.$$state.toJS().rowKeys;
 
-        } = this.props.$$state.toJS();
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+
         return (
-            <div className="custom-warpper ">
-                <TopSearchForm clearForm = {this.clearForm.bind(this)}/>
-                <div className="table-bg tabel-recoverd">
-                    <Table
-                        columns={this.columns}
-                        dataSource={page.data}
-                        rowKey="id"
-                        rowSelection={rowSelection}
-                        size="middle"
-                        pagination={{
-                            size: "large",
-                            current:pageSize,
-                            showSizeChanger: true,
-                            showQuickJumper: true,
-                            total: page.total,
-                            showTotal: this.showTotal,
-                            onChange: this.onPageChange.bind(this),
-                            onShowSizeChange: this.onPageSizeChange.bind(
-                                this
-                            )
-                        }}
-                        loading={tableLoading}
-                    />
-                </div>
-                <Modal
-                    title={viewData.id ? "编辑" : "新建"}
-                    visible={formVisitable}
-                    onOk={this.formHandleOk.bind(this)}
-                    onCancel={this.formHandleCancel.bind(this)}
-                    width={750}
-                    maskClosable={false}
-                    className='crm-list-card-modal'
-                >
-                    <div className="modal-height">
-                        <Card
-                            wrappedComponentRef={inst => (this.formRef = inst)}
-                            editCardFn={this.editCardFn.bind(this)}
-                            changeState={this.changeState.bind(this)}
+            <div className="crm-container">
+                <div className="contacts-warpper">
+                    {selectedRowKeys && selectedRowKeys.length ? (
+                        <HeaderButton
+                            length={selectedRowKeys.length}
+                            goBack={this.headerBack.bind(this)}
+                        >
+                            <Button onClick={this.onDelete.bind(this)}>
+                                <i className="iconfont icon-shanchu" />删除
+                            </Button>
+                            {selectedRowKeys.length == 1 ? (
+                                <Button onClick={this.onEdit.bind(this)}>
+                                    <i className="iconfont icon-bianji" />编辑
+                                </Button>
+                            ) : (
+                                ""
+                            )}
+                        </HeaderButton>
+                    ) : (
+                        <div className="crm-container-header">
+                            <Row>
+                                <Col span={18}>
+                                    <Row type="flex" gutter={15} align="middle">
+                                     
+                                        <Col span="21">
+                                            <div
+                                                className={
+                                                    this.state.more
+                                                        ? "less-hide-height"
+                                                        : "less-show-height"
+                                                }
+                                            >
+                                                <LessCard 
+                                                saveSearchMap={this.props.action.saveSearchMap.bind(this)}
+                                                />
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Col>
+
+                                <Col span={6}>
+                                    <Row type="flex" justify="end">
+                                        <Col span={24}>
+                                            <Row
+                                                type="flex"
+                                                justify="end"
+                                                gutter={15}
+                                            >
+                                                <div>
+                                                    <Button
+                                                        type="primary"
+                                                        onClick={this.addContacts.bind(
+                                                            this
+                                                        )}
+                                                    >
+                                                        <i className="iconfont icon-xinjian" />新建
+                                                    </Button>
+                                                </div>
+                                            </Row>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </div>
+                    )}
+                    <div className="tabel-bg tabel-recoverd">
+                        <Table
+                            size="middle"
+                            columns={this.columns}
+                            dataSource={newData}
+                            rowKey="id"
+                            rowSelection={rowSelection}
+                            pagination={{
+                                size: "large",
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                total: data.total,
+                                showTotal: this.showTotal,
+                                onChange: this.onPageChange.bind(this),
+                                onShowSizeChange: this.onPageSizeChange.bind(
+                                    this
+                                )
+                            }}
                         />
                     </div>
-                </Modal>
-                <SlidePanel
-                    viewState={viewState}
-                    onClose={this.slideHide.bind(this)}
-                    className='tab-viewPanel-recoverd'
-                >
-                    <ViewPanel ref="panelHeight" />
-                </SlidePanel>
-                {//------注掉导入导出
-                    /* <LeadExport/> */}
-            </div>
 
+                    <Modal
+                        title={editData.id ? "编辑" : "新建"}
+                        visible={visible}
+                        onOk={this.handleOk.bind(this)}
+                        onCancel={this.handleCancel.bind(this)}
+                        width={750}
+                        maskClosable={false}
+                        className='crm-list-card-modal'
+                    >
+                        <div className="modal-height">
+                            <Card
+                                dataSource={editData}
+                                wrappedComponentRef={inst =>this.formRef = inst}
+                            />
+                        </div>
+                    </Modal>
+
+                    <SlidePanel
+                        viewState={this.state.viewState}
+                        onClose={this.slideHide.bind(this)}
+                    >
+                        <PanelView slideShowData={slideShowData} onEdit={this.onEdit.bind(this)}/>
+                    </SlidePanel>
+                    {
+                        loading?
+                        <Spin className='loading' size='large'/>:''
+                    }
+                </div>
+            </div>
         );
     }
 }
-//绑定状态到组件props
-function mapStateToProps(state, ownProps) {
-    return {
-        $$state: state.contacts,
-    };
-}
-//绑定action到组件props
-function mapDispatchToProps(dispatch) {
-    return {
-        action: bindActionCreators(Actions, dispatch)
-    };
-}
-//输出绑定state和action后组件
-export default connect(mapStateToProps, mapDispatchToProps)(List);
+export default connect(
+    state => {
+        return {
+            $$stateComponent: state.componentReducer,
+            $$state: state.contacts
+        };
+    },
+    dispatch => {
+        return {
+            action: bindActionCreators(Actions, dispatch)
+        };
+    }
+)(Contacts);
+
+
