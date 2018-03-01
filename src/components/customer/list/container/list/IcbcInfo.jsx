@@ -52,11 +52,6 @@ class IcbcInfo extends React.Component {
 
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
-        // let cssCode = this.props.$$menuState.get("cssCode");
-        // //判断是否有核实权限
-        // if(cssCode.indexOf("customer_view_verify_customer")!="-1"){
-        //     return 
-        // }
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/",
@@ -116,7 +111,7 @@ class IcbcInfo extends React.Component {
     getIcbc(flag) {
         debugger
         let {viewData,icbcSelect,isClose,addIcbcName} = this.props.$$state.toJS()
-        let icbcName = viewData.name;
+        let icbcName = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name;
         let id = viewData.id
         let verifyId = viewData.verifyId;
 
@@ -192,7 +187,7 @@ class IcbcInfo extends React.Component {
         let value = this.state.value;
         let {viewData} = this.props.$$state.toJS();
         if(!value){
-            value = viewData.name
+            value = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name
         }
         this.getIcbcList(value, result => {
             if (result.data && result.data.length) {
@@ -217,7 +212,8 @@ class IcbcInfo extends React.Component {
             return item.key == 'verifyFullname'
         })
         //如果客户名称不存在 把获取的工商信息名称赋给客户名称
-        if(!viewData.name){
+        let vName = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name
+        if(!vName){
             viewData.name = name.value
         }
         //新增保存时，如果进行核实，要把verifyFullname字段发送给后台
@@ -247,8 +243,8 @@ class IcbcInfo extends React.Component {
                 viewData["taxpayerNo"] = item.value;
             } else if (item.key == "remark") {
                 viewData["remark"] = item.value;
-            } else if (item.key == "remark") {
-                viewData["remark"] = item.value;
+            } else if (item.key == "website") {
+                viewData["website"] = item.value;
             }
         });
         return viewData
@@ -283,7 +279,8 @@ class IcbcInfo extends React.Component {
         debugger
         let {viewData,icbcSelect,isClose,addIcbcName} = this.props.$$state.toJS();
         debugger
-        if(viewData.name == addIcbcName){
+        let name = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name
+        if(name == addIcbcName){
             this.props.action.saveIcbcName(viewData,false)
         }else{
             if(!viewData.verifyId){

@@ -1,3 +1,4 @@
+
 import {
     Select,
     Row,
@@ -19,7 +20,7 @@ import DropDownModal from '../../../../common/DrowdownModal'
 
 const Search = Input.Search;
 
-export default class SuperiorCustomer extends React.Component {
+export default class TableDropdownModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -38,20 +39,15 @@ export default class SuperiorCustomer extends React.Component {
         };
         this.columns = [
             {
-                title: "客户名称",
+                title: "产品编码",
                 dataIndex: "name",
                 key: "name",
 
             },
             {
-                title: "等级",
+                title: "产品名称",
                 dataIndex: "levelName",
                 key: "levelName"
-            },
-            {
-                title: "区域",
-                dataIndex: "saleArea",
-                key: "saleArea"
             }
         ];
     }
@@ -74,17 +70,20 @@ export default class SuperiorCustomer extends React.Component {
 
     //获取table选择数据
     getListData(flag, pagination) {
+        debugger
         reqwest(
             {
-                url: baseDir + "cum/customers/ref",
+                url: baseDir + "base/products/ref",
                 method: "GET",
                 data: {
-                    param: {
-                        ...this.state.pagination
-                    }
+                    //param: {
+                        ...pagination,
+                        searchMap:{}
+                   // }
                 }
             },
             result => {
+                debugger
                 this.setState({
                     visible: flag,
                     cumData: result
@@ -123,15 +122,6 @@ export default class SuperiorCustomer extends React.Component {
             );
         }
     }
-    //单多选属性
-    //url属性
-    //导出直接导出 selectedRows 需处理成能用数组对象
-        //value需要循环遍历ary
-        //点编辑按钮的时候需要弄成ary
-        //往后台发送数据时需要遍历id
-    //需要展示的属性名称字符串   
-    //method
-    //columns
 
     //table发生行选中触发的方法
     onSelectChange(selectedRowKeys, selectedRows) {
@@ -215,13 +205,12 @@ export default class SuperiorCustomer extends React.Component {
     createPanel() {
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
-            type: "radio",
             selectedRowKeys: this.state.selectedRowKeys
         };
         let tableData = this.state.cumData;
         return (
             <DropDownModal 
-                title='上级客户' 
+                title='云产品线' 
                 onCancel={this.onCancel.bind(this)}  
                 onOk={this.onOk.bind(this)} 
                 onSearch = {this.onSearch.bind(this)}
@@ -270,7 +259,7 @@ export default class SuperiorCustomer extends React.Component {
                             placement={this.props.placement}
                         >
                             <Search
-                                placeholder="上级客户"
+                                placeholder="云产品线"
                                 onSearch={this.getCumData.bind(this, true)}   //只要包含在dropdown里的只要出发都会执行onVisibleChange方法不必单写
                                 value={this.props.value ? this.props.value.name : ""}
                                 suffix={suffix}

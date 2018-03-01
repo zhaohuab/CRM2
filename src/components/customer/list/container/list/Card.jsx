@@ -36,6 +36,7 @@ import UploadImg from "./UploadImg";
 import CityChioce from "../../../../common/cityChioce/CityChioce";
 import InputDisable from './InputDisable'
 import SuperiorCustomer from './SuperiorCustomer'
+import TableDropdownModal from '../panel/TableDropdownModal'
 //import OwnUser from './OwnUser'
 
 import Int from "utils/components/int";
@@ -92,7 +93,6 @@ class EditForm extends React.Component {
             isClose,
             upLoadList
         } = this.props.$$state.toJS();
-       debugger
         return (
             <div>
                 <Row className="customform-input-recover">
@@ -116,7 +116,7 @@ class EditForm extends React.Component {
                                     <Input type="text" placeholder="请输入" />
                                 )}
                             </FormItem>
-                            <Row className="form-bottom">
+                            <Row>
                                 <Row>
                                     <Col span={2} className="form-title">
                                         客户信息:
@@ -124,18 +124,16 @@ class EditForm extends React.Component {
                                 </Row>
                                 <Row>
                                     <Col offset={1}>
-                                        <Row className="row-bottom">
-                                            <Col span={12}>
+                                        <Row >
+                                            <Col span={12} className="cum-from-row-bottom">
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row type="flex" justify="end">
                                                             <span className="import">*</span>客户名称：
                                                         </Row>
                                                     </Col>
-                                                    <Col span={12} id="upload-form-item">
-                                                        <FormItem
-                                                            {...formItemLayout}
-                                                        >
+                                                    <Col span={13} id="upload-form-item" className='name'>
+                                                        <FormItem {...formItemLayout}>
                                                             {getFieldDecorator(
                                                                 "name",
                                                                 {
@@ -151,25 +149,24 @@ class EditForm extends React.Component {
                                                                 <Input
                                                                     type="text"
                                                                     placeholder="请输入"
+                                                                    
                                                                 />
-                                                                )}
+                                                            )}
                                                         </FormItem>
                                                     </Col>
                                                     {viewData.isIdentified == 1 ? (
                                                         ""
                                                     ) : (
                                                         <Col span={5}>
-                                                            <Row
-                                                                type="flex"
-                                                                justify="end"
-                                                            >
+                                                            <Row type="flex">
                                                                 <IcbcInfo viewDataProps = {viewData}/>
                                                             </Row>
                                                         </Col>
                                                     )}
                                                 </Row>
                                             </Col>
-                                            <Col span={12}>
+                                            
+                                            <Col span={12} className="cum-from-row-bottom">
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -177,7 +174,7 @@ class EditForm extends React.Component {
                                                             justify="end"
                                                         >
                                                             <div>
-                                                                客户全称：
+                                                                客户简称：
                                                             </div>
                                                         </Row>
                                                     </Col>
@@ -186,17 +183,15 @@ class EditForm extends React.Component {
                                                             {...formItemLayout}
                                                         >
                                                             {getFieldDecorator(
-                                                                "fullname"
+                                                                "shortname"
                                                             )(
                                                                 <Input placeholder="请输入" />
-                                                                )}
+                                                            )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                        </Row>
-                                        <Row className="row-bottom">
-                                            <Col span={12}>
+                                            <Col span={12} className="cum-from-row-bottom">
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -220,13 +215,12 @@ class EditForm extends React.Component {
                                                                         precision: 2
                                                                     }}
                                                                 />
-                                                                )}
+                                                            )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
                                             </Col>
-
-                                            <Col span={12}>
+                                            <Col span={12} className="cum-from-row-bottom">
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -244,22 +238,19 @@ class EditForm extends React.Component {
                                                         >
                                                             {getFieldDecorator(
                                                                 "employeeNum",
-                                                                {}
                                                             )(<Int />)}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                        </Row>
-                                        <Row className="row-bottom">
-                                            <Col span={12}>
+                                            <Col span={12} className="cum-from-row-bottom">
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
                                                             type="flex"
                                                             justify="end"
                                                         >
-                                                            <div>邮箱：</div>
+                                                            <div>网址：</div>
                                                         </Row>
                                                     </Col>
                                                     <Col span={18}>
@@ -267,8 +258,7 @@ class EditForm extends React.Component {
                                                             {...formItemLayout}
                                                         >
                                                             {getFieldDecorator(
-                                                                "email",
-                                                                {}
+                                                                "website",
                                                             )(
                                                                 <Input
                                                                     type="text"
@@ -279,7 +269,7 @@ class EditForm extends React.Component {
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                            <Col span={12}>
+                                            <Col span={12} className="cum-from-row-bottom">
                                                 <Row type="flex" align="middle">
                                                     <Col span={6}>
                                                         <Row
@@ -306,9 +296,60 @@ class EditForm extends React.Component {
                                                     </Col>
                                                 </Row>
                                             </Col>
+                                            
+                                            <Col span={12} className="cum-from-row-bottom">
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>邮箱：</div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={18}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "email",
+                                                            )(
+                                                                <Input
+                                                                    type="text"
+                                                                    placeholder="请输入"
+                                                                />
+                                                                )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
                                         </Row>
-
-                                        <Row className="row-bottom">
+                                      {/* <Col span={12} className="cum-from-row-bottom">
+                                                <Row type="flex" align="middle">
+                                                    <Col span={6}>
+                                                        <Row
+                                                            type="flex"
+                                                            justify="end"
+                                                        >
+                                                            <div>
+                                                                客户全称：
+                                                            </div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={18}>
+                                                        <FormItem
+                                                            {...formItemLayout}
+                                                        >
+                                                            {getFieldDecorator(
+                                                                "fullname"
+                                                            )(
+                                                                <Input placeholder="请输入" />
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                        </Col> */}
+                                        {/* <Row className="cum-from-row-bottom">
                                             <Col span={24}>
                                                 <Row type="flex">
                                                     <Col span={3}>
@@ -319,29 +360,41 @@ class EditForm extends React.Component {
                                                             <div>备注：</div>
                                                         </Row>
                                                     </Col>
-                                                    <Col
-                                                        span={21}
-                                                        className="remark"
-                                                    >
-                                                        <FormItem
-                                                            {...formItemLayout1}
-                                                        >
+                                                    <Col span={21} className="remark">
+                                                        <FormItem {...formItemLayout1}>
                                                             {getFieldDecorator(
                                                                 "remark",
-                                                                {}
                                                             )(
                                                                 <TextArea
-                                                                    autosize={{
-                                                                        minRows: 3,
-                                                                        maxRows: 8
-                                                                    }}
+                                                                    autosize={{minRows: 3,maxRows: 8}}
                                                                     placeholder="请输入"
-                                                                    style={{
-                                                                        width:
-                                                                            "100%"
-                                                                    }}
+                                                                    style={{width:"100%"}}
                                                                 />
-                                                                )}
+                                                            )}
+                                                        </FormItem>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                        </Row> */}
+                                        <Row className="cum-from-row-bottom">
+                                            <Col span={24}>
+                                                <Row type="flex">
+                                                    <Col span={3}>
+                                                        <Row type="flex" justify="end" >
+                                                            <div>客户概要：</div>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col span={21} className="remark">
+                                                        <FormItem {...formItemLayout1}>
+                                                            {getFieldDecorator(
+                                                                "summary",
+                                                            )(
+                                                                <TextArea
+                                                                    autosize={{minRows: 3,maxRows: 8}}
+                                                                    placeholder="请输入"
+                                                                    style={{width:"100%"}}
+                                                                />
+                                                            )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -351,7 +404,7 @@ class EditForm extends React.Component {
                                 </Row>
                             </Row>
 
-                            <Row className="form-bottom">
+                            <Row >
                                 <Row>
                                     <Col span={2}>
                                         <div className="form-title">
@@ -359,7 +412,7 @@ class EditForm extends React.Component {
                                         </div>
                                     </Col>
                                 </Row>
-                                <Row className="row-bottom">
+                                <Row className="cum-from-row-bottom">
                                     <Col offset={1}>
                                         <Col span={12}>
                                             <Row type="flex" align="middle">
@@ -412,7 +465,7 @@ class EditForm extends React.Component {
                                     </Col>
                                 </Row>
                             </Row>
-                            <Row className="form-bottom">
+                            <Row>
                                 <Row>
                                     <Col span={2}>
                                         <div className="form-title">
@@ -420,9 +473,148 @@ class EditForm extends React.Component {
                                         </div>
                                     </Col>
                                 </Row>
-                                <Row className="row-bottom">
+                                <Row>
                                     <Col offset={1}>
-                                        <Col span={12}>
+                                    <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>销售区域：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "saleArea"
+                                                        )(
+                                                            <Enum
+                                                                addOptionAll={"销售区域"}
+                                                                dataSource={
+                                                                    enumData.saleArea
+                                                                }
+                                                            />
+                                                            )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>客户类别：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "category"
+                                                        )(
+                                                            <Enum
+                                                                addOptionAll={
+                                                                    "客户类别"
+                                                                }
+                                                                dataSource={
+                                                                    enumData.category
+                                                                }
+                                                            />
+                                                            )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>客户价值：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "worth"
+                                                        )(
+                                                            <Enum
+                                                                addOptionAll={
+                                                                    "客户价值"
+                                                                }
+                                                                dataSource={
+                                                                    enumData.worth
+                                                                }
+                                                            />
+                                                            )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>客户状态：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "state"
+                                                        )(
+                                                            <Enum
+                                                                addOptionAll={
+                                                                    "客户状态"
+                                                                }
+                                                                dataSource={
+                                                                    enumData.state
+                                                                }
+                                                            />
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>行业：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "industry"
+                                                        )(<Industry />)}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        {/* <Col span={12}  className="cum-from-row-bottom">
                                             <Row type="flex" align="middle">
                                                 <Col span={6}>
                                                     <Row
@@ -439,13 +631,14 @@ class EditForm extends React.Component {
                                                         {getFieldDecorator(
                                                             "biztype"
                                                         )(
-                                                           <InputDisable disabled = {true} viewData = {viewData}/>
+                                                           <InputDisable disabled = {true}/>
                                                         )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
-                                        </Col>
-                                        <Col span={12}>
+                                        </Col> */}
+                                        
+                                        {/* <Col span={12}  className="cum-from-row-bottom">
                                             <Row type="flex" align="middle">
                                                 <Col span={6}>
                                                     <Row
@@ -470,37 +663,13 @@ class EditForm extends React.Component {
                                                                     enumData.level
                                                                 }
                                                             />
-                                                            )}
+                                                        )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
-                                        </Col>
-                                    </Col>
-                                </Row>
-                                <Row className="row-bottom">
-                                    <Col offset={1}>
-                                        <Col span={12}>
-                                            <Row type="flex" align="middle">
-                                                <Col span={6}>
-                                                    <Row
-                                                        type="flex"
-                                                        justify="end"
-                                                    >
-                                                        <div>行业：</div>
-                                                    </Row>
-                                                </Col>
-                                                <Col span={18}>
-                                                    <FormItem
-                                                        {...formItemLayout}
-                                                    >
-                                                        {getFieldDecorator(
-                                                            "industry"
-                                                        )(<Industry />)}
-                                                    </FormItem>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col span={12}>
+                                        </Col> */}
+                                        
+                                        {/* <Col span={12} className="cum-from-row-bottom">
                                             <Row type="flex" align="middle">
                                                 <Col span={6}>
                                                     <Row
@@ -529,12 +698,8 @@ class EditForm extends React.Component {
                                                     </FormItem>
                                                 </Col>
                                             </Row>
-                                        </Col>
-                                    </Col>
-                                </Row>
-                                <Row className="row-bottom">
-                                    <Col offset={1}>
-                                        <Col span={12}>
+                                        </Col> */}
+                                        <Col span={12} className="cum-from-row-bottom">
                                             <Row type="flex" align="middle">
                                                 <Col span={6}>
                                                     <Row
@@ -545,12 +710,63 @@ class EditForm extends React.Component {
                                                     </Row>
                                                 </Col>
                                                 <Col span={18}>
+                                                    <FormItem {...formItemLayout}>
+                                                        {getFieldDecorator(
+                                                            "parentId"
+                                                        )(<SuperiorCustomer />)}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>客户规模：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
                                                     <FormItem
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "parentId"
-                                                        )(<SuperiorCustomer/>)}
+                                                            "scale"
+                                                        )(
+                                                            <Enum
+                                                                addOptionAll={
+                                                                    "客户规模"
+                                                                }
+                                                                dataSource={
+                                                                    enumData.scale
+                                                                }
+                                                            />
+                                                        )}
+                                                    </FormItem>
+                                                </Col>
+                                            </Row>
+                                        </Col>
+                                        <Col span={12}  className="cum-from-row-bottom">
+                                            <Row type="flex" align="middle">
+                                                <Col span={6}>
+                                                    <Row
+                                                        type="flex"
+                                                        justify="end"
+                                                    >
+                                                        <div>云产品线：</div>
+                                                    </Row>
+                                                </Col>
+                                                <Col span={18}>
+                                                    <FormItem
+                                                        {...formItemLayout}
+                                                    >
+                                                        {getFieldDecorator(
+                                                            "productLine"
+                                                        )(
+                                                            <TableDropdownModal/>
+                                                        )}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -558,7 +774,7 @@ class EditForm extends React.Component {
                                     </Col>
                                 </Row>
                             </Row>
-                            <Row className="form-bottom">
+                            <Row>
                                 <Row>
                                     <Col span={2}>
                                         <div className="form-title">
@@ -568,7 +784,7 @@ class EditForm extends React.Component {
                                 </Row>
                                 <Row>
                                     <Col offset={1}>
-                                        <Row className="row-bottom">
+                                        <Row className="cum-from-row-bottom">
                                             <Col span={12}>
                                                 <Row
                                                     type="flex"
@@ -597,7 +813,7 @@ class EditForm extends React.Component {
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                                )}
+                                                            )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
@@ -624,19 +840,18 @@ class EditForm extends React.Component {
                                                         >
                                                             {getFieldDecorator(
                                                                 "legalRepresent",
-                                                                {}
                                                             )(
                                                                 <Input
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                                )}
+                                                            )}
                                                         </FormItem>
                                                     </Col>
                                                 </Row>
                                             </Col>
                                         </Row>
-                                        <Row className="row-bottom">
+                                        <Row className="cum-from-row-bottom">
                                             <Col span={12}>
                                                 <Row
                                                     type="flex"
@@ -652,7 +867,7 @@ class EditForm extends React.Component {
                                                         </Row>
                                                     </Col>
                                                     <Col
-                                                        span={13}
+                                                        span={18}
                                                         id="upload-form-item"
                                                     >
                                                         <FormItem
@@ -668,7 +883,7 @@ class EditForm extends React.Component {
                                                                 )}
                                                         </FormItem>
                                                     </Col>
-                                                    <Col span={4}>
+                                                    {/* <Col span={4}>
                                                         <FormItem>
                                                             {getFieldDecorator(
                                                                 "taxCertificate"
@@ -676,7 +891,7 @@ class EditForm extends React.Component {
                                                                 <UploadImg title="税务登记证" />
                                                                 )}
                                                         </FormItem>
-                                                    </Col>
+                                                    </Col> */}
                                                 </Row>
                                             </Col>
                                             <Col span={12}>
@@ -694,7 +909,7 @@ class EditForm extends React.Component {
                                                         </Row>
                                                     </Col>
                                                     <Col
-                                                        span={13}
+                                                        span={18}
                                                         id="upload-form-item"
                                                     >
                                                         <FormItem
@@ -702,7 +917,6 @@ class EditForm extends React.Component {
                                                         >
                                                             {getFieldDecorator(
                                                                 "bizRegno",
-                                                                {}
                                                             )(
                                                                 <Input
                                                                     type="text"
@@ -711,7 +925,7 @@ class EditForm extends React.Component {
                                                                 )}
                                                         </FormItem>
                                                     </Col>
-                                                    <Col span={4}>
+                                                    {/* <Col span={4}>
                                                         <FormItem>
                                                             {getFieldDecorator(
                                                                 "bizLicense"
@@ -719,11 +933,11 @@ class EditForm extends React.Component {
                                                                 <UploadImg title="工商营业执照" />
                                                                 )}
                                                         </FormItem>
-                                                    </Col>
+                                                    </Col> */}
                                                 </Row>
                                             </Col>
                                         </Row>
-                                        <Row className="row-bottom">
+                                        <Row className="cum-from-row-bottom">
                                             <Col span={12}>
                                                 <Row
                                                     type="flex"
@@ -733,38 +947,35 @@ class EditForm extends React.Component {
                                                     <Col span={6}>
                                                         <Row
                                                             type="flex"
-                                                            justify="end"
+                                                            justify="start"
                                                         >
                                                             组织机构代码证：
                                                         </Row>
                                                     </Col>
                                                     <Col
-                                                        span={13}
+                                                        span={18}
                                                         id="upload-form-item"
                                                     >
-                                                        <FormItem
-                                                            {...formItemLayout}
-                                                        >
+                                                        <FormItem {...formItemLayout}>
                                                             {getFieldDecorator(
                                                                 "orgCode",
-                                                                {}
                                                             )(
                                                                 <Input
                                                                     type="text"
                                                                     placeholder="请输入"
                                                                 />
-                                                                )}
+                                                            )}
                                                         </FormItem>
                                                     </Col>
-                                                    <Col span={4}>
+                                                    {/* <Col span={4}>
                                                         <FormItem>
                                                             {getFieldDecorator(
                                                                 "bizLicense"
                                                             )(
                                                                 <UploadImg title="组织机构代码证" />
-                                                                )}
+                                                            )}
                                                         </FormItem>
-                                                    </Col>
+                                                    </Col> */}
                                                 </Row>
                                             </Col>
                                         </Row>
@@ -830,6 +1041,7 @@ function mapStateToProps(state, ownProps) {
         $$state: state.customerList
     };
 }
+
 //绑定action到组件props
 function mapDispatchToProps(dispatch) {
     return {

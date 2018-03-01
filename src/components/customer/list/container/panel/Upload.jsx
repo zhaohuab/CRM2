@@ -9,6 +9,32 @@ export default class Upload extends React.Component {
         debugger
         let files = e.target.files
         this.uploadFiles(files)
+        debugger
+        // reqwest(
+        //     {
+        //         url:`https://open.yonyoucloud.com/operation/palmyy/message/app/share?access_token=f9ffe7ec2a61e88c890cadf193fa03c0c2c8efe9560a2f8d3cf835b4e8e`,
+        //         method: "POST",
+        //         contentType:'application/json',
+        //         data:{
+        //             "spaceId": "5417",// 用友集团:5417
+        //             "appId": "1", // 应用ID,应用添加后张立朋提供
+        //             "sendThrough":"appNotify", // 发送到应用通知，写死
+        //             "sendScope":"list", // 发送给指定人员，写死
+        //             "toUserType":1, // 用户标识类型，1:手机号 2:邮箱
+        //             "to":["15810966427"], // 接收人手机号/邮箱，同toUserType匹配
+        //             "title":"crm测试", // 消息标题
+        //             "desc": "这里是内容描述1", // 消息内容描述
+        //             "detailUrl":""
+        //         }
+        //     }
+        // )
+        // .then((result) => {
+        //     debugger
+           
+        // }) 
+        // .fail((result) => {
+        //     debugger
+        // })
     }
 
     uploadFiles(files){

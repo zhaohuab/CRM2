@@ -81,11 +81,23 @@ class DetailTop extends React.Component {
         }
     }
 
+    //更改时间
+    changeTime(time){
+        time = new Date(time)
+        let second = time.toLocaleTimeString()
+        let  day= time.toLocaleDateString();
+        let reg = /^(上午|下午)/g;
+
+        second = second.replace(reg,'')
+        day = day.split('/').join('-')
+        
+        return [day,second]
+    }
+
     render(){
         let {viewData,icbcSelect2,icbcVisible2,icbcInfo1} = this.props.$$state.toJS();
         
         let name = viewData.name
-debugger
         return(
         <Row className="view-warrper-header">
             <Row className="header-customer">
@@ -135,31 +147,39 @@ debugger
                                    }
                                 </Row>
                                 <Row type='flex' align='middle'className="tags">
-                                    {
+                                    {/* {
                                         viewData.biztypeName ?
                                         <span className='tags-item'><span>{viewData.biztypeName}</span></span>: ''
-                                    }
-                                    {
+                                    } */}
+                                    {/* {
                                         viewData.levelName ? 
                                         <span className='tags-item'><span>{viewData.levelName}</span></span>:''
-                                    }
+                                    } */}
+                                    {/* {
+                                        viewData.cannelTypeName ?
+                                        <span className='tags-item'><span>{viewData.cannelTypeName}</span> </span>:''
+                                    } */}
+                                    {/* {
+                                        viewData.isGroup == 2?
+                                            viewData.isGroupName ?
+                                            <span className='tags-item'><span>{viewData.isGroupName}</span> </span>:''
+                                        :''
+                                    } */}
+                                    {/* {
+                                        viewData.industryName ?
+                                        <span className='tags-item'><span>{viewData.industryName}</span> </span>:''
+                                    } */}
                                     {
                                         viewData.stateName ?
                                         <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
                                     }
                                     {
-                                        viewData.industryName ?
-                                        <span className='tags-item'><span>{viewData.industryName}</span> </span>:''
+                                        viewData.categoryName ?
+                                        <span className='tags-item'><span>{viewData.categoryName}</span> </span>:''
                                     }
                                     {
-                                        viewData.cannelTypeName ?
-                                        <span className='tags-item'><span>{viewData.cannelTypeName}</span> </span>:''
-                                    }
-                                    {
-                                        viewData.isGroup == 2?
-                                            viewData.isGroupName ?
-                                            <span className='tags-item'><span>{viewData.isGroupName}</span> </span>:''
-                                        :''
+                                        viewData.worthName ?
+                                        <span className='tags-item'><span>{viewData.worthName}</span> </span>:''
                                     }
                                 </Row>
                             </Row>
@@ -188,11 +208,11 @@ debugger
                                 </Button>
                             </div>
                         }
-                        <div>
+                        {/* <div>
                             <Button onClick={this.upgrade.bind(this)} className="customer_view_upgrade_customer">
                                 <i className="iconfont icon-shengji" />升级
                             </Button>
-                        </div>
+                        </div> */}
                         <div>
                             <Button onClick={this.btnEdit.bind(this)} className="customer_view_edit_customer">
                                 <i className="iconfont icon-bianji" />编辑
@@ -203,7 +223,16 @@ debugger
             </Row>
             <Row>
                 <Row>
-                    <Col span={6}>
+                     {/* <Col span={6}>
+                        <Row
+                            type="flex"
+                            justify="center"
+                            className="info-title"
+                        >
+                            <i className="iconfont icon-dingwei" />首次跟进时间:
+                        </Row>
+                    </Col> */}
+                    <Col span={8}>
                         <Row
                             type="flex"
                             justify="center"
@@ -212,16 +241,8 @@ debugger
                             <i className="iconfont icon-dianhua" />客户状态:
                         </Row>
                     </Col>
-                    <Col span={6}>
-                        <Row
-                            type="flex"
-                            justify="center"
-                            className="info-title"
-                        >
-                            <i className="iconfont icon-dingwei" />首次跟进时间:
-                        </Row>
-                    </Col>
-                    <Col span={6}>
+                   
+                    <Col span={8}>
                         <Row
                             type="flex"
                             justify="center"
@@ -230,7 +251,7 @@ debugger
                             <i className="iconfont icon-fuzeren" />最近跟进时间:
                         </Row>
                     </Col>
-                    <Col span={6}>
+                    <Col span={8}>
                         <Row
                             type="flex"
                             justify="center"
@@ -241,34 +262,35 @@ debugger
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={6}>
+                    <Col span={8}>
                         <Row
                             type="flex"
                             justify="center"
                             className="info-content"
                         >
-                            {viewData.stateName}
+                                           
+                            {
+                                viewData.salesVOs && viewData.salesVOs.length?viewData.salesVOs[0].stateName:'无'
+                            }
                         </Row>
                     </Col>
-                    <Col span={6}>
+                   
+                    <Col span={8}>
                         <Row
                             type="flex"
                             justify="center"
                             className="info-content"
                         >
-                            2017-8-8
+                            {
+                                viewData.salesVOs && viewData.salesVOs.length?
+                                        viewData.salesVOs[0].createdTime?
+                                        this.changeTime(viewData.salesVOs[0].createdTime.time)
+                                        :'无' 
+                                :'无'
+                            }
                         </Row>
                     </Col>
-                    <Col span={6}>
-                        <Row
-                            type="flex"
-                            justify="center"
-                            className="info-content"
-                        >
-                            2017-8-8
-                        </Row>
-                    </Col>
-                    <Col span={6}>
+                    <Col span={8}>
                         <Row
                             type="flex"
                             justify="center"
