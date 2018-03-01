@@ -52,13 +52,16 @@ let $$initialState = {
 	//联系人弹框显隐
 	contactCardVisible: false,
 	//参与人相关对象数据
-	relUserData: [],
+
 	//联系人参照选中行
 	contactSelectedRows: [],
 	contactSelectedRowKeys: [],
 	//联系人参照卡片页面选中行
 	contactCardSelectedRows: [],
 	contactCardSelectedRowKeys: [],
+	relUserData: [],
+
+	attachFile: []
 };
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
@@ -254,8 +257,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				contactCardVisible: true,
 				contactCardData: action.payload.data,
-				contactCardSelectedRows:action.payload.selectedRows,
-				contactCardSelectedRowKeys:action.payload.selectedKeys
+				contactCardSelectedRows: action.payload.selectedRows,
+				contactCardSelectedRowKeys: action.payload.selectedKeys
 			})
 
 
@@ -274,22 +277,84 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 		//添加联系人保存
 		case 'OPPORTUNITY_LIST_SAVECONTACT':
 			return $$state.merge({
+				contactData: action.payload.data,
 				contactCardVisible: false,
 				contactSelectedRows: [],
 				contactSelectedRowKeys: [],
 				contactCardSelectedRows: [],
 				contactCardSelectedRowKeys: []
 			})
-				case 'OPPORTUNITY_LIST_CLOSECONTACTVIEW':
-				return $$state.merge({
-					contactCardVisible: false,
-					contactSelectedRows: [],
-					contactSelectedRowKeys: [],
-					contactCardSelectedRows: [],
-					contactCardSelectedRowKeys: []
-				})
+
+			//删除联系人保存
+		case 'OPPORTUNITY_LIST_DELCONTACT':
+		return $$state.merge({
+			contactData: action.payload.data,
+			contactSelectedRows: [],
+			contactSelectedRowKeys: []
+		})
+			
+		case 'OPPORTUNITY_LIST_CLOSECONTACTVIEW':
+			return $$state.merge({
+				contactCardVisible: false,
+				contactSelectedRows: [],
+				contactSelectedRowKeys: [],
+				contactCardSelectedRows: [],
+				contactCardSelectedRowKeys: []
+			})
+
+		case "OPPORTUNITY_LIST_GETRELUSERLISTDATA":
+			return $$state.merge({
+				relUserData: action.payload.data
+			});
+		case "OPPORTUNITY_LIST_GETATTACHFILE":
+			return $$state.merge({
+				attachFile: action.payload.data
+			});
+
+
+		case "OPPORTUNITY_LIST_DELETEFILE"://删除附件
+			let attachFile = $$state.get('attachFile').toJS()
+			let file = action.file;
+			for (let i = 0, len = attachFile.length; i < len; i++) {
+				if (attachFile[i].id == file.id) {
+					attachFile.splice(i, 1);
+					break;
+				}
+			}
+			return $$state.merge({
+				attachFile
+			});
+
+		case "OPPORTUNITY_LIST_FILESSUCCESS"://添加附件
+			let attachFile2 = $$state.get('attachFile').toJS()
+			attachFile2.unshift(action.payload)
+			return $$state.merge({
+				attachFile: attachFile2
+			});
 
 			
+			//删除参与人
+			case "OPPORTUNITY_LIST_SAVERELUSERSUCCESS":
+
+			return $$state.merge({
+				relUserData:action.payload
+			});
+
+
+		//删除参与人
+		case "OPPORTUNITY_LIST_DELRELUSERLIST":
+			let relUserData = $$state.get('relUserData').toJS()
+			let relUserId = action.payload
+			for (let i = 0, len = relUserData.length; i < len; i++) {
+				if (relUserData[i].relUserId == relUserId) {
+					relUserData.splice(i, 1);
+					break;
+				}
+			}
+			return $$state.merge({
+				relUserData
+			});
+
 
 		default:
 			return $$state;

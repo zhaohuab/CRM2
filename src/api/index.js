@@ -156,6 +156,10 @@ const finishtask ={
  }
 
 
+ const upload ={
+     upload:baseDir+'sys/upload'
+ }
+
 export {
     login,
     menu,
@@ -185,5 +189,6 @@ export {
     approval,
     speech,
     finishtask,
-    cusInquire
+    cusInquire,
+    upload
 }

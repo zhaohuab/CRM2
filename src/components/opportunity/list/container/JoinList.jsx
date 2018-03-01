@@ -30,31 +30,36 @@ import AddJoin from './AddJoin'
 
 class JoinList extends React.Component {
     changeViewData(data){
-        this.props.action.setRightPaneltList(data)
+        this.props.action.saveRelUserSuccess(data)
     }
     changeCircleColor(item){
-        let name = item.userName;
+        let name = item.relUserName;
         let color = ['#3CA4FB','#9FD563','#F7A508','#F7A508','#C9A5FC']
-        name = name.substring(item.userName.length-2);
         color = color[Math.floor(Math.random()*5)]
         return(
             <div className='join-round-color' style={{border:'1px solid '+color}}><span>{name}</span></div>
         )
     }
     
-    joinDel(id){
+    componentDidMount() {
+        let editData = this.props.$$state.get("editData").toJS();
+        this.props.action.getRelUserListData(editData.id);
+    }
+
+    joinDel(relUserId){
+        let editData = this.props.$$state.get("editData").toJS();
         reqwest(
             {
-                url: baseDir+`cum/customer/relusers/${id}`,
+                url: baseDir+`sprc/opportunities/${editData.id}/relusers`,
                 method: "DELETE",
                 data:{
                     param:{
-                        id
+                        relUserId
                     }
                 }
             },
             result => {
-                this.props.action.delRightPaneltList(id)
+                this.props.action.delRelUserData(relUserId)
             }
         );
     }
@@ -64,20 +69,16 @@ class JoinList extends React.Component {
         return(
             <div className='join-warpper'>
                 {
-                    relUserData && relUserData.data && relUserData.data.length?
-                    relUserData.data.map((item,index)=>{
+                    relUserData &&  relUserData.length?
+                    relUserData.map((item,index)=>{
                         
                         return(
                             <div className='join-warpper-item' data-id={item.id}>                             
                                 {
-                                    item.joinImage?
-                                    <img
-                                        src={require("assets/images/header/photo.png")}
-                                        className="join-image"
-                                    />:
+                                    
                                     this.changeCircleColor(item)
                                 }
-                                <span className='username'>{item.userName}<span className='del'><i className="iconfont icon-canyuren-shanchu customer_edit_deluser_customer" onClick={this.joinDel.bind(this,item.id)}/></span></span>
+                                <span className='username'>{item.userName}<span className='del'><i className="iconfont icon-canyuren-shanchu customer_edit_deluser_customer" onClick={this.joinDel.bind(this,item.relUserId)}/></span></span>
                             </div>
                         )
                     }):''

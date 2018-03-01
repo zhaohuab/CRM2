@@ -12,6 +12,8 @@ import * as enumDataFake from "./enumdata";
 const { RangePicker } = DatePicker;
 import Department from 'components/refs/departments'
 import OwnerUser from "../../../common/ownerUser";
+import getInfo from 'utils/cookie'
+
 
 class MoreForm extends React.Component {
     constructor(props) {
@@ -46,6 +48,7 @@ class MoreForm extends React.Component {
         };
         let { enumData,selectedDept } = this.props.$$state.toJS();
         enumData.stageList = enumData.biztypeList.length > 0 ? enumData.biztypeList[0].stageList : []
+        let deptid = getInfo("deptid")
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -99,7 +102,7 @@ class MoreForm extends React.Component {
                             >
                                 {getFieldDecorator('deptId', {
                                 })(
-                                    <Department orgType = {3}/>
+                                    <Department orgType = {3}  fatherorgId={deptid} />
                                 )}
                             </FormItem>
                         </Col>
@@ -157,6 +160,7 @@ const WarpMilForm = Form.create({
                 props.action.saveSelectedDept(deptId);
             }
         }
+        debugger
     }
 })(MoreForm);
 

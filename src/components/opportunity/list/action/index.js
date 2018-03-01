@@ -1,7 +1,7 @@
 import reqwest from 'utils/reqwest'
 import { message } from 'antd';
 import moment from 'moment'
-import { opportunity as url, product, oppflow, oppstage } from 'api';
+import { opportunity as url, product, oppflow, oppstage,upload } from 'api';
 
 
 const fetchData = (type, payload) => {
@@ -505,19 +505,7 @@ const showContactView = (id, customerId) => {
     }
 }
 
-//参与人数据获取
-const getRelUserListData = (id) => {
-    return (dispatch) => {
-        reqwest({
-            url: url.opportunity + "/" + id + "/relusers",
-            method: 'get',
-            data: {
-            }
-        }, (result) => {
-            dispatch(fetchData('OPPORTUNITY_LIST_GETRELUSERLISTDATA', { data:result }));
-        })
-    }
-}
+
 
 //保存联系人参照table已选择行数据
 const selectContactRow = (selectedRows, selectedRowKeys) => {
@@ -546,20 +534,20 @@ const saveContact =(id,contactIds)=>{
                     contactIds:contactIds.join(",")
                 }
             }
-        }, () => {
-            dispatch(fetchData('OPPORTUNITY_LIST_SAVECONTACT'));
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_SAVECONTACT', { data:result.data }));
         })
     }
 }
 
-//关闭
+//关闭联系人卡片
 const closeContactView =(id,contactIds)=>{
     return (dispatch) => {
         dispatch(fetchData('OPPORTUNITY_LIST_CLOSECONTACTVIEW'));
     }
 }
 
-//保存联系人
+//删除联系人
 const delContact =(id,contactIds)=>{
     return (dispatch) => {
         reqwest({
@@ -570,11 +558,84 @@ const delContact =(id,contactIds)=>{
                     ids:contactIds.join(",")
                 }
             }
-        }, () => {
-            dispatch(fetchData('OPPORTUNITY_LIST_SAVECONTACT'));
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_DELCONTACT', { data:result.data }));
         })
     }
 }
+
+//新增参与人
+export function saveRelUserSuccess(data) {
+    return {
+        type: 'OPPORTUNITY_LIST_SAVERELUSERSUCCESS',
+        payload:data
+    }
+}
+
+
+//删除参与人
+export function delRelUserData(relUserId) {
+    return {
+        type: 'OPPORTUNITY_LIST_DELRELUSERLIST',
+        payload:relUserId
+    }
+}
+
+
+//参与人数据获取
+const getRelUserListData = (id) => {
+    return (dispatch) => {
+        reqwest({
+            url: url.opportunity + "/" + id + "/relusers",
+            method: 'get',
+            data: {
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETRELUSERLISTDATA', { data:result.data }));
+        })
+    }
+}
+
+//获取附件
+const getAttachFile = (id,objType) => {
+    return (dispatch) => {
+        reqwest({
+            url: upload.upload + "/" + objType+"/"+id,
+            method: 'get',
+            data: {
+            }
+        }, (result) => {
+            dispatch(fetchData('OPPORTUNITY_LIST_GETATTACHFILE', { data:result.data }));
+        })
+    }
+}
+
+//天赐上传文件删除
+export function onDeleteFiles(file) {
+    return (dispatch) => {
+        reqwest(
+            {
+                url: upload.upload + `/${file.objType}/${file.objId}/${file.name}/${file.id}`,
+                method: "DELETE",
+            },
+            result => {
+                dispatch({
+                    type: "OPPORTUNITY_LIST_DELETEFILE",
+                    file
+                });
+            }
+        );
+    }
+}
+
+//天赐上传文件
+export function filesSuccess(file) {
+    return {
+        type: "OPPORTUNITY_LIST_FILESSUCCESS",
+        payload: file,
+    };
+}
+
 
 //输出 type 与 方法
 export {
@@ -615,5 +676,6 @@ export {
     selectContactCardRow,
     saveContact,
     closeContactView,
-    delContact
+    delContact,
+    getAttachFile
 }

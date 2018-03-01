@@ -11,6 +11,7 @@ import SaleStage from './SaleStage';
 import WinCard from './WinCard';
 import LostCard from './LostCard';
 import RelObject from './RelObject';
+import JoinList from './JoinList'
 class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -130,7 +131,7 @@ class ViewPanel extends React.Component {
                                     <span>{this.props.data.name}</span>
                                     <span>
                                     </span>
-                                     {/* 项目第一版移除  */}
+                                    {/* 项目第一版移除  */}
                                     {/* <span>
                                         <i className="iconfont icon-guanzhu" />
                                         <span>关注</span>
@@ -146,13 +147,13 @@ class ViewPanel extends React.Component {
                             </div>
                         </Col>
                         <Col span={10} className="customer-btn">
-                            {editData.state != 3 ? "" :
 
-                                <div>
-                                    <Row type="flex"
-                                        gutter={5}>
-                                        {/* 项目第一版移除  */}
-                                        {/* <Col>
+
+                            <div>
+                                <Row type="flex"
+                                    gutter={5}>
+                                    {/* 项目第一版移除  */}
+                                    {/* <Col>
                                             <Button
                                                 onClick={this.btnEdit.bind(this, editData.id)}
                                             >
@@ -166,33 +167,35 @@ class ViewPanel extends React.Component {
                                                 <i className="iconfont icon-bianji" />变更负责人
                                             </Button>
                                         </Col> */}
-
-                                        <Col>
+                                    {editData.state != 3 ? "" :
+                                    <Row gutter={5}>
+                                        <Col span="12">
                                             <Button
                                                 onClick={this.props.action.showLostCard.bind(true)}
                                             >
                                                 <i className="iconfont icon-bianji" />丢单
                                             </Button>
                                         </Col>
-                                        <Col>
+                                        <Col span="12">
                                             <Button
                                                 onClick={this.props.action.showWinCard.bind(true)}
                                             >
                                                 <i className="iconfont icon-bianji" />赢单
                                             </Button>
                                         </Col>
-                                        <Col>
-                                            <Button
-                                                onClick={this.props.btnClosePanel.bind(this)}
-                                            >
-                                                X
+                                        </Row>}
+                                    <Col>
+                                        <Button
+                                            onClick={this.props.btnClosePanel.bind(this)}
+                                        >
+                                            X
                                             </Button>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            }
+                                    </Col>
+                                </Row>
+                            </div>
 
-                            
+
+
 
                         </Col>
                     </Row>
@@ -300,7 +303,7 @@ class ViewPanel extends React.Component {
                                             </Card>
                                         </TabPane>
                                         <TabPane tab="相关" key="2">
-                                        <RelObject JoinPagination={this.state.JoinPagination}/>
+                                            <RelObject JoinPagination={this.state.JoinPagination} />
                                         </TabPane>
                                         <TabPane tab="产品" key="3">
                                             <Table
@@ -318,51 +321,15 @@ class ViewPanel extends React.Component {
                             </div>
                         </Col>
                         <Col span={6} className="warrper-main-right">
-                            <div className="main-right-state">动态</div>
-                            <div className="main-right-timeline">
-                                <Timeline>
-                                    <Timeline.Item>
-                                        <p>
-                                            <span className="timeline-import">
-                                                winni
-                                            </span>创建了任务<span className="timeline-import">AAA</span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            2017-08-18 14:30
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item>
-                                        <p>
-                                            <span className="timeline-import">
-                                                winni
-                                            </span>创建了任务<span className="timeline-import">AAA</span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            2017-08-18 14:30
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item>
-                                        <p>
-                                            <span className="timeline-import">
-                                                winni
-                                            </span>创建了任务<span className="timeline-import">AAA</span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            2017-08-18 14:30
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item>
-                                        <p>
-                                            <span className="timeline-import">
-                                                winni
-                                            </span>创建了任务<span className="timeline-import">AAA</span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            2017-08-18 14:30
-                                        </p>
-                                    </Timeline.Item>
-                                </Timeline>
-                            </div>
+                            <Tabs defaultActiveKey="1" >
+                                {/* <Tabs defaultActiveKey="1" activeKey = {1} onTabClick={this.panelTabRightFn.bind(this)}> */}
+                                <TabPane tab="动态" key="1">
+                                    {/* <DynamicState/> */}
+                                </TabPane>
+                                <TabPane tab="参与人" key="2">
+                                    <JoinList />
+                                </TabPane>
+                            </Tabs>
                         </Col>
                     </div>
                 </Row>

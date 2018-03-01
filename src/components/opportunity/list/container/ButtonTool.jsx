@@ -174,7 +174,7 @@ class ToolForm extends React.Component {
                                 </Row>
                             </Col>
                             {/* 项目第一版移除  */}
-                            {/* <Col span={6}>
+                            <Col span={6}>
                                 <Row type="flex" gutter={15} justify="end">
                                     <Col>
                                         <ButtonGroup>
@@ -194,7 +194,7 @@ class ToolForm extends React.Component {
                                     </Dropdown>
                                     </Col>
                                 </Row>
-                            </Col> */}
+                            </Col>
                         </Row>
                         <div className="header-bottom">
                             <Row

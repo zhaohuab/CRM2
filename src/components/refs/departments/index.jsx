@@ -42,21 +42,25 @@ class Department extends React.Component {
     };
 
     onSelect = (key, e) => {
-        let { title,path } = e.node.props;
-        this.setState({ select: { key: key[0], title,path } });
+        let { title, path } = e.node.props;
+        this.setState({ select: { key: key[0], title, path } });
     };
 
     getData = () => {
         let that = this;
-      console.log('==================='+url.orgTree)  
+        console.log('===================' + url.orgTree)
+        let param = { type: 1 };
+        let orgType = this.props.orgType;
+        if (orgType && orgType == 3 && this.props.fatherorgId) {
+            param.orgType = 3;
+            param.fatherorgId = this.props.fatherorgId
+        }
         reqwest(
             {
                 url: url.orgTree,
                 method: "get",
                 data: {
-                    param:{
-                        type:1
-                    }
+                    param
                 }
             },
             dataResult => {
@@ -97,7 +101,7 @@ class Department extends React.Component {
         if (this.props.value) {
             key = this.props.value.key;
             title = this.props.value.title;
-            console.log('title============',title)
+            console.log('title============', title)
         }
         const suffix =
             this.props.value && this.props.value.key ? (
