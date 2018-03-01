@@ -23,11 +23,11 @@ import { cum as url, doc, baseDir, oppstage, opportunity, contacts } from "api";
 
 import JoinList from './JoinList'
 // import Opportunity from './Opportunity'
-// import * as objTypeConst from 'utils/const/ObjTypeConst'
+import * as objTypeConst from 'utils/const/ObjTypeConst'
 // import ContactsModal from './ContactsDetailModal'
 // import OppModal from './OppDetailModal'
-// import Upload from './Upload'
-// import RelFile from './RelFile'
+import Upload from './Upload'
+import RelFile from './RelFile'
 
 
 class RelObject extends React.Component {
@@ -52,11 +52,11 @@ class RelObject extends React.Component {
             },
             {
                 title: "角色",
-                dataIndex: "role"
+                dataIndex: "roleName"
             },
             {
                 title: "态度",
-                dataIndex: "attitude"
+                dataIndex: "attitudeName"
             }
         ];
     }
@@ -64,7 +64,7 @@ class RelObject extends React.Component {
     componentDidMount() {
         let editData = this.props.$$state.get("editData").toJS();
         this.props.action.getContactListData(editData.id);
-        this.props.action.getRelUserListData(editData.id);
+        this.props.action.getAttachFile(editData.id,objTypeConst.OPPORTUNITY);
     }
 
     //上传图片之前的操作
@@ -81,18 +81,18 @@ class RelObject extends React.Component {
     }
 
     //打开添加联系人列表
-    showContactView(e){
+    showContactView(e) {
         e.stopPropagation();
         let editData = this.props.$$state.get("editData").toJS();
         this.props.action.showContactView(editData.id, editData.customerId.id);
     }
 
     //删除联系人
-    delContact(e){
+    delContact(e) {
         e.stopPropagation();
         let editData = this.props.$$state.get("editData").toJS();
         let contactIds = this.props.$$state.get("contactSelectedRowKeys").toJS();
-        this.props.action.delContact(editData.id,contactIds);
+        this.props.action.delContact(editData.id, contactIds);
     }
 
     //上传图片成功
@@ -109,31 +109,25 @@ class RelObject extends React.Component {
         this.props.action.onDeleteFiles(file);
     }
 
-    otherRef() {
-        let { viewData } = this.props.$$state.toJS();
-        this.props.action.getOppList(this.props.JoinPagination, viewData.id, 2)
-    }
     onContactSelectChange = (selectedRowKeys, selectedRows) => {
-        debugger
         this.props.action.selectContactRow(selectedRows, selectedRowKeys);
     }
     onContactCardSelectChange = (selectedRowKeys, selectedRows) => {
         this.props.action.selectContactCardRow(selectedRows, selectedRowKeys);
     }
 
-    onSave = ()=>{
-        debugger
+    onSave = () => {
         let editData = this.props.$$state.get("editData").toJS();
         let contactIds = this.props.$$state.get("contactCardSelectedRowKeys").toJS();
-        this.props.action.saveContact(editData.id,contactIds)
+        this.props.action.saveContact(editData.id, contactIds)
     }
 
-    onClose = ()=>{
+    onClose = () => {
         this.props.action.closeContactView()
     }
 
     render() {
-
+        let editData = this.props.$$state.get("editData").toJS();
         let contactData = this.props.$$state.get("contactData").toJS();
         let contactCardData = this.props.$$state.get("contactCardData").toJS();
         let contactCardVisible = this.props.$$state.get("contactCardVisible");
@@ -141,17 +135,17 @@ class RelObject extends React.Component {
         let contactSelectedRowKeys = this.props.$$state.get("contactSelectedRowKeys").toJS();
         let contactSelectedRows = this.props.$$state.get("contactSelectedRows").toJS();
         let rowSelection = {
-            selectedRowKeys:contactSelectedRowKeys,
+            selectedRowKeys: contactSelectedRowKeys,
             onChange: this.onContactSelectChange
         };
 
         let contactCardSelectedRowKeys = this.props.$$state.get("contactCardSelectedRowKeys").toJS();
         let contactCardSelectedRows = this.props.$$state.get("contactCardSelectedRows").toJS();
         let cardRowSelection = {
-            selectedRowKeys:contactCardSelectedRowKeys,
+            selectedRowKeys: contactCardSelectedRowKeys,
             onChange: this.onContactCardSelectChange
         };
-
+        let attachFile = this.props.$$state.get("attachFile").toJS();
         let contactHeader = () => {
             return (
                 <div>
@@ -161,17 +155,40 @@ class RelObject extends React.Component {
                         <Col span="7">
                             <Row type="flex" justify="end">
                                 <Col span="2">
-                                <div onClick={this.showContactView.bind(this)}><i className={'iconfont icon-tianjia'} /></div>
-                        </Col>
+                                    <div onClick={this.showContactView.bind(this)}><i className={'iconfont icon-tianjia'} /></div>
+                                </Col>
                             </Row>
                             <Row type="flex" justify="end">
                                 <Col span="2">
-                                <div onClick={this.delContact.bind(this)}><i className={'iconfont icon-shanchu'} /></div>
-                        </Col>
+                                    <div onClick={this.delContact.bind(this)}><i className={'iconfont icon-shanchu'} /></div>
+                                </Col>
                             </Row>
                         </Col>
                     </Row>
                 </div>
+            )
+        }
+
+        let attachHeader = (editData) => {
+
+            return (
+                <Row className='relevant-title' type='flex' justify='space-between' align='middle'>
+                    <Col className='left'>
+                        <span>附件</span>
+                    </Col>
+                    <Col className='right'>
+                        <Upload
+                            disabled={false}
+                            multiple={true}
+                            objType={objTypeConst.OPPORTUNITY}
+                            objId={editData.id}
+                            beforeUpload={this.beforeUpload.bind(this)}
+                            success={this.fileSuccess.bind(this)}
+                        >
+                            <i className='iconfont icon-shangchuan' />
+                        </Upload>
+                    </Col>
+                </Row>
             )
         }
 
@@ -182,7 +199,7 @@ class RelObject extends React.Component {
                         <Table
                             columns={this.columns}
                             dataSource={contactData}
-                            rowKey="contactId"
+                            rowKey="id"
                             rowSelection={rowSelection}
                             size="middle"
                             pagination={false}
@@ -190,32 +207,32 @@ class RelObject extends React.Component {
                         />
                     </Panel>
 
-                    <Panel header='参与人' key="2" >
+                    {/* <Panel header='参与人' key="2" >
                         <JoinList />
-                    </Panel>
-                    {/* <Panel header={this.headerFn({title:'文件',index:4})}  key="4" >
-                        <RelFile files={tempFile} onDeleteFile={this.onDeleteFile.bind(this)}/>
                     </Panel> */}
-                    
+                    <Panel header={attachHeader(editData)} key="2" >
+                        <RelFile files={attachFile} onDeleteFile={this.onDeleteFile.bind(this)} />
+                    </Panel>
+
                 </Collapse>
-                <Modal 
+                <Modal
                     title="选择联系人"
                     visible={contactCardVisible}
                     onOk={this.onSave.bind(this)}
                     onCancel={this.onClose.bind(this)}
                     width={500}
                     maskClosable={false}
-                     >
-                        <Table
-                            columns={this.columns}
-                            dataSource={contactCardData}
-                            rowKey="id"
-                            rowSelection={cardRowSelection}
-                            size="middle"
-                            pagination={false}
+                >
+                    <Table
+                        columns={this.columns}
+                        dataSource={contactCardData}
+                        rowKey="id"
+                        rowSelection={cardRowSelection}
+                        size="middle"
+                        pagination={false}
 
-                        />
-                     </Modal>
+                    />
+                </Modal>
             </div>
         )
     }

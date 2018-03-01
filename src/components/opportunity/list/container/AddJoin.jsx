@@ -18,6 +18,7 @@ import "assets/stylesheet/all/iconfont.css";
 import PersonChioce from '../../../common/personChoice'
 import { baseDir } from "api";
 import reqwest from "utils/reqwest";
+import getInfo from "utils/cookie"
 
 const columns = [{
     title: '姓名',
@@ -47,8 +48,8 @@ export default class AddJoin extends React.Component {
      assignFn(e){
         e.stopPropagation()
         let { viewData } = this.props
-        debugger
-        let orgId = viewData.orgId
+        let orgId = getInfo("orgid");
+        
         reqwest(
             {
                 url: baseDir+'sys/orgs/orgTree',
@@ -72,7 +73,7 @@ export default class AddJoin extends React.Component {
      //分配获取人员列表方法
      onSelectAssign(page,pageSize,selectedKeys){
         let { viewData } = this.props
-        let orgId = viewData.orgId;//组织id
+        let orgId = getInfo("orgid");//组织id
         let deptId = selectedKeys[0];//部门id
         let searchMap = {orgId,deptId}
         
@@ -100,32 +101,23 @@ export default class AddJoin extends React.Component {
 //增加参与人modal确定
     handleOk(){
         let { viewData } = this.props
-        let cumId = viewData.id    
+        let id = viewData.id    
         let userId = this.state.result.id
      
-        if(cumId&&userId){
+        if(id&&userId){
             reqwest(
                 {
-                    url: baseDir + 'cum/customer/relusers',
+                    url: baseDir + 'sprc/opportunities/'+id+'/relusers',
                     method: "POST",
                     data: {
                         param: {
-                            cumId,
-                            userId
+                            relUsersIds:userId
                         }
                     }
                 },
-                data => {
-                    if(data){
-                        this.props.changeViewData(data)
-                        // let nv = viewData.salesVOs[0]
-                        // if(this.state.result){
-                        //     nv.ownerUserName = this.state.result.value
-                        //     nv.ownerUserId = this.state.result.id
-                        //     viewData.ownerUserId = {id:nv.ownerUserId,name:nv.ownerUserName}    
-                        //     //{id: 60, name: "李天赐"}
-                        //     this.props.changeViewData(viewData)
-                        // }
+                result => {
+                    if(result){
+                        this.props.changeViewData(result.data)
                     }
                     
                     this.setState({

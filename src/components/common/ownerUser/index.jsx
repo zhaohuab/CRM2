@@ -27,15 +27,17 @@ const TreeNode = Tree.TreeNode;
 import DropDownModal from '../DrowdownModal'
 
 
-//负责人参照 可根据部门查询
+/**
+ * 负责人参照 可根据部门查询
+ **/
 export default class OwnerUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false, //整个下拉面板显示控制
             ownerUserData: [], //获取树数据
-            select: {}, //选择面板选择出的行业
-            selectKeys: [], //存放选择面板已选择的keys
+            selectedRowKeys: [], //选择面板选择出的行业
+            selectedRows: [], //存放选择面板已选择的keys
             name: undefined,//下拉面板中的searchvalue
         };
         this.columns = [
@@ -56,6 +58,10 @@ export default class OwnerUser extends React.Component {
                 width: 100
             }
         ]
+
+        this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            this.setState({ selectedRowKeys, selectedRows })
+        };
     }
 
     //获取树的数据
@@ -63,18 +69,18 @@ export default class OwnerUser extends React.Component {
         let searchMap = {}
         let deptId = this.props.deptId;
         let name = this.state.name;
-        if(deptId&&deptId!=""){
+        if (deptId && deptId != "") {
             searchMap.deptId = deptId;
         }
-        if(name&&name!=""){
+        if (name && name != "") {
             searchMap.name = name
         }
         reqwest(
             {
                 url: baseDir + "sys/users/ref",
                 method: "GET",
-                data:{
-                    param:{
+                data: {
+                    param: {
                         searchMap
                     }
                 }
@@ -112,7 +118,8 @@ export default class OwnerUser extends React.Component {
     //点击确定按钮触发的方法
     onOk() {
         if (this.props.onChange) {
-            this.props.onChange(this.state.select);
+            debugger
+            this.props.onChange({id:this.state.selectedRows[0].id,name:this.state.selectedRows[0].name});
             this.setState({
                 visible: false,
                 keyDownVisiable: false,
@@ -160,26 +167,21 @@ export default class OwnerUser extends React.Component {
         })
     }
 
+
     //下拉时显示的面板布局
     createTree() {
-        const loop = data =>
-            data.map(item => {
-                if (item.children && item.children.length) {
-                    return (
-                        <TreeNode key={item.id} title={item.name}>
-                            {loop(item.children)}
-                        </TreeNode>
-                    );
-                }
-                return <TreeNode key={item.id} title={item.name} />;
-            });
-        let suffix = <Icon type="close" />
+        let rowSelection = {
+            type: "radio",
+            hideDefaultSelections: true,
+            selectedRowKeys:this.state.selectedRowKeys,
+            onChange: this.onSelectChange
+        };
         return (
             <DropDownModal
-                title='行业'
+                title='负责人'
                 onCancel={this.onCancel.bind(this)}
                 onOk={this.onOk.bind(this)}
-                onSearch={this.onDropDownSearch.bind(this)}
+                onSearch={this.getOwnerUser.bind(this, true)}
                 value={this.state.name}
                 onChange={this.onDropDownChange.bind(this)}
                 width={400}
@@ -190,7 +192,7 @@ export default class OwnerUser extends React.Component {
                         columns={this.columns}
                         dataSource={this.state.ownerUserData}
                         rowKey="id"
-                        // rowSelection={rowSelection}
+                        rowSelection={rowSelection}
                         size="middle"
                         pagination={false}
 
@@ -219,7 +221,7 @@ export default class OwnerUser extends React.Component {
                             visible={this.state.visible} //受控面板显示
                         >
                             <Search
-                                placeholder="行业"
+                                placeholder="负责人"
                                 onSearch={this.getOwnerUser.bind(this, true)}
                                 value={this.props.value ? this.props.value.name : ""}
                                 suffix={suffix}

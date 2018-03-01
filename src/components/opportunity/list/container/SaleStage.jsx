@@ -110,9 +110,9 @@ class SaleStage extends React.Component {
                 return (
                     <Row className="dimension-line">
                         {/* <div className={item.selected ? "BatchSelect-box-selected" : "BatchSelect-box"}> {item.oppstage_name}</div> */}
-                        <Col span={6}>
+                        {/* <Col span={6}>
                             {item.oppdimension_name}:
-                        </Col>
+                        </Col> */}
                         {showAction(item.children)}
                     </Row>
                 );
@@ -122,7 +122,7 @@ class SaleStage extends React.Component {
             data.map(item => {
                 return (
                     <div onClick={this.finishAction.bind(this, item.oppstage_id, item.oppaction_id, item.is_finish, item.oppdimension_id)}>
-                        <Col span={6}>
+                        <Col span={4}>
                             {/* <div className={item.selected ? "BatchSelect-box-selected" : "BatchSelect-box"}> {item.oppstage_name}</div> */}
                             <Radio checked={item.is_finish == 1 ? true : false} />
                             {item.oppaction_name}
@@ -144,18 +144,18 @@ class SaleStage extends React.Component {
                     
                 </Row>
                 <Row>
-                    <Col span={12}>
+                    <Col span={24}>
                         <Row className="dimension-line-title">
                             ●关键动作:
                         </Row>
                         {editData.state!=3?<div className = "SaleStage-action-topdiv"></div>:'' }
                         {showDimension(dimension)}
                     </Col>
-                    <Col span={12} onClick={this.showRadarCard.bind(this)}>
+                    {/* <Col span={12} onClick={this.showRadarCard.bind(this)}>
                         <Radar data={dimension} />
-                    </Col>
+                    </Col> */}
                 </Row>
-                <Modal
+                {/* <Modal
                     title="查看大图"
                     visible={radarCardVisible}
                     onOk={this.onCancel.bind(this)}
@@ -164,7 +164,7 @@ class SaleStage extends React.Component {
                     maskClosable={false}
                 >
                     <Radar data={dimension} />
-                </Modal>
+                </Modal> */}
             </div>
         )
     }

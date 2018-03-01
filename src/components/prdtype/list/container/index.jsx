@@ -34,10 +34,6 @@ class List extends Component {
             dataIndex: 'fatherTypeName',
           },
           {
-            title: '属性组',
-            dataIndex: 'attrGroupName',
-          }, 
-          {
             title: '状态',
             dataIndex: 'enableStateName'
           },
@@ -306,16 +302,6 @@ class List extends Component {
                                         </Col>
                                         <Col span={6}>
                                             <Row type="flex" gutter={15} justify="end">
-                                                <Col>
-                                                    <ButtonGroup>
-                                                        <Button>
-                                                            <i className="iconfont icon-daoru" />导入
-                                                        </Button>
-                                                        <Button>
-                                                            <i className="iconfont icon-daochu" />导出
-                                                        </Button>
-                                                    </ButtonGroup>
-                                                </Col>
                                                 <Col>
                                                     <Button
                                                     type="primary"
