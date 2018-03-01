@@ -107,6 +107,7 @@ class List extends React.Component {
     //点击查看按钮打开查看页面
     btnView(record) {
         this.props.action.showViewForm(true, record);
+        this.props.action.getDynamicData(record.id)
     }
 
     //批量删除

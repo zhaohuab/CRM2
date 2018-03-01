@@ -154,13 +154,11 @@ const WarpMilForm = Form.create({
         // props.action.saveEnum(enumData);
          for (let key in onChangeFild) {
             if (key == 'deptId') {
-                debugger
                 let deptId = onChangeFild.deptId.value.key;
                 // this.setState({deptId})
                 props.action.saveSelectedDept(deptId);
             }
         }
-        debugger
     }
 })(MoreForm);
 
