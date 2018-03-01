@@ -315,7 +315,7 @@ export function getDynamic(id){
                 method: "GET",
             },
             data => {
-                //debugger
+                debugger
 
                 dispatch({
                     type:"CUSTOMERGROUP_LIST_GETDYNAMIC",

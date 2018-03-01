@@ -22,6 +22,8 @@ import SlidePanel from "../../../common/slidePanel/index.jsx";
 import ViewPanel from "./ViewPanel";
 import "assets/stylesheet/all/iconfont.css";
 import * as Actions from '../action';
+import AssignLead from './AssignLead';
+import LeadExport from './lead/LeadExport.jsx'; //导入导出
 
 class Clue extends React.Component {
     constructor(props) {
@@ -32,7 +34,7 @@ class Clue extends React.Component {
                 title: "主题",
                 dataIndex: "title",
                 render: (text, record) => (
-                    <div className="crm-pointer"
+                    <div className="crm-pointer title-color"
                         onClick={this.slideShow.bind(this, record)}
                     >
                         {record.title}
@@ -62,9 +64,9 @@ class Clue extends React.Component {
             {
                 title: "客户规模",
                 dataIndex: "cumSizeSum",
-                 render: (text, record) => (
+                render: (text, record) => (
                     <div>
-                        {record.cumSizeSum+'人'}
+                        {record.cumSizeSum ? record.cumSizeSum : ''}
                     </div>
                 )
             },
@@ -83,11 +85,7 @@ class Clue extends React.Component {
             {
                 title: "负责人",
                 dataIndex: "ownerUserName",
-                // render: (text, record) => (
-                //     <div>
-                //         {/* {record.ownerUserInfo.name} */}
-                //     </div>
-                // )
+               
             },
             {
                 title: "部门",
@@ -102,7 +100,7 @@ class Clue extends React.Component {
         this.menu = (
             <Menu>
                 <Menu.Item key="1">导入</Menu.Item>
-                <Menu.Item key="2">导出</Menu.Item>
+                {/* <Menu.Item key="2">导出</Menu.Item> */}
             </Menu>
         );
         this.state = {
@@ -114,8 +112,9 @@ class Clue extends React.Component {
     }
     //显示面板
     slideShow(record) {
-       // debugger
+        debugger
         this.props.action.showViewForm(true, record.id);
+       this.props.action.getDynamic(record.id)
     }
     //隐藏面版
     slideHide() {
@@ -225,7 +224,7 @@ class Clue extends React.Component {
         });
 
     }
-    
+
     //modal 点击取消
     onCancel() {
         //debugger
@@ -261,8 +260,56 @@ class Clue extends React.Component {
         this.props.action.getEnumData();
     }
 
+    //点击停用启用
+    btnSetEnable(enableState) {
+        debugger
+        let { searchMap, selectedRowKeys, pagination } = this.props.$$state.toJS()
+        const ids = selectedRowKeys.join(',');
+
+        this.props.action.setEnableState(
+            ids,
+            enableState, //获取起停用数字
+            pagination,
+            searchMap //查询条件
+        );
+    }
+    //分配按钮
+    assigin() {
+        this.props.action.assiginLead(true)
+        this.props.action.assignListData(
+            this.props.$$state.get("assignPagination").toJS(),
+            '');
+    }
+    // 头部筛选我负责查询
+    onHandleChange(value) {
+        let {searchMap}=this.props.$$state.toJS();
+        searchMap.option=value;
+        this.props.action.getListData(
+            this.props.$$state.get("pagination").toJS(),searchMap
+        );
+    }
+
+ // 导入导出 余春梅  1.30
+ onMenu(e) {
+    
+    // let { searchMap, pagination } = this.props.$$state.toJS();
+    // let page = pagination.page;
+    // let pageSize = pagination.pageSize
+    // let tranSearch=this.changeSearchData.call(this,searchMap);
+    // let search = JSON.stringify(tranSearch)
+    debugger
+    if (e.key == "1") {
+        debugger
+        this.props.action.viewLeadShow(true);
+    } else if (e.key == "2") {
+      //  location.href = baseDir + "tpub/excels/1/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 + "}"
+
+    }
+}
+
+
     render() {
-        //debugger;
+        debugger;
         const page = this.props.$$state.get("data").toJS();
         let {
             editData,
@@ -281,6 +328,16 @@ class Clue extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+        const moreMenu = (
+            <Menu onClick={this.onMenu.bind(this)}>
+                <Menu.Item key="1" className='lead_list_import_lead'>
+                    <span>导入</span>
+                </Menu.Item>
+                <Menu.Item key="2"className='lead_list_export_lead'>
+                    <span>导出</span>
+                </Menu.Item>
+            </Menu>
+        );
 
         return (
             <div className="clue-warpper">
@@ -291,21 +348,28 @@ class Clue extends React.Component {
                             length={selectedRowKeys.length}
                             goBack={this.headerBack.bind(this)}
                         >
-
                             {selectedRowKeys.length == 1 ? (
-                                <Button onClick={this.onEdit.bind(this)}>
+                                <Button onClick={this.onEdit.bind(this)} className='lead_list_edit_lead'>
                                     <i className="iconfont icon-bianji" />编辑
                                 </Button>
                             ) : (
                                     ""
                                 )}
 
-                            <Button>
+                            <Button onClick={this.assigin.bind(this)} className='lead_list_distribute_p_lead'>
                                 <i className="iconfont icon-xiansuofenpei" />线索分配
                         </Button>
-                            <Button onClick={this.onDelete.bind(this)}>
+                            <Button onClick={this.onDelete.bind(this)} className='lead_list_delete_lead'>
                                 <i className="iconfont icon-shanchu" />删除
                         </Button>
+                            {/* <ButtonGroup className="returnbtn-class">
+                                <Button onClick={this.btnSetEnable.bind(this, 1)} className="customer_list_start_customer">
+                                    <i className="iconfont icon-qiyong" />启用
+                            </Button>
+                                <Button onClick={this.btnSetEnable.bind(this, 2)} className="customer_list_stop_customer">
+                                    <i className="iconfont icon-tingyong" />停用
+                            </Button>
+                            </ButtonGroup> */}
                         </HeaderButton>
                     ) : (
                             <Row>
@@ -318,13 +382,13 @@ class Clue extends React.Component {
                                     <Col span={18}>
                                         <Row type="flex" align="middle">
                                             <Col className="select-recover">
-                                                <Select defaultValue="我负责" >
-                                                    <Option value="1">全部</Option>
-                                                    <Option value="2">我负责</Option>
-                                                    <Option value="3">我参与</Option>
-                                                    <Option value="4">我关注</Option>
-                                                    <Option value="5">成功转化</Option>
-                                                    <Option value="6">失败关闭</Option>
+                                                <Select defaultValue="我负责" onChange={this.onHandleChange.bind(this)}>
+                                                    <Option value="0">全部</Option>
+                                                    <Option value="1">待分配线索</Option>
+                                                    <Option value="2">已分配线索</Option>
+                                                    <Option value="3">成功转化</Option>
+                                                    <Option value="4">我负责</Option>
+                                                    <Option value="5">失败关闭</Option>
                                                 </Select>
                                             </Col>
                                             <Col span="21">
@@ -362,6 +426,7 @@ class Clue extends React.Component {
                                                 >
                                                     <div>
                                                         <Button
+                                                        className='lead_list_add_lead'
                                                             type="primary"
                                                             onClick={this.newClue.bind(
                                                                 this
@@ -372,7 +437,7 @@ class Clue extends React.Component {
                                                     </div>
                                                     <div>
                                                         <Dropdown.Button
-                                                            overlay={this.menu}
+                                                            overlay={moreMenu}
                                                             trigger={["click"]}
                                                         >
                                                             更多
@@ -429,11 +494,11 @@ class Clue extends React.Component {
                     onCancel={this.onCancel.bind(this)}
                     width={900}
                     maskClosable={false}
-                    footer={[
-                        <Button key="back" onClick={this.onOk.bind(this)}>保存</Button>,
-                        <Button key="submit" onClick={this.onCancel.bind(this)}>取消</Button>,
-                        // <Button key="submit1" onClick={this.handleOk.bind(this)}>保存并新建</Button>
-                    ]}
+                // footer={[
+                //     <Button key="back" onClick={this.onOk.bind(this)}>保存</Button>,
+                //     <Button key="submit" onClick={this.onCancel.bind(this)}>取消</Button>,
+                //     // <Button key="submit1" onClick={this.handleOk.bind(this)}>保存并新建</Button>
+                // ]}
                 >
                     <div className="modal-height">
                         <Card
@@ -451,6 +516,8 @@ class Clue extends React.Component {
                 >
                     <ViewPanel />
                 </SlidePanel>
+                <AssignLead />
+                <LeadExport/>
             </div>
         );
     }

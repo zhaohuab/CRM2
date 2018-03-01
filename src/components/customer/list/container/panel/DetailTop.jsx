@@ -134,7 +134,7 @@ debugger
                                        this.createAddress(viewData)
                                    }
                                 </Row>
-                                <Row type='flex' align='middle'className="tags">
+                                <Row type='flex' align='middle' className="tags">
                                     {
                                         viewData.biztypeName ?
                                         <span className='tags-item'><span>{viewData.biztypeName}</span></span>: ''

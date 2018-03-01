@@ -8,6 +8,26 @@ const fetchData = (type, payload) => {
         payload
     };
 };
+let changeSearchData = (data) => {
+    for (let key in data) {
+        if (key == 'isGroup'|| key == 'cannelType'|| key == 'enableState'|| key == 'level'|| key == 'state'|| key == 'type') {
+            if(data[key] && data[key].key){
+                data[key] = data[key].key
+            }
+        }
+        if (key == 'province_city_district' && data[key]) {
+            data.province = data[key][0];
+            data.city = data[key][1];
+            data.district = data[key][2];
+            delete data.province_city_district;
+        }
+
+        if (key == 'industry' && data[key]) {
+            data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+        }
+    }
+    return data
+}
 
 function transData(searchMap) {
     if (searchMap == null) {
@@ -26,8 +46,14 @@ function transData(searchMap) {
         searchMap.signTime = undefined;
     }
     if (searchMap.industryId) {
-        debugger
+        //debugger
         searchMap.industryId= searchMap.industryId.id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+    }
+    if(searchMap.ownerDeptId){
+        searchMap.ownerDeptId=searchMap.ownerDeptId.key;
+    }
+    if(searchMap.ownerUserId){
+        searchMap.ownerUserId=searchMap.ownerUserId.id;
     }
     return searchMap;
 }
@@ -49,8 +75,8 @@ const transReceiveData = (data) => {
         if (data.data[i].createdTime) {
             data.data[i].createdTime = transDate(new Date(data.data[i].createdTime.time))
         }
-        if (data.data[i].followTime) {
-            data.data[i].followTime = transDate(new Date(data.data[i].followTime.time))
+        if (data.data[i].modifiedTime) {
+            data.data[i].modifiedTime = transDate(new Date(data.data[i].modifiedTime.time))
         }
         if (data.data[i].assignTime) {
             data.data[i].assignTime = transDate(new Date(data.data[i].assignTime.time))
@@ -61,6 +87,8 @@ const transReceiveData = (data) => {
 
 //转换时间对象为字符串格式
 const transReceiveDataOne = (data) => {
+    
+    debugger
     if (data.createdTime) {
         data.createdTime = transDate(new Date(data.createdTime.time))
     }
@@ -68,8 +96,20 @@ const transReceiveDataOne = (data) => {
         data.followTime = transDate(new Date(data.followTime.time))
     }
     if (data.assignTime) {
-        data.followTime = transDate(new Date(data.assignTime.time))
+        data.assignTime = transDate(new Date(data.assignTime.time))
     }
+    if(data.modifiedTime){
+        data.modifiedTime = transDate(new Date(data.modifiedTime.time))
+    }
+    // if(data.related){
+    //     let relate=data.related;
+    //     if(relate.bizopps){
+    //         let bizopps=relate.bizopps;
+    //        if(bizopps.expectSignTime){
+
+    //        }
+    //     }
+    // }
     return data;
 }
 //拼接省市县
@@ -89,13 +129,144 @@ export function closeLeadShow(visible) {
     };
 }
 
+export function assiginLead(visible){
+    return {
+        type: "CLUE_LIST_ASSIGNLEADSHOW",
+        visible
+    };
 
+}
+export function saveUserCardName(name){
+    debugger
+	return (dispatch) => {
+		dispatch(fetchData("CLUE_LIST_SAVEUSERCARDNAME", name))
+	}
+};
+export function closeUserCard () {
+	return (dispatch) => {
+		dispatch(fetchData("CLUE_LIST_CLOSEUSERCARD", ))
+	}
+};
+
+
+export function assignPeople(pagination,ids,selectedUserRows,searchMap){
+
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.lead + "/assign",
+                method: "POST",
+                data: {
+                    param: {
+                        ids:ids.join(","),
+                        id:selectedUserRows[0].id,
+                        orgId:selectedUserRows[0].orgId,
+                        deptId:selectedUserRows[0].deptId
+                    }
+                }
+            },
+            data => {  
+                reqwest(
+                    {
+                        url: url.lead,
+                        method: "get",
+                        data: {
+                            param: {
+                                ...pagination,
+                                searchMap: transData(searchMap),
+                            }
+                        }
+                    },
+                    data => {
+                        debugger
+                        dispatch(
+                            fetchData("CLUE_LIST_GETDATA", {
+                                data: transReceiveData(data),
+                                pagination
+                            })
+                        );
+                    }
+                );
+            }
+        );
+    };
+}
+//选中人员列表
+export function selectUserRow (selectedRows, selectedRowKeys){
+
+	return (dispatch) => {
+        debugger
+        
+		dispatch(fetchData("CLUE_LIST_SELECTUSERROW", { selectedRows, selectedRowKeys }))
+	}
+};
+
+// 线索分配数据 列表数据
+export function assignListData(pagination,name) {
+    debugger
+    return dispatch => {
+        reqwest(
+            {
+                url: url.lead + "/user/list",
+                method: "GET",
+                data: {
+                    param: {
+                        ...pagination,
+                     name     
+                    }
+                }
+            },
+            data => {  
+                debugger
+                dispatch(
+                    fetchData("CLUE_LIST_ASSIGNLISTDATE", {
+                        data: data
+                    })
+                );
+            }
+        );
+    };
+};
+
+
+
+//启停用功能 暂时不做
+export function setEnableState(ids, state, page, searchMap) {
+    return dispatch => {
+        reqwest(
+            {
+                url: url.lead + "/state",
+                method: "PUT",
+                data: {
+                    param: {
+                        ids,
+                        ...page,
+                        searchMap:transData(searchMap),
+                        enableState: String(state)
+                    }
+                }
+            },
+            dataResult => {
+                debugger
+                dispatch(
+                    fetchData("CLUE_LIST_GETDATA", {
+                        data: dataResult,
+                        pagination: page
+                    })
+                );
+            }
+        );
+    };
+};
 
 
 //获取数据、基础查询数据、扩展查询数据
-export function getListData(pagination, searchMap) {
+export function getListData(pagination, searchMap,option) {
+    debugger
     return dispatch => {
         dispatch(fetchData("CLUE_LIST_SAVESEARCHMAP", searchMap));
+       // dispatch(fetchData("CLUE_LIST_SAVESOPTION", option))
         debugger
         reqwest(
             {
@@ -105,6 +276,7 @@ export function getListData(pagination, searchMap) {
                     param: {
                         ...pagination,
                         searchMap: transData(searchMap),
+                        option
                     }
                 }
             },
@@ -147,6 +319,7 @@ export function getEnumData() {
 
 //往redux中存基础、扩展查询条件
 export function saveSearchMap(data) {
+    debugger
     return {
         type: "CLUE_LIST_SEARCHMAP",
         data
@@ -217,15 +390,13 @@ export function edit(edit, show) {
 
 //编辑已选择（确定按钮）
 let onEdit=(values,dispatch)=>{
-
     debugger
-   
         reqwest(
             {
                 url: url.lead + "/" + values.id,
                 method: "PUT",
                 data: {
-                    param: transData(values)
+                    param: values
                 }
             },
             result => {
@@ -236,7 +407,6 @@ let onEdit=(values,dispatch)=>{
                 });
             }
         );
-
 }
 
 //点击新建按钮清空数据
@@ -252,9 +422,7 @@ export function addClue(data) {
 
 //保存新增联系人
 let onSave=(oneData,dispatch)=>{
-    debugger;
-   
-        debugger
+    
         reqwest(
             {
                 url: url.lead,
@@ -280,8 +448,30 @@ export function editCardFn(changeData) {
         changeData
     }
 }
+//动态数据
+export function getDynamic(id) {
+    return dispatch => {
+        debugger
+        reqwest(
+            {
+                url: url.lead + "/" + id+'/dynamic',
+                method: "GET",
+                data: {
+                }
+            },
+            data => {
+                debugger
+                dispatch({
+                    type: "CLUE_LIST_GETDYNAMIC",
+                    data: data && data.dynamiclist?data.dynamiclist:[]
+                });
 
-//展示面板，把点击某个客户的所有值，放在redux中
+            }
+        );
+    };
+
+}
+//详情展示面板，把点击某个客户的所有值，放在redux中
 export function showViewForm(visible, id) {
     return dispatch => {
         //debugger
@@ -292,12 +482,12 @@ export function showViewForm(visible, id) {
                 data: {
                 }
             },
-            data => {
-                //debugger
+            result => {
+                debugger
                 dispatch({
                     type: "CLUE_LIST_SHOWVIEWFORM",
                     visible,
-                    data: transReceiveDataOne(appendAddress(data))
+                    data: transReceiveDataOne(result.data)
                 });
 
             }
@@ -308,7 +498,7 @@ export function showViewForm(visible, id) {
 //详情页编辑 
 export function showFormEdit(visible){
     return{
-        type:'CUSTOMERCOMPANY_LIST_SHOWEDITFORM',
+        type:'CLUE_DETAILLIST_SHOWEDITFORM',
         visible
     }
 }
@@ -344,7 +534,7 @@ let getIndustry = (industry)=>{
     });
 }
 
-//新增、修改客户保存
+//新增、修改客户保存,行业处理 
 export function listFormSave(data) {
     
   //  data = trancFn(data);
@@ -392,3 +582,69 @@ export function listFormSave(data) {
         }
     };
 };
+
+
+//-------导入导出 1.30号 余春梅
+export function viewLeadShow(leadVisible) {
+    debugger
+    return {
+        type: "CLUE_LIST_VIEWLEADSHOW",
+        payload: { leadVisible }
+    };
+}
+
+export function leadShow(leadVisible) {
+    return {
+        type: "CLUE_LIST_LEADSHOW",
+        payload: { leadVisible }
+    };
+};
+
+export function leadEndShow(leadVisible) {
+    return {
+        type: "CLUE_LIST_LEADENDSHOW",
+        payload: { leadVisible }
+    };
+};
+export function leadEndView(leadVisible, leadStep) {
+    
+    return {
+        type: "CLUE_LIST_LEADENDVIEW",
+        payload: { leadVisible, leadStep }
+    };
+
+}
+export function changeStep(leadStep) {
+   // debugger
+    return {
+        type: "CLUE_LIST_CHANGESTEP",
+        payload: {leadStep }
+    };
+
+}
+export function leadEndIngShow(leadVisible) {
+    return {
+        type: "CLUE_LIST_LEADINGSHOW",
+        payload: { leadVisible }
+    };
+}
+
+export function saveFiles(files) {
+    
+    return {
+        type: "CLUE_LIST_SAVEFILES",
+        payload: { files }
+    };
+}
+export function fileSuccess(filesSuccess, result, show, leadStep) {
+    return {
+        type: "CLUE_LIST_FILESUCCESS",
+        payload: { filesSuccess, result, show, leadStep }
+    };
+}
+export function fileFail(filesFail) {
+    return {
+        type: "CLUE_LIST_FILEFAIL",
+        payload: { filesFail }
+    };
+}

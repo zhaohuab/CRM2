@@ -71,23 +71,23 @@ class DetailTable extends React.Component {
         }
         this.columns = [
      
-            {
-                title: "产品名称",
-                width:'20%',
-                dataIndex: "productId",
-                render: (text, record, index) => (
-                    <EditableCell
-                        data={text}
-                        type={record.type}
-                        colName="no"
-                        showProductCard={this.showProductCard.bind(this)}
-                        onChange={this.onCellChange.bind(this, index, "no")}
-                    />
-                )
-            },
+            // {
+            //     title: "产品名称",
+            //     width:'20%',
+            //     dataIndex: "productId",
+            //     render: (text, record, index) => (
+            //         <EditableCell
+            //             data={text}
+            //             type={record.type}
+            //             colName="no"
+            //             showProductCard={this.showProductCard.bind(this)}
+            //             onChange={this.onCellChange.bind(this, index, "no")}
+            //         />
+            //     )
+            // },
             {
                 title: "产品分类",
-                width:'20%',
+                width:'40%',
                 dataIndex: "productTypeId",
                 render: (text, record, index) => (
                     <EditableCell
@@ -97,33 +97,33 @@ class DetailTable extends React.Component {
                     />
                 )
             },
-            {
-                title: "品牌",
-                width:'12%',
-                dataIndex: "brandId",
-                render: (text, record, index) => (
-                    <EditableCell
-                        data={text}
-                        type={record.type}
-                        onChange={this.onCellChange.bind(this, index, "brandId")}
-                    />
-                )
-            },
-            {
-                title: "销售单位",
-                width:'12%',
-                dataIndex: "measureId",
-                render: (text, record, index) => (
-                    <EditableCell
-                        data={text}
-                        type={record.type}
-                        onChange={this.onCellChange.bind(this, index, "measureId")}
-                    />
-                )
-            },
+            // {
+            //     title: "品牌",
+            //     width:'12%',
+            //     dataIndex: "brandId",
+            //     render: (text, record, index) => (
+            //         <EditableCell
+            //             data={text}
+            //             type={record.type}
+            //             onChange={this.onCellChange.bind(this, index, "brandId")}
+            //         />
+            //     )
+            // },
+            // {
+            //     title: "销售单位",
+            //     width:'12%',
+            //     dataIndex: "measureId",
+            //     render: (text, record, index) => (
+            //         <EditableCell
+            //             data={text}
+            //             type={record.type}
+            //             onChange={this.onCellChange.bind(this, index, "measureId")}
+            //         />
+            //     )
+            // },
             {
                 title: "销售单价",
-                width:'12%',
+                width:'30%',
                 dataIndex: "price",
                 render: (text, record, index) => (
                     <EditableCell
@@ -135,7 +135,7 @@ class DetailTable extends React.Component {
             },
             {
                 title: "产品数量",
-                width:'12%',
+                width:'30%',
                 dataIndex: "number",
                 render: (text, record, index) => (
                     <EditableCell
@@ -145,18 +145,18 @@ class DetailTable extends React.Component {
                     />
                 )
             },
-            {
-                title: "合计金额",
-                width:'12%',
-                dataIndex: "sumMoney",
-                render: (text, record, index) => (
-                    <EditableCell
-                        data={text}
-                        type={record.type}
-                        onChange={this.onCellChange.bind(this, index, "sumMoney")}
-                    />
-                )
-            }
+            // {
+            //     title: "合计金额",
+            //     width:'12%',
+            //     dataIndex: "sumMoney",
+            //     render: (text, record, index) => (
+            //         <EditableCell
+            //             data={text}
+            //             type={record.type}
+            //             onChange={this.onCellChange.bind(this, index, "sumMoney")}
+            //         />
+            //     )
+            // }
         
         ]
 

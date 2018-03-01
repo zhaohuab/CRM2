@@ -113,8 +113,8 @@ class ToolForm extends React.Component {
                         length={selectedRows.length}
                     >
 
-                    {selectedRows.length == 1 ? <Button className="default_button" onClick={this.btnEdit.bind(this, selectedRowKeys[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
-                                : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>}
+                    {/*selectedRows.length == 1 ? <Button className="default_button" onClick={this.btnEdit.bind(this, selectedRowKeys[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
+                                : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>*/}
 
                         <Button
                             className="returnbtn-class"
@@ -122,15 +122,15 @@ class ToolForm extends React.Component {
                         >
                             <i className="iconfont icon-shanchu" />删除
                         </Button>
-
-                        <ButtonGroup className="returnbtn-class">
+                        {/* 项目第一版移除  */}
+                        {/* <ButtonGroup className="returnbtn-class">
                             <Button onClick={this.btnSetEnable.bind(this, 1)}>
                                 <i className="iconfont icon-qiyong" />启用
                             </Button>
                             <Button onClick={this.btnSetEnable.bind(this, 2)}>
                                 <i className="iconfont icon-tingyong" />停用
                             </Button>
-                        </ButtonGroup>
+                        </ButtonGroup> */}
                     </HeaderButton>
                 ) : (
                     <Row>
@@ -142,14 +142,15 @@ class ToolForm extends React.Component {
                         >
                             <Col span={18}>
                                 <Row type="flex" align="middle">
-                                    <Col className="select-recover">
+                                 {/* 项目第一版移除  */}
+                                    {/* <Col className="select-recover">
                                         <Select defaultValue="3">
                                             <Option value="0">全部</Option>
                                             <Option value="1">我关注的</Option>
                                             <Option value="2">最近新建</Option>
                                             <Option value="3">最近查看</Option>
                                         </Select>
-                                    </Col>
+                                    </Col> */}
                                     <Col
                                         span={18}
                                         className={
@@ -172,7 +173,7 @@ class ToolForm extends React.Component {
                                     </Col>
                                 </Row>
                             </Col>
-
+                            {/* 项目第一版移除  */}
                             <Col span={6}>
                                 <Row type="flex" gutter={15} justify="end">
                                     <Col>
@@ -186,15 +187,6 @@ class ToolForm extends React.Component {
                                         </ButtonGroup>
                                     </Col>
                                     <Col>
-                                        {/* <Button
-                                            type="primary"
-                                            onClick={this.btnNew.bind(this)}
-                                        >
-                                            <i className="iconfont icon-xinjian" />新建
-                                        </Button> */}
-
-
-
                                         <Dropdown overlay={menu}>
                                     <Button type="primary">
                                     <i className="iconfont icon-xinjian" />新建

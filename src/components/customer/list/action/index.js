@@ -359,7 +359,7 @@ export function appendAddress(data) {
 
 //获取数据、基础查询数据、扩展查询数据  
 export function getListData(pagination, searchMap) {
-    
+    debugger
     return dispatch => {
         dispatch(fetchData("CUSTOMERCOMPANY_LIST_SAVESEARCHMAP", searchMap));
         
@@ -421,7 +421,7 @@ export function getDynamic(id){
                 method: "GET",
             },
             data => {
-                
+                debugger
                 dispatch({
                     type:"CUSTOMERCOMPANY_LIST_GETDYNAMIC",
                     data:data && data.dynamiclist?data.dynamiclist:[]

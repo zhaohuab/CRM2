@@ -30,7 +30,7 @@ class LeadIn extends React.Component {
 
     //下载excel 表格 
     onLoad = () => {
-        location.href = baseDir + "/tpub/excels/1/templates/import"
+        location.href = baseDir + "/tpub/excels/3/templates/import"
     }
     importSuccess = (result) => {
         console.log(66, result)
@@ -107,7 +107,7 @@ class LeadIn extends React.Component {
                         <p>下载错误报告，查看失败原因</p>
                         <div className="errorFile"><i className="iconfont icon-word"></i></div>
                         <div className="errorExcel">{successResult[0].data.fileName}
-                            <Icon type="upload" style={{marginLeft:'5px'}} onClick={this.onErrorLoad.bind(this, successResult[0].data.errorURL)} />
+                            <Icon type="upload" onClick={this.onErrorLoad.bind(this, successResult[0].data.errorURL)} />
                         </div>
                     </div>
                     : null}
@@ -124,7 +124,7 @@ class LeadIn extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList,
+        $$state: state.lead,
         // $$stateCommon: state.componentReducer
     };
 }

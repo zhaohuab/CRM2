@@ -139,6 +139,7 @@ export default function customerGroupList($$state = Immutable.fromJS($$initialSt
             });
         //存放动态信息
         case "CUSTOMERGROUP_LIST_GETDYNAMIC":
+        debugger
                 return $$state.merge({
                     dynamicData: action.data
                 });    

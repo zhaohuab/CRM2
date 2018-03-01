@@ -91,7 +91,7 @@ class Upload extends React.Component {
 //绑定状态到组件props
 function mapStateToProps(state, ownProps) {
     return {
-        $$state: state.customerList,
+        $$state: state.lead,
         // $$stateCommon: state.componentReducer
     };
 }
