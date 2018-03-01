@@ -216,13 +216,6 @@ class ToolForm extends React.Component {
                             <Button onClick={this.btnSetEnable.bind(this, 2)} className="customer_list_stop_customer">
                                 <i className="iconfont icon-tingyong" />停用
                             </Button>
-                        </ButtonGroup><ButtonGroup className="returnbtn-class">
-                            <Button onClick={this.btnSetEnable.bind(this, 1)} className="customer_list_start_customer">
-                                <i className="iconfont icon-qiyong" />启用
-                            </Button>
-                            <Button onClick={this.btnSetEnable.bind(this, 2)} className="customer_list_stop_customer">
-                                <i className="iconfont icon-tingyong" />停用
-                            </Button>
                         </ButtonGroup>
                     </HeaderButton>
                 ) : (

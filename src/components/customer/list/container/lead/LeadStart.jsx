@@ -107,7 +107,7 @@ class LeadIn extends React.Component {
                         <p>下载错误报告，查看失败原因</p>
                         <div className="errorFile"><i className="iconfont icon-word"></i></div>
                         <div className="errorExcel">{successResult[0].data.fileName}
-                            <Icon type="upload" onClick={this.onErrorLoad.bind(this, successResult[0].data.errorURL)} />
+                            <Icon type="upload" style={{marginLeft:'5px'}} onClick={this.onErrorLoad.bind(this, successResult[0].data.errorURL)} />
                         </div>
                     </div>
                     : null}
@@ -125,7 +125,7 @@ class LeadIn extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         $$state: state.customerList,
-        $$stateCommon: state.componentReducer
+        // $$stateCommon: state.componentReducer
     };
 }
 //绑定action到组件props

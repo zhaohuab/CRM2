@@ -27,24 +27,24 @@
 //线索状态
 const state = [{
     "title": "未处理",
-    "key": "3"
-}, {
-    "title": "成功转化",
-    "key": "4"
-}, {
-    "title": "失败关闭",
-    "key": "5"
-}];
-
-//性别
-const genderName=[{
-    "title": "男",
     "key": "1"
 }, {
-    "title": "女",
+    "title": "成功转化",
     "key": "2"
-}]
+}, {
+    "title": "失败关闭",
+    "key": "3"
+}];
+
+// //性别
+// const genderName=[{
+//     "title": "男",
+//     "key": "1"
+// }, {
+//     "title": "女",
+//     "key": "2"
+// }]
 export {
-    state,
-    genderName,
+    state
+  
 };

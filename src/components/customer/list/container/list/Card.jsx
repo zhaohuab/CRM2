@@ -861,6 +861,7 @@ const cardForm = Form.create({
     },
     onFieldsChange: (props, onChangeFild) => {
         //往redux中写值//把值进行更新改变
+        debugger
         let viewData = props.$$state.toJS().viewData;
         debugger
         for (let key in onChangeFild) {

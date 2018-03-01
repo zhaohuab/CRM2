@@ -476,7 +476,7 @@ export function getDynamic(id){
                 method: "GET",
             },
             data => {
-                
+                debugger
                 dispatch({
                     type:"CUSTOMERCOMPANY_LIST_GETDYNAMIC",
                     data:data && data.dynamiclist?data.dynamiclist:[]

@@ -351,6 +351,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //存放动态信息
         case "CUSTOMERCOMPANY_LIST_GETDYNAMIC":
+        debugger
             return $$state.merge({
                 dynamicData: action.data
             });
