@@ -24,11 +24,10 @@ export default class SuperiorCustomer extends React.Component {
         super(props);
         this.state = {
             visible: false, //整个下拉面板显示控制
-            industryData: [], //获取树数据
+            cumData: [], //获取树数据
             select: {}, //选择面板选择出的行业
             selectKeys: [], //存放选择面板已选择的keys
             selectKeyUp: {}, //手输入时获取的选择字段
-            industryDataSearch: [], //获取手输入时获取的数据
             selectedRowKeys: [], //保存table行选中信息
             pagination: {
                 pageSize: 5,
@@ -59,8 +58,6 @@ export default class SuperiorCustomer extends React.Component {
 
     //点击分页时触发的方法
     onPageChange(page, pageSize) {
-        ;
-        //let { page, pageSize } = this.state.pagination;
         let pagination = {
             page,
             pageSize
@@ -88,17 +85,16 @@ export default class SuperiorCustomer extends React.Component {
                 }
             },
             result => {
-                ;
                 this.setState({
                     visible: flag,
-                    industryData: result
+                    cumData: result
                 });
             }
         );
     }
 
     //点击input弹出下拉面板
-    getIndustry(flag) {
+    getCumData(flag) {
         //这里需要Request请求
         if (flag) {
             let { page, pageSize } = this.state.pagination;
@@ -120,7 +116,6 @@ export default class SuperiorCustomer extends React.Component {
             this.setState(
                 {
                     visible: false
-                    //keyDownVisiable: false
                 },
                 () => {
                     this.props.onChange({});
@@ -128,9 +123,22 @@ export default class SuperiorCustomer extends React.Component {
             );
         }
     }
+    //单多选属性
+    //url属性
+    //导出直接导出 selectedRows 需处理成能用数组对象
+        //value需要循环遍历ary
+        //点编辑按钮的时候需要弄成ary
+        //往后台发送数据时需要遍历id
+    //需要展示的属性名称字符串   
+    //method
+    //columns
 
     //table发生行选中触发的方法
     onSelectChange(selectedRowKeys, selectedRows) {
+        debugger
+        let selectAry = []
+        //{ name: selectedRows[0].name, id: selectedRows[0].id }
+        //selectedRows循环放进数组，单选先创建的数组 永远等于selectedRows【0】项，
         this.setState({
             select: { name: selectedRows[0].name, id: selectedRows[0].id },
             selectedRowKeys: selectedRowKeys
@@ -190,7 +198,7 @@ export default class SuperiorCustomer extends React.Component {
             },
             result => {
                 this.setState({
-                    industryData: result
+                    cumData: result
                 });
             }
         );
@@ -204,13 +212,13 @@ export default class SuperiorCustomer extends React.Component {
     }
 
     //下拉时显示的面板布局
-    choiceIndustry() {
+    createPanel() {
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
             type: "radio",
             selectedRowKeys: this.state.selectedRowKeys
         };
-        let tableData = this.state.industryData;
+        let tableData = this.state.cumData;
         return (
             <DropDownModal 
                 title='上级客户' 
@@ -255,15 +263,15 @@ export default class SuperiorCustomer extends React.Component {
                         this.props.disabled?
                         <Input disabled value={this.props.value ? this.props.value.name : ""}/>:
                         <Dropdown
-                            overlay={this.choiceIndustry()} //生成下拉结构样式
+                            overlay={this.createPanel()} //生成下拉结构样式
                             trigger={["click"]}
-                            onVisibleChange={this.getIndustry.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
+                            onVisibleChange={this.getCumData.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
                             visible={this.state.visible} //受控面板显示
                             placement={this.props.placement}
                         >
                             <Search
                                 placeholder="上级客户"
-                                onSearch={this.getIndustry.bind(this, true)}   //只要包含在dropdown里的只要出发都会执行onVisibleChange方法不必单写
+                                onSearch={this.getCumData.bind(this, true)}   //只要包含在dropdown里的只要出发都会执行onVisibleChange方法不必单写
                                 value={this.props.value ? this.props.value.name : ""}
                                 suffix={suffix}
                             />

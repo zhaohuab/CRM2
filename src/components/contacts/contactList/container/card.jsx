@@ -1,4 +1,9 @@
+
 import React, { Component, PropTypes } from "react";
+import * as Actions from "../action";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Enum from "utils/components/enums";
 import {
     Icon,
     Button,
@@ -15,30 +20,18 @@ import {
     Select
 } from "antd";
 const FormItem = Form.Item;
+const { TextArea } = Input;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const childrenUser = [];
 const childrenResp = [];
+import Choosed from './RolesChoosed.jsx';
 import Email from "utils/components/emails";
 import Tags from "../../../common/tags/tags.jsx";
 import CustomTags from "../../../common/tags/custom-tags.jsx";
 import Department from 'components/refs/departments'
-export default class Card extends React.Component {
-    componentDidMount() {
-        this.props.form.setFieldsValue(this.props.dataSource);
-    }
-    onChangeUser(){
-        let {userList } = this.props.dataSource;
-        for (let i = 0, len = userList.length; i < len; i++) {
-            childrenUser.push(<Option key={userList[i].id}>{userList[i].name}</Option>);
-        }
-    }
-    onChangeResp(){
-        let {userList } = this.props.dataSource;
-        for (let i = 0, len = userList.length; i < len; i++) {
-            childrenResp.push(<Option key={userList[i].id}>{userList[i].name}</Option>);
-        }
-    }
+class Card extends React.Component {
+    componentDidMount() {} 
     render() {
         let formItemLayout = {
             labelCol: { span: 7 },
@@ -49,6 +42,18 @@ export default class Card extends React.Component {
             wrapperCol: { span: 19 }
         };
         const { getFieldDecorator } = this.props.form;
+        const { editData, post, customer } = this.props.$$state.toJS();
+        if(editData.customerList){
+            editData.customerList.forEach((item,index,arr)=>{
+                arr[index].id=arr[index].customer;
+                arr[index].name=arr[index].customerName;
+            })
+        }
+        let postId=[],customerId=[];
+        postId.push(post.id);
+        customerId.push(customer.id);
+        let columns={post:[{title: "职务",dataIndex: "name"}], customer:[{title: "客户",dataIndex: "name"}]};
+        //debugger;
         let ccc = (rule, value, callback) => {
             var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
             if (!myreg.test(value)) {
@@ -59,10 +64,7 @@ export default class Card extends React.Component {
         return (
             <div>
                 <Form>
-                    <div className="card-header-title">
-                        基本信息{" "}
-                        <i className="iconfont icon-xiajiantou-lanse" />
-                    </div>
+                  
                     <Row type="flex" justify="center">
                         <Col span={11}>
                             <FormItem style={{ display: "none" }}>
@@ -71,7 +73,6 @@ export default class Card extends React.Component {
                             <FormItem
                                 label="姓名"
                                 {...formItemLayout}
-                            //hasFeedback={true}
                             >
                                 {getFieldDecorator("name", {
                                     rules: [
@@ -84,8 +85,10 @@ export default class Card extends React.Component {
                             </FormItem>
                         </Col>
                         <Col span={11}>
-                            {" "}
-                            <FormItem label="客户" {...formItemLayout}>
+                            <FormItem
+                                label="客户"
+                                {...formItemLayout}
+                            >
                                 {getFieldDecorator("customer", {
                                     rules: [
                                         {
@@ -93,83 +96,33 @@ export default class Card extends React.Component {
                                             message: "请选择客户"
                                         }
                                     ]
-                                })(<Select
-                                    showSearch
-                                    style={{ width: 200 }}
-                                    placeholder="请选择客户"
-                                    optionFilterProp="children"
-                                    onChange={this.onChangeUser()}
-                                    filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                                >
-                                    {childrenUser}
-                                </Select>)}
+                                })(<Choosed 
+                                    onChange={this.props.action.choosed.bind(this,'customer')} 
+                                    dataSource={editData.customerList} 
+                                    columns={columns.customer}
+                                    idArr={customerId}
+                                    name={customer.name}
+                                    placeholder="选择" />)}
                             </FormItem>
                         </Col>
                     </Row>
                     <Row type="flex" justify="center">
-                        <Col span={11}>
-                            <FormItem label="负责人" {...formItemLayout}>
-                                {getFieldDecorator("ownerUserId")(
-                                    <Select
-                                        showSearch
-                                        style={{ width: 200 }}
-                                        placeholder="请选择负责人"
-                                        optionFilterProp="children"
-                                        onChange={this.onChangeResp()}
-                                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                                    >
-                                        {childrenResp}
-                                    </Select>
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={11}>
-                            {" "}
-                            <FormItem label="主联系人" {...formItemLayout}>
-                                {getFieldDecorator("mainContact", {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: "请输入..."
-                                        }
-                                    ]
-                                })(
-                                    <RadioGroup value={1}>
-                                        <Radio value={1}>是</Radio>
-                                        <Radio value={2}>否</Radio>
-                                    </RadioGroup>
-                                    )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row type="flex" justify="center">
-                        <Col span={11}>
-                            <FormItem label="部门" {...formItemLayout}>
-                                {getFieldDecorator('deptId', {
-                                    rules: [{
-                                        required: true, message: '请选择部门',
-                                    }],
-                                })(
-                                    <Department />
-                                    )}
-                            </FormItem>
-                        </Col>
-                        <Col span={11}>
-                            {" "}
+                        <Col span={11}>                          
                             <FormItem label="职务" {...formItemLayout}>
                                 {getFieldDecorator("post")(
-                                    <Select
-                                        showSearch
-                                        style={{ width: 200 }}
-                                        placeholder="请选择职务"
-                                        optionFilterProp="children"
-                                        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                                    >
-                                        <Option value="jack" selected>Jack</Option>
-                                        <Option value="lucy">Lucy</Option>
-                                        <Option value="tom">Tom</Option>
-                                    </Select>
+                                  <Choosed 
+                                    onChange={this.props.action.choosed.bind(this,'post')} 
+                                    dataSource={editData.postList} 
+                                    columns={columns.post}
+                                    idArr={postId}
+                                    name={post.name}
+                                    placeholder="选择" />
                                 )}
+                            </FormItem>
+                        </Col>
+                        <Col span={11}>
+                            <FormItem label="邮箱" {...formItemLayout}>
+                                {getFieldDecorator("email")(<Email />)}
                             </FormItem>
                         </Col>
                     </Row>
@@ -181,9 +134,8 @@ export default class Card extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={11}>
-                            {" "}
-                            <FormItem label="办公室电话" {...formItemLayout}>
+                        <Col span={11}>                       
+                            <FormItem label="办公电话" {...formItemLayout}>
                                 {getFieldDecorator("officePhone")(
                                     <Input placeholder="请输入..." />
                                 )}
@@ -193,94 +145,84 @@ export default class Card extends React.Component {
                     <Row type="flex" justify="center">
                         <Col span={11}>
                             <FormItem
-                                label="备注"
+                                label="兴趣爱好"
                                 {...formItemLayout}
-                            //hasFeedback={true}
                             >
                                 {getFieldDecorator(
-                                    "remarks"
-                                    // {
-                                    //     rules: [
-                                    //         {
-                                    //             required: true
-                                    //             //message: "请输出姓名",
-                                    //             //validator: ccc
-                                    //             //pattern: /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/
-                                    //         }
-                                    //     ]
-                                    // }
+                                    "hobby"
                                 )(
-                                    <Input
-                                        placeholder="请输入..."
-                                        type="textarea"
-                                        rows={3}
+                                    <TextArea
+                                        autosize={{
+                                            minRows: 3,
+                                            maxRows: 8
+                                        }}
+                                        placeholder="请输入"
                                     />
                                     )}
                             </FormItem>
                         </Col>
                         <Col span={11}>
-                            <FormItem label="邮箱" {...formItemLayout}>
-                                {getFieldDecorator("email")(<Email />)}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <div className="card-header-title">
-                        标签
-                        <i className="iconfont icon-xiajiantou-lanse" />
-                    </div>
-                    <Row>
-                        <Col>
-                            <FormItem label="角色" {...formItemLayout1}>
-                                {getFieldDecorator("role")(
-                                    <Tags
-                                        dataSource={[
-                                            "决策人",
-                                            "商务决策人",
-                                            "技术决策人",
-                                            "财务决策人",
-                                            "项目决策人",
-                                            "审批者",
-                                            "评估者",
-                                            "影响人",
-                                            "使用人",
-                                            "普通人"
-                                        ]}
+                            <FormItem
+                                label="备注"
+                                {...formItemLayout}
+                            >
+                                {getFieldDecorator(
+                                    "remarks"
+                                )(
+                                    <TextArea
+                                        autosize={{
+                                            minRows: 3,
+                                            maxRows: 8
+                                        }}
+                                        placeholder="请输入"
                                     />
-                                )}
+                                    )}
                             </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <FormItem label="态度" {...formItemLayout1}>
-                                {getFieldDecorator("attitude")(
-                                    <Tags
-                                        dataSource={[
-                                            "还不错",
-                                            "非常好",
-                                            "一般",
-                                            "恶略",
-                                            "无视"
-                                        ]}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <FormItem label="兴趣爱好" {...formItemLayout1}>
-                                {getFieldDecorator("hobby")(
-                                    <CustomTags dataSource={["踢球", "跑步"]} />
-                                )}
-                            </FormItem>
-                        </Col>
+                        </Col>                    
                     </Row>
                 </Form>
             </div>
         );
     }
 }
+
+
+const CardModal = Form.create({
+    mapPropsToFields: props => {
+        //把redux中的值取出来赋给表单
+        debugger
+        let modalData = props.$$state.toJS().modalData;
+        let value = {};
+        for (let key in modalData) {
+            value[key] = { value: modalData[key] };
+        }
+        return {
+            ...value
+        };
+    },
+    onFieldsChange: (props, onChangeFild) => {
+        debugger;
+        let modalData = props.$$state.toJS().modalData;
+        for (let key in onChangeFild) {  
+            modalData[key] = onChangeFild[key].value;
+        }
+        props.action.saveAddCard(modalData)
+    }
+})(Card);
+
+export default connect(
+    state => {
+        return {
+            $$stateComponent: state.componentReducer,
+            $$state: state.contacts
+        };
+    },
+    dispatch => {
+        return {
+            action: bindActionCreators(Actions, dispatch)
+        };
+    }
+)(CardModal);
 
 // data传值
 // 组件内保存选中状态

@@ -35,6 +35,18 @@ import LeadExport from './lead/LeadExport.jsx'; //导入导出
 class List extends React.Component {
     constructor(props) {
         super(props);
+        //更改时间
+        this.changeTime=(time)=>{
+            time = new Date(time)
+            let second = time.toLocaleTimeString()
+            let  day= time.toLocaleDateString();
+            let reg = /^(上午|下午)/g;
+
+            second = second.replace(reg,'')
+            day = day.split('/').join('-')
+            
+            return [day,second]
+        }
 
         this.columns = [
             {
@@ -73,31 +85,83 @@ class List extends React.Component {
                     )
                 }
             },
+          
             {
-                title: "客户类型",
-                dataIndex: "biztypeName"
-            },
-
-            {
-                title: "客户等级",
-                dataIndex: "levelName"
-            },
-            {
-                title: "客户状态",
-                dataIndex: "stateName"
+                title: "客户规模",
+                dataIndex: "scaleName"
             },
             {
                 title: "行业",
                 dataIndex: "industryName"
             },
             {
-                title: "渠道类型",
-                dataIndex: "cannelTypeName"
+                title: "客户状态",
+                dataIndex: "stateName"
+            },
+            {
+                title: "客户类别",
+                dataIndex: "categoryName"
+            },
+            {
+                title: "客户价值",
+                dataIndex: "worthName"
+            },
+            {
+                title: "电话",
+                dataIndex: "tel"
+            },
+            {
+                title: "最近跟进时间",
+                dataIndex: "followTime",
+                render:(text, record)=>{
+                    return (
+                        <div>
+                            {record.salesVOs && record.salesVOs.length?
+                            this.changeTime(record.salesVOs[0].followTime.time)[0]
+                            :'无'}
+                        </div>
+                    )
+                }
+            },
+            {
+                title: "销售区域",
+                dataIndex: "saleAreaName"
+            },
+            {
+                title: "部门",
+                dataIndex: "ownerDeptName",
+                render:(text, record)=>{
+                    return (
+                        <div>{record.salesVOs && record.salesVOs.length?record.salesVOs[0].ownerDeptName:'无'}</div>
+                    )
+                }
+            },
+            {
+                title: "负责人",
+                dataIndex: "ownerUserName",
+                render:(text, record)=>{
+                    return (
+                        <div>{record.salesVOs && record.salesVOs.length?record.salesVOs[0].ownerUserName:'无'}</div>
+                    )
+                }
             },
             {
                 title: "地址",
                 dataIndex: "street"
-            }
+            },
+            // {
+            //     title: "客户等级",
+            //     dataIndex: "levelName"
+            // },
+            
+            // {
+            //     title: "渠道类型",
+            //     dataIndex: "cannelTypeName"
+            // },
+            // {
+            //     title: "客户类型",
+            //     dataIndex: "biztypeName"
+            // },
         ];
         const that = this;
 
@@ -188,28 +252,53 @@ class List extends React.Component {
 
     //点击分页
     onPageChange(page, pageSize) {
+        debugger
+        let {serachMapData,witchSeach,searchPlaneData} = this.props.$$state.toJS()
         let pagination = { page: page, pageSize: pageSize };
-        this.props.action.getListData(
-            pagination,
-            this.props.$$state.get("searchMap").toJS()
-        );
+        if(witchSeach == 'searchMap'){
+            this.props.action.getListData(
+                pagination,
+                serachMapData,
+                witchSeach
+            );
+        }else if(witchSeach == 'searchPlanMap'){
+            this.props.action.getListData(
+                pagination,
+                searchPlaneData,
+                witchSeach
+            );
+        }else{//没有任何查询条件时
+            this.props.action.getListData(
+                pagination,
+                undefined,
+                'searchMap'
+            );
+        }
     }
 
     //点击分页跳转
     onPageSizeChange(current, pageSize) {
+        debugger
+        let {serachMapData,witchSeach} = this.props.$$state.toJS()
         let pagination = { page: current, pageSize: pageSize };
-        this.props.action.getListData(
-            pagination,
-            this.props.$$state.get("searchMap").toJS()
-        );
+        if(witchSeach == 'searchMap'){
+            this.props.action.getListData(
+                pagination,
+                serachMapData,
+                witchSeach
+            );
+        }
     }
 
     componentDidMount() {
-        let {pagination} =  this.props.$$state.toJS()
+        let {pagination} =  this.props.$$state.toJS();
+        //获取查询方案预置条件
+        this.props.action.getPlaneData()
         //获取列表数据
         this.props.action.getListData( pagination );
-        //获取查询条件、查询方案预置信息
+        //获取查询条件的枚举预置条件，包括表单中的枚举预置条件
         this.props.action.getEnumData();
+        
     }
 
     render() {
@@ -228,8 +317,8 @@ class List extends React.Component {
             viewLeadVisible,
             pagination,
             searchMap
-
         } = this.props.$$state.toJS();
+
         let rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange

@@ -16,13 +16,16 @@ let trancFn=(data)=>{
     debugger
     for (let key in data) {
         //枚举
-        if ( key == 'cannelType' || key == 'level'|| key == 'type') {
+        if ( key == 'cannelType' || key == 'level'|| key == 'type'|| key == 'scale'|| key == 'category'|| key == 'worth'|| key == 'saleArea'||key == 'state') {
             debugger
             if(data[key] && data[key].value){
                 data[key] = data[key].value.key
             }else if(data[key]){
-               
-                data[key] = data[key].key
+                if(data[key].hasOwnProperty('key')){
+                    data[key] = data[key].key
+                }else{
+                    data[key] = data[key]
+                }
             }else{
                 data[key] = undefined
             }
@@ -37,13 +40,13 @@ let trancFn=(data)=>{
         }
 
         //城市
-        if (data.province_city_district) {
+        if (key == 'province_city_district' && data[key]) {
             debugger
             let change
-            if(data.province_city_district.value){
-                change = data.province_city_district.value.result;
+            if(data[key].value){
+                change = data[key].value.result;
             }else{
-                change = data.province_city_district.result;
+                change = data[key].result;
             }
             data.province = change[0];
             data.city = change[1];
@@ -52,40 +55,39 @@ let trancFn=(data)=>{
         }
 
         //上级客户
-        if(data.parentId){
+        if(key == 'parentId' && data[key]){
             debugger
-            if(data.parentId && data.parentId.hasOwnProperty('value')&& data.parentId.value.id){
-                data.parentId = data.parentId.value.id
-            }else if(data.parentId && !data.parentId.hasOwnProperty('value') && data.parentId.id){
-                data.parentId = data.parentId.id
+            if(data[key] && data[key].hasOwnProperty('value')&& data[key].value.id){
+                data[key] = data[key].value.id
+            }else if(data[key] && !data[key].hasOwnProperty('value') && data[key].id){
+                data[key] = data[key].id
             }else{
-                data.parentId = undefined
+                data[key] = undefined
+            }
+        }
+
+        if(key == 'productLine'){
+            debugger
+            if(data[key] && data[key].value){
+                data[key] = data[key].value.id
+            }else if(data[key]){
+                data[key] = data[key].id
+            }else{
+                data[key] = undefined
             }
         }
 
         //详细地址
-        // if (data.street && data.street.value) {
-        //     data.longitude = data.street.value.location.lng
-        //     data.latitude = data.street.value.location.lat
-        //     data.street = data.street.value.address
-        // }else{
-        //     //如果不是带验证的值，就是编辑时付的值
-        //     if(data.street && typeof data.street == 'object'){
-        //         data.longitude = data.street.location.lng
-        //         data.latitude = data.street.location.lat
-        //         data.street = data.street.address
-        //     }
-        // }
-        if (data.street && typeof data.street == 'object') {
+        if (key == 'street' && typeof data[key] == 'object') {
             debugger
-            if(data.street.hasOwnProperty('value')){
-                data.longitude = data.street.value.location.lng
-                data.latitude = data.street.value.location.lat
-                data.street = data.street.value.address
+            if(data[key].hasOwnProperty('value')){
+                data.longitude = data[key].value.location.lng
+                data.latitude = data[key].value.location.lat
+                data.street = data[key].value.address
             }else{
-                data.longitude = data.street.location.lng
-                data.latitude = data.street.location.lat
-                data.street = data.street.address
+                data.longitude = data[key].location.lng
+                data.latitude = data[key].location.lat
+                data.street = data[key].address
             }
         }
 
@@ -95,30 +97,51 @@ let trancFn=(data)=>{
         }
     }
 debugger
-    data.address = ''
+    //客户状态
+    // if(!data.salesVOs){
+    //     data.salesVOs = []
+    //     data.salesVOs.push({state:data.state})
+    // }else if(data.salesVOs && data.salesVOs.length){
+    //     data.salesVOs[0].state = data.state
+    // }else{
+    //     data.salesVOs = []
+    // }
+    
     return data;
 }
 
 
 let changeSearchData = (data) => {
-    for (let key in data) {
-        if (key == 'isGroup'|| key == 'cannelType'|| key == 'enableState'|| key == 'level'|| key == 'state'|| key == 'type') {
-            if(data[key] && data[key].key){
-                data[key] = data[key].key
+    debugger
+    if(data){
+        if(typeof data == 'string'){
+            return data
+        }else{
+            for (let key in data) {
+                if (key == 'isGroup'|| key == 'cannelType'|| key == 'enableState'|| key == 'level'|| key == 'state'|| key == 'type') {
+                    if(data[key] && data[key].key){
+                        data[key] = data[key].key
+                    }
+                }
+                if (key == 'province_city_district' && data[key]) {
+                    data.province = data[key][0];
+                    data.city = data[key][1];
+                    data.district = data[key][2];
+                    delete data.province_city_district;
+                }
+        
+                if (key == 'industry' && data[key]) {
+                    data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+                }
             }
+            return data
         }
-        if (key == 'province_city_district' && data[key]) {
-            data.province = data[key][0];
-            data.city = data[key][1];
-            data.district = data[key][2];
-            delete data.province_city_district;
-        }
-
-        if (key == 'industry' && data[key]) {
-            data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
-        }
+        
+    }else{
+        return undefined
     }
-    return data
+    
+    
 }
 //遍历表单更改为可传数据
 function transData(searchMap) {
@@ -357,12 +380,21 @@ export function appendAddress(data) {
     return data;
 };
 
-//获取数据、基础查询数据、扩展查询数据  
-export function getListData(pagination, searchMap) {
+let witchChoice = (searchData,witch)=>{
     debugger
+    if(witch && witch == 'searchMap'){
+        return changeSearchData(searchData)
+    }else if(witch && witch == 'searchPlanMap'){
+        return searchData
+    }else{
+        return undefined
+    }
+}
+
+//获取数据、基础查询数据、扩展查询数据  
+export function getListData(pagination, searchData,witch) {
     return dispatch => {
-        dispatch(fetchData("CUSTOMERCOMPANY_LIST_SAVESEARCHMAP", searchMap));
-        
+        debugger
         reqwest(
             {
                 url: url.customer,
@@ -370,16 +402,18 @@ export function getListData(pagination, searchMap) {
                 data: {
                     param: {
                         ...pagination,
-                        searchMap: changeSearchData(searchMap)
+                        [witch]:witchChoice(searchData,witch)
                     }
                 }
             },
             data => {
-                console.log('获取列表==============',data)
+                debugger
                 dispatch(
                     fetchData("CUSTOMERCOMPANY_LIST_GETDATA", {
                         data: data,
-                        pagination
+                        pagination,
+                        searchData,
+                        witch
                     })
                 );
             }
@@ -387,9 +421,31 @@ export function getListData(pagination, searchMap) {
     };
 };
 
+//获取查询方案初始值
+export function getPlaneData(){
+    return dispatch => {
+        debugger
+        reqwest(
+            {
+                url: baseDir + `sys/queryplans/1/1`,
+                method: "get",
+            },
+            data => {
+                debugger
+                dispatch({
+                   type:'CUSTOMERCOMPANY_LIST_GETSEARCHPLANE',
+                   data : data.data    
+                });
+            },()=>{
+                debugger
+            }
+        );
+    };
+}
+
 //获取查询条件初始值
 export function getEnumData() {
-    
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -400,7 +456,7 @@ export function getEnumData() {
                 }
             },
             data => {
-                
+                debugger
                 dispatch(
                     fetchData("CUSTOMERCOMPANY_LIST_GETENUMDATA", {
                         enumData: data.enumData
@@ -413,7 +469,6 @@ export function getEnumData() {
 
 //获取动态信息
 export function getDynamic(id){
-    
     return dispatch => {
         reqwest(
             {
@@ -556,14 +611,12 @@ export function showViewForm(visible, id) {
             },
             data => {
                 debugger
-                console.log('点击详情时返回数据1==========',data)
                 reqwest(
                     {
                         url: baseDir + `cum/customers/${id}/isfollow`,
                         method: "GET"
                     },
                     state => {
-                        console.log('点击详情时返回数据2==========',state)
                         debugger;
                         dispatch({
                             type: "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM",
@@ -867,6 +920,7 @@ export function addCustomer(visiable, newType) {
 //点击新增按钮获取业务类型
 export function addNewType() {
     return dispatch => {
+        debugger
         reqwest(
             {
                 url: baseDir + 'cum/customers/roles/biztypes',

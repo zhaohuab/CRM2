@@ -18,17 +18,17 @@ class Header extends React.Component {
         this.menuSys = (
             <Menu>
                 <Menu.Item key="1">
-                    <p className="menu-more">
+                    <p className="app-header-menu-more">
                         <span>个人信息</span>
                     </p>
                 </Menu.Item>
                 <Menu.Item key="3">
-                    <p className="menu-more">
+                    <p className="app-header-menu-more">
                         <span>修改密码</span>
                     </p>
                 </Menu.Item>
-                <Menu.Item key="4">
-                    <p className="menu-more" onClick={this.loginOut.bind(this)}>
+                <Menu.Item key="4" >
+                    <p className="app-header-menu-more" onClick={this.loginOut.bind(this)}>
                         <span>退出</span>
                     </p>
                 </Menu.Item>
@@ -37,12 +37,12 @@ class Header extends React.Component {
         this.menuMore = (
             <Menu>
                 <Menu.Item key="1">
-                    <p className="menu-more" onClick={this.getApprovalData}>
+                    <p className="app-header-menu-more" onClick={this.getApprovalData}>
                         <span>审批</span>
                     </p>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <p className="menu-more" onClick={this.getData} style={{cursor:'pointer'}}>
+                    <p className="app-header-menu-more" onClick={this.getData} style={{cursor:'pointer'}}>
                         通讯录
                     </p>
                 </Menu.Item>
@@ -51,6 +51,7 @@ class Header extends React.Component {
     }
 
     loginOut() {
+        debugger
         this.props.action.loginOut();
     }
 

@@ -27,7 +27,7 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
-        this.props.handleSearch(this.props.$$state.toJS().searchMap);
+        this.props.handleSearch();
     }
     moreFn() {
         this.props.formMore();
