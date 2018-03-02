@@ -21,6 +21,8 @@ let $$initialState = {
         page: 1
     },
     moreShow: false, //查询条件显隐,
+
+    panelLoding:false,//详情面板加载
     viewState: false, //滑动面板显隐,
     dynamicData: [],//存放动态数据
 
@@ -166,16 +168,23 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 searchPlan:action.data
             }); 
-          
+        //详情停启用加载
+        case 'CUSTOMERCOMPANY_LIST_ABLESTATELOADING':
+            return $$state.merge({
+                panelLoding:true,
+                tableLoding:true
+            });
         //详情起停用功能    
         case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE':
             let enableState = $$state.get('viewData').toJS()
             enableState.enableState = action.state;
-            
+            debugger
             return $$state.merge({
                 data: action.data,
                 pagination: action.pagination,
-                viewData: enableState
+                viewData: enableState,
+                panelLoding:false,
+                tableLoding:false
             });
         //新增、修改取消显示    
         case "CUSTOMERCOMPANY_LIST_SHOWFORM":
@@ -389,7 +398,6 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 selectedRowKeys: [],
                 tableLoding:false
             });
-
         //点击显示详情面板加载
         case 'CUSTOMERCOMPANY_LIST_SHOWVIEWLOADING':
             return $$state.merge({
@@ -402,7 +410,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 
             //获取、添加关注数据
             actionData.followState = action.state.followState;
-
+            debugger
             return $$state.merge({
                 viewData: actionData,
                 leftJoinPanelKeys: '1',
@@ -455,10 +463,17 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 viewDataJoinList: action.data,
                 RightJoinPanelKeys: action.index
             });
-        case 'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_LIST'://点击详情面板中左侧详情部分列表数据           
+        //点击相关相关加载loading
+        case 'CUSTOMERCOMPANY_VIEWPANEL_RELATIVELOAING':
+            return $$state.merge({
+                panelLoding: true,
+            });
+        //点击详情面板中详情部分列表数据     
+        case 'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_LIST':          
             return $$state.merge({
                 leftJoinPanelKeys: action.index + '',
-                viewDataRelevant: action.data
+                viewDataRelevant: action.data,
+                panelLoding: false,
             });
 
         case 'CUSTOMERCOMPANY_VIEWPANEL_PANELLEFT_SETLIST'://只能加参与人

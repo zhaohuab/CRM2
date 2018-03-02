@@ -19,7 +19,7 @@ import { bindActionCreators } from "redux";
 import * as Actions from "../../action";
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
-const confirm = Modal.confirm;
+const confirm = Modal.confirm; 
 
 
 import UploadImg from "../list/UploadImg";

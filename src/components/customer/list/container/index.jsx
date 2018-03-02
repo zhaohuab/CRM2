@@ -309,7 +309,8 @@ class List extends React.Component {
             pagination,
             tableLoding,
             pageSize,
-            data
+            data,
+            panelLoding
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -356,14 +357,21 @@ class List extends React.Component {
                         />
                     </div>
                 </Modal>
+               
                 <SlidePanel
                     viewState={viewState}
                     onClose={this.slideHide.bind(this)}
                     className='tab-viewPanel-recoverd'
-                >
-                    <ViewPanel ref="panelHeight" />
+                >   
+                    <div className='panelSlide'>
+                        <Spin spinning={panelLoding} >
+                            <ViewPanel ref="panelHeight" />
+                        </Spin>
+                    </div>
                 </SlidePanel>
+                
                 <LeadExport/>
+                
             </div>
 
         );

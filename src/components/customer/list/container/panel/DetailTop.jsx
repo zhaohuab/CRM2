@@ -283,7 +283,7 @@ class DetailTop extends React.Component {
                             {
                                 viewData.salesVOs && viewData.salesVOs.length?
                                         viewData.salesVOs[0].createdTime?
-                                        this.changeTime(viewData.salesVOs[0].createdTime.time)
+                                        this.changeTime(viewData.salesVOs[0].createdTime.time)[0]
                                         :'无' 
                                 :'无'
                             }
