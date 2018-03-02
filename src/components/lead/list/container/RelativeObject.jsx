@@ -53,19 +53,18 @@ class RelevantObject extends React.Component {
         let relData = editData.related;
         if(relData&&relData.bizopps){
             let { bizopps} = relData;
+            bizopps=this.transTime(bizopps);
         }
         if(relData&&relData.contacts){
             let { contacts} = relData;
         }
         if(relData&&relData.customers){
             let {customers} = relData;
-        }
-      
-         bizopps=this.transTime(bizopps);
-        if (customers && customers.salesVOs) {
-            let ownerUserName = customers.salesVOs;
-        } else {
-            let ownerUserName = []
+            if (customers && customers.salesVOs) {
+                let ownerUserName = customers.salesVOs;
+            } else {
+                let ownerUserName = []
+            }
         }
 
         return (
@@ -79,7 +78,7 @@ class RelevantObject extends React.Component {
                     </Row>
 
 
-                    {relData && customers ?
+                    {relData && relData.customers?
                         <Row>
                             <Row style={{ marginLeft: '21px', marginBottom: '5px' }}>
 
@@ -117,7 +116,7 @@ class RelevantObject extends React.Component {
                         </Col>
                     </Row>
 
-                    {relData && bizopps ?
+                    {relData &&relData.bizopps ?
                         <Row>
                             {bizopps && bizopps.customerName ?
                                 <Row style={{ marginLeft: '21px', marginBottom: '5px' }}>
@@ -176,7 +175,7 @@ class RelevantObject extends React.Component {
                             <span sytle={{ color: '#333333' }}>转化的联系人</span>
                         </Col>
                     </Row>
-                    {relData && contacts ?
+                    {relData &&relData.contacts ?
                         <Row>
                             {contacts && contacts.ownerUserInfo ?
                                 <Row style={{ marginLeft: '21px', marginBottom: '5px' }}>

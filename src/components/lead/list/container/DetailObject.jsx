@@ -240,7 +240,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.cumSize
+                                            viewData.cumSizeNum
                                         }
                                     </span>
                                 </Col>

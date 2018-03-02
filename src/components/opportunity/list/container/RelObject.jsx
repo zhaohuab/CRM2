@@ -47,16 +47,16 @@ class RelObject extends React.Component {
                 dataIndex: "customerName"
             },
             {
-                title: "部门",
-                dataIndex: "deptName"
+                title: "职务",
+                dataIndex: "postName"
             },
             {
-                title: "角色",
-                dataIndex: "roleName"
+                title: "手机",
+                dataIndex: "mobile"
             },
             {
-                title: "态度",
-                dataIndex: "attitudeName"
+                title: "邮箱",
+                dataIndex: "email"
             }
         ];
     }

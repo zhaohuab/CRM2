@@ -61,7 +61,11 @@ let $$initialState = {
 	contactCardSelectedRowKeys: [],
 	relUserData: [],
 
-	attachFile: []
+	attachFile: [],
+	//产品分类数据
+	classRefTree: [],
+	//动态
+	dynamicData: []
 };
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
@@ -285,14 +289,14 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				contactCardSelectedRowKeys: []
 			})
 
-			//删除联系人保存
+		//删除联系人保存
 		case 'OPPORTUNITY_LIST_DELCONTACT':
-		return $$state.merge({
-			contactData: action.payload.data,
-			contactSelectedRows: [],
-			contactSelectedRowKeys: []
-		})
-			
+			return $$state.merge({
+				contactData: action.payload.data,
+				contactSelectedRows: [],
+				contactSelectedRowKeys: []
+			})
+
 		case 'OPPORTUNITY_LIST_CLOSECONTACTVIEW':
 			return $$state.merge({
 				contactCardVisible: false,
@@ -332,12 +336,12 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				attachFile: attachFile2
 			});
 
-			
-			//删除参与人
-			case "OPPORTUNITY_LIST_SAVERELUSERSUCCESS":
+
+		//删除参与人
+		case "OPPORTUNITY_LIST_SAVERELUSERSUCCESS":
 
 			return $$state.merge({
-				relUserData:action.payload
+				relUserData: action.payload
 			});
 
 
@@ -354,6 +358,19 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				relUserData
 			});
+
+		//查询产品分类
+		case "OPPORTUNITY_LIST_GETPROTYPETREE":
+			return $$state.merge({
+				classRefTree: action.payload.classRefTree
+			});
+
+		//动态
+		case "OPPORTUNITY_LIST_GETDYNAMICDATA":
+			return $$state.merge({
+				dynamicData: action.payload.data
+			});
+
 
 
 		default:
