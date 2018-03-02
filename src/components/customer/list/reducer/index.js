@@ -3,6 +3,7 @@ import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     data: [], //tabel展示数据
+    tableLoding:false,//table加载
     enumData: {},//存储查询条件预制数据
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
@@ -129,7 +130,16 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 leadStep: action.payload.leadStep
             });
-
+        //table停启用加载
+        case 'CUSTOMERCOMPANY_LIST_ENABLELOADING':
+            return $$state.merge({
+                tableLoding: true,
+            });
+        //table加载动画
+        case 'CUSTOMERCOMPANY_LIST_GETDATALOADING':
+            return $$state.merge({
+                tableLoding: true,
+            });
         //查询各种table数据
         case "CUSTOMERCOMPANY_LIST_GETDATA":
         debugger;
@@ -147,7 +157,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 pagination: action.payload.pagination,
                 selectedRowKeys: [],
                 pageSize:action.payload.pagination.page,
-                witchSeach:action.payload.witch//存储当前是查询方案，还是查询条件
+                witchSeach:action.payload.witch,//存储当前是查询方案，还是查询条件
+                tableLoding:false
             });
         //获取查询方案预置条件
         case 'CUSTOMERCOMPANY_LIST_GETSEARCHPLANE'://CUSTOMERCOMPANY_LIST_SETSEARCHPLANE
@@ -175,29 +186,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             if(EditCancelData.id){
                 EditCancelData =  $$state.get('editTempData').toJS();
             }
-            //详细地址
-            if(EditCancelData.street && EditCancelData.street.address){
-                EditCancelData.street = EditCancelData.street.address
-            }else if(EditCancelData.street && typeof EditCancelData.street == 'string'){
-                EditCancelData.street = EditCancelData.street
-            }else{
-                EditCancelData.street = ''
-            }
-
-            // //行业
-            // if(EditCancelData.industry && EditCancelData.industry.id){
-            //     EditCancelData.industry = EditCancelData.industry.id
-            // }else{
-            //     EditCancelData.industry = ''
-            // }
-
-            // //上级客户
-            // if(EditCancelData.parentId && EditCancelData.parentId.id){
-            //     EditCancelData.parentId = EditCancelData.parentId.id
-            // }else{
-            //     EditCancelData.parentId = ''
-            // }
-
+            
             return $$state.merge({
                 formVisitable: action.payload.visible,
                 viewData:EditCancelData
@@ -386,23 +375,39 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 addIcbcName:'',
                 icbcInfo:[]
             });
+
+        //删除客户loading 
+        case "CUSTOMERCOMPANY_LIST_DELETELOADING":
+            return $$state.merge({
+                tableLoding:true
+            });
         //删除客户    
         case "CUSTOMERCOMPANY_LIST_DELETE":
+        debugger
             return $$state.merge({
                 data: action.payload.data,
-                selectedRowKeys: []
+                selectedRowKeys: [],
+                tableLoding:false
             });
-        //显示面板时，根据客户id查客户数据，改变“关注”值    
+
+        //点击显示详情面板加载
+        case 'CUSTOMERCOMPANY_LIST_SHOWVIEWLOADING':
+            return $$state.merge({
+                viewState:action.visible,
+                panelLoding:true
+            });   
+        //显示详情面板时，根据客户id查客户数据   
         case "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM":
             let actionData = action.data;
-            //关注
+
+            //获取、添加关注数据
             actionData.followState = action.state.followState;
 
             return $$state.merge({
-                viewState: action.visible,
                 viewData: actionData,
                 leftJoinPanelKeys: '1',
-                RightJoinPanelKeys: '1'
+                RightJoinPanelKeys: '1',
+                panelLoding:false
             });
         //更改关注未关注    
         case "CUSTOMERCOMPANY_LIST_FOLLOWSTATECHANGE":

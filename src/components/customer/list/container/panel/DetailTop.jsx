@@ -247,7 +247,7 @@ class DetailTop extends React.Component {
                             justify="center"
                             className="info-title"
                         >
-                            <i className="iconfont icon-fuzeren" />最近跟进时间:
+                            <i className="iconfont icon-fuzeren" />跟进时间:
                         </Row>
                     </Col>
                     <Col span={8}>
