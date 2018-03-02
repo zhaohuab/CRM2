@@ -52,7 +52,7 @@ class MoreForm extends React.Component {
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
-                    <Row>
+                    <Row type='flex'>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("name", {})(
@@ -60,48 +60,8 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("type", {})(
-                                    <Enum
-                                        addOptionAll={"客户类型"}
-                                        dataSource={enumData.type}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("level", {})(
-                                    <Enum
-                                        addOptionAll={"客户等级"}
-                                        dataSource={enumData.level}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("province_city_district")(
-                                    <Cascader
-                                        options={cityData}
-                                        placeholder="请选择城市"
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("isGroup", {})(
-                                    <Enum
-                                        addOptionAll={"集团客户"}
-                                        dataSource={enumDataFake.isGroupEnum}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
+                       
+                       
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("industry", {})(
@@ -109,16 +69,7 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
-                            <FormItem {...formItemLayout}>
-                                {getFieldDecorator("cannelType", {})(
-                                    <Enum
-                                        addOptionAll={"渠道类型"}
-                                        dataSource={enumData.cannelType}
-                                    />
-                                )}
-                            </FormItem>
-                        </Col>
+                       
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("state", {})(
@@ -129,20 +80,17 @@ class MoreForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                    </Row>
-                    <Row>
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
-                                {getFieldDecorator("enableState", {})(
+                                {getFieldDecorator("scale", {})(
                                     <Enum
-                                        addOptionAll={"启用状态"}
-                                        dataSource={
-                                            enumDataFake.enableStateEnum
-                                        }
+                                        addOptionAll={"客户规模"}
+                                        dataSource={enumData.scale}
                                     />
                                 )}
                             </FormItem>
                         </Col>
+                       
                         <Col span={6}>
                             <div className="more-btn">
                                 <Button htmlType="submit" disabled = {tableLoding}>查询</Button>
@@ -198,3 +146,65 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WarpMilForm);
+{/* <Col span={6}>
+    <FormItem {...formItemLayout}>
+        {getFieldDecorator("isGroup", {})(
+            <Enum
+                addOptionAll={"集团客户"}
+                dataSource={enumDataFake.isGroupEnum}
+            />
+        )}
+    </FormItem>
+</Col> */}
+    {/* <Col span={6}>
+    <FormItem {...formItemLayout}>
+        {getFieldDecorator("cannelType", {})(
+            <Enum
+                addOptionAll={"渠道类型"}
+                dataSource={enumData.cannelType}
+            />
+        )}
+    </FormItem>
+</Col> */}
+    {/* <Col span={6}>
+    <FormItem {...formItemLayout}>
+        {getFieldDecorator("type", {})(
+            <Enum
+                addOptionAll={"客户类型"}
+                dataSource={enumData.type}
+            />
+        )}
+    </FormItem>
+</Col>
+<Col span={6}>
+    <FormItem {...formItemLayout}>
+        {getFieldDecorator("level", {})(
+            <Enum
+                addOptionAll={"客户等级"}
+                dataSource={enumData.level}
+            />
+        )}
+    </FormItem>
+</Col> */}
+    {/* <Col span={6}>
+    <FormItem {...formItemLayout}>
+        {getFieldDecorator("province_city_district")(
+            <Cascader
+                options={cityData}
+                placeholder="请选择城市"
+            />
+        )}
+    </FormItem>
+</Col> */}
+    {/* <Col span={6}>
+    <FormItem {...formItemLayout}>
+        {getFieldDecorator("enableState", {})(
+            <Enum
+                addOptionAll={"启用状态"}
+                dataSource={
+                    enumDataFake.enableStateEnum
+                }
+            />
+        )}
+    </FormItem>
+</Col> */}

@@ -247,8 +247,8 @@ class RelevantObject extends React.Component {
                                                 <Row className='position' type='flex' justify='center'><span>销售总监</span></Row>
                                         </Col>
                                         <Col span={16} className='right'>
-                                                <Row  type='flex' justify='center' align='bottom' className='content1'><span className='key'>角色：</span><span className='value' title={item.role}>{item.role}</span></Row>
-                                                <Row  type='flex' justify='center' align='top' className='content2'><span className='key'>态度：</span><span className='value'>{item.attitude}</span></Row>
+                                                <Row  type='flex' justify='center' align='bottom' className='content1'><span className='key'>电话：</span><span className='value' title = {item.mobile}>{item.mobile}</span></Row>
+                                                <Row  type='flex' justify='center' align='top' className='content2'><span className='key'>邮箱：</span><span className='value' title = {item.email}>{item.email}</span></Row>
                                         </Col>
                                         <span className='del' onClick={this.delContacts.bind(this,item.id)}><i className='iconfont icon-canyuren-shanchu'/></span>
                                     </Row>
