@@ -120,7 +120,10 @@ class List extends React.Component {
                 //     debugger
                 //     this.props.action.changeStep(2);
                 // }, 1000)
+            }else if(result.length && result[0].code == '1'){
+                message.error([result[0].message]);
             }
+
         }, (error) => {
             console.log(34, error)
             this.props.action.fileFail(false)

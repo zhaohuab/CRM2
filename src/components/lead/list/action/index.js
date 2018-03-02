@@ -153,8 +153,9 @@ export function closeUserCard () {
 
 export function assignPeople(pagination,ids,selectedUserRows,searchMap){
 
-    debugger
+
     return dispatch => {
+      
         reqwest(
             {
                 url: url.lead + "/assign",
@@ -267,6 +268,7 @@ export function setEnableState(ids, state, page, searchMap) {
 export function getListData(pagination, searchMap,option) {
     debugger
     return dispatch => {
+        dispatch({type:'CLUE_LIST_DELETELOADING'})
         dispatch(fetchData("CLUE_LIST_SAVESEARCHMAP", searchMap));
        // dispatch(fetchData("CLUE_LIST_SAVESOPTION", option))
         debugger
@@ -341,6 +343,7 @@ export function selectClue(selectedRows, selectedRowKeys) {
 export function deleteData(ids, searchMap, pagination) {
     //debugger
     return dispatch => {
+        dispatch({type:'CLUE_LIST_DELETELOADING'})
         reqwest(
             {
                 url: url.lead + "/batch",
