@@ -42,6 +42,7 @@ class PanelView extends React.Component {
     render() {
         let{ modalData, dynamicData, nameArr } = this.props.$$state.toJS();
         modalData=this.translate(modalData,nameArr)
+        debugger;
         return (      
             <div>
             {modalData.name?
@@ -171,7 +172,45 @@ class PanelView extends React.Component {
                         <div className="timeline-recoverd">
                             <div className="contacts-timeline-title">动态</div>
                             <div className="contacts-timeline">
-                                <Timeline>
+                            {
+                    dynamicData && dynamicData.length?
+                    <Timeline>
+                        {
+                            dynamicData && dynamicData.length?
+                            dynamicData.map((item)=>{
+                                debugger;
+                                return(
+                                    <Timeline.Item>
+                                        <p>
+                                            {
+                                                item.content && item.content.length?
+                                                item.content.map((itemDetail)=>{
+                                                    debugger
+                                                    return (
+                                                        <span>
+                                                            {
+                                                                itemDetail.link?
+                                                                <span className="timeline-import">
+                                                                    {itemDetail.title + itemDetail.link.title}
+                                                                </span>:
+                                                                <span>{itemDetail.title}</span>
+                                                            }
+                                                        </span>
+                                                    )
+                                                }):''
+                                            }
+                                        </p>
+                                        <p className="timeline-time">
+                                            {item.time?item.time:'暂无创建时间'}
+                                        </p>
+                                    </Timeline.Item>
+                                )
+                            }):''
+                        }
+                    </Timeline>:<div>暂无动态</div>
+                }
+
+                           {/*      <Timeline>
                                 {
                                     dynamicData?
                                     (
@@ -183,7 +222,7 @@ class PanelView extends React.Component {
                                                             {item.name}
                                                         </span>
                                                         <span className="timeline-item-normal">
-                                                            创建了任务
+                                                            创建联系人
                                                         </span>
                                                         <span className="timeline-item-import">
                                                             {item.content}
@@ -191,15 +230,13 @@ class PanelView extends React.Component {
                                                     </p>
                                                     <p className="timeline-time">
                                                         {moment(item.createdTime.time).format('YYYY-MM-DD HH:mm:ss')}
-                                                        {/* <span>2015-09-01</span>
-                                                        <span>14：30</span> */}
                                                     </p>
                                                 </Timeline.Item>
                                             )
                                         })
                                     ):'暂无'
                                 }
-                                </Timeline>
+                                </Timeline> */}
                             </div>
                         </div>
                     </Col>

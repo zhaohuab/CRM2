@@ -139,20 +139,7 @@ export default function reducer(
                 post: action.data
             });    
         case "CONTACTS_SLIDESHOW_CARD": //打开详情窗口
-            let cccvvvvvvvvvv=action;
-            let data2 = $$state.toJS().data.data
-            let slideShowObj = {};
-            debugger;
-            if(data2){
-                data2.forEach(item=>{
-                    if(item.id==action.data.id){
-                        slideShowObj=item
-                    }
-                })
-            }
-            //----一会取消这个slideShowData----------
             return $$state.merge({
-                slideShowData: slideShowObj,
                 dynamicData: action.result.dynamicList,
             });
         case "CONTACTS_LIST_FAIL": //请求失败，关闭loading
@@ -164,7 +151,7 @@ export default function reducer(
             let post={id:0,name:''};
             post.id=action.result.post;
             post.name=action.result.postName;
-            debugger
+            //debugger
             return $$state.merge({
                 modalData: action.result,
                 post: post,

@@ -184,7 +184,7 @@ class Card extends React.Component {
 const CardModal = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-        debugger
+        //debugger
         let modalData = props.$$state.toJS().modalData;
         let value = {}
         let changeFieldData = (modalData,key)=>{
@@ -202,6 +202,7 @@ const CardModal = Form.create({
             for (let key in modalData) {
               value[key] = { value: changeFieldData(modalData,key)};
             }
+            debugger;
             return {
                 ...value
             }
@@ -211,7 +212,7 @@ const CardModal = Form.create({
         };
     },
     onFieldsChange: (props, onChangeFild) => {
-        debugger;
+        //debugger;
         let {modalData,nameArr} = props.$$state.toJS();
         for (let key in onChangeFild) { 
           /*   if(key=='customer') {

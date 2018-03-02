@@ -277,7 +277,7 @@ export function saveAddCard(data,arr){
 
 //往redux中储存职务
 export function choosed(data){
-    debugger;
+    //debugger;
     return {
         type: "CONTACTS_CHOOSED_CARD",
         data
@@ -294,12 +294,12 @@ export function slideShow(data){
                 method: "GET",
                 data:{
                     param:{
-                        id: 1720
+                        id: data.id
                     }
                 }
             },
             result => {  //动态
-               debugger         
+               //debugger         
                 dispatch({ type: "CONTACTS_SLIDESHOW_CARD", result, data});
             }
         );
@@ -309,7 +309,7 @@ export function slideShow(data){
                 method: "GET",
             },
             result => {  //该联系人全部数据
-                debugger;        
+                //debugger;        
                 dispatch({ type: "CONTACTS_EDIT_DETAIL", result, data});
             }
         ); 
