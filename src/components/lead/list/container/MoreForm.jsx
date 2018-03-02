@@ -44,7 +44,7 @@ class MoreForm extends React.Component {
 
 
     render() {
-        console.log(33,enumDataFake.state)
+      
         debugger
         const formItemLayout = {
             labelCol: { span: 2 },
@@ -95,7 +95,7 @@ class MoreForm extends React.Component {
 
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator(
-                                    "ownerDeptId"
+                                    "deptId"
                                 )(
                                     <Departments orgType = {3}  fatherorgId={deptid} />
                                     )}
@@ -139,7 +139,7 @@ class MoreForm extends React.Component {
                         <Col span={6}>
 
                             <FormItem  {...formItemLayout}>
-                                {getFieldDecorator("signTime")(
+                                {getFieldDecorator("assignTime")(
                                     <RangePicker />
                                 )}
                             </FormItem>

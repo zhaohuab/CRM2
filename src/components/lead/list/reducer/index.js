@@ -246,9 +246,9 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             debugger
             let ser=action.data;
             let depatId;
-            if(ser.ownerDeptId){
-                let aaa=ser.ownerDeptId;
-                 depatId=aaa.key;
+            if(ser.deptId){
+                //let aaa=ser.deptId;
+                 depatId=ser.deptId.key;
             }else{
                  depatId='';
             }

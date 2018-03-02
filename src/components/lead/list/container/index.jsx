@@ -63,10 +63,10 @@ class Clue extends React.Component {
             },
             {
                 title: "客户规模",
-                dataIndex: "cumSizeSum",
+                dataIndex: "cumSizeNum",
                 render: (text, record) => (
                     <div>
-                        {record.cumSizeSum ? record.cumSizeSum : ''}
+                        {record.cumSizeNum ? record.cumSizeNum : ''}
                     </div>
                 )
             },
@@ -97,12 +97,7 @@ class Clue extends React.Component {
             //debugger;
             this.props.action.selectClue(selectedRows, selectedRowKeys);
         };
-        this.menu = (
-            <Menu>
-                <Menu.Item key="1">导入</Menu.Item>
-                {/* <Menu.Item key="2">导出</Menu.Item> */}
-            </Menu>
-        );
+       
         this.state = {
             pagination: {
                 pageSize: 10,

@@ -5,7 +5,7 @@ import { Icon, Input, Table, Row, Col, Button ,Modal} from 'antd';
 const Search = Input.Search;
 import * as Actions from "../action";
 import ProductTable from "./ProductTable.jsx"
-
+import PrdClassRef from "./PrdClassRef.jsx"
 
 class EditableCell extends React.Component {
     state = {
@@ -25,12 +25,19 @@ class EditableCell extends React.Component {
     edit = () => {
         this.setState({ editable: true });
     }
+
+    selectProductType = (productType) =>{
+        this.props.selectProductType(productType)
+    }
+
+
     render() {
         const { value, editable } = this.state;
         const {type,colName} = this.props;
         if(type=="first"){
-            if(colName =="no" ){
-                return (<Search onClick={this.props.showProductCard.bind(this)}/>)
+            if(colName =="productTypeId" ){
+                return (<PrdClassRef onChange={this.selectProductType}/>)
+                // return <div></div>;
             }else{
                 return <div></div>;
             }
@@ -88,11 +95,13 @@ class DetailTable extends React.Component {
             {
                 title: "产品分类",
                 width:'40%',
-                dataIndex: "productTypeId",
+                dataIndex: "prdtypeName",
                 render: (text, record, index) => (
                     <EditableCell
                         data={text}
+                        colName="productTypeId"
                         type={record.type}
+                        selectProductType={this.selectProductType.bind(this)}
                         onChange={this.onCellChange.bind(this, index, "productTypeId")}
                     />
                 )
@@ -191,6 +200,28 @@ class DetailTable extends React.Component {
         this.props.action.showProductCard();
     }
     
+    selectProductType(productType){
+        const oppBList = this.props.$$state.get("oppBList").toJS();
+        let newOppBList = this.addProductType(oppBList,productType)
+        this.props.action.saveOppBList(newOppBList);
+    }
+
+    addProductType(oppBList,product){
+        let tempId = this.state.tempId
+        const newOppB = new Object()
+        newOppB.productTypeId = product.prdtypeId;
+        newOppB.prdtypeName = product.prdtypeName;
+        newOppB.price = 0;
+        newOppB.number = 0;
+        newOppB.editState = "add";
+        newOppB.id = "temp"+tempId;
+        tempId++;
+        oppBList.push(newOppB);
+        
+        this.setState({tempId})
+        return oppBList;
+    }
+
     componentDidMount() {
        
     }
@@ -261,6 +292,7 @@ class DetailTable extends React.Component {
         return data;
     }
 
+    
     render() {
         const dataSource = this.warpData(this.props.$$state.get("oppBList").toJS());
         const productVisible = this.props.$$state.get("productVisible");

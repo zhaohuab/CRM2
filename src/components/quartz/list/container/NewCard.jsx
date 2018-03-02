@@ -20,9 +20,10 @@ export default class TaskGroupForm extends React.Component {
           sm: { span: 14 },
         },
       };
+      
       return (
         <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="">
+          <FormItem {...formItemLayout} label="名称">
             {getFieldDecorator('name', {})(
               <Input />
             )}

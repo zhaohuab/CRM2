@@ -1,7 +1,7 @@
 import reqwest from 'utils/reqwest'
 import { message } from 'antd';
 import moment from 'moment'
-import { opportunity as url, product, oppflow, oppstage,upload } from 'api';
+import { opportunity as url, product, oppflow, oppstage,upload,prdtype } from 'api';
 
 
 const fetchData = (type, payload) => {
@@ -191,7 +191,15 @@ const showFormNew = (visible, editData) => {
                     }
                 }
             }, (data) => {
-                dispatch(fetchData('OPPORTUNITY_LIST_SHOWFORMNEW', { visible, editData, stageEnum: data.stageEnum }));
+                reqwest({
+                    url: prdtype.prdtypeTree,
+                    method: 'get',
+                    data: {
+                    }
+                }, (result) => {
+                    dispatch(fetchData('OPPORTUNITY_LIST_GETPROTYPETREE', {  classRefTree:result.data }));
+                    dispatch(fetchData('OPPORTUNITY_LIST_SHOWFORMNEW', { visible, editData, stageEnum: data.stageEnum }));
+                })
             })
         } else {
             dispatch(fetchData('OPPORTUNITY_LIST_SHOWFORMNEW', { visible, editData, stageEnum: [] }));
@@ -634,6 +642,23 @@ export function filesSuccess(file) {
         type: "OPPORTUNITY_LIST_FILESSUCCESS",
         payload: file,
     };
+}
+
+
+
+//获取动态
+export function getDynamicData(id) {
+    return (dispatch) => {
+        reqwest(
+            {
+                url: url.opportunity +"/"+id+"/dynamic",
+                method: "GET",
+            },
+            result => {
+               dispatch(fetchData('OPPORTUNITY_LIST_GETDYNAMICDATA', { data:result.dynamiclist }));
+            }
+        );
+    }
 }
 
 

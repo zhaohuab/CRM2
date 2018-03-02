@@ -12,6 +12,8 @@ import WinCard from './WinCard';
 import LostCard from './LostCard';
 import RelObject from './RelObject';
 import JoinList from './JoinList'
+import DynamicState from './DynamicState';
+
 class ViewPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -20,22 +22,11 @@ class ViewPanel extends React.Component {
         };
 
         this.columns = [
-            {
-                title: "产品名称",
-                dataIndex: "productId",
-
-            },
+          
+           
             {
                 title: "产品分类",
-                dataIndex: "productTypeId"
-            },
-            {
-                title: "品牌",
-                dataIndex: "brandId"
-            },
-            {
-                title: "销售单位",
-                dataIndex: "measureId"
+                dataIndex: "productTypeName"
             },
             {
                 title: "销售单价",
@@ -45,10 +36,7 @@ class ViewPanel extends React.Component {
                 title: "数量",
                 dataIndex: "number"
             },
-            {
-                title: "合计金额",
-                dataIndex: "sumMoney"
-            }
+        
         ]
     }
 
@@ -324,7 +312,7 @@ class ViewPanel extends React.Component {
                             <Tabs defaultActiveKey="1" >
                                 {/* <Tabs defaultActiveKey="1" activeKey = {1} onTabClick={this.panelTabRightFn.bind(this)}> */}
                                 <TabPane tab="动态" key="1">
-                                    {/* <DynamicState/> */}
+                                    <DynamicState/>
                                 </TabPane>
                                 <TabPane tab="参与人" key="2">
                                     <JoinList />

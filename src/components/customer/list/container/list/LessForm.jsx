@@ -27,7 +27,11 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
-        this.props.handleSearch(this.props.$$state.toJS().searchMap);
+        let { searchMap , tableLoding } = this.props.$$state.toJS();
+        if(tableLoding){
+            return
+        }
+        this.props.handleSearch();
     }
     moreFn() {
         this.props.formMore();
@@ -39,7 +43,7 @@ class LessForm extends React.Component {
             wrapperCol: { span: 22 }
         };
         
-        let { enumData } = this.props.$$state.toJS();
+        let { enumData , tableLoding} = this.props.$$state.toJS();
         
         return (
             <div className="less-form">
@@ -75,7 +79,7 @@ class LessForm extends React.Component {
 
                         <Col span={6}>
                             <div className="more-btn">
-                                <Button htmlType="submit">查询</Button>
+                                <Button htmlType="submit" disabled = {tableLoding}>查询</Button>
                                 <span
                                     onClick={this.moreFn.bind(this)}
                                     className="more-up"

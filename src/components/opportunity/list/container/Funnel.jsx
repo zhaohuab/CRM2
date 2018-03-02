@@ -65,11 +65,16 @@ class Funnel extends React.Component {
         const funnelData = this.props.$$state.get("funnelData").toJS().data;
         const moneyData = this.props.$$state.get("funnelData").toJS().money;
         const legend = []
+        let tempMax = 0;
         for (let i = 0; i < funnelData.length; i++) {
             legend.push(funnelData[i].name);
+            if(funnelData[i].value>tempMax){
+                tempMax = funnelData[i].value
+            }
         }
         if (this.funnelEchar) {
             this.funnelOption.legend.data = legend;
+            this.funnelOption.series[0].max = tempMax;
             this.funnelOption.series[0].data = funnelData;
             this.funnelEchar.setOption(this.funnelOption);
             window.addEventListener('resize', this.onWindowResize.bind(this))

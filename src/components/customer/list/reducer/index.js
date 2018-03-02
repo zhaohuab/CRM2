@@ -3,12 +3,17 @@ import { pageAdd, pageEdit } from 'utils/busipub'
 
 let $$initialState = {
     data: [], //tabel展示数据
+    tableLoding:false,//table加载
     enumData: {},//存储查询条件预制数据
     selectedRowKeys: [],//存储table已选择keys
     formVisitable: false, //新增、修改modal显隐
     newCumMenu: [],//点击新增按钮时获取的业务类型
 
     searchMap: {}, //存放实时输入的表单查询查询条件
+    searchPlan:{},//存放获取的查询方案数据
+    serachMapData:undefined,//保存已选择的查询条件数据
+    searchPlaneData:undefined,//保存已选择的查询方案数据
+    witchSeach:'',//保存当前使用的是哪个查询结果，当点击分页的时候，获取上一次查询结果
     viewData: {}, //获取当前客户信息，view面板使用数据
     editTempData:'',
     pagination: {//list列表页table分页信息
@@ -125,16 +130,43 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 leadStep: action.payload.leadStep
             });
-
+        //table停启用加载
+        case 'CUSTOMERCOMPANY_LIST_ENABLELOADING':
+            return $$state.merge({
+                tableLoding: true,
+            });
+        //table加载动画
+        case 'CUSTOMERCOMPANY_LIST_GETDATALOADING':
+            return $$state.merge({
+                tableLoding: true,
+            });
         //查询各种table数据
         case "CUSTOMERCOMPANY_LIST_GETDATA":
         debugger;
-            return $$state.merge({
+            let s
+            if(action.payload.witch == 'searchMap'){
+                s = $$state.set('serachMapData',action.payload.searchData)
+            }else if(action.payload.witch == 'searchPlanMap'){
+                s = $$state.set('searchPlaneData',action.payload.searchData)
+            }else{//用于没有操作过任何查询条件
+                s = $$state.set('serachMapData',undefined)
+                s = $$state.set('searchPlaneData',undefined)
+            }
+            return s.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
                 selectedRowKeys: [],
                 pageSize:action.payload.pagination.page,
+                witchSeach:action.payload.witch,//存储当前是查询方案，还是查询条件
+                tableLoding:false
             });
+        //获取查询方案预置条件
+        case 'CUSTOMERCOMPANY_LIST_GETSEARCHPLANE'://CUSTOMERCOMPANY_LIST_SETSEARCHPLANE
+            debugger
+            return $$state.merge({
+                searchPlan:action.data
+            }); 
+          
         //详情起停用功能    
         case 'CUSTOMERCOMPANY_LIST_DETAILENABLESTATE':
             let enableState = $$state.get('viewData').toJS()
@@ -154,29 +186,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             if(EditCancelData.id){
                 EditCancelData =  $$state.get('editTempData').toJS();
             }
-            //详细地址
-            if(EditCancelData.street && EditCancelData.street.address){
-                EditCancelData.street = EditCancelData.street.address
-            }else if(EditCancelData.street && typeof EditCancelData.street == 'string'){
-                EditCancelData.street = EditCancelData.street
-            }else{
-                EditCancelData.street = ''
-            }
-
-            //行业
-            if(EditCancelData.industry && EditCancelData.industry.id){
-                EditCancelData.industry = EditCancelData.industry.id
-            }else{
-                EditCancelData.industry = ''
-            }
-
-            //上级客户
-            if(EditCancelData.parentId && EditCancelData.parentId.id){
-                EditCancelData.parentId = EditCancelData.parentId.id
-            }else{
-                EditCancelData.parentId = ''
-            }
-
+            
             return $$state.merge({
                 formVisitable: action.payload.visible,
                 viewData:EditCancelData
@@ -186,7 +196,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
         case 'CUSTOMERCOMPANY_LIST_SHOWEDITFORM':
             let editTempData =  $$state.get('viewData').toJS();
             let editData = Immutable.fromJS(editTempData).toJS()
-            debugger
+            
             //详细地址
             let streetEdit = {
                 address: editTempData.street,
@@ -209,13 +219,21 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 name:editTempData.parentName,
                 id:editTempData.parentId
             }
+            //客户状态
+            //editData.state = editTempData.salesVOs && editTempData.salesVOs.length?editTempData.salesVOs[0].state:undefined
+            debugger
+            //云产品线
+            editData.productLine = {
+                id:editTempData.productLine,
+                name:editTempData.productLineName
+            }
 
             editData.province_city_district = {}
             editData.province_city_district.result = district
             editData.street = streetEdit
             editData.industry = industry
             editData.parentId = parentId
-            //debugger
+            debugger
             return $$state.merge({
                 formVisitable: action.visiable,
                 viewData:editData,
@@ -223,9 +241,19 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });    
         case "CUSTOMERCOMPANY_LIST_NEWEDITTYPE": 
             debugger
-            return $$state.merge({
-                newCumMenu: action.typeItem
-            });
+            //新增业务类型>1时，显示下拉菜单选择客户类型
+            if(action.typeItem && action.typeItem.length<1){
+                return $$state.merge({
+                    newCumMenu: action.typeItem
+                });
+            }else{
+                return $$state.merge({
+                    formVisitable: true,
+                    viewData: stateAdd($$state.get('viewData').toJS(),{key:action.typeItem[0].key,name:action.typeItem[0].title}),
+                    //每次新建把上一次保存的工商核实名称清零
+                    addIcbcName:''
+                });
+            }
 
         //查询功能显示    
         case "CUSTOMERCOMPANY_LIST_CHANGEVISIBLE":
@@ -322,11 +350,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 viewData: action.data
             });
-        //每次查询列表数据保存的searchMap、searchPlan的值   
-        case "CUSTOMERCOMPANY_LIST_SAVESEARCHMAP":
-            return $$state.merge({
-                searchMap: action.payload == undefined ? {} : action.payload
-            });
+       
         //增加客户，增加一条新数据，清空工商详情，和保存的客户名称
         case "CUSTOMERCOMPANY_LIST_ADDSAVE":
             debugger
@@ -351,23 +375,39 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 addIcbcName:'',
                 icbcInfo:[]
             });
+
+        //删除客户loading 
+        case "CUSTOMERCOMPANY_LIST_DELETELOADING":
+            return $$state.merge({
+                tableLoding:true
+            });
         //删除客户    
         case "CUSTOMERCOMPANY_LIST_DELETE":
+        debugger
             return $$state.merge({
                 data: action.payload.data,
-                selectedRowKeys: []
+                selectedRowKeys: [],
+                tableLoding:false
             });
-        //显示面板时，根据客户id查客户数据，改变“关注”值    
+
+        //点击显示详情面板加载
+        case 'CUSTOMERCOMPANY_LIST_SHOWVIEWLOADING':
+            return $$state.merge({
+                viewState:action.visible,
+                panelLoding:true
+            });   
+        //显示详情面板时，根据客户id查客户数据   
         case "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM":
             let actionData = action.data;
-            //关注
+
+            //获取、添加关注数据
             actionData.followState = action.state.followState;
 
             return $$state.merge({
-                viewState: action.visible,
                 viewData: actionData,
                 leftJoinPanelKeys: '1',
-                RightJoinPanelKeys: '1'
+                RightJoinPanelKeys: '1',
+                panelLoding:false
             });
         //更改关注未关注    
         case "CUSTOMERCOMPANY_LIST_FOLLOWSTATECHANGE":
@@ -395,8 +435,20 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({ enumData: action.payload.enumData });
 
         case 'CUSTOMERCOMPANY_VIEWPANEL_ASSIGN_CHANGEVIEWPANEL':
+            let assignId = action.viewData.id
+            let assignData = $$state.toJS().data;
+            debugger
+            assignData.data = assignData.data.map((item,index)=>{
+                if(item.id == assignId){
+                    return action.viewData
+                }else{
+                    return item
+                }
+            })
+            debugger
             return $$state.merge({
-                viewData: action.viewData
+                viewData: action.viewData,
+                data:assignData
             });
         case 'CUSTOMERCOMPANY_VIEWPANEL_PANELRIGHT_LIST'://点击详情面板中右侧详情部分列表数据
             return $$state.merge({
