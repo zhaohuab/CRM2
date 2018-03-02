@@ -10,7 +10,45 @@ class DynamicState extends React.Component {
         debugger
         return (
             <div className="main-right-timeline timeline-recoverd">
-                {
+   {
+                    dynamicData && dynamicData.length?
+                    <Timeline>
+                        {
+                            dynamicData && dynamicData.length?
+                            dynamicData.map((item)=>{
+                                return(
+                                    <Timeline.Item>
+                                         {item.content && item.content.length?<p>{item.content[0].title}</p>:''}
+                                        <p>
+                                            {
+                                                item.content && item.content.length?
+                                                item.content.slice(1).map((itemDetail)=>{
+                                                    return (
+                                                        <span>
+                                                            {
+                                                                itemDetail.link?
+                                                                <span className="timeline-import">
+                                                                    {itemDetail.title + itemDetail.link.title}
+                                                                </span>:
+                                                                <span>{itemDetail.title}</span>
+                                                            }
+                                                        </span>
+                                                    )
+                                                }):''
+                                            }
+                                        </p>
+                                        <p className="timeline-time">
+                                            {item.time?item.time:'暂无创建时间'}
+                                        </p>
+                                    </Timeline.Item>
+                                )
+                            }):''
+                        }
+                    </Timeline>:<div>暂无动态</div>
+                }
+
+
+                {/* {
                     dynamicData && dynamicData.length ?
                         <Timeline>
                             {
@@ -29,7 +67,7 @@ class DynamicState extends React.Component {
                                     }) : ''
                             }
                         </Timeline> : <div>暂无动态</div>
-                }
+                } */}
             </div>
         )
     }

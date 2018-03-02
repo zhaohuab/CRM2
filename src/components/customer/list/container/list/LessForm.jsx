@@ -27,6 +27,10 @@ class LessForm extends React.Component {
     }
     handleSearch(e) {
         e.preventDefault();
+        let { searchMap , tableLoding } = this.props.$$state.toJS();
+        if(tableLoding){
+            return
+        }
         this.props.handleSearch();
     }
     moreFn() {
@@ -39,7 +43,7 @@ class LessForm extends React.Component {
             wrapperCol: { span: 22 }
         };
         
-        let { enumData } = this.props.$$state.toJS();
+        let { enumData , tableLoding} = this.props.$$state.toJS();
         
         return (
             <div className="less-form">
@@ -52,7 +56,7 @@ class LessForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
+                        {/* <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("type")(
                                     <Enum
@@ -71,11 +75,11 @@ class LessForm extends React.Component {
                                     />
                                 )}
                             </FormItem>
-                        </Col>
+                        </Col> */}
 
                         <Col span={6}>
                             <div className="more-btn">
-                                <Button htmlType="submit">查询</Button>
+                                <Button htmlType="submit" disabled = {tableLoding}>查询</Button>
                                 <span
                                     onClick={this.moreFn.bind(this)}
                                     className="more-up"

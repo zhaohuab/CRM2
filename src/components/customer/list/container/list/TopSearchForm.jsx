@@ -108,7 +108,7 @@ class ToolForm extends React.Component {
     }
 
     //查询方案查询
-    searchPlanSelect(data,id,option){//defClass\id
+    searchPlanSelect(data,id,option){
         debugger
         data = data.find((item)=>{
             return item.id == id
@@ -126,6 +126,7 @@ class ToolForm extends React.Component {
         debugger
         this.props.action.saveSearchMap(searchMap);
     }
+
     // 2.6 余春梅 查询条件导出转化
     changeSearchData(data){
         for (let key in data) {
@@ -142,7 +143,7 @@ class ToolForm extends React.Component {
             }
 
             if (key == 'industry' && data[key]) {
-                data[key] = data[key].id; //这会直接影响searchMap里industry的值，所以要先在不改变原先对象的基础上 改变原对象的id  进行原对象inmutable拷贝对象
+                data[key] = data[key].id; 
             }
         }
         return data
@@ -168,7 +169,7 @@ class ToolForm extends React.Component {
 
 
     render() {
-        let { enumData, moreShow, selectedRowKeys, newCumMenu,searchPlan } = this.props.$$state.toJS();
+        let { moreShow, selectedRowKeys, newCumMenu,searchPlan,tableLoding } = this.props.$$state.toJS();
         const loop = data => {
             return(
                 data.map((item, index) => {
@@ -205,15 +206,16 @@ class ToolForm extends React.Component {
                         <Button
                             className="returnbtn-class customer_list_delete_customer"
                             onClick={this.btnDelete.bind(this)}
+                            disabled = {tableLoding}
                         >
-                            <i className="iconfont icon-shanchu" />删除
+                            <span><i className="iconfont icon-shanchu" />删除</span>
                         </Button>
 
                         <ButtonGroup className="returnbtn-class">
-                            <Button onClick={this.btnSetEnable.bind(this, 1)} className="customer_list_start_customer">
+                            <Button disabled = {tableLoding} onClick={this.btnSetEnable.bind(this, 1)} className="customer_list_start_customer">
                                 <i className="iconfont icon-qiyong" />启用
                             </Button>
-                            <Button onClick={this.btnSetEnable.bind(this, 2)} className="customer_list_stop_customer">
+                            <Button disabled = {tableLoding} onClick={this.btnSetEnable.bind(this, 2)} className="customer_list_stop_customer">
                                 <i className="iconfont icon-tingyong" />停用
                             </Button>
                         </ButtonGroup>
@@ -229,7 +231,7 @@ class ToolForm extends React.Component {
                                 <Col span={17}>
                                     <Row type="flex" align="middle">
                                         <Col className="select-recover">
-                                            <Select defaultValue="全部" onSelect = {this.searchPlanSelect.bind(this,searchPlan)}>
+                                            <Select disabled = {tableLoding} defaultValue="全部" onSelect = {this.searchPlanSelect.bind(this,searchPlan)}>
                                                 {
                                                     searchPlan && searchPlan.length?
                                                     searchPlan.map((item,index)=>{
@@ -244,20 +246,14 @@ class ToolForm extends React.Component {
                                             span={18}
                                             className={
                                                 moreShow
-                                                    ? "less-hide-height"
-                                                    : "less-show-height"
+                                                ? "less-hide-height"
+                                                : "less-show-height"
                                             }
                                         >
                                             <LessForm
-                                                handleSearch={this.handleSearch.bind(
-                                                    this
-                                                )} //点击查询方法
-                                                searchMapFn={this.searchMapFn.bind(
-                                                    this
-                                                )} //动态赋值查询条件到redux中
-                                                formMore={this.changeVisible.bind(
-                                                    this
-                                                )} //控制查询显隐
+                                                handleSearch={this.handleSearch.bind(this)} //点击查询方法
+                                                searchMapFn={this.searchMapFn.bind(this)} //动态赋值查询条件到redux中
+                                                formMore={this.changeVisible.bind(this)} //控制查询显隐
                                             />
                                         </Col>
                                     </Row>

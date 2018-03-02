@@ -84,7 +84,6 @@ class Contacts extends React.Component {
         };
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
-           // debugger;
             this.setState({
                 more: false
             });
@@ -94,6 +93,7 @@ class Contacts extends React.Component {
 
     //点击姓名出侧滑面板
     slideShow(record) {
+        //debugger;
         this.setState({
             viewState: true
         });
@@ -129,21 +129,29 @@ class Contacts extends React.Component {
     }
     //modal点击确定按钮
     handleOk() {
-        let { pagination, searchMap, modalData } = this.props.$$state.toJS(); //获取分页信息 
-        let data =this.modalTranslate(modalData);    
+        let { pagination, searchMap, modalData, nameArr } = this.props.$$state.toJS(); //获取分页信息 
+        //let data =this.modalTranslate(modalData); 
+      /*   for(let key in data){
+            if(key=='customer'){
+                data[key]=data[key].vaule.id
+            }
+        }   */
+        //debugger; 
         let role = getCookie();
-        data.ownerUserId=Number(role.id);
-        data.deptid=Number(role.deptid)
-       // debugger;
+        modalData.ownerUserId=Number(role.id);
+        modalData.deptid=Number(role.deptid)
+        
+      // debugger;
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {
-           debugger;
+          
             if (!err) {
+               
                 if (values.id) {
                   //  debugger;
-                    this.props.action.onEdit(data, pagination, searchMap);
+                    this.props.action.onEdit(nameArr, modalData, pagination, searchMap);
                 } else {
                    // debugger;
-                    this.props.action.cardSaved(data, pagination, searchMap);
+                    this.props.action.cardSaved(modalData, pagination, searchMap);
                 }
             }
         });
@@ -153,10 +161,18 @@ class Contacts extends React.Component {
     handleCancel() {
         this.props.action.showForm(false);
     }
+   //清除表单数据
+    clearForm(){
+        //debugger
+        if(this.formRef){
+            this.formRef.props.form.resetFields()
+        }
+    }
 
     //新增按钮
     addContacts() {
         this.props.action.edit({}, true);
+        this.clearForm();
     }
 
     //删除按钮
@@ -208,30 +224,30 @@ class Contacts extends React.Component {
 
     //点击编辑按钮
     onEdit(flag,slideShowData,e) {
-        debugger;
+        let id=0;
         if(flag){//如果是详情中的编辑
-            this.props.action.edit(slideShowData, true, 'edit');
+            //this.props.action.edit(slideShowData, true, 'edit');
+            id=slideShowData.id;
         }else{//如果是选择中的编辑
-            let selectedRowKeys = this.props.$$state.toJS().rowKeys[
-            "selectedRowKeys"
-            ];
-            let resultNew = this.props.$$state.toJS().data.data;
-            resultNew = resultNew.filter(item => {
-                return item.id == selectedRowKeys[0];
-            });
-        
-            let newObj = {};
-            for (var key in resultNew[0]) {
-                newObj[key] = resultNew[0][key];
-            }
-        // debugger;
-            this.props.action.edit(newObj, true, 'edit');
-        }     
+            id= this.props.$$state.toJS().rowKeys["selectedRowKeys"][0]
+        };
+        let resultNew = this.props.$$state.toJS().data.data;
+        resultNew = resultNew.filter(item => {
+            return item.id == id;
+        });
+    
+        let newObj = {};
+        for (var key in resultNew[0]) {
+            newObj[key] = resultNew[0][key];
+        }
+         debugger;
+        this.props.action.edit(newObj, true, 'edit');     
     }
 
     //获取列表所需展示字段
     changeValue(data) {
         let newDate = [];
+       // debugger;
         data.forEach(item => {
             let obj = {};
             //debugger;
@@ -263,10 +279,10 @@ class Contacts extends React.Component {
             }
             newDate.push(obj);
         });
-        debugger;
+       // debugger;
         return newDate;
     }
-  
+   
     //页面刚挂在组件方法
     componentDidMount() {
         let { pagination, searchMap } = this.props.$$state.toJS(); //获取分页信息
@@ -315,7 +331,7 @@ class Contacts extends React.Component {
                                 <i className="iconfont icon-shanchu" />删除
                             </Button>
                             {selectedRowKeys.length == 1 ? (
-                                <Button onClick={this.onEdit.bind(this)}>
+                                <Button onClick={this.onEdit.bind(this,false)}>
                                     <i className="iconfont icon-bianji" />编辑
                                 </Button>
                             ) : (
@@ -374,6 +390,7 @@ class Contacts extends React.Component {
                             size="middle"
                             columns={this.columns}
                             dataSource={newData}
+                            loading={loading}
                             rowKey="id"
                             rowSelection={rowSelection}
                             pagination={{
@@ -413,10 +430,6 @@ class Contacts extends React.Component {
                     >
                         <PanelView slideShowData={slideShowData} onEdit={this.onEdit.bind(this)}/>
                     </SlidePanel>
-                    {
-                        loading?
-                        <Spin className='loading' size='large'/>:''
-                    }
                 </div>
             </div>
         );

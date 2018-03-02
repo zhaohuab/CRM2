@@ -25,7 +25,8 @@ const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const childrenUser = [];
 const childrenResp = [];
-import Choosed from './RolesChoosed.jsx';
+import Choosed from '../../../customer/list/container/list/SuperiorCustomer.jsx';
+import Post from './RolesChoosed.jsx';
 import Email from "utils/components/emails";
 import Tags from "../../../common/tags/tags.jsx";
 import CustomTags from "../../../common/tags/custom-tags.jsx";
@@ -49,10 +50,9 @@ class Card extends React.Component {
                 arr[index].name=arr[index].customerName;
             })
         }
-        let postId=[],customerId=[];
+        let postId=[];
         postId.push(post.id);
-        customerId.push(customer.id);
-        let columns={post:[{title: "职务",dataIndex: "name"}], customer:[{title: "客户",dataIndex: "name"}]};
+        let columns={post:[{title: "职务",dataIndex: "name"}]};
         //debugger;
         let ccc = (rule, value, callback) => {
             var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
@@ -92,17 +92,11 @@ class Card extends React.Component {
                                 {getFieldDecorator("customer", {
                                     rules: [
                                         {
-                                            required: true,
+                                            required: true, 
                                             message: "请选择客户"
                                         }
                                     ]
-                                })(<Choosed 
-                                    onChange={this.props.action.choosed.bind(this,'customer')} 
-                                    dataSource={editData.customerList} 
-                                    columns={columns.customer}
-                                    idArr={customerId}
-                                    name={customer.name}
-                                    placeholder="选择" />)}
+                                })(<Choosed />)}
                             </FormItem>
                         </Col>
                     </Row>
@@ -110,8 +104,8 @@ class Card extends React.Component {
                         <Col span={11}>                          
                             <FormItem label="职务" {...formItemLayout}>
                                 {getFieldDecorator("post")(
-                                  <Choosed 
-                                    onChange={this.props.action.choosed.bind(this,'post')} 
+                                  <Post 
+                                    onChange={this.props.action.choosed.bind(this)} 
                                     dataSource={editData.postList} 
                                     columns={columns.post}
                                     idArr={postId}
@@ -190,23 +184,47 @@ class Card extends React.Component {
 const CardModal = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-        debugger
+        //debugger
         let modalData = props.$$state.toJS().modalData;
-        let value = {};
-        for (let key in modalData) {
-            value[key] = { value: modalData[key] };
+        let value = {}
+        let changeFieldData = (modalData,key)=>{
+            if(key == 'biztype') debugger
+            if(modalData[key] && modalData[key].hasOwnProperty('value')){//带验证信息的值
+                return modalData[key].value
+            }else if(modalData[key] && !modalData[key].hasOwnProperty('value')){//值为编辑时附上值，而不是带验证信息的值
+                return modalData[key]
+            }else{
+                return undefined
+            }
+        }
+
+        if(modalData.id){//如果是编辑挨个赋值
+            for (let key in modalData) {
+              value[key] = { value: changeFieldData(modalData,key)};
+            }
+            debugger;
+            return {
+                ...value
+            }
         }
         return {
-            ...value
+            ...modalData
         };
     },
     onFieldsChange: (props, onChangeFild) => {
-        debugger;
-        let modalData = props.$$state.toJS().modalData;
-        for (let key in onChangeFild) {  
-            modalData[key] = onChangeFild[key].value;
+        //debugger;
+        let {modalData,nameArr} = props.$$state.toJS();
+        for (let key in onChangeFild) { 
+          /*   if(key=='customer') {
+                modalData[key]=onChangeFild[key].value.id
+            }else{
+               modalData[key] = onChangeFild[key].value; 
+            } */
+            modalData[key] = onChangeFild[key];
+            nameArr.push(key)
         }
-        props.action.saveAddCard(modalData)
+        nameArr= Array.from(new Set(nameArr));
+        props.action.saveAddCard(modalData,nameArr) 
     }
 })(Card);
 
