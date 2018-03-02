@@ -448,6 +448,15 @@ const winOpp = (id, data) => {
             }
         }, (result) => {
             dispatch(fetchData('OPPORTUNITY_LIST_WINOPP', { visible: false,data:transReceiveDataOne(result) }));
+            reqwest(
+                {
+                    url: url.opportunity +"/"+id+"/dynamic",
+                    method: "GET",
+                },
+                result => {
+                   dispatch(fetchData('OPPORTUNITY_LIST_GETDYNAMICDATA', { data:result.dynamiclist }));
+                }
+            );
         })
     }
 }
@@ -462,6 +471,15 @@ const lostOpp = (id, data) => {
             }
         }, (result) => {
             dispatch(fetchData('OPPORTUNITY_LIST_LOSTOPP', { visible: false,data:transReceiveDataOne(result) }));
+            reqwest(
+                {
+                    url: url.opportunity +"/"+id+"/dynamic",
+                    method: "GET",
+                },
+                result => {
+                   dispatch(fetchData('OPPORTUNITY_LIST_GETDYNAMICDATA', { data:result.dynamiclist }));
+                }
+            );
         })
     }
 }

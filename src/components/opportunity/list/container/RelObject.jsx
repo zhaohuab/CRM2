@@ -151,7 +151,7 @@ class RelObject extends React.Component {
                 <div>
                     <Row
                     >
-                        <Col span="15">1111</Col>
+                        <Col span="15">联系人</Col>
                         <Col span="7">
                             <Row type="flex" justify="end">
                                 <Col span="2">

@@ -95,6 +95,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				editData: action.payload.record,
 				viewFormVisible: action.payload.visible,
+				selectedStage: action.payload.record.saleStage
 			})
 
 		case "OPPORTUNITY_LIST_CHANGEVISIBLE": //查询功能显示
