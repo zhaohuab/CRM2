@@ -236,29 +236,29 @@ class RelevantObject extends React.Component {
                 <Collapse defaultActiveKey={['1', '2', '3', '4']}>
                     <Panel header={this.headerFn({ title: '联系人', index: 1 })} key="1">
                         <div className='contacts-warpper'>
-                            {
-                                tempContacts && tempContacts.length ?
-                                    tempContacts.map((item, index) => {
-                                        return (
-                                            <Row className='contacts-warpper-item' onClick={this.contactsDetailModal.bind(this, item)}>
-                                                <Col span={8} className='left'>
-                                                    <Row className='parmary' type='flex' align='top'><i className='iconfont icon-zhuyaolianxiren' /></Row>
-                                                    <Row className='name' type='flex' justify='center'><span>{item.name}</span></Row>
-                                                    <Row className='position' type='flex' justify='center'><span>销售总监</span></Row>
-                                                </Col>
-                                                <Col span={16} className='right'>
-                                                    <Row type='flex' justify='center' align='bottom' className='content1'><span className='key'>角色：</span><span className='value' title={item.role}>{item.role}</span></Row>
-                                                    <Row type='flex' justify='center' align='top' className='content2'><span className='key'>态度：</span><span className='value'>{item.attitude}</span></Row>
-                                                </Col>
-                                                <span className='del' onClick={this.delContacts.bind(this, item.id)}><i className='iconfont icon-canyuren-shanchu' /></span>
-                                            </Row>
-                                        )
-                                    }) : '暂无数据'
-                            }
-                            {
-                                viewDataRelevant && viewDataRelevant.length && viewDataRelevant[0].list.data.length > 7 ?
-                                    <div className='contacts-warpper-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo' /></div> : ''
-                            }
+                        {
+                            tempContacts && tempContacts.length?
+                            tempContacts.map((item,index)=>{
+                                return(
+                                    <Row className='contacts-warpper-item' onClick={this.contactsDetailModal.bind(this,item)}>
+                                        <Col span={8} className='left'>
+                                                <Row className='parmary' type='flex' align='top'><i className='iconfont icon-zhuyaolianxiren' /></Row>
+                                                <Row className='name' type='flex' justify='center'><span>{item.name}</span></Row>
+                                                <Row className='position' type='flex' justify='center'><span>销售总监</span></Row>
+                                        </Col>
+                                        <Col span={16} className='right'>
+                                                <Row  type='flex' justify='center' align='bottom' className='content1'><span className='key'>电话：</span><span className='value' title = {item.mobile}>{item.mobile}</span></Row>
+                                                <Row  type='flex' justify='center' align='top' className='content2'><span className='key'>邮箱：</span><span className='value' title = {item.email}>{item.email}</span></Row>
+                                        </Col>
+                                        <span className='del' onClick={this.delContacts.bind(this,item.id)}><i className='iconfont icon-canyuren-shanchu'/></span>
+                                    </Row>
+                                )
+                            }):'暂无数据'
+                        }
+                        {
+                            viewDataRelevant && viewDataRelevant.length && viewDataRelevant[0].list.data.length>7?
+                            <div className='contacts-warpper-item item-more'><span className='more'>更多</span><i className='iconfont icon-gengduo'/></div>:''
+                        }
                         </div>
                     </Panel>
 

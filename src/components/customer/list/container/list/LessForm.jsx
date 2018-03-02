@@ -56,7 +56,7 @@ class LessForm extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                        <Col span={6}>
+                        {/* <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("type")(
                                     <Enum
@@ -75,7 +75,7 @@ class LessForm extends React.Component {
                                     />
                                 )}
                             </FormItem>
-                        </Col>
+                        </Col> */}
 
                         <Col span={6}>
                             <div className="more-btn">
