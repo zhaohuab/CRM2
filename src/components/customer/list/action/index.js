@@ -287,6 +287,7 @@ export function showFormEdit(visiable){
 export function deleteData(ids, searchMap, pagination) {
     
     return dispatch => {
+        dispatch({type:'CUSTOMERCOMPANY_LIST_DELETELOADING'})
         reqwest(
             {
                 url: url.customer + "/batch",
@@ -300,7 +301,6 @@ export function deleteData(ids, searchMap, pagination) {
                 }
             },
             data => {
-                // 
                 dispatch(
                     fetchData("CUSTOMERCOMPANY_LIST_DELETE", {
                         data: data
@@ -313,6 +313,7 @@ export function deleteData(ids, searchMap, pagination) {
 //启停用功能
 export function setEnableState(ids, state, page, searchMap) {
     return dispatch => {
+        dispatch({type:'CUSTOMERCOMPANY_LIST_ENABLELOADING'})
         reqwest(
             {
                 url: url.customer + "/state",
@@ -391,10 +392,20 @@ let witchChoice = (searchData,witch)=>{
     }
 }
 
-//获取数据、基础查询数据、扩展查询数据  
+//获取数据、基础查询数据、扩展查询数据
+/**
+ * 
+ * 
+ * @export
+ * @param {分页信息} pagination 
+ * @param {查询方案、查询条件} searchData 
+ * @param {向后台发送那种查询} witch 
+ * @returns 
+ */
 export function getListData(pagination, searchData,witch) {
     return dispatch => {
         debugger
+        dispatch({type:'CUSTOMERCOMPANY_LIST_GETDATALOADING'})
         reqwest(
             {
                 url: url.customer,
@@ -604,6 +615,7 @@ export function listFormSave(data) {
 export function showViewForm(visible, id) {
     return dispatch => {
         debugger
+        dispatch({type:'CUSTOMERCOMPANY_LIST_SHOWVIEWLOADING',visible})
         reqwest(
             {
                 url: url.customer + "/" + id,
@@ -620,7 +632,6 @@ export function showViewForm(visible, id) {
                         debugger;
                         dispatch({
                             type: "CUSTOMERCOMPANY_LIST_SHOWVIEWFORM",
-                            visible,
                             data,
                             state
                         });

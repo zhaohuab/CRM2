@@ -250,11 +250,8 @@ class List extends React.Component {
         return `共 ${total} 条`;
     }
 
-    //点击分页
-    onPageChange(page, pageSize) {
-        debugger
-        let {serachMapData,witchSeach,searchPlaneData} = this.props.$$state.toJS()
-        let pagination = { page: page, pageSize: pageSize };
+    pageAction(pagination){
+        let {serachMapData,witchSeach,searchPlaneData} = this.props.$$state.toJS();
         if(witchSeach == 'searchMap'){
             this.props.action.getListData(
                 pagination,
@@ -276,47 +273,43 @@ class List extends React.Component {
         }
     }
 
+    //点击分页
+    onPageChange(page, pageSize) {
+        debugger
+        let pagination = { page: page, pageSize: pageSize };
+        this.pageAction(pagination)
+    }
+
     //点击分页跳转
     onPageSizeChange(current, pageSize) {
         debugger
-        let {serachMapData,witchSeach} = this.props.$$state.toJS()
         let pagination = { page: current, pageSize: pageSize };
-        if(witchSeach == 'searchMap'){
-            this.props.action.getListData(
-                pagination,
-                serachMapData,
-                witchSeach
-            );
-        }
+        this.pageAction(pagination)
     }
 
     componentDidMount() {
         let {pagination} =  this.props.$$state.toJS();
+
         //获取查询方案预置条件
-        this.props.action.getPlaneData()
+        this.props.action.getPlaneData();
+
         //获取列表数据
         this.props.action.getListData( pagination );
+
         //获取查询条件的枚举预置条件，包括表单中的枚举预置条件
         this.props.action.getEnumData();
-        
     }
 
     render() {
-        const { $$state } = this.props;
-        const page = $$state.get("data").toJS();
-        const pageSize = $$state.get("pageSize");      
         let {
             selectedRowKeys,
             formVisitable,
             viewState,
             viewData,
-            tableLoading,
-            leadVisible,
-            leadEndVisible,
-            leadingVisible,
-            viewLeadVisible,
             pagination,
-            searchMap
+            tableLoding,
+            pageSize,
+            data
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -329,23 +322,21 @@ class List extends React.Component {
                 <div className="table-bg tabel-recoverd">
                     <Table
                         columns={this.columns}
-                        dataSource={page.data}
+                        dataSource={data.data}
                         rowKey="id"
                         rowSelection={rowSelection}
                         size="middle"
+                        loading = {tableLoding}
                         pagination={{
                             size: "large",
                             current:pageSize,
                             showSizeChanger: true,
                             showQuickJumper: true,
-                            total: page.total,
+                            total: data.total,
                             showTotal: this.showTotal,
                             onChange: this.onPageChange.bind(this),
-                            onShowSizeChange: this.onPageSizeChange.bind(
-                                this
-                            )
+                            onShowSizeChange: this.onPageSizeChange.bind(this)
                         }}
-                        loading={tableLoading}
                     />
                 </div>
                 <Modal

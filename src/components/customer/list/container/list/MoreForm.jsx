@@ -31,6 +31,10 @@ class MoreForm extends React.Component {
 
     handleSearch(e) {
         e.preventDefault();
+        let { searchMap , tableLoding } = this.props.$$state.toJS();
+        if(tableLoding){
+            return
+        }
         this.props.handleSearch(this.props.$$state.toJS().searchMap);
     }
 
@@ -44,7 +48,7 @@ class MoreForm extends React.Component {
             labelCol: { span: 2 },
             wrapperCol: { span: 22 }
         };
-        let { enumData } = this.props.$$state.toJS();
+        let { enumData , tableLoding} = this.props.$$state.toJS();
         return (
             <div className="header-bottom-inner">
                 <Form layout="inline" onSubmit={this.handleSearch.bind(this)}>
@@ -141,7 +145,7 @@ class MoreForm extends React.Component {
                         </Col>
                         <Col span={6}>
                             <div className="more-btn">
-                                <Button htmlType="submit">查询</Button>
+                                <Button htmlType="submit" disabled = {tableLoding}>查询</Button>
                                 <span
                                     className="more-up"
                                     onClick={this.moreFn.bind(this)}
