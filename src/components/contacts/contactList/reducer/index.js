@@ -16,8 +16,9 @@ let $$initialState = {
     enumData:[],
     modalData:{},//弹窗modal中的数据
     post:{id:0,name:''},//职务
-    customer:{id:0,name:''},//客户
     slideShowData:{},//详情页面数据
+    dynamicData:[],//动态数据
+    nameArr:[],//编辑时修改过的字段名集合
 };
 
 export default function reducer(
@@ -37,6 +38,7 @@ export default function reducer(
             return $$state.merge({
                 data: action.data,
                 loading: false,
+                visible:false,
                 pagination: action.pagination,
             });
         case "CONTACTS_LIST_SHOWFORM": //显示、关闭modal层
@@ -46,31 +48,22 @@ export default function reducer(
 
         case "CONTACTS_LIST_EDIT"://打开新增编辑按钮
         let zzz=action;
-        let post={id:0,name:''},customer={id:0,name:''};
-        debugger;
-        if(action.name=='edit'){        
-            post.id=action.data.post;
-            post.name=action.data.postName;
-            customer.id=action.data.customer;
-            customer.name=action.data.customerInfo.name;
-        }      
+       
         //debugger;
             return $$state.merge({
                 loading: false,
                 visible: action.show,
                 editData: action.result,
-                modalData: action.data,
-                post: post,
-                customer: customer,
+                nameArr:[],
             });
         case "CONTACTS_CARD_SAVEADD": //新增一条数据
-        let vvv=action;
+     /*    let vvv=action;
         debugger;
             return $$state.merge({
                 visible: false,
                 loading: false,
                 data: pageAdd($$state.get("data").toJS(), action.data)
-            });
+            }); */
 
         case "CONTACTS_LIST_SELECTDATA": //保存已选择的数据
             return $$state.merge({
@@ -128,30 +121,28 @@ export default function reducer(
                 loading: false,
                 post: postEdit,
                 customer: customerEdit,
-                slideShowData: action.data,
+                modalData: action.data,
             });
         case "CONTACTS_LIST_SEARCHMAP": //保存table已选择条件
             return $$state.merge({
                 searchMap: action.data
             });
         case "CONTACTS_ADD_CARD": //打开新建窗口
+        let bnm=action;
+        //debugger
             return $$state.merge({
-                modalData: action.data
+                modalData: action.data,
+                nameArr: action.arr,
             });
         case "CONTACTS_CHOOSED_CARD": //保存参照中选择项
-                if(action.name=='post'){
-                    return $$state.merge({
-                        post: action.data
-                    });
-                }else{
-                    return $$state.merge({
-                        customer: action.data
-                    }); 
-                }   
+            return $$state.merge({
+                post: action.data
+            });    
         case "CONTACTS_SLIDESHOW_CARD": //打开详情窗口
             let cccvvvvvvvvvv=action;
             let data2 = $$state.toJS().data.data
             let slideShowObj = {};
+            debugger;
             if(data2){
                 data2.forEach(item=>{
                     if(item.id==action.data.id){
@@ -159,14 +150,26 @@ export default function reducer(
                     }
                 })
             }
+            //----一会取消这个slideShowData----------
             return $$state.merge({
-                slideShowData: slideShowObj
+                slideShowData: slideShowObj,
+                dynamicData: action.result.dynamicList,
             });
         case "CONTACTS_LIST_FAIL": //请求失败，关闭loading
                 return $$state.merge({
                     loading: false
                 });
-                                  
+        case "CONTACTS_EDIT_DETAIL": //请求回来单个联系人数据详情
+        let mmm=action;
+            let post={id:0,name:''};
+            post.id=action.result.post;
+            post.name=action.result.postName;
+            debugger
+            return $$state.merge({
+                modalData: action.result,
+                post: post,
+                });
+                                      
         default:
             return $$state;
     }

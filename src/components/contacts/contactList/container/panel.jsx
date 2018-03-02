@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import * as Actions from "../action";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import moment from 'moment';
 import "assets/stylesheet/all/iconfont.css";
 import {
     Icon,
@@ -19,19 +20,40 @@ const ButtonGroup = Button.Group;
 const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 class PanelView extends React.Component {
+
+ translate=(data,arr)=>{//编辑时转换参数结构
+   if(arr.length==0){
+       data=data
+   }else if(arr&&arr.length){
+        arr.forEach(item=>{
+            for(let key2 in data){
+                if(item==key2&&item!='ownerUserId'&&item!='deptid'){
+                    if(item=='customer'||item=='post'){
+                        data[item]=data[item].value.id
+                    }else{
+                        data[item]=data[item].value
+                    }
+                }
+            }
+        })      
+    } 
+    return data
+}
     render() {
-        let slideShowData = this.props.$$state.get('slideShowData').toJS();
-        debugger
-        return (
+        let{ modalData, dynamicData, nameArr } = this.props.$$state.toJS();
+        modalData=this.translate(modalData,nameArr)
+        return (      
             <div>
-                <Row className="panel-header">
+            {modalData.name?
+                <div>            
+                 <Row className="panel-header">
                     <Row
                         type="flex"
                         justify="space-between"
                         align="middle"
                         className="panel-header-top"
                     >
-                        <Col span={12}>
+                        <Col span={22}>
                             <Row type="flex" gutter={15} align="middle">
                                 <Col span={6}>
                                     <Row type="flex" gutter={10} align="middle">
@@ -39,14 +61,15 @@ class PanelView extends React.Component {
                                             src={require("assets/images/header/photo.png")}
                                         />
                                         <span className="contacts-name">
-                                            {slideShowData.name}
+                                            {modalData.name?modalData.name:''}
                                         </span>
                                     </Row>
                                 </Col>
-                                <Col span={16}>
+                                <Col span={14}></Col>
+                                <Col span={4}>
                                     <Row type="flex" gutter={10} align="middle">
                                        <span className="contacts-name">                                           
-                                            <Button onClick={this.props.onEdit.bind(this,true,slideShowData)} >
+                                            <Button onClick={this.props.onEdit.bind(this,true,modalData)} >
                                                 <i className="iconfont icon-bianji" />编辑
                                             </Button>
                                         </span>
@@ -60,21 +83,16 @@ class PanelView extends React.Component {
                             <div className="contact-single-title">
                                 <i className="iconfont icon-bianji" />职务
                             </div>
-                            <div className="contact-single-info">{slideShowData.postName}</div>
+                            <div className="contact-single-info">
+                                {modalData.postName?modalData.postName:'暂无'}
+                            </div>
                         </div>
                         <div>
                             <div className="contact-single-title">
                                 <i className="iconfont icon-bianji" />客户
                             </div>
-                            <div className="contact-single-info">{slideShowData.customerInfo.name}</div>
-                        </div>
-                        <div>
-                            <div className="contact-single-title">
-                                <i className="iconfont icon-bianji" />
-                                手机号
-                            </div>
                             <div className="contact-single-info">
-                                {slideShowData.mobile}
+                                {modalData.customerInfo.name?modalData.customerInfo.name:'暂无'}
                             </div>
                         </div>
                         <div>
@@ -89,7 +107,7 @@ class PanelView extends React.Component {
                                 <img
                                     src={require("assets/images/header/photo.png")}
                                 />
-                                <span>{slideShowData.ownerUserInfo.name}</span>
+                                <span>{modalData.ownerUserInfo.name?modalData.ownerUserInfo.name:'暂无'}</span>
                             </Row>
                         </div>
                         <div>
@@ -97,7 +115,7 @@ class PanelView extends React.Component {
                                 <i className="iconfont icon-bianji" />
                                 负责部门
                             </div>
-                            <div className="contact-single-info">{slideShowData.ownerUserInfo.deptName}</div>
+                            <div className="contact-single-info">{modalData.ownerUserInfo.deptName?modalData.ownerUserInfo.deptName:'暂无'}</div>
                         </div>
                     </Row>
                 </Row>
@@ -117,29 +135,29 @@ class PanelView extends React.Component {
                                                 <ul className="contacts-info-ul">
                                                     <li>
                                                         <span>部门:</span>
-                                                        <span>{slideShowData.ownerUserInfo.deptName}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span>职务:</span>
-                                                        <span>{slideShowData.postName}</span>
+                                                        <span>{modalData.ownerUserInfo.deptName?modalData.ownerUserInfo.deptName:'暂无'}</span>
                                                     </li>
                                                     <li>
                                                         <span>手机:</span>
-                                                        <span>{slideShowData.mobile}</span>
+                                                        <span>{modalData.mobile?modalData.mobile:'暂无'}</span>
                                                     </li>
                                                     <li>
-                                                        <span>办公室电话:</span>
-                                                        <span>{slideShowData.officePhone}</span>
+                                                        <span>办公电话:</span>
+                                                        <span>{modalData.officePhone?modalData.officePhone:'暂无'}</span>
                                                     </li>
                                                     <li>
                                                         <span>邮箱:</span>
                                                         <span>
-                                                            {slideShowData.email}
+                                                            {modalData.email?modalData.email:'暂无'}
                                                         </span>
                                                     </li>
                                                     <li>
+                                                        <span>爱好:</span>
+                                                        <span>{modalData.hobby?modalData.hobby:'暂无'}</span>
+                                                    </li>
+                                                    <li>
                                                         <span>备注:</span>
-                                                        <span>{slideShowData.remarks}</span>
+                                                        <span>{modalData.remarks?modalData.remarks:'暂无'}</span>
                                                     </li>
                                                 </ul>
                                             </Panel>
@@ -154,79 +172,39 @@ class PanelView extends React.Component {
                             <div className="contacts-timeline-title">动态</div>
                             <div className="contacts-timeline">
                                 <Timeline>
-                                    <Timeline.Item className="timeline-item">
-                                        <p>
-                                            <span className="timeline-item-import">
-                                                winni
-                                            </span>
-                                            <span className="timeline-item-normal">
-                                                创建了任务
-                                            </span>
-                                            <span className="timeline-item-import">
-                                                AAA
-                                            </span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            <span>2015-09-01</span>
-                                            <span>14：30</span>
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item className="timeline-item">
-                                        <p>
-                                            <span className="timeline-item-import">
-                                                winni
-                                            </span>
-                                            <span className="timeline-item-normal">
-                                                创建了任务
-                                            </span>
-                                            <span className="timeline-item-import">
-                                                AAA
-                                            </span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            <span>2015-09-01</span>
-                                            <span>14：30</span>
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item className="timeline-item">
-                                        <p>
-                                            <span className="timeline-item-import">
-                                                winni
-                                            </span>
-                                            <span className="timeline-item-normal">
-                                                创建了任务
-                                            </span>
-                                            <span className="timeline-item-import">
-                                                AAA
-                                            </span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            <span>2015-09-01</span>
-                                            <span>14：30</span>
-                                        </p>
-                                    </Timeline.Item>
-                                    <Timeline.Item className="timeline-item">
-                                        <p>
-                                            <span className="timeline-item-import">
-                                                winni
-                                            </span>
-                                            <span className="timeline-item-normal">
-                                                创建了任务
-                                            </span>
-                                            <span className="timeline-item-import">
-                                                AAA
-                                            </span>
-                                        </p>
-                                        <p className="timeline-time">
-                                            <span>2015-09-01</span>
-                                            <span>14：30</span>
-                                        </p>
-                                    </Timeline.Item>
+                                {
+                                    dynamicData?
+                                    (
+                                        dynamicData.map(item=>{
+                                            return (
+                                                <Timeline.Item className="timeline-item">
+                                                    <p>
+                                                        <span className="timeline-item-import">
+                                                            {item.name}
+                                                        </span>
+                                                        <span className="timeline-item-normal">
+                                                            创建了任务
+                                                        </span>
+                                                        <span className="timeline-item-import">
+                                                            {item.content}
+                                                        </span>
+                                                    </p>
+                                                    <p className="timeline-time">
+                                                        {moment(item.createdTime.time).format('YYYY-MM-DD HH:mm:ss')}
+                                                        {/* <span>2015-09-01</span>
+                                                        <span>14：30</span> */}
+                                                    </p>
+                                                </Timeline.Item>
+                                            )
+                                        })
+                                    ):'暂无'
+                                }
                                 </Timeline>
                             </div>
                         </div>
                     </Col>
                 </Row>
+                </div>:''}
             </div>
         );
     }
