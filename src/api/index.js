@@ -64,7 +64,8 @@ const product = {
 
 const contacts = {
     contacts: baseDir + "cum/contacts",
-    ref: baseDir + "cum/contacts/ref"
+    ref: baseDir + "cum/contacts/ref",
+    dynamic: baseDir + "cum/contacts/dynamic",
 };
 
 const visitRouter = {

@@ -39,8 +39,45 @@ export function showForm(data) {
         dispatch({ type: "CONTACTS_LIST_SHOWFORM", data });
     };
 }
+
+function translate(data,arr){//新增/编辑时转换参数结构
+    debugger;
+    if(typeof(arr)=='undefined'){
+        for(let key in data){
+            if(key!='ownerUserId'&&key!='deptid'){
+                if(key=='customer'||key=='post'){
+                    data[key]=data[key].value.id
+                }else{
+                    data[key]=data[key].value
+                }
+            }
+        }
+    }else if(arr.length==0){
+       data=data
+   }else if(arr&&arr.length){
+        arr.forEach(item=>{
+            for(let key2 in data){
+                if(item==key2&&item!='ownerUserId'&&item!='deptid'){
+                    if(item=='customer'||item=='post'){
+                        data[item]=data[item].value.id
+                    }else{
+                        data[item]=data[item].value
+                    }
+                }
+            }
+        })      
+    } 
+    return data
+}
 //保存新增联系人
 export function cardSaved(data, pagination, searchMap) {
+    let saveData=translate(data)
+    pagination={
+        pageSize: 10,
+        page: 1
+    };
+    searchMap={enableState:1};
+    //debugger
     return dispatch => {
         //dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
         reqwest(
@@ -49,15 +86,34 @@ export function cardSaved(data, pagination, searchMap) {
                 method: "POST",
                 data: {
                     param: {
-                        ...data
+                        ...saveData
                     }
                 }
             },
             result => {  
-               debugger         
-                dispatch({ type: "CONTACTS_CARD_SAVEADD", data: result});
+               //debugger  
+               reqwest(
+                {
+                    url: contacts.contacts,
+                    method: "GET",
+                    data: {
+                        param: {
+                            ...pagination,
+                            searchMap: {
+                                ...searchMap
+                            }
+                        }
+                    }
+                },
+                result => {
+                   // debugger;
+                    dispatch({ type: "CONTACTS_LIST_GETLIST", data: result, pagination });
+                }
+            );       
+               // dispatch({ type: "CONTACTS_CARD_SAVEADD", data: result});
             }
         );
+     
     };
 }
 //保存已选择的数据
@@ -97,24 +153,48 @@ export function onDelete(delKey, pagination, searchMap, fn) {
     };
 }
 //保存编辑
-export function onEdit(values, pagination, searchMa) {
-    dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
+export function onEdit(arr, values, pagination, searchMa) {
+    let saveData = translate(values,arr)
+    //debugger
     return dispatch => {
+        dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
         reqwest(
             {
                 url: `${contacts.contacts}/${values.id}`,
                 method: "PUT",
                 data: {
                     param: {
-                        ...values
+                        ...saveData
                     }
                 }
             },
             result => {
                // debugger
+          /*      return dispatch => {
+                // debugger
+                 dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
+                 reqwest(
+                     {
+                         url: contacts.contacts,
+                         method: "GET",
+                         data: {
+                             param: {
+                                 ...pagination,
+                                 searchMap: {
+                                     ...searchMap
+                                 }
+                             }
+                         }
+                     },
+                     result => {
+                        //debugger;
+                         dispatch({ type: "CONTACTS_LIST_GETLIST", data: result, pagination });
+                     }
+                 );
+             }; */
                 dispatch({
                     type: "CONTACTS_LIST_UPDATELIST",
-                    data: values
+                    data: saveData
                 });
             }
         );
@@ -124,7 +204,7 @@ export function onEdit(values, pagination, searchMa) {
 
 //新增/编辑按钮
 export function edit(data, show, name) {
-    //debugger;
+   // debugger
     /* if (isEmpty(edit)) { */
         return dispatch => {
             dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
@@ -139,11 +219,9 @@ export function edit(data, show, name) {
                     // }
                 },
                 result => {
-                   // debugger;
                     dispatch({
                         type: "CONTACTS_LIST_EDIT",
                         result,
-                        data,
                         show,
                         name
                     });
@@ -154,6 +232,18 @@ export function edit(data, show, name) {
                     });
                 } */
             );
+            if(name=='edit'){
+                 reqwest(
+                    {
+                        url: `${contacts.contacts}/${data.id}`,
+                        method: "GET",
+                    },
+                    result => {  
+                      //  debugger;        
+                        dispatch({ type: "CONTACTS_EDIT_DETAIL", result, data});
+                    }
+                ); 
+            }        
         };
    
 }
@@ -176,31 +266,55 @@ export function saveSearchMap(data){
     };
 };
 
-//往redux中储存弹框值
-export function saveAddCard(data){
+//往redux中储存modal值
+export function saveAddCard(data,arr){
     return {
         type: "CONTACTS_ADD_CARD",
-        data
+        data,
+        arr
     }
 }
 
-//往redux中储存客户/职务
-export function choosed(name,data){
-    //debugger;
+//往redux中储存职务
+export function choosed(data){
+    debugger;
     return {
         type: "CONTACTS_CHOOSED_CARD",
-        name,
         data
     }
 }
 
 //展开详情
 export function slideShow(data){
+    return dispatch => {
+        //dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
+        reqwest(
+            {
+                url: contacts.dynamic,
+                method: "GET",
+                data:{
+                    param:{
+                        id: 1720
+                    }
+                }
+            },
+            result => {  //动态
+               debugger         
+                dispatch({ type: "CONTACTS_SLIDESHOW_CARD", result, data});
+            }
+        );
+        reqwest(
+            {
+                url: `${contacts.contacts}/${data.id}`,
+                method: "GET",
+            },
+            result => {  //该联系人全部数据
+                debugger;        
+                dispatch({ type: "CONTACTS_EDIT_DETAIL", result, data});
+            }
+        ); 
+    };
     //debugger;
-    return {
-        type: "CONTACTS_SLIDESHOW_CARD",
-        data
-    }
 }
 
 
