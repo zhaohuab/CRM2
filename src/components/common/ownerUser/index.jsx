@@ -89,7 +89,7 @@ export default class OwnerUser extends React.Component {
                 this.setState({
                     visible: flag,
                     ownerUserData: data.data,
-                    keyDownVisiable: false
+                    keyDownVisiable: false,
                 });
             }
         );
@@ -134,7 +134,8 @@ export default class OwnerUser extends React.Component {
             this.setState({
                 visible: false,
                 keyDownVisiable: false,
-                selectKeys: []
+                selectKeys: [],
+                
             });
         }
     }
@@ -147,7 +148,8 @@ export default class OwnerUser extends React.Component {
                 {
                     keyDownVisiable: false,
                     visible: false,
-                    industryDataSearch: []
+                    industryDataSearch: [],
+                    selectedRowKeys:[]
                 },
                 () => {
                     this.props.onChange({});
@@ -156,10 +158,6 @@ export default class OwnerUser extends React.Component {
         }
     }
 
-    //下拉面板onSearch
-    onDropDownSearch() {
-        this.state.name
-    }
 
     onDropDownChange(name) {
         this.setState({
@@ -176,6 +174,7 @@ export default class OwnerUser extends React.Component {
             selectedRowKeys:this.state.selectedRowKeys,
             onChange: this.onSelectChange
         };
+        debugger
         return (
             <DropDownModal
                 title='负责人'

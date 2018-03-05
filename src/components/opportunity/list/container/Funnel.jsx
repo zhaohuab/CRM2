@@ -35,7 +35,7 @@ class Funnel extends React.Component {
         }
     }
 
-    
+
 
     componentDidMount() {
 
@@ -43,8 +43,8 @@ class Funnel extends React.Component {
         this.props.action.getFunnelData()
     }
 
-    moneyOnclick(state){
-        this.props.action.getListData(this.props.$$state.get("pagination").toJS(), { state});
+    moneyOnclick(state) {
+        this.props.action.getListData(this.props.$$state.get("pagination").toJS(), { state });
         this.props.action.getFunnelData({ state });
     }
 
@@ -62,20 +62,32 @@ class Funnel extends React.Component {
 
     render() {
         let { enumData } = this.props.$$state.toJS();
-        const funnelData = this.props.$$state.get("funnelData").toJS().data;
-        const moneyData = this.props.$$state.get("funnelData").toJS().money;
+        let funnelData = this.props.$$state.get("funnelData").toJS().data.stageExpectSingList;
+        const moneyData = this.props.$$state.get("funnelData").toJS().data.sumExpectSignMoney;
         const legend = []
         let tempMax = 0;
+        //漏斗图数据后台返回结构修改，前台需重新封装
+        let newFunnelData = [];
+        if (funnelData == undefined) {
+            funnelData = []
+        }
         for (let i = 0; i < funnelData.length; i++) {
-            legend.push(funnelData[i].name);
-            if(funnelData[i].value>tempMax){
-                tempMax = funnelData[i].value
+            let temp = {}
+            temp.name = funnelData[i].stageName;
+            temp.value = funnelData[i].stageExpectMoney;
+            //如果某个销售阶段值为0，则不展示该阶段数据
+            if(funnelData[i].stageExpectMoney !=0){
+                newFunnelData.push(temp);
+                legend.push(funnelData[i].stageName);
+            }
+            if (funnelData[i].stageExpectMoney > tempMax) {
+                tempMax = funnelData[i].stageExpectMoney
             }
         }
         if (this.funnelEchar) {
             this.funnelOption.legend.data = legend;
             this.funnelOption.series[0].max = tempMax;
-            this.funnelOption.series[0].data = funnelData;
+            this.funnelOption.series[0].data = newFunnelData;
             this.funnelEchar.setOption(this.funnelOption);
             window.addEventListener('resize', this.onWindowResize.bind(this))
         }
@@ -94,7 +106,7 @@ class Funnel extends React.Component {
                         <Col span={16}>
                             销售漏斗
                         </Col>
-                         {/* 项目第一版移除  */}
+                        {/* 项目第一版移除  */}
                         {/* <Col span={8}>
                             <Row>
                                 {
@@ -112,8 +124,8 @@ class Funnel extends React.Component {
                         <div ref='funnel' className='funnel-chrats'></div>
                     </div>
                     <Row gutter={5}>
-                        <div onClick={this.moneyOnclick.bind(this,3)}>
-                            <Col className="funnel-bottom-line-left" span={12}>预计成交金额：</Col><Col span={12}>¥{moneyData.goon}</Col>
+                        <div onClick={this.moneyOnclick.bind(this, 3)}>
+                            <Col className="funnel-bottom-line-left" span={12}>预计签单金额：</Col><Col span={12}>¥{moneyData}</Col>
                         </div>
                     </Row>
                     {/* <Row gutter={5}>

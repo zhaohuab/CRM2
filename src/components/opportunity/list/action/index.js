@@ -55,7 +55,7 @@ function transSearchMap(data) {
     if (data.saleStage) {
         data.saleStage = data.saleStage.key == 0 ? undefined : data.saleStage.key;
     }
-    if (data.signTime) {
+    if (data.signTime&&data.signTime.length>0) {
         data.expectSignTimeStart = data.signTime[0].format('YYYY-MM-DD HH:mm:ss');
         data.expectSignTimeEnd = data.signTime[1].format('YYYY-MM-DD HH:mm:ss');
         data.signTime = undefined;
@@ -67,7 +67,7 @@ function transSearchMap(data) {
         data.deptId = data.deptId.key == 0 ? undefined : data.deptId.key;
     }
     if (data.ownerUserId) {
-        data.ownerUserId = data.ownerUserId.key == 0 ? undefined : data.ownerUserId.key;
+        data.ownerUserId = data.ownerUserId.id == 0 ? undefined : data.ownerUserId.id;
     }
     return data
 }
@@ -113,6 +113,10 @@ const getListData = (pagination, searchMap) => {
     return (dispatch) => {
         searchMap = transSearchMap(searchMap)
         dispatch(fetchData('OPPORTUNITY_LIST_SAVESEARCHMAP', searchMap));
+        dispatch(fetchData('OPPORTUNITY_LIST_SAVEPAGINATION', pagination));
+
+        console.log("pagination------"+pagination)
+        console.log("...pagination------"+{...pagination})
         reqwest({
             url: url.opportunity,
             method: 'get',
@@ -678,6 +682,15 @@ export function getDynamicData(id) {
         );
     }
 }
+
+//天赐上传文件
+export function changeViewTabActived(tabIndex) {
+    return {
+        type: "OPPORTUNITY_LIST_CHANGEVIEWTABACTIVED",
+        payload: tabIndex,
+    };
+}
+
 
 
 //输出 type 与 方法

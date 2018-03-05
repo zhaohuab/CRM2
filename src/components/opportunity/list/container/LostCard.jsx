@@ -1,4 +1,4 @@
-import { Form, Input, Select,Radio,DatePicker } from 'antd';
+import { Form, Input, Select, Radio, DatePicker } from 'antd';
 import Department from 'components/refs/departments'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -12,11 +12,11 @@ class LostCard extends React.Component {
     constructor(props) {
         super(props)
     }
-    
+
     componentDidMount() {
-    
+
     }
-   
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const lostReason = this.props.$$state.toJS().lostReason;
@@ -34,22 +34,25 @@ class LostCard extends React.Component {
             getFieldDecorator('id', {
             })(
                 <Input />
-                )
+            )
         }
-       
+
         return (
             <Form >
-               
+
                 <FormItem
                     label="丢单原因"
                     {...formItemLayout}
                 >
                     {getFieldDecorator('failReason', {
+                        rules: [{
+                            required: true, message: '请输入丢单原因',
+                        }],
                     })(
                         <Enum dataSource={lostReason} placeholder='请输入...' />
-                        )}
+                    )}
                 </FormItem>
-              
+
                 <FormItem
                     label="备注"
                     {...formItemLayout}
@@ -58,7 +61,7 @@ class LostCard extends React.Component {
                         rules: [],
                     })(
                         <TextArea rows='4' placeholder='请输入...' />
-                        )}
+                    )}
                 </FormItem>
             </Form>)
     }

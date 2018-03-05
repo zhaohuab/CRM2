@@ -28,6 +28,7 @@ class MoreForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.props.action.getListData(this.props.$$state.get('pagination').toJS(), values);
+                this.props.action.getFunnelData(values)
             }
         });
     }
@@ -76,7 +77,7 @@ class MoreForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("signTime", {})(
-                                    <RangePicker placeholder={['预计开始时间', '结束日期']}/>
+                                    <RangePicker placeholder={['预计开始时间', '预计结束日期']}/>
                                 )}
                             </FormItem>
                         </Col>
