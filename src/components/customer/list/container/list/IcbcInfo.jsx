@@ -212,6 +212,7 @@ class IcbcInfo extends React.Component {
         name = icbcInfo.find((item)=>{
             return item.key == 'verifyFullname'
         })
+        debugger
         //如果客户名称不存在 把获取的工商信息名称赋给客户名称
         let vName = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name
         if(!vName){
@@ -225,29 +226,30 @@ class IcbcInfo extends React.Component {
         debugger
         icbcInfo.forEach(item => {
             if (item.key == "street") {
-                viewData["street"] = item.value;
+                viewData["street"] = {value:{address:item.value}};
             } else if (item.key == "bizRegno") {
-                viewData["bizRegno"] = item.value;
+                viewData["bizRegno"] = {value:item.value};
             } else if (item.key == "orgCode") {
-                viewData["orgCode"] = item.value;
+                viewData["orgCode"] = {value:item.value};
             } else if (item.key == "regCapital") {
-                viewData["regCapital"] = item.value;
+                viewData["regCapital"] = {value:item.value};
             } else if (item.key == "legalRepresent") {
-                viewData["legalRepresent"] = item.value;
+                viewData["legalRepresent"] = {value:item.value};
             } else if (item.key == "industry") {
-                viewData["industry"] = { name: item.value };
+                viewData["industry"] = { value:{name: item.value }};
             } else if (item.key == "email") {
-                viewData["email"] = item.value;
+                viewData["email"] = {value:item.value};
             } else if (item.key == "tel") {
-                viewData["tel"] = item.value;
+                viewData["tel"] = {value:item.value};
             } else if (item.key == "taxpayerNo") {
-                viewData["taxpayerNo"] = item.value;
+                viewData["taxpayerNo"] = {value:item.value};
             } else if (item.key == "remark") {
-                viewData["remark"] = item.value;
+                viewData["remark"] = {value:item.value};
             } else if (item.key == "website") {
-                viewData["website"] = item.value;
+                viewData["website"] = {value:item.value};
             }
         });
+        debugger
         return viewData
     }
      //覆盖表单信息二次确认modal
@@ -281,6 +283,7 @@ class IcbcInfo extends React.Component {
         let {viewData,icbcSelect,isClose,addIcbcName} = this.props.$$state.toJS();
         debugger
         let name = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name
+        addIcbcName = addIcbcName.hasOwnProperty('value')?addIcbcName.value:addIcbcName
         if(name == addIcbcName){
             this.props.action.saveIcbcName(viewData,false)
         }else{

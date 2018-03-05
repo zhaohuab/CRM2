@@ -1,13 +1,13 @@
 import reqwest from "utils/reqwest";
 import { contacts } from "api";
-
+import Immutable from "immutable";
 export function getCollaps() {
     return {
         type: "COMMON_MENU_COLLAPSED"
     };
 }
 
-//获取联系人信息
+//获取联系人列表
 export function getContactList(pagination, searchMap) {
     return dispatch => {
        // debugger
@@ -33,41 +33,44 @@ export function getContactList(pagination, searchMap) {
     };
 }
 
-//显示modal
+//显示/关闭modal，在index中仅关闭时引用了一次
 export function showForm(data) {
     return dispatch => {
         dispatch({ type: "CONTACTS_LIST_SHOWFORM", data });
     };
 }
 
-function translate(data,arr){//新增/编辑时转换参数结构
-    debugger;
+//新增、编辑时转换参数结构
+function translate(data,arr){
+    //debugger;
+    let dataCopy = Immutable.fromJS(data).toJS();
     if(typeof(arr)=='undefined'){
-        for(let key in data){
+        for(let key in dataCopy){
             if(key!='ownerUserId'&&key!='deptid'){
                 if(key=='customer'||key=='post'){
-                    data[key]=data[key].value.id
+                    dataCopy[key]=dataCopy[key].value.id
                 }else{
-                    data[key]=data[key].value
+                    dataCopy[key]=dataCopy[key].value
                 }
             }
         }
     }else if(arr.length==0){
-       data=data
+        dataCopy=dataCopy
    }else if(arr&&arr.length){
         arr.forEach(item=>{
             for(let key2 in data){
                 if(item==key2&&item!='ownerUserId'&&item!='deptid'){
                     if(item=='customer'||item=='post'){
-                        data[item]=data[item].value.id
+                        dataCopy[item]=dataCopy[item].value.id
                     }else{
-                        data[item]=data[item].value
+                        dataCopy[item]=dataCopy[item].value
                     }
                 }
             }
         })      
     } 
-    return data
+   // debugger
+    return dataCopy
 }
 //保存新增联系人
 export function cardSaved(data, pagination, searchMap) {
@@ -153,9 +156,10 @@ export function onDelete(delKey, pagination, searchMap, fn) {
     };
 }
 //保存编辑
-export function onEdit(arr, values, pagination, searchMa) {
-    let saveData = translate(values,arr)
+export function onEdit(arr, values, pagination, searchMap) {
     //debugger
+    let saveData = translate(values,arr)
+  // debugger
     return dispatch => {
         dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
         reqwest(
@@ -169,40 +173,35 @@ export function onEdit(arr, values, pagination, searchMa) {
                 }
             },
             result => {
-               // debugger
-          /*      return dispatch => {
-                // debugger
-                 dispatch({ type: "CONTACTS_LIST_GETLISTSUCCESS" });
-                 reqwest(
-                     {
-                         url: contacts.contacts,
-                         method: "GET",
-                         data: {
-                             param: {
-                                 ...pagination,
-                                 searchMap: {
-                                     ...searchMap
-                                 }
-                             }
-                         }
-                     },
-                     result => {
-                        //debugger;
-                         dispatch({ type: "CONTACTS_LIST_GETLIST", data: result, pagination });
-                     }
-                 );
-             }; */
                 dispatch({
                     type: "CONTACTS_LIST_UPDATELIST",
-                    data: saveData
+                    data: values
                 });
+                reqwest(
+                    {
+                        url: contacts.contacts,
+                        method: "GET",
+                        data: {
+                            param: {
+                                ...pagination,
+                                 searchMap: {
+                                    ...searchMap
+                                } 
+                            }
+                        }
+                    },
+                    result => {
+                        //debugger;
+                        dispatch({ type: "CONTACTS_LIST_GETLIST", data: result, pagination });
+                    }
+                ); 
             }
         );
     };
 }
 
 
-//新增/编辑按钮
+//新增、编辑按钮
 export function edit(data, show, name) {
    // debugger
     /* if (isEmpty(edit)) { */

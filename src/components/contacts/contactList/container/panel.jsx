@@ -21,17 +21,19 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 class PanelView extends React.Component {
 
- translate=(data,arr)=>{//编辑时转换参数结构
+translate=(data,arr)=>{//编辑时转换参数结构
+//debugger
    if(arr.length==0){
        data=data
    }else if(arr&&arr.length){
         arr.forEach(item=>{
-            for(let key2 in data){
+            for(let key2 in data){             
                 if(item==key2&&item!='ownerUserId'&&item!='deptid'){
-                    if(item=='customer'||item=='post'){
-                        data[item]=data[item].value.id
+                    if(item=='post'){
+                       // debugger
+                        data.postName=data[item].value?data[item].value.name:data.postName;
                     }else{
-                        data[item]=data[item].value
+                        data[item]=data[item].value?data[item].value:data[item];
                     }
                 }
             }
@@ -41,8 +43,9 @@ class PanelView extends React.Component {
 }
     render() {
         let{ modalData, dynamicData, nameArr } = this.props.$$state.toJS();
+       //debugger;
         modalData=this.translate(modalData,nameArr)
-        debugger;
+      //  debugger;
         return (      
             <div>
             {modalData.name?
@@ -58,9 +61,7 @@ class PanelView extends React.Component {
                             <Row type="flex" gutter={15} align="middle">
                                 <Col span={6}>
                                     <Row type="flex" gutter={10} align="middle">
-                                        <img
-                                            src={require("assets/images/header/photo.png")}
-                                        />
+                                        <div className='contacts-icon'><i className="iconfont icon-lianxiren-daixuan" /></div>
                                         <span className="contacts-name">
                                             {modalData.name?modalData.name:''}
                                         </span>
@@ -70,7 +71,7 @@ class PanelView extends React.Component {
                                 <Col span={4}>
                                     <Row type="flex" gutter={10} align="middle">
                                        <span className="contacts-name">                                           
-                                            <Button onClick={this.props.onEdit.bind(this,true,modalData)} >
+                                            <Button onClick={this.props.onEdit.bind(this,true,modalData)} className='contact_view_edit_contact'>
                                                 <i className="iconfont icon-bianji" />编辑
                                             </Button>
                                         </span>
@@ -178,14 +179,14 @@ class PanelView extends React.Component {
                         {
                             dynamicData && dynamicData.length?
                             dynamicData.map((item)=>{
-                                debugger;
+                                //debugger;
                                 return(
                                     <Timeline.Item>
                                         <p>
                                             {
                                                 item.content && item.content.length?
                                                 item.content.map((itemDetail)=>{
-                                                    debugger
+                                                   // debugger
                                                     return (
                                                         <span>
                                                             {

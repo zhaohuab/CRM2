@@ -362,6 +362,7 @@ export default class MultiFunctionMap extends React.Component {
     }
        
     render(){
+        debugger
         return(
             <div>
                 <Search

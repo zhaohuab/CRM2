@@ -184,12 +184,14 @@ class Card extends React.Component {
 const CardModal = Form.create({
     mapPropsToFields: props => {
         //把redux中的值取出来赋给表单
-        //debugger
+       // debugger
         let modalData = props.$$state.toJS().modalData;
         let value = {}
-        let changeFieldData = (modalData,key)=>{
-            if(key == 'biztype') debugger
-            if(modalData[key] && modalData[key].hasOwnProperty('value')){//带验证信息的值
+        let changeFieldData = (modalData,key)=>{           
+          /*   if(key=='customer'&&modalData['customerInfo'].name){//带验证信息的值
+                //debugger;
+                return modalData['customerInfo'].name
+            }else */ if(modalData[key] && modalData[key].hasOwnProperty('value')){//带验证信息的值
                 return modalData[key].value
             }else if(modalData[key] && !modalData[key].hasOwnProperty('value')){//值为编辑时附上值，而不是带验证信息的值
                 return modalData[key]
@@ -211,7 +213,7 @@ const CardModal = Form.create({
             ...modalData
         };
     },
-    onFieldsChange: (props, onChangeFild) => {
+    onFieldsChange: (props, onChangeFild) => {//表单中的值存储在redux中
         //debugger;
         let {modalData,nameArr} = props.$$state.toJS();
         for (let key in onChangeFild) { 
@@ -220,10 +222,12 @@ const CardModal = Form.create({
             }else{
                modalData[key] = onChangeFild[key].value; 
             } */
+           // debugger
             modalData[key] = onChangeFild[key];
             nameArr.push(key)
         }
         nameArr= Array.from(new Set(nameArr));
+        //debugger
         props.action.saveAddCard(modalData,nameArr) 
     }
 })(Card);

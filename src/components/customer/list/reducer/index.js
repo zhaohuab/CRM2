@@ -295,7 +295,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 icbcSele:action.select
             });
         //新增时，保存已获取工商信息的客户名称,和表单已赋值的数据
-        case 'CUSTOMERCOMPANY_LIST_SAVEICBCNAME':           
+        case 'CUSTOMERCOMPANY_LIST_SAVEICBCNAME':     
+        debugger      
             return $$state.merge({
                 icbcVisible: action.visiable,
                 addIcbcName: action.viewData.name,
@@ -324,6 +325,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             });
         //详情确认核实关闭modal    
         case 'CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL':
+            debugger
             return $$state.merge({
                 icbcVisible2: action.visiable,
                 viewData:action.result
