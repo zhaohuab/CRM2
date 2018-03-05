@@ -130,22 +130,12 @@ class Contacts extends React.Component {
     //modal点击确定按钮
     handleOk() {
         let { pagination, searchMap, modalData, nameArr } = this.props.$$state.toJS(); //获取分页信息 
-        //let data =this.modalTranslate(modalData); 
-      /*   for(let key in data){
-            if(key=='customer'){
-                data[key]=data[key].vaule.id
-            }
-        }   */
-        //debugger; 
         let role = getCookie();
         modalData.ownerUserId=Number(role.id);
-        modalData.deptid=Number(role.deptid)
-        
+        modalData.deptid=Number(role.deptid)       
       // debugger;
-        this.formRef.props.form.validateFieldsAndScroll((err, values) => {
-          
-            if (!err) {
-               
+        this.formRef.props.form.validateFieldsAndScroll((err, values) => {        
+            if (!err) {            
                 if (values.id) {
                   //  debugger;
                     this.props.action.onEdit(nameArr, modalData, pagination, searchMap);
@@ -240,7 +230,7 @@ class Contacts extends React.Component {
         for (var key in resultNew[0]) {
             newObj[key] = resultNew[0][key];
         }
-         debugger;
+         //debugger;
         this.props.action.edit(newObj, true, 'edit');     
     }
 
@@ -327,11 +317,11 @@ class Contacts extends React.Component {
                             length={selectedRowKeys.length}
                             goBack={this.headerBack.bind(this)}
                         >
-                            <Button onClick={this.onDelete.bind(this)}>
+                            <Button onClick={this.onDelete.bind(this)} className='contact_list_delete_contact'>
                                 <i className="iconfont icon-shanchu" />删除
                             </Button>
                             {selectedRowKeys.length == 1 ? (
-                                <Button onClick={this.onEdit.bind(this,false)}>
+                                <Button onClick={this.onEdit.bind(this,false)} className='contact_list_edit_contact'>
                                     <i className="iconfont icon-bianji" />编辑
                                 </Button>
                             ) : (
@@ -371,6 +361,7 @@ class Contacts extends React.Component {
                                                 <div>
                                                     <Button
                                                         type="primary"
+                                                        className='contact_list_add_contact'
                                                         onClick={this.addContacts.bind(
                                                             this
                                                         )}
@@ -416,7 +407,7 @@ class Contacts extends React.Component {
                         maskClosable={false}
                         className='crm-list-card-modal'
                     >
-                        <div className="modal-height">
+                        <div className="modal-height" style={{marginTop:'30px',height:'auto'}}>
                             <Card
                                 dataSource={editData}
                                 wrappedComponentRef={inst =>this.formRef = inst}

@@ -850,6 +850,7 @@ const cardForm = Form.create({
             for (let key in viewData) {
               value[key] = { value: changeFieldData(viewData,key)};
             }
+            debugger
             return {
                 ...value
             }
