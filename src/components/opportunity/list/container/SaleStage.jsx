@@ -85,11 +85,12 @@ class SaleStage extends React.Component {
                 return (
                     
                     <div >
-                        <Col span={4}>
+                        <Col span={5}>
+                        <div className = 'saleStage-container'>
                             <div onClick={this.selectStage.bind(this, item.oppstage_id)}
                                 className={item.oppstage_id == selectedStage ? "SaleStage-box-selected" : "SaleStage-box"}
                             >
-                               <div className={item.oppstage_id == editData.saleStage ? "background-green" : ""}>
+                               <div className={item.oppstage_id == editData.saleStage ? "background-green" : "background-pale"}>
                                         <Row class="SaleStage-stage-cell">
                                             {item.oppstage_name}
                                         </Row>
@@ -98,6 +99,8 @@ class SaleStage extends React.Component {
                                         </Row>
                                     </div>
                                   
+                            </div>
+                            <div className={item.oppstage_id == editData.saleStage ? "stage_sanjiaoxing_green" : "stage_sanjiaoxing_pale"}></div>
                             </div>
                         </Col>
                     </div>

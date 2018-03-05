@@ -836,7 +836,7 @@ const cardForm = Form.create({
         let viewData = props.$$state.toJS().viewData;
         let value = {}
         let changeFieldData = (viewData,key)=>{
-            if(key == 'biztype') debugger
+            if(key == 'street') debugger
             if(viewData[key] && viewData[key].hasOwnProperty('value')){//带验证信息的值
                 return viewData[key].value
             }else if(viewData[key] && !viewData[key].hasOwnProperty('value')){//值为编辑时附上值，而不是带验证信息的值
@@ -866,6 +866,7 @@ const cardForm = Form.create({
         let viewData = props.$$state.toJS().viewData;
         debugger
         for (let key in onChangeFild) {
+            if(key == 'street') debugger
             if(onChangeFild[key].hasOwnProperty('value')){
                 viewData[key] = onChangeFild[key];
             }

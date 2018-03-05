@@ -24,6 +24,7 @@ import UploadImg from "../list/UploadImg";
 class DetailObject extends React.Component {
     //生成地址方法
     createAddress(viewData){
+        debugger
         if(viewData.street && viewData.street.address){
              return(
                 <span>

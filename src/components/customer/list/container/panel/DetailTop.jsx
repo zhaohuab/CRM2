@@ -63,15 +63,16 @@ class DetailTop extends React.Component {
 
     //生成地址方法
     createAddress(viewData){
+        debugger
         if(viewData.street && viewData.street.address){
              return(
                 <span>
-                    { viewData.street.address }  <i className="iconfont icon-shouye-dingwei" />
+                     <i className="iconfont icon-shouye-dingwei" /> { viewData.street.address } 
                 </span>
              )
         }else if(viewData.street && typeof viewData.street == 'string'){
             return(
-                <span>{ viewData.street }  <i className="iconfont icon-shouye-dingwei" /></span>
+                <span><i className="iconfont icon-shouye-dingwei" /> { viewData.street } </span>
             )
         }else{
             return(
@@ -101,12 +102,9 @@ class DetailTop extends React.Component {
         <Row className="view-warrper-header">
             <Row className="header-customer">
                 <Col span={9}>
-                    <Row type="flex" align="middle" gutter={15}>
-                        <Row type="flex" align="middle">
-                            <img
-                                src={require("assets/images/header/photo.png")}
-                                className="customer-image"
-                            />
+                    <Row type="flex" gutter={15}>
+                        <Row type="flex">
+                            <i className="iconfont icon-kehu-qiye customer-icon" />
                         </Row>
                         <Col span={19}>
                             <Row>
@@ -140,7 +138,7 @@ class DetailTop extends React.Component {
                                         </div>
                                     </Row>
                                 </Row>
-                                <Row className="address pointer">
+                                <Row className="address pointer crm-ellipsis">
                                    {
                                        this.createAddress(viewData)
                                    }

@@ -55,16 +55,16 @@ class List extends React.Component {
                 dataIndex: "winProbability"
             },
             {
-                title: "预计成交金额",
+                title: "预计签单金额",
                 dataIndex: "expectSignMoney"
             },
             {
-                title: "预计成交时间",
+                title: "预计签单时间",
                 dataIndex: "expectSignTime"
             },
             {
                 title: "负责人",
-                dataIndex: "ownerUserId"
+                dataIndex: "ownerUserName"
             }
         ]
 
@@ -87,7 +87,13 @@ class List extends React.Component {
         const oppBList = this.props.$$state.get("oppBList").toJS();
         editData.childList = oppBList;
         this.formRef.props.form.validateFields((err, values) => {
+            let createdTime = values.createdTime.format('YYYY-MM-DD HH:mm:ss')
+            let expectSignTime = values.expectSignTime.format('YYYY-MM-DD HH:mm:ss')
+            editData.createdTime = createdTime;
+            editData.expectSignTime = expectSignTime;
             if (!err) {
+
+                
                 if (isEdit) {
                     this.props.action.listEditSave(editData);
                 } else {

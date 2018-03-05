@@ -303,7 +303,7 @@ class ViewPanel extends React.Component {
                                             />
 
                                         </TabPane>
-                                        <TabPane tab="新闻" key="4">Content of Tab Pane 3</TabPane>
+                                       
                                     </Tabs>
                                 </Row>
                             </div>

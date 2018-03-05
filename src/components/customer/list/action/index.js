@@ -21,6 +21,7 @@ let trancFn=(data)=>{
             if(data[key] && data[key].value){
                 data[key] = data[key].value.key
             }else if(data[key]){
+                debugger
                 if(data[key].hasOwnProperty('key')){
                     data[key] = data[key].key
                 }else{
@@ -81,19 +82,25 @@ let trancFn=(data)=>{
         if (key == 'street' && typeof data[key] == 'object') {
             debugger
             if(data[key].hasOwnProperty('value')){
-                data.longitude = data[key].value.location.lng
-                data.latitude = data[key].value.location.lat
+                let locationValue = data[key].value.location;//带value值的location
+                data.longitude = locationValue && locationValue.lng?locationValue.lng:''
+                data.latitude = locationValue && locationValue.lat?locationValue.lat:''
                 data.street = data[key].value.address
             }else{
-                data.longitude = data[key].location.lng
-                data.latitude = data[key].location.lat
+                let location = data[key].location;//不带value值的location
+                data.longitude = location && location.lng?location.lng:''
+                data.latitude = location && location.lat?location.lat:''
                 data.street = data[key].address
             }
         }
 
         //其他
-        if(data[key]&& data[key].value){
+        if(data[key]&& data[key].hasOwnProperty('value')){
             data[key] = data[key].value
+        }else if(data[key] && !data[key].value){
+            data[key] = data[key]
+        }else{
+            data[key] = undefined
         }
     }
 debugger
@@ -741,7 +748,7 @@ export function changeStateFn(visiable) {
 };
 //详情中工商核实
 export function checkedFn(viewData, select, id, visiable) {
-    //debugger
+    debugger
     return dispatch => {
         reqwest(
             {
@@ -757,7 +764,7 @@ export function checkedFn(viewData, select, id, visiable) {
                 }
             },
             result => {
-               // debugger
+                debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_CLOSEDETAILICBCMODOL",
                     visiable,

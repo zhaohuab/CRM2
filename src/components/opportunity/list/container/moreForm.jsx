@@ -76,7 +76,7 @@ class MoreForm extends React.Component {
                         <Col span={6}>
                             <FormItem {...formItemLayout}>
                                 {getFieldDecorator("signTime", {})(
-                                    <RangePicker />
+                                    <RangePicker placeholder={['预计开始时间', '结束日期']}/>
                                 )}
                             </FormItem>
                         </Col>
