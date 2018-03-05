@@ -93,7 +93,7 @@ class Contacts extends React.Component {
 
     //点击姓名出侧滑面板
     slideShow(record) {
-        debugger;
+        //debugger;
         this.setState({
             viewState: true
         });
@@ -247,7 +247,7 @@ class Contacts extends React.Component {
     //获取列表所需展示字段
     changeValue(data) {
         let newDate = [];
-        debugger;
+       // debugger;
         data.forEach(item => {
             let obj = {};
             //debugger;

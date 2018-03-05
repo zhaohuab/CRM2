@@ -176,7 +176,7 @@ class ToolForm extends React.Component {
                             {/* 项目第一版移除  */}
                             <Col span={6}>
                                 <Row type="flex" gutter={15} justify="end">
-                                    <Col>
+                                    {/* <Col>
                                         <ButtonGroup>
                                             <Button>
                                                 <i className="iconfont icon-daoru" />导入
@@ -185,7 +185,7 @@ class ToolForm extends React.Component {
                                                 <i className="iconfont icon-daochu" />导出
                                             </Button>
                                         </ButtonGroup>
-                                    </Col>
+                                    </Col> */}
                                     <Col>
                                         <Dropdown overlay={menu}>
                                     <Button type="primary">

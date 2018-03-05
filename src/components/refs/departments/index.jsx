@@ -107,13 +107,13 @@ class Department extends React.Component {
             this.props.value && this.props.value.key ? (
                 <Icon type="close" onClick={this.emitEmpty} />
             ) : null;
-
+            let orgType = this.props.orgType;
         return (
             <div>
                 {/* <Input value={key}/> */}
                 <Input
                     value={title}
-                    placeholder="请选择..."
+                    placeholder={orgType && orgType == 3?"公司":"请选择..."}
                     onClick={this.onClick}
                     suffix={suffix}
                 />

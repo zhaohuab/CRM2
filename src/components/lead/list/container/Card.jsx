@@ -215,7 +215,7 @@ class EditForm extends React.Component {
                                             <FormItem
                                             >
                                                 {getFieldDecorator(
-                                                    "remarks",
+                                                    "described",
                                                     {}
                                                 )(
                                                     <TextArea

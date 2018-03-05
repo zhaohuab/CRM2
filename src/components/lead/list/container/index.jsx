@@ -310,7 +310,8 @@ class Clue extends React.Component {
             editData,
             visible,
             viewState,
-            moreShow
+            moreShow,
+            tableLoding
         } = this.props.$$state.toJS();
 
         //debugger;
@@ -463,6 +464,7 @@ class Clue extends React.Component {
                 </Row>
                 <div className="tabel-bg tabel-recoverd">
                     <Table
+                    loading={tableLoding}
                         size="middle"
                         columns={this.columns}
                         dataSource={page.data}

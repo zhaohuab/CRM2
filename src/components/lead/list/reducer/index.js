@@ -24,7 +24,7 @@ let $$initialState = {
     editData: {},
     viewState: false,//获取view面板详细信息
     data: {}, //table展示的数据 
-
+    tableLoding:false,//table加载
     assignData: {},
     moreShow: false,//查询表单的显隐
     enumData: {//查询条件数据
@@ -189,7 +189,8 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({
                 data: action.payload.data,
                 pagination: action.payload.pagination,
-                selectedRowKeys: []
+                selectedRowKeys: [],
+                tableLoding:false
             });
 
         case 'CLUE_LIST_ASSIGNLEADSHOW':
@@ -230,8 +231,14 @@ export default function reducer($$state = Immutable.fromJS($$initialState),
             return $$state.merge({
                 data: action.payload.data,
                 selectedRows: [],
-                selectedRowKeys: []
+                selectedRowKeys: [],
+                tableLoding:false
             });
+            //删除客户loading 
+        case "CLUE_LIST_DELETELOADING":
+        return $$state.merge({
+            tableLoding:true
+        });
         case "CLUE_LIST_SHOWFORM": //显示、关闭modal层
             //debugger
             return $$state.merge({
