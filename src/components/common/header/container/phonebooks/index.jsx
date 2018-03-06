@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Input, Modal, Tree, Icon, Tabs, Avatar, Row, Col } from "antd";
-import { phonebooks as url } from "api/zhb";
+import { phonebooks as url } from "api";
 import reqwest from "utils/reqwest";
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;

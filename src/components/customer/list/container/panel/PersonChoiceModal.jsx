@@ -20,8 +20,9 @@ import "assets/stylesheet/all/iconfont.css";
 
 import OwnUser from '../list/OwnUser'
 import PersonChioce from '../../../../common/personChoice'
+import TreeGridRef from 'components/common/ref/TreeGridRef'
 
-import { baseDir } from "api";
+import { baseDir,org,user } from "api";
 import reqwest from "utils/reqwest";
 
 const columns = [{
@@ -301,7 +302,13 @@ export default class PersonChoiceModal extends React.Component {
                                 <Row type='flex' justify='end'>调整负责人：</Row>
                             </Col> 
                             <Col span={10}>
-                                <OwnUser viewData={viewData} disabled={false} width={500} height={300} onChange={this.onModifyChange.bind(this)} value={this.state.valueModify}/>
+                                <TreeGridRef title="负责人" size="small" treeUrl={org.orgTree} gridUrl={user.userref} onChange={this.onModifyChange.bind(this)} value={this.state.valueModify}
+                                columns={[{
+                                    title: '姓名',
+                                    dataIndex: 'name',
+                                    key: 'name',
+                                }]}
+                                />
                             </Col>
                         </Row>
                          {/* <Row type='flex' align='middle' className='change-person-item'>
