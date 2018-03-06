@@ -1,7 +1,7 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import { message } from "antd";
-import { distributed as url } from 'api/zhb';
+import { distributed as url } from 'api';
 
 const getCustomerList = (str,id,name,back) => {//获取左侧上半部分客户数据
     debugger;

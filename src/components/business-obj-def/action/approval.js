@@ -8,7 +8,7 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
 import cookie from "utils/cookie";
-import {approval as url } from 'api/zhb'
+import {approval as url } from 'api'
 const baseDir = cookie("basedir"); // host:ip/crm_web/
 
 import { Modal, Button, message } from 'antd';

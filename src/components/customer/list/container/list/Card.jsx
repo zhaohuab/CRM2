@@ -21,7 +21,7 @@ import { bindActionCreators } from "redux";
 import * as Actions from "../../action";
 import moment from "moment";
 import reqwest from "utils/reqwest";
-import { baseDir } from "api";
+import { baseDir,cum,industry,prdtype } from "api";
 
 import Department from "components/refs/departments";
 import Enum from "utils/components/enums";
@@ -37,6 +37,8 @@ import CityChioce from "../../../../common/cityChioce/CityChioce";
 import InputDisable from './InputDisable'
 import SuperiorCustomer from './SuperiorCustomer'
 import ProductLine from '../panel/ProductLine'
+import TreeRef from 'components/common/ref/TreeRef'
+import GridRef from 'components/common/ref/GridRef'
 //import OwnUser from './OwnUser'
 
 import Int from "utils/components/int";
@@ -528,7 +530,7 @@ class EditForm extends React.Component {
                                                         {getFieldDecorator(
                                                             "productLine"
                                                         )(
-                                                            <ProductLine/>
+                                                            <TreeRef title="云产品线" size="small" url={prdtype.prdtyperef}/>
                                                         )}
                                                     </FormItem>
                                                 </Col>
@@ -560,7 +562,7 @@ class EditForm extends React.Component {
                                                                     }
                                                                 ]
                                                             }
-                                                        )(<Industry />)}
+                                                        )(<TreeRef title="行业" size="small" url={industry.ref}/>)}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
@@ -580,7 +582,26 @@ class EditForm extends React.Component {
                                                     <FormItem {...formItemLayout}>
                                                         {getFieldDecorator(
                                                             "parentId"
-                                                        )(<SuperiorCustomer title='上级单位'/>)}
+                                                        )(<GridRef title="上级单位" size="middle" url={cum.cumref}
+                                                            columns={[
+                                                                {
+                                                                    title: "客户名称",
+                                                                    dataIndex: "name",
+                                                                    key: "name",
+                                                    
+                                                                },
+                                                                {
+                                                                    title: "等级",
+                                                                    dataIndex: "levelName",
+                                                                    key: "levelName"
+                                                                },
+                                                                {
+                                                                    title: "区域",
+                                                                    dataIndex: "saleArea",
+                                                                    key: "saleArea"
+                                                                }
+                                                            ]}
+                                                            />)}
                                                     </FormItem>
                                                 </Col>
                                             </Row>

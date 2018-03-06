@@ -1,6 +1,6 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { visitrules as url } from 'api/zhb';
+import { visitrules as url } from 'api';
 
 const showForm = (visible=false, editData = {}) => {
 	return (dispatch) => {

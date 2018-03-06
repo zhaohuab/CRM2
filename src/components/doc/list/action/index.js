@@ -1,6 +1,6 @@
 import fetchData from 'utils/fetchdata';
 import reqwest from 'utils/reqwest';
-import { doc as url } from 'api/zhb';
+import { doc as url } from 'api';
 
 const showForm = (detail,flag,editData={}) =>{
 	if(detail=='detail'){//档案详情查看
