@@ -134,7 +134,6 @@ export default class ProductLine extends React.Component {
 
     //下拉面板onSearch
     onDropDownSearch(){
-        
         this.state.value
     }
     
@@ -161,7 +160,7 @@ export default class ProductLine extends React.Component {
 
         return (
             <DropDownModal 
-                title='行业' 
+                title='云产品线' 
                 onCancel={this.onCancel.bind(this)}  
                 onOk={this.onOk.bind(this)} 
                 onSearch = {this.onDropDownSearch.bind(this)}

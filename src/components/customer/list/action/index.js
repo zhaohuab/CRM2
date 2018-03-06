@@ -577,7 +577,7 @@ export function listFormSave(data) {
     data = trancFn(data);
  
     return dispatch => {
-       // debugger
+        dispatch({type:'CUSTOMERCOMPANY_LIST_CARDLOADING'})
         if(data.industry && data.industry.name && (!data.industry.id)){
             getIndustry(data.industry.name).then((indastry)=>{
                 
@@ -693,6 +693,22 @@ export function cumUpgrade(id) {
     };
 }
 
+//工商核实加载
+export function setIcbcLoading(visiable){
+    debugger
+    return{
+        type:'CUSTOMERCOMPANY_LIST_ICBCLOADING',
+        visiable
+    }
+}
+
+//详情中工商核实加载
+export function setDetailIcbcLoading(visiable){
+    return{
+        type:'CUSTOMERCOMPANY_LIST_ICBCDETAILLOADING',
+        visiable
+    }
+}
 
 /**
  * 
@@ -713,7 +729,6 @@ export function customerListInfo(data, visiable,select) {
 
 //在新增时保存客户工商名称，工商详情的时候,保存名字
 export function saveIcbcName(viewData, visiable) {
-    
     return {
         type: 'CUSTOMERCOMPANY_LIST_SAVEICBCNAME',
         viewData,
@@ -774,14 +789,19 @@ export function checkedFn(viewData, select, id, visiable) {
                     // isIdentified:result.isIdentified
                 });
                 
+            },()=>{
+                debugger
+                message.error('核实失败请重新核实')
+                dispatch({type:'CUSTOMERCOMPANY_LIST_ICBCDETAILLOADING',visiable:false})
             }
         );
     };
 };
 //详情中取消工商核实
 export function checkedCancelFn(id, visiable) {
-    //debugger
+    debugger
     return dispatch => {
+        dispatch({type:'CUSTOMERCOMPANY_LIST_ICBCDETAILLOADING',visiable:true})
         reqwest(
             {
                 url: baseDir + `cum/customers/${id}/identifications`,
@@ -793,12 +813,15 @@ export function checkedCancelFn(id, visiable) {
                 }
             },
             result => {
-               // debugger
+               debugger
                 dispatch({
                     type: "CUSTOMERCOMPANY_LIST_CLEANVERIFYID",
                     visiable,
                     isIdentified:result.isIdentified
                 });
+            },()=>{
+                message.error('取消核实失败请重新核实')
+                dispatch({type:'CUSTOMERCOMPANY_LIST_ICBCDETAILLOADING',visiable:false})
             }
         );
     };
@@ -807,6 +830,7 @@ export function checkedCancelFn(id, visiable) {
 export function hasIcbc(name, id , visiable) {
     return dispatch => {
         //debugger
+        dispatch({type:'CUSTOMERCOMPANY_LIST_ICBCDETAILLOADING',visiable:true})
         if(name){
             reqwest(
                 {

@@ -87,7 +87,6 @@ export default class AddJoin extends React.Component {
                 }
             },
             result => {
-                ;
                 this.setState({
                     visible:true,
                     personList:result,

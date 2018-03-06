@@ -15,22 +15,25 @@ let $$initialState = {
     searchPlaneData:undefined,//保存已选择的查询方案数据
     witchSeach:'',//保存当前使用的是哪个查询结果，当点击分页的时候，获取上一次查询结果
     viewData: {}, //获取当前客户信息，view面板使用数据
-    editTempData:'',
+    editTempData:'',//保存修改时未修改过的数据
     pagination: {//list列表页table分页信息
         pageSize: 10,
         page: 1
     },
     moreShow: false, //查询条件显隐,
+    CardLoding:false,//表单加载
 
     panelLoding:false,//详情面板加载
     viewState: false, //滑动面板显隐,
     dynamicData: [],//存放动态数据
 
+    icbcLoading:false,//新增编辑中加载
     icbcInfo: [], //根据客户工商id查询出来的所有详情信息,用在编辑和新增中
     icbcVisible: false, //工商信息查询新增编辑时面板显隐控制
     addIcbcName: '',//保存新增时已查询了的名字
     icbcSele:'',//保存已选择的公司信息名称及id
 
+    icbcDetailLoading:false,//详情中工商核实加载
     icbcInfo1: [], //根据客户工商id查询出来的所有详情信息,用在详情中
     icbcVisible2: false, //工商信息查询详情面板显隐
     icbcSeleDetail:'',//保存已选择的公司信息名称及id
@@ -285,14 +288,24 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 //每次新建把上一次保存的工商核实名称清零
                 addIcbcName:''
             });
-
+        //工商核实加载
+        case 'CUSTOMERCOMPANY_LIST_ICBCLOADING':
+        debugger
+            return $$state.merge({
+                icbcLoading:action.visiable
+            });
+        case 'CUSTOMERCOMPANY_LIST_ICBCDETAILLOADING' :
+        debugger
+            return $$state.merge({
+                icbcDetailLoading:action.visiable
+            });
         //点击选择公司获取工商信息列表    
         case "CUSTOMERCOMPANY_LIST_ICBCDETAILINFO":    
-   
             return $$state.merge({
                 icbcInfo: action.data,
                 icbcVisible: action.visiable,
-                icbcSele:action.select
+                icbcSele:action.select,
+                icbcLoading:false
             });
         //新增时，保存已获取工商信息的客户名称,和表单已赋值的数据
         case 'CUSTOMERCOMPANY_LIST_SAVEICBCNAME':     
@@ -300,24 +313,28 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 icbcVisible: action.visiable,
                 addIcbcName: action.viewData.name,
-                viewData: action.viewData
+                viewData: action.viewData,
+                icbcLoading:false
             });
         //新增时,关闭工商信息详情modal
         case "CUSTOMERCOMPANY_LIST_SAVEICBCNAMECANCEL":
             return $$state.merge({
-                icbcVisible: action.visiable
+                icbcVisible: action.visiable,
+                icbcLoading:false
             });
         //客户详情获取工商详情列表，打开modal    
         case "CUSTOMERCOMPANY_LIST_ICBCINFODETAIL":   
             return $$state.merge({
                 icbcInfo1: action.data,
                 icbcVisible2: action.visiable,
-                icbcSeleDetail:action.select
+                icbcSeleDetail:action.select,
+                icbcDetailLoading:false
             });
         case 'CUSTOMERCOMPANY_LIST_ICBCDETAILMODAL':           
             return $$state.merge({
                 icbcVisible2: action.visiable,
-                icbcInfo1: action.data
+                icbcInfo1: action.data,
+                icbcDetailLoading:false
             })
         case "CUSTOMERCOMPANY_LIST_MODALDETALHIDE":
             return $$state.merge({
@@ -328,7 +345,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             debugger
             return $$state.merge({
                 icbcVisible2: action.visiable,
-                viewData:action.result
+                viewData:action.result,
+                icbcDetailLoading:false
             });
         case "CUSTOMERCOMPANY_LIST_CHANGESTATEEDIT":
             return $$state.merge({
@@ -361,7 +379,11 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             return $$state.merge({
                 viewData: action.data
             });
-       
+        //点击新增、编辑保存加载
+        case 'CUSTOMERCOMPANY_LIST_CARDLOADING':
+            return $$state.merge({
+                CardLoding: true
+            });
         //增加客户，增加一条新数据，清空工商详情，和保存的客户名称
         case "CUSTOMERCOMPANY_LIST_ADDSAVE":
             debugger
@@ -372,6 +394,7 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 addIcbcName:'',
                 icbcSele:'',
                 viewData:clearObject($$state.get('contactsCardData').toJS()),
+                CardLoding: false
             });
         //修改客户    
         case "CUSTOMERCOMPANY_LIST_EDITSAVE": 
@@ -384,7 +407,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 viewData: action.data,
                 icbcSele:'',
                 addIcbcName:'',
-                icbcInfo:[]
+                icbcInfo:[],
+                CardLoding: false
             });
 
         //删除客户loading 
@@ -417,7 +441,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
                 viewData: actionData,
                 leftJoinPanelKeys: '1',
                 RightJoinPanelKeys: '1',
-                panelLoding:false
+                panelLoding:false,
+                icbcDetailLoading:false
             });
         //更改关注未关注    
         case "CUSTOMERCOMPANY_LIST_FOLLOWSTATECHANGE":
@@ -434,11 +459,13 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
             let clean = $$state.get("viewData").merge({
                 verifyFullname: "",
                 verifyId:'',
-                isIdentified:action.isIdentified
+                isIdentified:action.isIdentified,
             });
+            debugger
             return $$state.merge({
                 icbcVisible2: action.visiable,
-                viewData: clean
+                viewData: clean,
+                icbcDetailLoading:false
             });
 
         case "CUSTOMERCOMPANY_LIST_GETENUMDATA": //获取查询条件基础显示内容

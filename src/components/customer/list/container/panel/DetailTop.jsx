@@ -168,7 +168,13 @@ class DetailTop extends React.Component {
                                     } */}
                                     {
                                         viewData.stateName ?
-                                        <span className='tags-item'><span>{viewData.stateName}</span> </span>:''
+                                        <span className='tags-item'>
+                                        <span>
+                                            {
+                                                viewData.salesVOs && viewData.salesVOs.length?viewData.salesVOs[0].stateName:'无'
+                                            }
+                                        </span>
+                                        </span>:''
                                     }
                                     {
                                         viewData.categoryName ?

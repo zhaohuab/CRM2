@@ -29,7 +29,7 @@ import Enum from "utils/components/enums";
 import * as enumDataFake from "../data/enumdata";
 
 import Industry from "../../../../common/industry";
-import CuperiorCustomer from "./SuperiorCustomer"; //组件暂时不用
+
 import IcbcInfo from "./IcbcInfo";
 import MultiFunctionMap from "./MultiFunctionMap";
 import UploadImg from "./UploadImg";
@@ -285,7 +285,6 @@ class EditForm extends React.Component {
                                                         >
                                                             {getFieldDecorator(
                                                                 "tel",
-                                                                {}
                                                             )(
                                                                 <Input
                                                                     type="text"
@@ -543,7 +542,7 @@ class EditForm extends React.Component {
                                                         type="flex"
                                                         justify="end"
                                                     >
-                                                        <div>行业：</div>
+                                                        <div><span className="import">*</span>行业：</div>
                                                     </Row>
                                                 </Col>
                                                 <Col span={18}>
@@ -551,7 +550,16 @@ class EditForm extends React.Component {
                                                         {...formItemLayout}
                                                     >
                                                         {getFieldDecorator(
-                                                            "industry"
+                                                            "industry",
+                                                            {
+                                                                rules: [
+                                                                    {
+                                                                        required: true,
+                                                                        message:
+                                                                            "请选择行业!"
+                                                                    }
+                                                                ]
+                                                            }
                                                         )(<Industry />)}
                                                     </FormItem>
                                                 </Col>
@@ -565,14 +573,14 @@ class EditForm extends React.Component {
                                                         type="flex"
                                                         justify="end"
                                                     >
-                                                        <div>上级客户：</div>
+                                                        <div>上级单位：</div>
                                                     </Row>
                                                 </Col>
                                                 <Col span={18}>
                                                     <FormItem {...formItemLayout}>
                                                         {getFieldDecorator(
                                                             "parentId"
-                                                        )(<SuperiorCustomer />)}
+                                                        )(<SuperiorCustomer title='上级单位'/>)}
                                                     </FormItem>
                                                 </Col>
                                             </Row>
