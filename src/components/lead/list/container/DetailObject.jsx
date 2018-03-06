@@ -672,7 +672,7 @@ class DetailObject extends React.Component {
                                 >
                                     <span>
                                         {
-                                            viewData.remarks? viewData.remarks: ''
+                                            viewData.described? viewData.described: ''
                                         }
                                     </span>
                                 </Col>

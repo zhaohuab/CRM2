@@ -10,6 +10,7 @@ export function fetchData(type, payload) {
         payload
     };
 };
+
 //新增保存时组装成后台所需数据
 let trancFn=(data)=>{
     data = Immutable.fromJS(data).toJS()

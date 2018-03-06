@@ -23,8 +23,8 @@ import * as Actions from "../action";
 import Enum from "utils/components/enums";
 import * as enumDataFake from "./enumdata.jsx";
 import Industry from "../../../common/industry";
+import CityChioce from "../../../common/cityChioce/CityChioce";
 //省市县
-import CityChioce from "./CityChioce";
 class EditForm extends React.Component {
     componentDidMount() {
 
@@ -208,7 +208,7 @@ class EditForm extends React.Component {
                                                 type="flex"
                                                 justify="end"
                                             >
-                                                <div>备注：</div>
+                                                <div>描述：</div>
                                             </Row>
                                         </Col>
                                         <Col span={20} className='remarks' style={{ width: '85%' }}>

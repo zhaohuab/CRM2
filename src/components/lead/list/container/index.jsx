@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { Select, Dropdown, Menu, Table, Button, Icon, Row, Col, Modal, Form, Tabs, Collapse } from "antd";
+import { Select, Dropdown, Menu, Table, Button, Icon, Row, Col, Modal, Form, Tabs, Collapse, Spin } from "antd";
 import './index.less';
 const Panel = Collapse.Panel;
 const ButtonGroup = Button.Group;
@@ -72,7 +72,12 @@ class Clue extends React.Component {
             },
             {
                 title: "线索状态",
-                dataIndex: "stateName"
+                dataIndex: "stateName",
+                render: (text, record) => (
+                    <div>
+                        {record.stateName ? record.stateName : ''}
+                    </div>
+                )
             },
             {
                 title: "分派时间",
@@ -85,7 +90,7 @@ class Clue extends React.Component {
             {
                 title: "负责人",
                 dataIndex: "ownerUserName",
-               
+
             },
             {
                 title: "部门",
@@ -97,7 +102,7 @@ class Clue extends React.Component {
             //debugger;
             this.props.action.selectClue(selectedRows, selectedRowKeys);
         };
-       
+
         this.state = {
             pagination: {
                 pageSize: 10,
@@ -109,7 +114,7 @@ class Clue extends React.Component {
     slideShow(record) {
         debugger
         this.props.action.showViewForm(true, record.id);
-       this.props.action.getDynamic(record.id)
+        this.props.action.getDynamic(record.id)
     }
     //隐藏面版
     slideHide() {
@@ -270,37 +275,38 @@ class Clue extends React.Component {
     }
     //分配按钮
     assigin() {
+        let searchMap={}
         this.props.action.assiginLead(true)
         this.props.action.assignListData(
             this.props.$$state.get("assignPagination").toJS(),
-            '');
+            searchMap);
     }
     // 头部筛选我负责查询
     onHandleChange(value) {
-        let {searchMap}=this.props.$$state.toJS();
-        searchMap.option=value;
+        let { searchMap } = this.props.$$state.toJS();
+        searchMap.option = value;
         this.props.action.getListData(
-            this.props.$$state.get("pagination").toJS(),searchMap
+            this.props.$$state.get("pagination").toJS(), searchMap
         );
     }
 
- // 导入导出 余春梅  1.30
- onMenu(e) {
-    
-    // let { searchMap, pagination } = this.props.$$state.toJS();
-    // let page = pagination.page;
-    // let pageSize = pagination.pageSize
-    // let tranSearch=this.changeSearchData.call(this,searchMap);
-    // let search = JSON.stringify(tranSearch)
-    debugger
-    if (e.key == "1") {
-        debugger
-        this.props.action.viewLeadShow(true);
-    } else if (e.key == "2") {
-      //  location.href = baseDir + "tpub/excels/1/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 + "}"
+    // 导入导出 余春梅  1.30
+    onMenu(e) {
 
+        // let { searchMap, pagination } = this.props.$$state.toJS();
+        // let page = pagination.page;
+        // let pageSize = pagination.pageSize
+        // let tranSearch=this.changeSearchData.call(this,searchMap);
+        // let search = JSON.stringify(tranSearch)
+        debugger
+        if (e.key == "1") {
+            debugger
+            this.props.action.viewLeadShow(true);
+        } else if (e.key == "2") {
+            //  location.href = baseDir + "tpub/excels/1/export?param=" + "{\"page\":" + `${page}` + ",\"pageSize\":" + `${pageSize}` + ",\"searchMap\":" + `${search}` + ",\"mode\":" + 2 + "}"
+
+        }
     }
-}
 
 
     render() {
@@ -311,7 +317,8 @@ class Clue extends React.Component {
             visible,
             viewState,
             moreShow,
-            tableLoding
+            tableLoding,
+            panelLoding
         } = this.props.$$state.toJS();
 
         //debugger;
@@ -329,7 +336,7 @@ class Clue extends React.Component {
                 <Menu.Item key="1" className='lead_list_import_lead'>
                     <span>导入</span>
                 </Menu.Item>
-                <Menu.Item key="2"className='lead_list_export_lead'>
+                <Menu.Item key="2" className='lead_list_export_lead'>
                     <span>导出</span>
                 </Menu.Item>
             </Menu>
@@ -422,7 +429,7 @@ class Clue extends React.Component {
                                                 >
                                                     <div>
                                                         <Button
-                                                        className='lead_list_add_lead'
+                                                            className='lead_list_add_lead'
                                                             type="primary"
                                                             onClick={this.newClue.bind(
                                                                 this
@@ -464,7 +471,7 @@ class Clue extends React.Component {
                 </Row>
                 <div className="tabel-bg tabel-recoverd">
                     <Table
-                    loading={tableLoding}
+                        loading={tableLoding}
                         size="middle"
                         columns={this.columns}
                         dataSource={page.data}
@@ -511,10 +518,15 @@ class Clue extends React.Component {
                     onClose={this.slideHide.bind(this)}
                     className='tab-viewPanel-recoverd'
                 >
-                    <ViewPanel />
+                    <div className='clue-spin' >
+                        <Spin spinning={panelLoding}>
+                            <ViewPanel />
+                        </Spin>
+                    </div>
+
                 </SlidePanel>
                 <AssignLead />
-                <LeadExport/>
+                <LeadExport />
             </div>
         );
     }

@@ -51,8 +51,13 @@ class Department extends React.Component {
         console.log('===================' + url.orgTree)
         let param = { type: 1 };
         let orgType = this.props.orgType;
+           debugger 
         if (orgType && orgType == 3 && this.props.fatherorgId) {
             param.orgType = 3;
+            param.fatherorgId = this.props.fatherorgId
+        }
+        if (orgType && orgType == 2 && this.props.fatherorgId) {
+            param.orgType = 2;
             param.fatherorgId = this.props.fatherorgId
         }
         reqwest(
@@ -64,6 +69,7 @@ class Department extends React.Component {
                 }
             },
             dataResult => {
+                debugger
                 that.setState({ dataSource: dataResult.data });
             }
         );

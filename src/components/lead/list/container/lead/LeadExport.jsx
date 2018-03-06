@@ -120,6 +120,9 @@ class List extends React.Component {
                 //     debugger
                 //     this.props.action.changeStep(2);
                 // }, 1000)
+                this.props.action.getListData(
+                    this.props.$$state.get("pagination").toJS()
+                );
             }else if(result.length && result[0].code == '1'){
                 message.error([result[0].message]);
             }

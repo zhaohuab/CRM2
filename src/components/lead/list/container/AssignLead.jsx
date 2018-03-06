@@ -50,12 +50,38 @@ class UserTable extends Component {
     //点击查询按钮
     onSearchUser(userCardName) {
         // debugger
+        let searchMap={}
+        if(userCardName&&userCardName!==""){
+            searchMap.name=userCardName;
+        }
         let {
             assignPagination
           } = this.props.$$state.toJS();
         this.props.action.assignListData(
+            // assignPagination,
+            searchMap);
+    }
+
+
+    //分页方法
+    showTotal(total) {
+        return `共 ${total} 条`;
+    }
+    onPageChange(page, pageSize) {
+        debugger
+        let  assignPagination = { page: page, pageSize: pageSize };
+        this.props.action.assignListData(
+            assignPagination
+            //this.props.$$state.get("searchMap").toJS()
+        );
+    }
+    onPageSizeChange(current, pageSize) {
+        debugger
+        let  assignPagination = { page: current, pageSize: pageSize };
+        this.props.action.assignListData(
             assignPagination,
-            userCardName);
+           // this.props.$$state.get("searchMap").toJS()
+        );
     }
 
     //点击保存按钮
@@ -125,8 +151,15 @@ class UserTable extends Component {
                             rowKey="id"
                             dataSource={page.data}
                             rowSelection={rowSelection}
-                            pagination={false}
-                            scroll={{ y: 400 }}
+                            pagination={{
+                                size: "small",
+                                total: page.total,
+                                showTotal: this.showTotal,
+                                onChange: this.onPageChange.bind(this),
+                                pageSize: 5,
+                                current: page.page
+                            }}
+                            //  scroll={{ y: 400 }}
                         />
 
                     </div>

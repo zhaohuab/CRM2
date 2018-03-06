@@ -47,27 +47,6 @@ class DynamicState extends React.Component {
                     </Timeline>:<div>暂无动态</div>
                 }
 
-
-                {/* {
-                    dynamicData && dynamicData.length ?
-                        <Timeline>
-                            {
-                                dynamicData && dynamicData.length ?
-                                    dynamicData.map((item) => {
-                                        return (
-                                            <Timeline.Item>
-                                                <p>
-                                                    <span>{item.content}</span>
-                                                </p>
-                                                <p className="timeline-time">
-                                                    {item.time ? item.time : '暂无创建时间'}
-                                                </p>
-                                            </Timeline.Item>
-                                        )
-                                    }) : ''
-                            }
-                        </Timeline> : <div>暂无动态</div>
-                } */}
             </div>
         )
     }

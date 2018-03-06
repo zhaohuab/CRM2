@@ -211,3 +211,89 @@ export default class Industry extends React.Component {
         );
     }
 }
+
+
+
+
+
+
+<Row className="clue-customer">
+<Row style={{ marginBottom: '5px' }}>
+    <Col span={24}>
+        <i className="iconfont icon-zhuanhuadekehu" />
+        <span sytle={{ color: '#333333' }}>转化的客户</span>
+    </Col>
+</Row>
+
+
+{editData&&editData.related &&editData.related.customers?
+    <Row>
+        <Row style={{ marginLeft: '21px', marginBottom: '5px' }}>
+
+            <Col span={12} >
+                <div>{editData.related.customers.name?editData.related.customers.name: ''}</div>
+            </Col>
+
+            <Col span={12} style={{ textAlign: 'right', color: '#F1B941' }}>
+                {/* <div>3天未跟进</div> */}
+            </Col>
+
+        </Row>
+        <Row style={{ marginLeft: '21px', color: '#999999', marginBottom: '5px' }}>
+            <Col span={12}>
+                <div>{editData.related.customers.address? editData.related.customers.address : ''}</div>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right', color: '#999999' }}>
+                <div>{editData.related.customers && editData.related.customers.ownerUserName && ownerUserName.length && ownerUserName[0].ownerUserName ? ownerUserName[0].ownerUserName : ''}</div>
+            </Col>
+        </Row>
+        <Row style={{ marginLeft: '21px', color: '#999999', marginBottom: '5px' }}>
+            <Col span={10}>
+                <div>{editData.related.customers.levelName?editData.related.customers.levelName : ''}</div>
+            </Col>
+
+        </Row>
+    </Row> : <div style={{ marginLeft: '21px' }}>暂无数据</div>}
+</Row>
+
+
+
+
+
+
+<Row className="clue-contast">
+<Row style={{ marginBottom: '5px' }}>
+    <Col span={24}>
+        <i className="iconfont icon-lianxiren-daixuan" />
+        <span sytle={{ color: '#333333' }}>转化的联系人</span>
+    </Col>
+</Row>
+{relData &&relData.contacts ?
+    <Row>
+        {relData.contacts && relData.contacts.ownerUserInfo ?
+            <Row style={{ marginLeft: '21px', marginBottom: '5px' }}>
+
+                <Col span={12} >
+                    <div>{relData.contacts.ownerUserInfo}</div>
+                </Col>
+
+                {/* <Col span={12} style={{ textAlign: 'right', color: '#F1B941' }}>
+                <div>3天未跟进</div>
+            </Col> */}
+
+            </Row> : ''}
+        {relData.contacts&& relData.contacts.customerInfo ?
+            <Row style={{ marginLeft: '21px', color: '#999999', marginBottom: '5px' }}>
+                <Col span={12}>
+                    <div>{relData.contacts.customerInfo}</div>
+                </Col>
+
+            </Row> : ''}
+        <Row style={{ marginLeft: '21px', color: '#999999', marginBottom: '5px' }}>
+            <Col span={10}>
+                <div>{relData.contacts && relData.contacts.postName ?relData.contacts.postName : ''}</div>
+            </Col>
+
+        </Row>
+    </Row> : <div style={{ marginLeft: '21px' }}>暂无数据</div>}
+</Row>
