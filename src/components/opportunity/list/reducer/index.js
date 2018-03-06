@@ -5,7 +5,7 @@ let $$initialState = {
 
 	data: [],
 	funnelData: {
-		data: [],
+		data: {},
 		money: {}
 	},
 	selectedRows: [],
@@ -65,7 +65,8 @@ let $$initialState = {
 	//产品分类数据
 	classRefTree: [],
 	//动态
-	dynamicData: []
+	dynamicData: [],
+	viewTabActived:"1"
 };
 
 export default function orgReducers($$state = Immutable.fromJS($$initialState), action) {
@@ -95,7 +96,8 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 			return $$state.merge({
 				editData: action.payload.record,
 				viewFormVisible: action.payload.visible,
-				selectedStage: action.payload.record.saleStage
+				selectedStage: action.payload.record.saleStage,
+				viewTabActived:1
 			})
 
 		case "OPPORTUNITY_LIST_CHANGEVISIBLE": //查询功能显示
@@ -115,9 +117,11 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				selectedRowKeys: Immutable.fromJS(action.payload.selectedRowKeys)
 			});
 
-
 		case 'OPPORTUNITY_LIST_SAVESEARCHMAP':
 			return $$state.merge({ searchMap: action.payload == undefined ? {} : action.payload })
+
+			case 'OPPORTUNITY_LIST_SAVEPAGINATION':
+			return $$state.merge({ pagination: action.payload })
 
 		case 'OPPORTUNITY_LIST_ADDSAVE':
 			return $$state.merge({
@@ -372,8 +376,13 @@ export default function orgReducers($$state = Immutable.fromJS($$initialState), 
 				dynamicData: action.payload.data
 			});
 
+		//动态
+		case "OPPORTUNITY_LIST_CHANGEVIEWTABACTIVED":
+		return $$state.merge({
+			viewTabActived: action.payload
+		});
 
-
+			
 		default:
 			return $$state;
 	}

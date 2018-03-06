@@ -35,6 +35,7 @@ class JoinList extends React.Component {
     changeCircleColor(item){
         let name = item.relUserName;
         let color = ['#3CA4FB','#9FD563','#F7A508','#F7A508','#C9A5FC']
+        name = name.substring(item.relUserName.length-2);
         color = color[Math.floor(Math.random()*5)]
         return(
             <div className='join-round-color' style={{border:'1px solid '+color}}><span>{name}</span></div>
@@ -63,7 +64,7 @@ class JoinList extends React.Component {
             }
         );
     }
-
+ 
     render(){  
         let {editData,relUserData} = this.props.$$state.toJS();
         return(
@@ -78,12 +79,12 @@ class JoinList extends React.Component {
                                     
                                     this.changeCircleColor(item)
                                 }
-                                <span className='username'>{item.userName}<span className='del'><i className="iconfont icon-canyuren-shanchu customer_edit_deluser_customer" onClick={this.joinDel.bind(this,item.relUserId)}/></span></span>
+                                <span className='username'>{item.relUserName}<span className='del'><i className="iconfont icon-canyuren-shanchu opportunity_list_delparticipant_opportunity" onClick={this.joinDel.bind(this,item.relUserId)}/></span></span>
                             </div>
                         )
                     }):''
                 }
-                <div className='join-warpper-item customer_edit_adduser_customer'>
+                <div className='join-warpper-item opportunity_list_addparticipant_opportunity'>
                     <AddJoin viewData={editData} changeViewData = {this.changeViewData.bind(this)}/>
                 </div>
             </div>

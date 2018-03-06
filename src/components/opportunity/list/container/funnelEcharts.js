@@ -6,11 +6,13 @@ let option = {
     // },
     tooltip: {
         trigger: 'item',
-        formatter: "{b}: {c}"
+        formatter: "{b} : {c}"
     },
+
     legend: {
         data: []
     },
+    calculable: true,
     series: [
         {
             name:'漏斗图',
@@ -29,33 +31,19 @@ let option = {
             gap: 2,
             label: {
                 normal: {
-                    color:'#999999',
-                    formatter: '{b}'
+                    show: true,
+                    position: 'inside'
                 },
-                emphasis: {
-                    position:'inside',
-                    formatter: '{b}: {c}'
-                }
-            },
-            labelLine: {
-                normal: {
-                    show: false
-                }
-            },
-            itemStyle: {
-                normal: {
-                    opacity: 0.7,
-                    borderWidth:0
-                }
-            },
-            data: [
                
-            ],
-            
-        },
+            },
         
         
-    ],
-    animationEasing: 'linear',
+            data: [
+            ]
+        }
+    ]
 };
+
  export default option
+
+ 
