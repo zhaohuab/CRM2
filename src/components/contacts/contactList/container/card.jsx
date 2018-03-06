@@ -53,14 +53,6 @@ class Card extends React.Component {
         let postId=[];
         postId.push(post.id);
         let columns={post:[{title: "职务",dataIndex: "name"}]};
-        //debugger;
-        let ccc = (rule, value, callback) => {
-            var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-            if (!myreg.test(value)) {
-                callback("wrong");
-            }
-            callback();
-        };
         return (
             <div>
                 <Form>
@@ -182,29 +174,23 @@ class Card extends React.Component {
 
 
 const CardModal = Form.create({
-    mapPropsToFields: props => {
-        //把redux中的值取出来赋给表单
-       // debugger
+    mapPropsToFields: props => {//把redux中的值取出来赋给表单     
         let modalData = props.$$state.toJS().modalData;
         let value = {}
         let changeFieldData = (modalData,key)=>{           
-          /*   if(key=='customer'&&modalData['customerInfo'].name){//带验证信息的值
-                //debugger;
-                return modalData['customerInfo'].name
-            }else */ if(modalData[key] && modalData[key].hasOwnProperty('value')){//带验证信息的值
+        if(modalData[key] && modalData[key].hasOwnProperty('value')){//带验证信息的值
                 return modalData[key].value
-            }else if(modalData[key] && !modalData[key].hasOwnProperty('value')){//值为编辑时附上值，而不是带验证信息的值
+        }else if(modalData[key] && !modalData[key].hasOwnProperty('value')){//值为编辑时附上值，而不是带验证信息的值
                 return modalData[key]
-            }else{
+        }else{
                 return undefined
             }
         }
 
-        if(modalData.id){//如果是编辑挨个赋值
+        if(!isNaN(modalData.id)){//如果是编辑挨个赋值
             for (let key in modalData) {
               value[key] = { value: changeFieldData(modalData,key)};
             }
-            debugger;
             return {
                 ...value
             }
@@ -214,20 +200,12 @@ const CardModal = Form.create({
         };
     },
     onFieldsChange: (props, onChangeFild) => {//表单中的值存储在redux中
-        //debugger;
         let {modalData,nameArr} = props.$$state.toJS();
         for (let key in onChangeFild) { 
-          /*   if(key=='customer') {
-                modalData[key]=onChangeFild[key].value.id
-            }else{
-               modalData[key] = onChangeFild[key].value; 
-            } */
-           // debugger
             modalData[key] = onChangeFild[key];
             nameArr.push(key)
         }
-        nameArr= Array.from(new Set(nameArr));
-        //debugger
+        nameArr = Array.from(new Set(nameArr));
         props.action.saveAddCard(modalData,nameArr) 
     }
 })(Card);
@@ -246,7 +224,3 @@ export default connect(
     }
 )(CardModal);
 
-// data传值
-// 组件内保存选中状态
-// 点击时改变状态
-// 使用ref，获取已选择项

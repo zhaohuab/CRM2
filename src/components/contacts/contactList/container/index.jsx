@@ -77,13 +77,13 @@ class Contacts extends React.Component {
         ];
         let that = this;
 
-        this.state = {
-            //上方条件选择保存更多状态
-            more: false,
+        this.state = {     
+            more: false,//上方条件选择保存更多状态
             viewState: false
         };
 
         this.onSelectChange = (selectedRowKeys, selectedRows) => {
+            debugger
             this.setState({
                 more: false
             });
@@ -93,7 +93,6 @@ class Contacts extends React.Component {
 
     //点击姓名出侧滑面板
     slideShow(record) {
-        //debugger;
         this.setState({
             viewState: true
         });
@@ -108,17 +107,15 @@ class Contacts extends React.Component {
     headerBack() {
         this.props.action.selectData([]);
     }
-    modalTranslate(obj) {//保存时转换表单数据格式
+/*     modalTranslate(obj) {//保存时转换表单数据格式
         for(let key in obj){
             if(key=='post'){
-               // debugger;
                 if(obj[key]){
                     obj.postName=obj[key].name;
                     obj[key]=obj[key].id; 
                 }          
             }
             if(key=='customer'){
-               // debugger;
                 if(obj[key]){
                     obj.customerName=obj[key].name;
                     obj[key]=obj[key].id;
@@ -126,21 +123,18 @@ class Contacts extends React.Component {
             }
         }
         return obj
-    }
+    } */
     //modal点击确定按钮
     handleOk() {
         let { pagination, searchMap, modalData, nameArr } = this.props.$$state.toJS(); //获取分页信息 
         let role = getCookie();
         modalData.ownerUserId=Number(role.id);
         modalData.deptid=Number(role.deptid)       
-      // debugger;
         this.formRef.props.form.validateFieldsAndScroll((err, values) => {        
             if (!err) {            
                 if (values.id) {
-                  //  debugger;
                     this.props.action.onEdit(nameArr, modalData, pagination, searchMap);
                 } else {
-                   // debugger;
                     this.props.action.cardSaved(modalData, pagination, searchMap);
                 }
             }
@@ -153,7 +147,6 @@ class Contacts extends React.Component {
     }
    //清除表单数据
     clearForm(){
-        //debugger
         if(this.formRef){
             this.formRef.props.form.resetFields()
         }
@@ -216,7 +209,6 @@ class Contacts extends React.Component {
     onEdit(flag,slideShowData,e) {
         let id=0;
         if(flag){//如果是详情中的编辑
-            //this.props.action.edit(slideShowData, true, 'edit');
             id=slideShowData.id;
         }else{//如果是选择中的编辑
             id= this.props.$$state.toJS().rowKeys["selectedRowKeys"][0]
@@ -230,17 +222,14 @@ class Contacts extends React.Component {
         for (var key in resultNew[0]) {
             newObj[key] = resultNew[0][key];
         }
-         //debugger;
         this.props.action.edit(newObj, true, 'edit');     
     }
 
     //获取列表所需展示字段
     changeValue(data) {
         let newDate = [];
-       // debugger;
         data.forEach(item => {
             let obj = {};
-            //debugger;
             for (var key in item) {
                 if (key == "id") {
                     obj.id = item[key];
@@ -269,7 +258,6 @@ class Contacts extends React.Component {
             }
             newDate.push(obj);
         });
-       // debugger;
         return newDate;
     }
    
@@ -284,9 +272,8 @@ class Contacts extends React.Component {
             data,
             visible,
             loading,
-            tags,
             editData,
-            slideShowData,
+            modalData
         } = this.props.$$state.toJS();
 
         //获取列表所需字段
@@ -294,10 +281,6 @@ class Contacts extends React.Component {
         if (data.data) {
             newData = this.changeValue.call(this, data.data);
         }
-        //新建表单
-       //debugger;
-        //查询列表头部简单搜索表单
- 
 
         let {
             selectedRowKeys,
@@ -399,7 +382,7 @@ class Contacts extends React.Component {
                     </div>
 
                     <Modal
-                        title={editData.id ? "编辑" : "新建"}
+                        title={isNaN(modalData.id) ? "新建":"编辑" }
                         visible={visible}
                         onOk={this.handleOk.bind(this)}
                         onCancel={this.handleCancel.bind(this)}
@@ -409,7 +392,6 @@ class Contacts extends React.Component {
                     >
                         <div className="modal-height" style={{marginTop:'30px',height:'auto'}}>
                             <Card
-                                dataSource={editData}
                                 wrappedComponentRef={inst =>this.formRef = inst}
                             />
                         </div>
@@ -419,7 +401,7 @@ class Contacts extends React.Component {
                         viewState={this.state.viewState}
                         onClose={this.slideHide.bind(this)}
                     >
-                        <PanelView slideShowData={slideShowData} onEdit={this.onEdit.bind(this)}/>
+                        <PanelView onEdit={this.onEdit.bind(this)}/>
                     </SlidePanel>
                 </div>
             </div>

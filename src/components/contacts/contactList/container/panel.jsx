@@ -21,8 +21,7 @@ const Option = Select.Option;
 const TabPane = Tabs.TabPane;
 class PanelView extends React.Component {
 
-translate=(data,arr)=>{//编辑时转换参数结构
-//debugger
+translate=(data,arr)=>{
    if(arr.length==0){
        data=data
    }else if(arr&&arr.length){
@@ -30,7 +29,6 @@ translate=(data,arr)=>{//编辑时转换参数结构
             for(let key2 in data){             
                 if(item==key2&&item!='ownerUserId'&&item!='deptid'){
                     if(item=='post'){
-                       // debugger
                         data.postName=data[item].value?data[item].value.name:data.postName;
                     }else{
                         data[item]=data[item].value?data[item].value:data[item];
@@ -43,9 +41,7 @@ translate=(data,arr)=>{//编辑时转换参数结构
 }
     render() {
         let{ modalData, dynamicData, nameArr } = this.props.$$state.toJS();
-       //debugger;
         modalData=this.translate(modalData,nameArr)
-      //  debugger;
         return (      
             <div>
             {modalData.name?
@@ -174,70 +170,40 @@ translate=(data,arr)=>{//编辑时转换参数结构
                             <div className="contacts-timeline-title">动态</div>
                             <div className="contacts-timeline">
                             {
-                    dynamicData && dynamicData.length?
-                    <Timeline>
-                        {
-                            dynamicData && dynamicData.length?
-                            dynamicData.map((item)=>{
-                                //debugger;
-                                return(
-                                    <Timeline.Item>
-                                        <p>
-                                            {
-                                                item.content && item.content.length?
-                                                item.content.map((itemDetail)=>{
-                                                   // debugger
-                                                    return (
-                                                        <span>
-                                                            {
-                                                                itemDetail.link?
-                                                                <span className="timeline-import">
-                                                                    {itemDetail.title + itemDetail.link.title}
-                                                                </span>:
-                                                                <span>{itemDetail.title}</span>
-                                                            }
-                                                        </span>
-                                                    )
-                                                }):''
-                                            }
-                                        </p>
-                                        <p className="timeline-time">
-                                            {item.time?item.time:'暂无创建时间'}
-                                        </p>
-                                    </Timeline.Item>
-                                )
-                            }):''
-                        }
-                    </Timeline>:<div>暂无动态</div>
-                }
-
-                           {/*      <Timeline>
-                                {
-                                    dynamicData?
-                                    (
-                                        dynamicData.map(item=>{
-                                            return (
-                                                <Timeline.Item className="timeline-item">
+                                dynamicData && dynamicData.length?
+                                <Timeline>
+                                    {
+                                        dynamicData && dynamicData.length?
+                                        dynamicData.map((item)=>{
+                                            return(
+                                                <Timeline.Item>
                                                     <p>
-                                                        <span className="timeline-item-import">
-                                                            {item.name}
-                                                        </span>
-                                                        <span className="timeline-item-normal">
-                                                            创建联系人
-                                                        </span>
-                                                        <span className="timeline-item-import">
-                                                            {item.content}
-                                                        </span>
+                                                        {
+                                                            item.content && item.content.length?
+                                                            item.content.map((itemDetail)=>{
+                                                                return (
+                                                                    <span>
+                                                                        {
+                                                                            itemDetail.link?
+                                                                            <span className="timeline-import">
+                                                                                {itemDetail.title + itemDetail.link.title}
+                                                                            </span>:
+                                                                            <span>{itemDetail.title}</span>
+                                                                        }
+                                                                    </span>
+                                                                )
+                                                            }):''
+                                                        }
                                                     </p>
                                                     <p className="timeline-time">
-                                                        {moment(item.createdTime.time).format('YYYY-MM-DD HH:mm:ss')}
+                                                        {item.time?item.time:'暂无创建时间'}
                                                     </p>
                                                 </Timeline.Item>
                                             )
-                                        })
-                                    ):'暂无'
-                                }
-                                </Timeline> */}
+                                        }):''
+                                    }
+                                </Timeline>:<div>暂无动态</div>
+                            }
                             </div>
                         </div>
                     </Col>

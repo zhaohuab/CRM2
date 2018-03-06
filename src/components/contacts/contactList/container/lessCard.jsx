@@ -42,13 +42,6 @@ class LessCard extends React.Component {
                                 )}
                             </FormItem>
                         </Col>
-                   {  /*    <Col span={6}>
-                            <FormItem>
-                                {getFieldDecorator("customer")(
-                                    <Input placeholder="客户" />
-                                )}
-                            </FormItem>
-                        </Col> */}
                         <Col span={6}>
                             <FormItem>
                                 <div className="more-btn">
@@ -64,8 +57,7 @@ class LessCard extends React.Component {
 }
 
 const SearchForm = Form.create({
-    mapPropsToFields: props => {
-        //把redux中的值取出来赋给表单
+    mapPropsToFields: props => {//把redux中的值取出来赋给表单   
         let searchMap = props.$$state.toJS().searchMap;
         let value = {};
         for (let key in searchMap) {
@@ -75,8 +67,7 @@ const SearchForm = Form.create({
             ...value
         };
     },
-    onFieldsChange: (props, onChangeFild) => {
-        //往redux中写值//把值进行更新改变
+    onFieldsChange: (props, onChangeFild) => {//往redux中写值//把值进行更新改变  
         let searchMap = props.$$state.toJS().searchMap;
         for (let key in onChangeFild) {         
             searchMap[key] = onChangeFild[key].value;

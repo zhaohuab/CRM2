@@ -10,13 +10,10 @@ let $$initialState = {
     rowKeys: {},//选择
     data: {},//列表数据
     visible: false,//
-    tags: {},//
     editData: {postList:[],customerList:[]},//客户和职务列表
     searchMap:{enableState:1},//查询条件
-    enumData:[],
     modalData:{},//弹窗modal中的数据
     post:{id:0,name:''},//职务
-    slideShowData:{},//详情页面数据
     dynamicData:[],//动态数据
     nameArr:[],//编辑时修改过的字段名集合
 };
@@ -47,16 +44,10 @@ export default function reducer(
                 loading: false,
                 visible: action.show,
                 editData: action.result,
-                nameArr:[],
+                modalData: {},
+                post: {id:0,name:''},
+                nameArr: [],
             });
-        case "CONTACTS_CARD_SAVEADD": //新增一条数据
-     /*    let vvv=action;
-        debugger;
-            return $$state.merge({
-                visible: false,
-                loading: false,
-                data: pageAdd($$state.get("data").toJS(), action.data)
-            }); */
 
         case "CONTACTS_LIST_SELECTDATA": //保存已选择的数据
             return $$state.merge({
@@ -66,8 +57,8 @@ export default function reducer(
                 return Immutable.fromJS(action.data);
             });
         case "CONTACTS_LIST_GETLISTUPDATE": //删除一到多条数据
-            $$state = $$state.set("data", Immutable.fromJS(action.data)).toJS();
-           // $$state = $$state.set("loading", false);
+            $$state = $$state.set("data", Immutable.fromJS(action.data));
+            $$state = $$state.set("loading", false).toJS();
             //selectedRows中删除已选择的
             $$state.rowKeys["selectedRows"] = $$state.rowKeys[
                 "selectedRows"
@@ -105,9 +96,7 @@ export default function reducer(
             postEdit.id= action.data.post;
             postEdit.name = action.data.postName;
             dataCopy.data = data
-           //debugger;
             return $$state.merge({
-                //data: dataCopy,
                 visible: false,
                 loading: false,
                 post: postEdit,
@@ -118,8 +107,6 @@ export default function reducer(
                 searchMap: action.data
             });
         case "CONTACTS_ADD_CARD": //表单中的变化值往redux写入中
-        let bnm=action;
-        //debugger
             return $$state.merge({
                 modalData: action.data,
                 nameArr: action.arr,
@@ -133,11 +120,14 @@ export default function reducer(
                 dynamicData: action.result.dynamicList,
             });
         case "CONTACTS_LIST_FAIL": //请求失败，关闭loading
-                return $$state.merge({
-                    loading: false
-                });
-        case "CONTACTS_EDIT_DETAIL": //请求回来单个联系人数据详情
-        let mmm=action;
+            return $$state.merge({
+                loading: false
+            });
+        case "CONTACTS_EDIT_DETAIL_BEGIN": //请求详情，就清空modalData中的值
+            return $$state.merge({
+                modalData: {},
+            });
+        case "CONTACTS_EDIT_DETAIL": //展开详情时请求回来单个联系人数据详情
             let post={id:0,name:''};
             post.id=action.result.post;
             post.name=action.result.postName;
@@ -146,13 +136,12 @@ export default function reducer(
                 id: action.result.customer
             }
             action.result.customer ={value: value}
-           // debugger
             return $$state.merge({
                 modalData: action.result,
                 post: post,
-                });
-                                      
+                });  
+                                                  
         default:
             return $$state;
-    }
+    } 
 }

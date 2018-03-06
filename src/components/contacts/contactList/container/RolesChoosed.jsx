@@ -50,7 +50,6 @@ class RolesChoosed extends React.Component {
             this.setState(
                 {
                     visible: false
-                    //keyDownVisiable: false
                 },
                 () => {
                     this.props.onChange({});
@@ -62,7 +61,6 @@ class RolesChoosed extends React.Component {
     //table发生行选中触发的方法
     onSelectChange(selectedRowKeys, selectedRows) {  
         this.setState({
-           /*  select: { name: selectedRows[0].role, id: selectedRows[0].key }, */
             selectedRowKeys: selectedRowKeys,
             roles:selectedRows
         });
@@ -96,26 +94,17 @@ class RolesChoosed extends React.Component {
 
     //下拉时显示的面板布局
     choiceIndustry() { 
-        //debugger;
         let rowSelection = {
             onChange: this.onSelectChange.bind(this),
             type: "radio",
             selectedRowKeys: this.props.idArr,          
         };   
-        //let dataSource = this.props.$$state.get("businessObjList").toJS(); 
         return (
             <div className="reference">
                 <div
                     className="reference-main"
-                    style={{ width:"250px",border:'1px solid #eee' }}
+                    style={{ width:"250px",border:'1px solid #ccc' }}
                 >
-                { /*    <Row
-                        type="flex"
-                        justify="space-between"
-                        className="reference-main-header"
-                    >
-                        <div className="title">业务类型</div>
-                    </Row> */}
                     <Row className="tabel-recoverd reference-main-choice ">
                         <Table
                             columns={this.props.columns}
@@ -132,6 +121,7 @@ class RolesChoosed extends React.Component {
                         justify="end"
                         align="middle"
                         className="reference-main-footer"
+                        style={{background:'#fff',borderTop:'1px solid #ccc', padding:'5px'}}
                     >
                         <Row
                             type="flex"
@@ -160,8 +150,6 @@ class RolesChoosed extends React.Component {
     }
 
     render() {
-        let xxxx=this.props;
-        //debugger;
         const suffix =
             this.props.value && this.props.value.name ? (
                 <Icon type="close" onClick={this.emitEmpty.bind(this)} />
