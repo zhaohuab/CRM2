@@ -177,9 +177,9 @@ const cusStatus = {//客户状态
     customer: baseDir+'cum/customerchart/customers',//获取客户数据
     echarts: baseDir+'cum/customerchart/ratio',
 }
-const approval = {//客户中审批流设置
-    approval: baseDir+'bpub/approvals/processes',
-}
+// const approval = {//客户中审批流设置
+//     approval: baseDir+'bpub/approvals/processes',
+// }
 
 export {
     login,
@@ -216,5 +216,5 @@ export {
     visitrules,
     distributed,
     cusStatus,
-    approval,
+    //approval, 客户审批的先注掉
 }
