@@ -304,7 +304,7 @@ class DetailObject extends React.Component {
                                         className="custom-info-title"
                                     >
                                         <span>
-                                            上级客户:
+                                            上级单位:
                                         </span>
                                     </Col>
                                     <Col
@@ -504,7 +504,7 @@ class DetailObject extends React.Component {
                                     >
                                         <span>
                                             {
-                                                viewData.stateName
+                                                viewData.leadName
                                             }
                                         </span>
                                     </Col>

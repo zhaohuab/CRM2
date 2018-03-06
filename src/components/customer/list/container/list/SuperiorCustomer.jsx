@@ -221,7 +221,7 @@ export default class SuperiorCustomer extends React.Component {
         let tableData = this.state.cumData;
         return (
             <DropDownModal 
-                title='上级客户' 
+                title={this.props.title} 
                 onCancel={this.onCancel.bind(this)}  
                 onOk={this.onOk.bind(this)} 
                 onSearch = {this.onSearch.bind(this)}
@@ -270,7 +270,7 @@ export default class SuperiorCustomer extends React.Component {
                             placement={this.props.placement}
                         >
                             <Search
-                                placeholder="上级客户"
+                                placeholder={this.props.title} 
                                 onSearch={this.getCumData.bind(this, true)}   //只要包含在dropdown里的只要出发都会执行onVisibleChange方法不必单写
                                 value={this.props.value ? this.props.value.name : ""}
                                 suffix={suffix}

@@ -11,7 +11,8 @@ import {
     Menu,
     Dropdown,
     Tree,
-    message
+    message,
+    Spin
 } from "antd";
 
 import "assets/stylesheet/all/iconfont.css";
@@ -66,6 +67,7 @@ class IcbcDetailInfo extends React.Component {
     changeCustomer(viewData) {
         //industry  ownerUserId  province_city_district
         debugger
+        this.props.action.setDetailIcbcLoading(true)
         let that = this
         for (let key in viewData) {
             if ( key == 'ownerUserId') {
@@ -206,8 +208,8 @@ class IcbcDetailInfo extends React.Component {
 
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
-       
         debugger
+        this.props.action.setDetailIcbcLoading(true)
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/",
@@ -221,6 +223,8 @@ class IcbcDetailInfo extends React.Component {
             },
             result => {
                 callback(result);
+            },()=>{
+                this.props.action.setDetailIcbcLoading(false)
             }
         );
     }
@@ -229,6 +233,7 @@ class IcbcDetailInfo extends React.Component {
     getIcbcDetal(select, visiable) {
         let id = select.companyid
         debugger
+        this.props.action.setDetailIcbcLoading(true)
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/" + id,
@@ -237,6 +242,9 @@ class IcbcDetailInfo extends React.Component {
             result => {
                 debugger
                 this.customerListInfo(result.data, visiable,select);
+            },()=>{
+                message.error('获取工商详情失败')
+                this.props.action.setDetailIcbcLoading(false)
             }
         );
     }
@@ -245,11 +253,15 @@ class IcbcDetailInfo extends React.Component {
 
     //点击获取工商核实按钮
     getIcbc(flag) {
+        debugger
+        let { viewData, icbcInfo1 ,icbcDetailLoading} = this.props.$$state.toJS()
+        if(icbcDetailLoading) return
 
         let cssCode = this.props.$$menuState.get("cssCode");
-        let { viewData, icbcInfo1 } = this.props.$$state.toJS()
+        
         let icbcName = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name;
         let verifyId = viewData.verifyId
+        debugger
         if (flag) {
             //如果面板是显示状态
             if (icbcName) {
@@ -273,6 +285,7 @@ class IcbcDetailInfo extends React.Component {
                                 icbcList: result.data
                             });
                         }
+                        this.props.action.setDetailIcbcLoading(false)
                     });
                 }
             }
@@ -319,6 +332,7 @@ class IcbcDetailInfo extends React.Component {
             visible: false,
             index: -1
         });
+        this.props.action.setDetailIcbcLoading(false)
     }
 
     //下拉面板中搜索
@@ -335,6 +349,7 @@ class IcbcDetailInfo extends React.Component {
                     icbcList: result.data
                 });
             }
+            this.props.action.setDetailIcbcLoading(false)
         });
     }
 
@@ -348,7 +363,7 @@ class IcbcDetailInfo extends React.Component {
 
     createList() {
         let index = this.state.index;
-        let { viewData } = this.props.$$state.toJS()
+        let { viewData ,icbcDetailLoading} = this.props.$$state.toJS()
         return (
             <DropDownModal
                 title='工商列表'
@@ -361,28 +376,31 @@ class IcbcDetailInfo extends React.Component {
                 height={380}
             >
                 <div className='' style={{ width: '100%' }}>
-                    {this.state.icbcList &&
-                        this.state.icbcList.length ? (
-                            this.state.icbcList.map((item, n) => {
-                                return (
-                                    <div
-                                        className={index == n ? "icbc-item-choice" : "icbc-item"}
-                                        onClick={this.onSelect.bind(this, item, n)}
-                                    >
-                                        {item.companyname}
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <div className="icbc-item">暂无数据</div>
+                    <Spin spinning={icbcDetailLoading} >
+                        {
+                            this.state.icbcList &&
+                            this.state.icbcList.length ? (
+                                this.state.icbcList.map((item, n) => {
+                                    return (
+                                        <div
+                                            className={index == n ? "icbc-item-choice" : "icbc-item"}
+                                            onClick={this.onSelect.bind(this, item, n)}
+                                        >
+                                            {item.companyname}
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div className="icbc-item">暂无数据</div>
                         )}
+                    </Spin>        
                 </div>
             </DropDownModal>
         );
     }
 
     render() {
-        let { viewData, icbcVisible2, icbcInfo1 } = this.props.$$state.toJS()
+        let { viewData, icbcVisible2, icbcInfo1,icbcDetailLoading } = this.props.$$state.toJS()
         let cssCode = this.props.$$menuState.get("cssCode");
       
         return (
@@ -419,17 +437,15 @@ class IcbcDetailInfo extends React.Component {
                     onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
                     visible={this.state.visible} //受控面板显示
                 >
-                    <div>
-                        {
-                            viewData.isIdentified == 1?
-                            <Row type = 'flex' justify='center'>
-                                <img src={require("assets/images/cum/icbc-true.png")} className='icbc-icon'/>已核实
-                            </Row>:
-                            <Row type = 'flex' justify='center'>
-                                 <img src={require("assets/images/cum/icbc-false.png")}  className='icbc-icon'/>未核实
-                            </Row>
-                        }
-                    </div>
+                    {
+                        viewData.isIdentified == 1?
+                        <Row type = 'flex' justify='center'>
+                            <img src={require("assets/images/cum/icbc-true.png")} className='icbc-icon'/>已核实
+                        </Row>:
+                        <Row type = 'flex' justify='center'>
+                                <img src={require("assets/images/cum/icbc-false.png")}  className='icbc-icon'/>未核实
+                        </Row>
+                    }
                 </Dropdown>
                
                 <Modal
@@ -440,19 +456,21 @@ class IcbcDetailInfo extends React.Component {
                     width={500}
                     maskClosable={false}
                 >
-                    <div className="modal-height">
-                        {icbcInfo1 && icbcInfo1.length
-                            ? icbcInfo1.map(item => {
-                                return (
-                                    <div className="icbc-detail-item">
-                                        <span>{item.name}</span>:<span>
-                                            {item.value}
-                                        </span>
-                                    </div>
-                                );
-                            })
-                            : ""}
-                    </div>
+                    <Spin spinning={icbcDetailLoading} >
+                        <div className="modal-height">
+                            {icbcInfo1 && icbcInfo1.length
+                                ? icbcInfo1.map(item => {
+                                    return (
+                                        <div className="icbc-detail-item">
+                                            <span>{item.name}</span>:<span>
+                                                {item.value}
+                                            </span>
+                                        </div>
+                                    );
+                                })
+                                : ""}
+                        </div>
+                    </Spin>
                 </Modal>
             </div>
         );

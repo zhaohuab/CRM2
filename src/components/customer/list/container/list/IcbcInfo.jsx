@@ -52,6 +52,7 @@ class IcbcInfo extends React.Component {
 
     //根据客户名称，获取搜索工商核实列表
     getIcbcList(name, callback) {
+        this.props.action.setIcbcLoading(true)
         reqwest(
             {
                 url: baseDir + "cum/customers/identifications/",
@@ -72,6 +73,7 @@ class IcbcInfo extends React.Component {
     //根据客户id获取详细客户工商信息 id为公司id
     getIcbcDetal(select, visiable) {
         debugger
+        this.props.action.setIcbcLoading(true)
        //验证唯一性
         let that = this
         reqwest(
@@ -110,6 +112,10 @@ class IcbcInfo extends React.Component {
     //点击核实按钮，新增判断是否已经获取核实信息 编辑判断是都认证
     getIcbc(flag) {
         debugger
+        let {icbcLoading} = this.props.$$state.toJS()
+
+        if(icbcLoading) return
+
         let {viewData,icbcSelect,isClose,addIcbcName} = this.props.$$state.toJS()
         let icbcName = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name;
         let id = viewData.id
@@ -120,9 +126,7 @@ class IcbcInfo extends React.Component {
         addIcbcName = addIcbcName.hasOwnProperty('value')?addIcbcName.value:addIcbcName
         addIcbcName = addIcbcName?addIcbcName.replace(reSpace,'$1'):addIcbcName;
         icbcName = icbcName?icbcName.replace(reSpace,'$1'):icbcName;
-        this.setState({
-            downSpin:true
-        })
+
         if (flag && icbcName) {
             debugger
             //如果面板是显示状态
@@ -134,18 +138,18 @@ class IcbcInfo extends React.Component {
                         this.setState({
                             visible: flag,
                             icbcList: result.data,
-                            downSpin:false
                         });
                     }
+                    this.props.action.setIcbcLoading(false)
                 });
             }
         } else {
             if(!icbcName) message.error('请输入名称')
             //如果面板是关闭状态
             this.setState({
-                visible: flag,
-                downSpin:false
+                visible: false,
             });
+            this.props.action.setIcbcLoading(false)
         }
     }   
     //公司列表选中触发方法
@@ -157,6 +161,9 @@ class IcbcInfo extends React.Component {
     }
     //下拉面板点击确定
     onOk() {
+        let {icbcLoading} = this.props.$$state.toJS();
+        if(icbcLoading) return
+
         debugger
         if (!this.state.select) {
             this.setState({
@@ -223,6 +230,9 @@ class IcbcInfo extends React.Component {
        
         //保存客户全称
         viewData.fullname = name.value;
+
+        //保存获取公司信息id
+        viewData.verifyId = {value:icbcSele.companyid}
         debugger
         icbcInfo.forEach(item => {
             if (item.key == "street") {
@@ -279,7 +289,11 @@ class IcbcInfo extends React.Component {
 
     //详细信息确定按钮，保存已获取公司的客户名称
     onIcbcOk(){
-        debugger
+        let {icbcLoading} = this.props.$$state.toJS()
+        if(icbcLoading) return
+        
+        this.props.action.setIcbcLoading(true)
+
         let {viewData,icbcSelect,isClose,addIcbcName} = this.props.$$state.toJS();
         debugger
         let name = viewData.name && viewData.name.hasOwnProperty('value')?viewData.name.value:viewData.name
@@ -298,18 +312,18 @@ class IcbcInfo extends React.Component {
 
     //modal框底部按钮
     footerContent() {
-        let {viewData} = this.props.$$state.toJS();
+        let {viewData,icbcLoading} = this.props.$$state.toJS();
         return (
             <div>
                 <Button onClick={this.onInbcCancel.bind(this)}>关闭</Button>
-                <Button onClick={this.onIcbcOk.bind(this)}>确定</Button>
+                <Button onClick={this.onIcbcOk.bind(this)} loading = {icbcLoading}>确定</Button>
             </div>
         );
     }
   
     createList() {
         let index = this.state.index;
-        let { viewData } = this.props.$$state.toJS()
+        let { viewData ,icbcLoading} = this.props.$$state.toJS()
         return (
             <DropDownModal 
                 title='工商列表' 
@@ -322,41 +336,45 @@ class IcbcInfo extends React.Component {
                 height= {380}
                
             >  
-               <div className="crm-list-card-icbc">
-               {this.state.icbcList &&
-                this.state.icbcList.length ? (
-                    this.state.icbcList.map((item, n) => {
-                        return (
-                            <div
-                                className={index == n? "icbc-item-choice": "icbc-item"}
-                                onClick={this.onSelect.bind(this,item,n)}
-                            >
-                                {item.companyname}
-                            </div>
-                        );
-                    })
-                ) : (
-                    <div className="icbc-item">暂无数据</div>
-                )}
+                <div className='crm-list-card-icbc'>
+                    <Spin spinning={icbcLoading} >
+                        {this.state.icbcList &&
+                            this.state.icbcList.length ? (
+                                this.state.icbcList.map((item, n) => {
+                                    return (
+                                        <div
+                                            className={index == n? "icbc-item-choice": "icbc-item"}
+                                            onClick={this.onSelect.bind(this,item,n)}
+                                        >
+                                            {item.companyname}
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <div className="icbc-item">暂无数据</div>
+                        )}
+                    </Spin>
                </div>
-             </DropDownModal>         
+           </DropDownModal>         
         );
     }
 
     render() {
-        let {viewData,icbcVisible,icbcInfo,icbcSelect,isClose,} = this.props.$$state.toJS();
+        let {viewData,icbcVisible,icbcInfo,icbcSelect,isClose,icbcLoading} = this.props.$$state.toJS();
         return (
             <div>
-                <Dropdown
-                    overlay={this.createList()} //生成下拉结构样式
-                    trigger={["click"]}
-                    onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
-                    visible={this.state.visible} //受控面板显示
-                >
-                    <span className="icbc-btn customer_view_verify_customer">
-                        企业核实
-                    </span>
-                </Dropdown>
+                <Spin spinning={icbcLoading} >
+                    <Dropdown
+                        overlay={this.createList()} //生成下拉结构样式
+                        trigger={["click"]}
+                        onVisibleChange={this.getIcbc.bind(this)} //聚焦、和点击外侧时显示关闭下拉面板
+                        visible={this.state.visible} //受控面板显示
+                    >
+                        <span className="icbc-btn customer_view_verify_customer">
+                            企业核实
+                        </span>
+                    </Dropdown>
+                </Spin>
                 <Modal
                     title="工商核实"
                     visible={icbcVisible}
@@ -365,19 +383,22 @@ class IcbcInfo extends React.Component {
                     width={500}
                     maskClosable={false}
                 >
-                    <div className="modal-height">
-                        {icbcInfo && icbcInfo.length
-                            ? icbcInfo.map(item => {
-                                  return (
-                                      <div className="icbc-detail-item">
-                                          <span>{item.name}</span>:<span>
-                                              {item.value}
-                                          </span>
-                                      </div>
-                                  );
-                              })
-                            : ""}
-                    </div>
+                    <Spin spinning={icbcLoading} >
+                        <div className="modal-height">
+                            {icbcInfo && icbcInfo.length
+                                ? icbcInfo.map(item => {
+                                    return (
+                                        <div className="icbc-detail-item">
+                                            <span>{item.name}</span>:<span>
+                                                {item.value}
+                                            </span>
+                                        </div>
+                                    );
+                                })
+                                : ""
+                            }
+                        </div>
+                    </Spin>
                 </Modal>
             </div>
         );

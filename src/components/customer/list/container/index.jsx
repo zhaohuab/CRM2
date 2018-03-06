@@ -96,7 +96,16 @@ class List extends React.Component {
             },
             {
                 title: "客户状态",
-                dataIndex: "stateName"
+                dataIndex: "stateName",
+                render:(text,recode)=>{
+                    return(
+                        <span>
+                            {
+                                recode.salesVOs && recode.salesVOs.length?recode.salesVOs[0].stateName:'无'
+                            }
+                        </span>
+                    )
+                }
             },
             {
                 title: "客户类别",
@@ -203,8 +212,8 @@ class List extends React.Component {
 
     //form新增、或者修改
     formHandleOk() {
-        let { viewData,icbcSele} = this.props.$$state.toJS();
-       
+        let { viewData,icbcSele,CardLoding} = this.props.$$state.toJS();
+        if(CardLoding) return
         this.formRef.props.form.validateFields((err, value) => {
             debugger
             if (!err) {
@@ -310,7 +319,8 @@ class List extends React.Component {
             tableLoding,
             pageSize,
             data,
-            panelLoding
+            panelLoding,
+            CardLoding
         } = this.props.$$state.toJS();
 
         let rowSelection = {
@@ -349,13 +359,15 @@ class List extends React.Component {
                     maskClosable={false}
                     className='crm-list-card-modal'
                 >
-                    <div className="modal-height">
-                        <Card
-                            wrappedComponentRef={inst => (this.formRef = inst)}
-                            editCardFn={this.editCardFn.bind(this)}
-                            changeState={this.changeState.bind(this)}
-                        />
-                    </div>
+                    <Spin spinning={CardLoding} >
+                        <div className="modal-height">
+                            <Card
+                                wrappedComponentRef={inst => (this.formRef = inst)}
+                                editCardFn={this.editCardFn.bind(this)}
+                                changeState={this.changeState.bind(this)}
+                            />
+                        </div>
+                    </Spin>
                 </Modal>
                
                 <SlidePanel
@@ -369,11 +381,8 @@ class List extends React.Component {
                         </Spin>
                     </div>
                 </SlidePanel>
-                
                 <LeadExport/>
-                
             </div>
-
         );
     }
 }
