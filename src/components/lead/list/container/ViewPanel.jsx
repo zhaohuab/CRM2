@@ -95,12 +95,15 @@ class ViewPanel extends React.Component {
                     <Row className="header-customer">
                         <Col span={13}>
                             <Row type="flex" align="middle" gutter={15}>
-                                <Row type="flex" align="middle">
+                                <Row type="flex">
+                                    <i className="iconfont icon-xiansuo clue-icon" />
+                                </Row>
+                                {/* <Row type="flex" align="middle">
                                     <img
                                         src={require("assets/images/header/photo.png")}
                                         className="customer-image"
                                     />
-                                </Row>
+                                </Row> */}
                                 <Col span={21}>
                                     <Row>
                                         <Row
@@ -307,10 +310,10 @@ class ViewPanel extends React.Component {
                         </Col>
                         <Col span={6} className="warrper-main-right">
                             <div className="clue-right-state">动态</div>
-                           
-                               <DynamicState/>
-                            
-                                {/* <Timeline>
+
+                            <DynamicState />
+
+                            {/* <Timeline>
                                     <Timeline.Item>
                                         <p>
                                             <span className="timeline-import">
@@ -360,7 +363,7 @@ class ViewPanel extends React.Component {
                                         </p>
                                     </Timeline.Item>
                                 </Timeline> */}
-                          
+
                         </Col>
                     </div>
                 </Row>
