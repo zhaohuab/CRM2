@@ -45,7 +45,7 @@ class WinCard extends React.Component {
                 >
                     {getFieldDecorator('actualSignMoney', {
                         rules: [{
-                            required: true, message: '请输出实际签单金额',
+                            required: true, message: '请输入实际签单金额',
                         }],
                     })(
                         <Input placeholder='请输入...' />
@@ -57,7 +57,9 @@ class WinCard extends React.Component {
                     {...formItemLayout}
                 >
                     {getFieldDecorator('actualSignTime', {
-                        rules: [],
+                         rules: [{
+                            required: true, message: '请输入实际签单日期',
+                        }],
                     })(
                         <DatePicker format='YYYY/MM/DD' />
                         )}
@@ -68,6 +70,9 @@ class WinCard extends React.Component {
                     {...formItemLayout}
                 >
                     {getFieldDecorator('winReason', {
+                         rules: [{
+                            required: true, message: '请输入赢单原因',
+                        }],
                     })(
                         <Enum dataSource={winReason} placeholder='请输入...' />
 

@@ -31,10 +31,6 @@ export default function reducer(
                 return true;
             });
         case "CONTACTS_LIST_GETLIST": //获取查询的数据，关闭table加载动画
-       // debugger
-           /*  $$state = $$state.update("loading", val => {
-                return false;
-            }); */
             return $$state.merge({
                 data: action.data,
                 loading: false,
@@ -47,9 +43,6 @@ export default function reducer(
             });
 
         case "CONTACTS_LIST_EDIT"://打开新增编辑按钮
-        let zzz=action;
-       
-        //debugger;
             return $$state.merge({
                 loading: false,
                 visible: action.show,
@@ -100,7 +93,7 @@ export default function reducer(
             return Immutable.fromJS($$state);
         case "CONTACTS_LIST_UPDATELIST": //保存编辑
             let data = $$state.toJS().data.data; 
-            let dataCopy={},postEdit={},customerEdit={}; 
+            let dataCopy={},postEdit={}; 
             if(data&&data.length){
                 data.forEach((item,index,arr)=>{
                     if(item.id==action.data.id){              
@@ -111,23 +104,20 @@ export default function reducer(
             }
             postEdit.id= action.data.post;
             postEdit.name = action.data.postName;
-            customerEdit.id = action.data.customer;
-            customerEdit.name = action.data.customerName;
             dataCopy.data = data
-            //debugger;
+           //debugger;
             return $$state.merge({
-                data: dataCopy,
+                //data: dataCopy,
                 visible: false,
                 loading: false,
                 post: postEdit,
-                customer: customerEdit,
                 modalData: action.data,
             });
         case "CONTACTS_LIST_SEARCHMAP": //保存table已选择条件
             return $$state.merge({
                 searchMap: action.data
             });
-        case "CONTACTS_ADD_CARD": //打开新建窗口
+        case "CONTACTS_ADD_CARD": //表单中的变化值往redux写入中
         let bnm=action;
         //debugger
             return $$state.merge({
@@ -151,7 +141,12 @@ export default function reducer(
             let post={id:0,name:''};
             post.id=action.result.post;
             post.name=action.result.postName;
-            //debugger
+            let value = {
+                name: action.result.customerInfo.name,
+                id: action.result.customer
+            }
+            action.result.customer ={value: value}
+           // debugger
             return $$state.merge({
                 modalData: action.result,
                 post: post,

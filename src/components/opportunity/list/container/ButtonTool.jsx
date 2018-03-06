@@ -113,11 +113,11 @@ class ToolForm extends React.Component {
                         length={selectedRows.length}
                     >
 
-                    {/*selectedRows.length == 1 ? <Button className="default_button" onClick={this.btnEdit.bind(this, selectedRowKeys[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
-                                : <Button className="default_button" disabled><i className='iconfont icon-bianji'></i>编辑</Button>*/}
+                    {/*selectedRows.length == 1 ? <Button className="default_button opportunity_list_edit_opportunity" onClick={this.btnEdit.bind(this, selectedRowKeys[0])}><i className='iconfont icon-bianji'></i>编辑</Button>
+                                : <Button className="default_button opportunity_list_edit_opportunity" disabled><i className='iconfont icon-bianji'></i>编辑</Button>*/}
 
                         <Button
-                            className="returnbtn-class"
+                            className="returnbtn-class opportunity_list_delete_opportunity"
                             onClick={this.btnDelete.bind(this)}
                         >
                             <i className="iconfont icon-shanchu" />删除
@@ -178,17 +178,17 @@ class ToolForm extends React.Component {
                                 <Row type="flex" gutter={15} justify="end">
                                     {/* <Col>
                                         <ButtonGroup>
-                                            <Button>
+                                            <Button className="opportunity_list_import_opportunity">
                                                 <i className="iconfont icon-daoru" />导入
                                             </Button>
-                                            <Button>
+                                            <Button className="opportunity_list_export_opportunity">
                                                 <i className="iconfont icon-daochu" />导出
                                             </Button>
                                         </ButtonGroup>
                                     </Col> */}
                                     <Col>
                                         <Dropdown overlay={menu}>
-                                    <Button type="primary">
+                                    <Button type="primary" className="opportunity_list_add_opportunity">
                                     <i className="iconfont icon-xinjian" />新建
                                     </Button>
                                     </Dropdown>

@@ -32,10 +32,15 @@
         color: #3ca4fb;
     }
     .crm-list-card-modal{//---修改card的默认样式
-        .modal-height{
-            margin-top: 30px;
-            height: auto;
+        .ant-modal-content{
+            .ant-modal-body{
+                .modal-height{
+                    margin-top: 30px;
+                    height: auto;
+                }
+            }
         }
+        
     }
     .loading{
         width:80%;
@@ -118,6 +123,17 @@
         .panel-header-top {
             height: 75px;
             border-bottom: 1px solid #3ca4fb;
+            .contacts-icon {
+                width: 40px;
+                height: 40px;
+                margin-right: 15px;
+                .icon-lianxiren-daixuan {
+                    font-size: 40px;
+                    line-height: 40px;
+                    margin-left: -5px;
+                    margin-top: -5px;
+                }
+            }
             .contacts-name {
                 font-size: 14px;
                 color: #333;

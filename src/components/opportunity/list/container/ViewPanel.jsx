@@ -13,6 +13,9 @@ import LostCard from './LostCard';
 import RelObject from './RelObject';
 import JoinList from './JoinList'
 import DynamicState from './DynamicState';
+import * as objTypeConst from 'utils/const/ObjTypeConst'
+import "assets/stylesheet/all/iconfont.css";
+
 
 class ViewPanel extends React.Component {
     constructor(props) {
@@ -91,6 +94,18 @@ class ViewPanel extends React.Component {
         this.props.action.showLostCard(false)
     }
 
+    onTabClick = (tabIndex) =>{
+        let editData = this.props.$$state.get("editData").toJS();
+        if (tabIndex == 1) {
+         
+        }else if(tabIndex == 2) {
+            this.props.action.getContactListData(editData.id);
+            this.props.action.getAttachFile(editData.id,objTypeConst.OPPORTUNITY);
+        }else if(tabIndex == 3) {
+        }
+        this.props.action.changeViewTabActived(tabIndex)
+    }
+
     render() {
         let dataSource = []
         if (this.props.data && this.props.data.childList) {
@@ -104,6 +119,7 @@ class ViewPanel extends React.Component {
         const winCardVisible = this.props.$$state.get("winCardVisible");
         const lostCardVisible = this.props.$$state.get("lostCardVisible");
         const viewFormVisible = this.props.$$state.get("viewFormVisible");
+        const viewTabActived = this.props.$$state.get("viewTabActived");
 
         return (
             <div className="view-warrper">
@@ -150,6 +166,7 @@ class ViewPanel extends React.Component {
                                         </Col>
                                         <Col>
                                             <Button
+                                            className="opportunity_list_principal_opportunity"
                                                 onClick={this.btnEdit.bind(this)}
                                             >
                                                 <i className="iconfont icon-bianji" />变更负责人
@@ -159,6 +176,7 @@ class ViewPanel extends React.Component {
                                     <Row gutter={5}>
                                         <Col span="12">
                                             <Button
+                                            className="opportunity_view_losebill_opportunity"
                                                 onClick={this.props.action.showLostCard.bind(true)}
                                             >
                                                 <i className="iconfont icon-bianji" />丢单
@@ -166,6 +184,7 @@ class ViewPanel extends React.Component {
                                         </Col>
                                         <Col span="12">
                                             <Button
+                                            className="opportunity_view_winbill_opportunity"
                                                 onClick={this.props.action.showWinCard.bind(true)}
                                             >
                                                 <i className="iconfont icon-bianji" />赢单
@@ -188,12 +207,12 @@ class ViewPanel extends React.Component {
                         </Col>
                     </Row>
                     <Row className="cumtomer-detail">
-                        <Col className="view-main-cell" span={6}>商机状态</Col>
-                        <Col className="view-main-cell" span={6}>预计签单金额</Col>
-                        <Col className="view-main-cell" span={6}>预计签单时间</Col>
-                        <Col className="view-main-cell" span={6}>负责人</Col>
+                        <Col className="view-main-cell" span={6}><i className="iconfont icon-zhuangtai1" />商机状态</Col>
+                        <Col className="view-main-cell" span={6}><i className="iconfont icon-jiaoyikehu" />预计签单金额</Col>
+                        <Col className="view-main-cell" span={6}><i className="iconfont icon-richeng1" />预计签单时间</Col>
+                        <Col className="view-main-cell" span={6}><i className="iconfont icon-fuzeren1" />负责人</Col>
                         <Col className="view-main-cell" span={6}>{editData.stateName}</Col>
-                        <Col className="view-main-cell" span={6}>{editData.expectSignMoney}</Col>
+                        <Col className="view-main-cell" span={6}>¥{editData.expectSignMoney}</Col>
                         <Col className="view-main-cell" span={6}>{editData.expectSignTime}</Col>
                         <Col className="view-main-cell" span={6}>{editData.ownerUserName}</Col>
                     </Row>
@@ -208,7 +227,7 @@ class ViewPanel extends React.Component {
                             >
                                 <Row><SaleStage /></Row>
                                 <Row className="view-tab">
-                                    <Tabs defaultActiveKey="1">
+                                    <Tabs activeKey={String(viewTabActived)} onTabClick={this.onTabClick}>
                                         <TabPane tab="资料" key="1">
                                             <Card title="基本信息">
                                                 <Row>

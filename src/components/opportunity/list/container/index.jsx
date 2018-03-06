@@ -39,10 +39,6 @@ class List extends React.Component {
                 dataIndex: "customerName"
             },
             {
-                title: "商机类型",
-                dataIndex: "typeName"
-            },
-            {
                 title: "销售阶段",
                 dataIndex: "saleStageName"
             },
@@ -124,8 +120,12 @@ class List extends React.Component {
         this.props.action.deleteData(selectedRowKeys, searchMap, pagination);
     }
 
+    //关闭查看页面
     btnClosePanel() {
         this.props.action.closePanel();
+        const searchMap = this.props.$$state.get("searchMap").toJS();
+        this.props.action.getListData(this.props.$$state.get("pagination").toJS(),searchMap);
+        this.props.action.getFunnelData(searchMap)
     }
 
     showTotal(total) {
@@ -137,12 +137,13 @@ class List extends React.Component {
         let pagination = this.props.$$state.get("pagination").toJS()
         //可能有问题
         pagination = { page: page, pageSize: pageSize };
+        debugger
         this.props.action.getListData(pagination, searchMap);
     }
     onPageSizeChange(current, pageSize) {
         let searchMap = this.props.$$state.get("searchMap").toJS()
         let pagination = this.props.$$state.get("pagination").toJS()
-        pagination = { page: pagination.page, pageSize: pageSize };
+        pagination = { page: 1, pageSize: pageSize };
         this.props.action.getListData(pagination, searchMap);
     }
     render() {
@@ -160,6 +161,7 @@ class List extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+        let pagination = this.props.$$state.get("pagination").toJS()
         return (
             <div className="custom-warpper" style={{ height: h + "px" }}>
                 <ToolForm />
@@ -173,8 +175,7 @@ class List extends React.Component {
                                 rowKey="id"
                                 rowSelection={rowSelection}
                                 size="middle"
-                                pagination={{ size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
-
+                                pagination={{current:pagination.page, size: "large", showSizeChanger: true, showQuickJumper: true, total: page.total, showTotal: this.showTotal, onChange: this.onPageChange.bind(this), onShowSizeChange: this.onPageSizeChange.bind(this) }}
                             />
                         </Col>
                         <Col span={8}>

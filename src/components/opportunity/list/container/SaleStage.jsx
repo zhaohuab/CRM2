@@ -143,7 +143,9 @@ class SaleStage extends React.Component {
                             {showStage(resultData)}
                         </Row>
                     </Col>
-                    {editData.state!=3?"":<Col span={4}><Button type="primary" onClick={this.setCurrentStage.bind(this, selectedStage)}>设为当前</Button></Col>}
+                    {editData.state!=3?"":<Col span={4}><Button 
+                    className="opportunity_view_follow_opportunity"
+                    type="primary" onClick={this.setCurrentStage.bind(this, selectedStage)}>设为当前</Button></Col>}
                     
                 </Row>
                 <Row>
@@ -151,7 +153,7 @@ class SaleStage extends React.Component {
                         <Row className="dimension-line-title">
                             ●关键动作:
                         </Row>
-                        {editData.state!=3?<div className = "SaleStage-action-topdiv"></div>:'' }
+                        {editData.state!=3||selectedStage!=editData.saleStage?<div className = "SaleStage-action-topdiv"></div>:'' }
                         {showDimension(dimension)}
                     </Col>
                     {/* <Col span={12} onClick={this.showRadarCard.bind(this)}>
