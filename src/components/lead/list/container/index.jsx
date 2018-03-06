@@ -85,7 +85,7 @@ class Clue extends React.Component {
             },
             {
                 title: "反馈结果",
-                dataIndex: "feedback"
+                dataIndex: "feedbackName"
             },
             {
                 title: "负责人",
